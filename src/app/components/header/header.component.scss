@@ -1,0 +1,38 @@
+a.is-active{
+ color: #78C2AD !important;
+}
+
+
+.nav-100 {
+ width: 100%;
+}
+
+a.logout{
+ cursor: pointer;
+}
+
+div.logo{
+ a.logo-normal{
+     white-space: pre-wrap;
+     white-space: -moz-pre-wrap;
+     white-space: -pre-wrap;
+     white-space: -o-pre-wrap;
+     word-wrap: break-word;
+ }
+}
+
+div.logo-rer{
+ position: relative;
+ z-index: 99;
+ bottom: 57px;
+ left: 28px;
+}
+
+div.sidebar-no-overflow{
+ overflow: hidden;
+ ul{
+     li {
+         max-height: 20px;
+     }
+ }
+}

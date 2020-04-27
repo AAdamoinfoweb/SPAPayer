@@ -1,0 +1,25 @@
+<div class="sidebar" data-color="white" data-active-color="danger">
+ <div class="logo">
+   <a routerLink="/" class="navbar-toggle simple-text logo-mini">
+     <div class="logo-image-small">
+       <img src="../assets/img/logo-small.png">
+     </div>
+   </a>
+   <a routerLink="/" class="navbar-toggle simple-text logo-normal">
+     {{ nomeUtente }}
+   </a>
+ </div>
+ <div class="sidebar-wrapper sidebar-no-overflow">
+   <ul class="nav">
+   </ul>
+   <ul class="nav">
+     <li>
+       <a (click)="logout()" class="logout navbar-brand">Logout</a>
+     </li>
+   </ul>
+ </div>
+ <div class="logo-rer">
+   <small>Versione: {{ versionApplicativo }}</small>
+  <img src="../assets/images/re-logo.png">
+ </div>
+</div>
