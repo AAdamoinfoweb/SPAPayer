@@ -1719,6 +1719,10 @@ fieldset[disabled] .btn-link.active {
     margin-left: -3px
 }
 
+.payment {
+  color: #004987;
+}
+
 .btn-group .btn:focus {
     background-color: #51bcda!important
 }
@@ -3557,6 +3561,10 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 
 .dropdown-actions .dropdown-item .link-danger {
     color: #ef8157
+}
+
+h3.header {
+  color: #ef8157
 }
 
 .dropdown-actions .dropdown-item .link-danger:hover,

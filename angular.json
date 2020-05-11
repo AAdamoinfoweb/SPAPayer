@@ -28,6 +28,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css",
               "src/assets/css/main.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
@@ -98,6 +99,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css",
               "src/styles.scss"
             ],
             "scripts": []

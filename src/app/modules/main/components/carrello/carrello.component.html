@@ -5,24 +5,80 @@
       {{item.label}}
     </it-breadcrumb-item>
   </it-breadcrumb>
-  <it-collapse-group [accordion]="accordion">
+  <h3 class="pl-3 mb-2 header">Carrello</h3>
+  <it-collapse-group [accordion]="false">
     <it-collapse-item header="Lista pagamenti">
-
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th></th>
+            <th scope="col">Emissione</th>
+            <th scope="col">N.ro Documento</th>
+            <th scope="col">Descrizione</th>
+            <th scope="col">Ente</th>
+            <th scope="col">Scadenza</th>
+            <th scope="col">Importo</th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let pagamento of listaPagamenti">
+            <tr>
+              <th>
+                <svg class="bg-light icon icon-xs">
+                  <use xlink:href="assets/img/sprite.svg#it-delete"></use>
+                </svg>
+              </th>
+              <td>{{pagamento.emissione | date: 'MM/yyyy'}}</td>
+              <td>{{pagamento.numDocumento}}</td>
+              <td>{{pagamento.descrizione}}</td>
+              <td>{{pagamento.ente}}</td>
+              <td>{{pagamento.scadenza | date: 'dd/MM/yyyy'}}</td>
+              <td>{{pagamento.importo|currency:"EUR":"€ "}}</td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
     </it-collapse-item>
-    <it-collapse-item header="Modalità pagamento">
+    <it-collapse-item header="Modalità pagamento" [it-collapse]="true">
+      <div class="row">
+        <div class="col-2">
+          <it-radio-button name="standard" [disabled]="true" [checked]="true" label="PagoPA"></it-radio-button>
+        </div>
+        <div class="col-10">
+          <p>
+            PagoPA è il sistema nazionale Italiano, previsto dalle normative vigenti (CAD. Codice dell'Amministrazione
+            Digitale)
+          </p>
+          <p>
+            per effettuare i pagamenti elettronici verso la Pubblica Amministrazione. Per procedere con il pagamento
+            occorre
+          </p>
+          <p>
+            selezionare il bottone Avanti in fondo alla pagina. Tenendo presente che
+          </p>
+          <p>
 
+          </p>
+        </div>
+      </div>
     </it-collapse-item>
-    <it-collapse-item header="Email per la notifica">
-      <it-input id="interactive-input-0" name="interactive-input-example" [label]="'E-mail'"
-                [type]="'email'" [icon]="'it-email'" [(ngModel)]="email" [note]="'Inserisci l\'indirizzo email'">
-      </it-input>
+    <it-collapse-item header="Email per la notifica" [it-collapse]="true">
+      <div class="row">
+        <div class="col-5">
+          <it-input id="interactive-input-0" name="interactive-input-example" [label]="'E-mail'"
+                    [type]="'email'" [icon]="'it-email'" [(ngModel)]="email" [note]="'Inserisci l\'indirizzo email'">
+          </it-input>
+        </div>
+      </div>
     </it-collapse-item>
   </it-collapse-group>
-  <div class="row">
-    <div class="col-2">Disposizioni di pagamento: {{listaPagamenti?.length}}</div>
-    <div class="col-2">Totale da pagare: {{total}}</div>
-    <div class="col-2">
-      <it-button color="primary">Paga</it-button>
+  <div class="row pl-4 align-items-center h-100">
+    <div class="col-4 align-middle">Disposizioni di pagamento: {{listaPagamenti?.length}}</div>
+    <div class="col-6 align-middle text-right">Totale da pagare: {{totale|currency:"EUR":"€ "}}</div>
+    <div class="col-2 align-middle text-center">
+      <button type="button" class="btn btn-outline-secondary">Paga</button>
     </div>
   </div>
 </div>
