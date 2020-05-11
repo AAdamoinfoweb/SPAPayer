@@ -4966,6 +4966,10 @@ img {
   color: #828282;
 }
 
+.font-msg {
+  font-size: 16px;
+}
+
 .main-panel {
 
   position: relative;

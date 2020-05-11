@@ -44,9 +44,9 @@
     <it-collapse-item header="Modalità pagamento" [it-collapse]="true">
       <div class="row">
         <div class="col-2">
-          <it-radio-button name="standard" [disabled]="true" [checked]="true" label="PagoPA"></it-radio-button>
+          <it-radio-button name="standard" [disabled]="true" [checked]="true" label="pagoPA"></it-radio-button>
         </div>
-        <div class="col-10">
+        <div class="col-10 font-msg">
           <p>
             PagoPA è il sistema nazionale Italiano, previsto dalle normative vigenti (CAD. Codice dell'Amministrazione
             Digitale)
@@ -58,9 +58,21 @@
           <p>
             selezionare il bottone Avanti in fondo alla pagina. Tenendo presente che
           </p>
-          <p>
-
-          </p>
+          <ul>
+            <li>verrà chiesta la registrazione a pagoPA; tale registrazione è facoltativa e non necessaria a terminare
+              il pagamento
+            </li>
+            <li>al termine del pagamento è necessario cliccare il bottone "Chiudi" per ritornare al servizio;</li>
+            <li>il sistema propone tre modalità di pagamento (carta di credito, conto corrente e altro)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-10 font-msg">
+          Si sottolinea che scegliendo il pagamento con carte di Intesa Sanpaolo, seguendo la procedura di seguito
+          riportata, è possibile usufruire di costi di commissione agevolati, ottenuti da Lepida S.c.p.A.
+          (0,50 € per i pagamenti nella fascia 0,01 € - 50,00 €
         </div>
       </div>
     </it-collapse-item>
