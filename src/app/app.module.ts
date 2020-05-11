@@ -10,12 +10,14 @@ import { JwtInterceptorService } from './services/jwt-interceptor.service';
 import { BackendInterceptorService } from './services/backend-interceptor';
 import { HeaderComponent } from './components/header/header.component';
 import { MainModule } from './modules/main/main.module';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     HeaderComponent,
+    FooterComponent,
   ],
   imports: [
     HttpClientModule,
