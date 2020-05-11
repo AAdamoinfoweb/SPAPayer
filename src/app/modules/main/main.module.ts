@@ -4,6 +4,8 @@ import { HomeriservataComponent } from './components/homeriservata/homeriservata
 import { MainRoutingModule } from './main-routing.module';
 import { CarrelloComponent } from './components/carrello/carrello.component';
 import { PresaincaricopagamentoComponent } from './components/presaincaricopagamento/presaincaricopagamento.component';
+import {DesignAngularKitModule} from "design-angular-kit";
+import {FormsModule} from "@angular/forms";
 
 
 
@@ -11,7 +13,9 @@ import { PresaincaricopagamentoComponent } from './components/presaincaricopagam
   declarations: [HomeriservataComponent, CarrelloComponent, PresaincaricopagamentoComponent],
   imports: [
     CommonModule,
-    MainRoutingModule
+    MainRoutingModule,
+    DesignAngularKitModule,
+    FormsModule
   ]
 })
 export class MainModule { }

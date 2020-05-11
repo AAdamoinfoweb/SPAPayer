@@ -1,0 +1,28 @@
+<div>
+  <it-breadcrumb [dark]="isDark" [separator]="separator">
+    <it-breadcrumb-item *ngFor="let item of items"
+                        [link]="item.link" [icon]="item.icon">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
+  <it-collapse-group [accordion]="accordion">
+    <it-collapse-item header="Lista pagamenti">
+
+    </it-collapse-item>
+    <it-collapse-item header="Modalità pagamento">
+
+    </it-collapse-item>
+    <it-collapse-item header="Email per la notifica">
+      <it-input id="interactive-input-0" name="interactive-input-example" [label]="'E-mail'"
+                [type]="'email'" [icon]="'it-email'" [(ngModel)]="email" [note]="'Inserisci l\'indirizzo email'">
+      </it-input>
+    </it-collapse-item>
+  </it-collapse-group>
+  <div class="row">
+    <div class="col-2">Disposizioni di pagamento: {{listaPagamenti?.length}}</div>
+    <div class="col-2">Totale da pagare: {{total}}</div>
+    <div class="col-2">
+      <it-button color="primary">Paga</it-button>
+    </div>
+  </div>
+</div>
