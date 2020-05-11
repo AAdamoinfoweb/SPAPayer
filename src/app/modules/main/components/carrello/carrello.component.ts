@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Pagamento} from "../../model/Pagamento";
+import {Breadcrumb} from "../../dto/Breadcrumb";
 
 @Component({
   selector: 'app-carrello',
@@ -10,12 +11,15 @@ export class CarrelloComponent implements OnInit {
   isDark: boolean = false;
   separator: string = "/";
   items = [];
-  accordion: any;
+
   listaPagamenti: Pagamento[] = [];
-  total: number;
+
   email: string;
 
   constructor() {
+    this.items.push(new Breadcrumb("Home", null, null));
+    this.items.push(new Breadcrumb("Pagamenti", null, null));
+    this.items.push(new Breadcrumb("Carrello", null, null));
   }
 
   ngOnInit(): void {
