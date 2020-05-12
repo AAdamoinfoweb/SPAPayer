@@ -1,16 +1,17 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {BrowserModule} from '@angular/platform-browser';
+import {ErrorHandler, NgModule} from '@angular/core';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
-import { ErrorHandlerGenerico } from './services/errorHandlerGenerico';
-import { JwtInterceptorService } from './services/jwt-interceptor.service';
-import { BackendInterceptorService } from './services/backend-interceptor';
-import { HeaderComponent } from './components/header/header.component';
-import { MainModule } from './modules/main/main.module';
-import { FooterComponent } from './components/footer/footer.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {HomeComponent} from './components/home/home.component';
+import {ErrorHandlerGenerico} from './services/errorHandlerGenerico';
+import {JwtInterceptorService} from './services/jwt-interceptor.service';
+import {BackendInterceptorService} from './services/backend-interceptor';
+import {HeaderComponent} from './components/header/header.component';
+import {MainModule} from './modules/main/main.module';
+import {FooterComponent} from './components/footer/footer.component';
+import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 
 @NgModule({
   declarations: [

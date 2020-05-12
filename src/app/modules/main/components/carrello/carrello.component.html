@@ -5,11 +5,11 @@
       {{item.label}}
     </it-breadcrumb-item>
   </it-breadcrumb>
-  <h3 class="pl-3 mb-2 header">Carrello</h3>
+  <h3 class="pl-3 mb-2 header"><b>Carrello</b></h3>
   <it-collapse-group [accordion]="false">
     <it-collapse-item header="Lista pagamenti">
       <div class="table-responsive font-msg">
-        <table class="table table-hover">
+        <table class="mb-0 table table-hover">
           <thead>
           <tr>
             <th></th>
@@ -43,22 +43,23 @@
     </it-collapse-item>
     <it-collapse-item header="Modalità pagamento" [it-collapse]="true">
       <div class="row">
-        <div class="col-2">
-          <it-radio-button name="standard" [disabled]="true" [checked]="true" label="pagoPA"></it-radio-button>
+        <div class="col-1">
+          <img width="100px" src="assets/img/pagopa.png">
+          <it-radio-button name="standard" [value]="'checked'" [checked]="true" label="pagoPA"></it-radio-button>
         </div>
-        <div class="col-10 font-msg">
-          <p>
+        <div class="col-7 font-msg">
+          <p class="mb-0">
             PagoPA è il sistema nazionale Italiano, previsto dalle normative vigenti (CAD. Codice dell'Amministrazione
             Digitale)
           </p>
-          <p>
+          <p class="mb-0">
             per effettuare i pagamenti elettronici verso la Pubblica Amministrazione. Per procedere con il pagamento
             occorre
           </p>
-          <p>
+          <p class="mb-0">
             selezionare il bottone Avanti in fondo alla pagina. Tenendo presente che
           </p>
-          <ul>
+          <ul class="mb-0">
             <li>verrà chiesta la registrazione a pagoPA; tale registrazione è facoltativa e non necessaria a terminare
               il pagamento
             </li>
@@ -66,13 +67,23 @@
             <li>il sistema propone tre modalità di pagamento (carta di credito, conto corrente e altro)</li>
           </ul>
         </div>
+        <div class="col-2">
+          <youtube-player
+            [height]="'150px'"
+            [videoId]="'HvfMZRLIgBo'"
+          ></youtube-player>
+        </div>
       </div>
       <div class="row">
-        <div class="col-2"></div>
+        <div class="col-1"></div>
         <div class="col-10 font-msg">
           Si sottolinea che scegliendo il pagamento con carte di Intesa Sanpaolo, seguendo la procedura di seguito
           riportata, è possibile usufruire di costi di commissione agevolati, ottenuti da Lepida S.c.p.A.
-          (0,50 € per i pagamenti nella fascia 0,01 € - 50,00 €
+          (0,50 € per i pagamenti nella fascia 0,01 € - 50,00 €; 0,95 € per i pagamenti nella fascia 50,01 € - 150,00 €;
+          1,25 € per i pagamenti nella fascia 150,01 € - 500,00 € e 2,00 € per importi superiori a 500 €). Per usufruire
+          delle commissioni agevolate utilizzando la carta di credito/debito, occorre scegliere "Conto Corrente" e ricercare
+          nella lista "Intesa Sanpoaolo Emilia Romagna: pagamenti con carte" (digitando nel campo di ricerca "Emilia Romagna").
+          Per istruzioni maggiormente dettagliate, è disponibile il video sulla destra.
         </div>
       </div>
     </it-collapse-item>
