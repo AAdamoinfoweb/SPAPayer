@@ -43,11 +43,11 @@
     </it-collapse-item>
     <it-collapse-item header="Modalità pagamento" [it-collapse]="true">
       <div class="row">
-        <div class="col-1">
+        <div class="col-xl-1 col-xs-12">
           <img width="100px" src="assets/img/pagopa.png">
           <it-radio-button name="standard" [value]="'checked'" [checked]="true" label="pagoPA"></it-radio-button>
         </div>
-        <div class="col-7 font-msg">
+        <div class="col-xl-7 col-xs-12 font-msg">
           <p class="mb-0">
             PagoPA è il sistema nazionale Italiano, previsto dalle normative vigenti (CAD. Codice dell'Amministrazione
             Digitale)
@@ -67,7 +67,7 @@
             <li>il sistema propone tre modalità di pagamento (carta di credito, conto corrente e altro)</li>
           </ul>
         </div>
-        <div class="col-2">
+        <div class="col-xl-2 col-xs-12">
           <youtube-player
             [height]="'150px'"
             [videoId]="'HvfMZRLIgBo'"
@@ -75,8 +75,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10 font-msg">
+        <div class="col-xl-1 col-xs-12"></div>
+        <div class="col-xl-10 col-xs-12 font-msg">
           Si sottolinea che scegliendo il pagamento con carte di Intesa Sanpaolo, seguendo la procedura di seguito
           riportata, è possibile usufruire di costi di commissione agevolati, ottenuti da Lepida S.c.p.A.
           (0,50 € per i pagamenti nella fascia 0,01 € - 50,00 €; 0,95 € per i pagamenti nella fascia 50,01 € - 150,00 €;
@@ -91,11 +91,12 @@
     </it-collapse-item>
     <it-collapse-item header="Email per la notifica" [it-collapse]="true">
       <div class="row">
-        <div class="col-5">
+        <div class="col-xl-4 col-xs-12">
           <form #myForm="ngForm">
             <it-input name="emailInput" required pattern="[ab]+" [label]="'E-mail'"
                       [type]="'email'" [icon]="'it-email'"
-                      [(ngModel)]="email" [note]="'Inserisci l\'indirizzo email'">
+                      [(ngModel)]="email"
+                      [note]="'Inserisci l\'indirizzo email'">
               <p id="tdv-required" class="error"
                  *ngIf="myForm.controls.emailInput?.errors?.required">Il campo è obbligatorio</p>
               <p id="tdv-pattern" class="error"
@@ -107,9 +108,9 @@
     </it-collapse-item>
   </it-collapse-group>
   <div class="row pl-4 align-items-center h-100">
-    <div class="col-4 font-msg align-middle">Disposizioni di pagamento: {{listaPagamenti?.length}}</div>
-    <div class="col-6 font-msg align-middle text-right">Totale da pagare: {{totale|currency:"EUR":"€ "}}</div>
-    <div class="col-2 font-msg align-middle text-center">
+    <div class="col-xl-9 col-xs-12 font-msg align-middle">Disposizioni di pagamento: {{listaPagamenti?.length}}</div>
+    <div class="col-xl-2 col-xs-12 font-msg align-middle">Totale da pagare: {{totale|currency:"EUR":"€ "}}</div>
+    <div class="col-xl-1 col-xs-12 font-msg align-middle">
       <button type="button" class="btn btn-outline-secondary">Paga</button>
     </div>
   </div>
