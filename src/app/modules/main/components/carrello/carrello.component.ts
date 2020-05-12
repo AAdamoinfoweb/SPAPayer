@@ -14,7 +14,7 @@ export class CarrelloComponent implements OnInit {
 
   listaPagamenti: Pagamento[] = [];
 
-  email: string;
+  email: string = '';
 
   constructor() {
     this.items.push(new Breadcrumb("Home", null, null));

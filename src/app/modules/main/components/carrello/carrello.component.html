@@ -81,8 +81,10 @@
           riportata, è possibile usufruire di costi di commissione agevolati, ottenuti da Lepida S.c.p.A.
           (0,50 € per i pagamenti nella fascia 0,01 € - 50,00 €; 0,95 € per i pagamenti nella fascia 50,01 € - 150,00 €;
           1,25 € per i pagamenti nella fascia 150,01 € - 500,00 € e 2,00 € per importi superiori a 500 €). Per usufruire
-          delle commissioni agevolate utilizzando la carta di credito/debito, occorre scegliere "Conto Corrente" e ricercare
-          nella lista "Intesa Sanpoaolo Emilia Romagna: pagamenti con carte" (digitando nel campo di ricerca "Emilia Romagna").
+          delle commissioni agevolate utilizzando la carta di credito/debito, occorre scegliere "Conto Corrente" e
+          ricercare
+          nella lista "Intesa Sanpaolo Emilia Romagna: pagamenti con carte" (digitando nel campo di ricerca "Emilia
+          Romagna").
           Per istruzioni maggiormente dettagliate, è disponibile il video sulla destra.
         </div>
       </div>
@@ -90,17 +92,24 @@
     <it-collapse-item header="Email per la notifica" [it-collapse]="true">
       <div class="row">
         <div class="col-5">
-          <it-input id="interactive-input-0" name="interactive-input-example" [label]="'E-mail'"
-                    [type]="'email'" [icon]="'it-email'" [(ngModel)]="email" [note]="'Inserisci l\'indirizzo email'">
-          </it-input>
+          <form #myForm="ngForm">
+            <it-input name="emailInput" required pattern="[ab]+" [label]="'E-mail'"
+                      [type]="'email'" [icon]="'it-email'"
+                      [(ngModel)]="email" [note]="'Inserisci l\'indirizzo email'">
+              <p id="tdv-required" class="error"
+                 *ngIf="myForm.controls.emailInput?.errors?.required">Il campo è obbligatorio</p>
+              <p id="tdv-pattern" class="error"
+                 *ngIf="myForm.controls.emailInput?.errors?.pattern">non corrisponde al pattern [ab]+</p>
+            </it-input>
+          </form>
         </div>
       </div>
     </it-collapse-item>
   </it-collapse-group>
   <div class="row pl-4 align-items-center h-100">
-    <div class="col-4 align-middle">Disposizioni di pagamento: {{listaPagamenti?.length}}</div>
-    <div class="col-6 align-middle text-right">Totale da pagare: {{totale|currency:"EUR":"€ "}}</div>
-    <div class="col-2 align-middle text-center">
+    <div class="col-4 font-msg align-middle">Disposizioni di pagamento: {{listaPagamenti?.length}}</div>
+    <div class="col-6 font-msg align-middle text-right">Totale da pagare: {{totale|currency:"EUR":"€ "}}</div>
+    <div class="col-2 font-msg align-middle text-center">
       <button type="button" class="btn btn-outline-secondary">Paga</button>
     </div>
   </div>
