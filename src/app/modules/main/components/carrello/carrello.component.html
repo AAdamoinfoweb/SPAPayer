@@ -5,7 +5,11 @@
       {{item.label}}
     </it-breadcrumb-item>
   </it-breadcrumb>
-  <h3 class="pl-3 mb-2 header"><b>Carrello</b></h3>
+  <h3 class="pl-3 mb-2 header"><b>Carrello</b>
+    <svg style="background-color: #F6F6F6!important;" class="bg-light icon icon-lg icon-padded">
+      <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+    </svg>
+  </h3>
   <it-collapse-group [accordion]="false">
     <it-collapse-item header="Lista pagamenti">
       <div class="table-responsive font-msg">
@@ -70,7 +74,7 @@
         <div class="col-xl-2 col-xs-12">
           <div class="video">
             <video height="180px" controls (click)="toggleVideo()" #videoPlayer>
-              <source src="https://multipler.lepida.it/lepida/video/lepida_8517.mp4" type="video/mp4" />
+              <source src="https://multipler.lepida.it/lepida/video/lepida_8517.mp4" type="video/mp4"/>
             </video>
           </div>
         </div>
@@ -112,7 +116,9 @@
     <div class="col-xl-9 col-xs-12 font-msg align-middle">Disposizioni di pagamento: {{listaPagamenti?.length}}</div>
     <div class="col-xl-2 col-xs-12 font-msg align-middle">Totale da pagare: {{totale|currency:"EUR":"€ "}}</div>
     <div class="col-xl-1 col-xs-12 font-msg align-middle">
-      <button (click)="goToPresaInCaricoPagamento()" id="payButton" type="button" class="btn btn-outline-secondary">Paga</button>
+      <button (click)="goToPresaInCaricoPagamento()" id="payButton" type="button" class="btn btn-outline-secondary">
+        Paga
+      </button>
     </div>
   </div>
 </div>

@@ -3343,6 +3343,11 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   background-color: #77777B;
 }
 
+.col-2_5 {
+  flex: 0 0 20%;
+  max-width: 20%;
+}
+
 .dropdown-menu .dropdown-header {
   color: #9a9a9a;
   font-size: .8571em;
