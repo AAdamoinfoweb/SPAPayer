@@ -3601,6 +3601,10 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   color: #ef8157
 }
 
+.progress-spinner.progress-spinner-active:not(.progress-spinner-double) {
+  border-color: #004987 #004987 #d4e9ff;
+}
+
 .main-header {
   background-color: #ef8157
 }
