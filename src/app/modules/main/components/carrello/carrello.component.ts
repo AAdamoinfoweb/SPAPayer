@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Pagamento} from "../../model/Pagamento";
 import {Breadcrumb} from "../../dto/Breadcrumb";
 import {Router} from "@angular/router";
@@ -17,10 +17,18 @@ export class CarrelloComponent implements OnInit {
 
   email: string = '';
 
+  @ViewChild("videoPlayer", { static: false }) videoplayer: ElementRef;
+  isPlay: boolean = false;
+
   constructor(private router: Router) {
     this.items.push(new Breadcrumb("Home", null, null));
     this.items.push(new Breadcrumb("Pagamenti", null, null));
     this.items.push(new Breadcrumb("Carrello", null, null));
+  }
+
+
+  toggleVideo() {
+    this.videoplayer.nativeElement.play();
   }
 
   ngOnInit(): void {
@@ -35,4 +43,5 @@ export class CarrelloComponent implements OnInit {
   goToPresaInCaricoPagamento() {
     this.router.navigateByUrl("/presaincaricopagamento");
   }
+
 }

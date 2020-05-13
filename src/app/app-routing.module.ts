@@ -15,8 +15,8 @@ const routes: Routes = [
       AuthguardService
     ]
   },
-  {path: 'carrello', component: CarrelloComponent, canActivate: [AuthguardService]},
-  {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent, canActivate: [AuthguardService]}
+  {path: 'carrello', component: CarrelloComponent},
+  {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent}
 ];
 
 @NgModule({
