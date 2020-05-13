@@ -16,17 +16,17 @@ body {
 }
 
 #payButton {
-  background-color: #004987!important;
+  background-color: #004987 !important;
 }
 
 .collapse-header {
   font-size: 1.2rem;
-  color: #004987!important;
+  color: #004987 !important;
 }
 
-.collapse-header [data-toggle=collapse]{
+.collapse-header [data-toggle=collapse] {
   font-size: 1.2rem;
-  color: #004987!important;
+  color: #004987 !important;
 }
 
 .animated {
@@ -3337,6 +3337,10 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 .dropdown-menu .divider {
   background-color: #f1eae0;
   margin: 0
+}
+
+.it-footer-main {
+  background-color: #77777B;
 }
 
 .dropdown-menu .dropdown-header {
