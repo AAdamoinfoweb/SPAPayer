@@ -15,8 +15,18 @@ body {
   padding: 3px 24px 20px !important;
 }
 
+#payButton {
+  background-color: #004987!important;
+}
+
 .collapse-header {
   font-size: 1.2rem;
+  color: #004987!important;
+}
+
+.collapse-header [data-toggle=collapse]{
+  font-size: 1.2rem;
+  color: #004987!important;
 }
 
 .animated {

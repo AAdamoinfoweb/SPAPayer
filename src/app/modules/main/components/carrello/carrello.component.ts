@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Pagamento} from "../../model/Pagamento";
 import {Breadcrumb} from "../../dto/Breadcrumb";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-carrello',
@@ -16,7 +17,7 @@ export class CarrelloComponent implements OnInit {
 
   email: string = '';
 
-  constructor() {
+  constructor(private router: Router) {
     this.items.push(new Breadcrumb("Home", null, null));
     this.items.push(new Breadcrumb("Pagamenti", null, null));
     this.items.push(new Breadcrumb("Carrello", null, null));
@@ -31,4 +32,7 @@ export class CarrelloComponent implements OnInit {
     return this.listaPagamenti.reduce((accum, item) => accum + item.importo, 0);
   }
 
+  goToPresaInCaricoPagamento() {
+    this.router.navigateByUrl("/presaincaricopagamento");
+  }
 }
