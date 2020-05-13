@@ -3601,6 +3601,10 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   color: #ef8157
 }
 
+.main-header {
+  background-color: #ef8157
+}
+
 h3.header {
   color: #ef8157
 }
