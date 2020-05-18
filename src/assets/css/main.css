@@ -5001,8 +5001,19 @@ img {
   font-size: 16px;
 }
 
-.main-panel {
+.ico-prefix {
+  position: absolute;
+  width: 3rem;
+  font-size: 1.8rem;
+  z-index: 10;
+  text-align: center;
+}
 
+.bg-light {
+  background-color: #F6F6F6!important;
+}
+
+.main-panel {
   position: relative;
   float: right;
   width: calc(100% - 260px);

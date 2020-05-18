@@ -16,7 +16,7 @@
   </div>
   <div class="row justify-content-md-center">
     <div class="col-12 font-msg align-middle">
-      <button [style.width]="'100%'" [style.text-transform]="'none'" id="payButton" type="button" class="btn btn-outline-secondary mb-0">
+      <button (click)="goToFeedback()" [style.width]="'100%'" [style.text-transform]="'none'" id="payButton" type="button" class="btn btn-outline-secondary mb-0">
         <svg class="icon icon icon-sm icon-white">
           <use
             xlink:href="assets/img/sprite.svg#it-pencil"
@@ -33,27 +33,12 @@
           <div class="row clearfix">
             <div class="col-2_5 text-center">
               <div class="it-brand-wrapper">
-                <a href="#">Note legali</a>
+                <a target="_blank" href="#">Policy privacy</a>
               </div>
             </div>
             <div class="col-2_5 text-center">
               <div class="it-brand-wrapper">
-                <a href="#">Policy privacy</a>
-              </div>
-            </div>
-            <div class="col-2_5 text-center">
-              <div class="it-brand-wrapper">
-                <a href="#">Sicurezza</a>
-              </div>
-            </div>
-            <div class="col-2_5 text-center">
-              <div class="it-brand-wrapper">
-                <a href="#">Info costi</a>
-              </div>
-            </div>
-            <div class="col-2_5 text-center">
-              <div class="it-brand-wrapper">
-                <a href="#">Contattaci</a>
+                <a target="_blank" href="https://www.lepida.net/assistenza/richiesta-assistenza-payer">Contattaci</a>
               </div>
             </div>
           </div>
