@@ -11,26 +11,25 @@ import {BackendInterceptorService} from './services/backend-interceptor';
 import {HeaderComponent} from './components/header/header.component';
 import {MainModule} from './modules/main/main.module';
 import {FooterComponent} from './components/footer/footer.component';
-import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    HeaderComponent,
-    FooterComponent,
-  ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    MainModule
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true },
-    { provide: ErrorHandler, useClass: ErrorHandlerGenerico }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        HeaderComponent
+    ],
+    imports: [
+        HttpClientModule,
+        BrowserModule,
+        AppRoutingModule,
+        MainModule
+    ],
+    providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
+        {provide: ErrorHandler, useClass: ErrorHandlerGenerico}
+    ],
+
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

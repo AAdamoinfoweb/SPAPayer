@@ -120,9 +120,11 @@
     <div class="col-xl-9 col-xs-12 font-msg align-middle">Disposizioni di pagamento: {{listaPagamenti?.length}}</div>
     <div class="col-xl-2 col-xs-12 font-msg align-middle">Totale da pagare: {{totale|currency:"EUR":"€ "}}</div>
     <div class="col-xl-1 col-xs-12 font-msg align-middle">
-      <button [disabled]="emailForm.invalid" (click)="goToPresaInCaricoPagamento()" id="payButton" type="button" class="btn btn-outline-secondary">
+      <button [disabled]="emailForm.invalid" (click)="goToPresaInCaricoPagamento()" id="payButton" type="button"
+              class="btn btn-outline-secondary">
         Paga
       </button>
     </div>
   </div>
+  <app-footer></app-footer>
 </div>

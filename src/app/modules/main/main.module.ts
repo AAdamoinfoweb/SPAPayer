@@ -7,16 +7,26 @@ import {PresaincaricopagamentoComponent} from './components/presaincaricopagamen
 import {DesignAngularKitModule} from "design-angular-kit";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxYoutubePlayerModule} from "ngx-youtube-player";
+import {FooterComponent} from "../../components/footer/footer.component";
 
 @NgModule({
-  declarations: [HomeriservataComponent, CarrelloComponent, PresaincaricopagamentoComponent],
+  declarations: [
+    HomeriservataComponent,
+    CarrelloComponent,
+    PresaincaricopagamentoComponent,
+    FooterComponent
+  ],
   imports: [
     CommonModule,
     MainRoutingModule,
     DesignAngularKitModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxYoutubePlayerModule
+    NgxYoutubePlayerModule,
+
+  ],
+  exports: [
+    FooterComponent
   ]
 })
 export class MainModule {
