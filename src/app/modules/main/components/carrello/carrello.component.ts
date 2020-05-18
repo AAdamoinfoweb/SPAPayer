@@ -14,7 +14,8 @@ export class CarrelloComponent implements OnInit {
   separator: string = "/";
   breadcrumbList = [];
 
-  listaPagamenti: Pagamento[] = [];
+  listaPagamentiLength: number = 0;
+  listaPagamentiTotal: number = 0;
 
   email: string = 'mario.rossi@gmail.com';
 
@@ -39,17 +40,6 @@ export class CarrelloComponent implements OnInit {
         Validators.required,
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")])
     });
-
-    this.listaPagamenti.push(new Pagamento(new Date(), "001233468129", "TARI", "Comune di Bologna", new Date(), 120.00));
-    this.listaPagamenti.push(new Pagamento(new Date(), "001233463789", "IMU", "Comune di Ferrara", new Date(), 572.56));
-  }
-
-  get emailInput() {
-    return this.userEmail.get("emailInput");
-  }
-
-  get totale(): number {
-    return this.listaPagamenti.reduce((accum, item) => accum + item.importo, 0);
   }
 
   goToPresaInCaricoPagamento() {

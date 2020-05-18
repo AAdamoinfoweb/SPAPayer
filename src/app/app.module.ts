@@ -11,12 +11,14 @@ import {BackendInterceptorService} from './services/backend-interceptor';
 import {HeaderComponent} from './components/header/header.component';
 import {MainModule} from './modules/main/main.module';
 import {FooterComponent} from './components/footer/footer.component';
+import { LoginBarComponent } from './components/login-bar/login-bar.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         HomeComponent,
-        HeaderComponent
+        HeaderComponent,
+        LoginBarComponent
     ],
     imports: [
         HttpClientModule,

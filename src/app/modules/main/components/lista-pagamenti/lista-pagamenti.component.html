@@ -1,0 +1,32 @@
+<div class="table-responsive font-msg">
+  <table class="mb-0 table table-hover">
+    <thead>
+    <tr>
+      <th></th>
+      <th scope="col">Emissione</th>
+      <th scope="col">N.ro Documento</th>
+      <th scope="col">Descrizione</th>
+      <th scope="col">Ente</th>
+      <th scope="col">Scadenza</th>
+      <th scope="col">Importo</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let pagamento of listaPagamenti">
+      <tr>
+        <th>
+          <svg class="bg-light icon icon-xs">
+            <use xlink:href="assets/img/sprite.svg#it-delete"></use>
+          </svg>
+        </th>
+        <td>{{pagamento.emissione | date: 'MM/yyyy'}}</td>
+        <td>{{pagamento.numDocumento}}</td>
+        <td>{{pagamento.descrizione}}</td>
+        <td>{{pagamento.ente}}</td>
+        <td>{{pagamento.scadenza | date: 'dd/MM/yyyy'}}</td>
+        <td>{{pagamento.importo|currency:"EUR":"€ "}}</td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+</div>

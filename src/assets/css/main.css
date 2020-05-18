@@ -31,8 +31,9 @@ hr {
 footer.it-footer {
   padding-left: 1px;
 }
-.h-41px {
-  height: 41px;
+
+.h-60px {
+  height: 60px;
 }
 
 .h-100px {
@@ -5798,7 +5799,16 @@ img {
   line-height: 59px
 }
 
-@media screen and (max-width: 991px) {
+.font-menu-sidebar {
+  font-size: 9px;
+}
+
+@media screen and (max-width: 2800px) {
+  /*added to hide sidebar menu*/
+  .navbar-expand-lg .navbar-toggler {
+    display: inline-block !important;
+  }
+
   .navbar {
     padding: 0
   }
@@ -6338,6 +6348,7 @@ img {
   }
 }
 
+/*
 @media screen and (min-width: 992px) {
   .navbar-collapse {
     background: none !important
@@ -6398,7 +6409,7 @@ img {
     top: 0
   }
 }
-
+*/
 @media screen and (max-width: 768px) {
   .card-stats [class*="col-"] .statistics::after {
     display: none

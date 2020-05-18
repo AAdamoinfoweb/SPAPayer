@@ -8,13 +8,15 @@ import {DesignAngularKitModule} from "design-angular-kit";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxYoutubePlayerModule} from "ngx-youtube-player";
 import {FooterComponent} from "../../components/footer/footer.component";
+import { ListaPagamentiComponent } from './components/lista-pagamenti/lista-pagamenti.component';
 
 @NgModule({
   declarations: [
     HomeriservataComponent,
     CarrelloComponent,
     PresaincaricopagamentoComponent,
-    FooterComponent
+    FooterComponent,
+    ListaPagamentiComponent
   ],
   imports: [
     CommonModule,
