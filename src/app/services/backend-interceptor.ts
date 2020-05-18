@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpClient, HttpEvent, HttpResponse } from '@angular/common/http';
-import { catchError, switchMap, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { RenewToken } from '../interfaces/renew-token';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpEvent, HttpHandler, HttpRequest, HttpResponse} from '@angular/common/http';
+import {catchError, switchMap, tap} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {RenewToken} from '../interfaces/renew-token';
 import * as Sentry from '@sentry/browser';
 
 @Injectable({

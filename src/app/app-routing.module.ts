@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './components/home/home.component';
 import {AuthguardService} from './services/authguard.service';
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";

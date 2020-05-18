@@ -1,5 +1,4 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Pagamento} from "../../model/Pagamento";
 import {Breadcrumb} from "../../dto/Breadcrumb";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -23,7 +22,6 @@ export class CarrelloComponent implements OnInit {
 
   tooltipTitle: string = "In questa interfaccia vengono mostrate le pendenze che stanno per essere pagate ed è possibile procedere al pagamento.";
   userEmail: FormGroup;
-  isShown: boolean = true;
 
   constructor(private router: Router) {
     this.breadcrumbList.push(new Breadcrumb("Home", null, null));

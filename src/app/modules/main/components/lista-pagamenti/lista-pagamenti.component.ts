@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Pagamento} from "../../model/Pagamento";
 import {ListaPagamentiService} from "../../../../services/lista-pagamenti.service";
 
