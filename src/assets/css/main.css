@@ -7,6 +7,15 @@ body {
   font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
 }
 
+.tooltip {
+  font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
+  font-size: 16px!important;
+}
+
+it-tooltip-window {
+  background-color: #F6F6F6!important;
+}
+
 .breadcrumb {
   background-color: inherit !important;
 }
