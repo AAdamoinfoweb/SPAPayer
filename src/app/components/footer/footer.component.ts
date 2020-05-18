@@ -12,4 +12,7 @@ export class FooterComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  goToFeedback() {
+    window.open("https://www.lepida.net/assistenza/richiesta-assistenza-payer", "_blank");
+  }
 }
