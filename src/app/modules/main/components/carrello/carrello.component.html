@@ -98,7 +98,6 @@
                         [type]="'email'"
                         required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                         [icon]="'it-email'"
-                        [(ngModel)]="email"
               ></it-input>
               <p id="tdv-required" class="error"
                  *ngIf="emailForm.controls.emailInput?.errors?.required">Il campo è obbligatorio</p>
