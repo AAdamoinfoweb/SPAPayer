@@ -28,7 +28,7 @@
     "design-angular-kit": "^0.13.0",
     "fp-ts": "^2.6.0",
     "io-ts": "^2.2.2",
-    "jquery": "^3.5.0",
+    "jquery": "3.4.1",
     "ngx-youtube-player": "^7.1.5",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
