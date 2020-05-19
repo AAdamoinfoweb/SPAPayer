@@ -21,8 +21,9 @@
     </div>
     <div id="collapse1" class="collapse show" role="tabpanel" aria-labelledby="heading1">
       <div class="collapse-body">
-        <app-lista-pagamenti (listaPagamentiTotal)="listaPagamentiTotal = $event"
-                             (listaPagamentiLength)="listaPagamentiLength = $event"></app-lista-pagamenti>
+        <app-lista-pagamenti [rid]="rid"
+                             (onChangeTotalePagamento)="totalePagamento = $event"
+                             (onChangeNumeroPagamenti)="numeroPagamenti = $event"></app-lista-pagamenti>
       </div>
     </div>
     <div class="collapse-header" id="heading2">
@@ -111,9 +112,9 @@
   </div>
 
   <div class="row pl-4 align-items-center h-100">
-    <div class="col-xl-9 col-xs-12 font-msg align-middle">Disposizioni di pagamento: {{listaPagamentiLength}}</div>
+    <div class="col-xl-9 col-xs-12 font-msg align-middle">Disposizioni di pagamento: {{numeroPagamenti}}</div>
     <div class="col-xl-2 col-xs-12 font-msg align-middle">Totale da
-      pagare: {{listaPagamentiTotal|currency:"EUR":"€ "}}</div>
+      pagare: {{totalePagamento|currency:"EUR":"€ "}}</div>
     <div class="col-xl-1 col-xs-12 font-msg align-middle">
       <button [disabled]="emailForm.invalid" (click)="goToPresaInCaricoPagamento()" id="payButton" type="button"
               class="btn btn-outline-secondary">

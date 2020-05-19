@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Breadcrumb} from "../../dto/Breadcrumb";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -13,8 +13,11 @@ export class CarrelloComponent implements OnInit {
   separator: string = "/";
   breadcrumbList = [];
 
-  listaPagamentiLength: number = 0;
-  listaPagamentiTotal: number = 0;
+  numeroPagamenti: number = 0;
+  totalePagamento: number = 0;
+
+  @Input()
+  rid: string;
 
   email: string = 'mario.rossi@gmail.com';
 

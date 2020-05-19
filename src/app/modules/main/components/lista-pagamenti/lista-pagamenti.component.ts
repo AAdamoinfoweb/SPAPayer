@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Pagamento} from "../../model/Pagamento";
 import {ListaPagamentiService} from "../../../../services/lista-pagamenti.service";
 
@@ -11,23 +11,26 @@ export class ListaPagamentiComponent implements OnInit {
 
   listaPagamenti: Pagamento[];
 
-  @Output()
-  listaPagamentiLength: EventEmitter<number> = new EventEmitter<number>();
+  @Input()
+  private rid: string;
 
   @Output()
-  listaPagamentiTotal: EventEmitter<number> = new EventEmitter<number>();
+  onChangeNumeroPagamenti: EventEmitter<number> = new EventEmitter<number>();
+
+  @Output()
+  onChangeTotalePagamento: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private listaPagamentiService: ListaPagamentiService) {
   }
 
   ngOnInit(): void {
-    this.listaPagamentiService.getListaPagamenti()
+    this.listaPagamentiService.getListaPagamenti(this.rid)
       .subscribe(value => {
         this.listaPagamenti = value;
         let total = this.listaPagamenti.reduce((accum, item) => accum + item.importo, 0);
 
-        this.listaPagamentiLength.emit(this.listaPagamenti.length);
-        this.listaPagamentiTotal.emit(total);
+        this.onChangeNumeroPagamenti.emit(this.listaPagamenti.length);
+        this.onChangeTotalePagamento.emit(total);
       })
   }
 
