@@ -4,6 +4,7 @@ import {HomeComponent} from './components/home/home.component';
 import {AuthguardService} from './services/authguard.service';
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
 import {PresaincaricopagamentoComponent} from "./modules/main/components/presaincaricopagamento/presaincaricopagamento.component";
+import {PrivacyComponent} from "./modules/main/components/privacy/privacy.component";
 
 
 const routes: Routes = [
@@ -16,7 +17,8 @@ const routes: Routes = [
     ]
   },
   {path: 'carrello', component: CarrelloComponent},
-  {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent}
+  {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
+  {path: 'privacy', component: PrivacyComponent}
 ];
 
 @NgModule({

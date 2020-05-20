@@ -50,7 +50,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     });
   }
 
-  goToPresaInCaricoPagamento() {
+  navigaInPresaInCaricoPagamento() {
     this.router.navigateByUrl("/presaincaricopagamento");
   }
 

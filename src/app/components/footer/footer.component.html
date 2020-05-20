@@ -1,6 +1,6 @@
 <div class="row justify-content-md-center">
   <div class="col-12 font-msg align-middle">
-    <button (click)="goToFeedback()" [style.width]="'100%'" [style.text-transform]="'none'" id="payButton"
+    <button (click)="navigaInAssistenza()" [style.width]="'100%'" [style.text-transform]="'none'" id="payButton"
             type="button" class="btn btn-outline-secondary mb-0">
       <svg class="icon icon icon-sm icon-white">
         <use
@@ -29,7 +29,7 @@
           <div class="col-lg-5 col-md-3 col-sm-3 text-center"></div>
           <div class="col-lg-2 col-md-3 col-sm-3 text-center">
             <div class="it-brand-wrapper">
-              <a class="underline" target="_blank" href="#"><strong>Policy privacy</strong></a>
+              <a class="underline" target="_blank" routerLink="/privacy"><strong>Policy privacy</strong></a>
             </div>
           </div>
           <div class="col-lg-5 col-md-4 col-sm-4 text-center">

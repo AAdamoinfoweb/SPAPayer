@@ -9,6 +9,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxYoutubePlayerModule} from "ngx-youtube-player";
 import {FooterComponent} from "../../components/footer/footer.component";
 import {ListaPagamentiComponent} from './components/lista-pagamenti/lista-pagamenti.component';
+import { PrivacyComponent } from './components/privacy/privacy.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {ListaPagamentiComponent} from './components/lista-pagamenti/lista-pagame
     CarrelloComponent,
     PresaincaricopagamentoComponent,
     FooterComponent,
-    ListaPagamentiComponent
+    ListaPagamentiComponent,
+    PrivacyComponent
   ],
   imports: [
     CommonModule,
