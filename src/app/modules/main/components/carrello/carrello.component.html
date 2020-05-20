@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <it-breadcrumb [dark]="isDark" [separator]="separator">
-    <it-breadcrumb-item *ngFor="let item of breadcrumbList"
+    <it-breadcrumb-item *ngFor="let item of breadcrumbList; let i = index"
                         [link]="item.link" [icon]="item.icon">
       {{item.label}}
     </it-breadcrumb-item>
