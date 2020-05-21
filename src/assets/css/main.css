@@ -1,27 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
 
-body {
-  font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
-}
-
-hr {
-  display: block;
-  position: relative;
-  padding: 0;
-  margin: 8px auto;
-  height: 0;
-  width: 100%;
-  max-height: 0;
-  font-size: 1px;
-  line-height: 0;
-  clear: both;
-  border: none;
-  border-top: 1px solid #aaaaaa;
-  border-bottom: 1px solid #ffffff;
-}
 
 .tooltip {
   font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
@@ -37,7 +14,7 @@ footer.it-footer {
 }
 
 .h-100px {
-  height: 100px;
+  height: 100px!important;
 }
 
 .font-table {
@@ -2344,13 +2321,6 @@ textarea.form-control {
   margin-top: 6px
 }
 
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif
-}
 
 h1,
 h2,
@@ -2542,14 +2512,6 @@ a.text-gray:hover {
 
 .blockquote.blockquote-white small {
   color: rgba(255, 255, 255, 0.8)
-}
-
-body {
-  color: #2c2c2c;
-  font-size: 14px;
-  font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased
 }
 
 .main {
@@ -3397,7 +3359,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .it-footer-main {
-  background-color: #77777B;
+  background-color: #77777B!important;
 }
 
 .col-2_5 {

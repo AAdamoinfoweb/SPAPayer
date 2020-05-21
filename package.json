@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxyconf.json",
+    "start-prod": "node server.js",
     "start-http-server": "http-server -p 3138 httpserver-fakelogin",
     "build": "ng build && npm run after-build",
     "build-prod": "ng build --prod && npm run after-build",
@@ -35,6 +36,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
+    "express-favicon": "2.0.1",
     "@angular-devkit/build-angular": "~0.901.1",
     "@angular/cli": "~9.1.1",
     "@angular/compiler-cli": "~9.1.2",
