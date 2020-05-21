@@ -1,32 +1,26 @@
-<div class="table-responsive font-msg">
-  <table class="mb-0 table table-hover">
-    <thead>
-    <tr>
-      <th></th>
-      <th scope="col">Emissione</th>
-      <th scope="col">N.ro Documento</th>
-      <th scope="col">Descrizione</th>
-      <th scope="col">Ente</th>
-      <th scope="col">Scadenza</th>
-      <th scope="col">Importo</th>
-    </tr>
-    </thead>
-    <tbody>
-    <ng-container *ngFor="let pagamento of listaPagamenti">
-      <tr>
-        <th>
-          <svg class="bg-light icon icon-xs">
-            <use xlink:href="assets/img/sprite.svg#it-delete"></use>
-          </svg>
-        </th>
-        <td>{{pagamento.emissione | date: 'MM/yyyy'}}</td>
-        <td>{{pagamento.numDocumento}}</td>
-        <td>{{pagamento.descrizione}}</td>
-        <td>{{pagamento.ente}}</td>
-        <td>{{pagamento.scadenza | date: 'dd/MM/yyyy'}}</td>
-        <td>{{pagamento.importo|currency:"EUR":"€ "}}</td>
-      </tr>
-    </ng-container>
-    </tbody>
-  </table>
+<div class="container-fluid p-0 m-0 font-table">
+  <div class="row table-header pb-2">
+    <div class="col-1"></div>
+    <div class="col-1">Emissione</div>
+    <div class="col-2">N.ro Documento</div>
+    <div class="col-3">Descrizione</div>
+    <div class="col-2">Ente</div>
+    <div class="col-2">Scadenza</div>
+    <div class="col-1">Importo</div>
+  </div>
+  <ng-container *ngFor="let pagamento of listaPagamenti">
+    <div class="row pt-2 pb-2 table-item">
+      <div class="col-1">
+        <svg class="bg-light icon icon-xs">
+          <use xlink:href="assets/img/sprite.svg#it-delete"></use>
+        </svg>
+      </div>
+      <div class="col-1">{{pagamento.emissione | date: 'MM/yyyy'}}</div>
+      <div class="col-2">{{pagamento.numDocumento}}</div>
+      <div class="col-3">{{pagamento.descrizione}}</div>
+      <div class="col-2">{{pagamento.ente}}</div>
+      <div class="col-2">{{pagamento.scadenza | date: 'dd/MM/yyyy'}}</div>
+      <div class="col-1">{{pagamento.importo|currency:"EUR":"€ "}}</div>
+    </div>
+  </ng-container>
 </div>

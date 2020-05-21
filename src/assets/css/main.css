@@ -40,6 +40,22 @@ footer.it-footer {
   height: 100px;
 }
 
+.font-table {
+  font-size: 14px;
+}
+
+.table-header {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #212529;
+}
+
+.table-item {
+  font-size: 16px;
+  color: #212529;
+  border-top: 1px solid #dee2e6
+}
+
 .underline {
   text-decoration: underline !important;
 }
@@ -5800,7 +5816,7 @@ img {
 }
 
 .font-menu-sidebar {
-  font-family: "Titillium Web", "Roboto Mono", "Lora"!important;
+  font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
   font-size: 9px;
 }
 
