@@ -1,9 +1,9 @@
 <div class="container-fluid p-0 m-0 font-table">
   <div class="row table-header pb-2">
     <div class="col-1"></div>
-    <div class="col-1">Emissione</div>
+    <div class="col-2">Emissione</div>
     <div class="col-2">N.ro Documento</div>
-    <div class="col-3">Descrizione</div>
+    <div class="col-2">Descrizione</div>
     <div class="col-2">Ente</div>
     <div class="col-2">Scadenza</div>
     <div class="col-1">Importo</div>
@@ -15,9 +15,9 @@
           <use xlink:href="assets/img/sprite.svg#it-delete"></use>
         </svg>
       </div>
-      <div class="col-1">{{pagamento.emissione | date: 'MM/yyyy'}}</div>
+      <div class="col-2">{{pagamento.emissione | date: 'MM/yyyy'}}</div>
       <div class="col-2">{{pagamento.numDocumento}}</div>
-      <div class="col-3">{{pagamento.descrizione}}</div>
+      <div class="col-2">{{pagamento.descrizione}}</div>
       <div class="col-2">{{pagamento.ente}}</div>
       <div class="col-2">{{pagamento.scadenza | date: 'dd/MM/yyyy'}}</div>
       <div class="col-1">{{pagamento.importo|currency:"EUR":"€ "}}</div>
