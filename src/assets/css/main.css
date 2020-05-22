@@ -1,27 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
 
-body {
-  font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
-}
-
-hr {
-  display: block;
-  position: relative;
-  padding: 0;
-  margin: 8px auto;
-  height: 0;
-  width: 100%;
-  max-height: 0;
-  font-size: 1px;
-  line-height: 0;
-  clear: both;
-  border: none;
-  border-top: 1px solid #aaaaaa;
-  border-bottom: 1px solid #ffffff;
-}
 
 .tooltip {
   font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
@@ -31,12 +8,25 @@ hr {
 footer.it-footer {
   padding-left: 1px;
 }
-.h-41px {
-  height: 41px;
+
+.h-60px {
+  height: 60px;
 }
 
-.h-100px {
-  height: 100px;
+.font-table {
+  font-size: 14px;
+}
+
+.table-header {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #212529;
+}
+
+.table-item {
+  font-size: 16px;
+  color: #212529;
+  border-top: 1px solid #dee2e6
 }
 
 .underline {
@@ -2327,13 +2317,6 @@ textarea.form-control {
   margin-top: 6px
 }
 
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif
-}
 
 h1,
 h2,
@@ -2525,14 +2508,6 @@ a.text-gray:hover {
 
 .blockquote.blockquote-white small {
   color: rgba(255, 255, 255, 0.8)
-}
-
-body {
-  color: #2c2c2c;
-  font-size: 14px;
-  font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased
 }
 
 .main {
@@ -3380,7 +3355,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .it-footer-main {
-  background-color: #77777B;
+  background-color: #77777B!important;
 }
 
 .col-2_5 {
@@ -5068,7 +5043,8 @@ img {
 .main-panel > .content {
   padding: 0 30px 30px;
   min-height: calc(100vh - 123px);
-  margin-top: 93px
+  /*margin-top: 93px*/
+  margin-top: 26px;
 }
 
 .main-panel > .navbar {
@@ -5798,7 +5774,22 @@ img {
   line-height: 59px
 }
 
-@media screen and (max-width: 991px) {
+.font-menu-sidebar {
+  font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
+  font-size: 9px;
+}
+
+@media screen and (max-width: 2800px) {
+
+  .h-100px {
+    height: 10vh;
+  }
+
+  /*added to hide sidebar menu*/
+  .navbar-expand-lg .navbar-toggler {
+    display: inline-block !important;
+  }
+
   .navbar {
     padding: 0
   }
@@ -6323,12 +6314,18 @@ img {
 }
 
 @media (max-width: 991px) and (min-width: 768px) {
+  .h-100px {
+    height: 8vh;
+  }
   .nav-tabs-navigation.verical-navs {
     padding: 0 2px
   }
 }
 
 @media screen and (min-width: 768px) {
+  .h-100px {
+    height: 8vh;
+  }
   .footer .footer-nav {
     padding-left: 21px
   }
@@ -6338,6 +6335,7 @@ img {
   }
 }
 
+/*
 @media screen and (min-width: 992px) {
   .navbar-collapse {
     background: none !important
@@ -6398,8 +6396,12 @@ img {
     top: 0
   }
 }
-
+*/
 @media screen and (max-width: 768px) {
+  .h-100px {
+    height: 7vh;
+  }
+
   .card-stats [class*="col-"] .statistics::after {
     display: none
   }
@@ -6488,6 +6490,11 @@ img {
 }
 
 @media screen and (max-width: 576px) {
+
+  .h-100px {
+    height: 6vh;
+  }
+
   .navbar[class*='navbar-toggleable-'] .container {
     margin-left: 0;
     margin-right: 0
@@ -6521,4 +6528,9 @@ img {
     width: 38%;
     padding: 15px
   }
+}
+
+.navbar-line {
+  box-shadow: none;
+  border-bottom: 1px solid #ddd
 }

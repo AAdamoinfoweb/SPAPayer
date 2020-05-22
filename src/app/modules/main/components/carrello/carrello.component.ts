@@ -1,5 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Pagamento} from "../../model/Pagamento";
+import {AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Breadcrumb} from "../../dto/Breadcrumb";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -9,12 +8,17 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
   templateUrl: './carrello.component.html',
   styleUrls: ['./carrello.component.scss']
 })
-export class CarrelloComponent implements OnInit {
+export class CarrelloComponent implements OnInit, AfterViewInit {
+
   isDark: boolean = false;
   separator: string = "/";
   breadcrumbList = [];
 
-  listaPagamenti: Pagamento[] = [];
+  numeroPagamenti: number = 0;
+  totalePagamento: number = 0;
+
+  @Input()
+  rid: string;
 
   email: string = 'mario.rossi@gmail.com';
 
@@ -23,11 +27,16 @@ export class CarrelloComponent implements OnInit {
   tooltipTitle: string = "In questa interfaccia vengono mostrate le pendenze che stanno per essere pagate ed è possibile procedere al pagamento.";
   userEmail: FormGroup;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private renderer: Renderer2) {
     this.breadcrumbList.push(new Breadcrumb("Home", null, null));
     this.breadcrumbList.push(new Breadcrumb("Pagamenti", null, null));
     this.breadcrumbList.push(new Breadcrumb("Carrello", null, null));
   }
+
+  ngAfterViewInit(): void {
+        this.renderer.addClass(document.getElementById("it-breadcrumb-item-0"), "active");
+        this.renderer.addClass(document.getElementById("it-breadcrumb-item-1"), "active");
+    }
 
   toggleVideo() {
     this.videoplayer.nativeElement.play();
@@ -39,20 +48,9 @@ export class CarrelloComponent implements OnInit {
         Validators.required,
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")])
     });
-
-    this.listaPagamenti.push(new Pagamento(new Date(), "001233468129", "TARI", "Comune di Bologna", new Date(), 120.00));
-    this.listaPagamenti.push(new Pagamento(new Date(), "001233463789", "IMU", "Comune di Ferrara", new Date(), 572.56));
   }
 
-  get emailInput() {
-    return this.userEmail.get("emailInput");
-  }
-
-  get totale(): number {
-    return this.listaPagamenti.reduce((accum, item) => accum + item.importo, 0);
-  }
-
-  goToPresaInCaricoPagamento() {
+  navigaInPresaInCaricoPagamento() {
     this.router.navigateByUrl("/presaincaricopagamento");
   }
 

@@ -1,6 +1,6 @@
-import { ErrorHandler, Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import {ErrorHandler, Injectable} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {environment} from 'src/environments/environment';
 import * as Sentry from '@sentry/browser';
 
 @Injectable({

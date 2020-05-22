@@ -37,7 +37,7 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "src/assets/js/perfect-scrollbar.min.js",
-              "src/assets/js/paper-dashboard.min.js"
+            //  "src/assets/js/paper-dashboard.min.js"
             ]
           },
           "configurations": {
@@ -101,13 +101,14 @@
             "styles": [
               "node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/css/main.css",
               "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "src/assets/js/perfect-scrollbar.min.js",
-              "src/assets/js/paper-dashboard.min.js"
+             // "src/assets/js/paper-dashboard.min.js"
             ]
           }
         },
