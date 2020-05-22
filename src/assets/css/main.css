@@ -13,10 +13,6 @@ footer.it-footer {
   height: 60px;
 }
 
-.h-100px {
-  height: 10vh!important;
-}
-
 .font-table {
   font-size: 14px;
 }
@@ -5047,7 +5043,8 @@ img {
 .main-panel > .content {
   padding: 0 30px 30px;
   min-height: calc(100vh - 123px);
-  margin-top: 93px
+  /*margin-top: 93px*/
+  margin-top: 26px;
 }
 
 .main-panel > .navbar {
@@ -5783,6 +5780,11 @@ img {
 }
 
 @media screen and (max-width: 2800px) {
+
+  .h-100px {
+    height: 10vh;
+  }
+
   /*added to hide sidebar menu*/
   .navbar-expand-lg .navbar-toggler {
     display: inline-block !important;
@@ -6312,12 +6314,18 @@ img {
 }
 
 @media (max-width: 991px) and (min-width: 768px) {
+  .h-100px {
+    height: 8vh;
+  }
   .nav-tabs-navigation.verical-navs {
     padding: 0 2px
   }
 }
 
 @media screen and (min-width: 768px) {
+  .h-100px {
+    height: 8vh;
+  }
   .footer .footer-nav {
     padding-left: 21px
   }
@@ -6390,6 +6398,10 @@ img {
 }
 */
 @media screen and (max-width: 768px) {
+  .h-100px {
+    height: 7vh;
+  }
+
   .card-stats [class*="col-"] .statistics::after {
     display: none
   }
@@ -6478,6 +6490,11 @@ img {
 }
 
 @media screen and (max-width: 576px) {
+
+  .h-100px {
+    height: 6vh;
+  }
+
   .navbar[class*='navbar-toggleable-'] .container {
     margin-left: 0;
     margin-right: 0
