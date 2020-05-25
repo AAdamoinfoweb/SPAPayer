@@ -5043,6 +5043,9 @@ img {
 .btn {
   background-color: #004987 !important;
 }
+.active-bold {
+font-weight: bold!important;
+}
 
 .main-panel > .content {
   padding: 0 30px 30px;
