@@ -38,6 +38,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     $("#breadcrumb-item-0 > li").addClass("active")
     $("#breadcrumb-item-1 > li").addClass("active")
+    $("#breadcrumb-item-2 > li > a").addClass("active-bold")
   }
 
   toggleVideo() {
