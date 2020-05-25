@@ -11,26 +11,30 @@ import {BackendInterceptorService} from './services/backend-interceptor';
 import {HeaderComponent} from './components/header/header.component';
 import {MainModule} from './modules/main/main.module';
 import {LoginBarComponent} from './components/login-bar/login-bar.component';
+import {ReplacePipe} from "./pipe/ReplacePipe";
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomeComponent,
-        HeaderComponent,
-        LoginBarComponent
-    ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        AppRoutingModule,
-        MainModule
-    ],
-    providers: [
-        {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
-        {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
-        {provide: ErrorHandler, useClass: ErrorHandlerGenerico}
-    ],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    HeaderComponent,
+    LoginBarComponent
+  ],
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    MainModule
+  ],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
+    {provide: ErrorHandler, useClass: ErrorHandlerGenerico}
+  ],
+  exports: [
+  ],
 
-    bootstrap: [AppComponent]
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

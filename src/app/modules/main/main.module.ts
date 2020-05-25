@@ -9,7 +9,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxYoutubePlayerModule} from "ngx-youtube-player";
 import {FooterComponent} from "../../components/footer/footer.component";
 import {ListaPagamentiComponent} from './components/lista-pagamenti/lista-pagamenti.component';
-import { PrivacyComponent } from './components/privacy/privacy.component';
+import {PrivacyComponent} from './components/privacy/privacy.component';
+import {LoginBarComponent} from "../../components/login-bar/login-bar.component";
+import {ReplacePipe} from "../../pipe/ReplacePipe";
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { PrivacyComponent } from './components/privacy/privacy.component';
     PresaincaricopagamentoComponent,
     FooterComponent,
     ListaPagamentiComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    ReplacePipe
   ],
   imports: [
     CommonModule,
@@ -30,7 +33,8 @@ import { PrivacyComponent } from './components/privacy/privacy.component';
 
   ],
   exports: [
-    FooterComponent
+    FooterComponent,
+    ReplacePipe
   ]
 })
 export class MainModule {

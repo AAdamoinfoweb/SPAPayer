@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Breadcrumb} from "../../dto/Breadcrumb";
 import {Router} from "@angular/router";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-carrello',
@@ -34,9 +34,9 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-        this.renderer.addClass(document.getElementById("it-breadcrumb-item-0"), "active");
-        this.renderer.addClass(document.getElementById("it-breadcrumb-item-1"), "active");
-    }
+    this.renderer.addClass(document.getElementById("it-breadcrumb-item-0"), "active");
+    this.renderer.addClass(document.getElementById("it-breadcrumb-item-1"), "active");
+  }
 
   toggleVideo() {
     this.videoplayer.nativeElement.play();
@@ -54,4 +54,10 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl("/presaincaricopagamento");
   }
 
+  getNote(emailForm: NgForm): string {
+    if (emailForm.controls.emailInput?.errors?.pattern) {
+      return 'Il valore inserito deve essere un\'email';
+    } else
+      return 'inserisci indirizzo e-mail';
+  }
 }
