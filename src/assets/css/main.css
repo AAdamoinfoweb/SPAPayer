@@ -1,5 +1,4 @@
 
-
 .tooltip {
   font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
   font-size: 16px !important;
@@ -11,6 +10,10 @@ footer.it-footer {
 
 .h-60px {
   height: 60px;
+}
+
+.h-36px {
+  height: 36px;
 }
 
 .font-table {
@@ -43,10 +46,6 @@ it-tooltip-window {
 
 .collapse-body {
   padding: 3px 24px 20px !important;
-}
-
-#payButton {
-  background-color: #004987 !important;
 }
 
 .collapse-header {
@@ -503,8 +502,8 @@ fieldset[disabled] .navbar .navbar-nav > a.btn:focus,
 fieldset[disabled] .navbar .navbar-nav > a.btn.focus,
 fieldset[disabled] .navbar .navbar-nav > a.btn:active,
 fieldset[disabled] .navbar .navbar-nav > a.btn.active {
-  background-color: #66615b;
-  border-color: #66615b
+  background-color: #77777B;
+  border-color: #77777B
 }
 
 .btn.btn-simple,
@@ -1666,6 +1665,7 @@ fieldset[disabled] .btn-neutral.active {
 .btn:disabled,
 .btn[disabled],
 .btn.disabled {
+  background-color: #77777B !important;
   opacity: .5;
   filter: alpha(opacity=50);
   pointer-events: none
@@ -3355,7 +3355,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .it-footer-main {
-  background-color: #77777B!important;
+  background-color: #77777B !important;
 }
 
 .col-2_5 {
@@ -5040,6 +5040,10 @@ img {
   transition: all .5s cubic-bezier(0.685, 0.0473, 0.346, 1)
 }
 
+.btn {
+  background-color: #004987 !important;
+}
+
 .main-panel > .content {
   padding: 0 30px 30px;
   min-height: calc(100vh - 123px);
@@ -5048,7 +5052,8 @@ img {
 }
 
 .main-panel > .navbar {
-  margin-bottom: 0
+  margin-bottom: 0;
+  padding-bottom: 6px;
 }
 
 .main-panel .header {
@@ -6317,6 +6322,7 @@ img {
   .h-100px {
     height: 8vh;
   }
+
   .nav-tabs-navigation.verical-navs {
     padding: 0 2px
   }
@@ -6326,6 +6332,7 @@ img {
   .h-100px {
     height: 8vh;
   }
+
   .footer .footer-nav {
     padding-left: 21px
   }
