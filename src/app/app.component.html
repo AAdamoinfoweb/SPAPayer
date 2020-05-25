@@ -4,8 +4,8 @@
   <div class="main-panel font-color">
     <nav class="navbar sticky-top navbar-line navbar-light bg-light bg-force">
       <div class="container-fluid">
-        <div class="navbar-wrapper">
-          <div class="navbar-toggle">
+        <div class="row align-items-center w-100 navbar-wrapper">
+          <div class="col-1 text-center pl-4 navbar-toggle">
             <button type="button" class="navbar-toggler">
               <span class="navbar-toggler-bar bar1"></span>
               <span class="navbar-toggler-bar bar2"></span>
@@ -13,9 +13,12 @@
               <span class="font-menu-sidebar">MENU</span>
             </button>
           </div>
-          <span class="p-0 navbar-brand">
+          <div class="col-7 pl-4 pl-sm-0 pl-md-0 pl-lg-0 col-sm-8 col-md-8 col-lg-8  p-lg-0 p-md-0 p-sm-0 navbar-brand">
             <img class="h-60px" src="assets/img/payer.png">
-          </span>
+          </div>
+          <div class="col-2 text-right">
+            <button *ngIf="isSticky" [disabled]="true" type="button" class="btn btn-outline-secondary">Accedi</button>
+          </div>
         </div>
       </div>
     </nav>

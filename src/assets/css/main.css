@@ -45,10 +45,6 @@ it-tooltip-window {
   padding: 3px 24px 20px !important;
 }
 
-#payButton {
-  background-color: #004987 !important;
-}
-
 .collapse-header {
   font-size: 1.2rem;
   color: #004987 !important;
@@ -503,8 +499,8 @@ fieldset[disabled] .navbar .navbar-nav > a.btn:focus,
 fieldset[disabled] .navbar .navbar-nav > a.btn.focus,
 fieldset[disabled] .navbar .navbar-nav > a.btn:active,
 fieldset[disabled] .navbar .navbar-nav > a.btn.active {
-  background-color: #66615b;
-  border-color: #66615b
+  background-color: #77777B;
+  border-color: #77777B
 }
 
 .btn.btn-simple,
@@ -1666,6 +1662,7 @@ fieldset[disabled] .btn-neutral.active {
 .btn:disabled,
 .btn[disabled],
 .btn.disabled {
+  background-color: #77777B!important;
   opacity: .5;
   filter: alpha(opacity=50);
   pointer-events: none
@@ -5038,6 +5035,10 @@ img {
   -o-transition: all .5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -ms-transition: all .5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   transition: all .5s cubic-bezier(0.685, 0.0473, 0.346, 1)
+}
+
+.btn {
+  background-color: #004987!important;
 }
 
 .main-panel > .content {
