@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Rende
 import {Breadcrumb} from "../../dto/Breadcrumb";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
+import * as $ from "jquery";
 
 @Component({
   selector: 'app-carrello',
@@ -28,14 +29,15 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   userEmail: FormGroup;
 
   constructor(private router: Router, private renderer: Renderer2) {
-    this.breadcrumbList.push(new Breadcrumb("Home", null, null));
-    this.breadcrumbList.push(new Breadcrumb("Pagamenti", null, null));
-    this.breadcrumbList.push(new Breadcrumb("Carrello", null, null));
+    this.breadcrumbList = [];
+    this.breadcrumbList.push(new Breadcrumb(0, "Home", null, null));
+    this.breadcrumbList.push(new Breadcrumb(1, "Pagamenti", null, null));
+    this.breadcrumbList.push(new Breadcrumb(2, "Carrello", null, null));
   }
 
   ngAfterViewInit(): void {
-    this.renderer.addClass(document.getElementById("it-breadcrumb-item-0"), "active");
-    this.renderer.addClass(document.getElementById("it-breadcrumb-item-1"), "active");
+    $("#breadcrumb-item-0 > li").addClass("active")
+    $("#breadcrumb-item-1 > li").addClass("active")
   }
 
   toggleVideo() {
