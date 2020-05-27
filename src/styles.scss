@@ -1,7 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
-//@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
-//@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
-//@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
+@font-face {
+  font-family: 'Titillium Web';
+  src: url('./assets/fonts/TitilliumWeb-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  src: url('./assets/fonts/RobotoMono-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('./assets/fonts/Lora-Regular.ttf');
+}
 
 body {
   font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
