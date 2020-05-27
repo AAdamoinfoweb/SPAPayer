@@ -70,6 +70,3 @@ Tutti i comandi sono disponibili (se usato un IDE compatibile) direttamente dent
  - `loginSpid`: url dove viene fatta l'autenticazione spid dal backend
  <b>attenzione:</b> questo parametro va poi replicato su `proxyconf.json` per permettere al proxy di angular di reindirizzare correttamente le chiamate al "finto" login
  - `logoutSpid`url dove viene fatto il logout anche da spid
- 
- ## Modifiche DXC
- `npm install design-angular-kit --save`
