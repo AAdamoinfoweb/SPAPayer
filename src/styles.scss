@@ -5,17 +5,12 @@
 }
 
 @font-face {
-  font-family: 'Roboto Mono';
-  src: url('./assets/fonts/RobotoMono-Regular.ttf');
-}
-
-@font-face {
   font-family: 'Lora';
   src: url('./assets/fonts/Lora-Regular.ttf');
 }
 
 body {
-  font-family: "Titillium Web", sens-serif !important;
+  font-family: "Titillium Web", sens-serif;
   color: #2c2c2c;
   font-size: 14px;
   -moz-osx-font-smoothing: grayscale;
