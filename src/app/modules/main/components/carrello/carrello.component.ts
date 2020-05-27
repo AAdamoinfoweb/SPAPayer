@@ -1,8 +1,7 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Breadcrumb} from "../../dto/Breadcrumb";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
-import * as $ from "jquery";
 
 @Component({
   selector: 'app-carrello',
@@ -28,7 +27,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   tooltipTitle: string = "In questa interfaccia vengono mostrate le pendenze che stanno per essere pagate ed è possibile procedere al pagamento.";
   userEmail: FormGroup;
 
-  constructor(private router: Router, private renderer: Renderer2) {
+  constructor(private router: Router, private renderer: Renderer2, private el: ElementRef) {
     this.breadcrumbList = [];
     this.breadcrumbList.push(new Breadcrumb(0, "Home", null, null));
     this.breadcrumbList.push(new Breadcrumb(1, "Pagamenti", null, null));
@@ -36,9 +35,9 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    $("#breadcrumb-item-0 > li").addClass("active")
-    $("#breadcrumb-item-1 > li").addClass("active")
-    $("#breadcrumb-item-2 > li > a").addClass("active-bold")
+    this.renderer.addClass(this.el.nativeElement.querySelector("#breadcrumb-item-0 > li"), "active")
+    this.renderer.addClass(this.el.nativeElement.querySelector("#breadcrumb-item-1 > li"), "active")
+    this.renderer.addClass(this.el.nativeElement.querySelector("#breadcrumb-item-2 > li > a"), "active-bold")
   }
 
   toggleVideo() {
