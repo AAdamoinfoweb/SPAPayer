@@ -15,13 +15,17 @@
 }
 
 body {
-  font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
+  font-family: "Titillium Web", sens-serif !important;
   color: #2c2c2c;
   font-size: 14px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased
 }
 
+.long-text {
+  font-family: "Lora", serif
+}
+
 button, input, optgroup, select, textarea {
-  font-family: "Titillium Web", "Roboto Mono", "Lora";
+  font-family: "Titillium Web", sens-serif;
 }
