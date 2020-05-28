@@ -2717,7 +2717,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .form-check .form-check-sign::after {
-  font-family: 'FontAwesome';
+  font-family: 'FontAwesome', sans-serif;
   content: "\f00c";
   top: -1px;
   text-align: center;
@@ -2770,7 +2770,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .form-check-radio .form-check-sign::before {
-  font-family: 'FontAwesome';
+  font-family: 'FontAwesome', sans-serif;
   content: "\f10c";
   font-size: 22px;
   -webkit-font-smoothing: antialiased;
@@ -2799,7 +2799,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .form-check-radio input[type="radio"]:checked + .form-check-sign::after {
-  font-family: 'FontAwesome';
+  font-family: 'FontAwesome', sans-serif;
   content: "\f192";
   top: -5px;
   position: absolute;
@@ -3856,7 +3856,7 @@ img {
 
 .nc-icon {
   display: inline-block;
-  font: normal normal normal 14px/1 'nucleo-icons';
+  font: normal normal normal 14px/1 'nucleo-icons', sans-serif;
   font-size: inherit;
   speak: none;
   text-transform: none;
@@ -5366,14 +5366,14 @@ font-weight: bold!important;
   border-radius: 10px;
   background-color: #FFF;
   border: 3px solid #FFF;
+  padding: 0;
   padding-left: 0;
   padding-right: 0;
   opacity: 1;
   cursor: pointer;
   display: block;
   max-height: 100px;
-  overflow: hidden;
-  padding: 0
+  overflow: hidden
 }
 
 .fixed-plugin .dropdown-menu > li > a.img-holder img {
