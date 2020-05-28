@@ -14,6 +14,11 @@
   border-bottom: 1px solid #ffffff!important;
 }
 
+:host ::ng-deep  .btn,
+.navbar .navbar-nav > a.btn {
+  text-transform: none!important;
+}
+
 :host ::ng-deep .it-footer-main .it-brand-wrapper {
   padding: 0;
 }
