@@ -1665,7 +1665,7 @@ fieldset[disabled] .btn-neutral.active {
 .btn[disabled],
 .btn.disabled {
   background-color: #77777B !important;
-  pointer-events: none
+  pointer-events: none;
   opacity: 1;
   filter: alpha(opacity=100)
 }
