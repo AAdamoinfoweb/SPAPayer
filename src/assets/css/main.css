@@ -407,7 +407,6 @@ it-tooltip-window {
   font-weight: 600;
   font-size: .8571em;
   line-height: 1.35em;
-  text-transform: uppercase;
   border: 0;
   margin: 10px 1px;
   border-radius: 3px;
@@ -1666,8 +1665,6 @@ fieldset[disabled] .btn-neutral.active {
 .btn[disabled],
 .btn.disabled {
   background-color: #77777B !important;
-  opacity: .5;
-  filter: alpha(opacity=50);
   pointer-events: none
 }
 
