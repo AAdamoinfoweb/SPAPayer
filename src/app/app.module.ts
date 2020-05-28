@@ -11,14 +11,15 @@ import {BackendInterceptorService} from './services/backend-interceptor';
 import {HeaderComponent} from './components/header/header.component';
 import {MainModule} from './modules/main/main.module';
 import {LoginBarComponent} from './components/login-bar/login-bar.component';
-import {ReplacePipe} from "./pipe/ReplacePipe";
+import {FooterDirective} from "./components/footer/FooterDirective";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    LoginBarComponent
+    LoginBarComponent,
+    FooterDirective
   ],
   imports: [
     HttpClientModule,
@@ -32,6 +33,7 @@ import {ReplacePipe} from "./pipe/ReplacePipe";
     {provide: ErrorHandler, useClass: ErrorHandlerGenerico}
   ],
   exports: [
+    FooterDirective
   ],
 
   bootstrap: [AppComponent]
