@@ -5397,7 +5397,6 @@ font-weight: bold!important;
 }
 
 .fixed-plugin .btn-social {
-  width: 50%;
   display: block;
   width: 48%;
   float: left;
@@ -5782,7 +5781,7 @@ font-weight: bold!important;
 }
 
 .font-menu-sidebar {
-  font-family: "Titillium Web", "Lora" !important;
+  font-family: "Titillium Web", sans-serif;
   font-size: 9px;
 }
 
