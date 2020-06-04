@@ -1,6 +1,6 @@
 
 .tooltip {
-  font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
+  font-family: "Titillium Web", "Lora" !important;
   font-size: 16px !important;
 }
 
@@ -407,7 +407,6 @@ it-tooltip-window {
   font-weight: 600;
   font-size: .8571em;
   line-height: 1.35em;
-  text-transform: uppercase;
   border: 0;
   margin: 10px 1px;
   border-radius: 3px;
@@ -1666,9 +1665,9 @@ fieldset[disabled] .btn-neutral.active {
 .btn[disabled],
 .btn.disabled {
   background-color: #77777B !important;
-  opacity: .5;
-  filter: alpha(opacity=50);
-  pointer-events: none
+  pointer-events: none;
+  opacity: 1;
+  filter: alpha(opacity=100)
 }
 
 .btn-simple {
@@ -2718,7 +2717,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .form-check .form-check-sign::after {
-  font-family: 'FontAwesome';
+  font-family: 'FontAwesome', sans-serif;
   content: "\f00c";
   top: -1px;
   text-align: center;
@@ -2771,7 +2770,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .form-check-radio .form-check-sign::before {
-  font-family: 'FontAwesome';
+  font-family: 'FontAwesome', sans-serif;
   content: "\f10c";
   font-size: 22px;
   -webkit-font-smoothing: antialiased;
@@ -2800,7 +2799,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .form-check-radio input[type="radio"]:checked + .form-check-sign::after {
-  font-family: 'FontAwesome';
+  font-family: 'FontAwesome', sans-serif;
   content: "\f192";
   top: -5px;
   position: absolute;
@@ -3857,7 +3856,7 @@ img {
 
 .nc-icon {
   display: inline-block;
-  font: normal normal normal 14px/1 'nucleo-icons';
+  font: normal normal normal 14px/1 'nucleo-icons', sans-serif;
   font-size: inherit;
   speak: none;
   text-transform: none;
@@ -5367,14 +5366,14 @@ font-weight: bold!important;
   border-radius: 10px;
   background-color: #FFF;
   border: 3px solid #FFF;
+  padding: 0;
   padding-left: 0;
   padding-right: 0;
   opacity: 1;
   cursor: pointer;
   display: block;
   max-height: 100px;
-  overflow: hidden;
-  padding: 0
+  overflow: hidden
 }
 
 .fixed-plugin .dropdown-menu > li > a.img-holder img {
@@ -5398,7 +5397,6 @@ font-weight: bold!important;
 }
 
 .fixed-plugin .btn-social {
-  width: 50%;
   display: block;
   width: 48%;
   float: left;
@@ -5783,7 +5781,7 @@ font-weight: bold!important;
 }
 
 .font-menu-sidebar {
-  font-family: "Titillium Web", "Roboto Mono", "Lora" !important;
+  font-family: "Titillium Web", sans-serif;
   font-size: 9px;
 }
 
