@@ -17,7 +17,6 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   numeroPagamenti: number = 0;
   totalePagamento: number = 0;
 
-  @Input()
   rid: string;
 
   email: string = 'mario.rossi@gmail.com';
@@ -33,7 +32,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     this.breadcrumbList.push(new Breadcrumb(1, "Pagamenti", null, null));
     this.breadcrumbList.push(new Breadcrumb(2, "Carrello", null, null));
     this.route.queryParams.subscribe((params) => {
-      console.log(params.rid);
+      this.rid = params.rid;
     });
   }
 

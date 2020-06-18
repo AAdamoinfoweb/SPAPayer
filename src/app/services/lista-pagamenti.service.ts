@@ -4,6 +4,7 @@ import {Observable, of} from "rxjs";
 import {Pagamento} from "../modules/main/model/Pagamento";
 import {map} from "rxjs/operators";
 import {XsrfService} from "./xsrf.service";
+import {Carrello} from "../modules/main/model/Carrello";
 
 @Injectable({
   providedIn: 'root'
@@ -32,12 +33,15 @@ export class ListaPagamentiService {
     }));
   }
 
-  public getCarrello(): Observable<Pagamento[]> {
+  public getCarrello(): Observable<Carrello> {
     let headers: HttpHeaders = new HttpHeaders();
     headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
     return this.http.get(this.getCarrelloUrl, {headers: headers}).pipe(map((body: any) => {
       let listaPagamenti: Pagamento[] = [];
-      return listaPagamenti;
+
+      let carrello: Carrello = new Carrello();
+      carrello.dettagli = listaPagamenti;
+      return carrello;
     }));
   }
 }
