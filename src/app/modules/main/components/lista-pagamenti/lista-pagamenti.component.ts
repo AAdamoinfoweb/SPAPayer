@@ -1,6 +1,9 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Pagamento} from "../../model/Pagamento";
 import {ListaPagamentiService} from "../../../../services/lista-pagamenti.service";
+import {flatMap, map} from "rxjs/operators";
+import {Observable} from "rxjs";
+import {Carrello} from "../../model/Carrello";
 
 @Component({
   selector: 'app-lista-pagamenti',
@@ -20,18 +23,27 @@ export class ListaPagamentiComponent implements OnInit {
   @Output()
   onChangeTotalePagamento: EventEmitter<number> = new EventEmitter<number>();
 
+  @Output()
+  onChangeEmailPagamento: EventEmitter<string> = new EventEmitter<string>();
+
   constructor(private listaPagamentiService: ListaPagamentiService) {
   }
 
   ngOnInit(): void {
-    this.listaPagamentiService.getListaPagamenti(this.rid)
-      .subscribe(value => {
-        this.listaPagamenti = value;
-        let total = this.listaPagamenti.reduce((accum, item) => accum + item.importo, 0);
+    let observable: Observable<Pagamento[]> = this.listaPagamentiService.verificaRid(this.rid)
+      .pipe(flatMap(() => {
+        return this.listaPagamentiService.getCarrello()
+          .pipe(map((value: Carrello) => {
+            this.listaPagamenti = value.dettagli;
 
-        this.onChangeNumeroPagamenti.emit(this.listaPagamenti.length);
-        this.onChangeTotalePagamento.emit(total);
-      })
+            this.onChangeNumeroPagamenti.emit(this.listaPagamenti.length);
+            this.onChangeTotalePagamento.emit(value.totale);
+            this.onChangeEmailPagamento.emit(value.email);
+
+            return this.listaPagamenti;
+          }));
+      }));
+    observable.subscribe();
   }
 
 }

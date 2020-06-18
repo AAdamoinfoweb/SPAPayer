@@ -23,6 +23,7 @@
       <div class="collapse-body">
         <app-lista-pagamenti [rid]="rid"
                              (onChangeTotalePagamento)="totalePagamento = $event"
+                             (onChangeEmailPagamento)="email = $event"
                              (onChangeNumeroPagamenti)="numeroPagamenti = $event"></app-lista-pagamenti>
       </div>
     </div>
