@@ -11,9 +11,11 @@ import {
 } from '@angular/core';
 import {Pagamento} from '../../model/Pagamento';
 import {ListaPagamentiService} from '../../../../services/lista-pagamenti.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {flatMap, map} from 'rxjs/operators';
 import {Carrello} from '../../model/Carrello';
+import {XsrfService} from "../../../../services/xsrf.service";
+import {Router} from "@angular/router";
 
 const arrowup = 'assets/img/sprite.svg#it-arrow-up-triangle'
 const arrowdown = 'assets/img/sprite.svg#it-arrow-down-triangle'
@@ -52,13 +54,15 @@ export class ListaPagamentiComponent implements OnInit {
   @Output()
   onChangeEmailPagamento: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private listaPagamentiService: ListaPagamentiService) {
+  constructor(private listaPagamentiService: ListaPagamentiService, private route: Router) {
   }
 
 
   ngOnInit(): void {
     let observable: Observable<Pagamento[]> = this.listaPagamentiService.verificaRid(this.rid)
-      .pipe(flatMap(() => {
+      .pipe(flatMap((ret) => {
+        if(ret == null)
+          return of(null);
         return this.listaPagamentiService.getCarrello()
           .pipe(map((value: Carrello) => {
             this.listaPagamenti = value.dettaglio;
@@ -72,7 +76,10 @@ export class ListaPagamentiComponent implements OnInit {
             return this.listaPagamenti;
           }));
       }));
-    observable.subscribe();
+    observable.subscribe((ret) => {
+      if(ret == null)
+        this.route.navigateByUrl("/nonautorizzato");
+    });
   }
 
   onChangePageSize(event): void {

@@ -16,7 +16,7 @@ export class ListaPagamentiService {
   verificaRidUrl = "/verificaRid";
   getCarrelloUrl = "/getCarrello";
 
-  constructor(private http: HttpClient, private xsrfService: XsrfService, private route: Router) {
+  constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }
 
   public verificaRid(rid: string): Observable<HttpResponse<any>> {
@@ -27,8 +27,7 @@ export class ListaPagamentiService {
         return response;
       }), catchError((err, caught) => {
         if (err.status == 401) {
-          this.route.navigateByUrl("/nonautorizzato");
-          return caught;
+          return of(null);
         } else
           return caught;
       }));
@@ -58,8 +57,7 @@ export class ListaPagamentiService {
         return carrello;
       }), catchError((err, caught) => {
         if (err.status == 401) {
-          this.route.navigateByUrl("/nonautorizzato");
-          return caught;
+          return of(null);
         } else
           return caught;
       }));
