@@ -29,26 +29,25 @@ export class ListaPagamentiService {
   public getCarrello(): Observable<Carrello> {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
-    return this.http.get(environment.bffBaseUrl + this.getCarrelloUrl, {headers: headers}).pipe(map((body: any) => {
-      let listaPagamenti: Pagamento[] = [];
+    return this.http.get(environment.bffBaseUrl + this.getCarrelloUrl, {headers: headers})
+      .pipe(map((json: any) => {
+        let listaPagamenti: Pagamento[] = [];
 
-      var json = JSON.parse(body);
-
-      let carrello: Carrello = new Carrello();
-      carrello.email = json["email"];
-      carrello.totale = json["totale"];
-      for (let dett in json["dettagli"]) {
-        let pagamento: Pagamento = new Pagamento();
-        pagamento.numDocumento = dett["numeroDocumento"];
-        pagamento.importo = dett["importo"];
-        pagamento.causale = dett["causale"];
-        pagamento.servizio = dett["servizio"];
-        pagamento.ente = dett["ente"];
-        pagamento.anno = dett["anno"];
-        listaPagamenti.push(pagamento);
-      }
-      carrello.dettagli = listaPagamenti;
-      return carrello;
-    }));
+        let carrello: Carrello = new Carrello();
+        carrello.email = json["email"];
+        carrello.totale = json["totale"];
+        json["dettaglio"].forEach((dett) => {
+          let pagamento: Pagamento = new Pagamento();
+          pagamento.numDocumento = dett["numeroDocumento"];
+          pagamento.importo = dett["importo"];
+          pagamento.causale = dett["causale"];
+          pagamento.servizio = dett["servizio"];
+          pagamento.ente = dett["ente"];
+          pagamento.anno = dett["anno"];
+          listaPagamenti.push(pagamento);
+        });
+        carrello.dettaglio = listaPagamenti;
+        return carrello;
+      }));
   }
 }

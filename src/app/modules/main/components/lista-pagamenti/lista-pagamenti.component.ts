@@ -34,7 +34,7 @@ export class ListaPagamentiComponent implements OnInit {
       .pipe(flatMap(() => {
         return this.listaPagamentiService.getCarrello()
           .pipe(map((value: Carrello) => {
-            this.listaPagamenti = value.dettagli;
+            this.listaPagamenti = value.dettaglio;
 
             this.onChangeNumeroPagamenti.emit(this.listaPagamenti.length);
             this.onChangeTotalePagamento.emit(value.totale);
