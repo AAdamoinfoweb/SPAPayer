@@ -15,23 +15,25 @@
 }
 
 :host ::ng-deep .dropdown > [ngbdropdowntoggle]:hover,
-:host ::ng-deep .dropdown > [ngbdropdowntoggle]:active {
+:host ::ng-deep .dropdown > [ngbdropdowntoggle]:active,
+:host ::ng-deep .dropdown > [ngbdropdowntoggle]:focus {
   color: #FFFFFF !important;
-  background: #403d39  !important;
+  background: #403d39 !important;
 }
 
-:host ::ng-deep .dropdown > [ngbdropdownmenu]{
+:host ::ng-deep .dropdown > [ngbdropdownmenu] {
   margin: 0;
 }
 
-:host ::ng-deep .dropdown > [ngbdropdownmenu]:before{
+:host ::ng-deep .dropdown > [ngbdropdownmenu]:before {
   display: none;
 }
-:host ::ng-deep .dropdown > [ngbdropdownmenu] > [ngbdropdownitem]:hover{
+
+:host ::ng-deep .dropdown > [ngbdropdownmenu] > [ngbdropdownitem]:hover {
   background: #ef8157;
 }
 
-:host ::ng-deep .dropdown > [ngbdropdowntoggle]:after{
+:host ::ng-deep .dropdown > [ngbdropdowntoggle]:after {
   margin-left: .255em;
 }
 
