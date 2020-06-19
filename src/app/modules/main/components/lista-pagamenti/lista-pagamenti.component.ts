@@ -33,8 +33,6 @@ export class ListaPagamentiComponent implements OnInit {
 
   listaPagamenti: Pagamento[];
 
-  listaPagamentiNotSorted: Pagamento[];
-
   @Input()
   private rid: string;
 
