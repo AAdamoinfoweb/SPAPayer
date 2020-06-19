@@ -11,25 +11,25 @@
   </div>
   <div class="row table-header pb-2">
     <div class="col-lg-1 col-md-1 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0"></div>
-    <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0 align-items-center"
+    <div class="col-lg-1 col-md-1 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0 align-items-center"
          (click)="onSort('anno')">Anno doc.
       <svg class="bg-light icon icon-sm">
         <use [attr.xlink:href]=this.sort.anno></use>
       </svg>
     </div>
-    <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0 align-items-center"
+    <div class="col-lg-3 col-md-3 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0 align-items-center"
          (click)="onSort('numDocumento')">N.ro
       Documento
       <svg class="bg-light icon icon-sm">
         <use [attr.xlink:href]=this.sort.numDocumento></use>
       </svg>
     </div>
-    <div class="col-lg-2 col-md-2 col-sm-2 align-items-center" (click)="onSort('descrizione')">Descrizione
+    <div class="col-lg-2 col-md-2 col-sm-12 align-items-center" (click)="onSort('descrizione')">Descrizione
       <svg class="bg-light icon icon-sm">
         <use [attr.xlink:href]=this.sort.descrizione></use>
       </svg>
     </div>
-    <div class="col-lg-2 col-md-2 col-sm-2" (click)="onSort('servizio')">Servizio
+    <div class="col-lg-2 col-md-2 col-sm-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0" (click)="onSort('servizio')">Servizio
       <svg class="bg-light icon icon-sm align-items-center">
         <use [attr.xlink:href]=this.sort.servizio></use>
       </svg>
@@ -40,7 +40,7 @@
         <use [attr.xlink:href]=this.sort.ente></use>
       </svg>
     </div>
-    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 align-items-center" (click)="onSort('importo')">Importo
+    <div class="col-lg-1 col-md-1 col-sm-12 align-items-center" (click)="onSort('importo')">Importo
       <svg class="bg-light icon icon-sm">
         <use [attr.xlink:href]=this.sort.importo></use>
       </svg>
@@ -54,9 +54,9 @@
         </svg>
       </div>
       <div
-        class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.anno}}</div>
-      <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.numDocumento}}</div>
-      <div class="col-lg-2 col-md-2 col-sm-2">{{pagamento.causale}}</div>
+        class="col-lg-1 col-md-1 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.anno}}</div>
+      <div class="col-lg-3 col-md-3 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.numDocumento}}</div>
+      <div class="col-lg-2 col-md-2 col-sm-12">{{pagamento.causale}}</div>
       <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.servizio}}</div>
       <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.ente}}</div>
       <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">{{pagamento.importo|currency:"EUR":"€ "| replace:'.':','}}</div>

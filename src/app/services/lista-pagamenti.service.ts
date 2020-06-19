@@ -19,19 +19,19 @@ export class ListaPagamentiService {
   constructor(private http: HttpClient, private xsrfService: XsrfService, private route: Router) {
   }
 
-  public verificaRid(rid: string): Observable<any> {
+  public verificaRid(rid: string): Observable<HttpResponse<any>> {
     return this.http.post(environment.bffBaseUrl + this.verificaRidUrl, rid, {observe: "response"})
-      .pipe(map((response: any) => {
-        const headers: Headers = response.headers;
+      .pipe(map((response: HttpResponse<any>) => {
+        const headers: HttpHeaders = response.headers;
         this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
         return response;
-      })/*, catchError((err, caught) => {
+      }), catchError((err, caught) => {
         if (err.status == 401) {
           this.route.navigateByUrl("/nonautorizzato");
           return caught;
         } else
           return caught;
-      })*/);
+      }));
   }
 
   public getCarrello(): Observable<Carrello> {
@@ -56,13 +56,12 @@ export class ListaPagamentiService {
         });
         carrello.dettaglio = listaPagamenti;
         return carrello;
-      })/*, catchError((err, caught) => {
+      }), catchError((err, caught) => {
         if (err.status == 401) {
           this.route.navigateByUrl("/nonautorizzato");
           return caught;
         } else
           return caught;
-      })*/
-      );
+      }));
   }
 }
