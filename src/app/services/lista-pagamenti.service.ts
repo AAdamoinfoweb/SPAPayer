@@ -5,6 +5,7 @@ import {Pagamento} from "../modules/main/model/Pagamento";
 import {map} from "rxjs/operators";
 import {XsrfService} from "./xsrf.service";
 import {Carrello} from "../modules/main/model/Carrello";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class ListaPagamentiService {
   }
 
   public verificaRid(rid: string): Observable<any> {
-    return this.http.post(this.verificaRidUrl, rid, {observe: "response"}).pipe(map((response: any) => {
+    return this.http.post(environment.bffBaseUrl + this.verificaRidUrl, rid, {observe: "response"}).pipe(map((response: any) => {
       const headers: Headers = response.headers;
       this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
       return response;
@@ -28,7 +29,7 @@ export class ListaPagamentiService {
   public getCarrello(): Observable<Carrello> {
     let headers: HttpHeaders = new HttpHeaders();
     headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
-    return this.http.get(this.getCarrelloUrl, {headers: headers}).pipe(map((body: any) => {
+    return this.http.get(environment.bffBaseUrl + this.getCarrelloUrl, {headers: headers}).pipe(map((body: any) => {
       let listaPagamenti: Pagamento[] = [];
 
       var json = JSON.parse(body);
