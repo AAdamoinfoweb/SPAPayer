@@ -17,13 +17,6 @@ export class ListaPagamentiService {
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }
 
-  public getListaPagamenti(rid: string): Observable<Pagamento[]> {
-    let listaPagamenti: Pagamento[] = []
-    listaPagamenti.push(new Pagamento(new Date(), "001233468129", "TARI", "Comune di Bologna", new Date(), 120.00));
-    listaPagamenti.push(new Pagamento(new Date(), "001233463789", "IMU", "Comune di Ferrara", new Date(), 572.56));
-    return of(listaPagamenti);
-  }
-
   public verificaRid(rid: string): Observable<any> {
     return this.http.post(this.verificaRidUrl, rid, {observe: "response"}).pipe(map((response: any) => {
       const headers: Headers = response.headers;
@@ -39,7 +32,21 @@ export class ListaPagamentiService {
     return this.http.get(this.getCarrelloUrl, {headers: headers}).pipe(map((body: any) => {
       let listaPagamenti: Pagamento[] = [];
 
+      var json = JSON.parse(body);
+
       let carrello: Carrello = new Carrello();
+      carrello.email = json["email"];
+      carrello.totale = json["totale"];
+      for (let dett in json["dettagli"]) {
+        let pagamento: Pagamento = new Pagamento();
+        pagamento.numDocumento = dett["numeroDocumento"];
+        pagamento.importo = dett["importo"];
+        pagamento.causale = dett["causale"];
+        pagamento.servizio = dett["servizio"];
+        pagamento.ente = dett["ente"];
+        pagamento.anno = dett["anno"];
+        listaPagamenti.push(pagamento);
+      }
       carrello.dettagli = listaPagamenti;
       return carrello;
     }));
