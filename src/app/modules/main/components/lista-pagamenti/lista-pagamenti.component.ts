@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  LOCALE_ID,
+  OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import {Pagamento} from '../../model/Pagamento';
 import {ListaPagamentiService} from '../../../../services/lista-pagamenti.service';
 import {Observable} from 'rxjs';

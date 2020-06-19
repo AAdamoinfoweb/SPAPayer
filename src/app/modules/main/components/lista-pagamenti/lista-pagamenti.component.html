@@ -59,7 +59,8 @@
       <div class="col-lg-2 col-md-2 col-sm-12">{{pagamento.causale}}</div>
       <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.servizio}}</div>
       <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.ente}}</div>
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">{{pagamento.importo|currency:"EUR":"€ "| replace:'.':','}}</div>
+      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">{{pagamento.importo|currency:"EUR":"€ "
+        | replace:'.':'|' | replace:',':'.'| replace:'|':','}}</div>
     </div>
   </ng-container>
   <div class="row pt-3">
