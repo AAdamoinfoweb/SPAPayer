@@ -20,8 +20,7 @@ export class ListaPagamentiService {
   public verificaRid(rid: string): Observable<any> {
     return this.http.post(this.verificaRidUrl, rid, {observe: "response"}).pipe(map((response: any) => {
       const headers: Headers = response.headers;
-      const cookie: string = headers.get('set-cookie');
-      this.xsrfService.xsrfToken = cookie.split('=')[0];
+      this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
       return response;
     }));
   }
