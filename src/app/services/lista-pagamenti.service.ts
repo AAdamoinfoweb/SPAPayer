@@ -13,7 +13,7 @@ import {environment} from "../../environments/environment";
 export class ListaPagamentiService {
 
   verificaRidUrl = "/verificaRid";
-  getCarrelloUrl = "";
+  getCarrelloUrl = "/getCarrello";
 
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }
@@ -28,7 +28,7 @@ export class ListaPagamentiService {
 
   public getCarrello(): Observable<Carrello> {
     let headers: HttpHeaders = new HttpHeaders();
-    headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
+    headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
     return this.http.get(environment.bffBaseUrl + this.getCarrelloUrl, {headers: headers}).pipe(map((body: any) => {
       let listaPagamenti: Pagamento[] = [];
 
