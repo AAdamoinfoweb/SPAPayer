@@ -2,6 +2,7 @@
   .pagination {
     transform: scale(0.8);
     transform-origin: left;
+    margin: 0;
 
     .page-item.active .page-link {
       background: #004987;
@@ -41,5 +42,6 @@
   background: #004987;
   color: #FFFFFF;
   border: 0 !important;
+  margin: 0 !important;
 
 }

@@ -89,8 +89,8 @@ export class ListaPagamentiComponent implements OnInit {
   onSort(column) {
     this.sort = {...this.sortDefault}
     this.sort[column] = this.direction === 'asc' ? arrowup : arrowdown;
-    this.listaPagamenti = [...this.listaPagamentiNotSorted].sort((a, b) => {
-      const res = compare(`${a[column]}`, `${b[column]}`);
+    this.listaPagamenti = [...this.listaPagamenti].sort((a, b) => {
+      const res = compare(`${a[column]}`.trim(), `${b[column]}`.trim());
       return this.direction === 'asc' ? res : -res;
     });
     this.direction = rotate[this.direction];

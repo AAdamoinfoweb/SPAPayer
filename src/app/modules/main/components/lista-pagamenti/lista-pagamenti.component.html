@@ -1,14 +1,4 @@
 <div class="container-fluid p-0 m-0 font-table">
-  <div class="col p-0 m-0 align-items-end">
-    <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{pageSize}}</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button ngbDropdownItem (click)="onChangePageSize($event)">5</button>
-        <button ngbDropdownItem (click)="onChangePageSize($event)">10</button>
-        <button ngbDropdownItem (click)="onChangePageSize($event)">15</button>
-      </div>
-    </div>
-  </div>
   <div class="row table-header pb-2">
     <div class="col-lg-1 col-md-1 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0"></div>
     <div class="col-lg-1 col-md-1 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0 align-items-center"
@@ -63,14 +53,25 @@
         | replace:'.':'|' | replace:',':'.'| replace:'|':','}}</div>
     </div>
   </ng-container>
-  <div class="row pt-3">
-    <div class="col">
-      <ngb-pagination
-        [(page)]="page"
-        [pageSize]="pageSize"
-        [collectionSize]="collectionSize"
-        [boundaryLinks]="true"
-        size="sm"></ngb-pagination>
+  <div class="row pt-3 align-items-center justify-content-between">
+    <div class="col-auto">Mostra
+        <div ngbDropdown class="d-inline-block pl-2">
+          <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{pageSize}}</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button ngbDropdownItem (click)="onChangePageSize($event)">5</button>
+            <button ngbDropdownItem (click)="onChangePageSize($event)">10</button>
+            <button ngbDropdownItem (click)="onChangePageSize($event)">15</button>
+          </div>
+      </div>risultati
     </div>
+      <div class="col-auto">
+        <ngb-pagination
+          [(page)]="page"
+          [pageSize]="pageSize"
+          [collectionSize]="collectionSize"
+          [boundaryLinks]="true"
+          [maxSize]="5"
+          size="sm"></ngb-pagination>
+      </div>
   </div>
 </div>
