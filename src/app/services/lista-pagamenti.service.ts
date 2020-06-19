@@ -2,10 +2,11 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Pagamento} from "../modules/main/model/Pagamento";
-import {map} from "rxjs/operators";
+import {catchError, map} from "rxjs/operators";
 import {XsrfService} from "./xsrf.service";
 import {Carrello} from "../modules/main/model/Carrello";
 import {environment} from "../../environments/environment";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +16,22 @@ export class ListaPagamentiService {
   verificaRidUrl = "/verificaRid";
   getCarrelloUrl = "/getCarrello";
 
-  constructor(private http: HttpClient, private xsrfService: XsrfService) {
+  constructor(private http: HttpClient, private xsrfService: XsrfService, private route: Router) {
   }
 
   public verificaRid(rid: string): Observable<any> {
-    return this.http.post(environment.bffBaseUrl + this.verificaRidUrl, rid, {observe: "response"}).pipe(map((response: any) => {
-      const headers: Headers = response.headers;
-      this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
-      return response;
-    }));
+    return this.http.post(environment.bffBaseUrl + this.verificaRidUrl, rid, {observe: "response"})
+      .pipe(map((response: any) => {
+        const headers: Headers = response.headers;
+        this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
+        return response;
+      }), catchError((err, caught) => {
+        if (err.status == 401) {
+          this.route.navigateByUrl("/nonautorizzato");
+          return caught;
+        } else
+          return caught;
+      }));
   }
 
   public getCarrello(): Observable<Carrello> {
@@ -48,6 +56,12 @@ export class ListaPagamentiService {
         });
         carrello.dettaglio = listaPagamenti;
         return carrello;
+      }), catchError((err, caught) => {
+        if (err.status == 401) {
+          this.route.navigateByUrl("/nonautorizzato");
+          return caught;
+        } else
+          return caught;
       }));
   }
 }

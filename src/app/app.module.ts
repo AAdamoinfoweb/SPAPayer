@@ -12,6 +12,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {MainModule} from './modules/main/main.module';
 import {LoginBarComponent} from './components/login-bar/login-bar.component';
 import {FooterDirective} from "./components/footer/FooterDirective";
+import { NonautorizzatoComponent } from './modules/nonautorizzato/nonautorizzato.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {FooterDirective} from "./components/footer/FooterDirective";
     HomeComponent,
     HeaderComponent,
     LoginBarComponent,
-    FooterDirective
+    FooterDirective,
+    NonautorizzatoComponent
   ],
   imports: [
     HttpClientModule,
