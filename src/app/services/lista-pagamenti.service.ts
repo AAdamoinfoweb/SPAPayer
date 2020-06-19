@@ -25,13 +25,13 @@ export class ListaPagamentiService {
         const headers: Headers = response.headers;
         this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
         return response;
-      }), catchError((err, caught) => {
+      })/*, catchError((err, caught) => {
         if (err.status == 401) {
           this.route.navigateByUrl("/nonautorizzato");
           return caught;
         } else
           return caught;
-      }));
+      })*/);
   }
 
   public getCarrello(): Observable<Carrello> {
@@ -56,12 +56,13 @@ export class ListaPagamentiService {
         });
         carrello.dettaglio = listaPagamenti;
         return carrello;
-      }), catchError((err, caught) => {
+      })/*, catchError((err, caught) => {
         if (err.status == 401) {
           this.route.navigateByUrl("/nonautorizzato");
           return caught;
         } else
           return caught;
-      }));
+      })*/
+      );
   }
 }
