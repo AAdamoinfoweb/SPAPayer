@@ -1,26 +1,77 @@
 <div class="container-fluid p-0 m-0 font-table">
   <div class="row table-header pb-2">
     <div class="col-lg-1 col-md-1 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0"></div>
-    <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">Emissione</div>
-    <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">N.ro Documento</div>
-    <div class="col-lg-2 col-md-2 col-sm-2">Descrizione</div>
-    <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">Ente</div>
-    <div class="col-lg-2 col-md-2 col-sm-2">Scadenza</div>
-    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">Importo</div>
+    <div class="col-lg-1 col-md-1 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0 align-items-center"
+         (click)="onSort('anno')">Anno doc.
+      <svg class="bg-light icon icon-sm">
+        <use [attr.xlink:href]=this.sort.anno></use>
+      </svg>
+    </div>
+    <div class="col-lg-3 col-md-3 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0 align-items-center"
+         (click)="onSort('numDocumento')">N.ro
+      Documento
+      <svg class="bg-light icon icon-sm">
+        <use [attr.xlink:href]=this.sort.numDocumento></use>
+      </svg>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-12 align-items-center" (click)="onSort('causale')">Descrizione
+      <svg class="bg-light icon icon-sm">
+        <use [attr.xlink:href]=this.sort.causale></use>
+      </svg>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0" (click)="onSort('servizio')">Servizio
+      <svg class="bg-light icon icon-sm align-items-center">
+        <use [attr.xlink:href]=this.sort.servizio></use>
+      </svg>
+    </div>
+    <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0 align-items-center"
+         (click)="onSort('ente')">Ente
+      <svg class="bg-light icon icon-sm">
+        <use [attr.xlink:href]=this.sort.ente></use>
+      </svg>
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-12 align-items-center" (click)="onSort('importo')">Importo
+      <svg class="bg-light icon icon-sm">
+        <use [attr.xlink:href]=this.sort.importo></use>
+      </svg>
+    </div>
   </div>
-  <ng-container *ngFor="let pagamento of listaPagamenti">
+  <ng-container *ngFor="let pagamento of listaPagamenti | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
     <div class="row pt-2 pb-2 table-item">
       <div class="col-lg-1 col-md-1 d-none d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">
-        <svg class="bg-light icon icon-xs">
+        <svg class="bg-light icon icon-sm">
           <use xlink:href="assets/img/sprite.svg#it-delete"></use>
         </svg>
       </div>
-      <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.emissione | date: 'MM/yyyy'}}</div>
-      <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.numDocumento}}</div>
-      <div class="col-lg-2 col-md-2 col-sm-2">{{pagamento.descrizione}}</div>
+      <div
+        class="col-lg-1 col-md-1 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.anno}}</div>
+      <div class="col-lg-3 col-md-3 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.numDocumento}}</div>
+      <div class="col-lg-2 col-md-2 col-sm-12">{{pagamento.causale}}</div>
+      <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.servizio}}</div>
       <div class="col-lg-2 col-md-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.ente}}</div>
-      <div class="col-lg-2 col-md-2 col-sm-2">{{pagamento.scadenza | date: 'dd/MM/yyyy'}}</div>
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">{{pagamento.importo|currency:"EUR":"€ "| replace:'.':','}}</div>
+      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 currency">{{pagamento.importo|currency:"EUR":"€ "
+        | replace:'.':'|' | replace:',':'.'| replace:'|':','}}</div>
     </div>
   </ng-container>
+  <div class="row pt-3 align-items-center justify-content-between">
+    <div class="col-auto">Mostra
+        <div ngbDropdown class="d-inline-block pl-2">
+          <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{pageSize}}</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button ngbDropdownItem (click)="onChangePageSize($event)">5</button>
+            <button ngbDropdownItem (click)="onChangePageSize($event)">10</button>
+            <button ngbDropdownItem (click)="onChangePageSize($event)">15</button>
+          </div>
+      </div>risultati
+    </div>
+      <div class="col-auto">
+        <ngb-pagination
+          [(page)]="page"
+          [pageSize]="pageSize"
+          [collectionSize]="collectionSize"
+          [boundaryLinks]="true"
+          [maxSize]="5"
+          size="sm"></ngb-pagination>
+      </div>
+  </div>
 </div>

@@ -36,8 +36,7 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "src/assets/js/perfect-scrollbar.min.js",
-            //  "src/assets/js/paper-dashboard.min.js"
+              "src/assets/js/perfect-scrollbar.min.js"
             ]
           },
           "configurations": {
@@ -107,8 +106,7 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "src/assets/js/perfect-scrollbar.min.js",
-             // "src/assets/js/paper-dashboard.min.js"
+              "src/assets/js/perfect-scrollbar.min.js"
             ]
           }
         },
@@ -138,6 +136,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "main-frontend"
+    }
+  },
+  "defaultProject": "main-frontend",
+  "cli": {
+    "analytics": false
+  }
 }

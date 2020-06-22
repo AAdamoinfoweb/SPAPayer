@@ -12,6 +12,8 @@ import {HeaderComponent} from './components/header/header.component';
 import {MainModule} from './modules/main/main.module';
 import {LoginBarComponent} from './components/login-bar/login-bar.component';
 import {FooterDirective} from "./components/footer/FooterDirective";
+import { NonautorizzatoComponent } from './modules/nonautorizzato/nonautorizzato.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -19,13 +21,15 @@ import {FooterDirective} from "./components/footer/FooterDirective";
     HomeComponent,
     HeaderComponent,
     LoginBarComponent,
-    FooterDirective
+    FooterDirective,
+    NonautorizzatoComponent
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
-    MainModule
+    MainModule,
+    NgbModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
