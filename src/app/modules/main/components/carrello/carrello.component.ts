@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Breadcrumb} from "../../dto/Breadcrumb";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 
 @Component({
@@ -17,7 +17,6 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   numeroPagamenti: number = 0;
   totalePagamento: number = 0;
 
-  @Input()
   rid: string;
 
   email: string = 'mario.rossi@gmail.com';
@@ -27,11 +26,14 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   tooltipTitle: string = "In questa interfaccia vengono mostrate le pendenze che stanno per essere pagate ed è possibile procedere al pagamento.";
   userEmail: FormGroup;
 
-  constructor(private router: Router, private renderer: Renderer2, private el: ElementRef) {
+  constructor(private router: Router, private renderer: Renderer2, private el: ElementRef, private route: ActivatedRoute) {
     this.breadcrumbList = [];
     this.breadcrumbList.push(new Breadcrumb(0, "Home", null, null));
     this.breadcrumbList.push(new Breadcrumb(1, "Pagamenti", null, null));
     this.breadcrumbList.push(new Breadcrumb(2, "Carrello", null, null));
+    this.route.queryParams.subscribe((params) => {
+      this.rid = params.rid;
+    });
   }
 
   ngAfterViewInit(): void {

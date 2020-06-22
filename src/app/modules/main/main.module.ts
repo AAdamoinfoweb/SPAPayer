@@ -12,6 +12,7 @@ import {ListaPagamentiComponent} from './components/lista-pagamenti/lista-pagame
 import {PrivacyComponent} from './components/privacy/privacy.component';
 import {LoginBarComponent} from "../../components/login-bar/login-bar.component";
 import {ReplacePipe} from "../../pipe/ReplacePipe";
+import {NgbDropdownModule, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {ReplacePipe} from "../../pipe/ReplacePipe";
     FormsModule,
     ReactiveFormsModule,
     NgxYoutubePlayerModule,
-
+    NgbPaginationModule,
+    NgbDropdownModule
   ],
   exports: [
     FooterComponent,

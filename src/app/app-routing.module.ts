@@ -5,6 +5,7 @@ import {AuthguardService} from './services/authguard.service';
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
 import {PresaincaricopagamentoComponent} from "./modules/main/components/presaincaricopagamento/presaincaricopagamento.component";
 import {PrivacyComponent} from "./modules/main/components/privacy/privacy.component";
+import {NonautorizzatoComponent} from "./modules/nonautorizzato/nonautorizzato.component";
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
       AuthguardService
     ]
   },
+  {path: 'nonautorizzato', component: NonautorizzatoComponent},
   {path: 'carrello', component: CarrelloComponent},
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
   {path: 'privacy', component: PrivacyComponent}
