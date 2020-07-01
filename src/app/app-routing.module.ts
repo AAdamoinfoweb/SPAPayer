@@ -6,6 +6,7 @@ import {CarrelloComponent} from "./modules/main/components/carrello/carrello.com
 import {PresaincaricopagamentoComponent} from "./modules/main/components/presaincaricopagamento/presaincaricopagamento.component";
 import {PrivacyComponent} from "./modules/main/components/privacy/privacy.component";
 import {NonautorizzatoComponent} from "./modules/nonautorizzato/nonautorizzato.component";
+import {WaitingComponent} from "./modules/main/components/waiting/waiting.component";
 
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'nonautorizzato', component: NonautorizzatoComponent},
   {path: 'carrello', component: CarrelloComponent},
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
+  {path: 'waiting', component: WaitingComponent},
   {path: 'privacy', component: PrivacyComponent}
 ];
 

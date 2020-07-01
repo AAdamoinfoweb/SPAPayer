@@ -13,6 +13,7 @@ import {PrivacyComponent} from './components/privacy/privacy.component';
 import {LoginBarComponent} from "../../components/login-bar/login-bar.component";
 import {ReplacePipe} from "../../pipe/ReplacePipe";
 import {NgbDropdownModule, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
+import { WaitingComponent } from './components/waiting/waiting.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {NgbDropdownModule, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap
     FooterComponent,
     ListaPagamentiComponent,
     PrivacyComponent,
-    ReplacePipe
+    ReplacePipe,
+    WaitingComponent
   ],
   imports: [
     CommonModule,
