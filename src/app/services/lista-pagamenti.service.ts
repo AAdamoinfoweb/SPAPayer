@@ -20,7 +20,10 @@ export class ListaPagamentiService {
   }
 
   public verificaRid(rid: string): Observable<HttpResponse<any>> {
-    return this.http.post(environment.bffBaseUrl + this.verificaRidUrl, rid, {observe: "response"})
+    return this.http.post(environment.bffBaseUrl + this.verificaRidUrl, rid, {
+      withCredentials: true,
+      observe: "response"
+    })
       .pipe(map((response: HttpResponse<any>) => {
         const headers: HttpHeaders = response.headers;
         this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
