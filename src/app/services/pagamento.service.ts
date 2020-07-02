@@ -23,7 +23,7 @@ export class PagamentoService {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
     let observable: Observable<string> = this.http.post(environment.bffBaseUrl + this.confermaPagamentoUrl, body,
-      {observe: "response", headers: headers})
+      {withCredentials: true, observe: "response", headers: headers})
       .pipe(map((response: HttpResponse<any>) => {
         const headers: HttpHeaders = response.headers;
         this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
