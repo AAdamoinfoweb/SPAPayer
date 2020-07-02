@@ -60,7 +60,6 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   navigaInPresaInCaricoPagamento() {
     this.confermaPagamento();
-    // this.router.navigateByUrl("/presaincaricopagamento");
   }
 
   getNote(emailForm: NgForm): string {
@@ -72,8 +71,9 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   confermaPagamento() {
     this.loading = true
-    this.pagamentoService.confermaPagamento(this.email).subscribe(response => {
+    this.pagamentoService.confermaPagamento(this.email).subscribe(url => {
       this.loading = false;
+     window.location.href = url;
     });
   }
 }
