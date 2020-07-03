@@ -19,9 +19,19 @@ export class PagamentoService {
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }
 
-  public confermaPagamento(body: any) {
-    return this.http.post(environment.bffBaseUrl + this.confermaPagamentoUrl, body,
-      {withCredentials: true, observe: "response"});
+  public confermaPagamento(body: any): Observable<any> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
+    let observable: Observable<any> = this.http.post(environment.bffBaseUrl + this.confermaPagamentoUrl, body,
+      {withCredentials: true, observe: "response", headers: headers})
+      .pipe(map((response) => response),
+        catchError((err, caught) => {
+          if (err.status == 401) {
+            return of(null);
+          } else
+            return caught;
+        }));
+    return observable;
   }
 
   public verificaQuietanza(idSession: string): Observable<HttpResponse<any>> {
@@ -43,7 +53,7 @@ export class PagamentoService {
     headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
     // const params = new HttpParams();
     //     // params.set('ultima', String(ultima));
-    return this.http.post(environment.bffBaseUrl + this.verificaEsitoPagamentoUrl, ultima,{headers: headers})
+    return this.http.post(environment.bffBaseUrl + this.verificaEsitoPagamentoUrl, ultima, {headers: headers})
       .pipe(map((json: any) => {
         return json;
       }), catchError((err, caught) => {
