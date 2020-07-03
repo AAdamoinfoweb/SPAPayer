@@ -19,22 +19,9 @@ export class PagamentoService {
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }
 
-  public confermaPagamento(body: any): Observable<string> {
-    let headers: HttpHeaders = new HttpHeaders();
-    headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
-    let observable: Observable<string> = this.http.post(environment.bffBaseUrl + this.confermaPagamentoUrl, body,
-      {withCredentials: true, observe: "response", headers: headers})
-      .pipe(map((response: HttpResponse<any>) => {
-        const headers: HttpHeaders = response.headers;
-        this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
-        return response.body.url;
-      }), catchError((err, caught) => {
-        if (err.status == 401) {
-          return of(null);
-        } else
-          return caught;
-      }));
-    return observable;
+  public confermaPagamento(body: any) {
+    return this.http.post(environment.bffBaseUrl + this.confermaPagamentoUrl, body,
+      {withCredentials: true, observe: "response"});
   }
 
   public verificaQuietanza(idSession: string): Observable<HttpResponse<any>> {
