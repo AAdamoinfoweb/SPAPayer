@@ -23,22 +23,22 @@ export class PagamentoService {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
     let observable: Observable<any> = this.http.post(environment.bffBaseUrl + this.confermaPagamentoUrl, body,
-      {withCredentials: true, observe: "response", headers: headers})
-      .pipe(map((response) => response),
+      {withCredentials: true, observe: "body", headers: headers})
+      .pipe(map((body: any) => body.url),
         catchError((err, caught) => {
           if (err.status == 401) {
-            return of(null);
+            return of("");
           } else
             return caught;
         }));
     return observable;
   }
 
-  public verificaQuietanza(idSession: string): Observable<HttpResponse<any>> {
+  public verificaQuietanza(idSession: string, esito: string): Observable<HttpResponse<any>> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
     return this.http.post(environment.bffBaseUrl + this.verificaQuietanzaUrl, idSession, {observe: "response"})
       .pipe(map((response: HttpResponse<any>) => {
-        const headers: HttpHeaders = response.headers;
-        this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
         return response;
       }), catchError((err, caught) => {
         if (err.status == 401) {

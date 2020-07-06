@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
+import {PagamentoService} from "../../../../services/pagamento.service";
 
 @Component({
   selector: 'app-waiting',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WaitingComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private pagamentoService: PagamentoService) { }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.pagamentoService.verificaQuietanza(params.idSession, params.esito).subscribe();
+
+    });
   }
 
 }

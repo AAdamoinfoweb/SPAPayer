@@ -19,7 +19,7 @@ export class PresaincaricopagamentoComponent implements OnInit {
   constructor(private route: ActivatedRoute, private pagamentoService: PagamentoService) {
     this.route.queryParams.subscribe((params) => {
       this.idSession = params.idSession;
-      this.pagamentoService.verificaQuietanza(this.idSession).subscribe();
+      this.pagamentoService.verificaQuietanza(this.idSession, "").subscribe();
     });
   }
 
