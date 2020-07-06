@@ -37,7 +37,11 @@ export class PagamentoService {
   public verificaQuietanza(idSession: string, esito: string): Observable<HttpResponse<any>> {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
-    return this.http.post(environment.bffBaseUrl + this.verificaQuietanzaUrl, idSession, {observe: "response"})
+    const verificaQuietanza = {
+      idSession: idSession,
+      esito: esito
+    }
+    return this.http.post(environment.bffBaseUrl + this.verificaQuietanzaUrl, verificaQuietanza, {observe: "response"})
       .pipe(map((response: HttpResponse<any>) => {
         return response;
       }), catchError((err, caught) => {
