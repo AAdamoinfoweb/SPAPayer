@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {PagamentoService} from "../../../../services/pagamento.service";
 
@@ -9,12 +9,15 @@ import {PagamentoService} from "../../../../services/pagamento.service";
 })
 export class WaitingComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private pagamentoService: PagamentoService) { }
+  constructor(private route: ActivatedRoute, private pagamentoService: PagamentoService) {
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.pagamentoService.verificaQuietanza(params.idSession, params.esito).subscribe();
-
+      this.pagamentoService.verificaQuietanza(params.idSession, params.esito)
+        .subscribe(url => {
+          window.location.href = url;
+        });
     });
   }
 

@@ -74,7 +74,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     this.pagamentoService.confermaPagamento(this.email)
       .subscribe(url => {
         this.loading = false;
-        window.location.href=url;
+        window.location.href = url;
       });
   }
 }
