@@ -26,8 +26,8 @@ export class PagamentoService {
       {withCredentials: true, headers: headers})
       .pipe(map((body: any) => body.url),
         catchError((err, caught) => {
-          if (err.status == 401) {
-            return of("");
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
           } else
             return caught;
         }));
