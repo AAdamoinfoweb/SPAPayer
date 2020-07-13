@@ -26,20 +26,26 @@ export class PresaincaricopagamentoComponent implements OnInit {
   ngOnInit(): void {
     this.runCount = this.runCount + 1;
     const observable = this.pagamentoService.verificaEsitoPagamento(this.idSession, false);
-    observable.subscribe((url) => this.goToUrl(url));
+
+    let subscr = observable.subscribe((url) => {
+      subscr.unsubscribe();
+      return this.goToUrl(url)
+    });
     this.timerId = source.subscribe(() => this.timerMethod());
   }
 
   timerMethod(): any {
     let ultima = false
     this.runCount = this.runCount + 1;
-    if (this.runCount === 12) {
+    if (this.runCount === 11) {
       ultima = true
-      // clearInterval(this.timerId);
       this.timerId.unsubscribe();
     }
     const observable = this.pagamentoService.verificaEsitoPagamento(this.idSession, ultima);
-    observable.subscribe((url) => this.goToUrl(url));
+    let subscr = observable.subscribe((url) => {
+      subscr.unsubscribe();
+      return this.goToUrl(url)
+    });
   }
 
   private goToUrl(url: string) {

@@ -57,7 +57,7 @@ export class PagamentoService {
     //     // params.set('ultima', String(ultima));
     return this.http.post(environment.bffBaseUrl + this.verificaEsitoPagamentoUrl, ultima, {headers: headers})
       .pipe(map((json: any) => {
-        return json.url;
+        return json ? json.url : null;
       }), catchError((err, caught) => {
         if (err.status == 401) {
           return of(null);
