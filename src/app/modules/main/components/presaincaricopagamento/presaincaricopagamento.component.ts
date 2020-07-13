@@ -31,7 +31,7 @@ export class PresaincaricopagamentoComponent implements OnInit {
   timerMethod(): any {
     let ultima = false
     this.runCount = this.runCount + 1;
-    if (this.runCount === 120) {
+    if (this.runCount === 12) {
       ultima = true
       // clearInterval(this.timerId);
       this.timerId.unsubscribe();
