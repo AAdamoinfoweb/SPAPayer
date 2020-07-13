@@ -26,8 +26,8 @@ export class PagamentoService {
       {withCredentials: true, headers: headers})
       .pipe(map((body: any) => body.url),
         catchError((err, caught) => {
-          if (err.status == 401) {
-            return of("");
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
           } else
             return caught;
         }));
@@ -36,7 +36,7 @@ export class PagamentoService {
 
   public verificaQuietanza(idSession: string, esito: string): Observable<string> {
     let headers: HttpHeaders = new HttpHeaders();
-    headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
+    headers = headers.append("XSRF-TOKEN", idSession)
     return this.http.post(environment.bffBaseUrl + this.verificaQuietanzaUrl, esito, {
       withCredentials: true,
       headers: headers
@@ -50,14 +50,14 @@ export class PagamentoService {
         }));
   }
 
-  public verificaEsitoPagamento(ultima: boolean): Observable<any> {
+  public verificaEsitoPagamento(idSession: string, ultima: boolean): Observable<any> {
     let headers: HttpHeaders = new HttpHeaders();
-    headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
+    headers = headers.append("XSRF-TOKEN", idSession)
     // const params = new HttpParams();
     //     // params.set('ultima', String(ultima));
     return this.http.post(environment.bffBaseUrl + this.verificaEsitoPagamentoUrl, ultima, {headers: headers})
       .pipe(map((json: any) => {
-        return json;
+        return json.url;
       }), catchError((err, caught) => {
         if (err.status == 401) {
           return of(null);

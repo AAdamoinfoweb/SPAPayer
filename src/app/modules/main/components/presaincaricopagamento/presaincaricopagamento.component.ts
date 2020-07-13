@@ -19,12 +19,14 @@ export class PresaincaricopagamentoComponent implements OnInit {
   constructor(private route: ActivatedRoute, private pagamentoService: PagamentoService) {
     this.route.queryParams.subscribe((params) => {
       this.idSession = params.idSession;
-      this.pagamentoService.verificaQuietanza(this.idSession, "").subscribe();
+
     });
   }
 
   ngOnInit(): void {
-    // this.timerId = setInterval(() => {this.timerMethod();}, 10000);
+    this.runCount = this.runCount + 1;
+    const observable = this.pagamentoService.verificaEsitoPagamento(this.idSession, false);
+    observable.subscribe((url) => this.goToUrl(url));
     this.timerId = source.subscribe(() => this.timerMethod());
   }
 
@@ -36,8 +38,13 @@ export class PresaincaricopagamentoComponent implements OnInit {
       // clearInterval(this.timerId);
       this.timerId.unsubscribe();
     }
-    const observable = this.pagamentoService.verificaEsitoPagamento(ultima);
-    observable.subscribe();
+    const observable = this.pagamentoService.verificaEsitoPagamento(this.idSession, ultima);
+    observable.subscribe((url) => this.goToUrl(url));
+  }
+
+  private goToUrl(url: string) {
+    if (url)
+      window.location.href = url;
   }
 
 }
