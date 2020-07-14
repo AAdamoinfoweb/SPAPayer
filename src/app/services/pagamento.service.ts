@@ -53,8 +53,6 @@ export class PagamentoService {
   public verificaEsitoPagamento(idSession: string, ultima: boolean): Observable<any> {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append("XSRF-TOKEN", idSession)
-    // const params = new HttpParams();
-    //     // params.set('ultima', String(ultima));
     return this.http.post(environment.bffBaseUrl + this.verificaEsitoPagamentoUrl, ultima, {headers: headers})
       .pipe(map((json: any) => {
         return json ? json.url : null;
