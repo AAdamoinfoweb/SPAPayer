@@ -14,6 +14,7 @@ import {LoginBarComponent} from './components/login-bar/login-bar.component';
 import {FooterDirective} from "./components/footer/FooterDirective";
 import { NonautorizzatoComponent } from './modules/nonautorizzato/nonautorizzato.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { GenericErrorComponent } from './modules/generic-error/generic-error.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     HeaderComponent,
     LoginBarComponent,
     FooterDirective,
-    NonautorizzatoComponent
+    NonautorizzatoComponent,
+    GenericErrorComponent
   ],
   imports: [
     HttpClientModule,
