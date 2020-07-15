@@ -12,4 +12,7 @@ export class NonautorizzatoComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  tornaAlServizio() {
+    alert('torna al servizio');
+  }
 }

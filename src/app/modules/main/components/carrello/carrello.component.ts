@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {Breadcrumb} from "../../dto/Breadcrumb";
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
-import {PagamentoService} from "../../../../services/pagamento.service";
+import {Breadcrumb} from '../../dto/Breadcrumb';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {PagamentoService} from '../../../../services/pagamento.service';
 
 @Component({
   selector: 'app-carrello',
@@ -11,20 +11,20 @@ import {PagamentoService} from "../../../../services/pagamento.service";
 })
 export class CarrelloComponent implements OnInit, AfterViewInit {
 
-  isDark: boolean = false;
-  separator: string = "/";
+  isDark = false;
+  separator = '/';
   breadcrumbList = [];
 
-  numeroPagamenti: number = 0;
-  totalePagamento: number = 0;
+  numeroPagamenti = 0;
+  totalePagamento = 0;
 
   rid: string;
 
-  email: string = 'mario.rossi@gmail.com';
+  email = 'mario.rossi@gmail.com';
 
-  @ViewChild("videoPlayer", {static: false}) videoplayer: ElementRef;
+  @ViewChild('videoPlayer', {static: false}) videoplayer: ElementRef;
 
-  tooltipTitle: string = "In questa interfaccia vengono mostrate le pendenze che stanno per essere pagate ed è possibile procedere al pagamento.";
+  tooltipTitle = 'In questa interfaccia vengono mostrate le pendenze che stanno per essere pagate ed è possibile procedere al pagamento.';
   userEmail: FormGroup;
 
   loading = false;
@@ -32,18 +32,18 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   constructor(private router: Router, private renderer: Renderer2, private el: ElementRef, private route: ActivatedRoute,
               private pagamentoService: PagamentoService) {
     this.breadcrumbList = [];
-    this.breadcrumbList.push(new Breadcrumb(0, "Home", null, null));
-    this.breadcrumbList.push(new Breadcrumb(1, "Pagamenti", null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, "Carrello", null, null));
+    this.breadcrumbList.push(new Breadcrumb(0, 'Home', null, null));
+    this.breadcrumbList.push(new Breadcrumb(1, 'Pagamenti', null, null));
+    this.breadcrumbList.push(new Breadcrumb(2, 'Carrello', null, null));
     this.route.queryParams.subscribe((params) => {
       this.rid = params.rid;
     });
   }
 
   ngAfterViewInit(): void {
-    this.renderer.addClass(this.el.nativeElement.querySelector("#breadcrumb-item-0 > li"), "active")
-    this.renderer.addClass(this.el.nativeElement.querySelector("#breadcrumb-item-1 > li"), "active")
-    this.renderer.addClass(this.el.nativeElement.querySelector("#breadcrumb-item-2 > li > a"), "active-bold")
+    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-0 > li'), 'active');
+    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-2 > li > a'), 'active-bold');
   }
 
   toggleVideo() {
@@ -54,7 +54,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     this.userEmail = new FormGroup({
       emailInput: new FormControl(this.email, [
         Validators.required,
-        Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")])
+        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')])
     });
   }
 
@@ -65,17 +65,23 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   getNote(emailForm: NgForm): string {
     if (emailForm.controls.emailInput?.errors?.pattern) {
       return 'Il valore inserito deve essere un\'email';
-    } else
+    } else {
       return 'inserisci indirizzo e-mail';
+    }
   }
 
   confermaPagamento() {
-    this.loading = true
+    this.loading = true;
     this.pagamentoService.confermaPagamento(this.email)
       .subscribe(url => {
         this.loading = false;
-        if (url)
+        if (url) {
           window.location.href = url;
+        }
       });
+  }
+
+  tornaAlServizio() {
+    alert('torna al servizio');
   }
 }

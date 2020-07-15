@@ -728,6 +728,51 @@ fieldset[disabled] .btn-primary.active {
   box-shadow: none
 }
 
+.btn.btn-secondary{
+  background-color: #fff !important;
+  color: #004987 !important;
+  box-shadow: none;
+  border: 2px solid #004987 !important;
+}
+.btn.btn-secondary:hover,
+.btn-secondary.btn-link:focus,
+.btn-secondary.btn-link:active,
+.btn-secondary.btn-link:active:focus{
+  background-color: #403d39 !important;
+  color: #fff !important;
+  box-shadow: none;
+  border: 2px solid #403d39 !important;
+}
+
+.btn.disabled.btn-secondary.disabled,
+.btn.disabled.btn-secondary.disabled:hover,
+.btn.disabled.btn-secondary.disabled:focus,
+.btn.disabled.btn-secondary.disabled.focus,
+.btn.disabled.btn-secondary.disabled:active,
+.btn.disabled.btn-secondary.disabled.active,
+.btn:disabled.btn-secondary:disabled,
+.btn:disabled:hover.btn-secondary:disabled:hover,
+.btn:disabled:focus.btn-secondary:disabled:focus,
+.btn:disabled.focus.btn-secondary:disabled.focus,
+.btn:disabled:active.btn-secondary:disabled:active,
+.btn:disabled.active.btn-secondary:disabled.active,
+.btn:disabled[disabled].btn-secondary[disabled],
+.btn:disabled[disabled]:hover.btn-secondary[disabled]:hover,
+.btn:disabled[disabled]:focus.btn-secondary[disabled]:focus,
+.btn:disabled[disabled].focus.btn-secondary[disabled].focus,
+.btn:disabled[disabled]:active.btn-secondary[disabled]:active,
+.btn:disabled[disabled].active.btn-secondary[disabled].active,
+fieldset[disabled] .btn-secondary,
+fieldset[disabled] .btn-secondary:hover,
+fieldset[disabled] .btn-secondary:focus,
+fieldset[disabled] .btn-secondary.focus,
+fieldset[disabled] .btn-secondary:active,
+fieldset[disabled] .btn-secondary.active {
+  background-color: #fff !important;
+  border-color: #66615b !important;
+  color: #66615b !important;
+}
+
 .btn-success {
   background-color: #6bd098;
   color: #fff
