@@ -15,6 +15,7 @@ import {FooterDirective} from "./components/footer/FooterDirective";
 import { NonautorizzatoComponent } from './modules/nonautorizzato/nonautorizzato.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { GenericErrorComponent } from './modules/generic-error/generic-error.component';
+import {UrlRitornoInterceptor} from "./services/urlRitorno.interceptor";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { GenericErrorComponent } from './modules/generic-error/generic-error.com
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
-    {provide: ErrorHandler, useClass: ErrorHandlerGenerico}
+    {provide: ErrorHandler, useClass: ErrorHandlerGenerico},
+    { provide: HTTP_INTERCEPTORS, useClass: UrlRitornoInterceptor, multi: true }
   ],
   exports: [
     FooterDirective

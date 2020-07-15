@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
+import {UrlRitornoService} from "../../services/urlRitorno.service";
 
 @Component({
   selector: 'app-nonautorizzato',
@@ -7,12 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NonautorizzatoComponent implements OnInit {
 
-  constructor() { }
+  urlRitorno: string;
+
+  constructor(private route: Router, private urlRitornoService: UrlRitornoService) {
+    this.urlRitorno = urlRitornoService.urlRitorno;
+  }
 
   ngOnInit(): void {
   }
 
   tornaAlServizio() {
-    alert('torna al servizio');
+    this.route.navigateByUrl(this.urlRitorno);
   }
 }
