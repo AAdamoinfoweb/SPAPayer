@@ -10,14 +10,13 @@ import {environment} from "../../../environments/environment";
 })
 export class PageSenderComponent implements OnInit {
 
-  buffer = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-    "<Buffer>\n" +
-    "    <ProtocolVersion />\n" +
-    "    <TagOrario>202007161139</TagOrario>\n" +
-    "    <CodicePortale>PROVA</CodicePortale>\n" +
-    "    <BufferDati>MDQwYTE2MDQtYzE3My00MGM2LWJjZTQtNjRjNzMyMDU5ZTZk</BufferDati>\n" +
-    "    <Hash>b0ea8d556c7431abdcc0501bf73e840d</Hash>\n" +
-    "</Buffer>"
+  buffer = {
+    ProtocolVersion: null,
+    TagOrario: "202007161733",
+    CodicePortale: "PROVA",
+    BufferDati: "NmU5NTE2NTktMGFlYy00MzEyLWJjYzItNjI3MDg2NmE4NDJl",
+    Hash: "15d2631e372329a9dd0606f1fd59fb05"
+  }
 
   constructor() {
   }
