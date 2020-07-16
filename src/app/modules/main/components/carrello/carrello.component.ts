@@ -3,7 +3,6 @@ import {Breadcrumb} from '../../dto/Breadcrumb';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {PagamentoService} from '../../../../services/pagamento.service';
-import {UrlBackService} from "../../../../services/urlBack.service";
 
 @Component({
   selector: 'app-carrello',
@@ -32,7 +31,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   urlBack;
 
   constructor(private router: Router, private renderer: Renderer2, private el: ElementRef, private route: ActivatedRoute,
-              private pagamentoService: PagamentoService, private urlBackService: UrlBackService) {
+              private pagamentoService: PagamentoService) {
     this.breadcrumbList = [];
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', null, null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Pagamenti', null, null));
@@ -40,7 +39,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.rid = params.rid;
     });
-    this.urlBack = urlBackService.urlBack;
+
   }
 
   ngAfterViewInit(): void {
