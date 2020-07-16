@@ -9,6 +9,7 @@ import {NonautorizzatoComponent} from "./modules/nonautorizzato/nonautorizzato.c
 import {WaitingComponent} from "./modules/main/components/waiting/waiting.component";
 import {GenericErrorComponent} from "./modules/generic-error/generic-error.component";
 import {RedirectPageComponent} from "./modules/redirect-page/redirect-page.component";
+import {PageSenderComponent} from "./modules/page-sender/page-sender.component";
 
 
 const routes: Routes = [
@@ -26,7 +27,8 @@ const routes: Routes = [
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
   {path: 'waiting', component: WaitingComponent},
   {path: 'privacy', component: PrivacyComponent},
-  {path: 'redirectpage', component: RedirectPageComponent}
+  {path: 'redirectpage', component: RedirectPageComponent},
+  {path: 'pagesender', component: PageSenderComponent}
 ];
 
 @NgModule({

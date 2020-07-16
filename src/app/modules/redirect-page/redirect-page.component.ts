@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {PagamentoService} from '../../services/pagamento.service';
 
 @Component({
-  selector: 'app-nonautorizzato',
+  selector: 'app-redirect',
   templateUrl: './redirect-page.component.html',
   styleUrls: ['./redirect-page.component.scss']
 })

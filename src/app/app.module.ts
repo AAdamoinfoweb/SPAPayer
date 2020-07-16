@@ -17,6 +17,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { GenericErrorComponent } from './modules/generic-error/generic-error.component';
 import {UrlBackInterceptor} from "./services/urlBack.interceptor";
 import {RedirectPageComponent} from "./modules/redirect-page/redirect-page.component";
+import {PageSenderComponent} from "./modules/page-sender/page-sender.component";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {RedirectPageComponent} from "./modules/redirect-page/redirect-page.compo
     FooterDirective,
     NonautorizzatoComponent,
     GenericErrorComponent,
-    RedirectPageComponent
+    RedirectPageComponent,
+    PageSenderComponent
   ],
   imports: [
     HttpClientModule,
