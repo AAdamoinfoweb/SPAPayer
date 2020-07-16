@@ -15,6 +15,8 @@ export class PagamentoService {
   confermaPagamentoUrl = '/confermaPagamento';
   verificaEsitoPagamentoUrl = '/verificaEsitoPagamento';
   verificaQuietanzaUrl = '/verificaQuietanza';
+  quietanzaUrl = '/quietanza'
+  redirectCarrelloUrl = '/redirectCarrello'
 
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }
@@ -64,5 +66,35 @@ export class PagamentoService {
       }));
   }
 
+  public quietanza(idSession: string, esito: string): Observable<string> {
+    const params = new HttpParams()
+    params.set('idSession', idSession);
+    params.set('esito', esito);
+
+    return this.http.get(environment.bffBaseUrl + this.quietanzaUrl, {
+      withCredentials: true,
+      params
+    })
+      .pipe(map((body: any) => body.url),
+        catchError((err, caught) => {
+          if (err.status == 401) {
+            return of("");
+          } else
+            return caught;
+        }));
+  }
+
+  public redirectCarrello(buffer: any): Observable<string> {
+    return this.http.post(environment.bffBaseUrl + this.redirectCarrelloUrl, buffer ,{
+      withCredentials: true
+    })
+      .pipe(map((body: any) => body.url),
+        catchError((err, caught) => {
+          if (err.status == 401) {
+            return of("");
+          } else
+            return caught;
+        }));
+  }
 
 }

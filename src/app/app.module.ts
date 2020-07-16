@@ -15,7 +15,8 @@ import {FooterDirective} from "./components/footer/FooterDirective";
 import { NonautorizzatoComponent } from './modules/nonautorizzato/nonautorizzato.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { GenericErrorComponent } from './modules/generic-error/generic-error.component';
-import {UrlRitornoInterceptor} from "./services/urlRitorno.interceptor";
+import {UrlBackInterceptor} from "./services/urlBack.interceptor";
+import {RedirectPageComponent} from "./modules/redirect-page/redirect-page.component";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {UrlRitornoInterceptor} from "./services/urlRitorno.interceptor";
     LoginBarComponent,
     FooterDirective,
     NonautorizzatoComponent,
-    GenericErrorComponent
+    GenericErrorComponent,
+    RedirectPageComponent
   ],
   imports: [
     HttpClientModule,
@@ -38,7 +40,7 @@ import {UrlRitornoInterceptor} from "./services/urlRitorno.interceptor";
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
     {provide: ErrorHandler, useClass: ErrorHandlerGenerico},
-    { provide: HTTP_INTERCEPTORS, useClass: UrlRitornoInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true }
   ],
   exports: [
     FooterDirective

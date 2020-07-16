@@ -3,16 +3,16 @@ import {Observable, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpHeaders, HttpRequest} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {UrlRitornoService} from "./urlRitorno.service";
+import {UrlBackService} from "./urlBack.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UrlRitornoInterceptor {
+export class UrlBackInterceptor {
 
   urlRitorno: string
 
-  constructor(private route: Router, private urlRitornoService: UrlRitornoService) {
+  constructor(private route: Router, private urlBackService: UrlBackService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -23,7 +23,7 @@ export class UrlRitornoInterceptor {
       catchError((error: HttpErrorResponse) => {
         // set this.urlRitorno con header error response
         const headers: HttpHeaders = error.headers;
-        this.urlRitornoService.urlRitorno = headers.get('urlRitorno');
+        this.urlBackService.urlBack = headers.get('urlBack');
         if (error.status === 401) {
           this.route.navigateByUrl('/nonautorizzato');
         } else {

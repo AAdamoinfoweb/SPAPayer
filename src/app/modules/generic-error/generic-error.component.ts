@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {UrlRitornoService} from '../../services/urlRitorno.service';
+import {UrlBackService} from '../../services/urlBack.service';
 import {Router} from "@angular/router";
 
 @Component({
@@ -9,17 +9,17 @@ import {Router} from "@angular/router";
 })
 export class GenericErrorComponent implements OnInit {
 
-  urlRitorno: string;
+  urlBack: string;
 
-  constructor(private route: Router, private urlRitornoService: UrlRitornoService) {
-    this.urlRitorno = urlRitornoService.urlRitorno;
+  constructor(private route: Router, private urlBackService: UrlBackService) {
+    this.urlBack = urlBackService.urlBack;
   }
 
   ngOnInit(): void {
   }
 
   tornaAlServizio() {
-    this.route.navigateByUrl(this.urlRitorno);
+    this.route.navigateByUrl(this.urlBack);
   }
 
 }

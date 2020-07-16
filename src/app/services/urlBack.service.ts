@@ -3,9 +3,9 @@ import {Injectable} from "@angular/core";
 @Injectable({
   providedIn: 'root'
 })
-export class UrlRitornoService {
+export class UrlBackService {
 
-  urlRitorno: string
+  urlBack: string
 
   constructor() {
   }
