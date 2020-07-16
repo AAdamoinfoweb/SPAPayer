@@ -85,15 +85,16 @@ export class PagamentoService {
   }
 
   public redirectCarrello(buffer: any): Observable<string> {
-    return this.http.post(environment.bffBaseUrl + this.redirectCarrelloUrl, buffer ,{
+    return this.http.post(environment.bffBaseUrl + this.redirectCarrelloUrl, buffer , {
       withCredentials: true
     })
       .pipe(map((body: any) => body.url),
         catchError((err, caught) => {
           if (err.status == 401) {
-            return of("");
-          } else
+            return of('');
+          } else {
             return caught;
+          }
         }));
   }
 
