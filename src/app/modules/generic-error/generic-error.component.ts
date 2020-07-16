@@ -13,17 +13,14 @@ import {XsrfService} from "../../services/xsrf.service";
 export class GenericErrorComponent implements OnInit {
 
   urlBack: string;
-  private getUrlBack: string = '/getUrlBack';
+  private getUrlBack: string = '/getBackUrl';
 
   constructor(private route: Router, private http: HttpClient, private xsrfService: XsrfService) {
   }
 
   ngOnInit(): void {
-    let headers: HttpHeaders = new HttpHeaders();
-    headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
     this.http.get(environment.bffBaseUrl + this.getUrlBack, {
-      withCredentials: true,
-      headers: headers,
+      withCredentials: true
     })
       .pipe(map((body: any) => {
        if(body.url)
