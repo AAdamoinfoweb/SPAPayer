@@ -1,6 +1,5 @@
-
-<body onLoad="document.myform.submit();">
-<form action="/redirectCarrello" name="myform" id="myform" method ="post">
+<body onLoad="document.myform.submit();" xmlns:Content-Type="http://www.w3.org/1999/xhtml">
+<form [action]="getAction()" name="myform" id="myform" method="post" enctype="application/x-www-form-urlencoded">
 <!--  <input type="hidden" name="formName" id="formName" value="formExtern">-->
   <input type="hidden" name="buffer" id="buffer" [value]=this.buffer>
 </form>

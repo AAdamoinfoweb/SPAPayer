@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {PagamentoService} from '../../services/pagamento.service';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-redirect',
@@ -22,5 +23,9 @@ export class PageSenderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  getAction() {
+    return environment.bffBaseUrl + '/redirectCarrello'
   }
 }
