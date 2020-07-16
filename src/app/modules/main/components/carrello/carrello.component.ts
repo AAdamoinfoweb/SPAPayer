@@ -3,6 +3,10 @@ import {Breadcrumb} from '../../dto/Breadcrumb';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {PagamentoService} from '../../../../services/pagamento.service';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {environment} from "../../../../../environments/environment";
+import {map} from "rxjs/operators";
+import {XsrfService} from "../../../../services/xsrf.service";
 
 @Component({
   selector: 'app-carrello',
@@ -28,10 +32,11 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   userEmail: FormGroup;
 
   loading = false;
-  urlBack;
+  urlBack: string;
+  private getUrlBack: string = '/getBackUrl';
 
   constructor(private router: Router, private renderer: Renderer2, private el: ElementRef, private route: ActivatedRoute,
-              private pagamentoService: PagamentoService) {
+              private pagamentoService: PagamentoService, private xsrfService: XsrfService, private http: HttpClient ) {
     this.breadcrumbList = [];
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', null, null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Pagamenti', null, null));
@@ -39,7 +44,6 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.rid = params.rid;
     });
-
   }
 
   ngAfterViewInit(): void {
@@ -58,6 +62,8 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')])
     });
+
+    this.recuperaUrlBack();
   }
 
   navigaInPresaInCaricoPagamento() {
@@ -84,6 +90,16 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   }
 
   tornaAlServizio() {
-    this.router.navigateByUrl(this.urlBack);
+    window.location.href = this.urlBack;
+  }
+
+  recuperaUrlBack(){
+    this.http.get(environment.bffBaseUrl + this.getUrlBack, {
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+        if(body.url)
+          this.urlBack = body.url;
+      })).subscribe();
   }
 }

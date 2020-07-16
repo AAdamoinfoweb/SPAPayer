@@ -24,7 +24,7 @@ export class GenericErrorComponent implements OnInit {
     })
       .pipe(map((body: any) => {
        if(body.url)
-         this.urlBack = body.url
+         this.urlBack = body.url;
       })).subscribe();
   }
 
