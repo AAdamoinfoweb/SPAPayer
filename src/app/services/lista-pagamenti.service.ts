@@ -39,7 +39,10 @@ export class ListaPagamentiService {
   public getCarrello(): Observable<Carrello> {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
-    return this.http.get(environment.bffBaseUrl + this.getCarrelloUrl, {headers: headers})
+    return this.http.get(environment.bffBaseUrl + this.getCarrelloUrl, {
+      withCredentials: true,
+      headers: headers
+    })
       .pipe(map((json: any) => {
         let listaPagamenti: Pagamento[] = [];
 
