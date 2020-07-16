@@ -29,7 +29,7 @@ export class GenericErrorComponent implements OnInit {
   }
 
   tornaAlServizio() {
-    this.route.navigateByUrl(this.urlBack);
+    window.location.href = this.urlBack;
   }
 
 }

@@ -29,6 +29,6 @@ export class NonautorizzatoComponent implements OnInit {
   }
 
   tornaAlServizio() {
-    this.route.navigateByUrl(this.urlBack);
+    window.location.href = this.urlBack;
   }
 }
