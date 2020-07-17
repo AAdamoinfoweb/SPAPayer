@@ -8,9 +8,6 @@ import {PrivacyComponent} from "./modules/main/components/privacy/privacy.compon
 import {NonautorizzatoComponent} from "./modules/nonautorizzato/nonautorizzato.component";
 import {WaitingComponent} from "./modules/main/components/waiting/waiting.component";
 import {GenericErrorComponent} from "./modules/generic-error/generic-error.component";
-import {RedirectPageComponent} from "./modules/redirect-page/redirect-page.component";
-import {PageSenderComponent} from "./modules/page-sender/page-sender.component";
-
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -26,9 +23,7 @@ const routes: Routes = [
   {path: 'carrello', component: CarrelloComponent},
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
   {path: 'waiting', component: WaitingComponent},
-  {path: 'privacy', component: PrivacyComponent},
-  {path: 'redirectpage', component: RedirectPageComponent},
-  {path: 'pagesender', component: PageSenderComponent}
+  {path: 'privacy', component: PrivacyComponent}
 ];
 
 @NgModule({

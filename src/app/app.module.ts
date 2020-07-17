@@ -16,8 +16,6 @@ import { NonautorizzatoComponent } from './modules/nonautorizzato/nonautorizzato
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { GenericErrorComponent } from './modules/generic-error/generic-error.component';
 import {UrlBackInterceptor} from "./services/urlBack.interceptor";
-import {RedirectPageComponent} from "./modules/redirect-page/redirect-page.component";
-import {PageSenderComponent} from "./modules/page-sender/page-sender.component";
 
 @NgModule({
   declarations: [
@@ -27,9 +25,7 @@ import {PageSenderComponent} from "./modules/page-sender/page-sender.component";
     LoginBarComponent,
     FooterDirective,
     NonautorizzatoComponent,
-    GenericErrorComponent,
-    RedirectPageComponent,
-    PageSenderComponent
+    GenericErrorComponent
   ],
   imports: [
     HttpClientModule,
