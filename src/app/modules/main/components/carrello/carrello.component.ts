@@ -33,7 +33,6 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   loading = false;
   urlBack: string;
-  private getUrlBack: string = '/getBackUrl';
 
   constructor(private router: Router, private renderer: Renderer2, private el: ElementRef, private route: ActivatedRoute,
               private pagamentoService: PagamentoService, private xsrfService: XsrfService, private http: HttpClient ) {
@@ -62,8 +61,6 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')])
     });
-
-    this.recuperaUrlBack();
   }
 
   navigaInPresaInCaricoPagamento() {
@@ -91,15 +88,5 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   tornaAlServizio() {
     window.location.href = this.urlBack;
-  }
-
-  recuperaUrlBack(){
-    this.http.get(environment.bffBaseUrl + this.getUrlBack, {
-      withCredentials: true
-    })
-      .pipe(map((body: any) => {
-        if(body.url)
-          this.urlBack = body.url;
-      })).subscribe();
   }
 }

@@ -12,10 +12,10 @@ export class PageSenderComponent implements OnInit {
 
   buffer = {
     ProtocolVersion: null,
-    TagOrario: "202007161733",
+    TagOrario: "202007171803",
     CodicePortale: "PROVA",
-    BufferDati: "NmU5NTE2NTktMGFlYy00MzEyLWJjYzItNjI3MDg2NmE4NDJl",
-    Hash: "15d2631e372329a9dd0606f1fd59fb05"
+    BufferDati: "NDk4ZjZmNDUtZjlhYi00ZDBhLTk0YjgtOTI3MjhjYzhkZTNk",
+    Hash: "e82e2c600781e3cd21e40a2044bb1317"
   }
 
   constructor() {
@@ -25,6 +25,6 @@ export class PageSenderComponent implements OnInit {
   }
 
   getAction() {
-    return environment.bffBaseUrl + '/redirectCarrello'
+    return environment.bffBaseUrl + '/cart/extCart.do'
   }
 }

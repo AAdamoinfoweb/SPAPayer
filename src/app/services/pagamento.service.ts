@@ -16,7 +16,7 @@ export class PagamentoService {
   verificaEsitoPagamentoUrl = '/verificaEsitoPagamento';
   verificaQuietanzaUrl = '/verificaQuietanza';
   quietanzaUrl = '/quietanza'
-  redirectCarrelloUrl = '/redirectCarrello'
+  redirectCarrelloUrl = '/cart/extCart.do'
 
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }

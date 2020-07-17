@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Pagamento} from "../modules/main/model/Pagamento";
-import {catchError, map} from "rxjs/operators";
+import {catchError, flatMap, map} from "rxjs/operators";
 import {XsrfService} from "./xsrf.service";
 import {Carrello} from "../modules/main/model/Carrello";
 import {environment} from "../../environments/environment";
@@ -16,23 +16,37 @@ export class ListaPagamentiService {
   verificaRidUrl = "/verificaRid";
   getCarrelloUrl = "/getCarrello";
 
+  getUrlBack: string = '/getBackUrl';
+
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }
 
-  public verificaRid(rid: string): Observable<HttpResponse<any>> {
+  public verificaRid(rid: string): Observable<string> {
     return this.http.post(environment.bffBaseUrl + this.verificaRidUrl, rid, {
       withCredentials: true,
       observe: "response"
     })
-      .pipe(map((response: HttpResponse<any>) => {
+      .pipe(flatMap((response: HttpResponse<any>) => {
         const headers: HttpHeaders = response.headers;
         this.xsrfService.xsrfToken = headers.get('XSRF-TOKEN');
-        return response;
+        return this.recuperaUrlBack();
       }), catchError((err, caught) => {
         if (err.status == 401) {
           return of(null);
         } else
           return caught;
+      }));
+  }
+
+
+  recuperaUrlBack(): Observable<string>{
+    return this.http.get(environment.bffBaseUrl + this.getUrlBack, {
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+        if(body.url)
+          return body.url;
+        else return null;
       }));
   }
 
