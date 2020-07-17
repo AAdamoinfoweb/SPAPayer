@@ -114,12 +114,6 @@
     <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">Disposizioni di
       pagamento: {{numeroPagamenti}}
     </div>
-  </div>
-  <div class="row pl-4 row justify-content-between align-items-center h-100">
-    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
-      <button *ngIf="urlBack" (click)="tornaAlServizio()" type="button"
-              class="btn btn-secondary">Torna al servizio</button>
-    </div>
     <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
       <div class="row align-items-center">
         <div
@@ -127,6 +121,17 @@
           Totale da
           pagare: {{totalePagamento|currency:"EUR":"€ "
           | replace:'.':'|' | replace:',':'.'| replace:'|':','}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row pl-4 row justify-content-between align-items-center h-100">
+    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
+      <button *ngIf="urlBack" (click)="tornaAlServizio()" type="button"
+              class="btn btn-secondary">Torna al servizio
+      </button>
+    </div>
+    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
+      <div class="row align-items-center">
         <div
           class="text-sm-left text-md-right text-lg-right col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle font-msg align-middle">
           <button [disabled]="emailForm.invalid" (click)="navigaInPresaInCaricoPagamento()" type="button"
