@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {XsrfService} from "../../services/xsrf.service";
 import {environment} from "../../../environments/environment";
 import {map} from "rxjs/operators";
+import {XsrfService} from "../../services/xsrf.service";
 
 @Component({
-  selector: 'app-nonautorizzato',
-  templateUrl: './nonautorizzato.component.html',
-  styleUrls: ['./nonautorizzato.component.scss']
+  selector: 'app-generic-error',
+  templateUrl: './generic-error.component.html',
+  styleUrls: ['./generic-error.component.scss']
 })
-export class NonautorizzatoComponent implements OnInit {
+export class GenericErrorComponent implements OnInit {
 
   urlBack: string;
   private getUrlBack: string = '/getBackUrl';
@@ -23,12 +23,13 @@ export class NonautorizzatoComponent implements OnInit {
       withCredentials: true
     })
       .pipe(map((body: any) => {
-        if(body.url)
-          this.urlBack = body.url
+       if(body.url)
+         this.urlBack = body.url;
       })).subscribe();
   }
 
   tornaAlServizio() {
     window.location.href = this.urlBack;
   }
+
 }

@@ -22,6 +22,7 @@
     <div id="collapse1" class="collapse show" role="tabpanel" aria-labelledby="heading1">
       <div class="collapse-body">
         <app-lista-pagamenti [rid]="rid"
+                             (urlBackEmitterChange)="urlBack=$event"
                              (onChangeTotalePagamento)="totalePagamento = $event"
                              (onChangeEmailPagamento)="email = $event"
                              (onChangeNumeroPagamenti)="numeroPagamenti = $event"></app-lista-pagamenti>
@@ -52,7 +53,8 @@
               selezionare il bottone Avanti in fondo alla pagina. Tenendo presente che
             </p>
             <ul class="mb-0">
-              <li>verrà chiesta la registrazione a pagoPA; tale registrazione è facoltativa e non necessaria a portare a termine
+              <li>verrà chiesta la registrazione a pagoPA; tale registrazione è facoltativa e non necessaria a portare a
+                termine
                 il pagamento
               </li>
               <li>al termine del pagamento è necessario cliccare il bottone "Chiudi" per ritornare al servizio;</li>
@@ -109,16 +111,37 @@
     </div>
   </div>
 
-  <div class="row pl-4 align-items-center h-100">
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 font-msg align-middle">Disposizioni di pagamento: {{numeroPagamenti}}</div>
-    <div class="text-sm-left text-md-right text-lg-right col-12 col-sm-12 col-md-4 col-lg-4 offset-lg-1 font-msg align-middle">Totale da
-      pagare: {{totalePagamento|currency:"EUR":"€ "
-        | replace:'.':'|' | replace:',':'.'| replace:'|':','}}</div>
-    <div class="text-sm-left text-md-right text-lg-right col-12 col-sm-12 col-md-2 col-lg-1 font-msg align-middle font-msg align-middle">
-      <button [disabled]="emailForm.invalid" (click)="navigaInPresaInCaricoPagamento()" type="button"
-              class="btn btn-outline-secondary">
-        Paga
+  <div class="row pl-4 row justify-content-between align-items-center h-100">
+    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">Disposizioni di
+      pagamento: {{numeroPagamenti}}
+    </div>
+    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
+      <div class="row align-items-center">
+        <div
+          class="text-sm-left text-md-right text-lg-right col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
+          Totale da
+          pagare: {{totalePagamento|currency:"EUR":"€ "
+          | replace:'.':'|' | replace:',':'.'| replace:'|':','}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row pl-4 row justify-content-between align-items-center h-100">
+    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
+      <button *ngIf="urlBack" (click)="tornaAlServizio()" type="button"
+              class="btn btn-secondary">Torna al servizio
       </button>
+    </div>
+    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
+      <div class="row align-items-center">
+        <div
+          class="text-sm-left text-md-right text-lg-right col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle font-msg align-middle">
+          <button [disabled]="emailForm.invalid" (click)="navigaInPresaInCaricoPagamento()" type="button"
+                  class="btn btn-outline-secondary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Paga
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <app-footer footer-directive></app-footer>

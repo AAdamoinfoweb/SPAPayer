@@ -12,7 +12,7 @@ export const environment = {
   renewJwtUrl: '/api/v1/renewToken',
   loginSpid: '/auth/loginLepida.htm',
   logoutSpid: '/',
-  bffBaseUrl: 'http://localhost:8090/payer'
+  bffBaseUrl: 'http://service.pp.192-168-43-56.nip.io/api'
 };
 
 /*

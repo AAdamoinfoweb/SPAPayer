@@ -6,7 +6,8 @@ import {CarrelloComponent} from "./modules/main/components/carrello/carrello.com
 import {PresaincaricopagamentoComponent} from "./modules/main/components/presaincaricopagamento/presaincaricopagamento.component";
 import {PrivacyComponent} from "./modules/main/components/privacy/privacy.component";
 import {NonautorizzatoComponent} from "./modules/nonautorizzato/nonautorizzato.component";
-
+import {WaitingComponent} from "./modules/main/components/waiting/waiting.component";
+import {GenericErrorComponent} from "./modules/generic-error/generic-error.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -17,9 +18,11 @@ const routes: Routes = [
       AuthguardService
     ]
   },
+  {path: 'erroregenerico', component: GenericErrorComponent},
   {path: 'nonautorizzato', component: NonautorizzatoComponent},
   {path: 'carrello', component: CarrelloComponent},
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
+  {path: 'waiting', component: WaitingComponent},
   {path: 'privacy', component: PrivacyComponent}
 ];
 
