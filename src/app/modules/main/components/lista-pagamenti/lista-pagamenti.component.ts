@@ -52,15 +52,18 @@ export class ListaPagamentiComponent implements OnInit {
   @Output()
   onChangeEmailPagamento: EventEmitter<string> = new EventEmitter<string>();
 
+  @Output()
+  urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
+
   constructor(private listaPagamentiService: ListaPagamentiService, private route: Router) {
   }
 
 
   ngOnInit(): void {
     let observable: Observable<Pagamento[]> = this.listaPagamentiService.verificaRid(this.rid)
-      .pipe(flatMap((ret) => {
-        if(ret == null)
-          return of(null);
+      .pipe(flatMap((urlBack) => {
+        if(urlBack)
+          this.urlBackEmitterChange.emit(urlBack);
         return this.listaPagamentiService.getCarrello()
           .pipe(map((value: Carrello) => {
             this.listaPagamenti = value.dettaglio;

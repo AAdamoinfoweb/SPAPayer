@@ -14,6 +14,8 @@ import {LoginBarComponent} from './components/login-bar/login-bar.component';
 import {FooterDirective} from "./components/footer/FooterDirective";
 import { NonautorizzatoComponent } from './modules/nonautorizzato/nonautorizzato.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { GenericErrorComponent } from './modules/generic-error/generic-error.component';
+import {UrlBackInterceptor} from "./services/urlBack.interceptor";
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     HeaderComponent,
     LoginBarComponent,
     FooterDirective,
-    NonautorizzatoComponent
+    NonautorizzatoComponent,
+    GenericErrorComponent
   ],
   imports: [
     HttpClientModule,
@@ -34,7 +37,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
-    {provide: ErrorHandler, useClass: ErrorHandlerGenerico}
+    {provide: ErrorHandler, useClass: ErrorHandlerGenerico},
+    { provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true }
   ],
   exports: [
     FooterDirective
