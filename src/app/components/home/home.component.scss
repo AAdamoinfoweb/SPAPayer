@@ -7,3 +7,19 @@
   height: auto;
   width: auto;
 }
+
+#home {
+  width: 34%;
+  margin: auto;
+}
+
+@media screen and (max-width: 992px) {
+  #home {
+    width: 90%;
+    margin: auto;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+}
