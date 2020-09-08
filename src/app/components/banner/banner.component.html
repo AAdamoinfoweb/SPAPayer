@@ -1,1 +1,10 @@
-<p>banner works!</p>
+<div *ngIf="this.banners">
+<div *ngFor="let banner of this.banners">
+  <div class="alert alert-warning alert-dismissible fade show" role="alert" >
+    <strong>{{banner.titolo}}</strong> {{banner.testo}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+</div>
