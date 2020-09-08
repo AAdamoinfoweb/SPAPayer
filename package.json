@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxyconf.json --host 0.0.0.0 --port 80 --disable-host-check",
+    "start-sviluppolocal": "ng serve --proxy-config proxyconf.json --host 0.0.0.0 --port 3000 --disable-host-check",
     "start-prod": "node server.js",
     "start-http-server": "http-server -p 3138 httpserver-fakelogin",
     "build": "ng build && npm run after-build",

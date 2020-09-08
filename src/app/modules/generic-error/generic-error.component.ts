@@ -23,7 +23,7 @@ export class GenericErrorComponent implements OnInit {
       withCredentials: true
     })
       .pipe(map((body: any) => {
-       if(body.url)
+       if(body && body.url)
          this.urlBack = body.url;
       })).subscribe();
   }

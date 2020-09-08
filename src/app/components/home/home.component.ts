@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    location.replace(environment.loginSpid);
+    // location.replace(environment.loginSpid);
 
   }
 
