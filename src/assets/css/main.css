@@ -4642,7 +4642,6 @@ img {
 .wrapper {
   position: relative;
   top: 0;
-  height: 100vh
 }
 
 .wrapper.wrapper-full-page {
