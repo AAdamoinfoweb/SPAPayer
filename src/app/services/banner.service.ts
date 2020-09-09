@@ -4,7 +4,8 @@ import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
 import {Banner} from '../modules/main/model/Banner';
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable, Output} from "@angular/core";
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +13,29 @@ import {Injectable} from "@angular/core";
 export class BannerService {
 
   bannerUrl = '/banner';
+  timestamp: string;
+  attivo: number;
+  banners: Banner[] = null;
+
+  bannerEvent: EventEmitter<Banner[]> = new EventEmitter<Banner[]>();
+
+
 
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
+    this.timestamp = moment().format('YYYY-MM-DD[T]hh:mm:ss');
+    this.attivo = 1;
   }
 
   letturaBanner(timestamp, attivo): Observable<Banner[]> {
     return this.http.get(environment.bffBaseUrl + this.bannerUrl, {
       withCredentials: true,
       params: {
-        timestamp: timestamp,
-        attivo: attivo}
+        timestamp,
+        attivo}
     })
       .pipe(map((body: any) => {
-          return body;
+        this.banners = body;
+        return body;
       }));
   }
 

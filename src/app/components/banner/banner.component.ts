@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {Observable} from "rxjs";
-import {Pagamento} from "../../modules/main/model/Pagamento";
-import {flatMap, map} from "rxjs/operators";
-import {Carrello} from "../../modules/main/model/Carrello";
-import {BannerService} from "../../services/banner.service";
-import {Banner} from "../../modules/main/model/Banner";
+import {Component, OnInit} from '@angular/core';
+import {BannerService} from '../../services/banner.service';
+import {Banner} from '../../modules/main/model/Banner';
+import {livelloBanner} from '../../enums/livelloBanner.enum';
 
 @Component({
   selector: 'app-banner',
@@ -15,17 +12,17 @@ export class BannerComponent implements OnInit {
 
   constructor(private bannerService: BannerService) { }
 
-  timestamp = '';
-  attivo = '';
-  banners: Banner[] = null;
+  timestamp;
+  attivo;
+  banners: Banner[];
+  livello;
+  classe: string[] = ['alert alert-dismissible fade show'];
 
   ngOnInit(): void {
-    const observable: Observable<Banner[]> = this.bannerService.letturaBanner(this.timestamp, this.attivo);
-
-    observable.subscribe((ret) => {
-     this.banners = ret;
+    this.bannerService.bannerEvent.subscribe((banners: Banner[]) => {
+      this.banners = banners;
+      this.livello = livelloBanner.INFO.livello;
+      this.classe.push(livelloBanner.INFO.classe);
     });
-
   }
-
 }
