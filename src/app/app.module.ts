@@ -17,6 +17,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { GenericErrorComponent } from './modules/generic-error/generic-error.component';
 import {UrlBackInterceptor} from "./services/urlBack.interceptor";
 import { BannerComponent } from './components/banner/banner.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { BannerComponent } from './components/banner/banner.component';
     FooterDirective,
     NonautorizzatoComponent,
     GenericErrorComponent,
-    BannerComponent
+    BannerComponent,
+    HeaderComponent
   ],
   imports: [
     HttpClientModule,
