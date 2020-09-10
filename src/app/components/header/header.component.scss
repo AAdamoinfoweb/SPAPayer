@@ -5,3 +5,9 @@
 :host ::ng-deep .navbar-light .navbar-toggler {
   border: none;
 }
+
+@media screen and (max-width: 768px) {
+  .font-menu-sidebar {
+    display: none;
+  }
+}
