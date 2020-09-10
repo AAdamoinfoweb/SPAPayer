@@ -2,11 +2,11 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {environment} from '../../../environments/environment';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class SidebarComponent implements OnInit {
 
   versionApplicativo: string;
   nomeUtente = '-----';

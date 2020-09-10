@@ -8,7 +8,7 @@ import {HomeComponent} from './components/home/home.component';
 import {ErrorHandlerGenerico} from './services/errorHandlerGenerico';
 import {JwtInterceptorService} from './services/jwt-interceptor.service';
 import {BackendInterceptorService} from './services/backend-interceptor';
-import {HeaderComponent} from './components/header/header.component';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {MainModule} from './modules/main/main.module';
 import {LoginBarComponent} from './components/login-bar/login-bar.component';
 import {FooterDirective} from "./components/footer/FooterDirective";
@@ -22,7 +22,7 @@ import { BannerComponent } from './components/banner/banner.component';
   declarations: [
     AppComponent,
     HomeComponent,
-    HeaderComponent,
+    SidebarComponent,
     LoginBarComponent,
     FooterDirective,
     NonautorizzatoComponent,
