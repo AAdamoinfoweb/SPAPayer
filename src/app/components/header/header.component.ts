@@ -21,4 +21,9 @@ export class HeaderComponent implements OnInit {
   checkScroll() {
     this.isSticky = window.pageYOffset >= this.maxHeightOffset;
   }
+
+  ritornaAHomePage() {
+    window.open("/", "_blank");
+  }
+
 }
