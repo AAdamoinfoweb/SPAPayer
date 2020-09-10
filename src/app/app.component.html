@@ -2,27 +2,7 @@
   <app-login-bar></app-login-bar>
   <app-sidebar></app-sidebar>
   <div class="main-panel font-color">
-    <nav class="navbar sticky-top navbar-line navbar-light bg-light bg-force">
-      <div class="container-fluid" style="padding-right: 0px">
-        <div class="row align-items-center w-100 navbar-wrapper">
-          <div class="col-1 text-center pl-4 navbar-toggle">
-            <button type="button" class="navbar-toggler">
-              <span class="navbar-toggler-bar bar1"></span>
-              <span class="navbar-toggler-bar bar2"></span>
-              <span class="navbar-toggler-bar bar3"></span>
-              <span class="font-menu-sidebar">MENU</span>
-            </button>
-          </div>
-          <div [ngClass]="{'offset-2': !isSticky, 'offset-0': isSticky}"
-               class="offset-sm-0 offset-md-0 offset-lg-0 col-7 pl-4 pl-sm-0 pl-md-0 pl-lg-0 col-sm-8 col-md-8 col-lg-7 p-lg-0 p-md-0 p-sm-0 navbar-brand">
-            <img [ngClass]="{'h-60px': !isSticky, 'h-36px': isSticky}" alt="payer" src="assets/img/payer.png">
-          </div>
-          <div class="offset-1 col-2 pl-0 offset-lg-2 text-right">
-            <button *ngIf="isSticky" [disabled]="true" type="button" [ngClass]="{'btn-sm': isSticky}" class="btn btn-outline-secondary">Accedi</button>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <app-header></app-header>
     <div class="content">
       <app-banner></app-banner>
       <router-outlet></router-outlet>

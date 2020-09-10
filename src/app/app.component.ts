@@ -7,20 +7,10 @@ import {StickyService} from "./components/login-bar/StickyService";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  private maxHeightOffset: number;
-
-  constructor(private stickyService: StickyService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.stickyService.stickyEvent.subscribe((value: number) => this.maxHeightOffset = value);
   }
 
   title = '';
-
-  isSticky: boolean = false;
-
-  @HostListener('window:scroll', ['$event'])
-  checkScroll() {
-    this.isSticky = window.pageYOffset >= this.maxHeightOffset;
-  }
 }
