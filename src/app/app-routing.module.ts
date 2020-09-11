@@ -10,7 +10,8 @@ import {WaitingComponent} from "./modules/main/components/waiting/waiting.compon
 import {GenericErrorComponent} from "./modules/generic-error/generic-error.component";
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  { path: '',   redirectTo: '/home', pathMatch: 'full' },
+  {path: 'home', component: HomeComponent},
   {
     path: 'riservata',
     loadChildren: () => import('src/app/modules/main/main.module').then(m => m.MainModule),
