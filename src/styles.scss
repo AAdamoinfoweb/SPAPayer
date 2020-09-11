@@ -39,3 +39,18 @@ button, input, optgroup, select, textarea {
   color: #004987;
   font-size: 22px;
 }
+
+.tooltip .arrow {
+  display: none;
+}
+
+.tooltip-inner {
+  color: #FFFFFF;
+  background-color: #77777B;
+  border-radius: .25rem;
+  text-align: center;
+}
+
+it-tooltip-window {
+  background-color: transparent !important;
+}
