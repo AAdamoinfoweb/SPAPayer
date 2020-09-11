@@ -22,3 +22,17 @@
 :host ::ng-deep .it-footer-main .it-brand-wrapper {
   padding: 0;
 }
+
+a {
+  color: white;
+}
+
+.footerlink {
+  text-align: center;
+}
+
+@media screen and (max-width: 576px) {
+  .footerlink {
+    text-align: initial;
+  }
+}
