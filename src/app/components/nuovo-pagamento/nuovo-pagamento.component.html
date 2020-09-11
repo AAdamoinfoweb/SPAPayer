@@ -1,1 +1,83 @@
-<p>nuovo-pagamento works!</p>
+<div>
+  <p>Home / Pagamento / <strong>Nuovo pagamento</strong></p>
+  <p class="title page-title">Nuovo pagamento</p>
+  <div class="page-section">
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <div class="row">
+          <label for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
+        </div>
+        <div class="row">
+          <select class="form-elem-big"id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato">
+            <option *ngFor="let item of listaLivelliTerritoriali" [value]="item.value">{{item.label}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row">
+          <label for="selectEnte" class="title">Ente</label>
+        </div>
+        <div class="row">
+          <select class="form-elem-big"id="selectEnte" [(ngModel)]="enteSelezionato">
+            <option *ngFor="let item of listaEnti" [value]="item.value">{{item.label}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row">
+          <label for="selectServizio" class="title">Servizio</label>
+        </div>
+        <div class="row">
+          <select class="form-elem-big"id="selectServizio" [(ngModel)]="servizioSelezionato">
+            <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="offset-md-10">
+        <button id="bottoneCompilazione" class="btn">
+          Compila
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <div class="row">
+          <label for="inputEnteRicevente" class="title">A favore di</label>
+        </div>
+        <div class="row">
+          <input class="form-elem-big" id="inputEnteRicevente" [value]="enteRicevente" disabled/>
+        </div>
+      </div>
+
+      <div class="offset-md-4 col-md-4">
+        <div class="row">
+          <label for="inputSommaDaRicevere" class="title">A favore di</label>
+        </div>
+        <div class="row">
+          <input class="form-elem-big" id="inputSommaDaRicevere" [value]="sommaDaRicevere" disabled/>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  TEST BINDING
+  <br/>
+  livello: {{livelloTerritorialeSelezionato}}
+  <br/>
+  ente: {{enteSelezionato}}
+  <br/>
+  servizio: {{servizioSelezionato}}
+
+</div>

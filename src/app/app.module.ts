@@ -20,6 +20,7 @@ import { BannerComponent } from './components/banner/banner.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NuovoPagamentoComponent } from './components/nuovo-pagamento/nuovo-pagamento.component';
 import { IMieiPagamentiComponent } from './components/i-miei-pagamenti/i-miei-pagamenti.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { IMieiPagamentiComponent } from './components/i-miei-pagamenti/i-miei-pa
     BrowserModule,
     AppRoutingModule,
     MainModule,
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
