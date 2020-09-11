@@ -18,6 +18,7 @@ import { GenericErrorComponent } from './modules/generic-error/generic-error.com
 import {UrlBackInterceptor} from "./services/urlBack.interceptor";
 import { BannerComponent } from './components/banner/banner.component';
 import { HeaderComponent } from './components/header/header.component';
+import { NuovoPagamentoComponent } from './components/nuovo-pagamento/nuovo-pagamento.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { HeaderComponent } from './components/header/header.component';
     NonautorizzatoComponent,
     GenericErrorComponent,
     BannerComponent,
-    HeaderComponent
+    HeaderComponent,
+    NuovoPagamentoComponent
   ],
   imports: [
     HttpClientModule,
