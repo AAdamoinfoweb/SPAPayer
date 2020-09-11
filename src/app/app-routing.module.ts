@@ -8,6 +8,7 @@ import {PrivacyComponent} from "./modules/main/components/privacy/privacy.compon
 import {NonautorizzatoComponent} from "./modules/nonautorizzato/nonautorizzato.component";
 import {WaitingComponent} from "./modules/main/components/waiting/waiting.component";
 import {GenericErrorComponent} from "./modules/generic-error/generic-error.component";
+import {NuovoPagamentoComponent} from './components/nuovo-pagamento/nuovo-pagamento.component';
 
 const routes: Routes = [
   { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -24,7 +25,8 @@ const routes: Routes = [
   {path: 'carrello', component: CarrelloComponent},
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
   {path: 'waiting', component: WaitingComponent},
-  {path: 'privacy', component: PrivacyComponent}
+  {path: 'privacy', component: PrivacyComponent},
+  {path: 'nuovopagamento', component: NuovoPagamentoComponent}
 ];
 
 @NgModule({
