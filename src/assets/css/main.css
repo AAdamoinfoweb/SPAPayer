@@ -5858,9 +5858,9 @@ font-weight: bold!important;
     display: inline-block !important;
   }
 
-  .navbar {
+ /* .navbar {
     padding: 0
-  }
+  }*/
 
   .navbar.navbar-absolute {
     padding-top: 0
