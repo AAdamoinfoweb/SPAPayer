@@ -19,6 +19,7 @@ import {UrlBackInterceptor} from "./services/urlBack.interceptor";
 import { BannerComponent } from './components/banner/banner.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NuovoPagamentoComponent } from './components/nuovo-pagamento/nuovo-pagamento.component';
+import { IMieiPagamentiComponent } from './components/i-miei-pagamenti/i-miei-pagamenti.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NuovoPagamentoComponent } from './components/nuovo-pagamento/nuovo-paga
     GenericErrorComponent,
     BannerComponent,
     HeaderComponent,
-    NuovoPagamentoComponent
+    NuovoPagamentoComponent,
+    IMieiPagamentiComponent
   ],
   imports: [
     HttpClientModule,
