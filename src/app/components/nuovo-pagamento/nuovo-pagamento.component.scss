@@ -1,7 +1,19 @@
+#nuovoPagamento {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
 .page-section {
   margin: 3%;
 }
 
 .form-elem-big {
   width: 80%;
+}
+
+@media screen and (max-width: 576px) {
+  #nuovoPagamento {
+    margin-left: 2%;
+    margin-right: 2%;
+  }
 }
