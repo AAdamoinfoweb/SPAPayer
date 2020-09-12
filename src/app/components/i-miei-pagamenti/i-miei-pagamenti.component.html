@@ -9,11 +9,11 @@
   </h3>
 
   <div class="row subsection-title">
-    <div class="col-11 pt-4">
+    <div class="col-xs-5 pt-4">
       <p class="title page-subtitle" (click)="showHideSubsection()">Filtri</p>
     </div>
-    <div class="col-1 mb-3 pl-5">
-      <svg class="bg-light icon icon-primary" (click)="showHideSubsection()">
+    <div class="col-xs-4 mb-3">
+      <svg class="bg-light icon" [style.fill]="'#004987'" (click)="showHideSubsection()">
         <use [attr.xlink:href]="displayArrow()" xlink:href=""></use>
       </svg>
     </div>
@@ -21,7 +21,7 @@
   <div *ngIf="isVisible"[style.margin]="'3%'">
     <!-- Livello Territoriale, Ente, Servizio -->
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-4 pb-2">
         <div class="row">
           <label for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
         </div>
@@ -31,7 +31,7 @@
           </select>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 pb-2">
         <div class="row">
           <label for="selectEnte" class="title">Ente</label>
         </div>
@@ -54,16 +54,18 @@
     </div>
     <!-- Documento, Data Inizio, Data Fine, Testo Libero -->
     <div class="row py-3">
-      <div class="col-md-4">
+      <div class="col-md-4 pb-2">
         <div class="row">
           <label for="inputDocumento" class="title">Documento</label>
         </div>
         <div class="row">
           <input type="text" class="input-text pt-0" id="inputDocumento" aria-describedby="inputDocumentoHelpDescription"/>
+        </div>
+        <div class="row">
           <small id="inputDocumentoHelpDescription" class="form-text text-muted">inserisci testo</small>
         </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-2 pb-2">
         <div class="row">
           <label for="dataDa" class="title">Da</label>
         </div>
@@ -73,10 +75,12 @@
           </svg>
           <input type="text" class="input-text pt-0" id="dataDa" aria-describedby="inputDataDaHelpDescription"
                  [style.padding-left]="'35px'" autocomplete="off" ngbDatepicker #da="ngbDatepicker"/>
+        </div>
+        <div class="row">
           <small id="inputDataDaHelpDescription" class="form-text text-muted">inserisci data</small>
         </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-2 pb-2">
         <div class="row">
           <label for="dataA" class="title">A</label>
         </div>
@@ -86,6 +90,8 @@
           </svg>
           <input type="text" class="input-text pt-0" id="dataA" aria-describedby="inputDataAHelpDescription"
                  [style.padding-left]="'35px'" autocomplete="off" ngbDatepicker #a="ngbDatepicker"/>
+        </div>
+        <div class="row">
           <small id="inputDataAHelpDescription" class="form-text text-muted">inserisci data</small>
         </div>
       </div>
@@ -95,6 +101,8 @@
         </div>
         <div class="row">
           <input type="text" class="input-text pt-0" id="inputTestoLibero" aria-describedby="inputTestoLiberoHelpDescription"/>
+        </div>
+        <div class="row">
           <small id="inputTestoLiberoHelpDescription" class="form-text text-muted">inserisci testo</small>
         </div>
       </div>
