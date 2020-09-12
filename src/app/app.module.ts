@@ -21,6 +21,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { NuovoPagamentoComponent } from './components/nuovo-pagamento/nuovo-pagamento.component';
 import { IMieiPagamentiComponent } from './components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {FormsModule} from '@angular/forms';
+import {DesignAngularKitModule} from 'design-angular-kit';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {FormsModule} from '@angular/forms';
     AppRoutingModule,
     MainModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    DesignAngularKitModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
