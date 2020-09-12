@@ -67,38 +67,26 @@
         <div class="row">
           <label for="dataDa" class="title">Da</label>
         </div>
-        <div class="row">
-          <div class="input-group">
-            <div (click)="d.toggle()" [style.border-bottom]="'1px solid #5c6f82'">
-              <svg class="bg-light icon">
-                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
-              </svg>
-            </div>
-            <div class="input-group-append">
-              <input type="text" class="input-text pt-0" id="dataDa" aria-describedby="inputDataDaHelpDescription"
-                     ngbDatepicker #d="ngbDatepicker" autocomplete="off"/>
-            </div>
-            <small id="inputDataDaHelpDescription" class="form-text text-muted">inserisci data</small>
-          </div>
+        <div class="row calendar">
+          <svg class="bg-light icon img-datepicker" [style.cursor]="'pointer'" (click)="da.toggle()">
+            <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+          </svg>
+          <input type="text" class="input-text pt-0" id="dataDa" aria-describedby="inputDataDaHelpDescription"
+                 [style.padding-left]="'35px'" autocomplete="off" ngbDatepicker #da="ngbDatepicker"/>
+          <small id="inputDataDaHelpDescription" class="form-text text-muted">inserisci data</small>
         </div>
       </div>
       <div class="col-md-2">
         <div class="row">
           <label for="dataA" class="title">A</label>
         </div>
-        <div class="row">
-          <div class="input-group">
-            <div (click)="d.toggle()" [style.border-bottom]="'1px solid #5c6f82'">
-              <svg class="bg-light icon">
-                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
-              </svg>
-            </div>
-            <div class="input-group-append">
-              <input type="text" class="input-text pt-0" id="dataA" aria-describedby="inputDataAHelpDescription"
-                     ngbDatepicker #d="ngbDatepicker" autocomplete="off"/>
-            </div>
-            <small id="inputDataAHelpDescription" class="form-text text-muted">inserisci data</small>
-          </div>
+        <div class="row calendar">
+          <svg class="bg-light icon img-datepicker" [style.cursor]="'pointer'" (click)="a.toggle()">
+            <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+          </svg>
+          <input type="text" class="input-text pt-0" id="dataA" aria-describedby="inputDataAHelpDescription"
+                 [style.padding-left]="'35px'" autocomplete="off" ngbDatepicker #a="ngbDatepicker"/>
+          <small id="inputDataAHelpDescription" class="form-text text-muted">inserisci data</small>
         </div>
       </div>
       <div class="col-md-4">

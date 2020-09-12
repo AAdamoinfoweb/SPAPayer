@@ -12,3 +12,22 @@
   height: auto;
   width: 85%;
 }
+
+.calendar {
+  position: relative;
+}
+
+.img-datepicker {
+  position: absolute;
+  height: 30px;
+  bottom: 25px;
+  fill: #77777B;
+}
+
+::ng-deep ngb-datepicker.dropdown-menu.show:before {
+  content: none !important;
+}
+
+::ng-deep .ngb-dp-arrow-btn {
+  background-color: transparent !important;
+}
