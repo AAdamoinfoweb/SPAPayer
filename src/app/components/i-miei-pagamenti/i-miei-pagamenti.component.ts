@@ -14,7 +14,8 @@ export class IMieiPagamentiComponent implements OnInit {
   tooltipVisualizeDownloadPagamento = 'Visualizza/Scarica gli attestati del pagamento';
   tooltipAddToCarrello = 'Aggiungi al carrello';
 
-  isVisible: boolean;
+  isSubsectionFiltriVisible: boolean;
+  isSubsectionListaPagamentiVisible: boolean;
 
   listaLivelliTerritoriali: Array<any> = [
     {value: 'mock livello1 val', label: 'mock livello1 label'},
@@ -38,15 +39,23 @@ export class IMieiPagamentiComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.isVisible = true;
+    this.isSubsectionFiltriVisible = true;
+    this.isSubsectionListaPagamentiVisible = true;
   }
 
-  showHideSubsection() {
-    this.isVisible = !this.isVisible;
+  showHideSubsection(nameSubsection) {
+    switch (nameSubsection) {
+      case 'filtri':
+        this.isSubsectionFiltriVisible = !this.isSubsectionFiltriVisible;
+        break;
+      case 'listaPagamenti':
+        this.isSubsectionListaPagamentiVisible = !this.isSubsectionListaPagamentiVisible;
+        break;
+    }
   }
 
-  displayArrow() {
-    return this.isVisible ? 'assets/img/sprite.svg#it-collapse' : 'assets/img/sprite.svg#it-expand';
+  displayArrow(flagSubsectionVisible) {
+    return !flagSubsectionVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse';
   }
 
 }

@@ -8,17 +8,21 @@
     </a>
   </h3>
 
+  <!-- Sottosezione Filtri -->
   <div class="row subsection-title">
     <div class="col-xs-5 pt-4">
-      <p class="title page-subtitle" (click)="showHideSubsection()">Filtri</p>
+      <p class="title page-subtitle">Filtri</p>
     </div>
     <div class="col-xs-4 mb-3">
-      <svg class="bg-light icon" [style.fill]="'#004987'" (click)="showHideSubsection()">
-        <use [attr.xlink:href]="displayArrow()" xlink:href=""></use>
+      <svg class="bg-light icon" [style.fill]="'#004987'"
+           data-toggle="collapse" data-target="#contenutoSezioneFiltri"
+           aria-expanded="true" aria-controls="contenutoSezioneFiltri"
+           (click)="showHideSubsection('filtri')">
+        <use [attr.xlink:href]="displayArrow(isSubsectionFiltriVisible)" xlink:href=""></use>
       </svg>
     </div>
   </div>
-  <div *ngIf="isVisible">
+  <div id="contenutoSezioneFiltri" class="collapse show">
     <!-- Livello Territoriale, Ente, Servizio -->
     <div class="row" [style.margin]="'3%'">
       <div class="col-md-4 pb-2">
@@ -116,5 +120,23 @@
         <button id="bottoneCerca" class="btn">Cerca</button>
       </div>
     </div>
+  </div>
+
+  <!-- Sottosezione Lista Pagamenti -->
+  <div class="row subsection-title">
+    <div class="col-xs-5 pt-4">
+      <p class="title page-subtitle">Lista Pagamenti</p>
+    </div>
+    <div class="col-xs-4 mb-3">
+      <svg class="bg-light icon" [style.fill]="'#004987'"
+           data-toggle="collapse" data-target="#contenutoSezioneListaPagamenti"
+           aria-expanded="true" aria-controls="contenutoSezioneListaPagamenti"
+           (click)="showHideSubsection('listaPagamenti')">
+        <use [attr.xlink:href]="displayArrow(isSubsectionListaPagamentiVisible)" xlink:href=""></use>
+      </svg>
+    </div>
+  </div>
+  <div id="contenutoSezioneListaPagamenti" class="collapse show">
+    <p>Contenuto Sezione Lista Pagamenti</p>
   </div>
 </div>
