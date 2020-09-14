@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ritornaAHomePage() {
-    window.open("/", "_blank");
+    window.open("/", "_self");
   }
 
 }
