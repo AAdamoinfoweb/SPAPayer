@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
+import {PrezzoService} from './prezzoService';
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -22,12 +23,14 @@ export class NuovoPagamentoComponent implements OnInit {
   servizioSelezionato: string;
 
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService) { }
+  constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService) { }
 
   ngOnInit(): void {
     this.recuperaFiltroLivelloTerritoriale();
     this.recuperaFiltroEnti();
     this.recuperaFiltroServizi();
+
+    this.mockAggiornaPrezzoCarrello();
   }
 
   recuperaFiltroLivelloTerritoriale(): void {
@@ -63,4 +66,12 @@ export class NuovoPagamentoComponent implements OnInit {
     })).subscribe();
   }
 
+  mockAggiornaPrezzoCarrello(): void {
+    this.sommaDaRicevere = 999;
+    this.aggiornaPrezzoCarrello();
+  }
+
+  aggiornaPrezzoCarrello(): void {
+    this.prezzoService.prezzoEvent.emit(this.sommaDaRicevere);
+  }
 }
