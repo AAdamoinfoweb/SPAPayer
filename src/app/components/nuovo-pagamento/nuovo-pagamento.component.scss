@@ -11,6 +11,16 @@
   width: 80%;
 }
 
+.price-field {
+  position: absolute;
+  text-align: right;
+}
+
+.price-unit {
+  padding: 3px;
+}
+
+
 @media screen and (max-width: 576px) {
   #nuovoPagamento {
     margin-left: 2%;
