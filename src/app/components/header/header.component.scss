@@ -6,6 +6,14 @@
   border: none;
 }
 
+#cart-background {
+  position: absolute;
+  bottom: -30px;
+  right: 10vw;
+  background-color: #EC6C25;
+  padding: 12px;
+}
+
 @media screen and (max-width: 768px) {
   .font-menu-sidebar {
     display: none;
