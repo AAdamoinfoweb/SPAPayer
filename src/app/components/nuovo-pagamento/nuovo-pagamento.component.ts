@@ -25,13 +25,13 @@ export class NuovoPagamentoComponent implements OnInit {
   constructor(private nuovoPagamentoService: NuovoPagamentoService) { }
 
   ngOnInit(): void {
-    this.recuperaFiltroLivelloTerrotoriale();
-    this.recuperaFiltroEnte();
+    this.recuperaFiltroLivelloTerritoriale();
+    this.recuperaFiltroEnti();
     this.recuperaFiltroServizi();
   }
 
-  recuperaFiltroLivelloTerrotoriale(): void {
-    this.nuovoPagamentoService.recuperaFiltroLivelloTerrotoriale().pipe(map(livelliTerritoriali => {
+  recuperaFiltroLivelloTerritoriale(): void {
+    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
       livelliTerritoriali.forEach(livello => {
         this.listaLivelliTerritoriali.push({
           value: livello.id,
@@ -41,8 +41,8 @@ export class NuovoPagamentoComponent implements OnInit {
     })).subscribe();
   }
 
-  recuperaFiltroEnte(): void {
-    this.nuovoPagamentoService.recuperaFiltroEnte().pipe(map(enti => {
+  recuperaFiltroEnti(): void {
+    this.nuovoPagamentoService.recuperaFiltroEnti().pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
           value: ente.id,

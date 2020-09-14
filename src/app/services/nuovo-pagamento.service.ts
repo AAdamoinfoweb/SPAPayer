@@ -12,23 +12,23 @@ import {Servizio} from '../modules/main/model/Servizio';
 })
 export class NuovoPagamentoService {
 
-  livelloTerritorialeUrl = '/filtroLivelloTerritoriale';
-  enteUrl = '/filtroEnti';
+  filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
+  filtroEntiUrl = '/filtroEnti';
   filtroServiziUrl = '/filtroServizi';
 
 
   constructor(private http: HttpClient) {
   }
 
-  recuperaFiltroLivelloTerrotoriale(): Observable<LivelloTerritoriale[]> {
-    return this.http.get(environment.bffBaseUrl + this.livelloTerritorialeUrl)
+  recuperaFiltroLivelloTerritoriale(): Observable<LivelloTerritoriale[]> {
+    return this.http.get(environment.bffBaseUrl + this.filtroLivelloTerritorialeUrl)
       .pipe(map((body: any) => {
         return body;
       }));
   }
 
-  recuperaFiltroEnte(): Observable<Ente[]> {
-    return this.http.get(environment.bffBaseUrl + this.enteUrl)
+  recuperaFiltroEnti(): Observable<Ente[]> {
+    return this.http.get(environment.bffBaseUrl + this.filtroEntiUrl)
       .pipe(map((body: any) => {
         return body;
       }));
