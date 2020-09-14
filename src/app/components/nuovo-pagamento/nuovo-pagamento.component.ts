@@ -31,6 +31,10 @@ export class NuovoPagamentoComponent implements OnInit {
   constructor(private nuovoPagamentoService: NuovoPagamentoService) { }
 
   ngOnInit(): void {
+    this.recuperaFiltroLivelloTerrotoriale();
+  }
+
+  recuperaFiltroLivelloTerrotoriale(): void {
     this.nuovoPagamentoService.recuperaFiltroLivelloTerrotoriale().pipe(map(livelliTerritoriali => {
       livelliTerritoriali.forEach(livello => {
         this.listaLivelliTerritoriali.push({
