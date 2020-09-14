@@ -18,9 +18,9 @@
       </svg>
     </div>
   </div>
-  <div *ngIf="isVisible"[style.margin]="'3%'">
+  <div *ngIf="isVisible">
     <!-- Livello Territoriale, Ente, Servizio -->
-    <div class="row">
+    <div class="row" [style.margin]="'3%'">
       <div class="col-md-4 pb-2">
         <div class="row">
           <label for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
@@ -53,7 +53,7 @@
       </div>
     </div>
     <!-- Documento, Data Inizio, Data Fine, Testo Libero -->
-    <div class="row py-3">
+    <div class="row" [style.margin]="'3%'">
       <div class="col-md-4 pb-2">
         <div class="row">
           <label for="inputDocumento" class="title">Documento</label>
@@ -105,6 +105,15 @@
         <div class="row">
           <small id="inputTestoLiberoHelpDescription" class="form-text text-muted">inserisci testo</small>
         </div>
+      </div>
+    </div>
+    <!-- Bottoni Pulisci e Cerca -->
+    <div class="row">
+      <div class="col-6">
+        <button id="bottonePulisci" class="btn btn-secondary">Pulisci</button>
+      </div>
+      <div class="col-6" style="text-align: right; margin-left: -6%">
+        <button id="bottoneCerca" class="btn">Cerca</button>
       </div>
     </div>
   </div>
