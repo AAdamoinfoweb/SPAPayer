@@ -13,7 +13,7 @@
     <div class="col-xs-5 pt-4">
       <p class="title page-subtitle">Filtri</p>
     </div>
-    <div class="col-xs-4 mb-3">
+    <div class="col-xs-4 mb-2">
       <svg class="bg-light icon" [style.fill]="'#004987'"
            data-toggle="collapse" data-target="#contenutoSezioneFiltri"
            aria-expanded="true" aria-controls="contenutoSezioneFiltri"
@@ -127,8 +127,11 @@
     <div class="col-xs-5 pt-4">
       <p class="title page-subtitle">Lista Pagamenti</p>
     </div>
-    <div class="col-xs-4 mb-3">
-      <svg class="bg-light icon" [style.fill]="'#004987'"
+    <div class="col-xs-4">
+      <svg class="bg-light icon mr-2" [style.fill]="'#004987'">
+        <use xlink:href="assets/img/sprite.svg#it-list"></use>
+      </svg>
+      <svg class="bg-light icon mb-2" [style.fill]="'#004987'"
            data-toggle="collapse" data-target="#contenutoSezioneListaPagamenti"
            aria-expanded="true" aria-controls="contenutoSezioneListaPagamenti"
            (click)="showHideSubsection('listaPagamenti')">
