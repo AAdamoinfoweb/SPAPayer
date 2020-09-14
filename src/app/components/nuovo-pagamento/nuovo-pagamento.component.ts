@@ -12,10 +12,7 @@ export class NuovoPagamentoComponent implements OnInit {
 
   listaEnti: Array<any> = []
 
-  listaServizi: Array<any> = [
-    {value: 'mock servizio1 val', label: 'mock servizio1 label'},
-    {value: 'mock servizio2 val', label: 'mock servizio2 label'}
-  ]
+  listaServizi: Array<any> = []
 
   enteRicevente: string = 'mock ricevente';
   sommaDaRicevere: number = 1234; //mock
@@ -30,6 +27,7 @@ export class NuovoPagamentoComponent implements OnInit {
   ngOnInit(): void {
     this.recuperaFiltroLivelloTerrotoriale();
     this.recuperaFiltroEnte();
+    this.recuperaFiltroServizi();
   }
 
   recuperaFiltroLivelloTerrotoriale(): void {
@@ -49,6 +47,17 @@ export class NuovoPagamentoComponent implements OnInit {
         this.listaEnti.push({
           value: ente.id,
           label: ente.nome
+        })
+      })
+    })).subscribe();
+  }
+
+  recuperaFiltroServizi(): void {
+    this.nuovoPagamentoService.recuperaFiltroServizi().pipe(map(servizi => {
+      servizi.forEach(servizio => {
+        this.listaServizi.push({
+          value: servizio.id,
+          label: servizio.nome
         })
       })
     })).subscribe();

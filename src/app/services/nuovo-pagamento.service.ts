@@ -5,6 +5,7 @@ import {map} from 'rxjs/operators';
 import {EventEmitter, Injectable, Output} from "@angular/core";
 import {LivelloTerritoriale} from '../modules/main/model/LivelloTerritoriale';
 import {Ente} from '../modules/main/model/Ente';
+import {Servizio} from '../modules/main/model/Servizio';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class NuovoPagamentoService {
 
   livelloTerritorialeUrl = '/filtroLivelloTerritoriale';
   enteUrl = '/filtroEnti';
+  filtroServiziUrl = '/filtroServizi';
 
 
   constructor(private http: HttpClient) {
@@ -32,5 +34,11 @@ export class NuovoPagamentoService {
       }));
   }
 
+  recuperaFiltroServizi(): Observable<Servizio[]> {
+    return this.http.get(environment.bffBaseUrl + this.filtroServiziUrl)
+      .pipe(map((body: any) => {
+        return body;
+      }));
+  }
 
 }
