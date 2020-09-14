@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -6,10 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./nuovo-pagamento.component.scss']
 })
 export class NuovoPagamentoComponent implements OnInit {
-  listaLivelliTerritoriali: Array<any> = [
-    {value: 'mock livello1 val', label: 'mock livello1 label'},
-    {value: 'mock livello2 val', label: 'mock livello2 label'}
-  ]
+  listaLivelliTerritoriali: Array<any>
 
   listaEnti: Array<any> = [
     {value: 'mock ente1 val', label: 'mock ente1 label'},
@@ -29,9 +28,17 @@ export class NuovoPagamentoComponent implements OnInit {
   servizioSelezionato: string;
 
 
-  constructor() { }
+  constructor(private nuovoPagamentoService: NuovoPagamentoService) { }
 
   ngOnInit(): void {
+    this.nuovoPagamentoService.recuperaFiltroLivelloTerrotoriale().pipe(map(livelliTerritoriali => {
+      livelliTerritoriali.forEach(livello => {
+        this.listaLivelliTerritoriali.push({
+          value: livello.id,
+          label: livello.nome
+        })
+      })
+    })).subscribe();
   }
 
 }
