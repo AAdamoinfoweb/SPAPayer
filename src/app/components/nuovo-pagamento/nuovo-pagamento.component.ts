@@ -10,10 +10,7 @@ import {map} from 'rxjs/operators';
 export class NuovoPagamentoComponent implements OnInit {
   listaLivelliTerritoriali: Array<any> = []
 
-  listaEnti: Array<any> = [
-    {value: 'mock ente1 val', label: 'mock ente1 label'},
-    {value: 'mock ente2 val', label: 'mock ente2 label'}
-  ]
+  listaEnti: Array<any> = []
 
   listaServizi: Array<any> = [
     {value: 'mock servizio1 val', label: 'mock servizio1 label'},
@@ -32,6 +29,7 @@ export class NuovoPagamentoComponent implements OnInit {
 
   ngOnInit(): void {
     this.recuperaFiltroLivelloTerrotoriale();
+    this.recuperaFiltroEnte();
   }
 
   recuperaFiltroLivelloTerrotoriale(): void {
@@ -40,6 +38,17 @@ export class NuovoPagamentoComponent implements OnInit {
         this.listaLivelliTerritoriali.push({
           value: livello.id,
           label: livello.nome
+        })
+      })
+    })).subscribe();
+  }
+
+  recuperaFiltroEnte(): void {
+    this.nuovoPagamentoService.recuperaFiltroEnte().pipe(map(enti => {
+      enti.forEach(ente => {
+        this.listaEnti.push({
+          value: ente.id,
+          label: ente.nome
         })
       })
     })).subscribe();
