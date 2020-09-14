@@ -8,7 +8,7 @@ import {map} from 'rxjs/operators';
   styleUrls: ['./nuovo-pagamento.component.scss']
 })
 export class NuovoPagamentoComponent implements OnInit {
-  listaLivelliTerritoriali: Array<any>
+  listaLivelliTerritoriali: Array<any> = []
 
   listaEnti: Array<any> = [
     {value: 'mock ente1 val', label: 'mock ente1 label'},
