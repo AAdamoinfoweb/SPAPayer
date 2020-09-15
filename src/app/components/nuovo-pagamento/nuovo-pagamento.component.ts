@@ -3,6 +3,7 @@ import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
 import {PrezzoService} from './prezzoService';
 import {CampoForm} from '../../modules/main/model/CampoForm';
+import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -10,68 +11,25 @@ import {CampoForm} from '../../modules/main/model/CampoForm';
   styleUrls: ['./nuovo-pagamento.component.scss']
 })
 export class NuovoPagamentoComponent implements OnInit {
-  listaLivelliTerritoriali: Array<any> = []
-
-  listaEnti: Array<any> = []
-
-  listaServizi: Array<any> = []
-
-  enteRicevente: string = 'mock ricevente';
-  sommaDaRicevere: number = 1234; //mock
-
-  livelloTerritorialeSelezionato: string = null;
-  enteSelezionato: string = null;
   servizioSelezionato: string = null;
 
-  isCompilato: boolean = false;
+  sommaDaRicevere: number = 1234; //mock
+
+  isCompilato = false;
 
   listaCampiTipologiaServizio: Array<CampoForm> = [];
   listaCampiBollettino: Array<CampoForm> = [];
   listaCampiServizio: Array<CampoForm> = [];
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService) { }
+  constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService, private compilazioneService: CompilazioneService) {
+    this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
+      this.servizioSelezionato = servizioSelezionato;
+      this.compila();
+    })).subscribe();
+  }
 
   ngOnInit(): void {
-    this.recuperaFiltroLivelloTerritoriale();
-
     this.mockAggiornaPrezzoCarrello();
-  }
-
-  recuperaFiltroLivelloTerritoriale(): void {
-    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
-      livelliTerritoriali.forEach(livello => {
-        this.listaLivelliTerritoriali.push({
-          value: livello.id,
-          label: livello.nome
-        })
-      })
-    })).subscribe();
-  }
-
-  recuperaFiltroEnti(idLivelloTerritoriale): void {
-    this.enteSelezionato = null
-    this.listaEnti = []
-    this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
-      enti.forEach(ente => {
-        this.listaEnti.push({
-          value: ente.id,
-          label: ente.nome
-        })
-      })
-    })).subscribe();
-  }
-
-  recuperaFiltroServizi(idEnte): void {
-    this.servizioSelezionato = null
-    this.listaServizi = []
-    this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
-      servizi.forEach(servizio => {
-        this.listaServizi.push({
-          value: servizio.id,
-          label: servizio.nome
-        })
-      })
-    })).subscribe();
   }
 
   mockAggiornaPrezzoCarrello(): void {

@@ -22,6 +22,7 @@ import { NuovoPagamentoComponent } from './components/nuovo-pagamento/nuovo-paga
 import { IMieiPagamentiComponent } from './components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {FormsModule} from '@angular/forms';
 import {DesignAngularKitModule} from 'design-angular-kit';
+import { CompilaNuovoPagamentoComponent } from './components/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {DesignAngularKitModule} from 'design-angular-kit';
     BannerComponent,
     HeaderComponent,
     NuovoPagamentoComponent,
-    IMieiPagamentiComponent
+    IMieiPagamentiComponent,
+    CompilaNuovoPagamentoComponent
   ],
   imports: [
     HttpClientModule,

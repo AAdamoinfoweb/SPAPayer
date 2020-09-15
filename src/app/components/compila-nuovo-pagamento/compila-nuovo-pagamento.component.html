@@ -1,0 +1,67 @@
+<div class="row">
+
+  <div class="col-md-4">
+    <div class="row">
+      <label for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
+    </div>
+    <div class="row">
+      <select class="form-elem-big"id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato" (ngModelChange)="recuperaFiltroEnti(livelloTerritorialeSelezionato)">
+        <option *ngFor="let item of listaLivelliTerritoriali" [value]="item.value">{{item.label}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="row">
+      <label for="selectEnte" class="title">Ente</label>
+    </div>
+    <div class="row">
+      <select [disabled]="livelloTerritorialeSelezionato == null" class="form-elem-big"id="selectEnte" [(ngModel)]="enteSelezionato" (ngModelChange)="recuperaFiltroServizi(enteSelezionato)">
+        <option *ngFor="let item of listaEnti" [value]="item.value">{{item.label}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="row">
+      <label for="selectServizio" class="title">Servizio</label>
+    </div>
+    <div class="row">
+      <select [disabled]="enteSelezionato == null" class="form-elem-big"id="selectServizio" [(ngModel)]="servizioSelezionato">
+        <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
+      </select>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="offset-md-10">
+    <button [disabled]="servizioSelezionato == null" id="btnCompila" class="btn" (click)="compila()">
+      Compila
+    </button>
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-md-4">
+    <div class="row">
+      <label for="inputEnteRicevente" class="title disabled-label">A favore di</label>
+    </div>
+    <div class="row">
+      <input class="form-elem-big" id="inputEnteRicevente" [value]="enteRicevente" disabled/>
+    </div>
+  </div>
+
+  <div class="offset-md-4 col-md-4">
+    <div class="row">
+      <label for="inputSommaDaRicevere" class="title disabled-label">Di Euro</label>
+    </div>
+    <div class="row">
+      <span class="price-unit">€</span>
+      <input class="form-elem-big price-field" id="inputSommaDaRicevere" [value]="sommaDaRicevere" disabled/>
+    </div>
+  </div>
+
+</div>
