@@ -8,9 +8,15 @@
 
 #cart-background {
   position: absolute;
-  bottom: -40px;
+  bottom: -35px;
   background-color: #EC6C25;
-  padding: 12px;
+  padding: 8px;
+}
+
+#cart {
+  width: 2em;
+  height: 2em;
+  fill: white;
 }
 
 .cart-hide {
