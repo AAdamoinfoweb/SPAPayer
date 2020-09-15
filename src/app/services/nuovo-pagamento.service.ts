@@ -27,8 +27,12 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaFiltroEnti(): Observable<Ente[]> {
-    return this.http.get(environment.bffBaseUrl + this.filtroEntiUrl)
+  recuperaFiltroEnti(idLivelloTerritoriale): Observable<Ente[]> {
+    return this.http.get(environment.bffBaseUrl + this.filtroEntiUrl, {
+      params: {
+        livelloTerritorialeId: idLivelloTerritoriale
+      }
+    })
       .pipe(map((body: any) => {
         return body;
       }));

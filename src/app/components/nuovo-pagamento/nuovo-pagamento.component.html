@@ -12,7 +12,7 @@
           <label for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
         </div>
         <div class="row">
-          <select class="form-elem-big"id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato">
+          <select class="form-elem-big"id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato" (ngModelChange)="recuperaFiltroEnti(livelloTerritorialeSelezionato)">
             <option *ngFor="let item of listaLivelliTerritoriali" [value]="item.value">{{item.label}}</option>
           </select>
         </div>
@@ -23,7 +23,7 @@
           <label for="selectEnte" class="title">Ente</label>
         </div>
         <div class="row">
-          <select class="form-elem-big"id="selectEnte" [(ngModel)]="enteSelezionato">
+          <select [disabled]="livelloTerritorialeSelezionato == null" class="form-elem-big"id="selectEnte" [(ngModel)]="enteSelezionato">
             <option *ngFor="let item of listaEnti" [value]="item.value">{{item.label}}</option>
           </select>
         </div>
