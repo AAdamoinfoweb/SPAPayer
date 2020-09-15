@@ -38,8 +38,12 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaFiltroServizi(): Observable<Servizio[]> {
-    return this.http.get(environment.bffBaseUrl + this.filtroServiziUrl)
+  recuperaFiltroServizi(idEnte): Observable<Servizio[]> {
+    return this.http.get(environment.bffBaseUrl + this.filtroServiziUrl, {
+      params: {
+        enteId: idEnte
+      }
+    })
       .pipe(map((body: any) => {
         return body;
       }));

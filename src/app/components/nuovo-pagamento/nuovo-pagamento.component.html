@@ -23,7 +23,7 @@
           <label for="selectEnte" class="title">Ente</label>
         </div>
         <div class="row">
-          <select [disabled]="livelloTerritorialeSelezionato == null" class="form-elem-big"id="selectEnte" [(ngModel)]="enteSelezionato">
+          <select [disabled]="livelloTerritorialeSelezionato == null" class="form-elem-big"id="selectEnte" [(ngModel)]="enteSelezionato" (ngModelChange)="recuperaFiltroServizi(enteSelezionato)">
             <option *ngFor="let item of listaEnti" [value]="item.value">{{item.label}}</option>
           </select>
         </div>
@@ -34,7 +34,7 @@
           <label for="selectServizio" class="title">Servizio</label>
         </div>
         <div class="row">
-          <select class="form-elem-big"id="selectServizio" [(ngModel)]="servizioSelezionato">
+          <select [disabled]="enteSelezionato == null" class="form-elem-big"id="selectServizio" [(ngModel)]="servizioSelezionato">
             <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
           </select>
         </div>

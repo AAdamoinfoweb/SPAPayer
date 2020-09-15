@@ -27,7 +27,6 @@ export class NuovoPagamentoComponent implements OnInit {
 
   ngOnInit(): void {
     this.recuperaFiltroLivelloTerritoriale();
-    this.recuperaFiltroServizi();
 
     this.mockAggiornaPrezzoCarrello();
   }
@@ -54,8 +53,8 @@ export class NuovoPagamentoComponent implements OnInit {
     })).subscribe();
   }
 
-  recuperaFiltroServizi(): void {
-    this.nuovoPagamentoService.recuperaFiltroServizi().pipe(map(servizi => {
+  recuperaFiltroServizi(idEnte): void {
+    this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
       servizi.forEach(servizio => {
         this.listaServizi.push({
           value: servizio.id,
