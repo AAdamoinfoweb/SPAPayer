@@ -22,6 +22,7 @@ export class NuovoPagamentoComponent implements OnInit {
   enteSelezionato: string = null;
   servizioSelezionato: string = null;
 
+  isCompilato: boolean = false;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService) { }
 
@@ -75,5 +76,10 @@ export class NuovoPagamentoComponent implements OnInit {
 
   aggiornaPrezzoCarrello(): void {
     this.prezzoService.prezzoEvent.emit(this.sommaDaRicevere);
+  }
+
+  compila(): void {
+    this.isCompilato = true;
+    //TODO carica campi da mostrare in sezione Dati
   }
 }
