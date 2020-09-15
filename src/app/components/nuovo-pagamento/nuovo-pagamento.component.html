@@ -44,7 +44,7 @@
 
     <div class="row">
       <div class="offset-md-10">
-        <button id="btnCompila" class="btn">
+        <button [disabled]="servizioSelezionato == null" id="btnCompila" class="btn">
           Compila
         </button>
       </div>
