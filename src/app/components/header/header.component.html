@@ -21,7 +21,8 @@
     </div>
 
     <div class="row align-items-center w-100 navbar-wrapper">
-      <div class="offset-10 col-1" [ngClass]="{'cart-hide': !isPaginaNuovoPagamento}">
+      <div class="offset-10 col-1" [ngClass]="{'hide': !isPaginaNuovoPagamento}">
+        <div class="row">
           <div id="cart-background" class="rounded-circle">
             <svg id="cart" viewBox="0 0 16 16" class="bi bi-cart3" xmlns="http://www.w3.org/2000/svg">
             <!--Bootstrap cart3 icon (removed M3 section to fill interior of cart)-->
@@ -37,6 +38,12 @@
               "/>
             </svg>
           </div>
+        </div>
+        <div class="row">
+          <div id="cart-price" class="rounded-pill" [ngClass]="{'hide': prezzoCarrello == null}">
+            {{prezzoCarrello}}€
+          </div>
+        </div>
       </div>
     </div>
   </div>
