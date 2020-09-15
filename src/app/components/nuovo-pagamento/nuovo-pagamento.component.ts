@@ -43,6 +43,7 @@ export class NuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
+    this.listaEnti = []
     this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
@@ -54,6 +55,7 @@ export class NuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroServizi(idEnte): void {
+    this.listaServizi = []
     this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
       servizi.forEach(servizio => {
         this.listaServizi.push({
