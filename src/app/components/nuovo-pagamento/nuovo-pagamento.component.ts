@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
 import {PrezzoService} from './prezzoService';
+import {CampoForm} from '../../modules/main/model/CampoForm';
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -23,6 +24,10 @@ export class NuovoPagamentoComponent implements OnInit {
   servizioSelezionato: string = null;
 
   isCompilato: boolean = false;
+
+  listaCampiTipologiaServizio: Array<CampoForm> = [];
+  listaCampiBollettino: Array<CampoForm> = [];
+  listaCampiServizio: Array<CampoForm> = [];
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService) { }
 
@@ -80,6 +85,10 @@ export class NuovoPagamentoComponent implements OnInit {
 
   compila(): void {
     this.isCompilato = true;
-    //TODO carica campi da mostrare in sezione Dati
+    this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato).pipe(map(campiNuovoPagamento => {
+      this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
+      this.listaCampiBollettino = campiNuovoPagamento.campiBollettino;
+      this.listaCampiServizio = campiNuovoPagamento.campiServizio;
+    })).subscribe();
   }
 }
