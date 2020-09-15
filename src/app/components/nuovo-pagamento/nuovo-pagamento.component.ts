@@ -18,9 +18,9 @@ export class NuovoPagamentoComponent implements OnInit {
   enteRicevente: string = 'mock ricevente';
   sommaDaRicevere: number = 1234; //mock
 
-  livelloTerritorialeSelezionato: string;
-  enteSelezionato: string;
-  servizioSelezionato: string;
+  livelloTerritorialeSelezionato: string = null;
+  enteSelezionato: string = null;
+  servizioSelezionato: string = null;
 
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService) { }
@@ -43,6 +43,7 @@ export class NuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
+    this.enteSelezionato = null
     this.listaEnti = []
     this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
       enti.forEach(ente => {
@@ -55,6 +56,7 @@ export class NuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroServizi(idEnte): void {
+    this.servizioSelezionato = null
     this.listaServizi = []
     this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
       servizi.forEach(servizio => {
