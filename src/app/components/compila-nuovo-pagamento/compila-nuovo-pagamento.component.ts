@@ -17,6 +17,8 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
 
   listaServizi: Array<any> = []
 
+  isCompilato: boolean = false
+
   enteRicevente: string = null;
   sommaDaRicevere: number = 1234; //mock
 
@@ -69,6 +71,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   compila(): void {
+    this.isCompilato = true;
     this.compilazioneService.compilazioneEvent.emit(this.servizioSelezionato);
   }
 }
