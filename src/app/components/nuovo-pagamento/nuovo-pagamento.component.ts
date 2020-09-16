@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
-import {PrezzoService} from './prezzoService';
 import {CampoForm} from '../../modules/main/model/CampoForm';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
+import {PrezzoService} from "./PrezzoService";
 
 @Component({
   selector: 'app-nuovo-pagamento',

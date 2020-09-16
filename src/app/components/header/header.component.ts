@@ -2,7 +2,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {StickyService} from '../login-bar/StickyService';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
-import {PrezzoService} from '../nuovo-pagamento/prezzoService';
+import {PrezzoService} from "../nuovo-pagamento/PrezzoService";
 
 @Component({
   selector: 'app-header',
