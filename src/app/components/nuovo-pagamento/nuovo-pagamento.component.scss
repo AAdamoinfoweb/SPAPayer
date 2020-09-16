@@ -40,6 +40,12 @@
   left: 5px;
 }
 
+@media screen and (max-width: 768px) {
+  .form-elem-big {
+    margin-top: 20px;
+  }
+}
+
 @media screen and (max-width: 576px) {
   #nuovoPagamento {
     margin-left: 2%;
