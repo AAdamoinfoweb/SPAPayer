@@ -5,20 +5,6 @@
   <app-compila-nuovo-pagamento></app-compila-nuovo-pagamento>
 
   <div [ngClass]="{'hide': !isCompilato}">
-    <hr/>
-
-    <p class="title page-subtitle">Dati</p>
-
-    <!--Sezione dati-->
-    <div class="page-section">
-    </div>
-
-    <hr/>
-
-    <p class="title page-subtitle">Importi</p>
-
-    <!--Sezione importi-->
-    <div class="page-section">
-    </div>
+    <app-dati-nuovo-pagamento></app-dati-nuovo-pagamento>
   </div>
 </div>
