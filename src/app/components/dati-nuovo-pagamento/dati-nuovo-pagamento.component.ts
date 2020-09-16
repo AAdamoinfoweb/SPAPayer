@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {CampoForm} from '../../modules/main/model/CampoForm';
 import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
 import {PrezzoService} from '../nuovo-pagamento/PrezzoService';
@@ -11,6 +12,19 @@ import {map} from 'rxjs/operators';
   styleUrls: ['../nuovo-pagamento/nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
 export class DatiNuovoPagamentoComponent implements OnInit {
+  /*
+    Esempio di CampoForm
+
+    campoFisso: true
+    disabilitato: null
+    id: 1
+    lunghezza: 15
+    lunghezzaVariabile: false
+    obbligatorio: true
+    tipoCampo: "string"
+    titolo: "Campo bollettino prova"
+   */
+
   sommaDaRicevere: number;
 
   servizioSelezionato: string = null;
@@ -19,6 +33,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   listaCampiBollettino: Array<CampoForm> = [];
   listaCampiServizio: Array<CampoForm> = [];
 
+  formDati: FormGroup;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService, private compilazioneService: CompilazioneService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
@@ -45,6 +60,18 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
       this.listaCampiBollettino = campiNuovoPagamento.campiBollettino;
       this.listaCampiServizio = campiNuovoPagamento.campiServizio;
+
+      //TODO inserire logica anche per gli array tipologiaServizio e servizio
+
+      let gruppo = {}
+      this.listaCampiBollettino.forEach(campo => {
+        gruppo[campo.titolo] = new FormControl('');
+      })
+      this.formDati = new FormGroup(gruppo);
     })).subscribe();
+  }
+
+  inviaDati(): void {
+
   }
 }
