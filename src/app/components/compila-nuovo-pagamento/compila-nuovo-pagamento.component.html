@@ -47,9 +47,10 @@
 
   <div class="col-md-4">
     <div class="row">
-      <div class="form-elem-big disabled">
+      <div class="form-elem-big">
         <form>
           <it-input
+            class="disabled"
             name="inputEnteRicevente"
             [(ngModel)]="enteRicevente"
             [label]="'A favore di'"
@@ -65,10 +66,10 @@
   <div class="offset-md-4 col-md-4">
     <div class="row">
       <span class="price-unit">€</span>
-      <div class="form-elem-big price-field disabled">
+      <div class="form-elem-big">
         <form>
           <it-input
-            class="form-elem-big price-field"
+            class="price-input disabled"
             name="inputSommaDaRicevere"
             [(ngModel)]="sommaDaRicevere"
             [label]="'di Euro'"
