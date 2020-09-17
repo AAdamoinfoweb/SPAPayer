@@ -36,6 +36,7 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/bootstrap-italia/dist/js/bootstrap-italia.bundle.min.js",
               "src/assets/js/perfect-scrollbar.min.js"
             ]
           },
@@ -106,6 +107,7 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/bootstrap-italia/dist/js/bootstrap-italia.bundle.min.js",
               "src/assets/js/perfect-scrollbar.min.js"
             ]
           }
