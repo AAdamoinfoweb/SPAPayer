@@ -1,0 +1,53 @@
+#nuovoPagamento {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.page-section {
+  margin: 3%;
+}
+
+.form-elem-big {
+  width: 80%;
+}
+
+:host ::ng-deep label {
+  color: #004987;
+  font-size: 16px;
+}
+
+:host ::ng-deep .disabled label {
+  color: #77777B;
+}
+
+:host ::ng-deep label.active {
+  font-size: 16px;
+}
+
+:host ::ng-deep .price-input input {
+  text-align: right;
+}
+
+:host ::ng-deep .disabled input {
+  color: #77777B;
+}
+
+.price-unit {
+  z-index: 1;
+  position: absolute;
+  bottom: 20px;
+  left: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .form-elem-big {
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  #nuovoPagamento {
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+}

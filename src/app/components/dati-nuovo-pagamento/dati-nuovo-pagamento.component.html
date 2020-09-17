@@ -1,0 +1,26 @@
+<p class="title page-subtitle">Dati</p>
+
+<!--Sezione dati-->
+<div class="page-section">
+  <form [formGroup]="formDati" (ngSubmit)="inviaDati()">
+    <div *ngFor="let campo of listaCampiBollettino">
+      <div ngSwitch="campo.tipoCampo">
+        <div *ngSwitchCase="'string'">
+          <input type="text" formControlName="{{campo.titolo.trim()}}"/>
+        </div>
+        <div *ngSwitchCase="'number'">
+          <input type="number" formControlName="{{campo.titolo.trim()}}"/>
+        </div>
+      </div>
+    </div>
+    <input type="submit" value="Prova invio"/>
+  </form>
+</div>
+
+<hr/>
+
+<p class="title page-subtitle">Importi</p>
+
+<!--Sezione importi-->
+<div class="page-section">
+</div>

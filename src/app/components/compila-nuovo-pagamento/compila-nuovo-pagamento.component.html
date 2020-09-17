@@ -1,0 +1,89 @@
+<div class="page-section">
+  <div class="row">
+
+    <div class="col-md-4">
+      <div class="row">
+        <label for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
+      </div>
+      <div class="row">
+        <select class="form-elem-big"id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato" (ngModelChange)="recuperaFiltroEnti(livelloTerritorialeSelezionato)">
+          <option *ngFor="let item of listaLivelliTerritoriali" [value]="item.value">{{item.label}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="row">
+        <label for="selectEnte" class="title">Ente</label>
+      </div>
+      <div class="row">
+        <select [disabled]="livelloTerritorialeSelezionato == null" class="form-elem-big"id="selectEnte" [(ngModel)]="enteSelezionato" (ngModelChange)="recuperaFiltroServizi(enteSelezionato)">
+          <option *ngFor="let item of listaEnti" [value]="item.value">{{item.label}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="row">
+        <label for="selectServizio" class="title">Servizio</label>
+      </div>
+      <div class="row">
+        <select [disabled]="enteSelezionato == null" class="form-elem-big"id="selectServizio" [(ngModel)]="servizioSelezionato">
+          <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="offset-md-10">
+      <button [disabled]="servizioSelezionato == null" id="btnCompila" class="btn" (click)="compila()">
+        Compila
+      </button>
+    </div>
+  </div>
+
+  <div class="row" [ngClass]="{'hide': !isCompilato}">
+
+    <div class="col-md-4">
+      <div class="row">
+        <div class="form-elem-big">
+          <form>
+            <it-input
+              class="disabled"
+              name="inputEnteRicevente"
+              [(ngModel)]="enteRicevente"
+              [label]="'A favore di'"
+              [type]="'text'"
+              [disabled]="true"
+            >
+            </it-input>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="offset-md-4 col-md-4">
+      <div class="row">
+        <div class="form-elem-big">
+          <span class="price-unit">€</span>
+          <form>
+            <it-input
+              class="price-input disabled"
+              name="inputSommaDaRicevere"
+              [(ngModel)]="sommaDaRicevere"
+              [label]="'di Euro'"
+              [type]="'text'"
+              [disabled]="true"
+            >
+            </it-input>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr [ngClass]="{'hide': !isCompilato}"/>

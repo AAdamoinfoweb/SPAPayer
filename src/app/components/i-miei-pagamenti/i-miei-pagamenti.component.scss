@@ -1,0 +1,35 @@
+.subsection-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #77777B;
+  line-height: 0;
+  margin-right: 7%;
+  margin-left: 0;
+}
+
+.input-text {
+  background-color: transparent;
+  height: auto;
+  width: 85%;
+  font-weight: normal;
+}
+
+.calendar {
+  position: relative;
+}
+
+.img-datepicker {
+  position: absolute;
+  height: 30px;
+  bottom: 5px;
+  fill: #77777B;
+}
+
+::ng-deep ngb-datepicker.dropdown-menu.show:before {
+  content: none !important;
+}
+
+::ng-deep .ngb-dp-arrow-btn {
+  background-color: transparent !important;
+}

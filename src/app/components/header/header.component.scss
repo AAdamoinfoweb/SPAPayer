@@ -6,6 +6,29 @@
   border: none;
 }
 
+#cart-background {
+  position: absolute;
+  bottom: -35px;
+  background-color: #EC6C25;
+  padding: 8px;
+}
+
+#cart {
+  width: 2em;
+  height: 2em;
+  fill: white;
+}
+
+#cart-price {
+  background-color: #004987;
+  color: white;
+  padding-left: 5px;
+  padding-right: 5px;
+  position: absolute;
+  bottom: -40px;
+  left: -15px;
+}
+
 @media screen and (max-width: 768px) {
   .font-menu-sidebar {
     display: none;

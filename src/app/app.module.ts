@@ -19,6 +19,11 @@ import {UrlBackInterceptor} from "./services/urlBack.interceptor";
 import { BannerComponent } from './components/banner/banner.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NuovoPagamentoComponent } from './components/nuovo-pagamento/nuovo-pagamento.component';
+import { IMieiPagamentiComponent } from './components/i-miei-pagamenti/i-miei-pagamenti.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {DesignAngularKitModule} from 'design-angular-kit';
+import { CompilaNuovoPagamentoComponent } from './components/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
+import { DatiNuovoPagamentoComponent } from './components/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
 
 @NgModule({
   declarations: [
@@ -31,15 +36,21 @@ import { NuovoPagamentoComponent } from './components/nuovo-pagamento/nuovo-paga
     GenericErrorComponent,
     BannerComponent,
     HeaderComponent,
-    NuovoPagamentoComponent
+    NuovoPagamentoComponent,
+    IMieiPagamentiComponent,
+    CompilaNuovoPagamentoComponent,
+    DatiNuovoPagamentoComponent
   ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    MainModule,
-    NgbModule
-  ],
+    imports: [
+        HttpClientModule,
+        BrowserModule,
+        AppRoutingModule,
+        MainModule,
+        NgbModule,
+        FormsModule,
+        DesignAngularKitModule,
+        ReactiveFormsModule
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
