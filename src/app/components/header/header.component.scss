@@ -6,6 +6,14 @@
   border: none;
 }
 
+.container-fluid {
+  padding-right: 0px;
+}
+
+#home-link {
+  cursor: pointer;
+}
+
 #cart-background {
   position: absolute;
   bottom: -35px;
