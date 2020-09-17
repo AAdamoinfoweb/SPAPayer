@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   {path: 'erroregenerico', component: GenericErrorComponent},
   {path: 'nonautorizzato', component: NonautorizzatoComponent},
-  {path: 'carrello', component: CarrelloComponent},
+  {path: 'carrelloL1', component: CarrelloComponent},
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
   {path: 'waiting', component: WaitingComponent},
   {path: 'privacy', component: PrivacyComponent},
