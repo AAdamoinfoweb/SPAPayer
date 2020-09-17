@@ -5,6 +5,7 @@ import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
 import {PrezzoService} from '../nuovo-pagamento/PrezzoService';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {map} from 'rxjs/operators';
+import {CampiNuovoPagamento} from '../../modules/main/model/CampiNuovoPagamento';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -12,28 +13,35 @@ import {map} from 'rxjs/operators';
   styleUrls: ['../nuovo-pagamento/nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
 export class DatiNuovoPagamentoComponent implements OnInit {
-  /*
-    Esempio di CampoForm
-
-    campoFisso: true
-    disabilitato: null
-    id: 1
-    lunghezza: 15
-    lunghezzaVariabile: false
-    obbligatorio: true
-    tipoCampo: "string"
-    titolo: "Campo bollettino prova"
-   */
-
   sommaDaRicevere: number;
 
   servizioSelezionato: string = null;
 
   listaCampiTipologiaServizio: Array<CampoForm> = [];
-  listaCampiBollettino: Array<CampoForm> = [];
   listaCampiServizio: Array<CampoForm> = [];
 
-  formDati: FormGroup;
+  /*
+    ESEMPIO DI CAMPO_FORM
+
+    {
+      campoFisso: true,
+      campo_input: true,
+      chiave: false,
+      controllo_logico: null,
+      disabilitato: false,
+      id: 1,
+      informazioni: "Inserisci il cf",
+      lunghezza: 20,
+      lunghezzaVariabile: true,
+      obbligatorio: true,
+      posizione: 2,
+      tipoCampo: "string",
+      titolo: "Campo tipologia servizio prova"
+    }
+   */
+
+  formTipologiaServizio: FormGroup;
+  formServizio: FormGroup;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService, private compilazioneService: CompilazioneService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
@@ -58,16 +66,20 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   compila(): void {
     this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato).pipe(map(campiNuovoPagamento => {
       this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
-      this.listaCampiBollettino = campiNuovoPagamento.campiBollettino;
+      let campiFormTipologiaServizio = {}
+
+      this.listaCampiTipologiaServizio.forEach(campo => {
+        campiFormTipologiaServizio[campo.titolo] = new FormControl('');
+      })
+      this.formTipologiaServizio = new FormGroup(campiFormTipologiaServizio);
+
       this.listaCampiServizio = campiNuovoPagamento.campiServizio;
 
-      //TODO inserire logica anche per gli array tipologiaServizio e servizio
-
-      let gruppo = {}
-      this.listaCampiBollettino.forEach(campo => {
-        gruppo[campo.titolo] = new FormControl('');
+      let campiFormServizio = {}
+      this.listaCampiServizio.forEach(campo => {
+        campiFormServizio[campo.titolo] = new FormControl('');
       })
-      this.formDati = new FormGroup(gruppo);
+      this.formServizio = new FormGroup(campiFormServizio);
     })).subscribe();
   }
 

@@ -2,9 +2,9 @@
 
 <!--Sezione dati-->
 <div class="page-section">
-  <form [formGroup]="formDati" (ngSubmit)="inviaDati()">
-    <div *ngFor="let campo of listaCampiBollettino">
-      <div ngSwitch="campo.tipoCampo">
+  <form [formGroup]="formTipologiaServizio" (ngSubmit)="inviaDati()">
+    <div *ngFor="let campo of listaCampiTipologiaServizio">
+      <div [ngSwitch]="campo.tipoCampo">
         <div *ngSwitchCase="'string'">
           <input type="text" formControlName="{{campo.titolo.trim()}}"/>
         </div>
