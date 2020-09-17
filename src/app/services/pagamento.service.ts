@@ -12,7 +12,7 @@ import {Pagamento} from "../modules/main/model/Pagamento";
 })
 export class PagamentoService {
 
-  confermaPagamentoUrl = '/confermaPagamento';
+  confermaPagamentoUrl = '/confermaPagamentoL1';
   verificaEsitoPagamentoUrl = '/verificaEsitoPagamento';
   verificaQuietanzaUrl = '/verificaQuietanza';
   quietanzaUrl = '/quietanza'
