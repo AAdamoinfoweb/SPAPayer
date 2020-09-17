@@ -2,7 +2,7 @@ export class CampoForm {
   id: number;
   titolo: string;
   obbligatorio: boolean;
-  tipoCampo: number;
+  tipoCampo: string;
   lunghezzaVariabile: boolean;
   lunghezza: number;
   campoFisso: boolean;
