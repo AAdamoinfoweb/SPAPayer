@@ -2,19 +2,13 @@
 
 <!--Sezione dati-->
 <div class="page-section">
-  <form [formGroup]="formTipologiaServizio" (ngSubmit)="inviaDati()">
+  <div class="row">
     <div *ngFor="let campo of listaCampiTipologiaServizio">
-      <div [ngSwitch]="campo.tipoCampo">
-        <div *ngSwitchCase="'string'">
-          <input type="text" formControlName="{{campo.titolo.trim()}}"/>
-        </div>
-        <div *ngSwitchCase="'number'">
-          <input type="number" formControlName="{{campo.titolo.trim()}}"/>
-        </div>
+      <div [ngClass]="{'col-md-2': campo.lunghezza <= lunghezzaMaxCampoPiccolo, 'col-md-4': campo.lunghezza > lunghezzaMaxCampoPiccolo}">
+        <p>mock campo</p>
       </div>
     </div>
-    <input type="submit" value="Prova invio"/>
-  </form>
+  </div>
 </div>
 
 <hr/>

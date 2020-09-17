@@ -20,6 +20,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   listaCampiTipologiaServizio: Array<CampoForm> = [];
   listaCampiServizio: Array<CampoForm> = [];
 
+  lunghezzaMaxCampoPiccolo: 10;
+
   /*
     ESEMPIO DI CAMPO_FORM
 
@@ -39,9 +41,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       titolo: "Campo tipologia servizio prova"
     }
    */
-
-  formTipologiaServizio: FormGroup;
-  formServizio: FormGroup;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService, private compilazioneService: CompilazioneService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
@@ -66,24 +65,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   compila(): void {
     this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato).pipe(map(campiNuovoPagamento => {
       this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
-      let campiFormTipologiaServizio = {}
-
-      this.listaCampiTipologiaServizio.forEach(campo => {
-        campiFormTipologiaServizio[campo.titolo] = new FormControl('');
-      })
-      this.formTipologiaServizio = new FormGroup(campiFormTipologiaServizio);
-
       this.listaCampiServizio = campiNuovoPagamento.campiServizio;
-
-      let campiFormServizio = {}
-      this.listaCampiServizio.forEach(campo => {
-        campiFormServizio[campo.titolo] = new FormControl('');
-      })
-      this.formServizio = new FormGroup(campiFormServizio);
     })).subscribe();
   }
 
-  inviaDati(): void {
-
-  }
 }
