@@ -31,6 +31,11 @@ a {
   text-align: center;
 }
 
+#payButton {
+  width: 100%;
+  text-transform: none;
+}
+
 @media screen and (max-width: 576px) {
   .footerlink {
     text-align: initial;
