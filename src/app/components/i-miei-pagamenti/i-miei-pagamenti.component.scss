@@ -11,7 +11,6 @@
 .input-text {
   background-color: transparent;
   height: auto;
-  width: 85%;
   font-weight: normal;
 }
 
@@ -24,6 +23,28 @@
   height: 30px;
   bottom: 5px;
   fill: #77777B;
+  cursor: pointer;
+}
+
+.btn-find {
+  text-align: right;
+  margin-left: -6%;
+}
+
+.date-input {
+  padding-left: 35px;
+}
+
+svg {
+  fill: #004987;
+}
+
+.section-row {
+  margin: 3%;
+}
+
+.form-elem {
+  width: 80%;
 }
 
 ::ng-deep ngb-datepicker.dropdown-menu.show:before {
