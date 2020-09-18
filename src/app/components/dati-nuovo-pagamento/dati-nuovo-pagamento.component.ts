@@ -29,10 +29,18 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     })).subscribe();
   }
 
-  /*
-    ESEMPIO DI CAMPO_FORM
+  ngOnInit(): void {
+    this.mockAggiornaPrezzoCarrello();
+    this.mockCampiForm();
+  }
 
-    {
+  mockAggiornaPrezzoCarrello(): void {
+    this.sommaDaRicevere = 999;
+    this.aggiornaPrezzoCarrello();
+  }
+
+  mockCampiForm(): void {
+    let mockCampoForm: CampoForm = {
       campoFisso: true,
       campo_input: true,
       chiave: false,
@@ -47,17 +55,50 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       tipoCampo: "string",
       titolo: "Campo tipologia servizio prova"
     }
-   */
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService, private compilazioneService: CompilazioneService) {
-    this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
-      this.servizioSelezionato = servizioSelezionato;
-      this.compila();
-    })).subscribe();
-  }
+    let cloneFn = (obj) => {
+      let clone = {};
+      Object.keys(obj).forEach(key => {
+        clone[key] = obj[key];
+      });
+      return clone;
+    }
 
-  ngOnInit(): void {
-    this.mockAggiornaPrezzoCarrello();
+    let i = 1;
+    let clone;
+    clone = cloneFn(mockCampoForm);
+    clone.titolo += '' + i;
+    this.listaCampiTipologiaServizio.push(clone);
+    i++;
+    clone = cloneFn(mockCampoForm);
+    clone.titolo += '' + i;
+    this.listaCampiTipologiaServizio.push(clone);
+    i++;
+    clone = cloneFn(mockCampoForm);
+    clone.titolo += '' + i;
+    this.listaCampiTipologiaServizio.push(clone);
+    i++;
+    clone = cloneFn(mockCampoForm);
+    clone.titolo += '' + i;
+    this.listaCampiTipologiaServizio.push(clone);
+    i++;
+    clone = cloneFn(mockCampoForm);
+    clone.titolo += '' + i;
+    this.listaCampiTipologiaServizio.push(clone);
+    i++;
+
+    this.campiCompilati = {};
+    this.listaCampi = [];
+    this.listaCampiTipologiaServizio.forEach((campo, indice) => {
+      campo["nome"] = campo.titolo.trim();
+      this.campiCompilati[campo["nome"]] = null;
+      this.listaCampi.push(campo);
+    });
+    this.listaCampiServizio.forEach(campo => {
+      campo["nome"] = campo.titolo.trim();
+      this.campiCompilati[campo["nome"]] = null;
+      this.listaCampi.push(campo);
+    });
   }
 
   isCampoGrande(campo) {
