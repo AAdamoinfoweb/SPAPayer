@@ -22,6 +22,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   listaCampi: Array<CampoForm> = [];
   campiCompilati: {};
 
+  isVisibile: boolean = true;
+
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService, private compilazioneService: CompilazioneService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
       this.servizioSelezionato = servizioSelezionato;
@@ -32,6 +34,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   ngOnInit(): void {
     this.mockAggiornaPrezzoCarrello();
     this.mockCampiForm();
+  }
+
+  aggiornaVisibilita(): void {
+    this.isVisibile = !this.isVisibile;
   }
 
   mockAggiornaPrezzoCarrello(): void {

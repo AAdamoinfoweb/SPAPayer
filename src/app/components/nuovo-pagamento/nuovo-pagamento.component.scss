@@ -16,6 +16,10 @@ select {
   width: 100%;
 }
 
+svg {
+  fill: #004987;
+}
+
 @media screen and (max-width: 576px) {
   #nuovoPagamento {
     margin-left: 2%;

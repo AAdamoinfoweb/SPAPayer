@@ -1,39 +1,54 @@
 <hr/>
 
-<p class="title page-subtitle">Dati</p>
+<div class="row">
+  <div class="col-1">
+    <p class="title page-subtitle">Dati</p>
+  </div>
+  <div class="offset-10 col-1">
+    <svg class="bg-light icon"
+         data-toggle="collapse" data-target="#sezioneDati"
+         aria-expanded="true" aria-controls="sezioneDati"
+         (click)="aggiornaVisibilita()">
+      <use [attr.xlink:href]="isVisibile ? 'assets/img/sprite.svg#it-collapse' : 'assets/img/sprite.svg#it-expand'" xlink:href=""></use>
+    </svg>
+  </div>
+</div>
 
-<div class="page-section">
-  <div class="row">
-    <div *ngFor="let campo of listaCampi" [ngClass]="{'col-md-2': !isCampoGrande(campo), 'col-md-4': isCampoGrande(campo)}">
-      <div [ngSwitch]="campo.tipoCampo" class="form-elem-container">
+<div id="sezioneDati" class="collapse show">
+  <div class="page-section">
+    <div class="row">
+      <div *ngFor="let campo of listaCampi" [ngClass]="{'col-md-2': !isCampoGrande(campo), 'col-md-4': isCampoGrande(campo)}">
+        <div [ngSwitch]="campo.tipoCampo" class="form-elem-container">
 
-        <div *ngSwitchCase="'string'" class="dynamic-form-elem">
-          <div class="row">
-            <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+          <div *ngSwitchCase="'string'" class="dynamic-form-elem">
+            <div class="row">
+              <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+            </div>
+            <div class="row">
+              <input
+                [id]="campo['nome']"
+                [(ngModel)]="campiCompilati[campo['nome']]"
+                type="text"
+              />
+            </div>
           </div>
-          <div class="row">
-            <input
-              [id]="campo['nome']"
-              [(ngModel)]="campiCompilati[campo['nome']]"
-              type="text"
-            />
+
+          <div *ngSwitchCase="'number'" class="dynamic-form-elem">
+            <div class="row">
+              <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+            </div>
+            <div class="row">
+              <input
+                [id]="campo['nome']"
+                [(ngModel)]="campiCompilati[campo['nome']]"
+                type="number"
+              />
+            </div>
           </div>
+
         </div>
-
-        <div *ngSwitchCase="'number'" class="dynamic-form-elem">
-          <div class="row">
-            <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
-          </div>
-          <div class="row">
-            <input
-              [id]="campo['nome']"
-              [(ngModel)]="campiCompilati[campo['nome']]"
-              type="number"
-            />
-          </div>
-        </div>
-
       </div>
     </div>
+
   </div>
 </div>
