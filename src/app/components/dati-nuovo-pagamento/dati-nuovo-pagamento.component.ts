@@ -19,8 +19,15 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   listaCampiTipologiaServizio: Array<CampoForm> = [];
   listaCampiServizio: Array<CampoForm> = [];
+  listaCampi: Array<CampoForm> = [];
+  campiCompilati: {};
 
-  lunghezzaMaxCampoPiccolo: 10;
+  constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService, private compilazioneService: CompilazioneService) {
+    this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
+      this.servizioSelezionato = servizioSelezionato;
+      this.compila();
+    })).subscribe();
+  }
 
   /*
     ESEMPIO DI CAMPO_FORM
@@ -53,9 +60,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.mockAggiornaPrezzoCarrello();
   }
 
-  mockAggiornaPrezzoCarrello(): void {
-    this.sommaDaRicevere = 999;
-    this.aggiornaPrezzoCarrello();
+  isCampoGrande(campo) {
+    const lunghezzaMaxCampoPiccolo = 10;
+    return campo.lunghezza > lunghezzaMaxCampoPiccolo;
   }
 
   aggiornaPrezzoCarrello(): void {
@@ -66,6 +73,19 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato).pipe(map(campiNuovoPagamento => {
       this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
       this.listaCampiServizio = campiNuovoPagamento.campiServizio;
+
+      this.campiCompilati = {};
+      this.listaCampi = [];
+      this.listaCampiTipologiaServizio.forEach((campo, indice) => {
+        campo["nome"] = campo.titolo.trim();
+        this.campiCompilati[campo["nome"]] = null;
+        this.listaCampi.push(campo);
+      });
+      this.listaCampiServizio.forEach(campo => {
+        campo["nome"] = campo.titolo.trim();
+        this.campiCompilati[campo["nome"]] = null;
+        this.listaCampi.push(campo);
+      });
     })).subscribe();
   }
 

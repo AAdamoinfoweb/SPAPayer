@@ -3,9 +3,19 @@
 <!--Sezione dati-->
 <div class="page-section">
   <div class="row">
-    <div *ngFor="let campo of listaCampiTipologiaServizio">
-      <div [ngClass]="{'col-md-2': campo.lunghezza <= lunghezzaMaxCampoPiccolo, 'col-md-4': campo.lunghezza > lunghezzaMaxCampoPiccolo}">
-        <p>mock campo</p>
+    <div *ngFor="let campo of listaCampi" [ngClass]="{'col-md-2': !isCampoGrande(campo), 'col-md-4': isCampoGrande(campo)}">
+      <div [ngSwitch]="campo.tipoCampo">
+        <div *ngSwitchCase="'string'">
+          <form>
+            <it-input
+              [name]="campo['nome']"
+              [label]="campo.titolo"
+              [(ngModel)]="campiCompilati[campo['nome']]"
+              [type]="'text'"
+            >
+            </it-input>
+          </form>
+        </div>
       </div>
     </div>
   </div>
