@@ -39,10 +39,8 @@
   left: 5px;
 }
 
-@media screen and (max-width: 768px) {
-  .dynamic-label {
-    margin-top: 20px;
-  }
+.dynamic-label {
+  margin-top: 20px;
 }
 
 @media screen and (max-width: 576px) {
