@@ -13,9 +13,14 @@ import {PrezzoService} from "./PrezzoService";
 export class NuovoPagamentoComponent implements OnInit {
   isCompilato: boolean = false;
 
-  constructor(private compilazioneService: CompilazioneService) {
+  importoTotale: number = 1234; //mock
+
+  constructor(private compilazioneService: CompilazioneService, private prezzoService: PrezzoService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
       this.compila();
+    })).subscribe();
+    this.prezzoService.prezzoEvent.pipe(map(prezzo => {
+      this.importoTotale = prezzo;
     })).subscribe();
   }
 

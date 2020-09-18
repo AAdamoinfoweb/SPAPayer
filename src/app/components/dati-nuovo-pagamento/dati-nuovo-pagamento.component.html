@@ -1,6 +1,7 @@
+<hr/>
+
 <p class="title page-subtitle">Dati</p>
 
-<!--Sezione dati-->
 <div class="page-section">
   <div class="row">
     <div *ngFor="let campo of listaCampi" [ngClass]="{'col-md-2': !isCampoGrande(campo), 'col-md-4': isCampoGrande(campo)}">
@@ -35,12 +36,4 @@
       </div>
     </div>
   </div>
-</div>
-
-<hr/>
-
-<p class="title page-subtitle">Importi</p>
-
-<!--Sezione importi-->
-<div class="page-section">
 </div>

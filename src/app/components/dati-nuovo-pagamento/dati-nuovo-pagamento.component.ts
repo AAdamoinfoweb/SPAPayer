@@ -13,7 +13,7 @@ import {CampiNuovoPagamento} from '../../modules/main/model/CampiNuovoPagamento'
   styleUrls: ['../nuovo-pagamento/nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
 export class DatiNuovoPagamentoComponent implements OnInit {
-  sommaDaRicevere: number;
+  importoTotale: number;
 
   servizioSelezionato: string = null;
 
@@ -35,7 +35,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   mockAggiornaPrezzoCarrello(): void {
-    this.sommaDaRicevere = 999;
+    this.importoTotale = 999;
     this.aggiornaPrezzoCarrello();
   }
 
@@ -107,7 +107,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.prezzoService.prezzoEvent.emit(this.sommaDaRicevere);
+    this.prezzoService.prezzoEvent.emit(this.importoTotale);
   }
 
   compila(): void {
