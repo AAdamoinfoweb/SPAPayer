@@ -11,17 +11,6 @@
   width: 80%;
 }
 
-.price-unit {
-  z-index: 1;
-  position: absolute;
-  bottom: 10px;
-  left: 5px;
-}
-
-.price-input {
-  text-align: right;
-}
-
 @media screen and (max-width: 576px) {
   #nuovoPagamento {
     margin-left: 2%;
