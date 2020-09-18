@@ -7,7 +7,7 @@
           <label for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
         </div>
         <div class="row">
-          <select id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato" (ngModelChange)="recuperaFiltroEnti(livelloTerritorialeSelezionato)">
+          <select id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato" (ngModelChange)="selezionaLivelloTerritoriale()">
             <option *ngFor="let item of listaLivelliTerritoriali" [value]="item.value">{{item.label}}</option>
           </select>
         </div>
@@ -20,7 +20,7 @@
           <label for="selectEnte" class="title">Ente</label>
         </div>
         <div class="row">
-          <select [disabled]="livelloTerritorialeSelezionato == null" id="selectEnte" [(ngModel)]="enteSelezionato" (ngModelChange)="recuperaFiltroServizi(enteSelezionato)">
+          <select [disabled]="livelloTerritorialeSelezionato == null" id="selectEnte" [(ngModel)]="enteSelezionato" (ngModelChange)="selezionaEnte()">
             <option *ngFor="let item of listaEnti" [value]="item.value">{{item.label}}</option>
           </select>
         </div>
@@ -33,7 +33,7 @@
           <label for="selectServizio" class="title">Servizio</label>
         </div>
         <div class="row">
-          <select [disabled]="enteSelezionato == null" id="selectServizio" [(ngModel)]="servizioSelezionato" (ngModelChange)="compila()">
+          <select [disabled]="enteSelezionato == null" id="selectServizio" [(ngModel)]="servizioSelezionato" (ngModelChange)="selezionaServizio()">
             <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
           </select>
         </div>

@@ -35,42 +35,52 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
         this.listaLivelliTerritoriali.push({
           value: livello.id,
           label: livello.nome
-        })
-      })
+        });
+      });
     })).subscribe();
   }
 
-  recuperaFiltroEnti(idLivelloTerritoriale): void {
-    this.isCompilato = false
+  selezionaLivelloTerritoriale(): void {
+    this.isCompilato = false;
     this.compilazioneService.compilazioneEvent.emit(null)
-    this.enteSelezionato = null
-    this.listaEnti = []
+    this.enteSelezionato = null;
+    this.listaEnti = [];
+
+    this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato);
+  }
+
+  recuperaFiltroEnti(idLivelloTerritoriale): void {
     this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
           value: ente.id,
           label: ente.nome
-        })
-      })
+        });
+      });
     })).subscribe();
   }
 
+  selezionaEnte(): void {
+    this.isCompilato = false;
+    this.compilazioneService.compilazioneEvent.emit(null);
+    this.servizioSelezionato = null;
+    this.listaServizi = [];
+
+    this.recuperaFiltroServizi(this.enteSelezionato);
+  }
+
   recuperaFiltroServizi(idEnte): void {
-    this.isCompilato = false
-    this.compilazioneService.compilazioneEvent.emit(null)
-    this.servizioSelezionato = null
-    this.listaServizi = []
     this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
       servizi.forEach(servizio => {
         this.listaServizi.push({
           value: servizio.id,
           label: servizio.nome
-        })
-      })
+        });
+      });
     })).subscribe();
   }
 
-  compila(): void {
+  selezionaServizio(): void {
     this.isCompilato = true;
     this.compilazioneService.compilazioneEvent.emit(this.servizioSelezionato);
   }
