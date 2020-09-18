@@ -52,7 +52,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       lunghezzaVariabile: true,
       obbligatorio: true,
       posizione: 2,
-      tipoCampo: "string",
+      tipoCampo: "number",
       titolo: "Campo tipologia servizio prova"
     }
 
