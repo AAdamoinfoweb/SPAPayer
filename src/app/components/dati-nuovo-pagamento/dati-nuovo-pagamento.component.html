@@ -4,17 +4,18 @@
 <div class="page-section">
   <div class="row">
     <div *ngFor="let campo of listaCampi" [ngClass]="{'col-md-2': !isCampoGrande(campo), 'col-md-4': isCampoGrande(campo)}">
-      <div [ngSwitch]="campo.tipoCampo">
-        <div *ngSwitchCase="'string'" class="dynamic-label">
-          <form>
-            <it-input
-              [name]="campo['nome']"
-              [label]="campo.titolo"
+      <div [ngSwitch]="campo.tipoCampo" class="form-elem-big">
+        <div *ngSwitchCase="'string'">
+          <div class="row">
+            <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+          </div>
+          <div class="row">
+            <input
+              [id]="campo['nome']"
               [(ngModel)]="campiCompilati[campo['nome']]"
-              [type]="'text'"
-            >
-            </it-input>
-          </form>
+              type="text"
+            />
+          </div>
         </div>
       </div>
     </div>
