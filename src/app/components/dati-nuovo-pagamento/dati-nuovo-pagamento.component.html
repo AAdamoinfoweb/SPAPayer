@@ -5,7 +5,7 @@
 <div class="page-section">
   <div class="row">
     <div *ngFor="let campo of listaCampi" [ngClass]="{'col-md-2': !isCampoGrande(campo), 'col-md-4': isCampoGrande(campo)}">
-      <div [ngSwitch]="campo.tipoCampo" class="form-elem-big">
+      <div [ngSwitch]="campo.tipoCampo" class="form-elem-container">
 
         <div *ngSwitchCase="'string'" class="dynamic-form-elem">
           <div class="row">

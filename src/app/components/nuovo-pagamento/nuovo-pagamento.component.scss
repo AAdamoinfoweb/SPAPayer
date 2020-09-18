@@ -7,8 +7,13 @@
   margin: 3%;
 }
 
-.form-elem-big {
-  width: 80%;
+.form-elem-container {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+select {
+  width: 100%;
 }
 
 @media screen and (max-width: 576px) {
