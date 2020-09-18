@@ -40,29 +40,29 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   mockCampiForm(): void {
-    let mockCampoForm: CampoForm = {
+    const mockCampoForm: CampoForm = {
       campoFisso: true,
       campo_input: true,
       chiave: false,
       controllo_logico: null,
       disabilitato: false,
       id: 1,
-      informazioni: "Inserisci il cf",
+      informazioni: 'Inserisci il cf',
       lunghezza: 20,
       lunghezzaVariabile: true,
       obbligatorio: true,
       posizione: 2,
-      tipoCampo: "number",
-      titolo: "Campo tipologia servizio prova"
-    }
+      tipoCampo: 'number',
+      titolo: 'Campo tipologia servizio prova'
+    };
 
-    let cloneFn = (obj) => {
-      let clone = {};
+    const cloneFn = (obj) => {
+      const clone = {};
       Object.keys(obj).forEach(key => {
         clone[key] = obj[key];
       });
       return clone;
-    }
+    };
 
     let i = 1;
     let clone;
@@ -90,13 +90,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.campiCompilati = {};
     this.listaCampi = [];
     this.listaCampiTipologiaServizio.forEach((campo, indice) => {
-      campo["nome"] = campo.titolo.trim();
-      this.campiCompilati[campo["nome"]] = null;
+      campo['nome'] = campo.titolo.trim();
+      this.campiCompilati[campo['nome']] = null;
       this.listaCampi.push(campo);
     });
     this.listaCampiServizio.forEach(campo => {
-      campo["nome"] = campo.titolo.trim();
-      this.campiCompilati[campo["nome"]] = null;
+      campo['nome'] = campo.titolo.trim();
+      this.campiCompilati[campo['nome']] = null;
       this.listaCampi.push(campo);
     });
   }
@@ -111,23 +111,27 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   compila(): void {
-    this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato).pipe(map(campiNuovoPagamento => {
-      this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
-      this.listaCampiServizio = campiNuovoPagamento.campiServizio;
+    const isCompilato = this.servizioSelezionato != null;
 
-      this.campiCompilati = {};
-      this.listaCampi = [];
-      this.listaCampiTipologiaServizio.forEach((campo, indice) => {
-        campo["nome"] = campo.titolo.trim();
-        this.campiCompilati[campo["nome"]] = null;
-        this.listaCampi.push(campo);
-      });
-      this.listaCampiServizio.forEach(campo => {
-        campo["nome"] = campo.titolo.trim();
-        this.campiCompilati[campo["nome"]] = null;
-        this.listaCampi.push(campo);
-      });
-    })).subscribe();
+    if (isCompilato) {
+      this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato).pipe(map(campiNuovoPagamento => {
+        this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
+        this.listaCampiServizio = campiNuovoPagamento.campiServizio;
+
+        this.campiCompilati = {};
+        this.listaCampi = [];
+        this.listaCampiTipologiaServizio.forEach((campo, indice) => {
+          campo['nome'] = campo.titolo.trim();
+          this.campiCompilati[campo['nome']] = null;
+          this.listaCampi.push(campo);
+        });
+        this.listaCampiServizio.forEach(campo => {
+          campo['nome'] = campo.titolo.trim();
+          this.campiCompilati[campo['nome']] = null;
+          this.listaCampi.push(campo);
+        });
+      })).subscribe();
+    }
   }
 
 }

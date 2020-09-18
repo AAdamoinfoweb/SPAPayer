@@ -17,7 +17,7 @@ export class NuovoPagamentoComponent implements OnInit {
 
   constructor(private compilazioneService: CompilazioneService, private prezzoService: PrezzoService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
-      this.compila();
+      this.compila(servizioSelezionato);
     })).subscribe();
     this.prezzoService.prezzoEvent.pipe(map(prezzo => {
       this.importoTotale = prezzo;
@@ -27,7 +27,7 @@ export class NuovoPagamentoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  compila(): void {
-    this.isCompilato = true;
+  compila(servizio): void {
+    this.isCompilato = servizio != null;
   }
 }

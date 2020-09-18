@@ -41,6 +41,8 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
+    this.isCompilato = false
+    this.compilazioneService.compilazioneEvent.emit(null)
     this.enteSelezionato = null
     this.listaEnti = []
     this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
@@ -54,6 +56,8 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroServizi(idEnte): void {
+    this.isCompilato = false
+    this.compilazioneService.compilazioneEvent.emit(null)
     this.servizioSelezionato = null
     this.listaServizi = []
     this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
