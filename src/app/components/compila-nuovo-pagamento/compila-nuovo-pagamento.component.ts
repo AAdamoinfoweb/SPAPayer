@@ -19,9 +19,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
 
   isCompilato: boolean = false
 
-  enteRicevente: string = null;
-  sommaDaRicevere: number = 1234; //mock
-
   livelloTerritorialeSelezionato: string = null;
   enteSelezionato: string = null;
   servizioSelezionato: string = null;
@@ -57,7 +54,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroServizi(idEnte): void {
-    this.enteRicevente = this.listaEnti.find(ente => ente.value == idEnte)?.label;
     this.servizioSelezionato = null
     this.listaServizi = []
     this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
