@@ -138,7 +138,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   aggiungiCampo(campo: CampoForm): void {
     campo['nome'] = campo.titolo.trim();
+
+    if (campo.tipoCampo === 'boolean') {
+      this.valoriCampi[campo['nome']] = false;
+    } else {
     this.valoriCampi[campo['nome']] = null;
+    }
+
     this.listaCampi.push(campo);
   }
 }
