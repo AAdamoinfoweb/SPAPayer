@@ -121,6 +121,21 @@
             </div>
           </div>
 
+          <div *ngSwitchCase="'dateyy'" class="dynamic-form-elem">
+            <div class="row">
+              <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+            </div>
+            <div class="row">
+              <input
+                [id]="campo['nome']"
+                [(ngModel)]="valoriCampi[campo['nome']]"
+                type="number"
+                min="1900"
+                [max]="calcolaMaxAnno()"
+              />
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

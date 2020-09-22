@@ -122,6 +122,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.listaCampiTipologiaServizio.push(clone);
     i++;
 
+    mockCampoForm.tipoCampo = 'dateyy';
+    mockCampoForm.informazioni = 'Inserisci una data yyyy';
+    mockCampoForm.lunghezza = 10;
+    clone = cloneFn(mockCampoForm);
+    clone.titolo += '' + i;
+    this.listaCampiTipologiaServizio.push(clone);
+    i++;
+
     this.valoriCampi = {};
     this.listaCampi = [];
     this.listaCampiTipologiaServizio.forEach(campo => {
