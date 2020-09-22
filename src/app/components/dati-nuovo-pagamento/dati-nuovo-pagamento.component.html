@@ -141,7 +141,8 @@
               <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
-              <select [id]="campo['nome']" [(ngModel)]="valoriCampi[campo['nome']]">
+              <select [ngClass]="{'placeholder': valoriCampi[campo['nome']] === null}" [id]="campo['nome']" [(ngModel)]="valoriCampi[campo['nome']]">
+                <option [value]="null" class="placeholder">{{campo.informazioni}}</option>
                 <option *ngFor="let item of campo['opzioni']" [value]="item.value">{{item.label}}</option>
               </select>
             </div>
