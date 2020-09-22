@@ -6,6 +6,7 @@ import {PrezzoService} from '../nuovo-pagamento/PrezzoService';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {map} from 'rxjs/operators';
 import {CampiNuovoPagamento} from '../../modules/main/model/CampiNuovoPagamento';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -21,6 +22,21 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   listaCampiServizio: Array<CampoForm> = [];
   listaCampi: Array<CampoForm> = [];
   valoriCampi: {};
+
+  mesi: Array<any> = [
+    {value: 1, label: 'gennaio'},
+    {value: 2, label: 'febbraio'},
+    {value: 3, label: 'marzo'},
+    {value: 4, label: 'aprile'},
+    {value: 5, label: 'maggio'},
+    {value: 6, label: 'giugno'},
+    {value: 7, label: 'luglio'},
+    {value: 8, label: 'agosto'},
+    {value: 9, label: 'settembre'},
+    {value: 10, label: 'ottobre'},
+    {value: 11, label: 'novembre'},
+    {value: 12, label: 'dicembre'}
+  ];
 
   isVisibile: boolean = true;
 
@@ -53,12 +69,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       controllo_logico: null,
       disabilitato: false,
       id: 1,
-      informazioni: 'Inserisci il cf',
+      informazioni: 'Inserisci un testo',
       lunghezza: 20,
       lunghezzaVariabile: true,
       obbligatorio: true,
       posizione: 2,
-      tipoCampo: 'number',
+      tipoCampo: 'string',
       titolo: 'Campo tipologia servizio prova'
     };
 
@@ -76,18 +92,23 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     clone.titolo += '' + i;
     this.listaCampiTipologiaServizio.push(clone);
     i++;
+
+    mockCampoForm.tipoCampo = 'number';
+    mockCampoForm.informazioni = 'Inserisci un numero';
     clone = cloneFn(mockCampoForm);
     clone.titolo += '' + i;
     this.listaCampiTipologiaServizio.push(clone);
     i++;
+
+    mockCampoForm.tipoCampo = 'boolean';
+    mockCampoForm.informazioni = 'Seleziona un booleano';
     clone = cloneFn(mockCampoForm);
     clone.titolo += '' + i;
     this.listaCampiTipologiaServizio.push(clone);
     i++;
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
+
+    mockCampoForm.tipoCampo = 'date';
+    mockCampoForm.informazioni = 'Inserisci una data dd-mm-yyyy';
     clone = cloneFn(mockCampoForm);
     clone.titolo += '' + i;
     this.listaCampiTipologiaServizio.push(clone);
@@ -95,15 +116,11 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
     this.valoriCampi = {};
     this.listaCampi = [];
-    this.listaCampiTipologiaServizio.forEach((campo, indice) => {
-      campo['nome'] = campo.titolo.trim();
-      this.valoriCampi[campo['nome']] = null;
-      this.listaCampi.push(campo);
+    this.listaCampiTipologiaServizio.forEach(campo => {
+      this.aggiungiCampo(campo);
     });
     this.listaCampiServizio.forEach(campo => {
-      campo['nome'] = campo.titolo.trim();
-      this.valoriCampi[campo['nome']] = null;
-      this.listaCampi.push(campo);
+      this.aggiungiCampo(campo);
     });
   }
 
@@ -114,6 +131,24 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   aggiornaPrezzoCarrello(): void {
     this.prezzoService.prezzoEvent.emit(this.importoTotale);
+  }
+
+  calcolaMaxGiorni(mese: number, anno: number): number {
+    let maxGiorni;
+
+    if (mese === 2) {
+      maxGiorni = anno % 4 === 0 ? 29 : 28;
+    } else if (mese === 4 || mese === 6 || mese === 9 || mese === 11) {
+      maxGiorni = 30;
+    } else {
+      maxGiorni = 31;
+    }
+
+    return maxGiorni;
+  }
+
+  calcolaMaxAnno(): number {
+    return moment().year();
   }
 
   compila(): void {
@@ -139,10 +174,32 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   aggiungiCampo(campo: CampoForm): void {
     campo['nome'] = campo.titolo.trim();
 
-    if (campo.tipoCampo === 'boolean') {
-      this.valoriCampi[campo['nome']] = false;
-    } else {
-    this.valoriCampi[campo['nome']] = null;
+    switch (campo.tipoCampo) {
+      case 'boolean':
+        this.valoriCampi[campo['nome']] = false;
+        break;
+      case 'string':
+        this.valoriCampi[campo['nome']] = null;
+        break;
+      case 'number':
+        this.valoriCampi[campo['nome']] = null;
+        break;
+      case 'date':
+        this.valoriCampi[campo['nome']] = {
+          giorno: null,
+          mese: null,
+          anno: null
+        };
+        break;
+      case 'datemmyy':
+        this.valoriCampi[campo['nome']] = {
+          mese: null,
+          anno: null
+        };
+        break;
+      case 'dateyy':
+        this.valoriCampi[campo['nome']] = null;
+        break;
     }
 
     this.listaCampi.push(campo);
