@@ -69,12 +69,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       controllo_logico: null,
       disabilitato: false,
       id: 1,
-      informazioni: 'Inserisci il cf',
+      informazioni: 'Inserisci un testo',
       lunghezza: 20,
       lunghezzaVariabile: true,
       obbligatorio: true,
       posizione: 2,
-      tipoCampo: 'number',
+      tipoCampo: 'string',
       titolo: 'Campo tipologia servizio prova'
     };
 
@@ -92,21 +92,23 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     clone.titolo += '' + i;
     this.listaCampiTipologiaServizio.push(clone);
     i++;
+
+    mockCampoForm.tipoCampo = 'number';
+    mockCampoForm.informazioni = 'Inserisci un numero';
+    clone = cloneFn(mockCampoForm);
+    clone.titolo += '' + i;
+    this.listaCampiTipologiaServizio.push(clone);
+    i++;
+
+    mockCampoForm.tipoCampo = 'boolean';
+    mockCampoForm.informazioni = 'Seleziona un booleano';
     clone = cloneFn(mockCampoForm);
     clone.titolo += '' + i;
     this.listaCampiTipologiaServizio.push(clone);
     i++;
 
     mockCampoForm.tipoCampo = 'date';
-
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
+    mockCampoForm.informazioni = 'Inserisci una data dd-mm-yyyy';
     clone = cloneFn(mockCampoForm);
     clone.titolo += '' + i;
     this.listaCampiTipologiaServizio.push(clone);
