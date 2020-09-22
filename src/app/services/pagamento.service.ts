@@ -12,7 +12,8 @@ import {Pagamento} from "../modules/main/model/Pagamento";
 })
 export class PagamentoService {
 
-  confermaPagamentoUrl = '/confermaPagamentoL1';
+  confermaPagamentoUrl = '/confermaPagamento';
+  confermaPagamentoL1Url = '/confermaPagamentoL1';
   verificaEsitoPagamentoUrl = '/verificaEsitoPagamento';
   verificaQuietanzaUrl = '/verificaQuietanza';
   quietanzaUrl = '/quietanza'
@@ -21,10 +22,10 @@ export class PagamentoService {
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }
 
-  public confermaPagamento(body: any): Observable<any> {
+  public confermaPagamentoL1(body: any): Observable<any> {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append("XSRF-TOKEN", this.xsrfService.xsrfToken)
-    let observable: Observable<any> = this.http.post(environment.bffBaseUrl + this.confermaPagamentoUrl, body,
+    let observable: Observable<any> = this.http.post(environment.bffBaseUrl + this.confermaPagamentoL1Url, body,
       {withCredentials: true, headers: headers})
       .pipe(map((body: any) => body.url),
         catchError((err, caught) => {
@@ -96,6 +97,22 @@ export class PagamentoService {
             return caught;
           }
         }));
+  }
+
+
+  public confermaPagamento(body: any, email: string): Observable<any> {
+    let observable: Observable<any> = this.http.post(environment.bffBaseUrl + this.confermaPagamentoUrl, body,
+      {withCredentials: true, params: {email}
+      }
+      )
+      .pipe(map((body: any) => body.url),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else
+            return caught;
+        }));
+    return observable;
   }
 
 }
