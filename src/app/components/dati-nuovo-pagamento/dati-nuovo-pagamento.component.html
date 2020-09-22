@@ -68,7 +68,7 @@
               <label [htmlFor]="campo['nome']+'-giorno'" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
-              <div class="col-4 form-elem-date-col form-elem-date-field">
+              <div class="col-3 form-elem-date-col">
                 <input
                   [id]="campo['nome']+'-giorno'"
                   [(ngModel)]="valoriCampi[campo['nome']]['giorno']"
@@ -78,14 +78,38 @@
                 />
                 <span class="form-elem-date-separator">/</span>
               </div>
-              <div class="col-4 form-elem-date-col form-elem-date-field">
+              <div class="col-6 form-elem-date-col">
                 <select class="form-elem-date-select">
                   <option [value]="null"></option>
                   <option *ngFor="let item of mesi">{{item.label}}</option>
                 </select>
                 <span class="form-elem-date-separator">/</span>
               </div>
-              <div class="col-4 form-elem-date-col form-elem-date-field">
+              <div class="col-3 form-elem-date-col">
+                <input
+                  [id]="campo['nome']+'-anno'"
+                  [(ngModel)]="valoriCampi[campo['nome']]['anno']"
+                  type="number"
+                  min="1900"
+                  [max]="calcolaMaxAnno()"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'datemmyy'" class="dynamic-form-elem">
+            <div class="row">
+              <label [htmlFor]="campo['nome']+'-mese'" class="title">{{campo.titolo}}</label>
+            </div>
+            <div class="row">
+              <div class="col-8 form-elem-date-col">
+                <select class="form-elem-date-select">
+                  <option [value]="null"></option>
+                  <option *ngFor="let item of mesi">{{item.label}}</option>
+                </select>
+                <span class="form-elem-date-separator">/</span>
+              </div>
+              <div class="col-4 form-elem-date-col">
                 <input
                   [id]="campo['nome']+'-anno'"
                   [(ngModel)]="valoriCampi[campo['nome']]['anno']"
