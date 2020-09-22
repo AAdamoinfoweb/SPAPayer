@@ -23,6 +23,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   listaCampi: Array<CampoForm> = [];
   valoriCampi: {};
 
+  lunghezzaMaxCampoPiccolo: number = 10;
+  lunghezzaMaxCampoMedio: number = 20;
+
   mesi: Array<any> = [
     {value: 1, label: 'gennaio'},
     {value: 2, label: 'febbraio'},
@@ -140,9 +143,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     });
   }
 
-  isCampoGrande(campo) {
-    const lunghezzaMaxCampoPiccolo = 10;
-    return campo.lunghezza > lunghezzaMaxCampoPiccolo;
+  isCampoDimensioneMedia(campo) {
+    return campo.lunghezza > this.lunghezzaMaxCampoPiccolo;
+  }
+
+  isCampoDimensioneGrande(campo) {
+    return campo.lunghezza > this.lunghezzaMaxCampoMedio;
   }
 
   aggiornaPrezzoCarrello(): void {

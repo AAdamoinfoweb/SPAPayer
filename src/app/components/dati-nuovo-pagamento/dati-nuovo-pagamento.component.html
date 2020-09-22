@@ -17,7 +17,7 @@
 <div id="sezioneDati" class="collapse show">
   <div class="page-section">
     <div class="row">
-      <div *ngFor="let campo of listaCampi" [ngClass]="{'col-md-2': !isCampoGrande(campo), 'col-md-4': isCampoGrande(campo)}">
+      <div *ngFor="let campo of listaCampi" [ngClass]="{'col-md-2': !isCampoDimensioneMedia(campo), 'col-md-3': isCampoDimensioneMedia(campo) && !isCampoDimensioneGrande(campo), 'col-md-4': isCampoDimensioneGrande(campo)}">
         <div [ngSwitch]="campo.tipoCampo" class="form-elem-container">
 
           <div *ngSwitchCase="'string'" class="dynamic-form-elem">
