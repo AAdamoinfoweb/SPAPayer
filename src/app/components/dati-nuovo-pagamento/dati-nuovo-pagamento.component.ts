@@ -98,15 +98,11 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
     this.valoriCampi = {};
     this.listaCampi = [];
-    this.listaCampiTipologiaServizio.forEach((campo, indice) => {
-      campo['nome'] = campo.titolo.trim();
-      this.valoriCampi[campo['nome']] = null;
-      this.listaCampi.push(campo);
+    this.listaCampiTipologiaServizio.forEach(campo => {
+      this.aggiungiCampo(campo);
     });
     this.listaCampiServizio.forEach(campo => {
-      campo['nome'] = campo.titolo.trim();
-      this.valoriCampi[campo['nome']] = null;
-      this.listaCampi.push(campo);
+      this.aggiungiCampo(campo);
     });
   }
 
