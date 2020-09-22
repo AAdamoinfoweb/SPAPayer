@@ -59,6 +59,39 @@
             </div>
           </div>
 
+          <div *ngSwitchCase="'date'" class="dynamic-form-elem">
+            <div class="row">
+              <label [htmlFor]="campo['nome']+'-giorno'" class="title">{{campo.titolo}}</label>
+            </div>
+            <div class="row">
+              <div class="col-4 form-elem-date-col form-elem-date-field">
+                <input
+                  [id]="campo['nome']+'-giorno'"
+                  [(ngModel)]="valoriCampi[campo['nome']]['giorno']"
+                  type="number"
+                  min="1"
+                  [max]="calcolaMaxGiorni(campo['nome']['mese'], campo['nome']['anno'])"
+                />
+                <span class="form-elem-date-separator">/</span>
+              </div>
+              <div class="col-4 form-elem-date-col form-elem-date-field">
+                <select class="form-elem-date-select">
+                  <option [value]="null"></option>
+                  <option *ngFor="let item of mesi">{{item.label}}</option>
+                </select>
+                <span class="form-elem-date-separator">/</span>
+              </div>
+              <div class="col-4 form-elem-date-col form-elem-date-field">
+                <input
+                  [id]="campo['nome']+'-anno'"
+                  [(ngModel)]="valoriCampi[campo['nome']]['anno']"
+                  type="number"
+                  min="1900"
+                  [max]="calcolaMaxAnno()"
+                />
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>
