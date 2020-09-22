@@ -80,6 +80,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     clone.titolo += '' + i;
     this.listaCampiTipologiaServizio.push(clone);
     i++;
+
+    mockCampoForm.tipoCampo = 'boolean';
+
     clone = cloneFn(mockCampoForm);
     clone.titolo += '' + i;
     this.listaCampiTipologiaServizio.push(clone);
