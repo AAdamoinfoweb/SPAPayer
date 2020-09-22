@@ -20,7 +20,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   listaCampiTipologiaServizio: Array<CampoForm> = [];
   listaCampiServizio: Array<CampoForm> = [];
   listaCampi: Array<CampoForm> = [];
-  campiCompilati: {};
+  valoriCampi: {};
 
   isVisibile: boolean = true;
 
@@ -93,16 +93,16 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.listaCampiTipologiaServizio.push(clone);
     i++;
 
-    this.campiCompilati = {};
+    this.valoriCampi = {};
     this.listaCampi = [];
     this.listaCampiTipologiaServizio.forEach((campo, indice) => {
       campo['nome'] = campo.titolo.trim();
-      this.campiCompilati[campo['nome']] = null;
+      this.valoriCampi[campo['nome']] = null;
       this.listaCampi.push(campo);
     });
     this.listaCampiServizio.forEach(campo => {
       campo['nome'] = campo.titolo.trim();
-      this.campiCompilati[campo['nome']] = null;
+      this.valoriCampi[campo['nome']] = null;
       this.listaCampi.push(campo);
     });
   }
@@ -124,16 +124,16 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
         this.listaCampiServizio = campiNuovoPagamento.campiServizio;
 
-        this.campiCompilati = {};
+        this.valoriCampi = {};
         this.listaCampi = [];
         this.listaCampiTipologiaServizio.forEach((campo, indice) => {
           campo['nome'] = campo.titolo.trim();
-          this.campiCompilati[campo['nome']] = null;
+          this.valoriCampi[campo['nome']] = null;
           this.listaCampi.push(campo);
         });
         this.listaCampiServizio.forEach(campo => {
           campo['nome'] = campo.titolo.trim();
-          this.campiCompilati[campo['nome']] = null;
+          this.valoriCampi[campo['nome']] = null;
           this.listaCampi.push(campo);
         });
       })).subscribe();
