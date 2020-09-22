@@ -133,6 +133,17 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.listaCampiTipologiaServizio.push(clone);
     i++;
 
+    mockCampoForm.tipoCampo = 'select';
+    mockCampoForm.informazioni = 'Seleziona un valore';
+    mockCampoForm.lunghezza = 25;
+    mockCampoForm['opzioni'] = [];
+    mockCampoForm['opzioni'].push({value: 'mock-value-1', label: 'mock-label-1'});
+    mockCampoForm['opzioni'].push({value: 'mock-value-2', label: 'mock-label-2'});
+    clone = cloneFn(mockCampoForm);
+    clone.titolo += '' + i;
+    this.listaCampiTipologiaServizio.push(clone);
+    i++;
+
     this.valoriCampi = {};
     this.listaCampi = [];
     this.listaCampiTipologiaServizio.forEach(campo => {
@@ -220,6 +231,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         };
         break;
       case 'dateyy':
+        this.valoriCampi[campo['nome']] = null;
+        break;
+      case 'select':
+        //TODO definire il formato delle opzioni ricevute per la Select
         this.valoriCampi[campo['nome']] = null;
         break;
     }
