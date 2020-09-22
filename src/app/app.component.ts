@@ -1,5 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {StickyService} from "./components/login-bar/StickyService";
+import {MenuService} from "./services/menu.service";
 
 @Component({
   selector: 'app-root',
@@ -7,9 +8,14 @@ import {StickyService} from "./components/login-bar/StickyService";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor() { }
+
+  constructor(private menuService: MenuService) {
+  }
 
   ngOnInit(): void {
+    this.menuService.getInfoUtente().subscribe((menu) => {
+
+    });
   }
 
   title = '';
