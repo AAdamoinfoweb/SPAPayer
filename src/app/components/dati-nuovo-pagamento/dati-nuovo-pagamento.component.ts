@@ -159,9 +159,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       campo['nome'] = campo.titolo.trim();
 
       switch (campo.tipoCampo) {
-        case 'checkbox':
-          this.valoriCampi[campo['nome']] = false;
-          break;
         case 'string':
           this.valoriCampi[campo['nome']] = null;
           break;

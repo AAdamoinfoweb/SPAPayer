@@ -52,22 +52,6 @@
             </div>
           </div>
 
-          <div *ngSwitchCase="'checkbox'" class="dynamic-form-elem">
-            <div class="row">
-              <label [htmlFor]="campo['nome']" class="title">
-                {{campo.titolo}}
-              </label>
-            </div>
-            <div class="row">
-              <input
-                [id]="campo['nome']"
-                [(ngModel)]="valoriCampi[campo['nome']]"
-                type="checkbox"
-                [disabled]="campo.disabilitato"
-              />
-            </div>
-          </div>
-
           <div *ngSwitchCase="'date'" class="dynamic-form-elem">
             <div class="row">
               <label [htmlFor]="campo['nome']+'-giorno'" class="title">{{campo.titolo}}</label>
