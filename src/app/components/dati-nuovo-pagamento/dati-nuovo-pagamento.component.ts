@@ -104,7 +104,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.listaCampiTipologiaServizio.push(clone);
     i++;
 
-    mockCampoForm.tipoCampo = 'boolean';
+    mockCampoForm.tipoCampo = 'checkbox';
     mockCampoForm.informazioni = 'Seleziona un booleano';
     clone = cloneFn(mockCampoForm);
     clone.titolo += '' + i;
