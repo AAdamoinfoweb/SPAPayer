@@ -146,12 +146,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
     this.valoriCampi = {};
     this.listaCampi = [];
-    this.listaCampiTipologiaServizio.forEach(campo => {
-      this.aggiungiCampo(campo);
-    });
-    this.listaCampiServizio.forEach(campo => {
-      this.aggiungiCampo(campo);
-    });
+    this.impostaCampi(this.listaCampiTipologiaServizio);
+    this.impostaCampi(this.listaCampiServizio);
   }
 
   isCampoDimensioneMedia(campo) {
@@ -194,51 +190,53 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
         this.valoriCampi = {};
         this.listaCampi = [];
-        this.listaCampiTipologiaServizio.forEach(campo => {
-          this.aggiungiCampo(campo);
-        });
-        this.listaCampiServizio.forEach(campo => {
-          this.aggiungiCampo(campo);
-        });
+        this.impostaCampi(this.listaCampiTipologiaServizio);
+        this.impostaCampi(this.listaCampiServizio);
       })).subscribe();
     }
   }
 
-  aggiungiCampo(campo: CampoForm): void {
-    campo['nome'] = campo.titolo.trim();
+  impostaCampi(campi: Array<CampoForm>): void {
+    campi.sort((campo1: CampoForm, campo2: CampoForm) => {
+      return campo1.posizione > campo2.posizione ? 1 : -1;
+    });
 
-    switch (campo.tipoCampo) {
-      case 'boolean':
-        this.valoriCampi[campo['nome']] = false;
-        break;
-      case 'string':
-        this.valoriCampi[campo['nome']] = null;
-        break;
-      case 'number':
-        this.valoriCampi[campo['nome']] = null;
-        break;
-      case 'date':
-        this.valoriCampi[campo['nome']] = {
-          giorno: null,
-          mese: null,
-          anno: null
-        };
-        break;
-      case 'datemmyy':
-        this.valoriCampi[campo['nome']] = {
-          mese: null,
-          anno: null
-        };
-        break;
-      case 'dateyy':
-        this.valoriCampi[campo['nome']] = null;
-        break;
-      case 'select':
-        //TODO definire il formato delle opzioni ricevute per la Select
-        this.valoriCampi[campo['nome']] = null;
-        break;
-    }
+    campi.forEach(campo => {
+      campo['nome'] = campo.titolo.trim();
 
-    this.listaCampi.push(campo);
+      switch (campo.tipoCampo) {
+        case 'checkbox':
+          this.valoriCampi[campo['nome']] = false;
+          break;
+        case 'string':
+          this.valoriCampi[campo['nome']] = null;
+          break;
+        case 'number':
+          this.valoriCampi[campo['nome']] = null;
+          break;
+        case 'date':
+          this.valoriCampi[campo['nome']] = {
+            giorno: null,
+            mese: null,
+            anno: null
+          };
+          break;
+        case 'datemmyy':
+          this.valoriCampi[campo['nome']] = {
+            mese: null,
+            anno: null
+          };
+          break;
+        case 'dateyy':
+          this.valoriCampi[campo['nome']] = null;
+          break;
+        case 'select':
+          //TODO definire il formato delle opzioni ricevute per la Select
+          this.valoriCampi[campo['nome']] = null;
+          break;
+      }
+
+      this.listaCampi.push(campo);
+    });
   }
 }
