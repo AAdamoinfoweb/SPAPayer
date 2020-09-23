@@ -50,16 +50,16 @@
 
           <div *ngSwitchCase="'boolean'" class="dynamic-form-elem">
             <div class="row">
-              <div class="form-elem-checkbox-container">
-                <label [htmlFor]="campo['nome']" class="title">
-                  <input
-                    [id]="campo['nome']"
-                    class="form-elem-checkbox"
-                    [(ngModel)]="valoriCampi[campo['nome']]"
-                    type="checkbox"
-                  />
-                  {{campo.titolo}}</label>
-              </div>
+              <label [htmlFor]="campo['nome']" class="title">
+                {{campo.titolo}}
+              </label>
+            </div>
+            <div class="row">
+              <input
+                [id]="campo['nome']"
+                [(ngModel)]="valoriCampi[campo['nome']]"
+                type="checkbox"
+              />
             </div>
           </div>
 
