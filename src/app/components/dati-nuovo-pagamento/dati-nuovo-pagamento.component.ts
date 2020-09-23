@@ -66,7 +66,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   mockCampiForm(): void {
-    const mockCampoForm: CampoForm = {
+    let campiMockati: Array<CampoForm> = [];
+    campiMockati.push({
       campoFisso: true,
       campo_input: true,
       chiave: false,
@@ -80,75 +81,11 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       posizione: 2,
       tipoCampo: 'string',
       titolo: 'Campo tipologia servizio prova'
-    };
-
-    const cloneFn = (obj) => {
-      const clone = {};
-      Object.keys(obj).forEach(key => {
-        clone[key] = obj[key];
-      });
-      return clone;
-    };
-
-    let i = 1;
-    let clone;
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'number';
-    mockCampoForm.informazioni = 'Inserisci un numero';
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'checkbox';
-    mockCampoForm.informazioni = 'Seleziona un booleano';
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'date';
-    mockCampoForm.informazioni = 'Inserisci una data dd-mm-yyyy';
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'datemmyy';
-    mockCampoForm.informazioni = 'Inserisci una data dd-mm-yyyy';
-    mockCampoForm.lunghezza = 10;
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'dateyy';
-    mockCampoForm.informazioni = 'Inserisci una data yyyy';
-    mockCampoForm.lunghezza = 10;
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'select';
-    mockCampoForm.informazioni = 'Seleziona un valore';
-    mockCampoForm.lunghezza = 25;
-    mockCampoForm['opzioni'] = [];
-    mockCampoForm['opzioni'].push({value: 'mock-value-1', label: 'mock-label-1'});
-    mockCampoForm['opzioni'].push({value: 'mock-value-2', label: 'mock-label-2'});
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
+    });
 
     this.valoriCampi = {};
     this.listaCampi = [];
-    this.impostaCampi(this.listaCampiTipologiaServizio);
-    this.impostaCampi(this.listaCampiServizio);
+    this.impostaCampi(campiMockati);
   }
 
   calcolaDimensioneCampo(campo: CampoForm): string {
