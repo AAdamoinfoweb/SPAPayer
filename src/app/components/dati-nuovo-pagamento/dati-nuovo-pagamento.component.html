@@ -30,6 +30,7 @@
                 [placeholder]="campo['informazioni']"
                 [(ngModel)]="valoriCampi[campo['nome']]"
                 type="text"
+                [maxLength]="campo.lunghezza"
               />
             </div>
           </div>
@@ -44,6 +45,7 @@
                 [placeholder]="campo['informazioni']"
                 [(ngModel)]="valoriCampi[campo['nome']]"
                 type="number"
+                [maxLength]="campo.lunghezza"
               />
             </div>
           </div>
