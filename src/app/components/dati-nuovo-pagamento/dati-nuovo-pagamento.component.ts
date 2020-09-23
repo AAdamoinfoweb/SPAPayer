@@ -23,8 +23,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   listaCampi: Array<CampoForm> = [];
   valoriCampi: {};
 
-  lunghezzaMaxCampoPiccolo: number = 10;
-  lunghezzaMaxCampoMedio: number = 20;
+  lunghezzaMaxCol1: number = 5;
+  lunghezzaMaxCol2: number = 10;
+  lunghezzaMaxCol3: number = 15;
 
   mesi: Array<any> = [
     {value: 1, label: 'gennaio'},
@@ -65,7 +66,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   mockCampiForm(): void {
-    const mockCampoForm: CampoForm = {
+    let campiMockati: Array<CampoForm> = [];
+    campiMockati.push({
       campoFisso: true,
       campo_input: true,
       chiave: false,
@@ -79,87 +81,35 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       posizione: 2,
       tipoCampo: 'string',
       titolo: 'Campo tipologia servizio prova'
-    };
-
-    const cloneFn = (obj) => {
-      const clone = {};
-      Object.keys(obj).forEach(key => {
-        clone[key] = obj[key];
-      });
-      return clone;
-    };
-
-    let i = 1;
-    let clone;
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'number';
-    mockCampoForm.informazioni = 'Inserisci un numero';
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'boolean';
-    mockCampoForm.informazioni = 'Seleziona un booleano';
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'date';
-    mockCampoForm.informazioni = 'Inserisci una data dd-mm-yyyy';
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'datemmyy';
-    mockCampoForm.informazioni = 'Inserisci una data dd-mm-yyyy';
-    mockCampoForm.lunghezza = 10;
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'dateyy';
-    mockCampoForm.informazioni = 'Inserisci una data yyyy';
-    mockCampoForm.lunghezza = 10;
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
-
-    mockCampoForm.tipoCampo = 'select';
-    mockCampoForm.informazioni = 'Seleziona un valore';
-    mockCampoForm.lunghezza = 25;
-    mockCampoForm['opzioni'] = [];
-    mockCampoForm['opzioni'].push({value: 'mock-value-1', label: 'mock-label-1'});
-    mockCampoForm['opzioni'].push({value: 'mock-value-2', label: 'mock-label-2'});
-    clone = cloneFn(mockCampoForm);
-    clone.titolo += '' + i;
-    this.listaCampiTipologiaServizio.push(clone);
-    i++;
+    });
 
     this.valoriCampi = {};
     this.listaCampi = [];
-    this.listaCampiTipologiaServizio.forEach(campo => {
-      this.aggiungiCampo(campo);
-    });
-    this.listaCampiServizio.forEach(campo => {
-      this.aggiungiCampo(campo);
-    });
+    this.impostaCampi(campiMockati);
   }
 
-  isCampoDimensioneMedia(campo) {
-    return campo.lunghezza > this.lunghezzaMaxCampoPiccolo;
-  }
+  calcolaDimensioneCampo(campo: CampoForm): string {
+    let classe;
 
-  isCampoDimensioneGrande(campo) {
-    return campo.lunghezza > this.lunghezzaMaxCampoMedio;
+    if (campo.tipoCampo === 'date') {
+      classe = 'col-md-4';
+    } else if (campo.tipoCampo === 'datemmyy') {
+      classe = 'col-md-2';
+    } else if (campo.tipoCampo === 'dateyy') {
+      classe = 'col-md-1';
+    } else {
+      if (campo.lunghezza <= this.lunghezzaMaxCol1) {
+        classe = 'col-md-1';
+      } else if (campo.lunghezza <= this.lunghezzaMaxCol2) {
+        classe = 'col-md-2';
+      } else if (campo.lunghezza <= this.lunghezzaMaxCol3) {
+        classe = 'col-md-3';
+      } else {
+        classe = 'col-md-4';
+      }
+    }
+
+    return classe;
   }
 
   aggiornaPrezzoCarrello(): void {
@@ -194,51 +144,50 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
         this.valoriCampi = {};
         this.listaCampi = [];
-        this.listaCampiTipologiaServizio.forEach(campo => {
-          this.aggiungiCampo(campo);
-        });
-        this.listaCampiServizio.forEach(campo => {
-          this.aggiungiCampo(campo);
-        });
+        this.impostaCampi(this.listaCampiTipologiaServizio);
+        this.impostaCampi(this.listaCampiServizio);
       })).subscribe();
     }
   }
 
-  aggiungiCampo(campo: CampoForm): void {
-    campo['nome'] = campo.titolo.trim();
+  impostaCampi(campi: Array<CampoForm>): void {
+    campi.sort((campo1: CampoForm, campo2: CampoForm) => {
+      return campo1.posizione > campo2.posizione ? 1 : -1;
+    });
 
-    switch (campo.tipoCampo) {
-      case 'boolean':
-        this.valoriCampi[campo['nome']] = false;
-        break;
-      case 'string':
-        this.valoriCampi[campo['nome']] = null;
-        break;
-      case 'number':
-        this.valoriCampi[campo['nome']] = null;
-        break;
-      case 'date':
-        this.valoriCampi[campo['nome']] = {
-          giorno: null,
-          mese: null,
-          anno: null
-        };
-        break;
-      case 'datemmyy':
-        this.valoriCampi[campo['nome']] = {
-          mese: null,
-          anno: null
-        };
-        break;
-      case 'dateyy':
-        this.valoriCampi[campo['nome']] = null;
-        break;
-      case 'select':
-        //TODO definire il formato delle opzioni ricevute per la Select
-        this.valoriCampi[campo['nome']] = null;
-        break;
-    }
+    campi.forEach(campo => {
+      campo['nome'] = campo.titolo.trim();
 
-    this.listaCampi.push(campo);
+      switch (campo.tipoCampo) {
+        case 'string':
+          this.valoriCampi[campo['nome']] = null;
+          break;
+        case 'number':
+          this.valoriCampi[campo['nome']] = null;
+          break;
+        case 'date':
+          this.valoriCampi[campo['nome']] = {
+            giorno: null,
+            mese: null,
+            anno: null
+          };
+          break;
+        case 'datemmyy':
+          this.valoriCampi[campo['nome']] = {
+            mese: null,
+            anno: null
+          };
+          break;
+        case 'dateyy':
+          this.valoriCampi[campo['nome']] = null;
+          break;
+        case 'select':
+          //TODO definire il formato delle opzioni ricevute per la Select
+          this.valoriCampi[campo['nome']] = null;
+          break;
+      }
+
+      this.listaCampi.push(campo);
+    });
   }
 }
