@@ -17,8 +17,8 @@ export class MenuService {
     return this.http.get(environment.bffBaseUrl + this.getInfoUtenteUrl, {
       withCredentials: true
     })
-      .pipe(map((body:any) => {
-        return JSON.parse(atob(body.menu));
+      .pipe(map((body: any) => {
+        return body;
       }), catchError((err, caught) => {
         if (err.status == 401) {
           return of(null);

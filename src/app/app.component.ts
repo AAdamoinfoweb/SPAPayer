@@ -9,13 +9,11 @@ import {MenuService} from "./services/menu.service";
 })
 export class AppComponent implements OnInit {
 
-  constructor(private menuService: MenuService) {
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.menuService.getInfoUtente().subscribe((menu) => {
 
-    });
   }
 
   title = '';
