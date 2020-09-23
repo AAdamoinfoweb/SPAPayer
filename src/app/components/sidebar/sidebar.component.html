@@ -1,36 +1,37 @@
 <div class="sidebar" data-color="white" data-active-color="danger">
- <div class="logo">
-   <a routerLink="/" class="navbar-toggle simple-text logo-mini">
-     <div class="logo-image-small">
-       <img alt="" src="../assets/img/logo-small.png">
-     </div>
-   </a>
-   <a routerLink="/" class="navbar-toggle simple-text logo-normal">
-     {{ nomeUtente }}
-   </a>
- </div>
- <div class="sidebar-wrapper sidebar-no-overflow">
-   <ul class="nav">
-     <li>
-       <h3 class="no_toc">Funzioni</h3>
-     </li>
-     <li><a class="list-item medium active" href="#"><span>Link list active </span></a>
-     </li>
-     <li><a class="list-item medium disabled" href="#"><span>Link list disabled </span></a>
-     </li>
-     <li><a class="list-item medium" href="#"><span>Link list</span></a>
-     </li>
-     <li><a class="list-item medium" href="#"><span>Link list</span></a>
-     </li>
-   </ul>
-   <ul class="nav">
-     <li>
-       <a (click)="logout()" class="logout navbar-brand">Logout</a>
-     </li>
-   </ul>
- </div>
- <div class="logo-rer">
-   <small>Versione: {{ versionApplicativo }}</small>
-  <img alt="" src="../assets/images/re-logo.png">
- </div>
+  <div class="logo">
+    <a routerLink="/" class="navbar-toggle simple-text logo-mini">
+      <div class="logo-image-small">
+        <img alt="" src="../assets/img/logo-small.png">
+      </div>
+    </a>
+    <a routerLink="/" class="navbar-toggle simple-text logo-normal">
+      {{ nomeUtente }}
+    </a>
+  </div>
+  <div *ngIf="!waiting" class="sidebar-wrapper sidebar-no-overflow">
+    <ul class="nav">
+      <li>
+        <h3 class="no_toc">Funzioni</h3>
+      </li>
+      <ng-container *ngFor="let item of menu">
+        <li><a class="list-item medium active" href="#collapseOne" data-toggle="collapse" aria-expanded="true"><span>{{item.nome}}</span></a>
+          <ul class="link-sublist collapse show" id="collapseOne" *ngIf="item.sotto_menu">
+            <ng-container *ngFor="let sub of item.sotto_menu">
+              <li><a class="list-item medium active" href="#collapseOne" data-toggle="collapse" aria-expanded="true"><span>{{sub.nome}}</span></a></li>
+            </ng-container>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+    <!--ul class="nav">
+      <li>
+        <a (click)="logout()" class="logout navbar-brand">Logout</a>
+      </li>
+    </ul-->
+  </div>
+  <div class="logo-rer">
+    <small>Versione: {{ versionApplicativo }}</small>
+    <img alt="" src="../assets/images/re-logo.png">
+  </div>
 </div>

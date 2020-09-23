@@ -1,6 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {environment} from '../../../environments/environment';
-import {MenuService} from "../../services/menu.service";
+import {MenuService} from '../../services/menu.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,13 +11,16 @@ export class SidebarComponent implements OnInit {
 
   versionApplicativo: string;
   nomeUtente = '-----';
-  private menu = [];
+  menu = [];
+  waiting: boolean;
 
   constructor(private menuService: MenuService) {
   }
 
   ngOnInit(): void {
+    this.waiting = true;
     this.menuService.getInfoUtente().subscribe((info) => {
+      this.waiting = false;
       localStorage.setItem('nome', info.nome);
       localStorage.setItem('cognome', info.cognome);
 
@@ -29,15 +32,15 @@ export class SidebarComponent implements OnInit {
     this.versionApplicativo = environment.sentry.release;
   }
 
-    logout() {
-      const inizioLogout = new Promise((resolve) => {
-        localStorage.clear();
-        resolve('done');
-      });
+  logout() {
+    const inizioLogout = new Promise((resolve) => {
+      localStorage.clear();
+      resolve('done');
+    });
 
-      inizioLogout.finally(() => {
-        location.replace(environment.logoutSpid);
-      });
-    }
+    inizioLogout.finally(() => {
+      location.replace(environment.logoutSpid);
+    });
+  }
 
 }
