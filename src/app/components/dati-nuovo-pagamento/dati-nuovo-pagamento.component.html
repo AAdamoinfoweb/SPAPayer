@@ -31,6 +31,7 @@
                 [(ngModel)]="valoriCampi[campo['nome']]"
                 type="text"
                 [maxLength]="campo.lunghezza"
+                [disabled]="campo.disabilitato"
               />
             </div>
           </div>
@@ -46,6 +47,7 @@
                 [(ngModel)]="valoriCampi[campo['nome']]"
                 type="number"
                 [maxLength]="campo.lunghezza"
+                [disabled]="campo.disabilitato"
               />
             </div>
           </div>
@@ -61,6 +63,7 @@
                 [id]="campo['nome']"
                 [(ngModel)]="valoriCampi[campo['nome']]"
                 type="checkbox"
+                [disabled]="campo.disabilitato"
               />
             </div>
           </div>
@@ -77,11 +80,15 @@
                   type="number"
                   min="1"
                   [max]="calcolaMaxGiorni(campo['nome']['mese'], campo['nome']['anno'])"
+                  [disabled]="campo.disabilitato"
                 />
                 <span class="form-elem-date-separator">/</span>
               </div>
               <div class="col-6 form-elem-date-col">
-                <select class="form-elem-date-select">
+                <select
+                  class="form-elem-date-select"
+                  [disabled]="campo.disabilitato"
+                >
                   <option [value]="null"></option>
                   <option *ngFor="let item of mesi">{{item.label}}</option>
                 </select>
@@ -94,6 +101,7 @@
                   type="number"
                   min="1900"
                   [max]="calcolaMaxAnno()"
+                  [disabled]="campo.disabilitato"
                 />
               </div>
             </div>
@@ -105,7 +113,10 @@
             </div>
             <div class="row">
               <div class="col-8 form-elem-date-col">
-                <select class="form-elem-date-select">
+                <select
+                  class="form-elem-date-select"
+                  [disabled]="campo.disabilitato"
+                >
                   <option [value]="null"></option>
                   <option *ngFor="let item of mesi">{{item.label}}</option>
                 </select>
@@ -118,6 +129,7 @@
                   type="number"
                   min="1900"
                   [max]="calcolaMaxAnno()"
+                  [disabled]="campo.disabilitato"
                 />
               </div>
             </div>
@@ -134,6 +146,7 @@
                 type="number"
                 min="1900"
                 [max]="calcolaMaxAnno()"
+                [disabled]="campo.disabilitato"
               />
             </div>
           </div>
@@ -143,7 +156,12 @@
               <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
-              <select [ngClass]="{'placeholder': valoriCampi[campo['nome']] === null}" [id]="campo['nome']" [(ngModel)]="valoriCampi[campo['nome']]">
+              <select
+                [ngClass]="{'placeholder': valoriCampi[campo['nome']] === null}"
+                [id]="campo['nome']"
+                [(ngModel)]="valoriCampi[campo['nome']]"
+                [disabled]="campo.disabilitato"
+              >
                 <option [value]="null" class="placeholder">{{campo.informazioni}}</option>
                 <option *ngFor="let item of campo['opzioni']" [value]="item.value">{{item.label}}</option>
               </select>
