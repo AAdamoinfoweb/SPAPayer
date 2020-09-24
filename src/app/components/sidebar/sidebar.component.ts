@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {MenuService} from '../../services/menu.service';
 
@@ -19,16 +19,17 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.waiting = true;
-    this.menuService.getInfoUtente().subscribe((info) => {
-      this.waiting = false;
-      localStorage.setItem('nome', info.nome);
-      localStorage.setItem('cognome', info.cognome);
+    this.menuService.infoUtenteEmitter
+      .subscribe((info) => {
+        this.waiting = false;
+        localStorage.setItem('nome', info.nome);
+        localStorage.setItem('cognome', info.cognome);
 
-      if (localStorage.getItem('nome')) {
-        this.nomeUtente = `${localStorage.getItem('nome')} ${localStorage.getItem('cognome')}`;
-      }
-      this.menu = JSON.parse(atob(info.menu));
-    });
+        if (localStorage.getItem('nome') !== 'null') {
+          this.nomeUtente = `${localStorage.getItem('nome')} ${localStorage.getItem('cognome')}`;
+        }
+        this.menu = JSON.parse(atob(info.menu));
+      });
     this.versionApplicativo = environment.sentry.release;
   }
 

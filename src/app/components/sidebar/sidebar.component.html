@@ -18,7 +18,7 @@
         <li><a class="list-item medium active" href="#collapseOne" data-toggle="collapse" aria-expanded="true"><span>{{item.nome}}</span></a>
           <ul class="link-sublist collapse show" id="collapseOne" *ngIf="item.sotto_menu">
             <ng-container *ngFor="let sub of item.sotto_menu">
-              <li><a class="list-item medium active" href="#collapseOne" data-toggle="collapse" aria-expanded="true"><span>{{sub.nome}}</span></a></li>
+              <li><a class="list-item medium active" href="{{sub.route}}" data-toggle="collapse" aria-expanded="true"><span>{{sub.nome}}</span></a></li>
             </ng-container>
           </ul>
         </li>

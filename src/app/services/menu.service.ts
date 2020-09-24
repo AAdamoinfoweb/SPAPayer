@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {environment} from "../../environments/environment";
@@ -9,6 +9,8 @@ import {catchError, map} from "rxjs/operators";
 })
 export class MenuService {
   private getInfoUtenteUrl: string = '/getInfoUtente';
+
+  infoUtenteEmitter: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private http: HttpClient) {
   }
