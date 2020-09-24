@@ -7,6 +7,7 @@ import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneServic
 import {map} from 'rxjs/operators';
 import {CampiNuovoPagamento} from '../../modules/main/model/CampiNuovoPagamento';
 import * as moment from 'moment';
+import {tipologicheSelect} from '../../enums/tipologicheSelect.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
