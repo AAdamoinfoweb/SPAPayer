@@ -1,5 +1,4 @@
 export class Comune {
-  codice: string;
-  codiceProvincia: string;
-  descrizione: string;
+  codiceIstat: string;
+  nome: string;
 }

@@ -39,34 +39,28 @@ export class AppComponent implements OnInit {
   mockLetturaTipologicheSelect(): void {
     this.province.push({
       codice: '058',
-      descrizione: 'Roma',
-      sigla: 'RM'
+      nome: 'Roma'
     });
     this.province.push({
       codice: '072',
-      descrizione: 'Bari',
-      sigla: 'BA'
+      nome: 'Bari'
     });
 
     this.comuni.push({
-      codice: '058091',
-      codiceProvincia: '058',
-      descrizione: 'Roma'
+      codiceIstat: '058091',
+      nome: 'Roma'
     });
     this.comuni.push({
-      codice: '058079',
-      codiceProvincia: '058',
-      descrizione: 'Pomezia'
+      codiceIstat: '058079',
+      nome: 'Pomezia'
     });
     this.comuni.push({
-      codice: '072006',
-      codiceProvincia: '072',
-      descrizione: 'Bari'
+      codiceIstat: '072006',
+      nome: 'Bari'
     });
     this.comuni.push({
-      codice: '072012',
-      codiceProvincia: '072',
-      descrizione: 'Bitritto'
+      codiceIstat: '072012',
+      nome: 'Bitritto'
     });
   }
 }
