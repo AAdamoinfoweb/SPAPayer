@@ -27,12 +27,14 @@
             <div class="row">
               <input
                 [id]="campo['nome']"
-                [placeholder]="campo['informazioni']"
                 [(ngModel)]="valoriCampi[campo['nome']]"
                 type="text"
                 [maxLength]="campo.lunghezza"
                 [disabled]="campo.disabilitato"
               />
+            </div>
+            <div class="row">
+              <p class="placeholder">{{campo.informazioni}}</p>
             </div>
           </div>
 
@@ -43,12 +45,14 @@
             <div class="row">
               <input
                 [id]="campo['nome']"
-                [placeholder]="campo['informazioni']"
                 [(ngModel)]="valoriCampi[campo['nome']]"
                 type="number"
                 [maxLength]="campo.lunghezza"
                 [disabled]="campo.disabilitato"
               />
+            </div>
+            <div class="row">
+              <p class="placeholder">{{campo.informazioni}}</p>
             </div>
           </div>
 
@@ -60,12 +64,14 @@
               <input
                 [id]="campo['nome']"
                 class="price-input"
-                [placeholder]="campo['informazioni']"
                 [(ngModel)]="valoriCampi[campo['nome']]"
                 type="number"
                 [maxLength]="campo.lunghezza"
                 [disabled]="campo.disabilitato"
               />
+            </div>
+            <div class="row">
+              <p class="placeholder">{{campo.informazioni}}</p>
             </div>
           </div>
 
@@ -106,6 +112,9 @@
                 />
               </div>
             </div>
+            <div class="row">
+              <p class="placeholder">{{campo.informazioni}}</p>
+            </div>
           </div>
 
           <div *ngSwitchCase="'datemmyy'" class="dynamic-form-elem">
@@ -134,6 +143,9 @@
                 />
               </div>
             </div>
+            <div class="row">
+              <p class="placeholder">{{campo.informazioni}}</p>
+            </div>
           </div>
 
           <div *ngSwitchCase="'dateyy'" class="dynamic-form-elem">
@@ -150,6 +162,9 @@
                 [disabled]="campo.disabilitato"
               />
             </div>
+            <div class="row">
+              <p class="placeholder">{{campo.informazioni}}</p>
+            </div>
           </div>
 
           <div *ngSwitchCase="'select'" class="dynamic-form-elem">
@@ -158,14 +173,16 @@
             </div>
             <div class="row">
               <select
-                [ngClass]="{'placeholder': valoriCampi[campo['nome']] === null}"
                 [id]="campo['nome']"
                 [(ngModel)]="valoriCampi[campo['nome']]"
                 [disabled]="campo.disabilitato"
               >
-                <option [value]="null" class="placeholder">{{campo.informazioni}}</option>
+                <option [value]="null"></option>
                 <option *ngFor="let item of campo['opzioni']" [value]="item.value">{{item.label}}</option>
               </select>
+            </div>
+            <div class="row">
+              <p class="placeholder">{{campo.informazioni}}</p>
             </div>
           </div>
 
