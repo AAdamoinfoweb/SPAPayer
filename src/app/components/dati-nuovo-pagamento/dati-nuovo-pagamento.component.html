@@ -52,6 +52,23 @@
             </div>
           </div>
 
+          <div *ngSwitchCase="'importo'" class="dynamic-form-elem">
+            <div class="row">
+              <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+            </div>
+            <div class="row">
+              <input
+                [id]="campo['nome']"
+                class="price-input"
+                [placeholder]="campo['informazioni']"
+                [(ngModel)]="valoriCampi[campo['nome']]"
+                type="number"
+                [maxLength]="campo.lunghezza"
+                [disabled]="campo.disabilitato"
+              />
+            </div>
+          </div>
+
           <div *ngSwitchCase="'date'" class="dynamic-form-elem">
             <div class="row">
               <label [htmlFor]="campo['nome']+'-giorno'" class="title">{{campo.titolo}}</label>

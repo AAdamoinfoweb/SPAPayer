@@ -74,13 +74,29 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       controllo_logico: null,
       disabilitato: false,
       id: 1,
-      informazioni: 'Inserisci un testo',
+      informazioni: 'Inserisci un valore',
       lunghezza: 20,
       lunghezzaVariabile: true,
       obbligatorio: true,
       posizione: 2,
-      tipoCampo: 'string',
-      titolo: 'Campo tipologia servizio prova'
+      tipoCampo: 'number',
+      titolo: 'Numero'
+    });
+
+    campiMockati.push({
+      campoFisso: true,
+      campo_input: true,
+      chiave: false,
+      controllo_logico: null,
+      disabilitato: false,
+      id: 1,
+      informazioni: 'Inserisci un importo',
+      lunghezza: 5,
+      lunghezzaVariabile: true,
+      obbligatorio: true,
+      posizione: 2,
+      tipoCampo: 'importo',
+      titolo: 'Importo'
     });
 
     this.valoriCampi = {};
@@ -97,6 +113,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       classe = 'col-md-3';
     } else if (campo.tipoCampo === 'dateyy') {
       classe = 'col-md-1';
+    } else if (campo.tipoCampo === 'importo') {
+      classe = 'col-md-2';
     } else {
       if (campo.lunghezza <= this.lunghezzaMaxCol1) {
         classe = 'col-md-1';
@@ -152,7 +170,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   impostaCampi(campi: Array<CampoForm>): void {
     campi.sort((campo1: CampoForm, campo2: CampoForm) => {
-      return campo1.posizione > campo2.posizione ? 1 : -1;
+      return campo1.posizione > campo2.posizione ? 1 : (campo1.posizione < campo2.posizione ? -1 : 0);
     });
 
     campi.forEach(campo => {
