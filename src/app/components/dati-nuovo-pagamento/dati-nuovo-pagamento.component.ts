@@ -94,7 +94,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     if (campo.tipoCampo === 'date') {
       classe = 'col-md-4';
     } else if (campo.tipoCampo === 'datemmyy') {
-      classe = 'col-md-2';
+      classe = 'col-md-3';
     } else if (campo.tipoCampo === 'dateyy') {
       classe = 'col-md-1';
     } else {
