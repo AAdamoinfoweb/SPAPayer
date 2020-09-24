@@ -14,5 +14,5 @@ export class CampoForm {
   campo_input: boolean;
   json_path: string;
   tipologica: string;
-  dipendeDa: string;
+  dipendeDa: number;
 }

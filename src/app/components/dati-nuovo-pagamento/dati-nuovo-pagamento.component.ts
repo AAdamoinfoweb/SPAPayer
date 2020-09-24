@@ -67,7 +67,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   mockCampiForm(): void {
     let campiMockati: Array<CampoForm> = [];
-    let campo = {
+    let campo;
+
+    campo = {
       id: 1,
       titolo: 'Importo',
       obbligatorio: true,
@@ -83,6 +85,47 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       campo_input: true,
       json_path: null,
       tipologica: null,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
+
+    campo = {
+      id: 2,
+      titolo: 'Provincia residenza',
+      obbligatorio: true,
+      tipoCampo: 'select',
+      informazioni: 'Seleziona',
+      lunghezzaVariabile: true,
+      lunghezza: 8,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 2,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: tipologicheSelect.province,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
+
+    campo = {
+      id: 3,
+      titolo: 'Comune residenza',
+      obbligatorio: true,
+      tipoCampo: 'select',
+      informazioni: 'Seleziona',
+      lunghezzaVariabile: true,
+      lunghezza: 8,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 3,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: tipologicheSelect.comuni,
+      // dipendeDa: 2
       dipendeDa: null
     };
     campiMockati.push(campo);
