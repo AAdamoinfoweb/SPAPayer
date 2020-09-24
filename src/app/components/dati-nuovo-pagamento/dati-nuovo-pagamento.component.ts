@@ -11,6 +11,7 @@ import {tipologicheSelect} from '../../enums/tipologicheSelect.enum';
 import {OpzioneSelect} from '../../modules/main/model/OpzioneSelect';
 import {Provincia} from '../../modules/main/model/Provincia';
 import {Comune} from '../../modules/main/model/Comune';
+import {BottoniService} from "../nuovo-pagamento/BottoniService";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -48,7 +49,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   isVisibile: boolean = true;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService, private compilazioneService: CompilazioneService) {
+  constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService,
+              private compilazioneService: CompilazioneService, private bottoniService: BottoniService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
       this.servizioSelezionato = servizioSelezionato;
       this.compila();
@@ -58,6 +60,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   ngOnInit(): void {
     this.mockAggiornaPrezzoCarrello();
     this.mockCampiForm();
+    this.aggiornaCampiForm();
   }
 
   aggiornaVisibilita(): void {
@@ -163,6 +166,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     }
 
     return classe;
+  }
+
+  aggiornaCampiForm(): void {
+    this.bottoniService.bottoniEvent.pipe(map(valoriCampi => {
+      this.valoriCampi = valoriCampi;
+    })).subscribe();
   }
 
   aggiornaPrezzoCarrello(): void {

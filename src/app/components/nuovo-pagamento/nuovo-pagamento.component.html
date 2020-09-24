@@ -30,4 +30,16 @@
       </div>
     </div>
   </div>
+
+  <div [ngClass]="{'hide': !isCompilato}">
+    <hr/>
+    <div class="row">
+      <div class="col-6">
+        <button id="bottonePulisci" class="btn btn-secondary" (click)="pulisciValoriSezioneDati()">Pulisci</button>
+      </div>
+      <div class="col-6 text-right">
+        <button id="bottoneProcedi" class="btn">Procedi</button>
+      </div>
+    </div>
+  </div>
 </div>
