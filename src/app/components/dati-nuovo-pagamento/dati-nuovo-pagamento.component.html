@@ -176,6 +176,7 @@
                 [id]="campo['nome']"
                 [(ngModel)]="valoriCampi[campo['nome']]"
                 [disabled]="campo.disabilitato"
+                (change)="aggiornaSelectDipendenti(campo)"
               >
                 <option [value]="null"></option>
                 <option *ngFor="let item of campo['opzioni']" [value]="item.value">{{item.label}}</option>

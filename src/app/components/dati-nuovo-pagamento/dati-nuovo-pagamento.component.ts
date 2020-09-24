@@ -8,6 +8,9 @@ import {map} from 'rxjs/operators';
 import {CampiNuovoPagamento} from '../../modules/main/model/CampiNuovoPagamento';
 import * as moment from 'moment';
 import {tipologicheSelect} from '../../enums/tipologicheSelect.enum';
+import {OpzioneSelect} from '../../modules/main/model/OpzioneSelect';
+import {Provincia} from '../../modules/main/model/Provincia';
+import {Comune} from '../../modules/main/model/Comune';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -126,8 +129,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       campo_input: true,
       json_path: null,
       tipologica: tipologicheSelect.comuni,
-      // dipendeDa: 2
-      dipendeDa: null
+      dipendeDa: 2
+      // dipendeDa: null
     };
     campiMockati.push(campo);
 
@@ -232,12 +235,73 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           this.valoriCampi[campo['nome']] = null;
           break;
         case 'select':
-          //TODO definire il formato delle opzioni ricevute per la Select
+          campo['opzioni'] = this.getOpzioniSelect(campo);
           this.valoriCampi[campo['nome']] = null;
           break;
       }
 
       this.listaCampi.push(campo);
     });
+  }
+
+  aggiornaSelectDipendenti(campo: CampoForm): void {
+    let selectDipendenti = this.getSelectDipendenti(campo);
+    if (selectDipendenti) {
+      selectDipendenti.forEach(select => {
+        let campoDipendente = this.listaCampi.find(item => item.id === select.id);
+        campoDipendente['opzioni'] = this.getOpzioniSelect(select);
+      });
+    }
+  }
+
+  getSelectDipendenti(campo: CampoForm): Array<CampoForm> {
+    return this.listaCampi.filter(item => {return item.dipendeDa === campo.id});
+  }
+
+  getOpzioniSelect(campo: CampoForm): Array<OpzioneSelect> {
+    let opzioniSelect: Array<OpzioneSelect> = [];
+
+    let valoriSelect = JSON.parse(localStorage.getItem(campo.tipologica));
+
+    if (valoriSelect) {
+
+      // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
+      if (campo.dipendeDa) {
+        let valoreSelectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa)?.['nome'];
+
+        // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
+        if (valoreSelectPadre) {
+            switch (campo.tipologica) {
+              case tipologicheSelect.comuni:
+                // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
+                valoriSelect = valoriSelect.filter(valore => {return valore.codiceIstat?.substring(0,3) === valoreSelectPadre});
+                break;
+
+              // Inserire qui logica per altri eventuali futuri casi di select dipendenti da altre select
+            }
+        } else {
+          valoriSelect = [];
+        }
+      }
+    }
+
+    valoriSelect.forEach(valore => {
+      switch (campo.tipologica) {
+        case tipologicheSelect.province:
+          opzioniSelect.push({
+            value: valore.codice,
+            label: valore.nome
+          });
+          break;
+        case tipologicheSelect.comuni:
+          opzioniSelect.push({
+            value: valore.codice,
+            label: valore.nome
+          });
+          break;
+      }
+    });
+
+    return opzioniSelect;
   }
 }
