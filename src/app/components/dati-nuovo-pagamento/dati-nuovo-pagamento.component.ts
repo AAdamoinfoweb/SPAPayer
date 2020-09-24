@@ -67,37 +67,25 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   mockCampiForm(): void {
     let campiMockati: Array<CampoForm> = [];
-    campiMockati.push({
-      campoFisso: true,
-      campo_input: true,
-      chiave: false,
-      controllo_logico: null,
-      disabilitato: false,
+    let campo = {
       id: 1,
-      informazioni: 'Inserisci un valore',
-      lunghezza: 20,
-      lunghezzaVariabile: true,
+      titolo: 'Importo',
       obbligatorio: true,
-      posizione: 2,
-      tipoCampo: 'number',
-      titolo: 'Numero'
-    });
-
-    campiMockati.push({
-      campoFisso: true,
-      campo_input: true,
-      chiave: false,
-      controllo_logico: null,
-      disabilitato: false,
-      id: 1,
-      informazioni: 'Inserisci un importo',
-      lunghezza: 5,
-      lunghezzaVariabile: true,
-      obbligatorio: true,
-      posizione: 2,
       tipoCampo: 'importo',
-      titolo: 'Importo'
-    });
+      informazioni: 'Inserisci un importo',
+      lunghezzaVariabile: true,
+      lunghezza: 5,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 1,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: null,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
 
     this.valoriCampi = {};
     this.listaCampi = [];

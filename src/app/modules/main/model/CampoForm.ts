@@ -12,4 +12,7 @@ export class CampoForm {
   chiave: boolean;
   controllo_logico: string;
   campo_input: boolean;
+  json_path: string;
+  tipologica: string;
+  dipendeDa: string;
 }
