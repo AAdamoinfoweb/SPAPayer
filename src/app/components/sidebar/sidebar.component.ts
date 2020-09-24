@@ -22,13 +22,15 @@ export class SidebarComponent implements OnInit {
     this.menuService.infoUtenteEmitter
       .subscribe((info) => {
         this.waiting = false;
-        localStorage.setItem('nome', info.nome);
-        localStorage.setItem('cognome', info.cognome);
+        if (info) {
+          localStorage.setItem('nome', info.nome);
+          localStorage.setItem('cognome', info.cognome);
 
-        if (localStorage.getItem('nome') !== 'null') {
-          this.nomeUtente = `${localStorage.getItem('nome')} ${localStorage.getItem('cognome')}`;
+          if (localStorage.getItem('nome') !== 'null') {
+            this.nomeUtente = `${localStorage.getItem('nome')} ${localStorage.getItem('cognome')}`;
+          }
+          this.menu = JSON.parse(atob(info.menu));
         }
-        this.menu = JSON.parse(atob(info.menu));
       });
     this.versionApplicativo = environment.sentry.release;
   }
