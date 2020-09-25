@@ -93,7 +93,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       posizione: 1,
       chiave: false,
       controllo_logico: null,
-      campo_input: true,
+      campo_input: false,
       json_path: null,
       tipologica: null,
       dipendeDa: null
@@ -169,7 +169,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
-    if (campo.tipoCampo === tipoCampo.DATEDDMMYY) {
+    if (!campo.campo_input) {
+      classe = 'hide';
+    } else if (campo.tipoCampo === tipoCampo.DATEDDMMYY) {
       classe = 'col-md-4';
     } else if (campo.tipoCampo === tipoCampo.DATEMMYY) {
       classe = 'col-md-3';
