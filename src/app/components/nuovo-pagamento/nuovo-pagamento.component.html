@@ -33,12 +33,22 @@
 
   <div [ngClass]="{'hide': !isCompilato}">
     <hr/>
-    <div class="row">
+    <div *ngIf="!isFaseVerificaPagamento" class="row">
       <div class="col-6">
         <button id="bottonePulisci" class="btn btn-secondary" (click)="pulisciValoriSezioneDati()">Pulisci</button>
       </div>
       <div class="col-6 text-right">
-        <button id="bottoneProcedi" class="btn">Procedi</button>
+        <button id="bottoneProcedi" class="btn" (click)="procediAVerificaPagamento()">Procedi</button>
+      </div>
+    </div>
+    <div *ngIf="isFaseVerificaPagamento" class="row">
+      <div class="col-xl-6 col-lg-6 col-md-5">
+        <button id="bottoneIndietro" class="btn btn-secondary">Indietro</button>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-7 col-xs-2 text-right">
+        <button id="bottoneSalvaPerDopo" class="btn btn-secondary">Salva per dopo</button>
+        <button id="bottoneAggiungiAlCarrello" class="btn btn-secondary">Aggiungi al carrello</button>
+        <button id="bottonePagaOra" class="btn">Paga ora</button>
       </div>
     </div>
   </div>

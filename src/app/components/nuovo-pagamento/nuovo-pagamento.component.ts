@@ -14,6 +14,8 @@ export class NuovoPagamentoComponent implements OnInit {
 
   importoTotale: number = 1234; //mock
 
+  isFaseVerificaPagamento: boolean = false;
+
   constructor(private compilazioneService: CompilazioneService, private prezzoService: PrezzoService,
               private bottoniService: BottoniService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
@@ -33,5 +35,9 @@ export class NuovoPagamentoComponent implements OnInit {
 
   pulisciValoriSezioneDati(): void {
     this.bottoniService.bottoniEvent.emit({});
+  }
+
+  procediAVerificaPagamento(): void {
+    this.isFaseVerificaPagamento = !this.isFaseVerificaPagamento;
   }
 }
