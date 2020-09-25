@@ -4,6 +4,8 @@ import {MenuService} from "./services/menu.service";
 import {Provincia} from './modules/main/model/Provincia';
 import {Comune} from './modules/main/model/Comune';
 import {tipologicheSelect} from './enums/tipologicheSelect.enum';
+import {ToponomasticaService} from './services/toponomastica.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +16,7 @@ export class AppComponent implements OnInit {
 
   title = '';
 
-  province: Array<Provincia> = [];
-  comuni: Array<Comune> = [];
-
-  constructor(private menuService: MenuService) {
+  constructor(private menuService: MenuService, private toponomasticaService: ToponomasticaService) {
   }
 
   ngOnInit(): void {
@@ -29,38 +28,12 @@ export class AppComponent implements OnInit {
   }
 
   letturaTipologicheSelect(): void {
-    // TODO rimpiazzare valori mockati con lettura da backend, quando saranno disponibili le operation
-    this.mockLetturaTipologicheSelect();
+    this.toponomasticaService.recuperaProvince().pipe(map(res => {
+      localStorage.setItem(tipologicheSelect.province, JSON.stringify(res));
+    })).subscribe();
 
-    localStorage.setItem(tipologicheSelect.province, JSON.stringify(this.province));
-    localStorage.setItem(tipologicheSelect.comuni, JSON.stringify(this.comuni));
-  }
-
-  mockLetturaTipologicheSelect(): void {
-    this.province.push({
-      codice: '058',
-      nome: 'Roma'
-    });
-    this.province.push({
-      codice: '072',
-      nome: 'Bari'
-    });
-
-    this.comuni.push({
-      codiceIstat: '058091',
-      nome: 'Roma'
-    });
-    this.comuni.push({
-      codiceIstat: '058079',
-      nome: 'Pomezia'
-    });
-    this.comuni.push({
-      codiceIstat: '072006',
-      nome: 'Bari'
-    });
-    this.comuni.push({
-      codiceIstat: '072012',
-      nome: 'Bitritto'
-    });
+    this.toponomasticaService.recuperaComuni().pipe(map(res => {
+      localStorage.setItem(tipologicheSelect.comuni, JSON.stringify(res));
+    })).subscribe();
   }
 }
