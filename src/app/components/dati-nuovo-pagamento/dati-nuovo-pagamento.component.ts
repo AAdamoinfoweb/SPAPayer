@@ -11,9 +11,10 @@ import {tipologicaSelect} from '../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../modules/main/model/OpzioneSelect';
 import {Provincia} from '../../modules/main/model/Provincia';
 import {Comune} from '../../modules/main/model/Comune';
-import {BottoniService} from "../nuovo-pagamento/BottoniService";
+import {PagamentoService} from "../nuovo-pagamento/PagamentoService";
 import {tipoCampo} from '../../enums/tipoCampo.enum';
 import {Servizio} from '../../modules/main/model/Servizio';
+import {livelloIntegrazione} from '../../enums/livelloIntegrazione.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -24,6 +25,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   tipoCampo = tipoCampo; // per passare l'enum al template html
 
   importoTotale: number;
+
+  isFaseVerificaPagamento: boolean = false;
 
   servizioSelezionato: Servizio = null;
 
@@ -54,17 +57,23 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   isVisibile: boolean = true;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private datiPagamentoService: DatiPagamentoService,
-              private compilazioneService: CompilazioneService, private bottoniService: BottoniService) {
+              private compilazioneService: CompilazioneService, private pagamentoService: PagamentoService) {
+
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
       this.servizioSelezionato = servizioSelezionato;
       this.compila();
+    })).subscribe();
+
+    this.aggiornaCampiForm();
+
+    this.pagamentoService.faseVerificaEvent.pipe(map(fase => {
+      this.isFaseVerificaPagamento = fase;
     })).subscribe();
   }
 
   ngOnInit(): void {
     this.mockAggiornaPrezzoCarrello();
     this.mockCampiForm();
-    this.aggiornaCampiForm();
   }
 
   aggiornaVisibilita(): void {
@@ -169,7 +178,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
-    if (!campo.campo_input) {
+    if (this.servizioSelezionato.livelloIntegrazioneId === livelloIntegrazione.LV2_BACK_OFFICE
+      && !campo.campo_input
+      && !this.isFaseVerificaPagamento) {
       classe = 'hide';
     } else if (campo.tipoCampo === tipoCampo.DATEDDMMYY) {
       classe = 'col-md-4';
@@ -195,7 +206,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiornaCampiForm(): void {
-    this.bottoniService.bottoniEvent.pipe(map(valoriCampi => {
+    this.pagamentoService.bottoniEvent.pipe(map(valoriCampi => {
       this.valoriCampi = valoriCampi;
     })).subscribe();
   }

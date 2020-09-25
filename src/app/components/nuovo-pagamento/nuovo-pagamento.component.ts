@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {map} from 'rxjs/operators';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {DatiPagamentoService} from "../dati-nuovo-pagamento/DatiPagamentoService";
-import {BottoniService} from './BottoniService';
+import {PagamentoService} from './PagamentoService';
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -19,7 +19,7 @@ export class NuovoPagamentoComponent implements OnInit {
   tooltipBottoneSalvaPerDopo: string;
 
   constructor(private compilazioneService: CompilazioneService, private datiPagamentoService: DatiPagamentoService,
-              private bottoniService: BottoniService) {
+              private pagamentoService: PagamentoService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
       this.compila(servizioSelezionato);
     })).subscribe();
@@ -36,11 +36,12 @@ export class NuovoPagamentoComponent implements OnInit {
   }
 
   pulisciValoriSezioneDati(): void {
-    this.bottoniService.bottoniEvent.emit({});
+    this.pagamentoService.bottoniEvent.emit({});
   }
 
   procediAVerificaPagamento(): void {
-    this.isFaseVerificaPagamento = !this.isFaseVerificaPagamento;
+    this.isFaseVerificaPagamento = true;
+    this.pagamentoService.faseVerificaEvent.emit(this.isFaseVerificaPagamento);
   }
 
   isUtenteAnonimo(): boolean {
