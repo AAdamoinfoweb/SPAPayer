@@ -175,7 +175,7 @@
               <select
                 [id]="campo['nome']"
                 [(ngModel)]="valoriCampi[campo['nome']]"
-                [disabled]="campo.disabilitato"
+                [disabled]="campo.disabilitato || !campo['opzioni']?.length"
                 (change)="aggiornaSelectDipendenti(campo)"
               >
                 <option [value]="null"></option>
