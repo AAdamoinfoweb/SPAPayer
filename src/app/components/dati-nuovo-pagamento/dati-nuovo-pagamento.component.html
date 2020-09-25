@@ -20,7 +20,7 @@
       <div *ngFor="let campo of listaCampi" [ngClass]="calcolaDimensioneCampo(campo)">
         <div [ngSwitch]="campo.tipoCampo" class="form-elem-container">
 
-          <div *ngSwitchCase="'string'" class="dynamic-form-elem">
+          <div *ngSwitchCase="tipoCampo.INPUT_TESTUALE" class="dynamic-form-elem">
             <div class="row">
               <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
             </div>
@@ -38,7 +38,7 @@
             </div>
           </div>
 
-          <div *ngSwitchCase="'number'" class="dynamic-form-elem">
+          <div *ngSwitchCase="tipoCampo.INPUT_NUMERICO" class="dynamic-form-elem">
             <div class="row">
               <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
             </div>
@@ -56,7 +56,7 @@
             </div>
           </div>
 
-          <div *ngSwitchCase="'importo'" class="dynamic-form-elem">
+          <div *ngSwitchCase="tipoCampo.INPUT_PREZZO" class="dynamic-form-elem">
             <div class="row">
               <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
             </div>
@@ -75,7 +75,7 @@
             </div>
           </div>
 
-          <div *ngSwitchCase="'date'" class="dynamic-form-elem">
+          <div *ngSwitchCase="tipoCampo.DATEDDMMYY" class="dynamic-form-elem">
             <div class="row">
               <label [htmlFor]="campo['nome']+'-giorno'" class="title">{{campo.titolo}}</label>
             </div>
@@ -117,7 +117,7 @@
             </div>
           </div>
 
-          <div *ngSwitchCase="'datemmyy'" class="dynamic-form-elem">
+          <div *ngSwitchCase="tipoCampo.DATEMMYY" class="dynamic-form-elem">
             <div class="row">
               <label [htmlFor]="campo['nome']+'-mese'" class="title">{{campo.titolo}}</label>
             </div>
@@ -148,7 +148,7 @@
             </div>
           </div>
 
-          <div *ngSwitchCase="'dateyy'" class="dynamic-form-elem">
+          <div *ngSwitchCase="tipoCampo.DATEYY" class="dynamic-form-elem">
             <div class="row">
               <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
             </div>
@@ -167,7 +167,7 @@
             </div>
           </div>
 
-          <div *ngSwitchCase="'select'" class="dynamic-form-elem">
+          <div *ngSwitchCase="tipoCampo.SELECT" class="dynamic-form-elem">
             <div class="row">
               <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
             </div>

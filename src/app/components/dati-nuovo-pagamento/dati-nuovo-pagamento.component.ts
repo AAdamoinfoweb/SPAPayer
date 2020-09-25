@@ -12,6 +12,7 @@ import {OpzioneSelect} from '../../modules/main/model/OpzioneSelect';
 import {Provincia} from '../../modules/main/model/Provincia';
 import {Comune} from '../../modules/main/model/Comune';
 import {BottoniService} from "../nuovo-pagamento/BottoniService";
+import {tipoCampo} from '../../enums/tipoCampo.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -19,6 +20,8 @@ import {BottoniService} from "../nuovo-pagamento/BottoniService";
   styleUrls: ['../nuovo-pagamento/nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
 export class DatiNuovoPagamentoComponent implements OnInit {
+  tipoCampo = tipoCampo; // per passare l'enum al template html
+
   importoTotale: number;
 
   servizioSelezionato: string = null;
@@ -80,7 +83,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 1,
       titolo: 'Importo',
       obbligatorio: true,
-      tipoCampo: 'importo',
+      tipoCampo: tipoCampo.INPUT_PREZZO,
       informazioni: 'Inserisci un importo',
       lunghezzaVariabile: true,
       lunghezza: 5,
@@ -100,7 +103,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 2,
       titolo: 'Provincia residenza',
       obbligatorio: true,
-      tipoCampo: 'select',
+      tipoCampo: tipoCampo.SELECT,
       informazioni: 'Seleziona',
       lunghezzaVariabile: true,
       lunghezza: 8,
@@ -120,7 +123,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 3,
       titolo: 'Comune residenza',
       obbligatorio: true,
-      tipoCampo: 'select',
+      tipoCampo: tipoCampo.SELECT,
       informazioni: 'Seleziona',
       lunghezzaVariabile: true,
       lunghezza: 8,
@@ -137,6 +140,26 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     };
     campiMockati.push(campo);
 
+    campo = {
+      id: 4,
+      titolo: 'Testo',
+      obbligatorio: true,
+      tipoCampo: tipoCampo.INPUT_TESTUALE,
+      informazioni: 'Inserisci un testo',
+      lunghezzaVariabile: true,
+      lunghezza: 20,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 4,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: null,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
+
     this.valoriCampi = {};
     this.listaCampi = [];
     this.impostaCampi(campiMockati);
@@ -145,13 +168,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
-    if (campo.tipoCampo === 'date') {
+    if (campo.tipoCampo === tipoCampo.DATEDDMMYY) {
       classe = 'col-md-4';
-    } else if (campo.tipoCampo === 'datemmyy') {
+    } else if (campo.tipoCampo === tipoCampo.DATEMMYY) {
       classe = 'col-md-3';
-    } else if (campo.tipoCampo === 'dateyy') {
+    } else if (campo.tipoCampo === tipoCampo.DATEYY) {
       classe = 'col-md-1';
-    } else if (campo.tipoCampo === 'importo') {
+    } else if (campo.tipoCampo === tipoCampo.INPUT_PREZZO) {
       classe = 'col-md-2';
     } else {
       if (campo.lunghezza <= this.lunghezzaMaxCol1) {
@@ -221,29 +244,29 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       campo['nome'] = campo.titolo.trim();
 
       switch (campo.tipoCampo) {
-        case 'string':
+        case tipoCampo.INPUT_TESTUALE:
           this.valoriCampi[campo['nome']] = null;
           break;
-        case 'number':
+        case tipoCampo.INPUT_NUMERICO:
           this.valoriCampi[campo['nome']] = null;
           break;
-        case 'date':
+        case tipoCampo.DATEDDMMYY:
           this.valoriCampi[campo['nome']] = {
             giorno: null,
             mese: null,
             anno: null
           };
           break;
-        case 'datemmyy':
+        case tipoCampo.DATEMMYY:
           this.valoriCampi[campo['nome']] = {
             mese: null,
             anno: null
           };
           break;
-        case 'dateyy':
+        case tipoCampo.DATEYY:
           this.valoriCampi[campo['nome']] = null;
           break;
-        case 'select':
+        case tipoCampo.SELECT:
           campo['opzioni'] = this.getOpzioniSelect(campo);
           this.valoriCampi[campo['nome']] = null;
           break;
