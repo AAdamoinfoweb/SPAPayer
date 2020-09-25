@@ -8,7 +8,7 @@
         </div>
         <div class="row">
           <select id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato" (ngModelChange)="selezionaLivelloTerritoriale()">
-            <option *ngFor="let item of listaLivelliTerritoriali" [value]="item.value">{{item.label}}</option>
+            <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
           </select>
         </div>
       </div>
@@ -21,7 +21,7 @@
         </div>
         <div class="row">
           <select [disabled]="livelloTerritorialeSelezionato == null" id="selectEnte" [(ngModel)]="enteSelezionato" (ngModelChange)="selezionaEnte()">
-            <option *ngFor="let item of listaEnti" [value]="item.value">{{item.label}}</option>
+            <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
           </select>
         </div>
       </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="row">
           <select [disabled]="enteSelezionato == null" id="selectServizio" [(ngModel)]="servizioSelezionato" (ngModelChange)="selezionaServizio()">
-            <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
+            <option *ngFor="let item of listaServizi" [ngValue]="item.value">{{item.label}}</option>
           </select>
         </div>
       </div>

@@ -4,6 +4,10 @@ import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
 import {PrezzoService} from '../nuovo-pagamento/PrezzoService';
 import {map} from 'rxjs/operators';
 import {CompilazioneService} from './CompilazioneService';
+import {LivelloTerritoriale} from '../../modules/main/model/LivelloTerritoriale';
+import {Ente} from '../../modules/main/model/Ente';
+import {Servizio} from '../../modules/main/model/Servizio';
+import {OpzioneSelect} from '../../modules/main/model/OpzioneSelect';
 
 @Component({
   selector: 'app-compila-nuovo-pagamento',
@@ -11,17 +15,15 @@ import {CompilazioneService} from './CompilazioneService';
   styleUrls: ['../nuovo-pagamento/nuovo-pagamento.component.scss', './compila-nuovo-pagamento.component.scss']
 })
 export class CompilaNuovoPagamentoComponent implements OnInit {
-  listaLivelliTerritoriali: Array<any> = []
+  listaLivelliTerritoriali: Array<OpzioneSelect> = [];
+  listaEnti: Array<OpzioneSelect> = [];
+  listaServizi: Array<OpzioneSelect> = [];
 
-  listaEnti: Array<any> = []
+  isCompilato: boolean = false;
 
-  listaServizi: Array<any> = []
-
-  isCompilato: boolean = false
-
-  livelloTerritorialeSelezionato: string = null;
-  enteSelezionato: string = null;
-  servizioSelezionato: string = null;
+  livelloTerritorialeSelezionato: LivelloTerritoriale = null;
+  enteSelezionato: Ente = null;
+  servizioSelezionato: Servizio = null;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private compilazioneService: CompilazioneService) { }
 
@@ -33,7 +35,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
     this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
       livelliTerritoriali.forEach(livello => {
         this.listaLivelliTerritoriali.push({
-          value: livello.id,
+          value: livello,
           label: livello.nome
         });
       });
@@ -46,14 +48,14 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
     this.enteSelezionato = null;
     this.listaEnti = [];
 
-    this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato);
+    this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato.id);
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
     this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
-          value: ente.id,
+          value: ente,
           label: ente.nome
         });
       });
@@ -66,14 +68,14 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
     this.servizioSelezionato = null;
     this.listaServizi = [];
 
-    this.recuperaFiltroServizi(this.enteSelezionato);
+    this.recuperaFiltroServizi(this.enteSelezionato.id);
   }
 
   recuperaFiltroServizi(idEnte): void {
     this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
       servizi.forEach(servizio => {
         this.listaServizi.push({
-          value: servizio.id,
+          value: servizio,
           label: servizio.nome
         });
       });

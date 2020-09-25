@@ -13,6 +13,7 @@ import {Provincia} from '../../modules/main/model/Provincia';
 import {Comune} from '../../modules/main/model/Comune';
 import {BottoniService} from "../nuovo-pagamento/BottoniService";
 import {tipoCampo} from '../../enums/tipoCampo.enum';
+import {Servizio} from '../../modules/main/model/Servizio';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -24,7 +25,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   importoTotale: number;
 
-  servizioSelezionato: string = null;
+  servizioSelezionato: Servizio = null;
 
   listaCampiTipologiaServizio: Array<CampoForm> = [];
   listaCampiServizio: Array<CampoForm> = [];
@@ -223,7 +224,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     const isCompilato = this.servizioSelezionato != null;
 
     if (isCompilato) {
-      this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato).pipe(map(campiNuovoPagamento => {
+      this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato.id).pipe(map(campiNuovoPagamento => {
         this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
         this.listaCampiServizio = campiNuovoPagamento.campiServizio;
 
