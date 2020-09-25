@@ -2,7 +2,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {StickyService} from '../login-bar/StickyService';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
-import {PrezzoService} from "../nuovo-pagamento/PrezzoService";
+import {DatiPagamentoService} from "../dati-nuovo-pagamento/DatiPagamentoService";
 
 @Component({
   selector: 'app-header',
@@ -12,14 +12,14 @@ import {PrezzoService} from "../nuovo-pagamento/PrezzoService";
 export class HeaderComponent implements OnInit {
   private maxHeightOffset: number;
 
-  constructor(private stickyService: StickyService, private router: Router, private prezzoService: PrezzoService) { }
+  constructor(private stickyService: StickyService, private router: Router, private datiPagamentoService: DatiPagamentoService) { }
 
   ngOnInit(): void {
     this.stickyService.stickyEvent.subscribe((value: number) => this.maxHeightOffset = value);
     this.router.events.pipe(filter(evento => evento instanceof NavigationEnd)).subscribe(event => {
       this.isPaginaNuovoPagamento = window.location.pathname === this.urlNuovoPagamento;
     })
-    this.prezzoService.prezzoEvent.subscribe((prezzo: number) => {this.prezzoCarrello = prezzo});
+    this.datiPagamentoService.prezzoEvent.subscribe((prezzo: number) => {this.prezzoCarrello = prezzo});
   }
 
   isSticky: boolean = false;

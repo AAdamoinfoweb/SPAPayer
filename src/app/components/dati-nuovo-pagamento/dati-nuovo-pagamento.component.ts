@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {CampoForm} from '../../modules/main/model/CampoForm';
 import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
-import {PrezzoService} from '../nuovo-pagamento/PrezzoService';
+import {DatiPagamentoService} from '../dati-nuovo-pagamento/DatiPagamentoService';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {map} from 'rxjs/operators';
 import {CampiNuovoPagamento} from '../../modules/main/model/CampiNuovoPagamento';
@@ -53,7 +53,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   isVisibile: boolean = true;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private prezzoService: PrezzoService,
+  constructor(private nuovoPagamentoService: NuovoPagamentoService, private datiPagamentoService: DatiPagamentoService,
               private compilazioneService: CompilazioneService, private bottoniService: BottoniService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
       this.servizioSelezionato = servizioSelezionato;
@@ -199,7 +199,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.prezzoService.prezzoEvent.emit(this.importoTotale);
+    this.datiPagamentoService.prezzoEvent.emit(this.importoTotale);
   }
 
   calcolaMaxGiorni(mese: number, anno: number): number {

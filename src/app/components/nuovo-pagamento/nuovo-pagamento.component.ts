@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {map} from 'rxjs/operators';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
-import {PrezzoService} from "./PrezzoService";
+import {DatiPagamentoService} from "../dati-nuovo-pagamento/DatiPagamentoService";
 import {BottoniService} from './BottoniService';
 
 @Component({
@@ -12,18 +12,18 @@ import {BottoniService} from './BottoniService';
 export class NuovoPagamentoComponent implements OnInit {
   isCompilato: boolean = false;
 
-  importoTotale: number = 1234; //mock
+  importoTotale: number = null;
 
   isFaseVerificaPagamento: boolean = false;
 
   tooltipBottoneSalvaPerDopo: string;
 
-  constructor(private compilazioneService: CompilazioneService, private prezzoService: PrezzoService,
+  constructor(private compilazioneService: CompilazioneService, private datiPagamentoService: DatiPagamentoService,
               private bottoniService: BottoniService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
       this.compila(servizioSelezionato);
     })).subscribe();
-    this.prezzoService.prezzoEvent.pipe(map(prezzo => {
+    this.datiPagamentoService.prezzoEvent.pipe(map(prezzo => {
       this.importoTotale = prezzo;
     })).subscribe();
   }
