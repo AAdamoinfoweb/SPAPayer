@@ -4,35 +4,35 @@
 
   <app-compila-nuovo-pagamento></app-compila-nuovo-pagamento>
 
-<!--  <div [ngClass]="{'hide': !isCompilato}">-->
-  <div [ngClass]="{'hide': false}">
+  <div [ngClass]="{'hide': !isCompilato}">
     <app-dati-nuovo-pagamento></app-dati-nuovo-pagamento>
-  </div>
 
-  <div class="page-section">
-    <div class="row">
-      <div class="offset-md-8 col-md-4">
-        <div class="form-elem-container">
-          <div class="row">
-            <label for="importoTotale" class="title">
-              Importo totale
-            </label>
-          </div>
-          <div class="row">
-            <input
-              class="price-input"
-              id="importoTotale"
-              [(ngModel)]="importoTotale"
-              type="number"
-            />
+    <!--Input importo-->
+    <div class="page-section">
+      <div class="row">
+        <div class="offset-md-8 col-md-4">
+          <div class="form-elem-container">
+            <div class="row">
+              <label for="importoTotale" class="title">
+                Importo totale
+              </label>
+            </div>
+            <div class="row">
+              <input
+                class="price-input"
+                id="importoTotale"
+                [(ngModel)]="importoTotale"
+                type="number"
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div [ngClass]="{'hide': !isCompilato}">
     <hr/>
+
+    <!--Bottoni-->
     <div *ngIf="!isFaseVerificaPagamento" class="row">
       <div class="col-6">
         <button id="bottonePulisci" class="btn btn-secondary" (click)="pulisciValoriSezioneDati()">Pulisci</button>
@@ -53,5 +53,7 @@
         <button id="bottonePagaOra" class="btn">Paga ora</button>
       </div>
     </div>
+
   </div>
 </div>
+
