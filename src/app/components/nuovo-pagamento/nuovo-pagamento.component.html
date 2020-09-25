@@ -33,7 +33,7 @@
     <hr/>
 
     <!--Bottoni-->
-    <div *ngIf="!isFaseVerificaPagamento" class="row">
+    <div *ngIf="!isFaseVerificaPagamento && livelloIntegrazioneEnum.LV2 === livelloIntegrazioneId" class="row">
       <div class="col-6">
         <button id="bottonePulisci" class="btn btn-secondary" (click)="pulisciValoriSezioneDati()">Pulisci</button>
       </div>
@@ -41,7 +41,7 @@
         <button id="bottoneProcedi" class="btn" (click)="procediAVerificaPagamento()">Procedi</button>
       </div>
     </div>
-    <div *ngIf="isFaseVerificaPagamento" class="row">
+    <div *ngIf="isFaseVerificaPagamento || livelloIntegrazioneEnum.LV2_BACK_OFFICE === livelloIntegrazioneId" class="row">
       <div class="col-xl-6 col-lg-6 col-md-5">
         <button id="bottoneIndietro" class="btn btn-secondary">Indietro</button>
       </div>

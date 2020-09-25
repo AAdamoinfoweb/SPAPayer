@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {DatiPagamentoService} from "../dati-nuovo-pagamento/DatiPagamentoService";
 import {PagamentoService} from './PagamentoService';
+import {livelloIntegrazione} from 'src/app/enums/livelloIntegrazione.enum';
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -11,6 +12,10 @@ import {PagamentoService} from './PagamentoService';
 })
 export class NuovoPagamentoComponent implements OnInit {
   isCompilato: boolean = false;
+
+  // assegno l'enum alla viariable livelloIntegrazione in modo da poterlo usare nella parte HTML
+  livelloIntegrazioneEnum = livelloIntegrazione;
+  livelloIntegrazioneId: number;
 
   importoTotale: number = null;
 
@@ -33,6 +38,7 @@ export class NuovoPagamentoComponent implements OnInit {
 
   compila(servizio): void {
     this.isCompilato = servizio != null;
+    this.livelloIntegrazioneId = servizio?.livelloIntegrazioneId;
   }
 
   pulisciValoriSezioneDati(): void {
