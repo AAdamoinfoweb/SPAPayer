@@ -39,6 +39,7 @@ export class NuovoPagamentoComponent implements OnInit {
   compila(servizio): void {
     this.isCompilato = servizio != null;
     this.livelloIntegrazioneId = servizio?.livelloIntegrazioneId;
+    this.isFaseVerificaPagamento = false;
   }
 
   pulisciValoriSezioneDati(): void {
