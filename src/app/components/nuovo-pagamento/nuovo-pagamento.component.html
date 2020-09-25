@@ -46,7 +46,9 @@
         <button id="bottoneIndietro" class="btn btn-secondary">Indietro</button>
       </div>
       <div class="col-xl-6 col-lg-6 col-md-7 col-xs-2 text-right">
-        <button id="bottoneSalvaPerDopo" class="btn btn-secondary">Salva per dopo</button>
+        <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top">
+          <button id="bottoneSalvaPerDopo" class="btn btn-secondary" [disabled]="isUtenteAnonimo()">Salva per dopo</button>
+        </span>
         <button id="bottoneAggiungiAlCarrello" class="btn btn-secondary">Aggiungi al carrello</button>
         <button id="bottonePagaOra" class="btn">Paga ora</button>
       </div>

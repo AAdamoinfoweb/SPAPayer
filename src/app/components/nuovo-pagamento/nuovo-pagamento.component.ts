@@ -16,6 +16,8 @@ export class NuovoPagamentoComponent implements OnInit {
 
   isFaseVerificaPagamento: boolean = false;
 
+  tooltipBottoneSalvaPerDopo: string;
+
   constructor(private compilazioneService: CompilazioneService, private prezzoService: PrezzoService,
               private bottoniService: BottoniService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
@@ -40,4 +42,16 @@ export class NuovoPagamentoComponent implements OnInit {
   procediAVerificaPagamento(): void {
     this.isFaseVerificaPagamento = !this.isFaseVerificaPagamento;
   }
+
+  isUtenteAnonimo(): boolean {
+    if (localStorage.getItem('nome') === 'null') {
+      // tslint:disable-next-line:max-line-length
+      this.tooltipBottoneSalvaPerDopo = 'É necessario autenticarsi per poter premere questo bottone e salvare il bollettino appena compilato nella sezione \"I miei pagamenti\"';
+      return true;
+    } else {
+      this.tooltipBottoneSalvaPerDopo = '';
+      return false;
+    }
+  }
+
 }
