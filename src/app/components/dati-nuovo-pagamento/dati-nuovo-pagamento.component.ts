@@ -7,7 +7,7 @@ import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneServic
 import {map} from 'rxjs/operators';
 import {CampiNuovoPagamento} from '../../modules/main/model/CampiNuovoPagamento';
 import * as moment from 'moment';
-import {tipologicheSelect} from '../../enums/tipologicheSelect.enum';
+import {tipologicaSelect} from '../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../modules/main/model/OpzioneSelect';
 import {Provincia} from '../../modules/main/model/Provincia';
 import {Comune} from '../../modules/main/model/Comune';
@@ -111,7 +111,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       controllo_logico: null,
       campo_input: true,
       json_path: null,
-      tipologica: tipologicheSelect.province,
+      tipologica: tipologicaSelect.PROVINCE,
       dipendeDa: null
     };
     campiMockati.push(campo);
@@ -131,7 +131,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       controllo_logico: null,
       campo_input: true,
       json_path: null,
-      tipologica: tipologicheSelect.comuni,
+      tipologica: tipologicaSelect.COMUNI,
       dipendeDa: 2
       // dipendeDa: null
     };
@@ -282,7 +282,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {
             switch (campo.tipologica) {
-              case tipologicheSelect.comuni:
+              case tipologicaSelect.COMUNI:
                 // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
                 valoriSelect = valoriSelect.filter(valore => {return valore.codiceIstat?.substring(0,3) === valoreSelectPadre});
                 break;
@@ -297,13 +297,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
     valoriSelect.forEach(valore => {
       switch (campo.tipologica) {
-        case tipologicheSelect.province:
+        case tipologicaSelect.PROVINCE:
           opzioniSelect.push({
             value: valore.codice,
             label: valore.nome
           });
           break;
-        case tipologicheSelect.comuni:
+        case tipologicaSelect.COMUNI:
           opzioniSelect.push({
             value: valore.codice,
             label: valore.nome

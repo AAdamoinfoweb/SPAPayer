@@ -3,7 +3,7 @@ import {StickyService} from "./components/login-bar/StickyService";
 import {MenuService} from "./services/menu.service";
 import {Provincia} from './modules/main/model/Provincia';
 import {Comune} from './modules/main/model/Comune';
-import {tipologicheSelect} from './enums/tipologicheSelect.enum';
+import {tipologicaSelect} from './enums/tipologicaSelect.enum';
 import {ToponomasticaService} from './services/toponomastica.service';
 import {map} from 'rxjs/operators';
 
@@ -24,16 +24,16 @@ export class AppComponent implements OnInit {
       this.menuService.infoUtenteEmitter.emit(info);
     });
 
-    this.letturaTipologicheSelect();
+    this.letturatipologicheSelect();
   }
 
-  letturaTipologicheSelect(): void {
+  letturatipologicheSelect(): void {
     this.toponomasticaService.recuperaProvince().pipe(map(res => {
-      localStorage.setItem(tipologicheSelect.province, JSON.stringify(res));
+      localStorage.setItem(tipologicaSelect.PROVINCE, JSON.stringify(res));
     })).subscribe();
 
     this.toponomasticaService.recuperaComuni().pipe(map(res => {
-      localStorage.setItem(tipologicheSelect.comuni, JSON.stringify(res));
+      localStorage.setItem(tipologicaSelect.COMUNI, JSON.stringify(res));
     })).subscribe();
   }
 }
