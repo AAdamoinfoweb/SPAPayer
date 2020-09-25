@@ -245,16 +245,16 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiornaSelectDipendenti(campo: CampoForm): void {
-    let selectDipendenti = this.getSelectDipendenti(campo);
-    if (selectDipendenti) {
-      selectDipendenti.forEach(select => {
-        let campoDipendente = this.listaCampi.find(item => item.id === select.id);
-        campoDipendente['opzioni'] = this.getOpzioniSelect(select);
+    let campiDipendenti = this.getCampiDipendenti(campo);
+    if (campiDipendenti) {
+      campiDipendenti.forEach(campo => {
+        this.valoriCampi[campo['nome']] = null;
+        campo['opzioni'] = this.getOpzioniSelect(campo);
       });
     }
   }
 
-  getSelectDipendenti(campo: CampoForm): Array<CampoForm> {
+  getCampiDipendenti(campo: CampoForm): Array<CampoForm> {
     return this.listaCampi.filter(item => {return item.dipendeDa === campo.id});
   }
 
@@ -267,7 +267,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
       // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
       if (campo.dipendeDa) {
-        let valoreSelectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa)?.['nome'];
+        let selectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa);
+        let valoreSelectPadre = this.valoriCampi[selectPadre?.['nome']];
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {
