@@ -178,7 +178,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
-    if (this.servizioSelezionato.livelloIntegrazioneId === livelloIntegrazione.LV2_BACK_OFFICE
+    if (this.servizioSelezionato?.livelloIntegrazioneId === livelloIntegrazione.LV2_BACK_OFFICE
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
