@@ -13,7 +13,7 @@ import {livelloIntegrazione} from 'src/app/enums/livelloIntegrazione.enum';
 export class NuovoPagamentoComponent implements OnInit {
   isCompilato: boolean = false;
 
-  // assegno l'enum alla viariable livelloIntegrazione in modo da poterlo usare nella parte HTML
+  // assegno l'enum livelloIntegrazione alla viariable livelloIntegrazioneEnum in modo da poterlo usare nella parte HTML
   livelloIntegrazioneEnum = livelloIntegrazione;
   livelloIntegrazioneId: number;
 
