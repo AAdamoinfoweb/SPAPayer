@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
-import {CampoForm} from '../../modules/main/model/CampoForm';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {PrezzoService} from "./PrezzoService";
+import {BottoniService} from './BottoniService';
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -15,7 +14,12 @@ export class NuovoPagamentoComponent implements OnInit {
 
   importoTotale: number = 1234; //mock
 
-  constructor(private compilazioneService: CompilazioneService, private prezzoService: PrezzoService) {
+  isFaseVerificaPagamento: boolean = false;
+
+  tooltipBottoneSalvaPerDopo: string;
+
+  constructor(private compilazioneService: CompilazioneService, private prezzoService: PrezzoService,
+              private bottoniService: BottoniService) {
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
       this.compila(servizioSelezionato);
     })).subscribe();
@@ -30,4 +34,24 @@ export class NuovoPagamentoComponent implements OnInit {
   compila(servizio): void {
     this.isCompilato = servizio != null;
   }
+
+  pulisciValoriSezioneDati(): void {
+    this.bottoniService.bottoniEvent.emit({});
+  }
+
+  procediAVerificaPagamento(): void {
+    this.isFaseVerificaPagamento = !this.isFaseVerificaPagamento;
+  }
+
+  isUtenteAnonimo(): boolean {
+    if (localStorage.getItem('nome') === 'null') {
+      // tslint:disable-next-line:max-line-length
+      this.tooltipBottoneSalvaPerDopo = 'É necessario autenticarsi per poter premere questo bottone e salvare il bollettino appena compilato nella sezione \"I miei pagamenti\"';
+      return true;
+    } else {
+      this.tooltipBottoneSalvaPerDopo = '';
+      return false;
+    }
+  }
+
 }
