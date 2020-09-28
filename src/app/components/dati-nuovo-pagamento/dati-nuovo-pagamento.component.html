@@ -197,3 +197,53 @@
 
   </div>
 </div>
+
+<!--Input importo-->
+<div class="page-section">
+  <div class="row">
+    <div class="offset-md-8 col-md-4">
+      <div class="form-elem-container">
+        <div class="row">
+          <label for="importoTotale" class="title">
+            Importo totale
+          </label>
+        </div>
+        <div class="row">
+          <input
+            class="price-input"
+            id="importoTotale"
+            [(ngModel)]="importoTotale"
+            type="number"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr/>
+
+<!--Bottoni-->
+<div class="row">
+  <!-- Bottone sx -->
+  <div *ngIf="!isFaseVerificaPagamento" class="col-2">
+    <button id="bottonePulisci" class="btn btn-secondary" (click)="pulisciCampiForm()">Pulisci</button>
+  </div>
+  <div *ngIf="isFaseVerificaPagamento" class="col-2">
+    <button id="bottoneIndietro" class="btn btn-secondary">Indietro</button>
+  </div>
+
+  <!-- Bottoni dx -->
+  <div *ngIf="isFaseVerificaPagamento || livelliIntegrazione.LV2 === livelloIntegrazioneId"
+       class="col-10 text-right button-space">
+        <span it-tooltip="{{this.tooltipBottoneSalvaPerDopo}}" placement="top">
+          <button id="bottoneSalvaPerDopo" class="btn btn-secondary" [disabled]="isUtenteAnonimo">Salva per dopo</button>
+        </span>
+    <button id="bottoneAggiungiAlCarrello" class="btn btn-secondary">Aggiungi al carrello</button>
+    <button id="bottonePagaOra" class="btn">Paga ora</button>
+  </div>
+  <div *ngIf="!isFaseVerificaPagamento && livelliIntegrazione.LV2_BACK_OFFICE === livelloIntegrazioneId"
+       class="col-10 text-right">
+    <button id="bottoneProcedi" class="btn" (click)="procediAVerificaPagamento()">Procedi</button>
+  </div>
+</div>

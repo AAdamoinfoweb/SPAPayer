@@ -24,6 +24,9 @@ import {livelloIntegrazione} from '../../enums/livelloIntegrazione.enum';
 export class DatiNuovoPagamentoComponent implements OnInit {
   tipoCampo = tipoCampo; // per passare l'enum al template html
 
+  livelliIntegrazione = livelloIntegrazione;
+  livelloIntegrazioneId: number = null;
+
   importoTotale: number;
 
   isFaseVerificaPagamento: boolean = false;
@@ -55,24 +58,33 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   isVisibile: boolean = true;
 
+  isUtenteAnonimo: boolean = null;
+  tooltipBottoneSalvaPerDopo: string = null;
+
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private datiPagamentoService: DatiPagamentoService,
               private compilazioneService: CompilazioneService, private pagamentoService: PagamentoService) {
 
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
-      this.servizioSelezionato = servizioSelezionato;
-      this.compila();
-    })).subscribe();
-
-    // this.aggiornaCampiForm();
-
-    this.pagamentoService.faseVerificaEvent.pipe(map(fase => {
-      this.isFaseVerificaPagamento = fase;
+      this.compila(servizioSelezionato);
     })).subscribe();
   }
 
   ngOnInit(): void {
     this.mockAggiornaPrezzoCarrello();
     this.mockCampiForm();
+    this.checkUtenteLoggato();
+  }
+
+  checkUtenteLoggato(): void {
+    this.isUtenteAnonimo = localStorage.getItem('nome') === 'null';
+    this.tooltipBottoneSalvaPerDopo = this.isUtenteAnonimo
+      ? 'É necessario autenticarsi per poter premere questo bottone e salvare il bollettino appena compilato nella sezione \"I miei pagamenti\"'
+      : null;
+  }
+
+  procediAVerificaPagamento(): void {
+    this.isFaseVerificaPagamento = true;
+    this.pagamentoService.faseVerificaEvent.emit(this.isFaseVerificaPagamento);
   }
 
   aggiornaVisibilita(): void {
@@ -223,17 +235,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return classe;
   }
 
-  // aggiornaCampiForm(): void {
   pulisciCampiForm(): void {
-    this.pagamentoService.pulisciEvent.pipe(map(valoriCampi => {
-      // TODO logica di reset campi form
-    })).subscribe();
+    let campiAttuali = [...this.listaCampi];
+    this.listaCampi = [];
+    this.impostaCampi(campiAttuali);
   }
 
-  impostaCampiForm(): void {
-    this.pagamentoService.impostaEvent.pipe(map(valoriCampi => {
-      // TODO logica imposta campi form
-    })).subscribe();
+  precompilaCampiForm(): void {
+    // TODO logica precompila campi form, in caso di LV2_BACK_OFFICE
   }
 
   aggiornaPrezzoCarrello(): void {
@@ -260,10 +269,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return moment().year();
   }
 
-  compila(): void {
+  compila(servizio: Servizio): void {
+    this.servizioSelezionato = servizio;
     const isCompilato = this.servizioSelezionato != null;
 
     if (isCompilato) {
+      this.livelloIntegrazioneId = this.servizioSelezionato.livelloIntegrazioneId;
+
       this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato.id).pipe(map(campiNuovoPagamento => {
         this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
         this.listaCampiServizio = campiNuovoPagamento.campiServizio;
