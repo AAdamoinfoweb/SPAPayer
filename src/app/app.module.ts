@@ -12,18 +12,19 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {MainModule} from './modules/main/main.module';
 import {LoginBarComponent} from './components/login-bar/login-bar.component';
 import {FooterDirective} from "./components/footer/FooterDirective";
-import { NonautorizzatoComponent } from './modules/nonautorizzato/nonautorizzato.component';
+import {NonautorizzatoComponent} from './modules/nonautorizzato/nonautorizzato.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import { GenericErrorComponent } from './modules/generic-error/generic-error.component';
+import {GenericErrorComponent} from './modules/generic-error/generic-error.component';
 import {UrlBackInterceptor} from "./services/urlBack.interceptor";
-import { BannerComponent } from './components/banner/banner.component';
-import { HeaderComponent } from './components/header/header.component';
-import { NuovoPagamentoComponent } from './components/nuovo-pagamento/nuovo-pagamento.component';
-import { IMieiPagamentiComponent } from './components/i-miei-pagamenti/i-miei-pagamenti.component';
+import {BannerComponent} from './components/banner/banner.component';
+import {HeaderComponent} from './components/header/header.component';
+import {NuovoPagamentoComponent} from './components/nuovo-pagamento/nuovo-pagamento.component';
+import {IMieiPagamentiComponent} from './components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DesignAngularKitModule} from 'design-angular-kit';
-import { CompilaNuovoPagamentoComponent } from './components/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
-import { DatiNuovoPagamentoComponent } from './components/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
+import {CompilaNuovoPagamentoComponent} from './components/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
+import {DatiNuovoPagamentoComponent} from './components/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
+import {UserIdleModule} from "angular-user-idle";
 
 @NgModule({
   declarations: [
@@ -41,21 +42,22 @@ import { DatiNuovoPagamentoComponent } from './components/dati-nuovo-pagamento/d
     CompilaNuovoPagamentoComponent,
     DatiNuovoPagamentoComponent
   ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        AppRoutingModule,
-        MainModule,
-        NgbModule,
-        FormsModule,
-        DesignAngularKitModule,
-        ReactiveFormsModule
-    ],
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    MainModule,
+    NgbModule,
+    FormsModule,
+    DesignAngularKitModule,
+    ReactiveFormsModule,
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
     {provide: ErrorHandler, useClass: ErrorHandlerGenerico},
-    { provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true }
+    {provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true}
   ],
   exports: [
     FooterDirective
