@@ -27,7 +27,7 @@ const routes: Routes = [
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
   {path: 'waiting', component: WaitingComponent},
   {path: 'privacy', component: PrivacyComponent},
-  {path: 'nuovopagamento', component: NuovoPagamentoComponent},
+  {path: 'nuovoPagamento', component: NuovoPagamentoComponent},
   {path: 'imieipagamenti', component: IMieiPagamentiComponent}
 ];
 
