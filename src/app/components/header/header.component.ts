@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
   }
 
   isSticky: boolean = false;
-  urlNuovoPagamento = "/nuovopagamento";
+  urlNuovoPagamento = "/nuovoPagamento";
   isPaginaNuovoPagamento: boolean = window.location.pathname === this.urlNuovoPagamento;
   prezzoCarrello: number;
 
