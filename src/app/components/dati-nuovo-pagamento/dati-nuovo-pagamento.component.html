@@ -22,11 +22,11 @@
 
           <div *ngSwitchCase="tipoCampo.INPUT_TESTUALE" class="dynamic-form-elem">
             <div class="row">
-              <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+              <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
               <input
-                [id]="campo['nome']"
+                [id]="campo.id"
                 [(ngModel)]="campo['valore']"
                 type="text"
                 [maxLength]="campo.lunghezza"
@@ -40,11 +40,11 @@
 
           <div *ngSwitchCase="tipoCampo.INPUT_NUMERICO" class="dynamic-form-elem">
             <div class="row">
-              <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+              <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
               <input
-                [id]="campo['nome']"
+                [id]="campo.id"
                 [(ngModel)]="campo['valore']"
                 type="number"
                 [maxLength]="campo.lunghezza"
@@ -58,11 +58,11 @@
 
           <div *ngSwitchCase="tipoCampo.INPUT_PREZZO" class="dynamic-form-elem">
             <div class="row">
-              <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+              <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
               <input
-                [id]="campo['nome']"
+                [id]="campo.id"
                 class="price-input"
                 [(ngModel)]="campo['valore']"
                 type="number"
@@ -77,12 +77,12 @@
 
           <div *ngSwitchCase="tipoCampo.DATEDDMMYY" class="dynamic-form-elem">
             <div class="row">
-              <label [htmlFor]="campo['nome']+'-giorno'" class="title">{{campo.titolo}}</label>
+              <label [htmlFor]="campo.id+'-giorno'" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
               <div class="col-3 form-elem-date-col">
                 <input
-                  [id]="campo['nome']+'-giorno'"
+                  [id]="campo.id+'-giorno'"
                   [(ngModel)]="campo['valore']['giorno']"
                   type="number"
                   min="1"
@@ -93,6 +93,7 @@
               </div>
               <div class="col-6 form-elem-date-col">
                 <select
+                  [id]="campo.id+'-mese'"
                   [(ngModel)]="campo['valore']['mese']"
                   class="form-elem-date-select"
                   [disabled]="campo.disabilitato"
@@ -104,7 +105,7 @@
               </div>
               <div class="col-3 form-elem-date-col">
                 <input
-                  [id]="campo['nome']+'-anno'"
+                  [id]="campo.id+'-anno'"
                   [(ngModel)]="campo['valore']['anno']"
                   type="number"
                   min="1900"
@@ -120,11 +121,12 @@
 
           <div *ngSwitchCase="tipoCampo.DATEMMYY" class="dynamic-form-elem">
             <div class="row">
-              <label [htmlFor]="campo['nome']+'-mese'" class="title">{{campo.titolo}}</label>
+              <label [htmlFor]="campo.id+'-mese'" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
               <div class="col-8 form-elem-date-col">
                 <select
+                  [id]="campo.id+'-mese'"
                   [(ngModel)]="campo['valore']['mese']"
                   class="form-elem-date-select"
                   [disabled]="campo.disabilitato"
@@ -136,7 +138,7 @@
               </div>
               <div class="col-4 form-elem-date-col">
                 <input
-                  [id]="campo['nome']+'-anno'"
+                  [id]="campo.id+'-anno'"
                   [(ngModel)]="campo['valore']['anno']"
                   type="number"
                   min="1900"
@@ -152,11 +154,11 @@
 
           <div *ngSwitchCase="tipoCampo.DATEYY" class="dynamic-form-elem">
             <div class="row">
-              <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+              <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
               <input
-                [id]="campo['nome']"
+                [id]="campo.id"
                 [(ngModel)]="campo['valore']"
                 type="number"
                 min="1900"
@@ -171,11 +173,11 @@
 
           <div *ngSwitchCase="tipoCampo.SELECT" class="dynamic-form-elem">
             <div class="row">
-              <label [htmlFor]="campo['nome']" class="title">{{campo.titolo}}</label>
+              <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
               <select
-                [id]="campo['nome']"
+                [id]="campo.id"
                 [(ngModel)]="campo['valore']"
                 [disabled]="campo.disabilitato || !campo['opzioni']?.length"
                 (change)="aggiornaSelectDipendenti(campo)"

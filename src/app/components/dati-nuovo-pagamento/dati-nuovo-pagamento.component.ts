@@ -274,8 +274,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     });
 
     campi.forEach(campo => {
-      campo['nome'] = campo.titolo.trim();
-
       switch (campo.tipoCampo) {
         case tipoCampo.INPUT_TESTUALE:
           campo['valore'] = null;
