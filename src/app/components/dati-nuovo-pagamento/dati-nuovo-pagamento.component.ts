@@ -33,7 +33,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   listaCampiTipologiaServizio: Array<CampoForm> = [];
   listaCampiServizio: Array<CampoForm> = [];
   listaCampi: Array<CampoForm> = [];
-  valoriCampi: {};
 
   lunghezzaMaxCol1: number = 5;
   lunghezzaMaxCol2: number = 10;
@@ -190,7 +189,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     };
     campiMockati.push(campo);
 
-    this.valoriCampi = {};
     this.listaCampi = [];
     this.impostaCampi(campiMockati);
   }
@@ -227,7 +225,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   aggiornaCampiForm(): void {
     this.pagamentoService.bottoniEvent.pipe(map(valoriCampi => {
-      this.valoriCampi = valoriCampi;
+      //TODO logica di reset campi form
     })).subscribe();
   }
 
@@ -263,7 +261,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
         this.listaCampiServizio = campiNuovoPagamento.campiServizio;
 
-        this.valoriCampi = {};
         this.listaCampi = [];
         this.impostaCampi(this.listaCampiTipologiaServizio);
         this.impostaCampi(this.listaCampiServizio);
@@ -281,30 +278,30 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
       switch (campo.tipoCampo) {
         case tipoCampo.INPUT_TESTUALE:
-          this.valoriCampi[campo['nome']] = null;
+          campo['valore'] = null;
           break;
         case tipoCampo.INPUT_NUMERICO:
-          this.valoriCampi[campo['nome']] = null;
+          campo['valore'] = null;
           break;
         case tipoCampo.DATEDDMMYY:
-          this.valoriCampi[campo['nome']] = {
+          campo['valore'] = {
             giorno: null,
             mese: null,
             anno: null
           };
           break;
         case tipoCampo.DATEMMYY:
-          this.valoriCampi[campo['nome']] = {
+          campo['valore'] = {
             mese: null,
             anno: null
           };
           break;
         case tipoCampo.DATEYY:
-          this.valoriCampi[campo['nome']] = null;
+          campo['valore'] = null;
           break;
         case tipoCampo.SELECT:
+          campo['valore'] = null;
           campo['opzioni'] = this.getOpzioniSelect(campo);
-          this.valoriCampi[campo['nome']] = null;
           break;
       }
 
@@ -316,7 +313,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     let campiDipendenti = this.getCampiDipendenti(campo);
     if (campiDipendenti) {
       campiDipendenti.forEach(campo => {
-        this.valoriCampi[campo['nome']] = null;
+        campo['valore'] = null;
         campo['opzioni'] = this.getOpzioniSelect(campo);
       });
     }
@@ -336,7 +333,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
       if (campo.dipendeDa) {
         let selectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa);
-        let valoreSelectPadre = this.valoriCampi[selectPadre?.['nome']];
+        let valoreSelectPadre = selectPadre?.['valore'];
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {

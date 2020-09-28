@@ -27,7 +27,7 @@
             <div class="row">
               <input
                 [id]="campo['nome']"
-                [(ngModel)]="valoriCampi[campo['nome']]"
+                [(ngModel)]="campo['valore']"
                 type="text"
                 [maxLength]="campo.lunghezza"
                 [disabled]="campo.disabilitato"
@@ -45,7 +45,7 @@
             <div class="row">
               <input
                 [id]="campo['nome']"
-                [(ngModel)]="valoriCampi[campo['nome']]"
+                [(ngModel)]="campo['valore']"
                 type="number"
                 [maxLength]="campo.lunghezza"
                 [disabled]="campo.disabilitato"
@@ -64,7 +64,7 @@
               <input
                 [id]="campo['nome']"
                 class="price-input"
-                [(ngModel)]="valoriCampi[campo['nome']]"
+                [(ngModel)]="campo['valore']"
                 type="number"
                 [maxLength]="campo.lunghezza"
                 [disabled]="campo.disabilitato"
@@ -83,17 +83,17 @@
               <div class="col-3 form-elem-date-col">
                 <input
                   [id]="campo['nome']+'-giorno'"
-                  [(ngModel)]="valoriCampi[campo['nome']]['giorno']"
+                  [(ngModel)]="campo['valore']['giorno']"
                   type="number"
                   min="1"
-                  [max]="calcolaMaxGiorni(valoriCampi[campo['nome']]['mese'], valoriCampi[campo['nome']]['anno'])"
+                  [max]="calcolaMaxGiorni(campo['valore']['mese'], campo['valore']['anno'])"
                   [disabled]="campo.disabilitato"
                 />
                 <span class="form-elem-date-separator">/</span>
               </div>
               <div class="col-6 form-elem-date-col">
                 <select
-                  [(ngModel)]="valoriCampi[campo['nome']]['mese']"
+                  [(ngModel)]="campo['valore']['mese']"
                   class="form-elem-date-select"
                   [disabled]="campo.disabilitato"
                 >
@@ -105,7 +105,7 @@
               <div class="col-3 form-elem-date-col">
                 <input
                   [id]="campo['nome']+'-anno'"
-                  [(ngModel)]="valoriCampi[campo['nome']]['anno']"
+                  [(ngModel)]="campo['valore']['anno']"
                   type="number"
                   min="1900"
                   [max]="calcolaMaxAnno()"
@@ -125,7 +125,7 @@
             <div class="row">
               <div class="col-8 form-elem-date-col">
                 <select
-                  [(ngModel)]="valoriCampi[campo['nome']]['mese']"
+                  [(ngModel)]="campo['valore']['mese']"
                   class="form-elem-date-select"
                   [disabled]="campo.disabilitato"
                 >
@@ -137,7 +137,7 @@
               <div class="col-4 form-elem-date-col">
                 <input
                   [id]="campo['nome']+'-anno'"
-                  [(ngModel)]="valoriCampi[campo['nome']]['anno']"
+                  [(ngModel)]="campo['valore']['anno']"
                   type="number"
                   min="1900"
                   [max]="calcolaMaxAnno()"
@@ -157,7 +157,7 @@
             <div class="row">
               <input
                 [id]="campo['nome']"
-                [(ngModel)]="valoriCampi[campo['nome']]"
+                [(ngModel)]="campo['valore']"
                 type="number"
                 min="1900"
                 [max]="calcolaMaxAnno()"
@@ -176,7 +176,7 @@
             <div class="row">
               <select
                 [id]="campo['nome']"
-                [(ngModel)]="valoriCampi[campo['nome']]"
+                [(ngModel)]="campo['valore']"
                 [disabled]="campo.disabilitato || !campo['opzioni']?.length"
                 (change)="aggiornaSelectDipendenti(campo)"
               >
