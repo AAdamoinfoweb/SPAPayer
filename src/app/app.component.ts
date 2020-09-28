@@ -24,13 +24,14 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
     this.idleService.startWatching();
+    this.idleService.onTimerStart().subscribe(count => console.log(count));
     this.idleService.onTimeout().subscribe(() => {
       this.authGuardService.logout().subscribe((url) => {
         this.idleService.stopWatching();
         window.location.href = url;
       });
     });
-    
+
     this.menuService.getInfoUtente().subscribe((info) => {
       this.menuService.infoUtenteEmitter.emit(info);
     });

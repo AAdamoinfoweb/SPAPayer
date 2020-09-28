@@ -51,7 +51,7 @@ import {UserIdleModule} from "angular-user-idle";
     FormsModule,
     DesignAngularKitModule,
     ReactiveFormsModule,
-    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
+    UserIdleModule.forRoot({idle: 10, timeout: 1, ping: 120})
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
