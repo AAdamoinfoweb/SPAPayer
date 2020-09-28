@@ -170,6 +170,26 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     };
     campiMockati.push(campo);
 
+    campo = {
+      id: 5,
+      titolo: 'Data',
+      obbligatorio: true,
+      tipoCampo: tipoCampo.DATEDDMMYY,
+      informazioni: 'Inserisci una data',
+      lunghezzaVariabile: true,
+      lunghezza: 20,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 5,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: null,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
+
     this.valoriCampi = {};
     this.listaCampi = [];
     this.impostaCampi(campiMockati);
@@ -216,14 +236,16 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   calcolaMaxGiorni(mese: number, anno: number): number {
-    let maxGiorni;
+    let maxGiorni = 31;
 
-    if (mese === 2) {
-      maxGiorni = anno % 4 === 0 ? 29 : 28;
-    } else if (mese === 4 || mese === 6 || mese === 9 || mese === 11) {
-      maxGiorni = 30;
-    } else {
-      maxGiorni = 31;
+    if (mese && anno) {
+      if (mese == 2) {
+        maxGiorni = anno % 4 == 0 ? 29 : 28;
+      } else if (mese == 4 || mese == 6 || mese == 9 || mese == 11) {
+        maxGiorni = 30;
+      } else {
+        maxGiorni = 31;
+      }
     }
 
     return maxGiorni;

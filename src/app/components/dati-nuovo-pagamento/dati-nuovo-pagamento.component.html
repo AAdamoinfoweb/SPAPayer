@@ -86,18 +86,19 @@
                   [(ngModel)]="valoriCampi[campo['nome']]['giorno']"
                   type="number"
                   min="1"
-                  [max]="calcolaMaxGiorni(campo['nome']['mese'], campo['nome']['anno'])"
+                  [max]="calcolaMaxGiorni(valoriCampi[campo['nome']]['mese'], valoriCampi[campo['nome']]['anno'])"
                   [disabled]="campo.disabilitato"
                 />
                 <span class="form-elem-date-separator">/</span>
               </div>
               <div class="col-6 form-elem-date-col">
                 <select
+                  [(ngModel)]="valoriCampi[campo['nome']]['mese']"
                   class="form-elem-date-select"
                   [disabled]="campo.disabilitato"
                 >
                   <option [value]="null"></option>
-                  <option *ngFor="let item of mesi">{{item.label}}</option>
+                  <option *ngFor="let item of mesi" [value]="item.value">{{item.label}}</option>
                 </select>
                 <span class="form-elem-date-separator">/</span>
               </div>
@@ -124,11 +125,12 @@
             <div class="row">
               <div class="col-8 form-elem-date-col">
                 <select
+                  [(ngModel)]="valoriCampi[campo['nome']]['mese']"
                   class="form-elem-date-select"
                   [disabled]="campo.disabilitato"
                 >
                   <option [value]="null"></option>
-                  <option *ngFor="let item of mesi">{{item.label}}</option>
+                  <option *ngFor="let item of mesi" [value]="item.value">{{item.label}}</option>
                 </select>
                 <span class="form-elem-date-separator">/</span>
               </div>
