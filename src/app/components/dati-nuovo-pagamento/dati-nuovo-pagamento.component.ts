@@ -38,7 +38,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   lunghezzaMaxCol2: number = 10;
   lunghezzaMaxCol3: number = 15;
 
-  mesi: Array<any> = [
+  mesi: Array<OpzioneSelect> = [
     {value: 1, label: 'gennaio'},
     {value: 2, label: 'febbraio'},
     {value: 3, label: 'marzo'},
@@ -343,21 +343,25 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {
             switch (campo.tipologica) {
+              // Inserire qui logica per i vari campi select dipendenti da altre select
+
               case tipologicaSelect.COMUNI:
                 // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
                 valoriSelect = valoriSelect.filter(valore => {return valore.codiceIstat?.substring(0,3) === valoreSelectPadre});
                 break;
-
-              // Inserire qui logica per altri eventuali futuri casi di select dipendenti da altre select
             }
         } else {
           valoriSelect = [];
         }
       }
+    } else {
+      valoriSelect = [];
     }
 
     valoriSelect.forEach(valore => {
       switch (campo.tipologica) {
+        // Inserire qui logica per l'impostazione delle opzioni dei vari tipi di select
+
         case tipologicaSelect.PROVINCE:
           opzioniSelect.push({
             value: valore.codice,
@@ -366,7 +370,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           break;
         case tipologicaSelect.COMUNI:
           opzioniSelect.push({
-            value: valore.codice,
+            value: valore.codiceIstat,
             label: valore.nome
           });
           break;
