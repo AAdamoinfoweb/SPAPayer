@@ -1,11 +1,10 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {StickyService} from "./components/login-bar/StickyService";
+import {Component, OnInit} from '@angular/core';
 import {MenuService} from "./services/menu.service";
-import {Provincia} from './modules/main/model/Provincia';
-import {Comune} from './modules/main/model/Comune';
 import {tipologicaSelect} from './enums/tipologicaSelect.enum';
 import {ToponomasticaService} from './services/toponomastica.service';
 import {map} from 'rxjs/operators';
+import {UserIdleService} from "angular-user-idle";
+import {AuthguardService} from "./services/authguard.service";
 
 @Component({
   selector: 'app-root',
@@ -16,10 +15,22 @@ export class AppComponent implements OnInit {
 
   title = '';
 
-  constructor(private menuService: MenuService, private toponomasticaService: ToponomasticaService) {
+  constructor(private menuService: MenuService,
+              private authGuardService: AuthguardService,
+              private idleService: UserIdleService,
+              private toponomasticaService: ToponomasticaService) {
   }
 
   ngOnInit(): void {
+
+    this.idleService.startWatching();
+    this.idleService.onTimeout().subscribe(() => {
+      this.authGuardService.logout().subscribe((url) => {
+        this.idleService.stopWatching();
+        window.location.href = url;
+      });
+    });
+    
     this.menuService.getInfoUtente().subscribe((info) => {
       this.menuService.infoUtenteEmitter.emit(info);
     });
