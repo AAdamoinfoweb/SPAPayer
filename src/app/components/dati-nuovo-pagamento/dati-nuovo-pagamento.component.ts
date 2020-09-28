@@ -63,7 +63,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       this.compila();
     })).subscribe();
 
-    this.aggiornaCampiForm();
+    // this.aggiornaCampiForm();
 
     this.pagamentoService.faseVerificaEvent.pipe(map(fase => {
       this.isFaseVerificaPagamento = fase;
@@ -223,9 +223,16 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return classe;
   }
 
-  aggiornaCampiForm(): void {
-    this.pagamentoService.bottoniEvent.pipe(map(valoriCampi => {
-      //TODO logica di reset campi form
+  // aggiornaCampiForm(): void {
+  pulisciCampiForm(): void {
+    this.pagamentoService.pulisciEvent.pipe(map(valoriCampi => {
+      // TODO logica di reset campi form
+    })).subscribe();
+  }
+
+  impostaCampiForm(): void {
+    this.pagamentoService.impostaEvent.pipe(map(valoriCampi => {
+      // TODO logica imposta campi form
     })).subscribe();
   }
 
