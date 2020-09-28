@@ -43,7 +43,8 @@ export class NuovoPagamentoComponent implements OnInit {
   }
 
   pulisciValoriSezioneDati(): void {
-    this.pagamentoService.bottoniEvent.emit({});
+    // this.pagamentoService.pulisciEvent.emit({});
+    // TODO reset campi form
   }
 
   procediAVerificaPagamento(): void {
