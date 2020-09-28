@@ -234,15 +234,15 @@
   </div>
 
   <!-- Bottoni dx -->
-  <div *ngIf="isFaseVerificaPagamento || livelliIntegrazione.LV2 === livelloIntegrazioneId"
+  <div *ngIf="livelliIntegrazione.LV2 === livelloIntegrazioneId || (livelliIntegrazione.LV2_BACK_OFFICE === livelloIntegrazioneId && isFaseVerificaPagamento)"
        class="col-10 text-right button-space">
-        <span it-tooltip="{{this.tooltipBottoneSalvaPerDopo}}" placement="top">
+        <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top">
           <button id="bottoneSalvaPerDopo" class="btn btn-secondary" [disabled]="isUtenteAnonimo">Salva per dopo</button>
         </span>
     <button id="bottoneAggiungiAlCarrello" class="btn btn-secondary">Aggiungi al carrello</button>
     <button id="bottonePagaOra" class="btn">Paga ora</button>
   </div>
-  <div *ngIf="!isFaseVerificaPagamento && livelliIntegrazione.LV2_BACK_OFFICE === livelloIntegrazioneId"
+  <div *ngIf="livelliIntegrazione.LV2_BACK_OFFICE === livelloIntegrazioneId && !isFaseVerificaPagamento"
        class="col-10 text-right">
     <button id="bottoneProcedi" class="btn" (click)="procediAVerificaPagamento()">Procedi</button>
   </div>
