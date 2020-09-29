@@ -25,6 +25,17 @@ import {DesignAngularKitModule} from 'design-angular-kit';
 import {CompilaNuovoPagamentoComponent} from './components/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
 import {DatiNuovoPagamentoComponent} from './components/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
 import {UserIdleModule} from "angular-user-idle";
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
+import {AccordionModule} from 'primeng/accordion';
+import {TableModule} from "primeng/table";
+import {TableComponent} from './components/table/table.component';
+import {GestioneUtentiComponent} from './components/gestione-utenti/gestione-utenti.component';
+import {ButtonModule} from "primeng/button";      //accordion and accordion tab
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {TabViewModule} from 'primeng/tabview';
+import {TabViewComponent} from './components/tab-view/tab-view.component';
+import {ToolbarComponent} from './components/toolbar/toolbar.component';
+import {ToolbarModule} from 'primeng/toolbar';
 
 @NgModule({
   declarations: [
@@ -40,7 +51,11 @@ import {UserIdleModule} from "angular-user-idle";
     NuovoPagamentoComponent,
     IMieiPagamentiComponent,
     CompilaNuovoPagamentoComponent,
-    DatiNuovoPagamentoComponent
+    DatiNuovoPagamentoComponent,
+    TableComponent,
+    GestioneUtentiComponent,
+    TabViewComponent,
+    ToolbarComponent
   ],
   imports: [
     HttpClientModule,
@@ -51,6 +66,13 @@ import {UserIdleModule} from "angular-user-idle";
     FormsModule,
     DesignAngularKitModule,
     ReactiveFormsModule,
+    NgxDatatableModule,
+    AccordionModule,
+    TableModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    TabViewModule,
+    ToolbarModule,
     UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
   ],
   providers: [

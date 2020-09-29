@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col"><app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view></div>
+  <div class="col"><app-toolbar></app-toolbar></div>
+</div>
+<div class="row">
+  <div class="col">
+    <app-table [dataKey]="tempTableData.dataKey"
+               [cols]="tempTableData.cols"
+               [rows]="tempTableData.rows"
+               [tipoTabella]="tempTableData.tipoTabella">
+    </app-table>
+  </div>
+</div>
+
+

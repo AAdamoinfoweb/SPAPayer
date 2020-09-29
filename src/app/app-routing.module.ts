@@ -10,6 +10,7 @@ import {WaitingComponent} from "./modules/main/components/waiting/waiting.compon
 import {GenericErrorComponent} from "./modules/generic-error/generic-error.component";
 import {NuovoPagamentoComponent} from './components/nuovo-pagamento/nuovo-pagamento.component';
 import {IMieiPagamentiComponent} from './components/i-miei-pagamenti/i-miei-pagamenti.component';
+import {GestioneUtentiComponent} from "./components/gestione-utenti/gestione-utenti.component";
 
 const routes: Routes = [
   { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -27,8 +28,9 @@ const routes: Routes = [
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
   {path: 'waiting', component: WaitingComponent},
   {path: 'privacy', component: PrivacyComponent},
-  {path: 'nuovoPagamento', component: NuovoPagamentoComponent},
-  {path: 'imieipagamenti', component: IMieiPagamentiComponent}
+  {path: 'nuovopagamento', component: NuovoPagamentoComponent},
+  {path: 'imieipagamenti', component: IMieiPagamentiComponent},
+  {path: 'gestioneutenti', component: GestioneUtentiComponent}
 ];
 
 @NgModule({
