@@ -22,8 +22,8 @@ import {NuovoPagamentoComponent} from './components/nuovo-pagamento/nuovo-pagame
 import {IMieiPagamentiComponent} from './components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DesignAngularKitModule} from 'design-angular-kit';
-import {CompilaNuovoPagamentoComponent} from './components/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
-import {DatiNuovoPagamentoComponent} from './components/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
+import {CompilaNuovoPagamentoComponent} from './components/nuovo-pagamento/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
+import {DatiNuovoPagamentoComponent} from './components/nuovo-pagamento/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
 import {UserIdleModule} from "angular-user-idle";
 
 @NgModule({

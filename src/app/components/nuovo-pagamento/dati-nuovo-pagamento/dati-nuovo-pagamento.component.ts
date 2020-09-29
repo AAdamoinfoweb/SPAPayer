@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {CampoForm} from '../../modules/main/model/CampoForm';
-import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
-import {DatiPagamentoService} from '../dati-nuovo-pagamento/DatiPagamentoService';
+import {CampoForm} from '../../../modules/main/model/CampoForm';
+import {NuovoPagamentoService} from '../../../services/nuovo-pagamento.service';
+import {DatiPagamentoService} from './DatiPagamentoService';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {map} from 'rxjs/operators';
-import {CampiNuovoPagamento} from '../../modules/main/model/CampiNuovoPagamento';
+import {CampiNuovoPagamento} from '../../../modules/main/model/CampiNuovoPagamento';
 import * as moment from 'moment';
-import {tipologicaSelect} from '../../enums/tipologicaSelect.enum';
-import {OpzioneSelect} from '../../modules/main/model/OpzioneSelect';
-import {Provincia} from '../../modules/main/model/Provincia';
-import {Comune} from '../../modules/main/model/Comune';
-import {PagamentoService} from "../nuovo-pagamento/PagamentoService";
-import {tipoCampo} from '../../enums/tipoCampo.enum';
-import {Servizio} from '../../modules/main/model/Servizio';
-import {livelloIntegrazione} from '../../enums/livelloIntegrazione.enum';
+import {tipologicaSelect} from '../../../enums/tipologicaSelect.enum';
+import {OpzioneSelect} from '../../../modules/main/model/OpzioneSelect';
+import {Provincia} from '../../../modules/main/model/Provincia';
+import {Comune} from '../../../modules/main/model/Comune';
+import {PagamentoService} from "../PagamentoService";
+import {tipoCampo} from '../../../enums/tipoCampo.enum';
+import {Servizio} from '../../../modules/main/model/Servizio';
+import {livelloIntegrazione} from '../../../enums/livelloIntegrazione.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
   templateUrl: './dati-nuovo-pagamento.component.html',
-  styleUrls: ['../nuovo-pagamento/nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
+  styleUrls: ['../nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
 export class DatiNuovoPagamentoComponent implements OnInit {
   tipoCampo = tipoCampo; // per passare l'enum al template html
