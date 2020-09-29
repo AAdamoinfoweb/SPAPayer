@@ -29,7 +29,7 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {AccordionModule} from 'primeng/accordion';
 import {TableModule} from "primeng/table";
 import {TableComponent} from './components/table/table.component';
-import {GestioneUtentiComponent} from './components/gestione-utenti/gestione-utenti.component';
+import {GestisciUtentiComponent} from './components/gestisci-utenti/gestisci-utenti.component';
 import {ButtonModule} from "primeng/button";      //accordion and accordion tab
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TabViewModule} from 'primeng/tabview';
@@ -53,7 +53,7 @@ import {ToolbarModule} from 'primeng/toolbar';
     CompilaNuovoPagamentoComponent,
     DatiNuovoPagamentoComponent,
     TableComponent,
-    GestioneUtentiComponent,
+    GestisciUtentiComponent,
     TabViewComponent,
     ToolbarComponent
   ],

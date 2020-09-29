@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {tipoColonna} from '../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../enums/TipoTabella.enum';
-import {tipoUtente} from "../../enums/TipoUtente.enum";
-import * as _ from 'lodash';
+import {tipoUtente} from '../../enums/TipoUtente.enum';
+import {tool} from '../../enums/Tool.enum';
 
 @Component({
   selector: 'app-gestione-utenti',
-  templateUrl: './gestione-utenti.component.html',
-  styleUrls: ['./gestione-utenti.component.scss']
+  templateUrl: './gestisci-utenti.component.html',
+  styleUrls: ['./gestisci-utenti.component.scss']
 })
-export class GestioneUtentiComponent implements OnInit {
+export class GestisciUtentiComponent implements OnInit {
 
 
   constructor() {
@@ -45,6 +45,7 @@ export class GestioneUtentiComponent implements OnInit {
 
   tempTableData;
 
+  //  todo popolare la tabella utenti
   ngOnInit(): void {
     this.tempTableData = Object.assign({}, this.tableData);
   }
@@ -59,6 +60,21 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     this.tempTableData.rows = tabRows;
+  }
+
+  // todo logica azioni tool
+  eseguiAzioni(azioneTool) {
+    if (azioneTool.value === tool.INSERT.value) {
+      // inserisci utente
+    } else if (azioneTool.value === tool.UPDATE.value) {
+      // aggiorna utente
+    } else if (azioneTool.value === tool.DELETE.value) {
+      // cancella utente
+    } else if (azioneTool.value === tool.EXPORT_PDF.value) {
+      // esporta in pdf
+    } else if (azioneTool.value === tool.EXPORT_PDF.value) {
+      // esporta in excel
+    }
   }
 
 }

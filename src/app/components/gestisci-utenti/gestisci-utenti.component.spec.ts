@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GestioneUtentiComponent } from './gestione-utenti.component';
+import { GestisciUtentiComponent } from './gestisci-utenti.component';
 
 describe('GestioneUtentiComponent', () => {
-  let component: GestioneUtentiComponent;
-  let fixture: ComponentFixture<GestioneUtentiComponent>;
+  let component: GestisciUtentiComponent;
+  let fixture: ComponentFixture<GestisciUtentiComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GestioneUtentiComponent ]
+      declarations: [ GestisciUtentiComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GestioneUtentiComponent);
+    fixture = TestBed.createComponent(GestisciUtentiComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
