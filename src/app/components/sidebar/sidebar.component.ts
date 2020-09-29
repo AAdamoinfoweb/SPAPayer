@@ -29,7 +29,7 @@ export class SidebarComponent implements OnInit {
           if (localStorage.getItem('nome') !== 'null') {
             this.nomeUtente = `${localStorage.getItem('nome')} ${localStorage.getItem('cognome')}`;
           }
-          this.menu = JSON.parse(atob(info.menu));
+          this.menu = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
         }
       });
     this.versionApplicativo = environment.sentry.release;
