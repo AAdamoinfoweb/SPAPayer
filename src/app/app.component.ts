@@ -5,6 +5,7 @@ import {ToponomasticaService} from './services/toponomastica.service';
 import {map} from 'rxjs/operators';
 import {UserIdleService} from "angular-user-idle";
 import {AuthguardService} from "./services/authguard.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -16,13 +17,13 @@ export class AppComponent implements OnInit {
   title = '';
 
   constructor(private menuService: MenuService,
+              private router: Router,
               private authGuardService: AuthguardService,
               private idleService: UserIdleService,
               private toponomasticaService: ToponomasticaService) {
   }
 
   ngOnInit(): void {
-
     this.idleService.startWatching();
     this.idleService.onTimerStart().subscribe(count => console.log(count));
     this.idleService.onTimeout().subscribe(() => {
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit {
   logout() {
     this.authGuardService.logout().subscribe((url) => {
       this.idleService.stopWatching();
+      this.idleService.stopTimer();
       window.location.href = url;
     });
   }
