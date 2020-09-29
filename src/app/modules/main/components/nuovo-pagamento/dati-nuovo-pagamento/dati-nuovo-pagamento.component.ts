@@ -183,7 +183,27 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
     campo = {
       id: 5,
-      titolo: 'Data',
+      titolo: 'Data small',
+      obbligatorio: true,
+      tipoCampo: tipoCampo.DATEDDMMYY,
+      informazioni: 'Inserisci una data',
+      lunghezzaVariabile: true,
+      lunghezza: 5,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 5,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: null,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
+
+    campo = {
+      id: 6,
+      titolo: 'Data large',
       obbligatorio: true,
       tipoCampo: tipoCampo.DATEDDMMYY,
       informazioni: 'Inserisci una data',
@@ -191,7 +211,47 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       lunghezza: 20,
       campoFisso: true,
       disabilitato: false,
-      posizione: 5,
+      posizione: 6,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: null,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
+
+    campo = {
+      id: 7,
+      titolo: 'DataMMYY',
+      obbligatorio: true,
+      tipoCampo: tipoCampo.DATEMMYY,
+      informazioni: 'Inserisci un mese e un anno',
+      lunghezzaVariabile: true,
+      lunghezza: 15,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 7,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: null,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
+
+    campo = {
+      id: 8,
+      titolo: 'DataYY',
+      obbligatorio: true,
+      tipoCampo: tipoCampo.DATEYY,
+      informazioni: 'Inserisci un anno',
+      lunghezzaVariabile: true,
+      lunghezza: 5,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 8,
       chiave: false,
       controllo_logico: null,
       campo_input: true,
@@ -212,12 +272,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
-    } else if (campo.tipoCampo === tipoCampo.DATEDDMMYY) {
-      classe = 'col-md-4';
-    } else if (campo.tipoCampo === tipoCampo.DATEMMYY) {
-      classe = 'col-md-3';
-    } else if (campo.tipoCampo === tipoCampo.DATEYY) {
-      classe = 'col-md-1';
     } else if (campo.tipoCampo === tipoCampo.INPUT_PREZZO) {
       classe = 'col-md-2';
     } else {
@@ -301,17 +355,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           campo['valore'] = null;
           break;
         case tipoCampo.DATEDDMMYY:
-          campo['valore'] = {
-            giorno: null,
-            mese: null,
-            anno: null
-          };
+          campo['valore'] = null;
           break;
         case tipoCampo.DATEMMYY:
-          campo['valore'] = {
-            mese: null,
-            anno: null
-          };
+          campo['valore'] = null;
           break;
         case tipoCampo.DATEYY:
           campo['valore'] = null;

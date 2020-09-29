@@ -25,6 +25,7 @@ import {DesignAngularKitModule} from 'design-angular-kit';
 import {CompilaNuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
 import {DatiNuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
 import {UserIdleModule} from "angular-user-idle";
+import {DpDatePickerModule} from 'ng2-date-picker';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {UserIdleModule} from "angular-user-idle";
     FormsModule,
     DesignAngularKitModule,
     ReactiveFormsModule,
-    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120})
+    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    DpDatePickerModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
