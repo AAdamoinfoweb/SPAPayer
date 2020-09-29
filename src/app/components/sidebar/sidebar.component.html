@@ -20,7 +20,9 @@
           <ul class="link-sublist collapse show" *ngIf="item.sotto_menu">
             <ng-container *ngFor="let sub of item.sotto_menu">
               <li>
-                <a class="list-item medium active" [routerLink]="sub.route" data-toggle="collapse" aria-expanded="true"><span>{{sub.nome}}</span></a>
+                <a class="list-item medium active"
+                   [routerLink]="sub.nome === 'Accedi' ? ['http://service.pp.192-168-43-56.nip.io'+sub.route] : [sub.route]"
+                   data-toggle="collapse" aria-expanded="true"><span>{{sub.nome}}</span></a>
               </li>
             </ng-container>
           </ul>
