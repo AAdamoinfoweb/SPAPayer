@@ -4,7 +4,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HomeComponent} from './components/home/home.component';
+import {HomeComponent} from './modules/main/components/home/home.component';
 import {ErrorHandlerGenerico} from './services/errorHandlerGenerico';
 import {JwtInterceptorService} from './services/jwt-interceptor.service';
 import {BackendInterceptorService} from './services/backend-interceptor';
@@ -18,12 +18,12 @@ import {GenericErrorComponent} from './modules/generic-error/generic-error.compo
 import {UrlBackInterceptor} from "./services/urlBack.interceptor";
 import {BannerComponent} from './components/banner/banner.component';
 import {HeaderComponent} from './components/header/header.component';
-import {NuovoPagamentoComponent} from './components/nuovo-pagamento/nuovo-pagamento.component';
-import {IMieiPagamentiComponent} from './components/i-miei-pagamenti/i-miei-pagamenti.component';
+import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/nuovo-pagamento.component';
+import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DesignAngularKitModule} from 'design-angular-kit';
-import {CompilaNuovoPagamentoComponent} from './components/nuovo-pagamento/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
-import {DatiNuovoPagamentoComponent} from './components/nuovo-pagamento/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
+import {CompilaNuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
+import {DatiNuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
 import {UserIdleModule} from "angular-user-idle";
 
 @NgModule({

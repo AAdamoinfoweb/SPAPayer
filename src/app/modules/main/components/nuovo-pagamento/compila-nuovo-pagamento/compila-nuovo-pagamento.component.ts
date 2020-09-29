@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {CampoForm} from '../../../modules/main/model/CampoForm';
-import {NuovoPagamentoService} from '../../../services/nuovo-pagamento.service';
+import {CampoForm} from '../../../model/CampoForm';
+import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {DatiPagamentoService} from '../dati-nuovo-pagamento/DatiPagamentoService';
 import {map} from 'rxjs/operators';
 import {CompilazioneService} from './CompilazioneService';
-import {LivelloTerritoriale} from '../../../modules/main/model/LivelloTerritoriale';
-import {Ente} from '../../../modules/main/model/Ente';
-import {Servizio} from '../../../modules/main/model/Servizio';
-import {OpzioneSelect} from '../../../modules/main/model/OpzioneSelect';
+import {LivelloTerritoriale} from '../../../model/LivelloTerritoriale';
+import {Ente} from '../../../model/Ente';
+import {Servizio} from '../../../model/Servizio';
+import {OpzioneSelect} from '../../../model/OpzioneSelect';
 
 @Component({
   selector: 'app-compila-nuovo-pagamento',
