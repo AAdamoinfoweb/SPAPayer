@@ -42,7 +42,9 @@ export class AppComponent implements OnInit {
     this.authGuardService.logout().subscribe((url) => {
       this.idleService.stopWatching();
       this.idleService.stopTimer();
-      window.location.href = url;
+      if (url) {
+        window.location.href = url;
+      }
     });
   }
 

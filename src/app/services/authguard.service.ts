@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +29,8 @@ export class AuthguardService implements CanActivate {
         localStorage.removeItem('access_jwt');
         localStorage.removeItem('renew_jwt');
         return body.url;
+      }), catchError((err, caught) => {
+          return of(null);
       }));
   }
 

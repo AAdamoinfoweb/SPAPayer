@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {StickyService} from "./StickyService";
 
 @Component({
@@ -11,6 +11,9 @@ export class LoginBarComponent implements OnInit, AfterViewInit {
   constructor(private stickyService: StickyService) { }
 
   @ViewChild("containerLoginBar", {static: false}) containerLoginBar: ElementRef;
+
+  @Input()
+  isL1: boolean = false;
 
   ngOnInit(): void {
   }
