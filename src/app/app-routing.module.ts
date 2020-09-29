@@ -30,7 +30,7 @@ const routes: Routes = [
   {path: 'privacy', component: PrivacyComponent},
   {path: 'nuovopagamento', component: NuovoPagamentoComponent},
   {path: 'imieipagamenti', component: IMieiPagamentiComponent},
-  {path: 'gestiosciutenti', component: GestisciUtentiComponent}
+  {path: 'gestisciutenti', component: GestisciUtentiComponent}
 ];
 
 @NgModule({
