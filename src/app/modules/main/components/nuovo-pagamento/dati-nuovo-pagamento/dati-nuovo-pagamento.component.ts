@@ -303,26 +303,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.datiPagamentoService.prezzoEvent.emit(this.importoTotale);
   }
 
-  calcolaMaxGiorni(mese: number, anno: number): number {
-    let maxGiorni = 31;
-
-    if (mese && anno) {
-      if (mese == 2) {
-        maxGiorni = anno % 4 == 0 ? 29 : 28;
-      } else if (mese == 4 || mese == 6 || mese == 9 || mese == 11) {
-        maxGiorni = 30;
-      } else {
-        maxGiorni = 31;
-      }
-    }
-
-    return maxGiorni;
-  }
-
-  calcolaMaxAnno(): number {
-    return moment().year();
-  }
-
   compila(servizio: Servizio): void {
     this.servizioSelezionato = servizio;
     const isCompilato = this.servizioSelezionato != null;

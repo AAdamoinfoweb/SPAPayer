@@ -101,7 +101,7 @@
 
           <div *ngSwitchCase="tipoCampo.DATEMMYY" class="dynamic-form-elem">
             <div class="row">
-              <label [htmlFor]="campo.id+'-mese'" class="title">{{campo.titolo}}</label>
+              <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
               <dp-date-picker
@@ -133,7 +133,6 @@
                 [(ngModel)]="campo['valore']"
                 type="number"
                 min="1900"
-                [max]="calcolaMaxAnno()"
                 [disabled]="campo.disabilitato"
               />
             </div>
