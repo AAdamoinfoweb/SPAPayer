@@ -28,7 +28,7 @@ const routes: Routes = [
   {path: 'waiting', component: WaitingComponent},
   {path: 'privacy', component: PrivacyComponent},
   {path: 'nuovoPagamento', component: NuovoPagamentoComponent},
-  {path: 'imieipagamenti', component: IMieiPagamentiComponent}
+  {path: 'iMieiPagamenti', component: IMieiPagamentiComponent}
 ];
 
 @NgModule({
