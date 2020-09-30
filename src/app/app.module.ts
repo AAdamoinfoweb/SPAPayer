@@ -70,7 +70,7 @@ import { PaginatorComponent } from './components/table/paginator/paginator.compo
     DesignAngularKitModule,
     ReactiveFormsModule,
     UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
-    DpDatePickerModule
+    DpDatePickerModule,
     NgxDatatableModule,
     AccordionModule,
     TableModule,
