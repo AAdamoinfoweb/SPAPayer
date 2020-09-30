@@ -1,12 +1,12 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
-import {environment} from '../../../environments/environment';
+import {environment} from '../../../../../environments/environment';
 import {Observable} from "rxjs";
-import {Banner} from "../../modules/main/model/Banner";
-import {BannerService} from "../../services/banner.service";
-import {PagamentoService} from "../../services/pagamento.service";
-import {Bollettino} from "../../modules/main/model/bollettino/Bollettino";
-import {CampoDettaglioTransazione} from "../../modules/main/model/bollettino/CampoDettaglioTransazione";
+import {Banner} from "../../model/Banner";
+import {BannerService} from "../../../../services/banner.service";
+import {PagamentoService} from "../../../../services/pagamento.service";
+import {Bollettino} from "../../model/bollettino/Bollettino";
+import {CampoDettaglioTransazione} from "../../model/bollettino/CampoDettaglioTransazione";
 
 @Component({
   selector: 'app-home',

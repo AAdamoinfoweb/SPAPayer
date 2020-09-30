@@ -1,3 +1,5 @@
+import {ControlloLogico} from './ControlloLogico';
+
 export class CampoForm {
   id: number;
   titolo: string;
@@ -10,7 +12,7 @@ export class CampoForm {
   disabilitato: boolean;
   posizione: number;
   chiave: boolean;
-  controllo_logico: string;
+  controllo_logico: ControlloLogico;
   campo_input: boolean;
   json_path: string;
   tipologica: string;

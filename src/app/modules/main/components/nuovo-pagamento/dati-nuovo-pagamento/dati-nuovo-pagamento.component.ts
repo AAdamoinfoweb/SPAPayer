@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {CampoForm} from '../../modules/main/model/CampoForm';
-import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
-import {DatiPagamentoService} from '../dati-nuovo-pagamento/DatiPagamentoService';
+import {CampoForm} from '../../../model/CampoForm';
+import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
+import {DatiPagamentoService} from './DatiPagamentoService';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {map} from 'rxjs/operators';
-import {CampiNuovoPagamento} from '../../modules/main/model/CampiNuovoPagamento';
+import {CampiNuovoPagamento} from '../../../model/CampiNuovoPagamento';
 import * as moment from 'moment';
-import {tipologicaSelect} from '../../enums/tipologicaSelect.enum';
-import {OpzioneSelect} from '../../modules/main/model/OpzioneSelect';
-import {Provincia} from '../../modules/main/model/Provincia';
-import {Comune} from '../../modules/main/model/Comune';
-import {PagamentoService} from "../nuovo-pagamento/PagamentoService";
-import {tipoCampo} from '../../enums/tipoCampo.enum';
-import {Servizio} from '../../modules/main/model/Servizio';
-import {livelloIntegrazione} from '../../enums/livelloIntegrazione.enum';
+import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
+import {OpzioneSelect} from '../../../model/OpzioneSelect';
+import {Provincia} from '../../../model/Provincia';
+import {Comune} from '../../../model/Comune';
+import {PagamentoService} from "../PagamentoService";
+import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
+import {Servizio} from '../../../model/Servizio';
+import {livelloIntegrazione} from '../../../../../enums/livelloIntegrazione.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
   templateUrl: './dati-nuovo-pagamento.component.html',
-  styleUrls: ['../nuovo-pagamento/nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
+  styleUrls: ['../nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
 export class DatiNuovoPagamentoComponent implements OnInit {
   tipoCampo = tipoCampo; // per passare l'enum al template html
@@ -183,7 +183,27 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
     campo = {
       id: 5,
-      titolo: 'Data',
+      titolo: 'Data small',
+      obbligatorio: true,
+      tipoCampo: tipoCampo.DATEDDMMYY,
+      informazioni: 'Inserisci una data',
+      lunghezzaVariabile: true,
+      lunghezza: 5,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 5,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: null,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
+
+    campo = {
+      id: 6,
+      titolo: 'Data large',
       obbligatorio: true,
       tipoCampo: tipoCampo.DATEDDMMYY,
       informazioni: 'Inserisci una data',
@@ -191,7 +211,47 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       lunghezza: 20,
       campoFisso: true,
       disabilitato: false,
-      posizione: 5,
+      posizione: 6,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: null,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
+
+    campo = {
+      id: 7,
+      titolo: 'DataMMYY',
+      obbligatorio: true,
+      tipoCampo: tipoCampo.DATEMMYY,
+      informazioni: 'Inserisci un mese e un anno',
+      lunghezzaVariabile: true,
+      lunghezza: 15,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 7,
+      chiave: false,
+      controllo_logico: null,
+      campo_input: true,
+      json_path: null,
+      tipologica: null,
+      dipendeDa: null
+    };
+    campiMockati.push(campo);
+
+    campo = {
+      id: 8,
+      titolo: 'DataYY',
+      obbligatorio: true,
+      tipoCampo: tipoCampo.DATEYY,
+      informazioni: 'Inserisci un anno',
+      lunghezzaVariabile: true,
+      lunghezza: 5,
+      campoFisso: true,
+      disabilitato: false,
+      posizione: 8,
       chiave: false,
       controllo_logico: null,
       campo_input: true,
@@ -212,12 +272,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
-    } else if (campo.tipoCampo === tipoCampo.DATEDDMMYY) {
-      classe = 'col-md-4';
-    } else if (campo.tipoCampo === tipoCampo.DATEMMYY) {
-      classe = 'col-md-3';
-    } else if (campo.tipoCampo === tipoCampo.DATEYY) {
-      classe = 'col-md-1';
+    } else if (campo.tipoCampo === tipoCampo.DATEDDMMYY || campo.tipoCampo === tipoCampo.DATEMMYY || campo.tipoCampo === tipoCampo.DATEYY) {
+      classe = 'col-md-2';
     } else if (campo.tipoCampo === tipoCampo.INPUT_PREZZO) {
       classe = 'col-md-2';
     } else {
@@ -247,26 +303,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   aggiornaPrezzoCarrello(): void {
     this.datiPagamentoService.prezzoEvent.emit(this.importoTotale);
-  }
-
-  calcolaMaxGiorni(mese: number, anno: number): number {
-    let maxGiorni = 31;
-
-    if (mese && anno) {
-      if (mese == 2) {
-        maxGiorni = anno % 4 == 0 ? 29 : 28;
-      } else if (mese == 4 || mese == 6 || mese == 9 || mese == 11) {
-        maxGiorni = 30;
-      } else {
-        maxGiorni = 31;
-      }
-    }
-
-    return maxGiorni;
-  }
-
-  calcolaMaxAnno(): number {
-    return moment().year();
   }
 
   compila(servizio: Servizio): void {
@@ -301,17 +337,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           campo['valore'] = null;
           break;
         case tipoCampo.DATEDDMMYY:
-          campo['valore'] = {
-            giorno: null,
-            mese: null,
-            anno: null
-          };
+          campo['valore'] = null;
           break;
         case tipoCampo.DATEMMYY:
-          campo['valore'] = {
-            mese: null,
-            anno: null
-          };
+          campo['valore'] = null;
           break;
         case tipoCampo.DATEYY:
           campo['valore'] = null;
