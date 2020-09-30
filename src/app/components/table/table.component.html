@@ -24,7 +24,7 @@
         <!--  template ICONA  -->
         <div it-tooltip="{{row[col.field].tooltip}}"
               *ngIf="col.type == tipoColonnaEnum.ICONA"
-             [ngStyle]="{fill: row[col.field].color != null ? row[col.field].color : '#403d39'}"
+             [ngStyle]="{fill: row[col.field] != null ? row[col.field].color : '#403d39'}"
               (click)="onIcon(row[dataKey])"
         >
           <svg class="bg-light icon icon-sm">
@@ -37,8 +37,8 @@
         </div>
         <!--  template LINK  -->
         <div *ngIf="col.type == tipoColonnaEnum.LINK">
-          {{row[col.field].testo != null  ? row[col.field].testo : null}}
-          <a href="{{row[col.field].link}}" *ngIf="row[col.field].link != null">
+          {{row[col.field] != null  ? row[col.field].testo : null}}
+          <a href="{{row[col.field].link}}" *ngIf="row[col.field] != null">
             <svg class="bg-light icon icon-sm" fill="#004987">
               <use xlink:href="assets/img/sprite.svg#it-external-link"></use>
             </svg>

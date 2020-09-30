@@ -38,12 +38,6 @@ export class TableComponent implements OnInit {
     this.totalRecords = this.rows.length;
   }
 
-  renderLink(testoLink: string) {
-    const link = testoLink.split('href:');
-    link.forEach(value => value.replace('href:', ''));
-    return link;
-  }
-
   selectRow(row: any) {
     window.alert(row.name);
   }

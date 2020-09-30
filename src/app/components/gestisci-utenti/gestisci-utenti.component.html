@@ -12,11 +12,11 @@
   <app-filtro-gestione-utenti></app-filtro-gestione-utenti>
 
   <!-- Sottosezione Lista Utenti -->
-  <div class="row align-items-baseline">
-    <div class="col">
+  <div class="row align-items-baseline align-content-lg-around">
+    <div class="col-lg pb-2 pb-sm-2 pb-lg-0">
       <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>
     </div>
-    <div class="col">
+    <div class="col-auto">
       <app-toolbar (onClick)="eseguiAzioni($event)"></app-toolbar>
     </div>
   </div>
