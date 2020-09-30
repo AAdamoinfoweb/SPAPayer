@@ -73,7 +73,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   ngOnInit(): void {
     this.mockAggiornaPrezzoCarrello();
-    this.mockCampiForm();
     this.checkUtenteLoggato();
   }
 
@@ -98,7 +97,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.aggiornaPrezzoCarrello();
   }
 
-  mockCampiForm(): void {
+  mockCampiForm(): Array<CampoForm> {
     let campiMockati: Array<CampoForm> = [];
     let campo;
 
@@ -263,9 +262,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     };
     campiMockati.push(campo);
 
-    this.listaCampi = [];
-    this.form = new FormGroup({});
-    this.impostaCampi(campiMockati);
+    return campiMockati;
   }
 
   calcolaDimensioneCampo(campo: CampoForm): string {
@@ -316,8 +313,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       this.livelloIntegrazioneId = this.servizioSelezionato.livelloIntegrazioneId;
 
       this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato.id).pipe(map(campiNuovoPagamento => {
-        this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
-        this.listaCampiServizio = campiNuovoPagamento.campiServizio;
+        // this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
+        // this.listaCampiServizio = campiNuovoPagamento.campiServizio;
+        this.listaCampiTipologiaServizio = this.mockCampiForm();
 
         this.listaCampi = [];
         this.form = new FormGroup({});
