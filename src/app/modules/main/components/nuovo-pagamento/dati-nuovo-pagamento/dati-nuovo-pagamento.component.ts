@@ -383,8 +383,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     let campiDipendenti = this.getCampiDipendenti(campo);
     if (campiDipendenti) {
       campiDipendenti.forEach(campo => {
-        this.form.controls[this.getNomeCampoForm(campo)].setValue(null);
+        let campoForm = this.form.controls[this.getNomeCampoForm(campo)];
+        campoForm.setValue(null);
         this.impostaOpzioniSelect(campo);
+        if (campo['opzioni']?.length) {
+          campoForm.enable();
+        } else {
+          campoForm.disable();
+        }
       });
     }
   }
