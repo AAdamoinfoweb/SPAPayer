@@ -1,1 +1,65 @@
-<p>filtro-gestione-utenti works!</p>
+<div class="row subsection-title">
+  <div class="col-xs-5 pt-4">
+    <p class="title page-subtitle">Filtri</p>
+  </div>
+  <div class="col-xs-4 mb-2">
+    <svg class="bg-light icon"
+         data-toggle="collapse" data-target="#contenutoSezioneFiltri"
+         aria-expanded="true" aria-controls="contenutoSezioneFiltri"
+         (click)="isSubsectionFiltriVisible = !isSubsectionFiltriVisible">
+      <use [attr.xlink:href]="!isSubsectionFiltriVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse'"
+           xlink:href=""></use>
+    </svg>
+  </div>
+</div>
+<div id="contenutoSezioneFiltri" class="collapse show">
+  <!-- Livello Territoriale, Società, Ente -->
+  <div class="row section-row">
+    <div class="col-md-4 pb-2">
+      <div class="row">
+        <label for="selectSocieta" class="title">Società</label>
+      </div>
+      <div class="row">
+        <select class="form-elem" id="selectSocieta">
+          <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-4 pb-2">
+      <div class="row">
+        <label for="selectLivelloTerritoriale" class="title">Livello Territoriale</label>
+      </div>
+      <div class="row">
+        <select class="form-elem" id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato" (ngModelChange)="selezionaLivelloTerritoriale()">
+          <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <label for="selectEnte" class="title">Ente</label>
+      </div>
+      <div class="row">
+        <select class="form-elem" id="selectEnte" [(ngModel)]="enteSelezionato" (ngModelChange)="selezionaEnte()">
+          <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Servizio, Funzione abilitata, User ID (cod. fiscale) -->
+  <div class="row section-row">
+    <div class="col-md-4 pb-2">
+      <div class="row">
+        <label for="selectServizio" class="title">Servizio</label>
+      </div>
+      <div class="row">
+        <select class="form-elem" id="selectServizio" [(ngModel)]="servizioSelezionato" (ngModelChange)="selezionaServizio()">
+          <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scadenza abilitazione Da - a, Ultimo accesso da - a -->
+</div>

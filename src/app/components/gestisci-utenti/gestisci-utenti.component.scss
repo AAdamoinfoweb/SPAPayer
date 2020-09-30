@@ -8,3 +8,17 @@
 :host ::ng-deep .p-link:focus {
   box-shadow: none;
 }
+
+svg {
+  fill: #004987;
+}
+
+.subsection-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #77777B;
+  line-height: 0;
+  margin-right: 7%;
+  margin-left: 0;
+}
