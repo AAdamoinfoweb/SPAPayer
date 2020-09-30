@@ -1,7 +1,10 @@
 export class Utils {
  static creaLink = (testo, link) => {
-    const linkCompleto = '{testo} href:{link}';
-    return linkCompleto.replace('{testo}', testo)
-      .replace('{link}', link);
+   return {testo: testo, link: link};
   }
+
+  static creaIcona = (path, color, tooltip) => {
+    return {path: path, color: color, tooltip: tooltip};
+  }
+
 }

@@ -22,9 +22,13 @@
       <td *ngFor="let col of columns">
         <span class="p-column-title">{{col.header}}</span>
         <!--  template ICONA  -->
-        <div *ngIf="col.type == tipoColonnaEnum.ICONA" class="fill">
+        <div it-tooltip="{{row[col.field].tooltip}}"
+              *ngIf="col.type == tipoColonnaEnum.ICONA"
+             [ngStyle]="{fill: row[col.field].color != null ? row[col.field].color : '#403d39'}"
+              (click)="onIcon(row[dataKey])"
+        >
           <svg class="bg-light icon icon-sm">
-            <use [attr.xlink:href]="row[col.field]"></use>
+            <use [attr.xlink:href]="row[col.field].path"></use>
           </svg>
         </div>
         <!--  template TESTO  -->
@@ -33,8 +37,8 @@
         </div>
         <!--  template LINK  -->
         <div *ngIf="col.type == tipoColonnaEnum.LINK">
-          {{renderLink(row[col.field]).length > 1  ? renderLink(row[col.field])[0] : null}}
-          <a href="{{renderLink(row[col.field])[1]}}" *ngIf="renderLink(row[col.field]).length > 1">
+          {{row[col.field].testo != null  ? row[col.field].testo : null}}
+          <a href="{{row[col.field].link}}" *ngIf="row[col.field].link != null">
             <svg class="bg-light icon icon-sm" fill="#004987">
               <use xlink:href="assets/img/sprite.svg#it-external-link"></use>
             </svg>

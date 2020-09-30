@@ -18,6 +18,9 @@ export class TableComponent implements OnInit {
   @Output()
   onSelection: EventEmitter<any> = new EventEmitter<any>();
 
+  @Output()
+  onClickIcon: EventEmitter<any> = new EventEmitter<any>();
+
   tipoColonnaEnum = tipoColonna;
   tipoTabellaEnum = tipoTabella;
 
@@ -27,7 +30,7 @@ export class TableComponent implements OnInit {
 
   rowsPerPageOption: number[] = [5, 10, 20];
 
-  pageSize = this.rowsPerPageOption[0]
+  pageSize = this.rowsPerPageOption[0];
 
   constructor() { }
 
@@ -55,6 +58,10 @@ export class TableComponent implements OnInit {
 
   onChangePageSize(event) {
     this.pageSize = event;
+  }
+
+  onIcon(dataKey) {
+    this.onClickIcon.emit(dataKey);
   }
 
 }

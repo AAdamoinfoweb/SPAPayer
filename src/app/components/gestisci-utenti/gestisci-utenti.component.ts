@@ -24,7 +24,7 @@ export class GestisciUtentiComponent implements OnInit {
 
   tableData = {
     rows: [{
-      iconaUtente: 'assets/img/sprite.svg#it-user',
+      iconaUtente: Utils.creaIcona('assets/img/sprite.svg#it-user', '#ef8157', 'ciao'),
       id: 'RBNGNN94C11A662V',
       nome: 'Giovanni Rubino',
       societa: Utils.creaLink('DXC Technology', 'www.dxc.com'),
