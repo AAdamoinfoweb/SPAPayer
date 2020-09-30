@@ -272,6 +272,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
+    } else if (campo.tipoCampo === tipoCampo.DATEDDMMYY || campo.tipoCampo === tipoCampo.DATEMMYY || campo.tipoCampo === tipoCampo.DATEYY) {
+      classe = 'col-md-2';
     } else if (campo.tipoCampo === tipoCampo.INPUT_PREZZO) {
       classe = 'col-md-2';
     } else {
