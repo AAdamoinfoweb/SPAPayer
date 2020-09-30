@@ -1,8 +1,8 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {StickyService} from '../login-bar/StickyService';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
-import {DatiPagamentoService} from "../dati-nuovo-pagamento/DatiPagamentoService";
+import {DatiPagamentoService} from "../../modules/main/components/nuovo-pagamento/dati-nuovo-pagamento/DatiPagamentoService";
 
 @Component({
   selector: 'app-header',
@@ -26,6 +26,9 @@ export class HeaderComponent implements OnInit {
   urlNuovoPagamento = "/nuovoPagamento";
   isPaginaNuovoPagamento: boolean = window.location.pathname === this.urlNuovoPagamento;
   prezzoCarrello: number;
+
+  @Input()
+  isL1: boolean = false;
 
   @HostListener('window:scroll', ['$event'])
   checkScroll() {

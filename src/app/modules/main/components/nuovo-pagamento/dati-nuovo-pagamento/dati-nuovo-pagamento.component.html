@@ -77,42 +77,22 @@
 
           <div *ngSwitchCase="tipoCampo.DATEDDMMYY" class="dynamic-form-elem">
             <div class="row">
-              <label [htmlFor]="campo.id+'-giorno'" class="title">{{campo.titolo}}</label>
+              <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
-              <div class="col-3 form-elem-date-col">
-                <input
-                  [id]="campo.id+'-giorno'"
-                  [(ngModel)]="campo['valore']['giorno']"
-                  type="number"
-                  min="1"
-                  [max]="calcolaMaxGiorni(campo['valore']['mese'], campo['valore']['anno'])"
-                  [disabled]="campo.disabilitato"
-                />
-                <span class="form-elem-date-separator">/</span>
-              </div>
-              <div class="col-6 form-elem-date-col">
-                <select
-                  [id]="campo.id+'-mese'"
-                  [(ngModel)]="campo['valore']['mese']"
-                  class="form-elem-date-select"
-                  [disabled]="campo.disabilitato"
-                >
-                  <option [value]="null"></option>
-                  <option *ngFor="let item of mesi" [value]="item.value">{{item.label}}</option>
-                </select>
-                <span class="form-elem-date-separator">/</span>
-              </div>
-              <div class="col-3 form-elem-date-col">
-                <input
-                  [id]="campo.id+'-anno'"
-                  [(ngModel)]="campo['valore']['anno']"
-                  type="number"
-                  min="1900"
-                  [max]="calcolaMaxAnno()"
-                  [disabled]="campo.disabilitato"
-                />
-              </div>
+              <dp-date-picker
+                mode="day"
+                theme="dp-material"
+                [(ngModel)]="campo['valore']"
+                [id]="campo.id"
+                [disabled]="campo.disabilitato"
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false
+                }"
+              ></dp-date-picker>
             </div>
             <div class="row">
               <p class="placeholder">{{campo.informazioni}}</p>
@@ -121,31 +101,22 @@
 
           <div *ngSwitchCase="tipoCampo.DATEMMYY" class="dynamic-form-elem">
             <div class="row">
-              <label [htmlFor]="campo.id+'-mese'" class="title">{{campo.titolo}}</label>
+              <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
             </div>
             <div class="row">
-              <div class="col-8 form-elem-date-col">
-                <select
-                  [id]="campo.id+'-mese'"
-                  [(ngModel)]="campo['valore']['mese']"
-                  class="form-elem-date-select"
-                  [disabled]="campo.disabilitato"
-                >
-                  <option [value]="null"></option>
-                  <option *ngFor="let item of mesi" [value]="item.value">{{item.label}}</option>
-                </select>
-                <span class="form-elem-date-separator">/</span>
-              </div>
-              <div class="col-4 form-elem-date-col">
-                <input
-                  [id]="campo.id+'-anno'"
-                  [(ngModel)]="campo['valore']['anno']"
-                  type="number"
-                  min="1900"
-                  [max]="calcolaMaxAnno()"
-                  [disabled]="campo.disabilitato"
-                />
-              </div>
+              <dp-date-picker
+                mode="month"
+                theme="dp-material"
+                [(ngModel)]="campo['valore']"
+                [id]="campo.id"
+                [disabled]="campo.disabilitato"
+                [config]="{
+                  locale: 'it',
+                  format: 'MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false
+                }"
+              ></dp-date-picker>
             </div>
             <div class="row">
               <p class="placeholder">{{campo.informazioni}}</p>
@@ -162,7 +133,6 @@
                 [(ngModel)]="campo['valore']"
                 type="number"
                 min="1900"
-                [max]="calcolaMaxAnno()"
                 [disabled]="campo.disabilitato"
               />
             </div>

@@ -13,6 +13,7 @@ import {Utils} from '../../utils/Utils';
 })
 export class GestisciUtentiComponent implements OnInit {
 
+  tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
   constructor() {
   }
@@ -41,7 +42,7 @@ export class GestisciUtentiComponent implements OnInit {
       {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
       {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
     ],
-    dataKey: 'name',
+    dataKey: 'nome',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 

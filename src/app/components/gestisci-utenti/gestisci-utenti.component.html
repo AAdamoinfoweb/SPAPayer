@@ -1,20 +1,37 @@
-<div class="container-fluid">
-  <div class="row align-items-baseline">
-    <div class="col">
-      <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>
+<div class="ml-5">
+  <p>Home / Amministra Portale / <strong>Gestisci Utenti</strong></p>
+  <h3 class="mb-2 page-title"><strong>Gestisci Utenti</strong>
+    <span it-tooltip="{{tooltipGestisciUtentiTitle}}">
+      <svg class="bg-light icon icon-lg icon-padded">
+        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+      </svg>
+    </span>
+  </h3>
+
+  <!-- Sottosezione Filtri -->
+  <app-filtro-gestione-utenti></app-filtro-gestione-utenti>
+
+  <!-- Sottosezione Lista Utenti -->
+  <div class="container font">
+<!--    table, actions, tabs-->
+    <div class="row align-items-baseline">
+      <div class="col">
+        <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>
+      </div>
+      <div class="col">
+        <app-toolbar (onClick)="eseguiAzioni($event)"></app-toolbar>
+      </div>
     </div>
-    <div class="col">
-      <app-toolbar (onClick)="eseguiAzioni($event)"></app-toolbar>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <app-table [dataKey]="tempTableData.dataKey"
-                 [cols]="tempTableData.cols"
-                 [rows]="tempTableData.rows"
-                 [tipoTabella]="tempTableData.tipoTabella">
-      </app-table>
+    <div class="row">
+      <div class="col">
+        <app-table [dataKey]="tempTableData.dataKey"
+                   [cols]="tempTableData.cols"
+                   [rows]="tempTableData.rows"
+                   [tipoTabella]="tempTableData.tipoTabella">
+        </app-table>
+      </div>
     </div>
   </div>
 </div>
+
 
