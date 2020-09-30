@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {OpzioneSelect} from '../../../modules/main/model/OpzioneSelect';
 import {LivelloTerritoriale} from '../../../modules/main/model/LivelloTerritoriale';
 import {Ente} from '../../../modules/main/model/Ente';
@@ -6,6 +6,7 @@ import {Servizio} from '../../../modules/main/model/Servizio';
 import {NuovoPagamentoService} from '../../../services/nuovo-pagamento.service';
 import {FiltroGestioneUtentiService} from './FiltroGestioneUtentiService';
 import {map} from 'rxjs/operators';
+import {DatePickerComponent} from 'ng2-date-picker';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -14,17 +15,27 @@ import {map} from 'rxjs/operators';
 })
 export class FiltroGestioneUtentiComponent implements OnInit {
 
-  isSubsectionFiltriVisible: boolean;
+  isSubsectionFiltriVisible: boolean = true;
+
+  @ViewChild('datePicker') datePicker: DatePickerComponent;
+  isCalendarOpen: boolean = false;
 
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
 
-  // TODO operation mancante nel BE: letturaSocieta
-  // TODO recuperare società tramite societaId recuperato al momento dell'invocazione del metodo recuperaFiltroLivelloTerritoriale
+  // TODO recuperare società tramite operation mancante nel BE: letturaSocieta
   listaSocieta: Array<OpzioneSelect> = [
+    {value: '', label: ''},
     {value: 'mock societa1 val', label: 'mock societa1 label'},
     {value: 'mock societa2 val', label: 'mock societa2 label'}
+  ];
+
+  // TODO recuperare funzioni tramite operation mancante nel BE: letturaFunzioni
+  listaFunzioniAbilitate: Array<OpzioneSelect> = [
+    {value: '', label: ''},
+    {value: 'mock funzione1 val', label: 'mock funzione1 label'},
+    {value: 'mock funzione2 val', label: 'mock funzione2 label'}
   ];
 
   livelloTerritorialeSelezionato: LivelloTerritoriale = null;
@@ -86,6 +97,11 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaServizio(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.servizioSelezionato);
+  }
+
+  onChangeOpenDatePicker(): void {
+    this.datePicker.api.open();
+    this.isCalendarOpen = !this.isCalendarOpen;
   }
 
 }

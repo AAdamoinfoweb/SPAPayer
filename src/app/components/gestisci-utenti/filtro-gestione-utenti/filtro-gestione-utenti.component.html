@@ -48,7 +48,7 @@
   </div>
 
   <!-- Servizio, Funzione abilitata, User ID (cod. fiscale) -->
-  <div class="row section-row">
+  <div class="row section-row mb-0">
     <div class="col-md-4 pb-2">
       <div class="row">
         <label for="selectServizio" class="title">Servizio</label>
@@ -59,7 +59,57 @@
         </select>
       </div>
     </div>
+    <div class="col-md-4 pb-2">
+      <div class="row">
+        <label for="selectFunzioneAbilitata" class="title">Funzione abilitata</label>
+      </div>
+      <div class="row">
+        <select class="form-elem" id="selectFunzioneAbilitata">
+          <option *ngFor="let item of listaFunzioniAbilitate" [ngValue]="item.value">{{item.label}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <label for="inputUserId" class="title">User ID (cod. fiscale)</label>
+      </div>
+      <div class="row">
+        <input type="text" class="input-text form-elem pt-0"
+               id="inputUserId" aria-describedby="inputUserIdHelpDescription" maxlength="16"/>
+      </div>
+      <div class="row">
+        <small id="inputUserIdHelpDescription" class="form-text text-muted">inserisci testo</small>
+      </div>
+    </div>
   </div>
 
   <!-- Scadenza abilitazione Da - a, Ultimo accesso da - a -->
+  <div class="row section-row mt-3">
+
+    <div class="col-md-4 pb-2">
+      <div class="row">
+        <label for="scadenzaDataDa" class="title">Scadenza abilit. - Da</label>
+      </div>
+      <div class="row">
+        <svg class="bg-light icon img-calendar" (click)="onChangeOpenDatePicker()">
+          <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+        </svg>
+        <dp-date-picker
+          mode="day"
+          id="scadenzaDataDa"
+          theme="dp-material"
+          [config]="{
+	          locale: 'it',
+	          format: 'DD/MM/YYYY',
+	          firstDayOfWeek: 'mo',
+	          showGoToCurrent: false,
+	          openOnClick: isCalendarOpen,
+	          openOnFocus: false
+	        }"
+          #datePicker
+          (click)="isCalendarOpen = false"
+        ></dp-date-picker>
+      </div>
+    </div>
+  </div>
 </div>
