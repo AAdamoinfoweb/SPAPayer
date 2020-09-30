@@ -345,7 +345,19 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       switch (campo.tipoCampo) {
         case tipoCampo.INPUT_TESTUALE:
           if (campo.disabilitato) { campoForm.disable(); }
-          campoForm.setValidators(null);
+          campoForm.setValidators((formControl) => {
+            let errori = {};
+
+            if (formControl.value === "") {
+              formControl.setValue(null);
+            }
+
+            if (campo.obbligatorio && formControl.value === null) {
+              errori['required'] = true;
+            }
+
+            return Object.keys(errori).length > 0 ? errori : null;
+          });
           break;
         case tipoCampo.INPUT_NUMERICO:
           if (campo.disabilitato) { campoForm.disable(); }
