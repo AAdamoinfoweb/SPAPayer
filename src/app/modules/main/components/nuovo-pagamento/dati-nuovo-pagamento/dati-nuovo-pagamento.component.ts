@@ -72,8 +72,15 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.mockSelezionaServizio();
     this.mockAggiornaPrezzoCarrello();
     this.checkUtenteLoggato();
+  }
+
+  mockSelezionaServizio() {
+    let mockServizio = new Servizio();
+    mockServizio.id = 7;
+    this.compila(mockServizio);
   }
 
   checkUtenteLoggato(): void {
@@ -313,9 +320,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       this.livelloIntegrazioneId = this.servizioSelezionato.livelloIntegrazioneId;
 
       this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato.id).pipe(map(campiNuovoPagamento => {
-        // this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
-        // this.listaCampiServizio = campiNuovoPagamento.campiServizio;
-        this.listaCampiTipologiaServizio = this.mockCampiForm();
+        this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
+        this.listaCampiServizio = campiNuovoPagamento.campiServizio;
+        // this.listaCampiTipologiaServizio = this.mockCampiForm();
 
         this.listaCampi = [];
         this.form = new FormGroup({});
