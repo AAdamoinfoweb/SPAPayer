@@ -11,6 +11,7 @@ import {tool} from '../../enums/Tool.enum';
 })
 export class GestisciUtentiComponent implements OnInit {
 
+  tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
   constructor() {
   }

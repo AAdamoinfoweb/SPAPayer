@@ -38,6 +38,7 @@ import {TabViewComponent} from './components/tab-view/tab-view.component';
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {ToolbarModule} from 'primeng/toolbar';
 import { PaginatorComponent } from './components/table/paginator/paginator.component';
+import {FiltroGestioneUtentiComponent} from './components/gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { PaginatorComponent } from './components/table/paginator/paginator.compo
     GestisciUtentiComponent,
     TabViewComponent,
     ToolbarComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    FiltroGestioneUtentiComponent
   ],
   imports: [
     HttpClientModule,
