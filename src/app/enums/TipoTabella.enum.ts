@@ -1,5 +1,5 @@
-export const tipoTabella = {
-  CHECKBOX_SELECTION: {value: 'checkboxSelection'},
-  TEMPLATING: {value: 'templating'},
+export enum tipoTabella {
+  CHECKBOX_SELECTION = 'checkboxSelection',
+  TEMPLATING = 'templating'
 };
 

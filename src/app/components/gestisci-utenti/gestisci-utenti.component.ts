@@ -3,6 +3,8 @@ import {tipoColonna} from '../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../enums/TipoTabella.enum';
 import {tipoUtente} from '../../enums/TipoUtente.enum';
 import {tool} from '../../enums/Tool.enum';
+import {Utils} from '../../utils/Utils';
+
 
 @Component({
   selector: 'app-gestione-utenti',
@@ -21,23 +23,23 @@ export class GestisciUtentiComponent implements OnInit {
 
   tableData = {
     rows: [{
-      name: 'Austin', gender: 'assets/img/sprite.svg#it-check', company: 'Swimlane',
-      link: 'link company href:https://www.google.com/', importo: '89.21'
-    },
-      {
-        name: 'Dany', gender: 'assets/img/sprite.svg#it-delete', company: 'KFC',
-        link: 'href:https://www.google.com/', importo: '43'
-      },
-      {
-        name: 'Molly', gender: 'assets/img/sprite.svg#it-mail', company: 'Burger King',
-        link: 'href:https://www.google.com/', importo: '10'
-      }],
+      iconaUtente: 'assets/img/sprite.svg#it-user',
+      id: 'RBNGNN94C11A662V',
+      nome: 'Giovanni Rubino',
+      societa: Utils.creaLink('DXC Technology', 'www.dxc.com'),
+      ente: Utils.creaLink('INPS', 'www.inps.it'),
+      gruppoAbilitazioni: 'Amministra',
+      scadenza: '10/12/2020'
+    }],
     cols: [
-      {field: 'name', header: 'Name', type: tipoColonna.TESTO},
-      {field: 'gender', header: 'Gender', type: tipoColonna.ICONA},
-      {field: 'company', header: 'Company', type: tipoColonna.TESTO},
-      {field: 'link', header: 'Link', type: tipoColonna.LINK},
-      {field: 'importo', header: 'Importo', type: tipoColonna.IMPORTO}
+      {field: 'iconaUtente', header: '', type: tipoColonna.ICONA},
+      {field: 'id', header: 'User ID (Cod. Fisc.)', type: tipoColonna.TESTO},
+      {field: 'nome', header: 'Cognome e Nome', type: tipoColonna.TESTO},
+      {field: 'societa', header: 'Società', type: tipoColonna.LINK},
+      {field: 'ente', header: 'Ente', type: tipoColonna.LINK},
+      {field: 'gruppoAbilitazioni', header: 'Gruppi Abilitazioni', type: tipoColonna.TESTO},
+      {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
+      {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
     ],
     dataKey: 'name',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
@@ -54,9 +56,9 @@ export class GestisciUtentiComponent implements OnInit {
   onChangeTab(value) {
     let tabRows = this.tableData.rows.map(row => row);
     if (value === tipoUtente.ATTIVI.value) {
-       tabRows = tabRows.filter(value1 => value1.name.startsWith('A'));
+      tabRows = tabRows.filter(value1 => value1.nome.startsWith('A'));
     } else if (value === tipoUtente.DISABILITATI.value) {
-      tabRows = tabRows.filter(value1 => value1.name.startsWith('M'));
+      tabRows = tabRows.filter(value1 => value1.nome.startsWith('M'));
     }
 
     this.tempTableData.rows = tabRows;
