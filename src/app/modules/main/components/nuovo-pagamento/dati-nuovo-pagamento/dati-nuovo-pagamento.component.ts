@@ -386,7 +386,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         let campoForm = this.form.controls[this.getNomeCampoForm(campo)];
         campoForm.setValue(null);
         this.impostaOpzioniSelect(campo);
-        if (campo['opzioni']?.length) {
+        if (!campo.disabilitato && campo['opzioni']?.length > 0) {
           campoForm.enable();
         } else {
           campoForm.disable();
