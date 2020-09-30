@@ -1,16 +1,14 @@
 <p-table [columns]="cols" [value]="rows" styleClass="p-datatable-responsive-demo"
          dataKey="{{dataKey}}" [(selection)]="selection"
          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
-         [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-         [rowsPerPageOptions]="[10,25,50]">
+         [paginator]="true" [rows]="pageSize" [showCurrentPageReport]="false">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th style="width: 3rem" *ngIf="tipoTabella == tipoTabellaEnum.CHECKBOX_SELECTION">
-        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        <p-tableHeaderCheckbox class="icon-box"></p-tableHeaderCheckbox>
       </th>
       <th *ngFor="let col of columns" pSortableColumn="{{col.field}}">
-        {{col.header}}
+        {{col.header.toUpperCase()}}
         <p-sortIcon field="{{col.field}}"></p-sortIcon>
       </th>
     </tr>
@@ -36,7 +34,7 @@
         <div *ngIf="col.type == tipoColonnaEnum.LINK">
           {{renderLink(row[col.field])[0]}}
           <a href="{{renderLink(row[col.field])[1]}}">
-            <svg class="bg-light icon icon-sm">
+            <svg class="bg-light icon icon-sm" fill="#004987">
               <use xlink:href="assets/img/sprite.svg#it-external-link"></use>
             </svg>
           </a>
@@ -51,9 +49,11 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="paginatorleft">
-    <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+    Totale: {{totalRecords}}
   </ng-template>
   <ng-template pTemplate="paginatorright">
-    <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+    <app-paginator (onChangePageSize)="onChangePageSize($event)" pageSize="{{rowsPerPageOption[0]}}"
+                   [rowsPerPageOptions]="rowsPerPageOption"></app-paginator>
   </ng-template>
 </p-table>
+

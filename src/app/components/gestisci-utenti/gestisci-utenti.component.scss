@@ -1,0 +1,10 @@
+/*prime ng font component*/
+:host ::ng-deep .p-component{
+  font-family: "Titillium Web", Geneva,Tahoma,sans-serif;
+  font-size: 14px;
+}
+
+/*prime ng link*/
+:host ::ng-deep .p-link:focus {
+  box-shadow: none;
+}

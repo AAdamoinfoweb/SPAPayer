@@ -1,0 +1,35 @@
+// panel
+:host ::ng-deep .p-tabview .p-tabview-panels {
+  padding: 0;
+}
+
+// header bar
+:host ::ng-deep .p-tabview .p-tabview-nav {
+  background: none;
+}
+
+// headers disattivi
+:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  background: none;
+  margin-right: 0.5rem;
+  color: #77777B;
+  border-color: #77777B;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+
+// header attivo
+:host ::ng-deep .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: none;
+  color: #004987;
+  border-color: #004987;
+}
+
+// headers disattivi
+:host ::ng-deep  .p-tabview:hover .p-tabview-nav:hover li .p-tabview-nav-link:hover {
+  background: none;
+  color: #EC6C25;
+  border-color: #EC6C25;
+}

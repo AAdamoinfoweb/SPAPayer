@@ -22,23 +22,16 @@ export class TableComponent implements OnInit {
 
   selection: any [];
 
+  totalRecords: any;
+
+  rowsPerPageOption: number[] = [5, 10, 20];
+
+  pageSize = this.rowsPerPageOption[0]
+
   constructor() { }
 
   ngOnInit() {
-    this.rows = [{ name: 'Austin', gender: 'assets/img/sprite.svg#it-check', company: 'Swimlane',
-      link: 'link company href:https://www.google.com/', importo: '89.21' },
-      { name: 'Dany', gender: 'assets/img/sprite.svg#it-delete', company: 'KFC',
-        link: 'href:https://www.google.com/', importo: '43' },
-      { name: 'Molly', gender: 'assets/img/sprite.svg#it-mail', company: 'Burger King',
-        link: 'href:https://www.google.com/', importo: '10' }];
-
-    this.cols = [
-      { field: 'name', header: 'Name', type: this.tipoColonnaEnum.TESTO },
-      { field: 'gender', header: 'Gender', type: this.tipoColonnaEnum.ICONA },
-      { field: 'company', header: 'Company', type: this.tipoColonnaEnum.TESTO },
-      { field: 'link', header: 'Link', type: this.tipoColonnaEnum.LINK },
-      { field: 'importo', header: 'Importo', type: this.tipoColonnaEnum.IMPORTO }
-    ];
+    this.totalRecords = this.rows.length;
   }
 
   renderLink(testoLink: string) {
@@ -57,6 +50,10 @@ export class TableComponent implements OnInit {
 
   onRowUnselect(event) {
     this.onSelection.emit(event.data);
+  }
+
+  onChangePageSize(event) {
+    this.pageSize = event;
   }
 }
 

@@ -36,6 +36,7 @@ import {TabViewModule} from 'primeng/tabview';
 import {TabViewComponent} from './components/tab-view/tab-view.component';
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {ToolbarModule} from 'primeng/toolbar';
+import { PaginatorComponent } from './components/table/paginator/paginator.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {ToolbarModule} from 'primeng/toolbar';
     TableComponent,
     GestisciUtentiComponent,
     TabViewComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    PaginatorComponent
   ],
   imports: [
     HttpClientModule,

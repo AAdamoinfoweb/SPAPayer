@@ -1,56 +1,115 @@
+// header css
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background: none;
+  color: #77777B;
+  padding: 0.6rem;
+  border-color: #77777B;
+}
+
+:host ::ng-deep .p-datatable:hover .p-datatable-thead:hover > tr > th {
+  background: none;
+  color: #77777B;
+}
+
+:host ::ng-deep .form-check [type=checkbox]:focus+label, .form-check [type=radio]:focus+label, .toggles label input[type=checkbox]:focus+.lever, :focus{
+  box-shadow: none;
+}
+
+:host ::ng-deep p-tableheadercheckbox .p-checkbox .p-checkbox-box .p-checkbox-icon::before{
+  visibility: visible;
+  content: "\e90f";
+  font-family: 'primeicons';
+  font-weight: bolder;
+  font-variant: normal;
+  text-transform: none;
+  color: #004987;
+}
+:host ::ng-deep p-tableheadercheckbox .p-checkbox .p-checkbox-box[aria-checked=true] .p-checkbox-icon::before{
+  content: "\e909";
+  visibility: visible;
+  font-family: 'primeicons';
+  font-weight: bolder;
+  font-variant: normal;
+  text-transform: none;
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box{
+  border: #004987;
+}
+
+//:host ::ng-deep .pi-check:before {
+//  content: "\e90f";
+//}
+
+// row css
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr {
+  background: none;
+  border: #77777B;
+  color: #77777B;
+}
+
+
+// cell css
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.6rem;
+  border-color: #77777B;
+}
+
 :host ::ng-deep .currency {
   text-align: right;
 }
 
-:host ::ng-deep ngb-pagination {
-  .pagination {
-    transform: scale(0.8);
-    transform-origin: left;
-    margin: 0;
+// paginator
+:host ::ng-deep .p-datatable .p-paginator-bottom {
+  background: none;
+}
 
-    .page-item.active .page-link {
-      background: #004987;
-    }
+:host ::ng-deep .p-paginator-first,
+:host ::ng-deep .p-paginator-prev,
+:host ::ng-deep .p-paginator-next,
+:host ::ng-deep .p-paginator-last {
+  transform: scale(0.8);
+  color: #004987;
+}
 
-    .page-item .page-link:hover {
-      color: #ef8157;
-    }
+:host ::ng-deep .p-paginator-first:disabled,
+:host ::ng-deep .p-paginator-prev:disabled,
+:host ::ng-deep .p-paginator-next:disabled,
+:host ::ng-deep .p-paginator-last:disabled {
+  color: #403d39;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-first:not(.p-disabled):not(.p-highlight):hover,
+:host ::ng-deep .p-paginator .p-paginator-prev:not(.p-disabled):not(.p-highlight):hover,
+:host ::ng-deep .p-paginator .p-paginator-next:not(.p-disabled):not(.p-highlight):hover,
+:host ::ng-deep .p-paginator .p-paginator-last:not(.p-disabled):not(.p-highlight):hover{
+  background: none;
+  color: #403d39;
+}
+
+:host ::ng-deep .p-paginator-pages {
+  transform: scale(0.8);
+
+  .p-paginator-page:not(.p-highlight):hover {
+    background: none;
   }
+
+  .p-paginator-page.p-highlight {
+    background: #004987;
+    border:none;
+  }
+
 }
 
-:host ::ng-deep .dropdown > [ngbdropdowntoggle]:hover,
-:host ::ng-deep .dropdown > [ngbdropdowntoggle]:active,
-:host ::ng-deep .dropdown > [ngbdropdowntoggle]:focus {
-  color: #FFFFFF !important;
-  background: #403d39 !important;
+:host ::ng-deep .p-paginator-page:hover {
+  background: none;
 }
 
-:host ::ng-deep .dropdown > [ngbdropdownmenu] {
-  margin: 0;
-}
 
-:host ::ng-deep .dropdown > [ngbdropdownmenu]:before {
+// dropdown
+:host ::ng-deep .p-paginator-rpp-options {
   display: none;
 }
-
-:host ::ng-deep .dropdown > [ngbdropdownmenu] > [ngbdropdownitem]:hover {
-  background: #ef8157;
-}
-
-:host ::ng-deep .dropdown > [ngbdropdowntoggle]:after {
-  margin-left: .255em;
-}
-
-:host ::ng-deep [ngbdropdowntoggle] {
-  transform: scale(0.8);
-  transform-origin: left;
-
-  background: #004987;
-  color: #FFFFFF;
-  border: 0 !important;
-  margin: 0 !important;
-}
-
 
 // responsive prime ng
 :host ::ng-deep {
