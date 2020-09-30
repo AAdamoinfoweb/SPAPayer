@@ -37,6 +37,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   listaCampiServizio: Array<CampoForm> = [];
   listaCampi: Array<CampoForm> = [];
 
+  form: FormGroup = new FormGroup({});
+
   lunghezzaMaxCol1: number = 5;
   lunghezzaMaxCol2: number = 10;
   lunghezzaMaxCol3: number = 15;
@@ -262,6 +264,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     campiMockati.push(campo);
 
     this.listaCampi = [];
+    this.form = new FormGroup({});
     this.impostaCampi(campiMockati);
   }
 
@@ -317,6 +320,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         this.listaCampiServizio = campiNuovoPagamento.campiServizio;
 
         this.listaCampi = [];
+        this.form = new FormGroup({});
         this.impostaCampi(this.listaCampiTipologiaServizio);
         this.impostaCampi(this.listaCampiServizio);
       })).subscribe();
@@ -329,38 +333,47 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     });
 
     campi.forEach(campo => {
+      let campoForm = new FormControl();
+
+      // TODO impostare i validatori per i vari tipi di campo
+
       switch (campo.tipoCampo) {
         case tipoCampo.INPUT_TESTUALE:
-          campo['valore'] = null;
+          campoForm.setValidators(null);
           break;
         case tipoCampo.INPUT_NUMERICO:
-          campo['valore'] = null;
+          campoForm.setValidators(null);
           break;
         case tipoCampo.DATEDDMMYY:
-          campo['valore'] = null;
+          campoForm.setValidators(null);
           break;
         case tipoCampo.DATEMMYY:
-          campo['valore'] = null;
+          campoForm.setValidators(null);
           break;
         case tipoCampo.DATEYY:
-          campo['valore'] = null;
+          campoForm.setValidators(null);
           break;
         case tipoCampo.SELECT:
-          campo['valore'] = null;
-          campo['opzioni'] = this.getOpzioniSelect(campo);
+          campoForm.setValidators(null);
+          this.impostaOpzioniSelect(campo);
           break;
       }
 
+      this.form.addControl(this.getNomeCampoForm(campo), campoForm);
       this.listaCampi.push(campo);
     });
+  }
+
+  getNomeCampoForm(campo: CampoForm): string {
+    return campo.id.toString();
   }
 
   aggiornaSelectDipendenti(campo: CampoForm): void {
     let campiDipendenti = this.getCampiDipendenti(campo);
     if (campiDipendenti) {
       campiDipendenti.forEach(campo => {
-        campo['valore'] = null;
-        campo['opzioni'] = this.getOpzioniSelect(campo);
+        this.form.controls[this.getNomeCampoForm(campo)].setValue(null);
+        this.impostaOpzioniSelect(campo);
       });
     }
   }
@@ -369,7 +382,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return this.listaCampi.filter(item => {return item.dipendeDa === campo.id});
   }
 
-  getOpzioniSelect(campo: CampoForm): Array<OpzioneSelect> {
+  impostaOpzioniSelect(campo: CampoForm): void {
     let opzioniSelect: Array<OpzioneSelect> = [];
 
     let valoriSelect = JSON.parse(localStorage.getItem(campo.tipologica));
@@ -379,7 +392,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
       if (campo.dipendeDa) {
         let selectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa);
-        let valoreSelectPadre = selectPadre?.['valore'];
+        let valoreSelectPadre = this.form.controls[this.getNomeCampoForm(selectPadre)].value;
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {
@@ -418,6 +431,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       }
     });
 
-    return opzioniSelect;
+    campo['opzioni'] = opzioniSelect;
   }
 }
