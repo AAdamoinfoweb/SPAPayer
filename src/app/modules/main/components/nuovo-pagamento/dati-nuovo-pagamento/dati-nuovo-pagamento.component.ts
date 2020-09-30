@@ -339,23 +339,29 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
       switch (campo.tipoCampo) {
         case tipoCampo.INPUT_TESTUALE:
+          if (campo.disabilitato) { campoForm.disable(); }
           campoForm.setValidators(null);
           break;
         case tipoCampo.INPUT_NUMERICO:
+          if (campo.disabilitato) { campoForm.disable(); }
           campoForm.setValidators(null);
           break;
         case tipoCampo.DATEDDMMYY:
+          if (campo.disabilitato) { campoForm.disable(); }
           campoForm.setValidators(null);
           break;
         case tipoCampo.DATEMMYY:
+          if (campo.disabilitato) { campoForm.disable(); }
           campoForm.setValidators(null);
           break;
         case tipoCampo.DATEYY:
+          if (campo.disabilitato) { campoForm.disable(); }
           campoForm.setValidators(null);
           break;
         case tipoCampo.SELECT:
-          campoForm.setValidators(null);
           this.impostaOpzioniSelect(campo);
+          if (campo.disabilitato || !campo['opzioni']?.length) { campoForm.disable(); }
+          campoForm.setValidators(null);
           break;
       }
 

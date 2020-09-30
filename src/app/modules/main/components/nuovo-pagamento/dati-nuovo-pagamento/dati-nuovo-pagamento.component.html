@@ -31,7 +31,6 @@
                   [formControlName]="getNomeCampoForm(campo)"
                   type="text"
                   [maxLength]="campo.lunghezza"
-                  [disabled]="campo.disabilitato"
                 />
               </div>
               <div class="row">
@@ -49,7 +48,6 @@
                   [formControlName]="getNomeCampoForm(campo)"
                   type="number"
                   [maxLength]="campo.lunghezza"
-                  [disabled]="campo.disabilitato"
                 />
               </div>
               <div class="row">
@@ -68,7 +66,6 @@
                   [formControlName]="getNomeCampoForm(campo)"
                   type="number"
                   [maxLength]="campo.lunghezza"
-                  [disabled]="campo.disabilitato"
                 />
               </div>
               <div class="row">
@@ -86,7 +83,6 @@
                   theme="dp-material"
                   [formControlName]="getNomeCampoForm(campo)"
                   [id]="campo.id"
-                  [disabled]="campo.disabilitato"
                   [config]="{
                     locale: 'it',
                     format: 'DD/MM/YYYY',
@@ -110,7 +106,6 @@
                   theme="dp-material"
                   [formControlName]="getNomeCampoForm(campo)"
                   [id]="campo.id"
-                  [disabled]="campo.disabilitato"
                   [config]="{
                     locale: 'it',
                     format: 'MM/YYYY',
@@ -134,7 +129,6 @@
                   [formControlName]="getNomeCampoForm(campo)"
                   type="number"
                   min="1900"
-                  [disabled]="campo.disabilitato"
                 />
               </div>
               <div class="row">
@@ -150,7 +144,6 @@
                 <select
                   [id]="campo.id"
                   [formControlName]="getNomeCampoForm(campo)"
-                  [disabled]="campo.disabilitato || !campo['opzioni']?.length"
                   (change)="aggiornaSelectDipendenti(campo)"
                 >
                   <option [value]="null"></option>
