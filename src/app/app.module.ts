@@ -52,7 +52,7 @@ import {DpDatePickerModule} from 'ng2-date-picker';
     FormsModule,
     DesignAngularKitModule,
     ReactiveFormsModule,
-    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     DpDatePickerModule
   ],
   providers: [
