@@ -7,6 +7,7 @@ import {BannerService} from "../../../../services/banner.service";
 import {PagamentoService} from "../../../../services/pagamento.service";
 import {Bollettino} from "../../model/bollettino/Bollettino";
 import {CampoDettaglioTransazione} from "../../model/bollettino/CampoDettaglioTransazione";
+import {MenuService} from "../../../../services/menu.service";
 
 @Component({
   selector: 'app-home',
@@ -15,11 +16,20 @@ import {CampoDettaglioTransazione} from "../../model/bollettino/CampoDettaglioTr
 })
 export class HomeComponent implements OnInit {
 
+  testoAccedi = 'Accedi';
+  isAnonimo = false;
+
   constructor(
     private router: Router,
     private bannerService: BannerService,
-    private pagamentoService: PagamentoService
+    private pagamentoService: PagamentoService,
+    private menuService: MenuService
   ) {
+    this.menuService.userAutenticatedEvent
+      .subscribe((isAnonimo: boolean) => {
+        this.isAnonimo = isAnonimo;
+        this.testoAccedi = isAnonimo ? 'Accedi' : 'Esci';
+      });
     if (localStorage.getItem('access_jwt')) {
       this.router.navigate(['/riservata']);
       return;
@@ -61,4 +71,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  getLoginLink() {
+    return this.isAnonimo ? environment.bffBaseUrl + '/loginLepida.htm' : environment.bffBaseUrl + '/logout';
+  }
 }

@@ -17,7 +17,7 @@
       </div>
       <div class="offset-1 col-2 pl-0 offset-lg-2 text-right">
         <button *ngIf="isSticky" [disabled]="isL1" type="button" [ngClass]="{'btn-sm': isSticky}" class="btn btn-outline-secondary"
-                routerLink="http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm">Accedi</button>
+                [routerLink]="getLoginLink()">{{testoAccedi}}</button>
       </div>
     </div>
 

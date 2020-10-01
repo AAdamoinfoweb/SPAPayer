@@ -21,7 +21,7 @@
             <ng-container *ngFor="let sub of item.sotto_menu">
               <li>
                 <a class="list-item medium active"
-                   [routerLink]="sub.nome === 'Accedi' ? ['http://service.pp.192-168-43-56.nip.io'+sub.route] : [sub.route]"
+                   [routerLink]="getRouterLink(sub)"
                    data-toggle="collapse" aria-expanded="true"><span>{{sub.nome}}</span></a>
               </li>
             </ng-container>

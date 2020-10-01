@@ -1,5 +1,7 @@
 import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
-import {StickyService} from "./StickyService";
+import {StickyService} from './StickyService';
+import {MenuService} from '../../services/menu.service';
+import {environment} from 'src/environments/environment';
 
 @Component({
   selector: 'app-login-bar',
@@ -8,14 +10,24 @@ import {StickyService} from "./StickyService";
 })
 export class LoginBarComponent implements OnInit, AfterViewInit {
 
-  constructor(private stickyService: StickyService) { }
+  constructor(private stickyService: StickyService,
+              private menuService: MenuService) {
+  }
 
   @ViewChild("containerLoginBar", {static: false}) containerLoginBar: ElementRef;
 
   @Input()
-  isL1: boolean = false;
+  isL1: boolean = true;
+
+  testoAccedi = "Accedi";
+  isAnonimo = false;
 
   ngOnInit(): void {
+    this.menuService.userAutenticatedEvent
+      .subscribe((isAnonimo: boolean) => {
+        this.isAnonimo = isAnonimo;
+        this.testoAccedi = isAnonimo ? 'Accedi' : 'Esci';
+      });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -27,4 +39,7 @@ export class LoginBarComponent implements OnInit, AfterViewInit {
     this.stickyService.stickyEvent.emit(this.containerLoginBar.nativeElement.offsetHeight);
   }
 
+  getLoginLink() {
+    return this.isAnonimo ? environment.bffBaseUrl + '/loginLepida.htm' : environment.bffBaseUrl + '/logout';
+  }
 }
