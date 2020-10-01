@@ -20,9 +20,8 @@
       <svg id="img-arrow" class="bg-light icon"
            data-toggle="collapse" data-target="#contenutoSezioneListaUtenti"
            aria-expanded="true" aria-controls="contenutoSezioneListaUtenti"
-           (click)="isSubsectionListaUtentiVisible = !isSubsectionListaUtentiVisible">
-        <use [attr.xlink:href]="!isSubsectionListaUtentiVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse'"
-             xlink:href=""></use>
+           (click)="setArrowType()">
+        <use [attr.xlink:href]="arrowType" xlink:href=""></use>
       </svg>
     </div>
   </div>

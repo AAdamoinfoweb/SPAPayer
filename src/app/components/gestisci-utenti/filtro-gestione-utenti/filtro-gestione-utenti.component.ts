@@ -16,6 +16,7 @@ import {DatePickerComponent} from 'ng2-date-picker';
 export class FiltroGestioneUtentiComponent implements OnInit {
 
   isSubsectionFiltriVisible: boolean = true;
+  arrowType: string = 'assets/img/sprite.svg#it-collapse';
 
   isCalendarOpen: boolean = false;
 
@@ -96,6 +97,11 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaServizio(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.servizioSelezionato);
+  }
+
+  setArrowType(): void {
+    this.isSubsectionFiltriVisible = !this.isSubsectionFiltriVisible;
+    this.arrowType = !this.isSubsectionFiltriVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse';
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
