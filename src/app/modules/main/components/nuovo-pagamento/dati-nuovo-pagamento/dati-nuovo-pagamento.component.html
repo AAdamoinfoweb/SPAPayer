@@ -189,7 +189,8 @@
             <input
               class="price-input"
               id="importoTotale"
-              [(ngModel)]="importoTotale"
+              [formControl]="importoFormControl"
+              [(ngModel)]="model.importo"
               type="number"
             />
           </div>

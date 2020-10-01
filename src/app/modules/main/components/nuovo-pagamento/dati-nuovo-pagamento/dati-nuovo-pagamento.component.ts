@@ -27,8 +27,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   livelliIntegrazione = livelloIntegrazione;
   livelloIntegrazioneId: number = null;
 
-  importoTotale: number;
-
   isFaseVerificaPagamento: boolean = false;
 
   servizioSelezionato: Servizio = null;
@@ -37,7 +35,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   listaCampiServizio: Array<CampoForm> = [];
   listaCampi: Array<CampoForm> = [];
 
-  form: FormGroup = new FormGroup({});
+  importoFormControl: FormControl = new FormControl();
+  form: FormGroup = new FormGroup({importo: this.importoFormControl});
+  model = {importo: null};
 
   lunghezzaMaxCol1: number = 5;
   lunghezzaMaxCol2: number = 10;
@@ -100,7 +100,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   mockAggiornaPrezzoCarrello(): void {
-    this.importoTotale = 999;
+    this.model.importo = 999;
     this.aggiornaPrezzoCarrello();
   }
 
@@ -309,7 +309,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.datiPagamentoService.prezzoEvent.emit(this.importoTotale);
+    this.datiPagamentoService.prezzoEvent.emit(this.model.importo);
   }
 
   compila(servizio: Servizio): void {
@@ -325,7 +325,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         // this.listaCampiTipologiaServizio = this.mockCampiForm();
 
         this.listaCampi = [];
-        this.form = new FormGroup({});
+        this.form = new FormGroup({importo: this.importoFormControl});
+        this.model = {
+          importo: null
+        };
         this.impostaCampi(this.listaCampiTipologiaServizio);
         this.impostaCampi(this.listaCampiServizio);
       })).subscribe();
