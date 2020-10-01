@@ -65,8 +65,10 @@
                   [id]="campo.id"
                   class="price-input"
                   [formControlName]="getNomeCampoForm(campo)"
-                  type="number"
+                  type="tel"
                   [maxLength]="campo.lunghezza"
+                  currencyMask
+                  [options]="{allowNegative: false, prefix: '', decimal: '.', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
                 />
               </div>
               <div class="row">
