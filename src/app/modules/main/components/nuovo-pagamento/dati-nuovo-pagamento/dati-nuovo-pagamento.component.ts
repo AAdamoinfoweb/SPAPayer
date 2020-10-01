@@ -391,7 +391,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   getNomeCampoForm(campo: CampoForm): string {
-    return campo.id.toString();
+    return this.getIdCampo(campo);
   }
 
   getTitoloCampo(campo: CampoForm): string {
@@ -408,7 +408,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   getIdCampo(campo: CampoForm): string {
-    return this.getNomeCampoForm(campo);
+    return campo.id;
   }
 
   aggiornaSelectDipendenti(campo: CampoForm): void {
