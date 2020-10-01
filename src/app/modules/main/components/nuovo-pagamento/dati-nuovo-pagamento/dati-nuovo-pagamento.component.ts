@@ -408,7 +408,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   getIdCampo(campo: CampoForm): string {
-    return campo.id;
+    return campo.id.toString();
   }
 
   aggiornaSelectDipendenti(campo: CampoForm): void {
