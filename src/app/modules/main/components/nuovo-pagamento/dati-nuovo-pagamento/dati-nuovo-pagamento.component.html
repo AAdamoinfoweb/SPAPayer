@@ -23,67 +23,67 @@
 
             <div *ngSwitchCase="tipoCampo.INPUT_TESTUALE" class="dynamic-form-elem">
               <div class="row">
-                <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
-                  [id]="campo.id"
+                  [id]="getIdCampo(campo)"
                   [formControlName]="getNomeCampoForm(campo)"
                   type="text"
-                  [maxLength]="campo.lunghezza"
+                  [maxLength]="getLunghezzaCampo(campo)"
                   (change)="formattaCampo(campo)"
                 />
               </div>
               <div class="row">
-                <p class="placeholder">{{campo.informazioni}}</p>
+                <p class="placeholder">{{getDescrizioneCampo(campo)}}</p>
               </div>
             </div>
 
             <div *ngSwitchCase="tipoCampo.INPUT_NUMERICO" class="dynamic-form-elem">
               <div class="row">
-                <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
-                  [id]="campo.id"
+                  [id]="getIdCampo(campo)"
                   [formControlName]="getNomeCampoForm(campo)"
                   type="number"
-                  [maxLength]="campo.lunghezza"
+                  [maxLength]="getLunghezzaCampo(campo)"
                 />
               </div>
               <div class="row">
-                <p class="placeholder">{{campo.informazioni}}</p>
+                <p class="placeholder">{{getDescrizioneCampo(campo)}}</p>
               </div>
             </div>
 
             <div *ngSwitchCase="tipoCampo.INPUT_PREZZO" class="dynamic-form-elem">
               <div class="row">
-                <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
-                  [id]="campo.id"
+                  [id]="getIdCampo(campo)"
                   class="price-input"
                   [formControlName]="getNomeCampoForm(campo)"
                   type="number"
-                  [maxLength]="campo.lunghezza"
+                  [maxLength]="getLunghezzaCampo(campo)"
                 />
               </div>
               <div class="row">
-                <p class="placeholder">{{campo.informazioni}}</p>
+                <p class="placeholder">{{getDescrizioneCampo(campo)}}</p>
               </div>
             </div>
 
             <div *ngSwitchCase="tipoCampo.DATEDDMMYY" class="dynamic-form-elem">
               <div class="row">
-                <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <dp-date-picker
                   mode="day"
                   theme="dp-material"
                   [formControlName]="getNomeCampoForm(campo)"
-                  [id]="campo.id"
+                  [id]="getIdCampo(campo)"
                   [config]="{
                     locale: 'it',
                     format: 'DD/MM/YYYY',
@@ -93,20 +93,20 @@
                 ></dp-date-picker>
               </div>
               <div class="row">
-                <p class="placeholder">{{campo.informazioni}}</p>
+                <p class="placeholder">{{getDescrizioneCampo(campo)}}</p>
               </div>
             </div>
 
             <div *ngSwitchCase="tipoCampo.DATEMMYY" class="dynamic-form-elem">
               <div class="row">
-                <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <dp-date-picker
                   mode="month"
                   theme="dp-material"
                   [formControlName]="getNomeCampoForm(campo)"
-                  [id]="campo.id"
+                  [id]="getIdCampo(campo)"
                   [config]="{
                     locale: 'it',
                     format: 'MM/YYYY',
@@ -116,34 +116,34 @@
                 ></dp-date-picker>
               </div>
               <div class="row">
-                <p class="placeholder">{{campo.informazioni}}</p>
+                <p class="placeholder">{{getDescrizioneCampo(campo)}}</p>
               </div>
             </div>
 
             <div *ngSwitchCase="tipoCampo.DATEYY" class="dynamic-form-elem">
               <div class="row">
-                <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
-                  [id]="campo.id"
+                  [id]="getIdCampo(campo)"
                   [formControlName]="getNomeCampoForm(campo)"
                   type="number"
                   min="1900"
                 />
               </div>
               <div class="row">
-                <p class="placeholder">{{campo.informazioni}}</p>
+                <p class="placeholder">{{getDescrizioneCampo(campo)}}</p>
               </div>
             </div>
 
             <div *ngSwitchCase="tipoCampo.SELECT" class="dynamic-form-elem">
               <div class="row">
-                <label [htmlFor]="campo.id" class="title">{{campo.titolo}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <select
-                  [id]="campo.id"
+                  [id]="getIdCampo(campo)"
                   [formControlName]="getNomeCampoForm(campo)"
                   (change)="aggiornaSelectDipendenti(campo)"
                 >
@@ -152,7 +152,7 @@
                 </select>
               </div>
               <div class="row">
-                <p class="placeholder">{{campo.informazioni}}</p>
+                <p class="placeholder">{{getDescrizioneCampo(campo)}}</p>
               </div>
             </div>
 

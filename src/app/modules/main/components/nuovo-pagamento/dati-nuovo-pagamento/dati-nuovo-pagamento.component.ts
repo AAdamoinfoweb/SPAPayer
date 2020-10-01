@@ -394,6 +394,23 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return campo.id.toString();
   }
 
+  getTitoloCampo(campo: CampoForm): string {
+    return campo.titolo;
+  }
+
+  getDescrizioneCampo(campo: CampoForm): string {
+    // TODO inserire logica condizionale per mostrare descrizione o errori validazione
+    return campo.informazioni;
+  }
+
+  getLunghezzaCampo(campo: CampoForm): number {
+    return campo.lunghezza;
+  }
+
+  getIdCampo(campo: CampoForm): string {
+    return this.getNomeCampoForm(campo);
+  }
+
   aggiornaSelectDipendenti(campo: CampoForm): void {
     let campiDipendenti = this.getCampiDipendenti(campo);
     if (campiDipendenti) {
