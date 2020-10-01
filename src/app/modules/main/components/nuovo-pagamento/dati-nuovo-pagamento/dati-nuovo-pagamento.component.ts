@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {DatiPagamentoService} from './DatiPagamentoService';
@@ -357,10 +357,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
     campi.forEach(campo => {
       let campoForm = new FormControl();
-      if (campo.disabilitato) { campoForm.disable(); }
+      if (campo.disabilitato) {
+        campoForm.disable();
+      }
 
       let validatori = [];
-      if (campo.obbligatorio) { validatori.push(Validators.required); }
+      if (campo.obbligatorio) {
+        validatori.push(Validators.required);
+      }
 
       // TODO impostare i validatori per i vari tipi di campo
 
@@ -430,7 +434,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   getCampiDipendenti(campo: CampoForm): Array<CampoForm> {
-    return this.listaCampi.filter(item => {return item.dipendeDa === campo.id});
+    return this.listaCampi.filter(item => {
+      return item.dipendeDa === campo.id
+    });
   }
 
   impostaOpzioniSelect(campo: CampoForm): void {
@@ -447,14 +453,16 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {
-            switch (campo.tipologica) {
-              // Inserire qui logica per i vari campi select dipendenti da altre select
+          switch (campo.tipologica) {
+            // Inserire qui logica per i vari campi select dipendenti da altre select
 
-              case tipologicaSelect.COMUNI:
-                // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
-                valoriSelect = valoriSelect.filter(valore => {return valore.codiceIstat?.substring(0,3) === valoreSelectPadre});
-                break;
-            }
+            case tipologicaSelect.COMUNI:
+              // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
+              valoriSelect = valoriSelect.filter(valore => {
+                return valore.codiceIstat?.substring(0, 3) === valoreSelectPadre
+              });
+              break;
+          }
         } else {
           valoriSelect = [];
         }
@@ -483,5 +491,21 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     });
 
     campo['opzioni'] = opzioniSelect;
+  }
+
+  aggiungiAlCarrello() {
+    let anonimo = true;
+    if (anonimo) {
+      this.nuovoPagamentoService.verificaBollettino(this.getNumeroDocumento())
+        .subscribe((result) => {
+
+        });
+    } else {
+
+    }
+  }
+
+  private getNumeroDocumento() {
+
   }
 }

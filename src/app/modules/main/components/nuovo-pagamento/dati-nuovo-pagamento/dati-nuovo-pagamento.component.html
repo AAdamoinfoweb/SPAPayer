@@ -217,7 +217,7 @@
           <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top">
             <button id="bottoneSalvaPerDopo" class="btn btn-secondary" [disabled]="isUtenteAnonimo">Salva per dopo</button>
           </span>
-      <button id="bottoneAggiungiAlCarrello" class="btn btn-secondary">Aggiungi al carrello</button>
+      <button (click)="aggiungiAlCarrello()" id="bottoneAggiungiAlCarrello" class="btn btn-secondary">Aggiungi al carrello</button>
       <button id="bottonePagaOra" class="btn">Paga ora</button>
     </div>
     <div *ngIf="livelliIntegrazione.LV2_BACK_OFFICE === livelloIntegrazioneId && !isFaseVerificaPagamento"

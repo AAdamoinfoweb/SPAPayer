@@ -64,7 +64,7 @@ export class NuovoPagamentoService {
       }));
   }
 
-  verificaBollettino(numero, idDettaglioTransazione): Observable<string> {
+  verificaBollettino(numero?, idDettaglioTransazione?): Observable<string> {
     return this.http.get(environment.bffBaseUrl + this.verificaBollettinoUrl, {
       params: {
         numero,
