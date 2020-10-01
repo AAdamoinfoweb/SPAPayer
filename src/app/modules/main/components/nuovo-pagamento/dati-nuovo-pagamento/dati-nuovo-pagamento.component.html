@@ -28,7 +28,8 @@
               <div class="row">
                 <input
                   [id]="getIdCampo(campo)"
-                  [formControlName]="getNomeCampoForm(campo)"
+                  [formControl]="form.controls[getNomeCampoForm(campo)]"
+                  [(ngModel)]="model[getNomeCampoForm(campo)]"
                   type="text"
                   [maxLength]="getLunghezzaCampo(campo)"
                   (change)="formattaCampo(campo)"
@@ -46,7 +47,8 @@
               <div class="row">
                 <input
                   [id]="getIdCampo(campo)"
-                  [formControlName]="getNomeCampoForm(campo)"
+                  [formControl]="form.controls[getNomeCampoForm(campo)]"
+                  [(ngModel)]="model[getNomeCampoForm(campo)]"
                   [maxLength]="getLunghezzaCampo(campo)"
                   type="tel"
                   currencyMask
@@ -66,7 +68,8 @@
                 <input
                   [id]="getIdCampo(campo)"
                   class="price-input"
-                  [formControlName]="getNomeCampoForm(campo)"
+                  [formControl]="form.controls[getNomeCampoForm(campo)]"
+                  [(ngModel)]="model[getNomeCampoForm(campo)]"
                   [maxLength]="getLunghezzaCampo(campo)"
                   type="tel"
                   currencyMask
@@ -86,7 +89,8 @@
                 <dp-date-picker
                   mode="day"
                   theme="dp-material"
-                  [formControlName]="getNomeCampoForm(campo)"
+                  [formControl]="form.controls[getNomeCampoForm(campo)]"
+                  [(ngModel)]="model[getNomeCampoForm(campo)]"
                   [id]="getIdCampo(campo)"
                   [config]="{
                     locale: 'it',
@@ -109,7 +113,8 @@
                 <dp-date-picker
                   mode="month"
                   theme="dp-material"
-                  [formControlName]="getNomeCampoForm(campo)"
+                  [formControl]="form.controls[getNomeCampoForm(campo)]"
+                  [(ngModel)]="model[getNomeCampoForm(campo)]"
                   [id]="getIdCampo(campo)"
                   [config]="{
                     locale: 'it',
@@ -131,7 +136,8 @@
               <div class="row">
                 <input
                   [id]="getIdCampo(campo)"
-                  [formControlName]="getNomeCampoForm(campo)"
+                  [formControl]="form.controls[getNomeCampoForm(campo)]"
+                  [(ngModel)]="model[getNomeCampoForm(campo)]"
                   type="tel"
                   currencyMask
                   [options]="{allowNegative: false, prefix: '', precision: 0, decimal: '', thousands: '', nullable: true, inputMode: 'FINANCIAL', align: 'LEFT'}"
@@ -149,7 +155,8 @@
               <div class="row">
                 <select
                   [id]="getIdCampo(campo)"
-                  [formControlName]="getNomeCampoForm(campo)"
+                  [formControl]="form.controls[getNomeCampoForm(campo)]"
+                  [(ngModel)]="model[getNomeCampoForm(campo)]"
                   (change)="aggiornaSelectDipendenti(campo)"
                 >
                   <option [value]="null"></option>
