@@ -10,7 +10,7 @@ import {WaitingComponent} from "./modules/main/components/waiting/waiting.compon
 import {GenericErrorComponent} from "./modules/generic-error/generic-error.component";
 import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/nuovo-pagamento.component';
 import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
-import {GestisciUtentiComponent} from "./components/gestisci-utenti/gestisci-utenti.component";
+import {GestisciUtentiComponent} from './modules/main/components/gestisci-utenti/gestisci-utenti.component';
 
 const routes: Routes = [
   { path: '',   redirectTo: '/home', pathMatch: 'full' },

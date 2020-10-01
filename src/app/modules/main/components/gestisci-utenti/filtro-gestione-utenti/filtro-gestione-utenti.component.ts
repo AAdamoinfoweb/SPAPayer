@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {OpzioneSelect} from '../../../modules/main/model/OpzioneSelect';
-import {LivelloTerritoriale} from '../../../modules/main/model/LivelloTerritoriale';
-import {Ente} from '../../../modules/main/model/Ente';
-import {Servizio} from '../../../modules/main/model/Servizio';
-import {NuovoPagamentoService} from '../../../services/nuovo-pagamento.service';
+import {OpzioneSelect} from '../../../model/OpzioneSelect';
+import {LivelloTerritoriale} from '../../../model/LivelloTerritoriale';
+import {Ente} from '../../../model/Ente';
+import {Servizio} from '../../../model/Servizio';
+import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {FiltroGestioneUtentiService} from './FiltroGestioneUtentiService';
 import {map} from 'rxjs/operators';
 import {DatePickerComponent} from 'ng2-date-picker';

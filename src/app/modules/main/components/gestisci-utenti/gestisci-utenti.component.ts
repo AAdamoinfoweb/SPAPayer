@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {tipoColonna} from '../../enums/TipoColonna.enum';
-import {tipoTabella} from '../../enums/TipoTabella.enum';
-import {tipoUtente} from '../../enums/TipoUtente.enum';
-import {tool} from '../../enums/Tool.enum';
-import {Utils} from '../../utils/Utils';
+import {tipoColonna} from '../../../../enums/TipoColonna.enum';
+import {tipoTabella} from '../../../../enums/TipoTabella.enum';
+import {tipoUtente} from '../../../../enums/TipoUtente.enum';
+import {tool} from '../../../../enums/Tool.enum';
+import {Utils} from '../../../../utils/Utils';
 
 
 @Component({

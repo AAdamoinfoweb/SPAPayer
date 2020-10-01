@@ -30,7 +30,7 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {AccordionModule} from 'primeng/accordion';
 import {TableModule} from "primeng/table";
 import {TableComponent} from './components/table/table.component';
-import {GestisciUtentiComponent} from './components/gestisci-utenti/gestisci-utenti.component';
+import {GestisciUtentiComponent} from './modules/main/components/gestisci-utenti/gestisci-utenti.component';
 import {ButtonModule} from "primeng/button";      //accordion and accordion tab
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TabViewModule} from 'primeng/tabview';
@@ -38,7 +38,7 @@ import {TabViewComponent} from './components/tab-view/tab-view.component';
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {ToolbarModule} from 'primeng/toolbar';
 import { PaginatorComponent } from './components/table/paginator/paginator.component';
-import {FiltroGestioneUtentiComponent} from './components/gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
+import {FiltroGestioneUtentiComponent} from './modules/main/components/gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
 
 @NgModule({
   declarations: [
