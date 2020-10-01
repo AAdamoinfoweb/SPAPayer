@@ -19,7 +19,7 @@
         <label for="selectSocieta" class="title">Società</label>
       </div>
       <div class="row">
-        <select class="form-elem" id="selectSocieta">
+        <select class="form-elem" id="selectSocieta" [(ngModel)]="societaSelezionata" (ngModelChange)="selezionaSocieta()">
           <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
         </select>
       </div>

@@ -7,6 +7,8 @@ import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.ser
 import {FiltroGestioneUtentiService} from './FiltroGestioneUtentiService';
 import {map} from 'rxjs/operators';
 import {DatePickerComponent} from 'ng2-date-picker';
+import {Societa} from '../../../model/Societa';
+import {SocietaService} from '../../../../../services/societa.service';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -23,13 +25,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
-
-  // TODO recuperare società tramite operation mancante nel BE: letturaSocieta
-  listaSocieta: Array<OpzioneSelect> = [
-    {value: '', label: ''},
-    {value: 'mock societa1 val', label: 'mock societa1 label'},
-    {value: 'mock societa2 val', label: 'mock societa2 label'}
-  ];
+  listaSocieta: Array<OpzioneSelect> = [];
 
   // TODO recuperare funzioni tramite operation mancante nel BE: letturaFunzioni
   listaFunzioniAbilitate: Array<OpzioneSelect> = [
@@ -38,16 +34,36 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     {value: 'mock funzione2 val', label: 'mock funzione2 label'}
   ];
 
+  societaSelezionata: Societa = null;
   livelloTerritorialeSelezionato: LivelloTerritoriale = null;
   enteSelezionato: Ente = null;
   servizioSelezionato: Servizio = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private filtroGestioneUtentiService: FiltroGestioneUtentiService) { }
+  constructor(private nuovoPagamentoService: NuovoPagamentoService,
+              private filtroGestioneUtentiService: FiltroGestioneUtentiService, private societaService: SocietaService) { }
 
   ngOnInit(): void {
+    this.letturaSocieta();
     this.recuperaFiltroLivelloTerritoriale();
     this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato.id);
     this.recuperaFiltroServizi(this.enteSelezionato.id);
+  }
+
+  letturaSocieta(): void {
+    this.societaService.letturaSocieta().pipe(map(societa => {
+      societa.forEach(s => {
+        this.listaSocieta.push({
+          value: s,
+          label: s.nome
+        });
+      });
+    })).subscribe();
+  }
+
+  selezionaSocieta(): void {
+    this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(null);
+    this.societaSelezionata = null;
+    this.listaLivelliTerritoriali = [];
   }
 
   recuperaFiltroLivelloTerritoriale(): void {
