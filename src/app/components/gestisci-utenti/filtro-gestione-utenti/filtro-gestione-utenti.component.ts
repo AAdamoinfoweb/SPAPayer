@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OpzioneSelect} from '../../../modules/main/model/OpzioneSelect';
 import {LivelloTerritoriale} from '../../../modules/main/model/LivelloTerritoriale';
 import {Ente} from '../../../modules/main/model/Ente';
@@ -17,7 +17,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   isSubsectionFiltriVisible: boolean = true;
 
-  @ViewChild('datePicker') datePicker: DatePickerComponent;
   isCalendarOpen: boolean = false;
 
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
@@ -99,8 +98,8 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.servizioSelezionato);
   }
 
-  onChangeOpenDatePicker(): void {
-    this.datePicker.api.open();
+  openDatepicker(datePickerComponent: DatePickerComponent): void {
+    datePickerComponent.api.open();
     this.isCalendarOpen = !this.isCalendarOpen;
   }
 

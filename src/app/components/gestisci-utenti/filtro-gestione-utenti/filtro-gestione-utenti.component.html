@@ -85,13 +85,12 @@
 
   <!-- Scadenza abilitazione Da - a, Ultimo accesso da - a -->
   <div class="row section-row mt-3">
-
-    <div class="col-md-4 pb-2">
+    <div class="col-lg-2 col-md-3 col-sm-4 pb-2">
       <div class="row">
         <label for="scadenzaDataDa" class="title">Scadenza abilit. - Da</label>
       </div>
       <div class="row">
-        <svg class="bg-light icon img-calendar" (click)="onChangeOpenDatePicker()">
+        <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaDa)">
           <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
         </svg>
         <dp-date-picker
@@ -106,7 +105,82 @@
 	          openOnClick: isCalendarOpen,
 	          openOnFocus: false
 	        }"
-          #datePicker
+          #datePickerScadenzaDa
+          (click)="isCalendarOpen = false"
+        ></dp-date-picker>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-4 pb-2">
+      <div class="row">
+        <label for="scadenzaDataA" class="title">Scadenza abilit. - A</label>
+      </div>
+      <div class="row">
+        <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaA)">
+          <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+        </svg>
+        <dp-date-picker
+          mode="day"
+          id="scadenzaDataA"
+          theme="dp-material"
+          [config]="{
+	          locale: 'it',
+	          format: 'DD/MM/YYYY',
+	          firstDayOfWeek: 'mo',
+	          showGoToCurrent: false,
+	          openOnClick: isCalendarOpen,
+	          openOnFocus: false
+	        }"
+          #datePickerScadenzaA
+          (click)="isCalendarOpen = false"
+        ></dp-date-picker>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-4 pb-2">
+      <div class="row">
+        <label for="ultimoAccessoDataDa" class="title">Ultimo accesso - Da</label>
+      </div>
+      <div class="row">
+        <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerUltimoAccessoDa)">
+          <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+        </svg>
+        <dp-date-picker
+          mode="day"
+          id="ultimoAccessoDataDa"
+          theme="dp-material"
+          [config]="{
+	          locale: 'it',
+	          format: 'DD/MM/YYYY',
+	          firstDayOfWeek: 'mo',
+	          showGoToCurrent: false,
+	          openOnClick: isCalendarOpen,
+	          openOnFocus: false
+	        }"
+          #datePickerUltimoAccessoDa
+          (click)="isCalendarOpen = false"
+        ></dp-date-picker>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-4 pb-2">
+      <div class="row">
+        <label for="ultimoAccessoDataA" class="title">Ultimo accesso - A</label>
+      </div>
+      <div class="row">
+        <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerUltimoAccessoA)">
+          <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+        </svg>
+        <dp-date-picker
+          mode="day"
+          id="ultimoAccessoDataA"
+          theme="dp-material"
+          [config]="{
+	          locale: 'it',
+	          format: 'DD/MM/YYYY',
+	          firstDayOfWeek: 'mo',
+	          showGoToCurrent: false,
+	          openOnClick: isCalendarOpen,
+	          openOnFocus: false
+	        }"
+          #datePickerUltimoAccessoA
           (click)="isCalendarOpen = false"
         ></dp-date-picker>
       </div>
