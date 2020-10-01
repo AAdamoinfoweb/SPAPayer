@@ -332,6 +332,21 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     }
   }
 
+  formattaCampo(campo: CampoForm): void {
+    let nomeCampo = this.getNomeCampoForm(campo);
+    let valoreCampo = this.form.controls[nomeCampo].value;
+    let patch = {};
+
+    switch (campo.tipoCampo) {
+      case tipoCampo.INPUT_TESTUALE:
+        if (valoreCampo === "") {
+          patch[nomeCampo] = null;
+          this.form.patchValue(patch);
+        }
+        break;
+    }
+  }
+
   impostaCampi(campi: Array<CampoForm>): void {
     campi.sort((campo1: CampoForm, campo2: CampoForm) => {
       return campo1.posizione > campo2.posizione ? 1 : (campo1.posizione < campo2.posizione ? -1 : 0);
@@ -348,20 +363,23 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           campoForm.setValidators((formControl) => {
             let errori = {};
 
-            if (formControl.value === "") {
-              formControl.setValue(null);
-            }
-
             if (campo.obbligatorio && formControl.value === null) {
               errori['required'] = true;
             }
 
-            return Object.keys(errori).length > 0 ? errori : null;
+            return Object.keys(errori)?.length > 0 ? errori : null;
           });
           break;
         case tipoCampo.INPUT_NUMERICO:
           if (campo.disabilitato) { campoForm.disable(); }
-          campoForm.setValidators(null);
+          // campoForm.setValidators((formControl) => {
+          //   const separatoreDecimale = ',';
+          //   const minCifreDecimaliNumero = '1';
+          //   const maxCifreDecimaliNumero = '';
+          //   let numeroRegex = new RegExp('^[0-9]+(' + separatoreDecimale + '[0-9]{' + minCifreDecimaliNumero + ',' + maxCifreDecimaliNumero + '}){0,1}$');
+          //   console.log('xx', formControl.value.match(numeroRegex));
+          //   return null;
+          // });
           break;
         case tipoCampo.DATEDDMMYY:
           if (campo.disabilitato) { campoForm.disable(); }

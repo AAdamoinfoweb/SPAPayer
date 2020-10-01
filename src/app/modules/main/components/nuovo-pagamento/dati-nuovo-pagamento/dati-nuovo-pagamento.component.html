@@ -31,6 +31,7 @@
                   [formControlName]="getNomeCampoForm(campo)"
                   type="text"
                   [maxLength]="campo.lunghezza"
+                  (change)="formattaCampo(campo)"
                 />
               </div>
               <div class="row">
