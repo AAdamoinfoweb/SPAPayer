@@ -354,12 +354,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
     campi.forEach(campo => {
       let campoForm = new FormControl();
+      if (campo.disabilitato) { campoForm.disable(); }
 
       // TODO impostare i validatori per i vari tipi di campo
 
       switch (campo.tipoCampo) {
         case tipoCampo.INPUT_TESTUALE:
-          if (campo.disabilitato) { campoForm.disable(); }
           campoForm.setValidators((formControl) => {
             let errori = {};
 
@@ -371,31 +371,20 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           });
           break;
         case tipoCampo.INPUT_NUMERICO:
-          if (campo.disabilitato) { campoForm.disable(); }
-          // campoForm.setValidators((formControl) => {
-          //   const separatoreDecimale = ',';
-          //   const minCifreDecimaliNumero = '1';
-          //   const maxCifreDecimaliNumero = '';
-          //   let numeroRegex = new RegExp('^[0-9]+(' + separatoreDecimale + '[0-9]{' + minCifreDecimaliNumero + ',' + maxCifreDecimaliNumero + '}){0,1}$');
-          //   console.log('xx', formControl.value.match(numeroRegex));
-          //   return null;
-          // });
+          campoForm.setValidators(null);
           break;
         case tipoCampo.DATEDDMMYY:
-          if (campo.disabilitato) { campoForm.disable(); }
           campoForm.setValidators(null);
           break;
         case tipoCampo.DATEMMYY:
-          if (campo.disabilitato) { campoForm.disable(); }
           campoForm.setValidators(null);
           break;
         case tipoCampo.DATEYY:
-          if (campo.disabilitato) { campoForm.disable(); }
           campoForm.setValidators(null);
           break;
         case tipoCampo.SELECT:
           this.impostaOpzioniSelect(campo);
-          if (campo.disabilitato || !campo['opzioni']?.length) { campoForm.disable(); }
+          if (!campo['opzioni']?.length) { campoForm.disable(); }
           campoForm.setValidators(null);
           break;
       }
