@@ -59,8 +59,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaSocieta(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(null);
-    this.livelloTerritorialeSelezionato = null;
-    this.listaLivelliTerritoriali = [];
   }
 
   recuperaFiltroLivelloTerritoriale(): void {
