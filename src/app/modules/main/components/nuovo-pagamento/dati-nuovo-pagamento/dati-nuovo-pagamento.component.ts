@@ -337,14 +337,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   formattaCampo(campo: CampoForm): void {
     let nomeCampo = this.getNomeCampoForm(campo);
-    let valoreCampo = this.form.controls[nomeCampo].value;
-    let patch = {};
+    let valoreCampo = this.model[nomeCampo];
 
     switch (campo.tipoCampo) {
       case tipoCampo.INPUT_TESTUALE:
         if (valoreCampo === "") {
-          patch[nomeCampo] = null;
-          this.form.patchValue(patch);
+          this.model[nomeCampo] = null;
         }
         break;
     }
@@ -382,6 +380,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
       campoForm.setValidators(validatori);
 
+      this.model[this.getNomeCampoForm(campo)] = null;
       this.form.addControl(this.getNomeCampoForm(campo), campoForm);
       this.listaCampi.push(campo);
     });

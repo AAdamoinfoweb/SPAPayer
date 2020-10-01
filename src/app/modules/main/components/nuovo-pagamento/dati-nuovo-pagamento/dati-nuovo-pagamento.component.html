@@ -32,7 +32,7 @@
                   [(ngModel)]="model[getNomeCampoForm(campo)]"
                   type="text"
                   [maxLength]="getLunghezzaCampo(campo)"
-                  (change)="formattaCampo(campo)"
+                  (ngModelChange)="formattaCampo(campo)"
                 />
               </div>
               <div class="row">
