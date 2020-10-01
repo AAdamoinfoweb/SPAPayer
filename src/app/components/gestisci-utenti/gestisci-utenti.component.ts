@@ -15,6 +15,8 @@ export class GestisciUtentiComponent implements OnInit {
 
   tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
+  isSubsectionListaUtentiVisible: boolean = true;
+
   constructor() {
   }
 
