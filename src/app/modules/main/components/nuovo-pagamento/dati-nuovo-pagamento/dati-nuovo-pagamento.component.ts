@@ -356,38 +356,34 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       let campoForm = new FormControl();
       if (campo.disabilitato) { campoForm.disable(); }
 
+      let validatori = [];
+      if (campo.obbligatorio) { validatori.push(Validators.required); }
+
       // TODO impostare i validatori per i vari tipi di campo
 
       switch (campo.tipoCampo) {
         case tipoCampo.INPUT_TESTUALE:
-          campoForm.setValidators((formControl) => {
-            let errori = {};
-
-            if (campo.obbligatorio && formControl.value === null) {
-              errori['required'] = true;
-            }
-
-            return Object.keys(errori)?.length > 0 ? errori : null;
-          });
           break;
         case tipoCampo.INPUT_NUMERICO:
-          campoForm.setValidators(null);
+          validatori.push(() => { return null; });
           break;
         case tipoCampo.DATEDDMMYY:
-          campoForm.setValidators(null);
+          validatori.push(() => { return null; });
           break;
         case tipoCampo.DATEMMYY:
-          campoForm.setValidators(null);
+          validatori.push(() => { return null; });
           break;
         case tipoCampo.DATEYY:
-          campoForm.setValidators(null);
+          validatori.push(() => { return null; });
           break;
         case tipoCampo.SELECT:
           this.impostaOpzioniSelect(campo);
           if (!campo['opzioni']?.length) { campoForm.disable(); }
-          campoForm.setValidators(null);
+          validatori.push(() => { return null; });
           break;
       }
+
+      campoForm.setValidators(validatori);
 
       this.form.addControl(this.getNomeCampoForm(campo), campoForm);
       this.listaCampi.push(campo);
