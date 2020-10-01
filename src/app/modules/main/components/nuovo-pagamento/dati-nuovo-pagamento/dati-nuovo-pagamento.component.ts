@@ -299,9 +299,11 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   pulisciCampiForm(): void {
-    let campiAttuali = [...this.listaCampi];
-    this.listaCampi = [];
-    this.impostaCampi(campiAttuali);
+    // TODO implementa logica pulizia
+  }
+
+  calcolaChiaveForm(): void {
+    // TODO concatena valori dei campi con flag chiave
   }
 
   precompilaCampiForm(): void {
@@ -368,6 +370,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           break;
         case tipoCampo.INPUT_PREZZO:
           validatori.push(Validators.min(0));
+          break;
+        case tipoCampo.DATEDDMMYY:
+          let minData = moment(new Date().setFullYear(1900));
+          validatori.push(Validators.min(minData));
           break;
         case tipoCampo.DATEYY:
           validatori.push(Validators.min(1900));
