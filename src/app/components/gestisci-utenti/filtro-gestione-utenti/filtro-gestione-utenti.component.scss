@@ -1,3 +1,7 @@
+svg {
+  fill: #004987;
+}
+
 .section-row {
   margin: 3%;
 }
@@ -14,7 +18,7 @@
 
 .img-calendar {
   position: absolute;
-  bottom: 14%;
+  top: 26%;
   fill: #77777B;
   cursor: pointer;
   background: transparent !important;
@@ -24,4 +28,13 @@
 :host::ng-deep dp-date-picker.dp-material .dp-picker-input {
   width: 72%;
   margin-left: 21%;
+}
+
+.btn-find {
+  text-align: right;
+  margin-left: -6%;
+}
+
+.btn {
+  height: 42px;
 }
