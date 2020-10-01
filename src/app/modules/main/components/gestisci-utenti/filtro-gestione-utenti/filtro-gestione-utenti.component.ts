@@ -9,6 +9,8 @@ import {map} from 'rxjs/operators';
 import {DatePickerComponent} from 'ng2-date-picker';
 import {Societa} from '../../../model/Societa';
 import {SocietaService} from '../../../../../services/societa.service';
+import {Funzione} from '../../../model/Funzione';
+import {FunzioneService} from '../../../../../services/funzione.service';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -22,31 +24,26 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   isCalendarOpen: boolean = false;
 
+  listaSocieta: Array<OpzioneSelect> = [];
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
-  listaSocieta: Array<OpzioneSelect> = [];
-
-  // TODO recuperare funzioni tramite operation mancante nel BE: letturaFunzioni
-  listaFunzioniAbilitate: Array<OpzioneSelect> = [
-    {value: '', label: ''},
-    {value: 'mock funzione1 val', label: 'mock funzione1 label'},
-    {value: 'mock funzione2 val', label: 'mock funzione2 label'}
-  ];
+  listaFunzioniAbilitate: Array<OpzioneSelect> = [];
 
   societaSelezionata: Societa = null;
   livelloTerritorialeSelezionato: LivelloTerritoriale = null;
   enteSelezionato: Ente = null;
   servizioSelezionato: Servizio = null;
+  funzioneAbilitataSelezionata: Funzione = null;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
-              private filtroGestioneUtentiService: FiltroGestioneUtentiService, private societaService: SocietaService) { }
+              private filtroGestioneUtentiService: FiltroGestioneUtentiService, private societaService: SocietaService,
+              private funzioneService: FunzioneService) { }
 
   ngOnInit(): void {
     this.letturaSocieta();
     this.recuperaFiltroLivelloTerritoriale();
-    this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato.id);
-    this.recuperaFiltroServizi(this.enteSelezionato.id);
+    this.letturaFunzioni();
   }
 
   letturaSocieta(): void {
@@ -62,7 +59,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaSocieta(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(null);
-    this.societaSelezionata = null;
+    this.livelloTerritorialeSelezionato = null;
     this.listaLivelliTerritoriali = [];
   }
 
@@ -81,6 +78,8 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(null);
     this.enteSelezionato = null;
     this.listaEnti = [];
+
+    this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato.id);
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
@@ -98,6 +97,8 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(null);
     this.servizioSelezionato = null;
     this.listaServizi = [];
+
+    this.recuperaFiltroServizi(this.enteSelezionato.id);
   }
 
   recuperaFiltroServizi(idEnte): void {
@@ -113,6 +114,21 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaServizio(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.servizioSelezionato);
+  }
+
+  letturaFunzioni(): void {
+    this.funzioneService.letturaFunzioni().pipe(map(funzioneAbilitata => {
+      funzioneAbilitata.forEach(funzione => {
+        this.listaFunzioniAbilitate.push({
+          value: funzione,
+          label: funzione.nome
+        });
+      });
+    })).subscribe();
+  }
+
+  selezionaFunzione(): void {
+    this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(null);
   }
 
   setArrowType(): void {

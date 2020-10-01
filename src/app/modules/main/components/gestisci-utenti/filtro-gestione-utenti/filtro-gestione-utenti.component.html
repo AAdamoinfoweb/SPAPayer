@@ -75,7 +75,7 @@
         <label for="selectFunzioneAbilitata" class="title">Funzione abilitata</label>
       </div>
       <div class="row">
-        <select class="form-elem" id="selectFunzioneAbilitata">
+        <select class="form-elem" id="selectFunzioneAbilitata" [(ngModel)]="funzioneAbilitataSelezionata" (ngModelChange)="selezionaFunzione()">
           <option *ngFor="let item of listaFunzioniAbilitate" [ngValue]="item.value">{{item.label}}</option>
         </select>
       </div>
