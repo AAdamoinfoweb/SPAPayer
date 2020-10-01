@@ -47,8 +47,10 @@
                 <input
                   [id]="getIdCampo(campo)"
                   [formControlName]="getNomeCampoForm(campo)"
-                  type="number"
                   [maxLength]="getLunghezzaCampo(campo)"
+                  type="tel"
+                  currencyMask
+                  [options]="{allowNegative: false, prefix: '', precision: 0, decimal: '', thousands: '', nullable: true, inputMode: 'FINANCIAL', align: 'LEFT'}"
                 />
               </div>
               <div class="row">
@@ -65,8 +67,10 @@
                   [id]="getIdCampo(campo)"
                   class="price-input"
                   [formControlName]="getNomeCampoForm(campo)"
-                  type="number"
                   [maxLength]="getLunghezzaCampo(campo)"
+                  type="tel"
+                  currencyMask
+                  [options]="{allowNegative: false, prefix: '', precision: 2, decimal: '.', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
                 />
               </div>
               <div class="row">
@@ -128,8 +132,9 @@
                 <input
                   [id]="getIdCampo(campo)"
                   [formControlName]="getNomeCampoForm(campo)"
-                  type="number"
-                  min="1900"
+                  type="tel"
+                  currencyMask
+                  [options]="{allowNegative: false, prefix: '', precision: 0, decimal: '', thousands: '', nullable: true, inputMode: 'FINANCIAL', align: 'LEFT'}"
                 />
               </div>
               <div class="row">

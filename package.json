@@ -36,6 +36,7 @@
     "jquery": "3.4.1",
     "moment": "^2.27.0",
     "ng2-date-picker": "10.0.0",
+    "ngx-currency": "2.5.1",
     "ngx-youtube-player": "^7.1.5",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",

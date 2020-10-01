@@ -362,24 +362,18 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       // TODO impostare i validatori per i vari tipi di campo
 
       switch (campo.tipoCampo) {
-        case tipoCampo.INPUT_TESTUALE:
-          break;
         case tipoCampo.INPUT_NUMERICO:
-          validatori.push(() => { return null; });
+          validatori.push(Validators.min(0));
           break;
-        case tipoCampo.DATEDDMMYY:
-          validatori.push(() => { return null; });
-          break;
-        case tipoCampo.DATEMMYY:
-          validatori.push(() => { return null; });
+        case tipoCampo.INPUT_PREZZO:
+          validatori.push(Validators.min(0));
           break;
         case tipoCampo.DATEYY:
-          validatori.push(() => { return null; });
+          validatori.push(Validators.min(1900));
           break;
         case tipoCampo.SELECT:
           this.impostaOpzioniSelect(campo);
           if (!campo['opzioni']?.length) { campoForm.disable(); }
-          validatori.push(() => { return null; });
           break;
       }
 
