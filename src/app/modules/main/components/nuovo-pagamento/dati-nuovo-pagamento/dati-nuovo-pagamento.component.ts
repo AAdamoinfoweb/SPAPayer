@@ -39,9 +39,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   form: FormGroup = new FormGroup({importo: this.importoFormControl});
   model = {importo: null};
 
-  lunghezzaMaxCol1 = 5;
-  lunghezzaMaxCol2 = 10;
-  lunghezzaMaxCol3 = 15;
+  minDataDDMMYY = '01/01/1900';
+  minDataMMYY = '01/1900';
+
+  lunghezzaMaxCol1: number = 5;
+  lunghezzaMaxCol2: number = 10;
+  lunghezzaMaxCol3: number = 15;
 
   mesi: Array<OpzioneSelect> = [
     {value: 1, label: 'gennaio'},
@@ -366,7 +369,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         validatori.push(Validators.required);
       }
 
-      // TODO impostare i validatori per i vari tipi di campo
+      // TODO testare validazione regex quando è fixato l'invio delle regex dal backend
+      if (campo.controllo_logico?.regex) { validatori.push(Validators.pattern(campo.controllo_logico.regex)); }
 
       switch (campo.tipoCampo) {
         case tipoCampo.INPUT_NUMERICO:
