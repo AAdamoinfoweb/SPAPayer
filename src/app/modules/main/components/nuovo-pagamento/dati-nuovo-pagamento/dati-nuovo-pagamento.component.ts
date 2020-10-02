@@ -15,6 +15,7 @@ import {PagamentoService} from '../PagamentoService';
 import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
 import {livelloIntegrazione} from '../../../../../enums/livelloIntegrazione.enum';
+import {EsitoEnum} from '../../../../../enums/esito.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -505,7 +506,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       const numeroDoc = this.getNumeroDocumento();
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .subscribe((result) => {
-          if (result !== 'OK' || result !== 'PENDING') {
+          if (result !== EsitoEnum.OK || result !== EsitoEnum.PENDING) {
             localStorage.setItem(numeroDoc, JSON.stringify(this.model));
             this.clearField();
           } else {
