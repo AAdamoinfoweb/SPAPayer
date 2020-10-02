@@ -39,6 +39,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   form: FormGroup = new FormGroup({importo: this.importoFormControl});
   model = {importo: null};
 
+  minDataDDMMYY = '01/01/1900';
+  minDataMMYY = '01/1900';
+
   lunghezzaMaxCol1: number = 5;
   lunghezzaMaxCol2: number = 10;
   lunghezzaMaxCol3: number = 15;
@@ -368,12 +371,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           break;
         case tipoCampo.INPUT_PREZZO:
           validatori.push(Validators.min(0));
-          break;
-        case tipoCampo.DATEDDMMYY:
-          // TODO impostare validatore
-          break;
-        case tipoCampo.DATEMMYY:
-          // TODO impostare validatore
           break;
         case tipoCampo.DATEYY:
           validatori.push(Validators.min(1900));
