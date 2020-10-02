@@ -307,8 +307,61 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     // TODO implementa logica pulizia
   }
 
-  calcolaChiaveForm(): void {
-    // TODO concatena valori dei campi con flag chiave
+  calcolaChiaveForm(): string {
+    let chiave: string = null;
+
+    const campiChiave = [];
+
+    this.listaCampi.forEach(campo => {
+      if (campo.chiave) {
+        campiChiave.push(campo);
+      }
+    });
+
+    if (campiChiave.length > 0) {
+      this.ordinaPerPosizione(campiChiave);
+
+      chiave = '';
+      campiChiave.forEach(campo => {
+        chiave += this.getValoreCampoFormattato(campo);
+      });
+    }
+
+    return chiave;
+  }
+
+  // Restituisce il valore campo formattato per l'invio al backend
+  getValoreCampoFormattato(campo: CampoForm): any {
+    const valoreModel = this.model[this.getNomeCampoForm(campo)];
+    let valoreFormattato;
+
+    switch (campo.tipoCampo) {
+      case tipoCampo.INPUT_TESTUALE:
+        valoreFormattato = valoreModel;
+        break;
+      case tipoCampo.INPUT_NUMERICO:
+        valoreFormattato = valoreModel;
+        break;
+      case tipoCampo.INPUT_PREZZO:
+        valoreFormattato = valoreModel;
+        break;
+      case tipoCampo.DATEDDMMYY:
+        // TODO convertire stringa data utc in valore da inviare al backend
+        valoreFormattato = null;
+        break;
+      case tipoCampo.DATEMMYY:
+        // TODO convertire stringa data utc in valore da inviare al backend
+        valoreFormattato = null;
+        break;
+      case tipoCampo.DATEYY:
+        valoreFormattato = valoreModel ? valoreModel.toString() : null;
+        break;
+      case tipoCampo.SELECT:
+        valoreFormattato = valoreModel;
+        break;
+    }
+
+    return valoreFormattato;
   }
 
   precompilaCampiForm(): void {
@@ -342,7 +395,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     }
   }
 
-  formattaCampo(campo: CampoForm): void {
+  formattaInput(campo: CampoForm): void {
     const nomeCampo = this.getNomeCampoForm(campo);
     const valoreCampo = this.model[nomeCampo];
 
@@ -355,10 +408,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     }
   }
 
-  impostaCampi(campi: Array<CampoForm>): void {
+  ordinaPerPosizione(campi: Array<CampoForm>): void {
     campi.sort((campo1: CampoForm, campo2: CampoForm) => {
       return campo1.posizione > campo2.posizione ? 1 : (campo1.posizione < campo2.posizione ? -1 : 0);
     });
+  }
+
+  impostaCampi(campi: Array<CampoForm>): void {
+    this.ordinaPerPosizione(campi);
 
     campi.forEach(campo => {
       const campoForm = new FormControl();
