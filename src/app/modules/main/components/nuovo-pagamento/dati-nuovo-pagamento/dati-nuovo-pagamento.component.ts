@@ -78,7 +78,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   ngOnInit(): void {
     this.mockSelezionaServizio();
-    this.mockAggiornaPrezzoCarrello();
     this.checkUtenteLoggato();
   }
 
@@ -103,12 +102,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   aggiornaVisibilita(): void {
     this.isVisibile = !this.isVisibile;
   }
-
-  mockAggiornaPrezzoCarrello(): void {
-    this.model.importo = 999;
-    this.aggiornaPrezzoCarrello();
-  }
-
+  
   mockCampiForm(): Array<CampoForm> {
     const campiMockati: Array<CampoForm> = [];
     let campo;
