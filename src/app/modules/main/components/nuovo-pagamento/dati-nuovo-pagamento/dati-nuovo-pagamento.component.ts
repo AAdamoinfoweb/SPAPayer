@@ -400,6 +400,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return campo.titolo;
   }
 
+  isCampoObbligatorio(campo: CampoForm): boolean {
+    return campo.obbligatorio;
+  }
+
   getDescrizioneCampo(campo: CampoForm): string {
     // TODO inserire logica condizionale per mostrare descrizione o errori validazione
     return campo.informazioni;
