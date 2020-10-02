@@ -7,6 +7,7 @@ import {DatePickerComponent} from 'ng2-date-picker';
 import {SocietaService} from '../../../../../services/societa.service';
 import {FunzioneService} from '../../../../../services/funzione.service';
 import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
+import {NgForm, NgModel} from '@angular/forms';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -15,10 +16,14 @@ import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUten
 })
 export class FiltroGestioneUtentiComponent implements OnInit {
 
-  isSubsectionFiltriVisible: boolean = true;
-  arrowType: string = 'assets/img/sprite.svg#it-collapse';
+  isSubsectionFiltriVisible = true;
+  arrowType = 'assets/img/sprite.svg#it-collapse';
 
-  isCalendarOpen: boolean = false;
+  placeholderCf = 'inserisci testo';
+
+  isCalendarOpen = false;
+
+  minDateDDMMYY = '01/01/1900';
 
   listaSocieta: Array<OpzioneSelect> = [];
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
@@ -28,12 +33,14 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
 
+  isAtLeastOneFieldValued = false;
+
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private filtroGestioneUtentiService: FiltroGestioneUtentiService, private societaService: SocietaService,
               private funzioneService: FunzioneService) { }
 
   ngOnInit(): void {
-    this.filtroGestioneUtentiApplicato = {} as ParametriRicercaUtente;
+    this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
 
     this.letturaSocieta();
     this.recuperaFiltroLivelloTerritoriale();
@@ -53,6 +60,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaSocieta(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
+    this.isAtLeastOneFieldValued = true;
   }
 
   recuperaFiltroLivelloTerritoriale(): void {
@@ -68,10 +76,14 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaLivelloTerritoriale(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
+    this.isAtLeastOneFieldValued = true;
     this.filtroGestioneUtentiApplicato.enteId = null;
     this.listaEnti = [];
 
-    this.recuperaFiltroEnti(this.filtroGestioneUtentiApplicato.livelloTerritorialeId);
+    const livelloTerritorialeId = this.filtroGestioneUtentiApplicato?.livelloTerritorialeId;
+    if (livelloTerritorialeId != null) {
+      this.recuperaFiltroEnti(livelloTerritorialeId);
+    }
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
@@ -87,10 +99,14 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaEnte(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
+    this.isAtLeastOneFieldValued = true;
     this.filtroGestioneUtentiApplicato.servizioId = null;
     this.listaServizi = [];
 
-    this.recuperaFiltroServizi(this.filtroGestioneUtentiApplicato.enteId);
+    const enteId = this.filtroGestioneUtentiApplicato?.enteId;
+    if (enteId != null) {
+      this.recuperaFiltroServizi(enteId);
+    }
   }
 
   recuperaFiltroServizi(idEnte): void {
@@ -106,6 +122,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaServizio(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
+    this.isAtLeastOneFieldValued = true;
   }
 
   letturaFunzioni(): void {
@@ -121,6 +138,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaFunzione(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
+    this.isAtLeastOneFieldValued = true;
   }
 
   setArrowType(): void {
@@ -128,9 +146,27 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.arrowType = !this.isSubsectionFiltriVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse';
   }
 
+  setPlaceholderCodiceFiscaleField(codicefiscaleinput: NgModel): void {
+    if (codicefiscaleinput?.errors) {
+      this.placeholderCf = 'Inserire un codice fiscale valido';
+    } else {
+      this.placeholderCf = 'inserisci testo';
+      this.isAtLeastOneFieldValued = true;
+    }
+  }
+
   openDatepicker(datePickerComponent: DatePickerComponent): void {
     datePickerComponent.api.open();
     this.isCalendarOpen = !this.isCalendarOpen;
+  }
+
+  pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
+    filtroGestioneUtentiForm.resetForm();
+    this.isAtLeastOneFieldValued = false;
+  }
+
+  disabilitaBottone(filtroGestioneUtentiForm: NgForm): boolean {
+    return !filtroGestioneUtentiForm.valid || !this.isAtLeastOneFieldValued;
   }
 
 }

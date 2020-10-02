@@ -102,10 +102,13 @@
           <input type="text" class="input-text form-elem pt-0" name="codiceFiscale"
                  id="inputUserId" aria-describedby="inputUserIdHelpDescription"
                  autocomplete="off" maxlength="16"
-                 [(ngModel)]="filtroGestioneUtentiApplicato.codiceFiscale"/>
+                 pattern="^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$"
+                 #codicefiscaleinput = "ngModel"
+                 [(ngModel)]="filtroGestioneUtentiApplicato.codiceFiscale"
+                 (ngModelChange)="setPlaceholderCodiceFiscaleField(codicefiscaleinput)">
         </div>
         <div class="row">
-          <small id="inputUserIdHelpDescription" class="form-text text-muted">inserisci testo</small>
+          <small id="inputUserIdHelpDescription" class="form-text text-muted">{{placeholderCf}}</small>
         </div>
       </div>
     </div>
@@ -125,13 +128,16 @@
             id="scadenzaDataDa"
             theme="dp-material"
             [config]="{
-	          locale: 'it',
-	          format: 'DD/MM/YYYY',
-	          firstDayOfWeek: 'mo',
-	          showGoToCurrent: false,
-	          openOnClick: isCalendarOpen,
-	          openOnFocus: false
-	        }"
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYY
+	          }"
+            [minDate]="minDateDDMMYY"
+            (onSelect)="filtroGestioneUtentiApplicato.dataScadenzaDa"
             #datePickerScadenzaDa
             (click)="isCalendarOpen = false"
           ></dp-date-picker>
@@ -153,13 +159,15 @@
             id="scadenzaDataA"
             theme="dp-material"
             [config]="{
-	          locale: 'it',
-	          format: 'DD/MM/YYYY',
-	          firstDayOfWeek: 'mo',
-	          showGoToCurrent: false,
-	          openOnClick: isCalendarOpen,
-	          openOnFocus: false
-	        }"
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYY
+            }"
+            [minDate]="minDateDDMMYY"
             #datePickerScadenzaA
             (click)="isCalendarOpen = false"
           ></dp-date-picker>
@@ -181,13 +189,15 @@
             id="ultimoAccessoDataDa"
             theme="dp-material"
             [config]="{
-	          locale: 'it',
-	          format: 'DD/MM/YYYY',
-	          firstDayOfWeek: 'mo',
-	          showGoToCurrent: false,
-	          openOnClick: isCalendarOpen,
-	          openOnFocus: false
-	        }"
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYY
+            }"
+            [minDate]="minDateDDMMYY"
             #datePickerUltimoAccessoDa
             (click)="isCalendarOpen = false"
           ></dp-date-picker>
@@ -209,13 +219,15 @@
             id="ultimoAccessoDataA"
             theme="dp-material"
             [config]="{
-	          locale: 'it',
-	          format: 'DD/MM/YYYY',
-	          firstDayOfWeek: 'mo',
-	          showGoToCurrent: false,
-	          openOnClick: isCalendarOpen,
-	          openOnFocus: false
-	        }"
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYY
+            }"
+            [minDate]="minDateDDMMYY"
             #datePickerUltimoAccessoA
             (click)="isCalendarOpen = false"
           ></dp-date-picker>
@@ -229,10 +241,11 @@
     <!-- Bottoni Pulisci e Cerca -->
     <div class="row">
       <div class="col-6">
-        <button id="bottonePulisci" class="btn btn-secondary">Pulisci</button>
+        <button id="bottonePulisci" class="btn btn-secondary"
+                [disabled]="!isAtLeastOneFieldValued" (click)="pulisciFiltri(filtroGestioneUtentiForm)">Pulisci</button>
       </div>
       <div class="col-6 btn-find">
-        <button id="bottoneCerca" class="btn">Cerca</button>
+        <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroGestioneUtentiForm)">Cerca</button>
       </div>
     </div>
   </div>
