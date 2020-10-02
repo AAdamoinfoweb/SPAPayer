@@ -365,6 +365,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       let validatori = [];
       if (campo.obbligatorio) { validatori.push(Validators.required); }
 
+      // TODO testare validazione regex quando è fixato l'invio delle regex dal backend
+      if (campo.controllo_logico?.regex) { validatori.push(Validators.pattern(campo.controllo_logico.regex)); }
+
       switch (campo.tipoCampo) {
         case tipoCampo.INPUT_NUMERICO:
           validatori.push(Validators.min(0));
