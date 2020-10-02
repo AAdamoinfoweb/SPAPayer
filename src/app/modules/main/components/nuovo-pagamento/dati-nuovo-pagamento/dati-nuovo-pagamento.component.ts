@@ -319,8 +319,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     });
 
     if (campiChiave.length > 0) {
-      this.ordinaPerPosizione(campiChiave);
-
       chiave = '';
       campiChiave.forEach(campo => {
         chiave += this.getValoreCampoFormattato(campo);
