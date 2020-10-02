@@ -27,6 +27,7 @@ export class SidebarComponent implements OnInit {
           localStorage.setItem('cognome', info.cognome);
 
           if (localStorage.getItem('nome') !== 'null') {
+            this.menuService.userAutenticatedEvent.emit()
             this.nomeUtente = `${localStorage.getItem('nome')} ${localStorage.getItem('cognome')}`;
           }
           this.menu = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
@@ -46,4 +47,7 @@ export class SidebarComponent implements OnInit {
     });
   }
 
+  getRouterLink(sub: any) {
+    return sub.nome === 'Accedi' || sub.nome === 'Esci' ? [environment.bffBaseUrl + sub.route] : [sub.route];
+  }
 }

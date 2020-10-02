@@ -1,20 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {DatiPagamentoService} from './DatiPagamentoService';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {map} from 'rxjs/operators';
-import {CampiNuovoPagamento} from '../../../model/CampiNuovoPagamento';
-import * as moment from 'moment';
 import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
-import {Provincia} from '../../../model/Provincia';
-import {Comune} from '../../../model/Comune';
-import {PagamentoService} from "../PagamentoService";
+import {PagamentoService} from '../PagamentoService';
 import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
 import {livelloIntegrazione} from '../../../../../enums/livelloIntegrazione.enum';
+import {EsitoEnum} from '../../../../../enums/esito.enum';
+import {Bollettino} from '../../../model/bollettino/Bollettino';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -27,15 +25,21 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   livelliIntegrazione = livelloIntegrazione;
   livelloIntegrazioneId: number = null;
 
-  importoTotale: number;
-
-  isFaseVerificaPagamento: boolean = false;
+  isFaseVerificaPagamento = false;
 
   servizioSelezionato: Servizio = null;
 
   listaCampiTipologiaServizio: Array<CampoForm> = [];
   listaCampiServizio: Array<CampoForm> = [];
   listaCampi: Array<CampoForm> = [];
+
+  importoFormControl: FormControl = new FormControl();
+  form: FormGroup = new FormGroup({importo: this.importoFormControl});
+  model = {importo: null};
+
+  minDataDDMMYY = '01/01/1900';
+  minDataMMYY = '01/1900';
+  minDataYY = 1900;
 
   lunghezzaMaxCol1: number = 5;
   lunghezzaMaxCol2: number = 10;
@@ -56,13 +60,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     {value: 12, label: 'dicembre'}
   ];
 
-  isVisibile: boolean = true;
+  isVisibile = true;
 
   isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private datiPagamentoService: DatiPagamentoService,
-              private compilazioneService: CompilazioneService, private pagamentoService: PagamentoService) {
+              private compilazioneService: CompilazioneService, private pagamentoService: PagamentoService,
+              private cdr: ChangeDetectorRef) {
 
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
       this.compila(servizioSelezionato);
@@ -70,9 +75,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mockAggiornaPrezzoCarrello();
-    this.mockCampiForm();
+    this.mockSelezionaServizio();
     this.checkUtenteLoggato();
+  }
+
+  mockSelezionaServizio() {
+    const mockServizio = new Servizio();
+    mockServizio.id = 7;
+    this.compila(mockServizio);
   }
 
   checkUtenteLoggato(): void {
@@ -91,13 +101,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.isVisibile = !this.isVisibile;
   }
 
-  mockAggiornaPrezzoCarrello(): void {
-    this.importoTotale = 999;
-    this.aggiornaPrezzoCarrello();
-  }
-
-  mockCampiForm(): void {
-    let campiMockati: Array<CampoForm> = [];
+  mockCampiForm(): Array<CampoForm> {
+    const campiMockati: Array<CampoForm> = [];
     let campo;
 
     campo = {
@@ -261,8 +266,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     };
     campiMockati.push(campo);
 
-    this.listaCampi = [];
-    this.impostaCampi(campiMockati);
+    return campiMockati;
   }
 
   calcolaDimensioneCampo(campo: CampoForm): string {
@@ -292,9 +296,62 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   pulisciCampiForm(): void {
-    let campiAttuali = [...this.listaCampi];
-    this.listaCampi = [];
-    this.impostaCampi(campiAttuali);
+    // TODO implementa logica pulizia
+  }
+
+  getNumDocumento(): string {
+    let chiave: string = null;
+
+    const campiChiave = [];
+
+    this.listaCampi.forEach(campo => {
+      if (campo.chiave) {
+        campiChiave.push(campo);
+      }
+    });
+
+    if (campiChiave.length > 0) {
+      chiave = '';
+      campiChiave.forEach(campo => {
+        chiave += this.getValoreCampoFormattato(campo);
+      });
+    }
+
+    return chiave;
+  }
+
+  // Restituisce il valore campo formattato per l'invio al backend
+  getValoreCampoFormattato(campo: CampoForm): any {
+    const valoreModel = this.model[this.getNomeCampoForm(campo)];
+    let valoreFormattato;
+
+    switch (campo.tipoCampo) {
+      case tipoCampo.INPUT_TESTUALE:
+        valoreFormattato = valoreModel;
+        break;
+      case tipoCampo.INPUT_NUMERICO:
+        valoreFormattato = valoreModel;
+        break;
+      case tipoCampo.INPUT_PREZZO:
+        valoreFormattato = valoreModel;
+        break;
+      case tipoCampo.DATEDDMMYY:
+        // TODO convertire stringa data utc in valore da inviare al backend
+        valoreFormattato = null;
+        break;
+      case tipoCampo.DATEMMYY:
+        // TODO convertire stringa data utc in valore da inviare al backend
+        valoreFormattato = null;
+        break;
+      case tipoCampo.DATEYY:
+        valoreFormattato = valoreModel ? valoreModel.toString() : null;
+        break;
+      case tipoCampo.SELECT:
+        valoreFormattato = valoreModel;
+        break;
+    }
+
+    return valoreFormattato;
   }
 
   precompilaCampiForm(): void {
@@ -302,7 +359,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.datiPagamentoService.prezzoEvent.emit(this.importoTotale);
+    this.datiPagamentoService.prezzoEvent.emit(this.model.importo);
   }
 
   compila(servizio: Servizio): void {
@@ -315,62 +372,164 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato.id).pipe(map(campiNuovoPagamento => {
         this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
         this.listaCampiServizio = campiNuovoPagamento.campiServizio;
+        // this.listaCampiTipologiaServizio = this.mockCampiForm();
 
         this.listaCampi = [];
+        this.form = new FormGroup({importo: this.importoFormControl});
+        this.model = {
+          importo: null
+        };
         this.impostaCampi(this.listaCampiTipologiaServizio);
         this.impostaCampi(this.listaCampiServizio);
       })).subscribe();
     }
   }
 
-  impostaCampi(campi: Array<CampoForm>): void {
+  formattaInput(campo: CampoForm): void {
+    const nomeCampo = this.getNomeCampoForm(campo);
+    const valoreCampo = this.model[nomeCampo];
+
+    switch (campo.tipoCampo) {
+      case tipoCampo.INPUT_TESTUALE:
+        if (valoreCampo === '') {
+          this.model[nomeCampo] = null;
+        }
+        break;
+    }
+  }
+
+  ordinaPerPosizione(campi: Array<CampoForm>): void {
     campi.sort((campo1: CampoForm, campo2: CampoForm) => {
       return campo1.posizione > campo2.posizione ? 1 : (campo1.posizione < campo2.posizione ? -1 : 0);
     });
+  }
+
+  impostaCampi(campi: Array<CampoForm>): void {
+    this.ordinaPerPosizione(campi);
 
     campi.forEach(campo => {
+      const campoForm = new FormControl();
+      if (campo.disabilitato) {
+        campoForm.disable();
+      }
+
+      const validatori = [];
+      if (campo.obbligatorio) {
+        validatori.push(Validators.required);
+      }
+
+      // TODO testare validazione regex quando è fixato l'invio delle regex dal backend
+      if (campo.controllo_logico?.regex) { validatori.push(Validators.pattern(campo.controllo_logico.regex)); }
+
       switch (campo.tipoCampo) {
-        case tipoCampo.INPUT_TESTUALE:
-          campo['valore'] = null;
-          break;
         case tipoCampo.INPUT_NUMERICO:
-          campo['valore'] = null;
+          validatori.push(Validators.min(0));
           break;
-        case tipoCampo.DATEDDMMYY:
-          campo['valore'] = null;
-          break;
-        case tipoCampo.DATEMMYY:
-          campo['valore'] = null;
+        case tipoCampo.INPUT_PREZZO:
+          validatori.push(Validators.min(0));
           break;
         case tipoCampo.DATEYY:
-          campo['valore'] = null;
+          validatori.push(Validators.min(this.minDataYY));
           break;
         case tipoCampo.SELECT:
-          campo['valore'] = null;
-          campo['opzioni'] = this.getOpzioniSelect(campo);
+          this.impostaOpzioniSelect(campo);
+          if (!campo.opzioni?.length) {
+            campoForm.disable();
+          }
           break;
       }
 
+      campoForm.setValidators(validatori);
+
+      this.model[this.getNomeCampoForm(campo)] = null;
+      this.form.addControl(this.getNomeCampoForm(campo), campoForm);
       this.listaCampi.push(campo);
     });
   }
 
+  getNomeCampoForm(campo: CampoForm): string {
+    return campo.titolo;
+  }
+
+  getTitoloCampo(campo: CampoForm): string {
+    return campo.titolo;
+  }
+
+  isCampoObbligatorio(campo: CampoForm): boolean {
+    return campo.obbligatorio;
+  }
+
+  getDescrizioneCampo(campo: CampoForm): string {
+    let descrizione: string;
+
+    const formControl = this.form.controls[this.getNomeCampoForm(campo)];
+
+    if (this.isCampoInvalido(campo)) {
+      if (formControl.errors?.required) {
+        descrizione = 'Il campo è obbligatorio';
+      } else if (formControl.errors?.pattern) {
+        descrizione = 'Formato non valido';
+      } else if (formControl.errors?.date) {
+        descrizione = 'Data non valida';
+      } else if (formControl.errors?.minDate) {
+        switch (campo.tipoCampo) {
+          case tipoCampo.DATEDDMMYY:
+            descrizione = 'Data inferiore al ' + this.minDataDDMMYY;
+            break;
+          case tipoCampo.DATEMMYY:
+            descrizione = 'Data inferiore al ' + this.minDataMMYY;
+            break;
+          case tipoCampo.DATEYY:
+            descrizione = 'Data inferiore al ' + this.minDataYY;
+            break;
+        }
+      } else {
+        descrizione = 'Errore';
+      }
+    } else {
+      descrizione = campo.informazioni;
+    }
+
+    return descrizione;
+  }
+
+  isCampoInvalido(campo: CampoForm): boolean {
+    const formControl = this.form.controls[this.getNomeCampoForm(campo)];
+    return formControl.errors !== null;
+  }
+
+  getLunghezzaCampo(campo: CampoForm): number {
+    return campo.lunghezza;
+  }
+
+  getIdCampo(campo: CampoForm): string {
+    return campo.id.toString();
+  }
+
   aggiornaSelectDipendenti(campo: CampoForm): void {
-    let campiDipendenti = this.getCampiDipendenti(campo);
+    const campiDipendenti = this.getCampiDipendenti(campo);
     if (campiDipendenti) {
       campiDipendenti.forEach(campo => {
-        campo['valore'] = null;
-        campo['opzioni'] = this.getOpzioniSelect(campo);
+        const campoForm = this.form.controls[this.getNomeCampoForm(campo)];
+        campoForm.setValue(null);
+        this.impostaOpzioniSelect(campo);
+        if (!campo.disabilitato && campo.opzioni?.length > 0) {
+          campoForm.enable();
+        } else {
+          campoForm.disable();
+        }
       });
     }
   }
 
   getCampiDipendenti(campo: CampoForm): Array<CampoForm> {
-    return this.listaCampi.filter(item => {return item.dipendeDa === campo.id});
+    return this.listaCampi.filter(item => {
+      return item.dipendeDa === campo.id;
+    });
   }
 
-  getOpzioniSelect(campo: CampoForm): Array<OpzioneSelect> {
-    let opzioniSelect: Array<OpzioneSelect> = [];
+  impostaOpzioniSelect(campo: CampoForm): void {
+    const opzioniSelect: Array<OpzioneSelect> = [];
 
     let valoriSelect = JSON.parse(localStorage.getItem(campo.tipologica));
 
@@ -378,19 +537,21 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
       // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
       if (campo.dipendeDa) {
-        let selectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa);
-        let valoreSelectPadre = selectPadre?.['valore'];
+        const selectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa);
+        const valoreSelectPadre = this.form.controls[this.getNomeCampoForm(selectPadre)].value;
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {
-            switch (campo.tipologica) {
-              // Inserire qui logica per i vari campi select dipendenti da altre select
+          switch (campo.tipologica) {
+            // Inserire qui logica per i vari campi select dipendenti da altre select
 
-              case tipologicaSelect.COMUNI:
-                // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
-                valoriSelect = valoriSelect.filter(valore => {return valore.codiceIstat?.substring(0,3) === valoreSelectPadre});
-                break;
-            }
+            case tipologicaSelect.COMUNI:
+              // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
+              valoriSelect = valoriSelect.filter(valore => {
+                return valore.codiceIstat?.substring(0, 3) === valoreSelectPadre;
+              });
+              break;
+          }
         } else {
           valoriSelect = [];
         }
@@ -418,6 +579,39 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       }
     });
 
-    return opzioniSelect;
+    campo.opzioni = opzioniSelect;
   }
+
+  calcolaBollettini(): Array<Bollettino> {
+    const bollettini: Array<Bollettino> = new Array<Bollettino>();
+    // TODO logica di conversione fra oggetto model e array di bollettini
+    return bollettini;
+  }
+
+  aggiungiAlCarrello() {
+    const anonimo = true;
+    if (anonimo) {
+      const numeroDoc = this.getNumDocumento();
+      this.nuovoPagamentoService.verificaBollettino(numeroDoc)
+        .subscribe((result) => {
+          if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
+            localStorage.setItem(numeroDoc, JSON.stringify(this.model));
+            this.clearField();
+          } else {
+            // show err
+          }
+        });
+    } else {
+      this.nuovoPagamentoService.inserimentoBollettino(this.calcolaBollettini())
+        .pipe(map(() => {
+          return null;
+        })).subscribe();
+    }
+  }
+
+  private clearField() {
+    this.model = {importo: null};
+    this.cdr.detectChanges();
+  }
+
 }

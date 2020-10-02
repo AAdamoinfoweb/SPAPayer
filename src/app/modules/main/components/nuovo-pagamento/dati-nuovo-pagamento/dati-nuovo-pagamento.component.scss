@@ -1,5 +1,24 @@
+.page-section {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 .dynamic-form-elem {
   margin-top: 20px;
+}
+
+.form-elem-error {
+  color: red;
+}
+
+.required .form-elem-title:after {
+  content: ' *';
+  color: red;
+}
+
+.form-elem-title {
+  //Manda a capo i titoli di campi composti da parole molto lunghe, che si sovrapporrebbero ai campi adiacenti
+  word-break: break-word;
 }
 
 .form-elem-date-col {

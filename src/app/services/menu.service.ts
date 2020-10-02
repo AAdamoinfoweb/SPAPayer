@@ -11,6 +11,7 @@ export class MenuService {
   private getInfoUtenteUrl: string = '/getInfoUtente';
 
   infoUtenteEmitter: EventEmitter<any> = new EventEmitter<any>();
+  userAutenticatedEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private http: HttpClient) {
   }

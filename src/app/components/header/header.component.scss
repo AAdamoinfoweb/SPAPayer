@@ -27,14 +27,18 @@
   fill: white;
 }
 
+#cart-price-container {
+  position: absolute;
+  top: 25px;
+}
+
 #cart-price {
-  background-color: #004987;
-  color: white;
   padding-left: 5px;
   padding-right: 5px;
+  background-color: #004987;
+  color: white;
   position: absolute;
-  bottom: -40px;
-  left: -15px;
+  right: -20px;
 }
 
 @media screen and (max-width: 768px) {

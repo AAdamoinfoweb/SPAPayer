@@ -1,4 +1,5 @@
 import {ControlloLogico} from './ControlloLogico';
+import {OpzioneSelect} from './OpzioneSelect';
 
 export class CampoForm {
   id: number;
@@ -17,4 +18,5 @@ export class CampoForm {
   json_path: string;
   tipologica: string;
   dipendeDa: number;
+  opzioni: Array<OpzioneSelect>;
 }

@@ -39,6 +39,8 @@ import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {ToolbarModule} from 'primeng/toolbar';
 import { PaginatorComponent } from './components/table/paginator/paginator.component';
 import {FiltroGestioneUtentiComponent} from './modules/main/components/gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
+import {NgxCurrencyModule} from 'ngx-currency';
+import {CustomFormsModule} from 'ngx-custom-validators';
 
 @NgModule({
   declarations: [
@@ -81,6 +83,10 @@ import {FiltroGestioneUtentiComponent} from './modules/main/components/gestisci-
     TabViewModule,
     ToolbarModule,
     UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
+    DpDatePickerModule,
+    NgxCurrencyModule,
+    CustomFormsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
