@@ -506,7 +506,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       const numeroDoc = this.getNumeroDocumento();
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .subscribe((result) => {
-          if (result !== EsitoEnum.OK || result !== EsitoEnum.PENDING) {
+          if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem(numeroDoc, JSON.stringify(this.model));
             this.clearField();
           } else {
