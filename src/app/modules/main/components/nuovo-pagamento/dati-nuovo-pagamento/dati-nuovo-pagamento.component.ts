@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {DatiPagamentoService} from './DatiPagamentoService';
@@ -11,7 +11,7 @@ import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {Provincia} from '../../../model/Provincia';
 import {Comune} from '../../../model/Comune';
-import {PagamentoService} from "../PagamentoService";
+import {PagamentoService} from '../PagamentoService';
 import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
 import {livelloIntegrazione} from '../../../../../enums/livelloIntegrazione.enum';
@@ -27,7 +27,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   livelliIntegrazione = livelloIntegrazione;
   livelloIntegrazioneId: number = null;
 
-  isFaseVerificaPagamento: boolean = false;
+  isFaseVerificaPagamento = false;
 
   servizioSelezionato: Servizio = null;
 
@@ -61,7 +61,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     {value: 12, label: 'dicembre'}
   ];
 
-  isVisibile: boolean = true;
+  isVisibile = true;
 
   isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
@@ -81,7 +81,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   mockSelezionaServizio() {
-    let mockServizio = new Servizio();
+    const mockServizio = new Servizio();
     mockServizio.id = 7;
     this.compila(mockServizio);
   }
@@ -108,7 +108,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   mockCampiForm(): Array<CampoForm> {
-    let campiMockati: Array<CampoForm> = [];
+    const campiMockati: Array<CampoForm> = [];
     let campo;
 
     campo = {
@@ -341,12 +341,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   formattaCampo(campo: CampoForm): void {
-    let nomeCampo = this.getNomeCampoForm(campo);
-    let valoreCampo = this.model[nomeCampo];
+    const nomeCampo = this.getNomeCampoForm(campo);
+    const valoreCampo = this.model[nomeCampo];
 
     switch (campo.tipoCampo) {
       case tipoCampo.INPUT_TESTUALE:
-        if (valoreCampo === "") {
+        if (valoreCampo === '') {
           this.model[nomeCampo] = null;
         }
         break;
@@ -359,11 +359,15 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     });
 
     campi.forEach(campo => {
-      let campoForm = new FormControl();
-      if (campo.disabilitato) { campoForm.disable(); }
+      const campoForm = new FormControl();
+      if (campo.disabilitato) {
+        campoForm.disable();
+      }
 
-      let validatori = [];
-      if (campo.obbligatorio) { validatori.push(Validators.required); }
+      const validatori = [];
+      if (campo.obbligatorio) {
+        validatori.push(Validators.required);
+      }
 
       // TODO testare validazione regex quando è fixato l'invio delle regex dal backend
       if (campo.controllo_logico?.regex) { validatori.push(Validators.pattern(campo.controllo_logico.regex)); }
@@ -375,12 +379,18 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         case tipoCampo.INPUT_PREZZO:
           validatori.push(Validators.min(0));
           break;
+        case tipoCampo.DATEDDMMYY:
+          const minData = moment(new Date().setFullYear(1900));
+          validatori.push(Validators.min(minData));
+          break;
         case tipoCampo.DATEYY:
           validatori.push(Validators.min(1900));
           break;
         case tipoCampo.SELECT:
           this.impostaOpzioniSelect(campo);
-          if (!campo['opzioni']?.length) { campoForm.disable(); }
+          if (!campo.opzioni?.length) {
+            campoForm.disable();
+          }
           break;
       }
 
@@ -418,13 +428,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiornaSelectDipendenti(campo: CampoForm): void {
-    let campiDipendenti = this.getCampiDipendenti(campo);
+    const campiDipendenti = this.getCampiDipendenti(campo);
     if (campiDipendenti) {
       campiDipendenti.forEach(campo => {
-        let campoForm = this.form.controls[this.getNomeCampoForm(campo)];
+        const campoForm = this.form.controls[this.getNomeCampoForm(campo)];
         campoForm.setValue(null);
         this.impostaOpzioniSelect(campo);
-        if (!campo.disabilitato && campo['opzioni']?.length > 0) {
+        if (!campo.disabilitato && campo.opzioni?.length > 0) {
           campoForm.enable();
         } else {
           campoForm.disable();
@@ -434,11 +444,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   getCampiDipendenti(campo: CampoForm): Array<CampoForm> {
-    return this.listaCampi.filter(item => {return item.dipendeDa === campo.id});
+    return this.listaCampi.filter(item => {
+      return item.dipendeDa === campo.id;
+    });
   }
 
   impostaOpzioniSelect(campo: CampoForm): void {
-    let opzioniSelect: Array<OpzioneSelect> = [];
+    const opzioniSelect: Array<OpzioneSelect> = [];
 
     let valoriSelect = JSON.parse(localStorage.getItem(campo.tipologica));
 
@@ -446,19 +458,21 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
       // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
       if (campo.dipendeDa) {
-        let selectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa);
-        let valoreSelectPadre = this.form.controls[this.getNomeCampoForm(selectPadre)].value;
+        const selectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa);
+        const valoreSelectPadre = this.form.controls[this.getNomeCampoForm(selectPadre)].value;
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {
-            switch (campo.tipologica) {
-              // Inserire qui logica per i vari campi select dipendenti da altre select
+          switch (campo.tipologica) {
+            // Inserire qui logica per i vari campi select dipendenti da altre select
 
-              case tipologicaSelect.COMUNI:
-                // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
-                valoriSelect = valoriSelect.filter(valore => {return valore.codiceIstat?.substring(0,3) === valoreSelectPadre});
-                break;
-            }
+            case tipologicaSelect.COMUNI:
+              // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
+              valoriSelect = valoriSelect.filter(valore => {
+                return valore.codiceIstat?.substring(0, 3) === valoreSelectPadre;
+              });
+              break;
+          }
         } else {
           valoriSelect = [];
         }
@@ -486,6 +500,35 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       }
     });
 
-    campo['opzioni'] = opzioniSelect;
+    campo.opzioni = opzioniSelect;
+  }
+
+  aggiungiAlCarrello() {
+    const anonimo = true;
+    if (anonimo) {
+      const numeroDoc = this.getNumeroDocumento();
+      this.nuovoPagamentoService.verificaBollettino(numeroDoc)
+        .subscribe((result) => {
+          if (result !== 'OK' || result !== 'PENDING') {
+            localStorage.setItem(numeroDoc, JSON.stringify(this.model));
+            this.clearField();
+          } else {
+            // show err
+          }
+        });
+    } else {
+      this.nuovoPagamentoService.inserimentoBollettino(this.model)
+        .pipe(map(() => {
+          return null;
+        })).subscribe();
+    }
+  }
+
+  private clearField() {
+    this.model = {importo: null};
+  }
+
+  private getNumeroDocumento(): string {
+    return null;
   }
 }
