@@ -1,3 +1,4 @@
+<!-- Sottotitolo -->
 <div class="row subsection-title">
   <div class="col-xs-5 pt-4">
     <p class="title page-subtitle">Filtri</p>
@@ -11,219 +12,228 @@
     </svg>
   </div>
 </div>
-<div id="contenutoSezioneFiltri" class="collapse show">
-  <!-- Livello Territoriale, Società, Ente -->
-  <div class="row section-row mt-2 mb-0">
-    <div class="col-md-4 pb-2">
-      <div class="row">
-        <label for="selectSocieta" class="title">Società</label>
-      </div>
-      <div class="row">
-        <select class="form-elem" id="selectSocieta" [(ngModel)]="societaSelezionata" (ngModelChange)="selezionaSocieta()">
-          <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
-        </select>
-      </div>
-      <div class="row">
-        <small class="form-text text-muted">seleziona un elemento dalla lista</small>
-      </div>
-    </div>
-    <div class="col-md-4 pb-2">
-      <div class="row">
-        <label for="selectLivelloTerritoriale" class="title">Livello Territoriale</label>
-      </div>
-      <div class="row">
-        <select class="form-elem" id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato" (ngModelChange)="selezionaLivelloTerritoriale()">
-          <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
-        </select>
-      </div>
-      <div class="row">
-        <small class="form-text text-muted">seleziona un elemento dalla lista</small>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="row">
-        <label for="selectEnte" class="title">Ente</label>
-      </div>
-      <div class="row">
-        <select class="form-elem" id="selectEnte"
-                [disabled]="livelloTerritorialeSelezionato == null || !listaEnti.length"
-                [(ngModel)]="enteSelezionato" (ngModelChange)="selezionaEnte()">
-          <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
-        </select>
-      </div>
-      <div class="row">
-        <small class="form-text text-muted">seleziona un elemento dalla lista</small>
-      </div>
-    </div>
-  </div>
 
-  <!-- Servizio, Funzione abilitata, User ID (cod. fiscale) -->
-  <div class="row section-row mb-0">
-    <div class="col-md-4 pb-2">
-      <div class="row">
-        <label for="selectServizio" class="title">Servizio</label>
+<!-- Form filtri -->
+<form #filtroGestioneUtentiForm="ngForm" (ngSubmit)="filtroGestioneUtentiForm">
+  <div id="contenutoSezioneFiltri" class="collapse show">
+    <!-- Livello Territoriale, Società, Ente -->
+    <div class="row section-row mt-2 mb-0">
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <label for="selectSocieta" class="title">Società</label>
+        </div>
+        <div class="row">
+          <select class="form-elem" id="selectSocieta" name="societaId"
+                  [(ngModel)]="filtroGestioneUtentiApplicato.societaId" (ngModelChange)="selezionaSocieta()">
+            <option *ngFor="let item of listaSocieta" [value]="item.value">{{item.label}}</option>
+          </select>
+        </div>
+        <div class="row">
+          <small class="form-text text-muted">seleziona un elemento dalla lista</small>
+        </div>
       </div>
-      <div class="row">
-        <select class="form-elem" id="selectServizio"
-                [disabled]="enteSelezionato == null || !listaServizi.length"
-                [(ngModel)]="servizioSelezionato" (ngModelChange)="selezionaServizio()">
-          <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
-        </select>
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <label for="selectLivelloTerritoriale" class="title">Livello Territoriale</label>
+        </div>
+        <div class="row">
+          <select class="form-elem" id="selectLivelloTerritoriale" name="livelloTerritorialeId"
+                  [(ngModel)]="filtroGestioneUtentiApplicato.livelloTerritorialeId" (ngModelChange)="selezionaLivelloTerritoriale()">
+            <option *ngFor="let item of listaLivelliTerritoriali" [value]="item.value">{{item.label}}</option>
+          </select>
+        </div>
+        <div class="row">
+          <small class="form-text text-muted">seleziona un elemento dalla lista</small>
+        </div>
       </div>
-      <div class="row">
-        <small class="form-text text-muted">seleziona un elemento dalla lista</small>
+      <div class="col-md-4">
+        <div class="row">
+          <label for="selectEnte" class="title">Ente</label>
+        </div>
+        <div class="row">
+          <select class="form-elem" id="selectEnte" name="enteId"
+                  [disabled]="filtroGestioneUtentiApplicato.livelloTerritorialeId == null || !listaEnti.length"
+                  [(ngModel)]="filtroGestioneUtentiApplicato.enteId" (ngModelChange)="selezionaEnte()">
+            <option *ngFor="let item of listaEnti" [value]="item.value">{{item.label}}</option>
+          </select>
+        </div>
+        <div class="row">
+          <small class="form-text text-muted">seleziona un elemento dalla lista</small>
+        </div>
       </div>
     </div>
-    <div class="col-md-4 pb-2">
-      <div class="row">
-        <label for="selectFunzioneAbilitata" class="title">Funzione abilitata</label>
-      </div>
-      <div class="row">
-        <select class="form-elem" id="selectFunzioneAbilitata" [(ngModel)]="funzioneAbilitataSelezionata" (ngModelChange)="selezionaFunzione()">
-          <option *ngFor="let item of listaFunzioniAbilitate" [ngValue]="item.value">{{item.label}}</option>
-        </select>
-      </div>
-      <div class="row">
-        <small class="form-text text-muted">seleziona un elemento dalla lista</small>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="row">
-        <label for="inputUserId" class="title">User ID (cod. fiscale)</label>
-      </div>
-      <div class="row">
-        <input type="text" class="input-text form-elem pt-0"
-               id="inputUserId" aria-describedby="inputUserIdHelpDescription" maxlength="16"/>
-      </div>
-      <div class="row">
-        <small id="inputUserIdHelpDescription" class="form-text text-muted">inserisci testo</small>
-      </div>
-    </div>
-  </div>
 
-  <!-- Scadenza abilitazione Da - a, Ultimo accesso da - a -->
-  <div class="row section-row mt-3 mb-0">
-    <div class="col-lg-2 col-md-3 col-sm-4 pb-2">
-      <div class="row">
-        <label for="scadenzaDataDa" class="title">Scadenza abilit. - Da</label>
+    <!-- Servizio, Funzione abilitata, User ID (cod. fiscale) -->
+    <div class="row section-row mb-0">
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <label for="selectServizio" class="title">Servizio</label>
+        </div>
+        <div class="row">
+          <select class="form-elem" id="selectServizio" name="servizioId"
+                  [disabled]="filtroGestioneUtentiApplicato.enteId == null || !listaServizi.length"
+                  [(ngModel)]="filtroGestioneUtentiApplicato.servizioId" (ngModelChange)="selezionaServizio()">
+            <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
+          </select>
+        </div>
+        <div class="row">
+          <small class="form-text text-muted">seleziona un elemento dalla lista</small>
+        </div>
       </div>
-      <div class="row">
-        <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaDa)">
-          <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
-        </svg>
-        <dp-date-picker
-          mode="day"
-          id="scadenzaDataDa"
-          theme="dp-material"
-          [config]="{
-	          locale: 'it',
-	          format: 'DD/MM/YYYY',
-	          firstDayOfWeek: 'mo',
-	          showGoToCurrent: false,
-	          openOnClick: isCalendarOpen,
-	          openOnFocus: false
-	        }"
-          #datePickerScadenzaDa
-          (click)="isCalendarOpen = false"
-        ></dp-date-picker>
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <label for="selectFunzioneAbilitata" class="title">Funzione abilitata</label>
+        </div>
+        <div class="row">
+          <select class="form-elem" id="selectFunzioneAbilitata" name="funzioneId"
+                  [(ngModel)]="filtroGestioneUtentiApplicato.funzioneId" (ngModelChange)="selezionaFunzione()">
+            <option *ngFor="let item of listaFunzioniAbilitate" [value]="item.value">{{item.label}}</option>
+          </select>
+        </div>
+        <div class="row">
+          <small class="form-text text-muted">seleziona un elemento dalla lista</small>
+        </div>
       </div>
-      <div class="row">
-        <small class="form-text text-muted">inserisci data</small>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-4 pb-2">
-      <div class="row">
-        <label for="scadenzaDataA" class="title">Scadenza abilit. - A</label>
-      </div>
-      <div class="row">
-        <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaA)">
-          <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
-        </svg>
-        <dp-date-picker
-          mode="day"
-          id="scadenzaDataA"
-          theme="dp-material"
-          [config]="{
-	          locale: 'it',
-	          format: 'DD/MM/YYYY',
-	          firstDayOfWeek: 'mo',
-	          showGoToCurrent: false,
-	          openOnClick: isCalendarOpen,
-	          openOnFocus: false
-	        }"
-          #datePickerScadenzaA
-          (click)="isCalendarOpen = false"
-        ></dp-date-picker>
-      </div>
-      <div class="row">
-        <small class="form-text text-muted">inserisci data</small>
+      <div class="col-md-4">
+        <div class="row">
+          <label for="inputUserId" class="title">User ID (cod. fiscale)</label>
+        </div>
+        <div class="row">
+          <input type="text" class="input-text form-elem pt-0" name="codiceFiscale"
+                 id="inputUserId" aria-describedby="inputUserIdHelpDescription"
+                 autocomplete="off" maxlength="16"
+                 [(ngModel)]="filtroGestioneUtentiApplicato.codiceFiscale"/>
+        </div>
+        <div class="row">
+          <small id="inputUserIdHelpDescription" class="form-text text-muted">inserisci testo</small>
+        </div>
       </div>
     </div>
-    <div class="col-lg-2 col-md-3 col-sm-4 pb-2">
-      <div class="row">
-        <label for="ultimoAccessoDataDa" class="title">Ultimo accesso - Da</label>
-      </div>
-      <div class="row">
-        <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerUltimoAccessoDa)">
-          <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
-        </svg>
-        <dp-date-picker
-          mode="day"
-          id="ultimoAccessoDataDa"
-          theme="dp-material"
-          [config]="{
-	          locale: 'it',
-	          format: 'DD/MM/YYYY',
-	          firstDayOfWeek: 'mo',
-	          showGoToCurrent: false,
-	          openOnClick: isCalendarOpen,
-	          openOnFocus: false
-	        }"
-          #datePickerUltimoAccessoDa
-          (click)="isCalendarOpen = false"
-        ></dp-date-picker>
-      </div>
-      <div class="row">
-        <small class="form-text text-muted">inserisci data</small>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-4 pb-2">
-      <div class="row">
-        <label for="ultimoAccessoDataA" class="title">Ultimo accesso - A</label>
-      </div>
-      <div class="row">
-        <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerUltimoAccessoA)">
-          <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
-        </svg>
-        <dp-date-picker
-          mode="day"
-          id="ultimoAccessoDataA"
-          theme="dp-material"
-          [config]="{
-	          locale: 'it',
-	          format: 'DD/MM/YYYY',
-	          firstDayOfWeek: 'mo',
-	          showGoToCurrent: false,
-	          openOnClick: isCalendarOpen,
-	          openOnFocus: false
-	        }"
-          #datePickerUltimoAccessoA
-          (click)="isCalendarOpen = false"
-        ></dp-date-picker>
-      </div>
-      <div class="row">
-        <small class="form-text text-muted">inserisci data</small>
-      </div>
-    </div>
-  </div>
 
-  <!-- Bottoni Pulisci e Cerca -->
-  <div class="row">
-    <div class="col-6">
-      <button id="bottonePulisci" class="btn btn-secondary">Pulisci</button>
+    <!-- Scadenza abilitazione Da - a, Ultimo accesso da - a -->
+    <div class="row section-row mt-3 mb-0">
+      <div class="col-lg-2 col-md-3 col-sm-4 pb-2">
+        <div class="row">
+          <label for="scadenzaDataDa" class="title">Scadenza abilit. - Da</label>
+        </div>
+        <div class="row">
+          <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaDa)">
+            <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+          </svg>
+          <dp-date-picker
+            mode="day"
+            id="scadenzaDataDa"
+            theme="dp-material"
+            [config]="{
+	          locale: 'it',
+	          format: 'DD/MM/YYYY',
+	          firstDayOfWeek: 'mo',
+	          showGoToCurrent: false,
+	          openOnClick: isCalendarOpen,
+	          openOnFocus: false
+	        }"
+            #datePickerScadenzaDa
+            (click)="isCalendarOpen = false"
+          ></dp-date-picker>
+        </div>
+        <div class="row">
+          <small class="form-text text-muted">inserisci data</small>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-4 pb-2">
+        <div class="row">
+          <label for="scadenzaDataA" class="title">Scadenza abilit. - A</label>
+        </div>
+        <div class="row">
+          <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaA)">
+            <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+          </svg>
+          <dp-date-picker
+            mode="day"
+            id="scadenzaDataA"
+            theme="dp-material"
+            [config]="{
+	          locale: 'it',
+	          format: 'DD/MM/YYYY',
+	          firstDayOfWeek: 'mo',
+	          showGoToCurrent: false,
+	          openOnClick: isCalendarOpen,
+	          openOnFocus: false
+	        }"
+            #datePickerScadenzaA
+            (click)="isCalendarOpen = false"
+          ></dp-date-picker>
+        </div>
+        <div class="row">
+          <small class="form-text text-muted">inserisci data</small>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-sm-4 pb-2">
+        <div class="row">
+          <label for="ultimoAccessoDataDa" class="title">Ultimo accesso - Da</label>
+        </div>
+        <div class="row">
+          <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerUltimoAccessoDa)">
+            <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+          </svg>
+          <dp-date-picker
+            mode="day"
+            id="ultimoAccessoDataDa"
+            theme="dp-material"
+            [config]="{
+	          locale: 'it',
+	          format: 'DD/MM/YYYY',
+	          firstDayOfWeek: 'mo',
+	          showGoToCurrent: false,
+	          openOnClick: isCalendarOpen,
+	          openOnFocus: false
+	        }"
+            #datePickerUltimoAccessoDa
+            (click)="isCalendarOpen = false"
+          ></dp-date-picker>
+        </div>
+        <div class="row">
+          <small class="form-text text-muted">inserisci data</small>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-4 pb-2">
+        <div class="row">
+          <label for="ultimoAccessoDataA" class="title">Ultimo accesso - A</label>
+        </div>
+        <div class="row">
+          <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerUltimoAccessoA)">
+            <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+          </svg>
+          <dp-date-picker
+            mode="day"
+            id="ultimoAccessoDataA"
+            theme="dp-material"
+            [config]="{
+	          locale: 'it',
+	          format: 'DD/MM/YYYY',
+	          firstDayOfWeek: 'mo',
+	          showGoToCurrent: false,
+	          openOnClick: isCalendarOpen,
+	          openOnFocus: false
+	        }"
+            #datePickerUltimoAccessoA
+            (click)="isCalendarOpen = false"
+          ></dp-date-picker>
+        </div>
+        <div class="row">
+          <small class="form-text text-muted">inserisci data</small>
+        </div>
+      </div>
     </div>
-    <div class="col-6 btn-find">
-      <button id="bottoneCerca" class="btn">Cerca</button>
+
+    <!-- Bottoni Pulisci e Cerca -->
+    <div class="row">
+      <div class="col-6">
+        <button id="bottonePulisci" class="btn btn-secondary">Pulisci</button>
+      </div>
+      <div class="col-6 btn-find">
+        <button id="bottoneCerca" class="btn">Cerca</button>
+      </div>
     </div>
   </div>
-</div>
+</form>

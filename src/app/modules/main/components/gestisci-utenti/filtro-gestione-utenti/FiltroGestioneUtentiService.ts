@@ -1,11 +1,11 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {Servizio} from '../../../model/Servizio';
+import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FiltroGestioneUtentiService {
 
-  filtroGestioneUtentiEvent: EventEmitter<Servizio> = new EventEmitter<Servizio>();
+  filtroGestioneUtentiEvent: EventEmitter<ParametriRicercaUtente> = new EventEmitter<ParametriRicercaUtente>();
 
 }
