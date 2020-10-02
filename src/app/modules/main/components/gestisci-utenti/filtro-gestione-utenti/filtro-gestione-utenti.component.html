@@ -137,9 +137,9 @@
               min: minDateDDMMYY
 	          }"
             [minDate]="minDateDDMMYY"
-            (onSelect)="filtroGestioneUtentiApplicato.dataScadenzaDa"
             #datePickerScadenzaDa
             (click)="isCalendarOpen = false"
+            (onChange)="selezionaData(datePickerScadenzaDa, 'dataScadenzaDa')"
           ></dp-date-picker>
         </div>
         <div class="row">
@@ -170,6 +170,7 @@
             [minDate]="minDateDDMMYY"
             #datePickerScadenzaA
             (click)="isCalendarOpen = false"
+            (onChange)="selezionaData(datePickerScadenzaA, 'dataScadenzaA')"
           ></dp-date-picker>
         </div>
         <div class="row">
@@ -200,6 +201,7 @@
             [minDate]="minDateDDMMYY"
             #datePickerUltimoAccessoDa
             (click)="isCalendarOpen = false"
+            (onChange)="selezionaData(datePickerUltimoAccessoDa, 'ultimoAccessoDa')"
           ></dp-date-picker>
         </div>
         <div class="row">
@@ -230,6 +232,7 @@
             [minDate]="minDateDDMMYY"
             #datePickerUltimoAccessoA
             (click)="isCalendarOpen = false"
+            (onChange)="selezionaData(datePickerUltimoAccessoA, 'ultimoAccessoA')"
           ></dp-date-picker>
         </div>
         <div class="row">
@@ -241,11 +244,12 @@
     <!-- Bottoni Pulisci e Cerca -->
     <div class="row">
       <div class="col-6">
-        <button id="bottonePulisci" class="btn btn-secondary"
-                [disabled]="!isAtLeastOneFieldValued" (click)="pulisciFiltri(filtroGestioneUtentiForm)">Pulisci</button>
+        <button id="bottonePulisci" class="btn btn-secondary" [disabled]="!isAtLeastOneFieldValued"
+                (click)="pulisciFiltri(filtroGestioneUtentiForm)">Pulisci</button>
       </div>
       <div class="col-6 btn-find">
-        <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroGestioneUtentiForm)">Cerca</button>
+        <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroGestioneUtentiForm)"
+                (click)="cercaUtenti(filtroGestioneUtentiForm)">Cerca</button>
       </div>
     </div>
   </div>

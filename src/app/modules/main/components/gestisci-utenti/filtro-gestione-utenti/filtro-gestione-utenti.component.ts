@@ -19,20 +19,18 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   isSubsectionFiltriVisible = true;
   arrowType = 'assets/img/sprite.svg#it-collapse';
 
-  placeholderCf = 'inserisci testo';
-
-  isCalendarOpen = false;
-
-  minDateDDMMYY = '01/01/1900';
-
   listaSocieta: Array<OpzioneSelect> = [];
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
   listaFunzioniAbilitate: Array<OpzioneSelect> = [];
 
-  filtroGestioneUtentiApplicato: ParametriRicercaUtente;
+  placeholderCf = 'inserisci testo';
 
+  isCalendarOpen = false;
+  minDateDDMMYY = '01/01/1900';
+
+  filtroGestioneUtentiApplicato: ParametriRicercaUtente;
   isAtLeastOneFieldValued = false;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
@@ -160,9 +158,18 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.isCalendarOpen = !this.isCalendarOpen;
   }
 
+  selezionaData(datePickerComponent: DatePickerComponent, nomeCampoData: string) {
+    this.filtroGestioneUtentiApplicato[nomeCampoData] = datePickerComponent.inputElementValue;
+    this.isAtLeastOneFieldValued = true;
+  }
+
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
     this.isAtLeastOneFieldValued = false;
+  }
+
+  cercaUtenti({value, valid}: {value: ParametriRicercaUtente, valid: boolean}): void {
+    // TODO logica collegamento operation ricercaUtenti e recupero Lista Utenti
   }
 
   disabilitaBottone(filtroGestioneUtentiForm: NgForm): boolean {
