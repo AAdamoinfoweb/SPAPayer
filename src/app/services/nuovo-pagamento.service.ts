@@ -7,6 +7,9 @@ import {LivelloTerritoriale} from '../modules/main/model/LivelloTerritoriale';
 import {Ente} from '../modules/main/model/Ente';
 import {Servizio} from '../modules/main/model/Servizio';
 import {CampiNuovoPagamento} from '../modules/main/model/CampiNuovoPagamento';
+import {DettaglioTransazioneEsito} from '../modules/main/model/bollettino/DettaglioTransazioneEsito';
+import {Bollettino} from "../modules/main/model/bollettino/Bollettino";
+import {EsitoEnum} from "../enums/esito.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -64,14 +67,14 @@ export class NuovoPagamentoService {
       }));
   }
 
-  verificaBollettino(numero?, idDettaglioTransazione?): Observable<string> {
+  verificaBollettino(numero?, idDettaglioTransazione?): Observable<EsitoEnum> {
     return this.http.get(environment.bffBaseUrl + this.verificaBollettinoUrl, {
       params: {
         numero,
         idDettaglioTransazione
       }
     })
-      .pipe(map((body: any) => body.url),
+      .pipe(map((body: any) => EsitoEnum[body]),
         catchError((err, caught) => {
           if (err.status == 401) {
             return of('');
@@ -81,10 +84,12 @@ export class NuovoPagamentoService {
         }));
   }
 
-  inserimentoBollettino(body: any): Observable<string> {
-    this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, body,
-      {withCredentials: true})
-      .pipe(map((body: any) => body.url),
+  inserimentoBollettino(bollettini: Bollettino[]): Observable<DettaglioTransazioneEsito[]> {
+    return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JSON.stringify(bollettini),
+      {withCredentials: true}).pipe(map((body: any) => {
+        let aa = body as DettaglioTransazioneEsito[];
+        console.log(aa)
+      }),
       catchError((err, caught) => {
         if (err.status == 401 || err.status == 400) {
           return of(null);
