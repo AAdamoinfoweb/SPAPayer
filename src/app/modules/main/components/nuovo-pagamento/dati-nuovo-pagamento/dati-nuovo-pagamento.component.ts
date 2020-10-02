@@ -362,8 +362,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       let validatori = [];
       if (campo.obbligatorio) { validatori.push(Validators.required); }
 
-      // TODO impostare i validatori per i vari tipi di campo
-
       switch (campo.tipoCampo) {
         case tipoCampo.INPUT_NUMERICO:
           validatori.push(Validators.min(0));
@@ -372,8 +370,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           validatori.push(Validators.min(0));
           break;
         case tipoCampo.DATEDDMMYY:
-          let minData = moment(new Date().setFullYear(1900));
-          validatori.push(Validators.min(minData));
+          // TODO impostare validatore
+          break;
+        case tipoCampo.DATEMMYY:
+          // TODO impostare validatore
           break;
         case tipoCampo.DATEYY:
           validatori.push(Validators.min(1900));
