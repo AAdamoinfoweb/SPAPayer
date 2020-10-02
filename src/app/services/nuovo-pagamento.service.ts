@@ -81,9 +81,10 @@ export class NuovoPagamentoService {
         }));
   }
 
-  inserimentoBollettino(body: any): void {
+  inserimentoBollettino(body: any): Observable<string> {
     this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, body,
-      {withCredentials: true}).pipe(map((body: any) => body.url),
+      {withCredentials: true})
+      .pipe(map((body: any) => body.url),
       catchError((err, caught) => {
         if (err.status == 401 || err.status == 400) {
           return of(null);
