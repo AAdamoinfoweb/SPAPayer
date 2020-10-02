@@ -82,7 +82,6 @@ import {CustomFormsModule} from 'ngx-custom-validators';
     BrowserAnimationsModule,
     TabViewModule,
     ToolbarModule,
-    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
     UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     DpDatePickerModule,
     NgxCurrencyModule,
