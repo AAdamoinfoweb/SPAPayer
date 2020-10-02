@@ -41,8 +41,10 @@
           </div>
         </div>
         <div class="row">
-          <div id="cart-price" class="rounded-pill" [ngClass]="{'hide': prezzoCarrello == null}">
-            {{prezzoCarrello}}€
+          <div id="cart-price-container">
+            <div id="cart-price" class="rounded-pill" [ngClass]="{'hide': prezzoCarrello == null}">
+              {{prezzoCarrello}}€
+            </div>
           </div>
         </div>
       </div>
