@@ -7,6 +7,11 @@
   margin-top: 20px;
 }
 
+.required .form-elem-title:after {
+  content: ' *';
+  color: red;
+}
+
 .form-elem-date-col {
   padding: 0px;
   display: flex;

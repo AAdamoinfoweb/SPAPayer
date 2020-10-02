@@ -102,7 +102,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   aggiornaVisibilita(): void {
     this.isVisibile = !this.isVisibile;
   }
-  
+
   mockCampiForm(): Array<CampoForm> {
     const campiMockati: Array<CampoForm> = [];
     let campo;

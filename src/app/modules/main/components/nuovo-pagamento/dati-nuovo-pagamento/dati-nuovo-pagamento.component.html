@@ -23,9 +23,9 @@
         <div *ngFor="let campo of listaCampi" [ngClass]="calcolaDimensioneCampo(campo)">
           <div [ngSwitch]="campo.tipoCampo" class="form-elem-container">
 
-            <div *ngSwitchCase="tipoCampo.INPUT_TESTUALE" class="dynamic-form-elem">
+            <div *ngSwitchCase="tipoCampo.INPUT_TESTUALE" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}<span *ngIf="isCampoObbligatorio(campo)"> *</span></label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -42,9 +42,9 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="tipoCampo.INPUT_NUMERICO" class="dynamic-form-elem">
+            <div *ngSwitchCase="tipoCampo.INPUT_NUMERICO" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}<span *ngIf="isCampoObbligatorio(campo)"> *</span></label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -62,9 +62,9 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="tipoCampo.INPUT_PREZZO" class="dynamic-form-elem">
+            <div *ngSwitchCase="tipoCampo.INPUT_PREZZO" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}<span *ngIf="isCampoObbligatorio(campo)"> *</span></label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -83,9 +83,9 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="tipoCampo.DATEDDMMYY" class="dynamic-form-elem">
+            <div *ngSwitchCase="tipoCampo.DATEDDMMYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}<span *ngIf="isCampoObbligatorio(campo)"> *</span></label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <dp-date-picker
@@ -109,9 +109,9 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="tipoCampo.DATEMMYY" class="dynamic-form-elem">
+            <div *ngSwitchCase="tipoCampo.DATEMMYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}<span *ngIf="isCampoObbligatorio(campo)"> *</span></label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <dp-date-picker
@@ -135,9 +135,9 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="tipoCampo.DATEYY" class="dynamic-form-elem">
+            <div *ngSwitchCase="tipoCampo.DATEYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}<span *ngIf="isCampoObbligatorio(campo)"> *</span></label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -154,9 +154,9 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="tipoCampo.SELECT" class="dynamic-form-elem">
+            <div *ngSwitchCase="tipoCampo.SELECT" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title">{{getTitoloCampo(campo)}}<span *ngIf="isCampoObbligatorio(campo)"> *</span></label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <select
