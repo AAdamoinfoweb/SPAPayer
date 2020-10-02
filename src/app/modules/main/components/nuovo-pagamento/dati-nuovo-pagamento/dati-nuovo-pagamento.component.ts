@@ -401,7 +401,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   getNomeCampoForm(campo: CampoForm): string {
-    return this.getIdCampo(campo);
+    return campo.titolo;
   }
 
   getTitoloCampo(campo: CampoForm): string {
