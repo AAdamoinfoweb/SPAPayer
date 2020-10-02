@@ -1,16 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {DatiPagamentoService} from './DatiPagamentoService';
 import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {map} from 'rxjs/operators';
-import {CampiNuovoPagamento} from '../../../model/CampiNuovoPagamento';
-import * as moment from 'moment';
 import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
-import {Provincia} from '../../../model/Provincia';
-import {Comune} from '../../../model/Comune';
 import {PagamentoService} from '../PagamentoService';
 import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
@@ -69,7 +65,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   tooltipBottoneSalvaPerDopo: string = null;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private datiPagamentoService: DatiPagamentoService,
-              private compilazioneService: CompilazioneService, private pagamentoService: PagamentoService) {
+              private compilazioneService: CompilazioneService, private pagamentoService: PagamentoService,
+              private cdr: ChangeDetectorRef) {
 
     this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
       this.compila(servizioSelezionato);
@@ -102,7 +99,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   aggiornaVisibilita(): void {
     this.isVisibile = !this.isVisibile;
   }
-  
+
   mockCampiForm(): Array<CampoForm> {
     const campiMockati: Array<CampoForm> = [];
     let campo;
@@ -301,7 +298,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     // TODO implementa logica pulizia
   }
 
-  calcolaChiaveForm(): string {
+  getNumDocumento(): string {
     let chiave: string = null;
 
     const campiChiave = [];
@@ -559,7 +556,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   aggiungiAlCarrello() {
     const anonimo = true;
     if (anonimo) {
-      const numeroDoc = this.getNumeroDocumento();
+      const numeroDoc = this.getNumDocumento();
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .subscribe((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
@@ -579,9 +576,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   private clearField() {
     this.model = {importo: null};
+    this.cdr.detectChanges();
   }
 
-  private getNumeroDocumento(): string {
-    return null;
-  }
 }
