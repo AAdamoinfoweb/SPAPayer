@@ -12,6 +12,11 @@
   color: red;
 }
 
+.form-elem-title {
+  //Manda a capo i titoli di campi composti da parole molto lunghe, che si sovrapporrebbero ai campi adiacenti
+  word-break: break-word;
+}
+
 .form-elem-date-col {
   padding: 0px;
   display: flex;
