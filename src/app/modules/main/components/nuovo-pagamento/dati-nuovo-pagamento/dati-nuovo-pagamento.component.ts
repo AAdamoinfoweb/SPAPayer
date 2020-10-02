@@ -16,6 +16,7 @@ import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
 import {livelloIntegrazione} from '../../../../../enums/livelloIntegrazione.enum';
 import {EsitoEnum} from '../../../../../enums/esito.enum';
+import {Bollettino} from '../../../model/bollettino/Bollettino';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -500,6 +501,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     campo.opzioni = opzioniSelect;
   }
 
+  calcolaBollettini(): Array<Bollettino> {
+    const bollettini: Array<Bollettino> = new Array<Bollettino>();
+    // TODO logica di conversione fra oggetto model e array di bollettini
+    return bollettini;
+  }
+
   aggiungiAlCarrello() {
     const anonimo = true;
     if (anonimo) {
@@ -514,7 +521,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           }
         });
     } else {
-      this.nuovoPagamentoService.inserimentoBollettino(this.model)
+      this.nuovoPagamentoService.inserimentoBollettino(this.calcolaBollettini())
         .pipe(map(() => {
           return null;
         })).subscribe();
