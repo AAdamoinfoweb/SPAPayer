@@ -379,10 +379,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         case tipoCampo.INPUT_PREZZO:
           validatori.push(Validators.min(0));
           break;
-        case tipoCampo.DATEDDMMYY:
-          const minData = moment(new Date().setFullYear(1900));
-          validatori.push(Validators.min(minData));
-          break;
         case tipoCampo.DATEYY:
           validatori.push(Validators.min(1900));
           break;
