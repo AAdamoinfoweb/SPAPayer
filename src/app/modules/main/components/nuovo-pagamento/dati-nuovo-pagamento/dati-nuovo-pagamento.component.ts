@@ -39,6 +39,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   minDataDDMMYY = '01/01/1900';
   minDataMMYY = '01/1900';
+  minDataYY = 1900;
 
   lunghezzaMaxCol1: number = 5;
   lunghezzaMaxCol2: number = 10;
@@ -428,7 +429,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           validatori.push(Validators.min(0));
           break;
         case tipoCampo.DATEYY:
-          validatori.push(Validators.min(1900));
+          validatori.push(Validators.min(this.minDataYY));
           break;
         case tipoCampo.SELECT:
           this.impostaOpzioniSelect(campo);
@@ -459,8 +460,42 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   getDescrizioneCampo(campo: CampoForm): string {
-    // TODO inserire logica condizionale per mostrare descrizione o errori validazione
-    return campo.informazioni;
+    let descrizione: string;
+
+    const formControl = this.form.controls[this.getNomeCampoForm(campo)];
+
+    if (this.isCampoInvalido(campo)) {
+      if (formControl.errors?.required) {
+        descrizione = 'Il campo è obbligatorio';
+      } else if (formControl.errors?.pattern) {
+        descrizione = 'Formato non valido';
+      } else if (formControl.errors?.date) {
+        descrizione = 'Data non valida';
+      } else if (formControl.errors?.minDate) {
+        switch (campo.tipoCampo) {
+          case tipoCampo.DATEDDMMYY:
+            descrizione = 'Data inferiore al ' + this.minDataDDMMYY;
+            break;
+          case tipoCampo.DATEMMYY:
+            descrizione = 'Data inferiore al ' + this.minDataMMYY;
+            break;
+          case tipoCampo.DATEYY:
+            descrizione = 'Data inferiore al ' + this.minDataYY;
+            break;
+        }
+      } else {
+        descrizione = 'Errore';
+      }
+    } else {
+      descrizione = campo.informazioni;
+    }
+
+    return descrizione;
+  }
+
+  isCampoInvalido(campo: CampoForm): boolean {
+    const formControl = this.form.controls[this.getNomeCampoForm(campo)];
+    return formControl.errors !== null;
   }
 
   getLunghezzaCampo(campo: CampoForm): number {

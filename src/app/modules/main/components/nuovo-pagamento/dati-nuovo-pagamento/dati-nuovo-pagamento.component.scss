@@ -7,6 +7,10 @@
   margin-top: 20px;
 }
 
+.form-elem-error {
+  color: red;
+}
+
 .required .form-elem-title:after {
   content: ' *';
   color: red;
