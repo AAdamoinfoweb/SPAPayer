@@ -145,12 +145,12 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   }
 
   setPlaceholderCodiceFiscaleField(codicefiscaleinput: NgModel): void {
-    if (codicefiscaleinput?.errors) {
-      this.placeholderCf = 'Inserire un codice fiscale valido';
-    } else {
-      this.placeholderCf = 'inserisci testo';
-      this.isAtLeastOneFieldValued = true;
-    }
+    this.placeholderCf = codicefiscaleinput?.errors ? 'campo non valido' : 'inserisci testo';
+    this.isAtLeastOneFieldValued = true;
+  }
+
+  setPlaceholderData(dataInserita: NgModel): string {
+    return dataInserita?.errors ? 'campo non valido' : 'inserisci data';
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -158,22 +158,32 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.isCalendarOpen = !this.isCalendarOpen;
   }
 
-  selezionaData(datePickerComponent: DatePickerComponent, nomeCampoData: string) {
-    this.filtroGestioneUtentiApplicato[nomeCampoData] = datePickerComponent.inputElementValue;
-    this.isAtLeastOneFieldValued = true;
+  selezionaData(datePickerComponent: DatePickerComponent, nomeCampo: string): void {
+    if (!datePickerComponent.inputElementValue) {
+      this.isAtLeastOneFieldValued = false;
+    } else {
+      this.isAtLeastOneFieldValued = true;
+    }
+    // TODO convertire data recuperata dal campo datepicker in formato da inviare all'oggetto del backend
+    // this.filtroGestioneUtentiApplicato[nomeCampo] = datePickerComponent.inputElementValue;
   }
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
+    this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
     this.isAtLeastOneFieldValued = false;
   }
 
-  cercaUtenti({value, valid}: {value: ParametriRicercaUtente, valid: boolean}): void {
-    // TODO logica collegamento operation ricercaUtenti e recupero Lista Utenti
+  cercaUtenti({value}: {value: ParametriRicercaUtente}): void {
+    // TODO logica collegamento operation ricercaUtenti per recupero Lista Utenti
   }
 
-  disabilitaBottone(filtroGestioneUtentiForm: NgForm): boolean {
-    return !filtroGestioneUtentiForm.valid || !this.isAtLeastOneFieldValued;
+  disabilitaBottone(filtroGestioneUtentiForm: NgForm, nomeBottone: string): boolean {
+    if (nomeBottone === 'Pulisci') {
+      return !this.isAtLeastOneFieldValued;
+    } else {
+      return !filtroGestioneUtentiForm.valid || !this.isAtLeastOneFieldValued;
+    }
   }
 
 }

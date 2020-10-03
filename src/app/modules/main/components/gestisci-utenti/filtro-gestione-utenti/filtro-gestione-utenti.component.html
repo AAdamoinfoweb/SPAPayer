@@ -136,14 +136,19 @@
               openOnFocus: false,
               min: minDateDDMMYY
 	          }"
+            #scadenzaDaInput = "ngModel"
+            [(ngModel)]="filtroGestioneUtentiApplicato.dataScadenzaDa"
+            name="dataScadenzaDa"
             [minDate]="minDateDDMMYY"
+            date
             #datePickerScadenzaDa
             (click)="isCalendarOpen = false"
+            (onSelect)="selezionaData(datePickerScadenzaDa, 'dataScadenzaDa')"
             (onChange)="selezionaData(datePickerScadenzaDa, 'dataScadenzaDa')"
           ></dp-date-picker>
         </div>
         <div class="row">
-          <small class="form-text text-muted">inserisci data</small>
+          <small class="form-text text-muted">{{setPlaceholderData(scadenzaDaInput)}}</small>
         </div>
       </div>
       <div class="col-md-3 col-sm-4 pb-2">
@@ -165,16 +170,21 @@
               showGoToCurrent: false,
               openOnClick: isCalendarOpen,
               openOnFocus: false,
-              min: minDateDDMMYY
+              min: filtroGestioneUtentiForm.controls['dataScadenzaDa']?.value
             }"
-            [minDate]="minDateDDMMYY"
+            #scadenzaAInput = "ngModel"
+            [minDate]="filtroGestioneUtentiForm.controls['dataScadenzaDa']?.value"
+            date
+            [(ngModel)]="filtroGestioneUtentiApplicato.dataScadenzaA"
+            name="dataScadenzaA"
             #datePickerScadenzaA
             (click)="isCalendarOpen = false"
+            (onSelect)="selezionaData(datePickerScadenzaA, 'dataScadenzaA')"
             (onChange)="selezionaData(datePickerScadenzaA, 'dataScadenzaA')"
           ></dp-date-picker>
         </div>
         <div class="row">
-          <small class="form-text text-muted">inserisci data</small>
+          <small class="form-text text-muted">{{setPlaceholderData(scadenzaAInput)}}</small>
         </div>
       </div>
       <div class="col-lg-2 col-md-3 col-sm-4 pb-2">
@@ -198,14 +208,19 @@
               openOnFocus: false,
               min: minDateDDMMYY
             }"
+            #ultimoAccessoDaInput = "ngModel"
             [minDate]="minDateDDMMYY"
+            date
+            [(ngModel)]="filtroGestioneUtentiApplicato.ultimoAccessoDa"
+            name="ultimoAccessoDa"
             #datePickerUltimoAccessoDa
             (click)="isCalendarOpen = false"
+            (onSelect)="selezionaData(datePickerUltimoAccessoDa, 'ultimoAccessoDa')"
             (onChange)="selezionaData(datePickerUltimoAccessoDa, 'ultimoAccessoDa')"
           ></dp-date-picker>
         </div>
         <div class="row">
-          <small class="form-text text-muted">inserisci data</small>
+          <small class="form-text text-muted">{{setPlaceholderData(ultimoAccessoDaInput)}}</small>
         </div>
       </div>
       <div class="col-md-3 col-sm-4 pb-2">
@@ -227,16 +242,21 @@
               showGoToCurrent: false,
               openOnClick: isCalendarOpen,
               openOnFocus: false,
-              min: minDateDDMMYY
+              min: filtroGestioneUtentiForm.controls['ultimoAccessoDa']?.value
             }"
-            [minDate]="minDateDDMMYY"
+            #ultimoAccessoAInput = "ngModel"
+            [minDate]="filtroGestioneUtentiForm.controls['ultimoAccessoDa']?.value"
+            date
+            [(ngModel)]="filtroGestioneUtentiApplicato.ultimoAccessoA"
+            name="ultimoAccessoA"
             #datePickerUltimoAccessoA
             (click)="isCalendarOpen = false"
+            (onSelect)="selezionaData(datePickerUltimoAccessoA, 'ultimoAccessoA')"
             (onChange)="selezionaData(datePickerUltimoAccessoA, 'ultimoAccessoA')"
           ></dp-date-picker>
         </div>
         <div class="row">
-          <small class="form-text text-muted">inserisci data</small>
+          <small class="form-text text-muted">{{setPlaceholderData(ultimoAccessoAInput)}}</small>
         </div>
       </div>
     </div>
@@ -244,11 +264,11 @@
     <!-- Bottoni Pulisci e Cerca -->
     <div class="row">
       <div class="col-6">
-        <button id="bottonePulisci" class="btn btn-secondary" [disabled]="!isAtLeastOneFieldValued"
+        <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroGestioneUtentiForm, 'Pulisci')"
                 (click)="pulisciFiltri(filtroGestioneUtentiForm)">Pulisci</button>
       </div>
       <div class="col-6 btn-find">
-        <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroGestioneUtentiForm)"
+        <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroGestioneUtentiForm, 'Cerca')"
                 (click)="cercaUtenti(filtroGestioneUtentiForm)">Cerca</button>
       </div>
     </div>
