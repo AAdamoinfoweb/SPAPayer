@@ -31,7 +31,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   minDateDDMMYY = '01/01/1900';
 
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
-  isAtLeastOneFieldValued = false;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private filtroGestioneUtentiService: FiltroGestioneUtentiService, private societaService: SocietaService,
@@ -58,7 +57,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaSocieta(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
-    this.isAtLeastOneFieldValued = true;
   }
 
   recuperaFiltroLivelloTerritoriale(): void {
@@ -74,7 +72,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaLivelloTerritoriale(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
-    this.isAtLeastOneFieldValued = true;
     this.filtroGestioneUtentiApplicato.enteId = null;
     this.listaEnti = [];
 
@@ -97,7 +94,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaEnte(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
-    this.isAtLeastOneFieldValued = true;
     this.filtroGestioneUtentiApplicato.servizioId = null;
     this.listaServizi = [];
 
@@ -120,7 +116,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaServizio(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
-    this.isAtLeastOneFieldValued = true;
   }
 
   letturaFunzioni(): void {
@@ -136,7 +131,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   selezionaFunzione(): void {
     this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
-    this.isAtLeastOneFieldValued = true;
   }
 
   setArrowType(): void {
@@ -146,7 +140,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   setPlaceholderCodiceFiscaleField(codicefiscaleinput: NgModel): void {
     this.placeholderCf = codicefiscaleinput?.errors ? 'campo non valido' : 'inserisci testo';
-    this.isAtLeastOneFieldValued = true;
   }
 
   setPlaceholderData(dataInserita: NgModel): string {
@@ -159,11 +152,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   }
 
   selezionaData(datePickerComponent: DatePickerComponent, nomeCampo: string): void {
-    if (!datePickerComponent.inputElementValue) {
-      this.isAtLeastOneFieldValued = false;
-    } else {
-      this.isAtLeastOneFieldValued = true;
-    }
     // TODO convertire data recuperata dal campo datepicker in formato da inviare all'oggetto del backend
     // this.filtroGestioneUtentiApplicato[nomeCampo] = datePickerComponent.inputElementValue;
   }
@@ -171,7 +159,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
-    this.isAtLeastOneFieldValued = false;
   }
 
   cercaUtenti({value}: {value: ParametriRicercaUtente}): void {
@@ -179,10 +166,11 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   }
 
   disabilitaBottone(filtroGestioneUtentiForm: NgForm, nomeBottone: string): boolean {
+    const isAtLeastOneFieldValued = Object.keys(filtroGestioneUtentiForm.value).some(key => filtroGestioneUtentiForm.value[key]);
     if (nomeBottone === 'Pulisci') {
-      return !this.isAtLeastOneFieldValued;
+      return !isAtLeastOneFieldValued;
     } else {
-      return !filtroGestioneUtentiForm.valid || !this.isAtLeastOneFieldValued;
+      return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued;
     }
   }
 
