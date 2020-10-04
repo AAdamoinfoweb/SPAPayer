@@ -8,6 +8,7 @@ import {SocietaService} from '../../../../../services/societa.service';
 import {FunzioneService} from '../../../../../services/funzione.service';
 import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
 import {NgForm, NgModel} from '@angular/forms';
+import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -24,8 +25,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
   listaFunzioniAbilitate: Array<OpzioneSelect> = [];
-
-  placeholderCf = 'inserisci testo';
 
   isCalendarOpen = false;
   minDateDDMMYY = '01/01/1900';
@@ -138,12 +137,18 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.arrowType = !this.isSubsectionFiltriVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse';
   }
 
-  setPlaceholderCodiceFiscaleField(codicefiscaleinput: NgModel): void {
-    this.placeholderCf = codicefiscaleinput?.errors ? 'campo non valido' : 'inserisci testo';
-  }
-
-  setPlaceholderData(dataInserita: NgModel): string {
-    return dataInserita?.errors ? 'campo non valido' : 'inserisci data';
+  setPlaceholder(model: NgModel, tipo: string): string {
+    if (model?.errors) {
+      return 'campo non valido';
+    } else {
+      if (tipoCampo.SELECT === tipo) {
+        return 'seleziona un elemento dalla lista';
+      } else if (tipoCampo.INPUT_TESTUALE === tipo) {
+        return 'inserisci testo';
+      } else {
+        return 'inserisci data';
+      }
+    }
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
