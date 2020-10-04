@@ -137,8 +137,8 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.arrowType = !this.isSubsectionFiltriVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse';
   }
 
-  setPlaceholder(model: NgModel, tipo: string): string {
-    if (model?.errors) {
+  setPlaceholder(campo: NgModel, tipo: string): string {
+    if (this.isCampoInvalido(campo)) {
       return 'campo non valido';
     } else {
       if (tipoCampo.SELECT === tipo) {
@@ -149,6 +149,10 @@ export class FiltroGestioneUtentiComponent implements OnInit {
         return 'inserisci data';
       }
     }
+  }
+
+  isCampoInvalido(campo: NgModel) {
+    return campo?.errors;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {

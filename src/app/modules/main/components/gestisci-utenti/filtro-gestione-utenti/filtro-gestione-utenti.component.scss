@@ -6,6 +6,12 @@
   width: 80%;
 }
 
+.input-disabled {
+  pointer-events: none;
+  border: 1px solid #CCCCCC;
+  background-color: #CCCCCC;
+}
+
 .input-text {
   background-color: transparent;
   height: auto;
@@ -14,7 +20,7 @@
 
 .img-calendar {
   position: absolute;
-  top: 26%;
+  top: 21.9%;
   fill: #77777B;
   cursor: pointer;
   background: transparent !important;
