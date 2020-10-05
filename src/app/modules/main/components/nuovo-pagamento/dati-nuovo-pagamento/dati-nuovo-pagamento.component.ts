@@ -582,9 +582,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     campo.opzioni = opzioniSelect;
   }
 
-  calcolaBollettini(): Array<Bollettino> {
+  creaBollettino(): Array<Bollettino> {
     const bollettini: Array<Bollettino> = new Array<Bollettino>();
     // TODO logica di conversione fra oggetto model e array di bollettini
+
     return bollettini;
   }
 
@@ -599,10 +600,11 @@ export class DatiNuovoPagamentoComponent implements OnInit {
             this.clearField();
           } else {
             // show err
+
           }
         });
     } else {
-      this.nuovoPagamentoService.inserimentoBollettino(this.calcolaBollettini())
+      this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
         .pipe(map(() => {
           return null;
         })).subscribe();
