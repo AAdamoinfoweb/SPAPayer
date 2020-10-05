@@ -170,8 +170,8 @@
                   [(ngModel)]="model[getNomeCampoForm(campo)]"
                   (change)="aggiornaSelectDipendenti(campo)"
                 >
-                  <option [value]="null"></option>
-                  <option *ngFor="let item of campo['opzioni']" [value]="item.value">{{item.label}}</option>
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let item of campo['opzioni']" [ngValue]="item.value">{{item.label}}</option>
                 </select>
               </div>
               <div class="row">
