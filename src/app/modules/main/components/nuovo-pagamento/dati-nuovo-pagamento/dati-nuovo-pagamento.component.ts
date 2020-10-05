@@ -292,7 +292,18 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   pulisciCampiForm(): void {
-    // TODO implementa logica pulizia
+    this.form.reset();
+
+    this.listaCampi.forEach(campo => {
+      const nomeCampo = this.getNomeCampoForm(campo);
+
+      this.model[nomeCampo] = null;
+
+      if (campo.tipoCampo === tipoCampo.SELECT && campo.dipendeDa) {
+        this.form.controls[nomeCampo].disable();
+        campo.opzioni = [];
+      }
+    });
   }
 
   getNumDocumento(): string {
@@ -558,7 +569,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         .subscribe((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem(numeroDoc, JSON.stringify(this.model));
-            this.clearField();
+            this.pulisciCampiForm();
           } else {
             // show err
 
@@ -571,10 +582,4 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         })).subscribe();
     }
   }
-
-  private clearField() {
-    this.model = {importo: null};
-    this.cdr.detectChanges();
-  }
-
 }
