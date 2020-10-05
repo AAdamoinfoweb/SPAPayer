@@ -35,6 +35,7 @@
                   type="text"
                   [maxLength]="getLunghezzaCampo(campo)"
                   (ngModelChange)="formattaInput(campo)"
+                  autocomplete="off"
                 />
               </div>
               <div class="row">
@@ -55,6 +56,7 @@
                   type="number"
                   integerNumber
                   [min]="minInputNumerico"
+                  autocomplete="off"
                 />
               </div>
               <div class="row">
@@ -76,6 +78,7 @@
                   type="tel"
                   currencyMask
                   [options]="{allowNegative: false, prefix: '', precision: 2, decimal: '.', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
+                  autocomplete="off"
                 />
               </div>
               <div class="row">
@@ -148,6 +151,7 @@
                   type="number"
                   integerNumber
                   [min]="this.minDataYY"
+                  autocomplete="off"
                 />
               </div>
               <div class="row">
@@ -201,6 +205,7 @@
               type="tel"
               currencyMask
               [options]="{allowNegative: false, prefix: '', precision: 2, decimal: '.', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
+              autocomplete="off"
             />
           </div>
         </div>
