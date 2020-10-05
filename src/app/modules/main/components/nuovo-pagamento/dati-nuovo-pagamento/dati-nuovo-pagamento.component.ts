@@ -433,6 +433,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return campo.titolo;
   }
 
+  isCampoDisabilitato(campo: CampoForm): boolean {
+    return this.form.controls[this.getNomeCampoForm(campo)].disabled;
+  }
+
   isCampoObbligatorio(campo: CampoForm): boolean {
     return campo.obbligatorio;
   }

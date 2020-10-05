@@ -25,7 +25,7 @@
 
             <div *ngSwitchCase="tipoCampo.INPUT_TESTUALE" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -45,7 +45,7 @@
 
             <div *ngSwitchCase="tipoCampo.INPUT_NUMERICO" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -66,7 +66,7 @@
 
             <div *ngSwitchCase="tipoCampo.INPUT_PREZZO" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -88,7 +88,7 @@
 
             <div *ngSwitchCase="tipoCampo.DATEDDMMYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <dp-date-picker
@@ -115,7 +115,7 @@
 
             <div *ngSwitchCase="tipoCampo.DATEMMYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <dp-date-picker
@@ -141,7 +141,7 @@
 
             <div *ngSwitchCase="tipoCampo.DATEYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -161,7 +161,7 @@
 
             <div *ngSwitchCase="tipoCampo.SELECT" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <select
@@ -192,7 +192,7 @@
       <div class="offset-md-8 col-md-4">
         <div class="form-elem-container">
           <div class="row">
-            <label for="importoTotale" class="title">
+            <label for="importoTotale" class="title form-elem-title" [ngClass]="{'disabled': isFaseVerificaPagamento}">
               Importo totale
             </label>
           </div>
