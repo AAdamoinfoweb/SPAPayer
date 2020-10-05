@@ -23,6 +23,9 @@ export class NuovoPagamentoService {
   private verificaBollettinoUrl = '/verificaBollettino';
   private inserimentoBollettinoUrl = '/bollettino';
 
+  compilazioneEvent: EventEmitter<Servizio> = new EventEmitter<Servizio>();
+  prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
+
   constructor(private http: HttpClient) {
   }
 

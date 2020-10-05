@@ -2,8 +2,6 @@ import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
-import {DatiPagamentoService} from './DatiPagamentoService';
-import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {map} from 'rxjs/operators';
 import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
@@ -70,7 +68,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private datiPagamentoService: DatiPagamentoService,
+  constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private cdr: ChangeDetectorRef) {
   }
 
@@ -337,7 +335,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.datiPagamentoService.prezzoEvent.emit(this.model.importo);
+    this.nuovoPagamentoService.prezzoEvent.emit(this.model.importo);
   }
 
   compila(servizio: Servizio): void {

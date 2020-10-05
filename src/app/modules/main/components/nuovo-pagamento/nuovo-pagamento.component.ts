@@ -1,9 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {CompilazioneService} from './compila-nuovo-pagamento/CompilazioneService';
-import {DatiPagamentoService} from "./dati-nuovo-pagamento/DatiPagamentoService";
-import {livelloIntegrazione} from 'src/app/enums/livelloIntegrazione.enum';
 import {Servizio} from '../../model/Servizio';
+import {NuovoPagamentoService} from '../../../../services/nuovo-pagamento.service';
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -13,8 +10,8 @@ import {Servizio} from '../../model/Servizio';
 export class NuovoPagamentoComponent implements OnInit {
   servizioSelezionato: Servizio;
 
-  constructor(private compilazioneService: CompilazioneService, private datiPagamentoService: DatiPagamentoService) {
-    this.compilazioneService.compilazioneEvent.subscribe(servizioSelezionato => {
+  constructor(private nuovoPagamentoService: NuovoPagamentoService) {
+    this.nuovoPagamentoService.compilazioneEvent.subscribe(servizioSelezionato => {
       this.servizioSelezionato = servizioSelezionato;
     });
   }
