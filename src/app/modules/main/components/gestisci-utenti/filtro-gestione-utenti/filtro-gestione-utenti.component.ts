@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
-import {FiltroGestioneUtentiService} from './FiltroGestioneUtentiService';
 import {map} from 'rxjs/operators';
 import {DatePickerComponent} from 'ng2-date-picker';
 import {SocietaService} from '../../../../../services/societa.service';
@@ -31,8 +30,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService,
-              private filtroGestioneUtentiService: FiltroGestioneUtentiService, private societaService: SocietaService,
+  constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService) { }
 
   ngOnInit(): void {
@@ -54,10 +52,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     })).subscribe();
   }
 
-  selezionaSocieta(): void {
-    this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
-  }
-
   recuperaFiltroLivelloTerritoriale(): void {
     this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
       livelliTerritoriali.forEach(livello => {
@@ -70,7 +64,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   }
 
   selezionaLivelloTerritoriale(): void {
-    this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
     this.filtroGestioneUtentiApplicato.enteId = null;
     this.listaEnti = [];
 
@@ -92,7 +85,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   }
 
   selezionaEnte(): void {
-    this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
     this.filtroGestioneUtentiApplicato.servizioId = null;
     this.listaServizi = [];
 
@@ -113,10 +105,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     })).subscribe();
   }
 
-  selezionaServizio(): void {
-    this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
-  }
-
   letturaFunzioni(): void {
     this.funzioneService.letturaFunzioni().pipe(map(funzioneAbilitata => {
       funzioneAbilitata.forEach(funzione => {
@@ -126,10 +114,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
         });
       });
     })).subscribe();
-  }
-
-  selezionaFunzione(): void {
-    this.filtroGestioneUtentiService.filtroGestioneUtentiEvent.emit(this.filtroGestioneUtentiApplicato);
   }
 
   setArrowType(): void {

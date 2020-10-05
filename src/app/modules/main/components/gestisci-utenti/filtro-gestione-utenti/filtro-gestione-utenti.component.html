@@ -25,7 +25,7 @@
         <div class="row">
           <select class="form-elem" id="selectSocieta" name="societaId"
                   #societaInput = "ngModel"
-                  [(ngModel)]="filtroGestioneUtentiApplicato.societaId" (ngModelChange)="selezionaSocieta()">
+                  [(ngModel)]="filtroGestioneUtentiApplicato.societaId">
             <option *ngFor="let item of listaSocieta" [value]="item.value">{{item.label}}</option>
           </select>
         </div>
@@ -82,7 +82,7 @@
           <select [ngClass]="{'form-elem': true, 'input-disabled': filtroGestioneUtentiApplicato.enteId == null || !listaServizi.length}"
                   id="selectServizio" name="servizioId"
                   #servizioInput = "ngModel"
-                  [(ngModel)]="filtroGestioneUtentiApplicato.servizioId" (ngModelChange)="selezionaServizio()">
+                  [(ngModel)]="filtroGestioneUtentiApplicato.servizioId">
             <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
           </select>
         </div>
@@ -99,7 +99,7 @@
         <div class="row">
           <select class="form-elem" id="selectFunzioneAbilitata" name="funzioneId"
                   #funzioneAbilitataInput = "ngModel"
-                  [(ngModel)]="filtroGestioneUtentiApplicato.funzioneId" (ngModelChange)="selezionaFunzione()">
+                  [(ngModel)]="filtroGestioneUtentiApplicato.funzioneId">
             <option *ngFor="let item of listaFunzioniAbilitate" [value]="item.value">{{item.label}}</option>
           </select>
         </div>
