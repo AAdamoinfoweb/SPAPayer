@@ -45,6 +45,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   minDataMMYY = '01/1900';
   minDataYY = 1900;
 
+  minInputNumerico = 0;
+
   lunghezzaMaxCol1: number = 5;
   lunghezzaMaxCol2: number = 10;
   lunghezzaMaxCol3: number = 15;
@@ -307,45 +309,11 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     if (campiChiave.length > 0) {
       chiave = '';
       campiChiave.forEach(campo => {
-        chiave += this.getValoreCampoFormattato(campo);
+        chiave += this.model[this.getNomeCampoForm(campo)];
       });
     }
 
     return chiave;
-  }
-
-  // Restituisce il valore campo formattato per l'invio al backend
-  getValoreCampoFormattato(campo: CampoForm): any {
-    const valoreModel = this.model[this.getNomeCampoForm(campo)];
-    let valoreFormattato;
-
-    switch (campo.tipoCampo) {
-      case tipoCampo.INPUT_TESTUALE:
-        valoreFormattato = valoreModel;
-        break;
-      case tipoCampo.INPUT_NUMERICO:
-        valoreFormattato = valoreModel;
-        break;
-      case tipoCampo.INPUT_PREZZO:
-        valoreFormattato = valoreModel;
-        break;
-      case tipoCampo.DATEDDMMYY:
-        // TODO convertire stringa data utc in valore da inviare al backend
-        valoreFormattato = null;
-        break;
-      case tipoCampo.DATEMMYY:
-        // TODO convertire stringa data utc in valore da inviare al backend
-        valoreFormattato = null;
-        break;
-      case tipoCampo.DATEYY:
-        valoreFormattato = valoreModel ? valoreModel.toString() : null;
-        break;
-      case tipoCampo.SELECT:
-        valoreFormattato = valoreModel;
-        break;
-    }
-
-    return valoreFormattato;
   }
 
   precompilaCampiForm(): void {
@@ -463,16 +431,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         descrizione = 'Il campo è obbligatorio';
       } else if (formControl.errors?.pattern) {
         descrizione = 'Formato non valido';
-      } else if (formControl.errors?.minDate) {
+      } else if (formControl.errors?.min) {
         switch (campo.tipoCampo) {
-          case tipoCampo.DATEDDMMYY:
-            descrizione = 'Data inferiore al ' + this.minDataDDMMYY;
-            break;
-          case tipoCampo.DATEMMYY:
-            descrizione = 'Data inferiore al ' + this.minDataMMYY;
+          case tipoCampo.INPUT_NUMERICO:
+            descrizione = 'Valore inferiore a ' + this.minInputNumerico;
             break;
           case tipoCampo.DATEYY:
-            descrizione = 'Data inferiore al ' + this.minDataYY;
+            descrizione = 'Valore inferiore a ' + this.minDataYY;
             break;
         }
       } else {
@@ -582,6 +547,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiungiAlCarrello() {
+    this.aggiornaPrezzoCarrello();
+
     const anonimo = true;
     if (anonimo) {
       const numeroDoc = this.getNumDocumento();
