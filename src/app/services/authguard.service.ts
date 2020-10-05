@@ -10,6 +10,8 @@ import {catchError, map} from 'rxjs/operators';
 })
 export class AuthguardService implements CanActivate {
 
+  private logoutUrl = '/logout';
+
   constructor(private router: Router, private http: HttpClient) {
   }
 
@@ -22,7 +24,7 @@ export class AuthguardService implements CanActivate {
   }
 
   logout(): Observable<string> {
-    return this.http.get(environment.bffBaseUrl + '/logout', {withCredentials: true})
+    return this.http.get(environment.bffBaseUrl + this.logoutUrl, {withCredentials: true})
       .pipe(map((body: any) => {
         localStorage.removeItem('nome');
         localStorage.removeItem('cognome');

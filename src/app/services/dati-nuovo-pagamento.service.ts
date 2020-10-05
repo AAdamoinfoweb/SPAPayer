@@ -9,7 +9,7 @@ import {Observable, of} from 'rxjs';
 })
 export class DatiNuovoPagamentoService {
 
-  recuperaDatiPagamentoUrl = '/datiPagamento';
+  private recuperaDatiPagamentoUrl = '/datiPagamento';
 
   constructor(private http: HttpClient) {}
 

@@ -12,12 +12,12 @@ import {Pagamento} from "../modules/main/model/Pagamento";
 })
 export class PagamentoService {
 
-  confermaPagamentoUrl = '/confermaPagamento';
-  confermaPagamentoL1Url = '/confermaPagamentoL1';
-  verificaEsitoPagamentoUrl = '/verificaEsitoPagamento';
-  verificaQuietanzaUrl = '/verificaQuietanza';
-  quietanzaUrl = '/quietanza'
-  redirectCarrelloUrl = '/cart/extCart.do'
+  private confermaPagamentoUrl = '/confermaPagamento';
+  private confermaPagamentoL1Url = '/confermaPagamentoL1';
+  private verificaEsitoPagamentoUrl = '/verificaEsitoPagamento';
+  private verificaQuietanzaUrl = '/verificaQuietanza';
+  private quietanzaUrl = '/quietanza';
+  private redirectCarrelloUrl = '/cart/extCart.do';
 
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }

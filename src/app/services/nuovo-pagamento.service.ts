@@ -16,13 +16,12 @@ import {EsitoEnum} from "../enums/esito.enum";
 })
 export class NuovoPagamentoService {
 
-  filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
-  filtroEntiUrl = '/filtroEnti';
-  filtroServiziUrl = '/filtroServizi';
-  campiNuovoPagamentoUrl = '/campiNuovoPagamento';
-  verificaBollettinoUrl = '/verificaBollettino';
-  inserimentoBollettinoUrl = '/bollettino';
-
+  private filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
+  private filtroEntiUrl = '/filtroEnti';
+  private filtroServiziUrl = '/filtroServizi';
+  private campiNuovoPagamentoUrl = '/campiNuovoPagamento';
+  private verificaBollettinoUrl = '/verificaBollettino';
+  private inserimentoBollettinoUrl = '/bollettino';
 
   constructor(private http: HttpClient) {
   }

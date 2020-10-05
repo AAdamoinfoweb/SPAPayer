@@ -12,7 +12,7 @@ import * as moment from 'moment';
 })
 export class BannerService {
 
-  bannerUrl = '/banner';
+  private bannerUrl = '/banner';
   timestamp: string;
   attivo: boolean;
   banners: Banner[] = null;
