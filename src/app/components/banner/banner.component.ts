@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BannerService} from '../../services/banner.service';
 import {Banner} from '../../modules/main/model/Banner';
-import {livelloBanner} from '../../enums/livelloBanner.enum';
+import {getBannerType, LivelloBanner} from "../../enums/livelloBanner.enum";
 
 @Component({
   selector: 'app-banner',
@@ -10,7 +10,8 @@ import {livelloBanner} from '../../enums/livelloBanner.enum';
 })
 export class BannerComponent implements OnInit {
 
-  constructor(private bannerService: BannerService) { }
+  constructor(private bannerService: BannerService) {
+  }
 
   timestamp;
   attivo;
@@ -20,9 +21,15 @@ export class BannerComponent implements OnInit {
 
   ngOnInit(): void {
     this.bannerService.bannerEvent.subscribe((banners: Banner[]) => {
+      banners.map(banner => {
+        this.classe.push(banner.tipo ? banner.tipo.classe : getBannerType(LivelloBanner.INFO).classe);
+        banner.classe = this.classe;
+      })
       this.banners = banners;
-      this.livello = livelloBanner.INFO.livello;
-      this.classe.push(livelloBanner.INFO.classe);
+      this.livello = getBannerType(LivelloBanner.INFO).livello;
+
     });
   }
+
+
 }

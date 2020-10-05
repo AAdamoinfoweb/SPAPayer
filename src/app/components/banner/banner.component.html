@@ -1,6 +1,6 @@
 <div *ngIf="this.banners" class="container-fluid">
   <div *ngFor="let banner of this.banners">
-    <div [ngClass]="classe" role="alert">
+    <div [ngClass]="banner.classe" role="alert">
       <div class="row">
         <div class="col">
           <h5 class="alert-heading">{{banner.titolo}}</h5>
