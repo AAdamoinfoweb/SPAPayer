@@ -75,16 +75,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mockSelezionaServizio();
     this.checkUtenteLoggato();
   }
-
-  mockSelezionaServizio() {
-    const mockServizio = new Servizio();
-    mockServizio.id = 7;
-    this.compila(mockServizio);
-  }
-
+  
   checkUtenteLoggato(): void {
     this.isUtenteAnonimo = localStorage.getItem('nome') === 'null';
     this.tooltipBottoneSalvaPerDopo = this.isUtenteAnonimo
