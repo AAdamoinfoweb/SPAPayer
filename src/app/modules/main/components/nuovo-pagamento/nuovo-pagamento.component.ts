@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {CompilazioneService} from './compila-nuovo-pagamento/CompilazioneService';
 import {DatiPagamentoService} from "./dati-nuovo-pagamento/DatiPagamentoService";
-import {PagamentoService} from './PagamentoService';
 import {livelloIntegrazione} from 'src/app/enums/livelloIntegrazione.enum';
 import {Servizio} from '../../model/Servizio';
 

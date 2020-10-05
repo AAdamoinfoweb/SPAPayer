@@ -7,7 +7,6 @@ import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneServic
 import {map} from 'rxjs/operators';
 import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
-import {PagamentoService} from '../PagamentoService';
 import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
 import {livelloIntegrazione} from '../../../../../enums/livelloIntegrazione.enum';
@@ -72,7 +71,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   tooltipBottoneSalvaPerDopo: string = null;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private datiPagamentoService: DatiPagamentoService,
-              private compilazioneService: CompilazioneService, private pagamentoService: PagamentoService,
               private cdr: ChangeDetectorRef) {
   }
 
@@ -90,7 +88,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   procediAVerificaPagamento(): void {
     this.isFaseVerificaPagamento = true;
-    this.pagamentoService.faseVerificaEvent.emit(this.isFaseVerificaPagamento);
   }
 
   aggiornaVisibilita(): void {
