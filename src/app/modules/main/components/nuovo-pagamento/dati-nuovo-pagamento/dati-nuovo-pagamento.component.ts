@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
@@ -27,7 +27,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   isFaseVerificaPagamento = false;
 
-  servizioSelezionato: Servizio = null;
+  @Input()
+  servizio: Servizio = null;
 
   listaCampiTipologiaServizio: Array<CampoForm> = [];
   listaCampiServizio: Array<CampoForm> = [];
@@ -68,16 +69,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private datiPagamentoService: DatiPagamentoService,
               private compilazioneService: CompilazioneService, private pagamentoService: PagamentoService,
               private cdr: ChangeDetectorRef) {
-
-    this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
-      this.compila(servizioSelezionato);
-    })).subscribe();
   }
 
   ngOnInit(): void {
     this.checkUtenteLoggato();
+    this.compila(this.servizio);
   }
-  
+
   checkUtenteLoggato(): void {
     this.isUtenteAnonimo = localStorage.getItem('nome') === 'null';
     this.tooltipBottoneSalvaPerDopo = this.isUtenteAnonimo
@@ -265,7 +263,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
-    if (this.servizioSelezionato?.livelloIntegrazioneId === livelloIntegrazione.LV2_BACK_OFFICE
+    if (this.servizio?.livelloIntegrazioneId === livelloIntegrazione.LV2_BACK_OFFICE
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
@@ -356,13 +354,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   compila(servizio: Servizio): void {
-    this.servizioSelezionato = servizio;
-    const isCompilato = this.servizioSelezionato != null;
+    this.servizio = servizio;
+    const isCompilato = this.servizio != null;
 
     if (isCompilato) {
-      this.livelloIntegrazioneId = this.servizioSelezionato.livelloIntegrazioneId;
+      this.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
 
-      this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato.id).pipe(map(campiNuovoPagamento => {
+      this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
         this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
         this.listaCampiServizio = campiNuovoPagamento.campiServizio;
         // this.listaCampiTipologiaServizio = this.mockCampiForm();
