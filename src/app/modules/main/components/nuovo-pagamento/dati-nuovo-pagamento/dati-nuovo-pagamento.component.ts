@@ -581,6 +581,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiungiAlCarrello() {
+    this.aggiornaPrezzoCarrello();
+
     const anonimo = true;
     if (anonimo) {
       const numeroDoc = this.getNumDocumento();
