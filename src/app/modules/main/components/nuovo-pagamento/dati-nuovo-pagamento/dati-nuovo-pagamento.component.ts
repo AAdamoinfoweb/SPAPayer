@@ -313,6 +313,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       });
     }
 
+    chiave = chiave.replace('/', '');
+
     return chiave;
   }
 
