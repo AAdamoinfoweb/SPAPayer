@@ -45,6 +45,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   minDataMMYY = '01/1900';
   minDataYY = 1900;
 
+  minInputNumerico = 0;
+
   lunghezzaMaxCol1: number = 5;
   lunghezzaMaxCol2: number = 10;
   lunghezzaMaxCol3: number = 15;
@@ -463,16 +465,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         descrizione = 'Il campo è obbligatorio';
       } else if (formControl.errors?.pattern) {
         descrizione = 'Formato non valido';
-      } else if (formControl.errors?.minDate) {
+      } else if (formControl.errors?.min) {
         switch (campo.tipoCampo) {
-          case tipoCampo.DATEDDMMYY:
-            descrizione = 'Data inferiore al ' + this.minDataDDMMYY;
-            break;
-          case tipoCampo.DATEMMYY:
-            descrizione = 'Data inferiore al ' + this.minDataMMYY;
+          case tipoCampo.INPUT_NUMERICO:
+            descrizione = 'Valore inferiore a ' + this.minInputNumerico;
             break;
           case tipoCampo.DATEYY:
-            descrizione = 'Data inferiore al ' + this.minDataYY;
+            descrizione = 'Valore inferiore a ' + this.minDataYY;
             break;
         }
       } else {

@@ -28,23 +28,25 @@ import {UserIdleModule} from "angular-user-idle";
 import {DpDatePickerModule} from 'ng2-date-picker';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
+import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    SidebarComponent,
-    LoginBarComponent,
-    FooterDirective,
-    NonautorizzatoComponent,
-    GenericErrorComponent,
-    BannerComponent,
-    HeaderComponent,
-    NuovoPagamentoComponent,
-    IMieiPagamentiComponent,
-    CompilaNuovoPagamentoComponent,
-    DatiNuovoPagamentoComponent
-  ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        SidebarComponent,
+        LoginBarComponent,
+        FooterDirective,
+        NonautorizzatoComponent,
+        GenericErrorComponent,
+        BannerComponent,
+        HeaderComponent,
+        NuovoPagamentoComponent,
+        IMieiPagamentiComponent,
+        CompilaNuovoPagamentoComponent,
+        DatiNuovoPagamentoComponent,
+        IntegerNumberDirective
+    ],
   imports: [
     HttpClientModule,
     BrowserModule,
