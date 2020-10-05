@@ -36,6 +36,7 @@
                   [maxLength]="getLunghezzaCampo(campo)"
                   (ngModelChange)="formattaInput(campo)"
                   autocomplete="off"
+                  [attr.disabled]="isCampoDisabilitato(campo)"
                 />
               </div>
               <div class="row">
@@ -57,6 +58,7 @@
                   integerNumber
                   [min]="minInputNumerico"
                   autocomplete="off"
+                  [attr.disabled]="isCampoDisabilitato(campo)"
                 />
               </div>
               <div class="row">
@@ -79,6 +81,7 @@
                   currencyMask
                   [options]="{allowNegative: false, prefix: '', precision: 2, decimal: '.', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
                   autocomplete="off"
+                  [attr.disabled]="isCampoDisabilitato(campo)"
                 />
               </div>
               <div class="row">
@@ -106,6 +109,7 @@
                     disableKeypress: true,
                     returnedValueType: tipoData
                   }"
+                  [attr.disabled]="isCampoDisabilitato(campo)"
                 ></dp-date-picker>
               </div>
               <div class="row">
@@ -132,6 +136,7 @@
                     disableKeypress: true,
                     returnedValueType: tipoData
                   }"
+                  [attr.disabled]="isCampoDisabilitato(campo)"
                 ></dp-date-picker>
               </div>
               <div class="row">
@@ -152,6 +157,7 @@
                   integerNumber
                   [min]="this.minDataYY"
                   autocomplete="off"
+                  [attr.disabled]="isCampoDisabilitato(campo)"
                 />
               </div>
               <div class="row">
@@ -169,6 +175,7 @@
                   [formControl]="form.controls[getNomeCampoForm(campo)]"
                   [(ngModel)]="model[getNomeCampoForm(campo)]"
                   (change)="aggiornaSelectDipendenti(campo)"
+                  [attr.disabled]="isCampoDisabilitato(campo)"
                 >
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of campo['opzioni']" [ngValue]="item.value">{{item.label}}</option>

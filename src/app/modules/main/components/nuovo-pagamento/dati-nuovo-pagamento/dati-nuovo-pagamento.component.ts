@@ -434,7 +434,11 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   isCampoDisabilitato(campo: CampoForm): boolean {
-    return this.form.controls[this.getNomeCampoForm(campo)].disabled;
+    if (campo.tipoCampo === tipoCampo.SELECT && campo.dipendeDa) {
+      return (campo.disabilitato || !campo.opzioni || campo.opzioni.length === 0) ? true : null;
+    } else {
+      return campo.disabilitato ? true : null;
+    }
   }
 
   isCampoObbligatorio(campo: CampoForm): boolean {
@@ -490,11 +494,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         const campoForm = this.form.controls[this.getNomeCampoForm(campo)];
         campoForm.setValue(null);
         this.impostaOpzioniSelect(campo);
-        if (!campo.disabilitato && campo.opzioni?.length > 0) {
-          campoForm.enable();
-        } else {
-          campoForm.disable();
-        }
       });
     }
   }
