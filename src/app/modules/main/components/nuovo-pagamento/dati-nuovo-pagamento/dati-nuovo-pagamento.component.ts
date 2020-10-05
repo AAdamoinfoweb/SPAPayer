@@ -13,6 +13,7 @@ import {Servizio} from '../../../model/Servizio';
 import {livelloIntegrazione} from '../../../../../enums/livelloIntegrazione.enum';
 import {EsitoEnum} from '../../../../../enums/esito.enum';
 import {Bollettino} from '../../../model/bollettino/Bollettino';
+import {ECalendarValue} from 'ng2-date-picker';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -26,6 +27,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   livelloIntegrazioneId: number = null;
 
   isFaseVerificaPagamento = false;
+
+  tipoData = ECalendarValue.String;
 
   @Input()
   servizio: Servizio = null;
@@ -460,8 +463,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         descrizione = 'Il campo è obbligatorio';
       } else if (formControl.errors?.pattern) {
         descrizione = 'Formato non valido';
-      } else if (formControl.errors?.date) {
-        descrizione = 'Data non valida';
       } else if (formControl.errors?.minDate) {
         switch (campo.tipoCampo) {
           case tipoCampo.DATEDDMMYY:
