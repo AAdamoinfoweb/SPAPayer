@@ -309,45 +309,11 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     if (campiChiave.length > 0) {
       chiave = '';
       campiChiave.forEach(campo => {
-        chiave += this.getValoreCampoFormattato(campo);
+        chiave += this.model[this.getNomeCampoForm(campo)];
       });
     }
 
     return chiave;
-  }
-
-  // Restituisce il valore campo formattato per l'invio al backend
-  getValoreCampoFormattato(campo: CampoForm): any {
-    const valoreModel = this.model[this.getNomeCampoForm(campo)];
-    let valoreFormattato;
-
-    switch (campo.tipoCampo) {
-      case tipoCampo.INPUT_TESTUALE:
-        valoreFormattato = valoreModel;
-        break;
-      case tipoCampo.INPUT_NUMERICO:
-        valoreFormattato = valoreModel;
-        break;
-      case tipoCampo.INPUT_PREZZO:
-        valoreFormattato = valoreModel;
-        break;
-      case tipoCampo.DATEDDMMYY:
-        // TODO convertire stringa data utc in valore da inviare al backend
-        valoreFormattato = null;
-        break;
-      case tipoCampo.DATEMMYY:
-        // TODO convertire stringa data utc in valore da inviare al backend
-        valoreFormattato = null;
-        break;
-      case tipoCampo.DATEYY:
-        valoreFormattato = valoreModel ? valoreModel.toString() : null;
-        break;
-      case tipoCampo.SELECT:
-        valoreFormattato = valoreModel;
-        break;
-    }
-
-    return valoreFormattato;
   }
 
   precompilaCampiForm(): void {
