@@ -19,8 +19,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
 
-  isCompilato: boolean = false;
-
   livelloTerritorialeSelezionato: LivelloTerritoriale = null;
   enteSelezionato: Ente = null;
   servizioSelezionato: Servizio = null;
@@ -43,7 +41,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   selezionaLivelloTerritoriale(): void {
-    this.isCompilato = false;
     this.compilazioneService.compilazioneEvent.emit(null)
     this.enteSelezionato = null;
     this.listaEnti = [];
@@ -63,7 +60,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   selezionaEnte(): void {
-    this.isCompilato = false;
     this.compilazioneService.compilazioneEvent.emit(null);
     this.servizioSelezionato = null;
     this.listaServizi = [];
@@ -83,7 +79,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   selezionaServizio(): void {
-    this.isCompilato = true;
     this.compilazioneService.compilazioneEvent.emit(this.servizioSelezionato);
   }
 }
