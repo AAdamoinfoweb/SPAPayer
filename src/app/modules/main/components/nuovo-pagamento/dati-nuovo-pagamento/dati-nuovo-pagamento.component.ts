@@ -434,10 +434,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   isCampoDisabilitato(campo: CampoForm): boolean {
-    if (campo.tipoCampo === tipoCampo.SELECT && campo.dipendeDa) {
-      return (campo.disabilitato || !campo.opzioni || campo.opzioni.length === 0) ? true : null;
+    if (this.isFaseVerificaPagamento) {
+      return true;
     } else {
-      return campo.disabilitato ? true : null;
+      if (campo.tipoCampo === tipoCampo.SELECT && campo.dipendeDa) {
+        return (campo.disabilitato || !campo.opzioni || campo.opzioni.length === 0) ? true : null;
+      } else {
+        return campo.disabilitato ? true : null;
+      }
     }
   }
 
