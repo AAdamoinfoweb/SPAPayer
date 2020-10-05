@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
-import {DatePickerComponent} from 'ng2-date-picker';
+import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {SocietaService} from '../../../../../services/societa.service';
 import {FunzioneService} from '../../../../../services/funzione.service';
 import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
@@ -27,6 +27,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   isCalendarOpen = false;
   minDateDDMMYY = '01/01/1900';
+  tipoData = ECalendarValue.String;
 
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
 
@@ -142,11 +143,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   openDatepicker(datePickerComponent: DatePickerComponent): void {
     datePickerComponent.api.open();
     this.isCalendarOpen = !this.isCalendarOpen;
-  }
-
-  selezionaData(datePickerComponent: DatePickerComponent, nomeCampo: string): void {
-    // TODO convertire data recuperata dal campo datepicker in formato da inviare all'oggetto del backend
-    // this.filtroGestioneUtentiApplicato[nomeCampo] = datePickerComponent.inputElementValue;
   }
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {

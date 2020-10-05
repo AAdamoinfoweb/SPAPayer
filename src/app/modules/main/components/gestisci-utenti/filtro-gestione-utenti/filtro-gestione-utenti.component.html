@@ -26,7 +26,7 @@
           <select class="form-elem" id="selectSocieta" name="societaId"
                   #societaInput = "ngModel"
                   [(ngModel)]="filtroGestioneUtentiApplicato.societaId">
-            <option *ngFor="let item of listaSocieta" [value]="item.value">{{item.label}}</option>
+            <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
           </select>
         </div>
         <div class="row">
@@ -43,7 +43,7 @@
           <select class="form-elem" id="selectLivelloTerritoriale" name="livelloTerritorialeId"
                   #livelloTerritorialeInput = "ngModel"
                   [(ngModel)]="filtroGestioneUtentiApplicato.livelloTerritorialeId" (ngModelChange)="selezionaLivelloTerritoriale()">
-            <option *ngFor="let item of listaLivelliTerritoriali" [value]="item.value">{{item.label}}</option>
+            <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
           </select>
         </div>
         <div class="row">
@@ -61,7 +61,7 @@
                   id="selectEnte" name="enteId"
                   #enteInput = "ngModel"
                   [(ngModel)]="filtroGestioneUtentiApplicato.enteId" (ngModelChange)="selezionaEnte()">
-            <option *ngFor="let item of listaEnti" [value]="item.value">{{item.label}}</option>
+            <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
           </select>
         </div>
         <div class="row">
@@ -83,7 +83,7 @@
                   id="selectServizio" name="servizioId"
                   #servizioInput = "ngModel"
                   [(ngModel)]="filtroGestioneUtentiApplicato.servizioId">
-            <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
+            <option *ngFor="let item of listaServizi" [ngValue]="item.value">{{item.label}}</option>
           </select>
         </div>
         <div class="row">
@@ -100,7 +100,7 @@
           <select class="form-elem" id="selectFunzioneAbilitata" name="funzioneId"
                   #funzioneAbilitataInput = "ngModel"
                   [(ngModel)]="filtroGestioneUtentiApplicato.funzioneId">
-            <option *ngFor="let item of listaFunzioniAbilitate" [value]="item.value">{{item.label}}</option>
+            <option *ngFor="let item of listaFunzioniAbilitate" [ngValue]="item.value">{{item.label}}</option>
           </select>
         </div>
         <div class="row">
@@ -150,17 +150,14 @@
               showGoToCurrent: false,
               openOnClick: isCalendarOpen,
               openOnFocus: false,
-              min: minDateDDMMYY
+              min: minDateDDMMYY,
+              returnedValueType: tipoData
 	          }"
             #scadenzaDaInput = "ngModel"
             [(ngModel)]="filtroGestioneUtentiApplicato.dataScadenzaDa"
             name="dataScadenzaDa"
-            [minDate]="minDateDDMMYY"
-            date
             #datePickerScadenzaDa
             (click)="isCalendarOpen = false"
-            (onSelect)="selezionaData(datePickerScadenzaDa, 'dataScadenzaDa')"
-            (onChange)="selezionaData(datePickerScadenzaDa, 'dataScadenzaDa')"
           ></dp-date-picker>
         </div>
         <div class="row">
@@ -188,17 +185,14 @@
               showGoToCurrent: false,
               openOnClick: isCalendarOpen,
               openOnFocus: false,
-              min: filtroGestioneUtentiForm.controls['dataScadenzaDa']?.value
+              min: filtroGestioneUtentiForm.controls['dataScadenzaDa']?.value,
+              returnedValueType: tipoData
             }"
             #scadenzaAInput = "ngModel"
-            [minDate]="filtroGestioneUtentiForm.controls['dataScadenzaDa']?.value"
-            date
             [(ngModel)]="filtroGestioneUtentiApplicato.dataScadenzaA"
             name="dataScadenzaA"
             #datePickerScadenzaA
             (click)="isCalendarOpen = false"
-            (onSelect)="selezionaData(datePickerScadenzaA, 'dataScadenzaA')"
-            (onChange)="selezionaData(datePickerScadenzaA, 'dataScadenzaA')"
           ></dp-date-picker>
         </div>
         <div class="row">
@@ -226,17 +220,14 @@
               showGoToCurrent: false,
               openOnClick: isCalendarOpen,
               openOnFocus: false,
-              min: minDateDDMMYY
+              min: minDateDDMMYY,
+              returnedValueType: tipoData
             }"
             #ultimoAccessoDaInput = "ngModel"
-            [minDate]="minDateDDMMYY"
-            date
             [(ngModel)]="filtroGestioneUtentiApplicato.ultimoAccessoDa"
             name="ultimoAccessoDa"
             #datePickerUltimoAccessoDa
             (click)="isCalendarOpen = false"
-            (onSelect)="selezionaData(datePickerUltimoAccessoDa, 'ultimoAccessoDa')"
-            (onChange)="selezionaData(datePickerUltimoAccessoDa, 'ultimoAccessoDa')"
           ></dp-date-picker>
         </div>
         <div class="row">
@@ -264,17 +255,14 @@
               showGoToCurrent: false,
               openOnClick: isCalendarOpen,
               openOnFocus: false,
-              min: filtroGestioneUtentiForm.controls['ultimoAccessoDa']?.value
+              min: filtroGestioneUtentiForm.controls['ultimoAccessoDa']?.value,
+              returnedValueType: tipoData
             }"
             #ultimoAccessoAInput = "ngModel"
-            [minDate]="filtroGestioneUtentiForm.controls['ultimoAccessoDa']?.value"
-            date
             [(ngModel)]="filtroGestioneUtentiApplicato.ultimoAccessoA"
             name="ultimoAccessoA"
             #datePickerUltimoAccessoA
             (click)="isCalendarOpen = false"
-            (onSelect)="selezionaData(datePickerUltimoAccessoA, 'ultimoAccessoA')"
-            (onChange)="selezionaData(datePickerUltimoAccessoA, 'ultimoAccessoA')"
           ></dp-date-picker>
         </div>
         <div class="row">
