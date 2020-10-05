@@ -222,7 +222,7 @@
       <button id="bottonePulisci" class="btn btn-secondary" (click)="pulisciCampiForm()">Pulisci</button>
     </div>
     <div *ngIf="livelliIntegrazione.LV2_BACK_OFFICE === livelloIntegrazioneId && isFaseVerificaPagamento" class="col-2">
-      <button id="bottoneIndietro" class="btn btn-secondary">Indietro</button>
+      <button id="bottoneIndietro" class="btn btn-secondary" (click)="tornaAdInserimentoDati()">Indietro</button>
     </div>
 
     <!-- Bottoni dx -->

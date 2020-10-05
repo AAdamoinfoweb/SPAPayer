@@ -86,8 +86,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       : null;
   }
 
+  tornaAdInserimentoDati(): void {
+    this.isFaseVerificaPagamento = false;
+    // TODO logica bottone indietro
+  }
+
   procediAVerificaPagamento(): void {
     this.isFaseVerificaPagamento = true;
+    // TODO logica bottone procedi
   }
 
   aggiornaVisibilita(): void {
