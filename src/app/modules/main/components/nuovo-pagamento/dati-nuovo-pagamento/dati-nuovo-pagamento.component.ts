@@ -570,7 +570,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   aggiungiAlCarrello() {
     this.aggiornaPrezzoCarrello();
 
-    const anonimo = true;
+    const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
     if (anonimo) {
       const numeroDoc = this.getNumDocumento();
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)

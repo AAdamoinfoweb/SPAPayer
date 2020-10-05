@@ -70,15 +70,20 @@ export class NuovoPagamentoService {
   }
 
   verificaBollettino(numero = null, idDettaglioTransazione = null): Observable<EsitoEnum> {
+    let params = {};
+    if (numero)
+      params = {numero};
+    else if (idDettaglioTransazione)
+      params = {idDettaglioTransazione};
+
     return this.http.get(environment.bffBaseUrl + this.verificaBollettinoUrl, {
-      params: {
-        numero,
-        idDettaglioTransazione
-      }
+      params: params
     })
       .pipe(map((body: any) => EsitoEnum[body]),
         catchError((err, caught) => {
           if (err.status == 401) {
+            return of('');
+          } else if (err.status == 500) {
             return of('');
           } else {
             return caught;
