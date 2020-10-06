@@ -438,7 +438,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
             let value: DettaglioTransazioneEsito = result[0];
             if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
               return this.nuovoPagamentoService.inserimentoCarrello(value)
-                .pipe(map(() => this.pulisciCampiForm()));
+                .pipe(map(() => this.clickPulisci()));
             } else {
               // show err
 
