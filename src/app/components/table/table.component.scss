@@ -200,3 +200,20 @@
 :host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
   color: #FFFFFF !important;
 }
+
+:host ::ng-deep .p-datatable .p-sortable-column {
+  .p-sortable-column-icon.pi.pi-fw.pi-sort-alt:before {
+    content: '\23F7';
+    vertical-align: super;
+  }
+
+  .p-sortable-column-icon.pi.pi-fw.pi-sort-amount-up-alt:before {
+    content: '\23F6';
+    vertical-align: super;
+  }
+
+  .p-sortable-column-icon.pi.pi-fw.pi-sort-amount-down:before {
+    content: '\23F7';
+    vertical-align: super;
+  }
+}
