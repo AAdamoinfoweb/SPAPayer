@@ -13,10 +13,10 @@ import {Router} from "@angular/router";
 })
 export class ListaPagamentiService {
 
-  verificaRidUrl = "/verificaRid";
-  getCarrelloUrl = "/getCarrello";
+  private verificaRidUrl = "/verificaRid";
+  private getCarrelloUrl = "/getCarrello";
 
-  getUrlBack: string = '/getBackUrl';
+  private getUrlBack: string = '/getBackUrl';
 
   constructor(private http: HttpClient, private xsrfService: XsrfService) {
   }

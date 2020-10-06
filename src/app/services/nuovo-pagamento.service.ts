@@ -16,13 +16,15 @@ import {EsitoEnum} from "../enums/esito.enum";
 })
 export class NuovoPagamentoService {
 
-  filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
-  filtroEntiUrl = '/filtroEnti';
-  filtroServiziUrl = '/filtroServizi';
-  campiNuovoPagamentoUrl = '/campiNuovoPagamento';
-  verificaBollettinoUrl = '/verificaBollettino';
-  inserimentoBollettinoUrl = '/bollettino';
+  private filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
+  private filtroEntiUrl = '/filtroEnti';
+  private filtroServiziUrl = '/filtroServizi';
+  private campiNuovoPagamentoUrl = '/campiNuovoPagamento';
+  private verificaBollettinoUrl = '/verificaBollettino';
+  private inserimentoBollettinoUrl = '/bollettino';
 
+  compilazioneEvent: EventEmitter<Servizio> = new EventEmitter<Servizio>();
+  prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private http: HttpClient) {
   }
@@ -68,15 +70,20 @@ export class NuovoPagamentoService {
   }
 
   verificaBollettino(numero = null, idDettaglioTransazione = null): Observable<EsitoEnum> {
+    let params = {};
+    if (numero)
+      params = {numero};
+    else if (idDettaglioTransazione)
+      params = {idDettaglioTransazione};
+
     return this.http.get(environment.bffBaseUrl + this.verificaBollettinoUrl, {
-      params: {
-        numero,
-        idDettaglioTransazione
-      }
+      params: params
     })
       .pipe(map((body: any) => EsitoEnum[body]),
         catchError((err, caught) => {
           if (err.status == 401) {
+            return of('');
+          } else if (err.status == 500) {
             return of('');
           } else {
             return caught;

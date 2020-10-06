@@ -2,9 +2,9 @@ import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {StickyService} from '../login-bar/StickyService';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
-import {DatiPagamentoService} from '../../modules/main/components/nuovo-pagamento/dati-nuovo-pagamento/DatiPagamentoService';
 import {MenuService} from '../../services/menu.service';
 import {environment} from 'src/environments/environment';
+import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   isAnonimo = false;
 
   constructor(private stickyService: StickyService, private router: Router,
-              private datiPagamentoService: DatiPagamentoService, private menuService: MenuService) {
+              private nuovoPagamentoService: NuovoPagamentoService, private menuService: MenuService) {
   }
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
     this.router.events.pipe(filter(evento => evento instanceof NavigationEnd)).subscribe(event => {
       this.isPaginaNuovoPagamento = window.location.pathname === this.urlNuovoPagamento;
     })
-    this.datiPagamentoService.prezzoEvent.subscribe((prezzo: number) => {
+    this.nuovoPagamentoService.prezzoEvent.subscribe((prezzo: number) => {
       this.prezzoCarrello = prezzo
     });
   }

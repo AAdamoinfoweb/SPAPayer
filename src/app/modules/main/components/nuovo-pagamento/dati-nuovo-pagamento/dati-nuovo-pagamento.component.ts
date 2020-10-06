@@ -2,12 +2,9 @@ import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
-import {DatiPagamentoService} from './DatiPagamentoService';
-import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {map} from 'rxjs/operators';
 import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
-import {PagamentoService} from '../PagamentoService';
 import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
 import {livelloIntegrazione} from '../../../../../enums/livelloIntegrazione.enum';
@@ -71,8 +68,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private datiPagamentoService: DatiPagamentoService,
-              private compilazioneService: CompilazioneService, private pagamentoService: PagamentoService,
+  constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private cdr: ChangeDetectorRef) {
   }
 
@@ -88,9 +84,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       : null;
   }
 
+  tornaAdInserimentoDati(): void {
+    this.isFaseVerificaPagamento = false;
+    // TODO logica bottone indietro
+  }
+
   procediAVerificaPagamento(): void {
     this.isFaseVerificaPagamento = true;
-    this.pagamentoService.faseVerificaEvent.emit(this.isFaseVerificaPagamento);
+    // TODO logica bottone procedi
   }
 
   aggiornaVisibilita(): void {
@@ -292,7 +293,18 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   pulisciCampiForm(): void {
-    // TODO implementa logica pulizia
+    this.form.reset();
+
+    this.listaCampi.forEach(campo => {
+      const nomeCampo = this.getNomeCampoForm(campo);
+
+      this.model[nomeCampo] = null;
+
+      if (campo.tipoCampo === tipoCampo.SELECT && campo.dipendeDa) {
+        this.form.controls[nomeCampo].disable();
+        campo.opzioni = [];
+      }
+    });
   }
 
   getNumDocumento(): string {
@@ -313,6 +325,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       });
     }
 
+    chiave = chiave.replace('/', '');
+
     return chiave;
   }
 
@@ -321,7 +335,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.datiPagamentoService.prezzoEvent.emit(this.model.importo);
+    this.nuovoPagamentoService.prezzoEvent.emit(this.model.importo);
   }
 
   compila(servizio: Servizio): void {
@@ -417,6 +431,18 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return campo.titolo;
   }
 
+  isCampoDisabilitato(campo: CampoForm): boolean {
+    if (this.isFaseVerificaPagamento) {
+      return true;
+    } else {
+      if (campo.tipoCampo === tipoCampo.SELECT && campo.dipendeDa) {
+        return (campo.disabilitato || !campo.opzioni || campo.opzioni.length === 0) ? true : null;
+      } else {
+        return campo.disabilitato ? true : null;
+      }
+    }
+  }
+
   isCampoObbligatorio(campo: CampoForm): boolean {
     return campo.obbligatorio;
   }
@@ -470,11 +496,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         const campoForm = this.form.controls[this.getNomeCampoForm(campo)];
         campoForm.setValue(null);
         this.impostaOpzioniSelect(campo);
-        if (!campo.disabilitato && campo.opzioni?.length > 0) {
-          campoForm.enable();
-        } else {
-          campoForm.disable();
-        }
       });
     }
   }
@@ -549,14 +570,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   aggiungiAlCarrello() {
     this.aggiornaPrezzoCarrello();
 
-    const anonimo = true;
+    const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
     if (anonimo) {
       const numeroDoc = this.getNumDocumento();
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .subscribe((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem(numeroDoc, JSON.stringify(this.model));
-            this.clearField();
+            this.pulisciCampiForm();
           } else {
             // show err
 
@@ -569,10 +590,4 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         })).subscribe();
     }
   }
-
-  private clearField() {
-    this.model = {importo: null};
-    this.cdr.detectChanges();
-  }
-
 }
