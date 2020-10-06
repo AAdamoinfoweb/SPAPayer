@@ -68,8 +68,8 @@ export class GestisciUtentiComponent implements OnInit {
       id: utente.codiceFiscale.toUpperCase(),
       nome: nomeUtente,
       gruppoAbilitazioni: utente.gruppo,
-      scadenza: utente.dataFineValidita,
-      ultimoAccesso: utente.ultimoAccesso
+      scadenza: utente.dataFineValidita ? moment(utente.dataFineValidita).format('DD/MM/YYYY[; h. ] HH:mm') : null,
+      ultimoAccesso: utente.ultimoAccesso ? moment(utente.ultimoAccesso).format('DD/MM/YYYY[; h. ] HH:mm') : null
     };
 
     if (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema) {
