@@ -32,8 +32,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   @Input()
   servizio: Servizio = null;
 
-  listaCampiTipologiaServizio: Array<CampoForm> = [];
-  listaCampiServizio: Array<CampoForm> = [];
   listaCampi: Array<CampoForm> = [];
 
   importoFormControl: FormControl = new FormControl();
@@ -84,174 +82,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   aggiornaVisibilita(): void {
     this.isVisibile = !this.isVisibile;
-  }
-
-  mockCampiForm(): Array<CampoForm> {
-    const campiMockati: Array<CampoForm> = [];
-    let campo;
-
-    campo = {
-      id: 1,
-      titolo: 'Importo',
-      obbligatorio: true,
-      TipoCampoEnum: TipoCampoEnum.INPUT_PREZZO,
-      informazioni: 'Inserisci un importo',
-      lunghezzaVariabile: true,
-      lunghezza: 5,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 1,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: false,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 2,
-      titolo: 'Provincia residenza',
-      obbligatorio: true,
-      TipoCampoEnum: TipoCampoEnum.SELECT,
-      informazioni: 'Seleziona',
-      lunghezzaVariabile: true,
-      lunghezza: 8,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 2,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: TipologicaSelectEnum.PROVINCE,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 3,
-      titolo: 'Comune residenza',
-      obbligatorio: true,
-      TipoCampoEnum: TipoCampoEnum.SELECT,
-      informazioni: 'Seleziona',
-      lunghezzaVariabile: true,
-      lunghezza: 8,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 3,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: TipologicaSelectEnum.COMUNI,
-      dipendeDa: 2
-      // dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 4,
-      titolo: 'Testo',
-      obbligatorio: true,
-      TipoCampoEnum: TipoCampoEnum.INPUT_TESTUALE,
-      informazioni: 'Inserisci un testo',
-      lunghezzaVariabile: true,
-      lunghezza: 20,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 4,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 5,
-      titolo: 'Data small',
-      obbligatorio: true,
-      TipoCampoEnum: TipoCampoEnum.DATEDDMMYY,
-      informazioni: 'Inserisci una data',
-      lunghezzaVariabile: true,
-      lunghezza: 5,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 5,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 6,
-      titolo: 'Data large',
-      obbligatorio: true,
-      TipoCampoEnum: TipoCampoEnum.DATEDDMMYY,
-      informazioni: 'Inserisci una data',
-      lunghezzaVariabile: true,
-      lunghezza: 20,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 6,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 7,
-      titolo: 'DataMMYY',
-      obbligatorio: true,
-      TipoCampoEnum: TipoCampoEnum.DATEMMYY,
-      informazioni: 'Inserisci un mese e un anno',
-      lunghezzaVariabile: true,
-      lunghezza: 15,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 7,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 8,
-      titolo: 'DataYY',
-      obbligatorio: true,
-      TipoCampoEnum: TipoCampoEnum.DATEYY,
-      informazioni: 'Inserisci un anno',
-      lunghezzaVariabile: true,
-      lunghezza: 5,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 8,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    return campiMockati;
   }
 
   calcolaDimensioneCampo(campo: CampoForm): string {
@@ -344,16 +174,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       this.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
 
       this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
-        this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
-        this.listaCampiServizio = campiNuovoPagamento.campiServizio;
-        // this.listaCampiTipologiaServizio = this.mockCampiForm();
-
         this.listaCampi = [];
         this.form = new FormGroup({importo: this.importoFormControl});
         this.model = {
           importo: null
         };
-        this.impostaCampi(this.listaCampiTipologiaServizio);
+        this.impostaCampi(campiNuovoPagamento.);
         this.impostaCampi(this.listaCampiServizio);
       })).subscribe();
     }
