@@ -194,7 +194,7 @@
   </div>
 
   <!--Input importo-->
-  <div class="page-section">
+  <div class="page-section" *ngIf="livelliIntegrazione.LV2 === livelloIntegrazioneId || (livelliIntegrazione.LV2_BACK_OFFICE === livelloIntegrazioneId && isFaseVerificaPagamento)">
     <div class="row">
       <div class="offset-md-8 col-md-4">
         <div class="form-elem-container">
