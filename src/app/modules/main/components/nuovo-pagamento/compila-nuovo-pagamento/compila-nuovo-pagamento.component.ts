@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
-import {DatiPagamentoService} from '../dati-nuovo-pagamento/DatiPagamentoService';
 import {map} from 'rxjs/operators';
-import {CompilazioneService} from './CompilazioneService';
 import {LivelloTerritoriale} from '../../../model/LivelloTerritoriale';
 import {Ente} from '../../../model/Ente';
 import {Servizio} from '../../../model/Servizio';
@@ -19,17 +16,26 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
 
-  isCompilato: boolean = false;
-
   livelloTerritorialeSelezionato: LivelloTerritoriale = null;
   enteSelezionato: Ente = null;
   servizioSelezionato: Servizio = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private compilazioneService: CompilazioneService) { }
+  constructor(private nuovoPagamentoService: NuovoPagamentoService) {
+    this.nuovoPagamentoService.pulisciEvent.subscribe(() => {
+      this.pulisci();
+    });
+  }
 
   ngOnInit(): void {
     this.recuperaFiltroLivelloTerritoriale();
-}
+  }
+
+  pulisci(): void {
+    this.livelloTerritorialeSelezionato = null;
+    this.enteSelezionato = null;
+    this.servizioSelezionato = null;
+    this.nuovoPagamentoService.compilazioneEvent.emit(null);
+  }
 
   recuperaFiltroLivelloTerritoriale(): void {
     this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
@@ -43,10 +49,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   selezionaLivelloTerritoriale(): void {
-    this.isCompilato = false;
-    this.compilazioneService.compilazioneEvent.emit(null)
+    this.nuovoPagamentoService.compilazioneEvent.emit(null);
     this.enteSelezionato = null;
     this.listaEnti = [];
+    this.servizioSelezionato = null;
+    this.listaServizi = [];
 
     this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato.id);
   }
@@ -63,8 +70,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   selezionaEnte(): void {
-    this.isCompilato = false;
-    this.compilazioneService.compilazioneEvent.emit(null);
+    this.nuovoPagamentoService.compilazioneEvent.emit(null);
     this.servizioSelezionato = null;
     this.listaServizi = [];
 
@@ -83,7 +89,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   selezionaServizio(): void {
-    this.isCompilato = true;
-    this.compilazioneService.compilazioneEvent.emit(this.servizioSelezionato);
+    this.nuovoPagamentoService.compilazioneEvent.emit(this.servizioSelezionato);
   }
 }

@@ -4,8 +4,8 @@
 
   <app-compila-nuovo-pagamento></app-compila-nuovo-pagamento>
 
-  <div [ngClass]="{'hide': !isCompilato}">
-    <app-dati-nuovo-pagamento></app-dati-nuovo-pagamento>
+  <div *ngIf="servizioSelezionato">
+    <app-dati-nuovo-pagamento [servizio]="servizioSelezionato"></app-dati-nuovo-pagamento>
   </div>
 </div>
 

@@ -1,9 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {CompilazioneService} from './compila-nuovo-pagamento/CompilazioneService';
-import {DatiPagamentoService} from "./dati-nuovo-pagamento/DatiPagamentoService";
-import {PagamentoService} from './PagamentoService';
-import {livelloIntegrazione} from 'src/app/enums/livelloIntegrazione.enum';
+import {Servizio} from '../../model/Servizio';
+import {NuovoPagamentoService} from '../../../../services/nuovo-pagamento.service';
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -11,18 +8,15 @@ import {livelloIntegrazione} from 'src/app/enums/livelloIntegrazione.enum';
   styleUrls: ['./nuovo-pagamento.component.scss']
 })
 export class NuovoPagamentoComponent implements OnInit {
-  isCompilato: boolean = false;
+  servizioSelezionato: Servizio;
 
-  constructor(private compilazioneService: CompilazioneService, private datiPagamentoService: DatiPagamentoService) {
-    this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
-      this.compila(servizioSelezionato);
-    })).subscribe();
+  constructor(private nuovoPagamentoService: NuovoPagamentoService) {
+    this.nuovoPagamentoService.compilazioneEvent.subscribe(servizioSelezionato => {
+      this.servizioSelezionato = servizioSelezionato;
+    });
   }
 
   ngOnInit(): void {
   }
 
-  compila(servizio): void {
-    this.isCompilato = servizio != null;
-  }
 }

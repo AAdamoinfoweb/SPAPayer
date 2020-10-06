@@ -1,4 +1,4 @@
-export enum tipologicaSelect {
+export enum TipologicaSelectEnum {
   PROVINCE = 'province',
   COMUNI = 'comuni'
 }

@@ -41,9 +41,9 @@ import { PaginatorComponent } from './components/table/paginator/paginator.compo
 import {FiltroGestioneUtentiComponent} from './modules/main/components/gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
+import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
 
 @NgModule({
-  declarations: [
     AppComponent,
     HomeComponent,
     SidebarComponent,
@@ -63,6 +63,7 @@ import {CustomFormsModule} from 'ngx-custom-validators';
     ToolbarComponent,
     PaginatorComponent,
     FiltroGestioneUtentiComponent
+        IntegerNumberDirective
   ],
   imports: [
     HttpClientModule,

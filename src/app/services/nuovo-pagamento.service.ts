@@ -16,13 +16,17 @@ import {EsitoEnum} from "../enums/esito.enum";
 })
 export class NuovoPagamentoService {
 
-  filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
-  filtroEntiUrl = '/filtroEnti';
-  filtroServiziUrl = '/filtroServizi';
-  campiNuovoPagamentoUrl = '/campiNuovoPagamento';
-  verificaBollettinoUrl = '/verificaBollettino';
-  inserimentoBollettinoUrl = '/bollettino';
+  private filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
+  private filtroEntiUrl = '/filtroEnti';
+  private filtroServiziUrl = '/filtroServizi';
+  private campiNuovoPagamentoUrl = '/campiNuovoPagamento';
+  private verificaBollettinoUrl = '/verificaBollettino';
+  private inserimentoBollettinoUrl = '/bollettino';
+  private inserimentoCarrelloUrl = '/carrello';
 
+  compilazioneEvent: EventEmitter<Servizio> = new EventEmitter<Servizio>();
+  prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
+  pulisciEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private http: HttpClient) {
   }
@@ -67,16 +71,21 @@ export class NuovoPagamentoService {
       }));
   }
 
-  verificaBollettino(numero?, idDettaglioTransazione?): Observable<EsitoEnum> {
+  verificaBollettino(numero = null, idDettaglioTransazione = null): Observable<EsitoEnum> {
+    let params = {};
+    if (numero)
+      params = {numero};
+    else if (idDettaglioTransazione)
+      params = {idDettaglioTransazione};
+
     return this.http.get(environment.bffBaseUrl + this.verificaBollettinoUrl, {
-      params: {
-        numero,
-        idDettaglioTransazione
-      }
+      params: params, withCredentials: true
     })
       .pipe(map((body: any) => EsitoEnum[body]),
         catchError((err, caught) => {
           if (err.status == 401) {
+            return of('');
+          } else if (err.status == 500) {
             return of('');
           } else {
             return caught;
@@ -85,10 +94,57 @@ export class NuovoPagamentoService {
   }
 
   inserimentoBollettino(bollettini: Bollettino[]): Observable<DettaglioTransazioneEsito[]> {
-    return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JSON.stringify(bollettini),
+let b = [
+  {
+    "servizioId": 6,
+    "enteId": 3,
+    "cfpiva": "VRDNTN80A01A662Q",
+    "importo": 450,
+    "numero": "documento 30",
+    "anno": "2020",
+    "causale": "finanziamento",
+    "iuv": "iuv test",
+    "listaCampoDettaglioTransazione": [
+      {
+        "titolo": "titolo di prova",
+        "valore": "valore di prova"
+      }
+    ]
+  },
+  {
+    "servizioId": 6,
+    "enteId": 3,
+    "cfpiva": "VRDNTN80A01A662Q",
+    "importo": 400,
+    "numero": "documento 38",
+    "anno": "2020",
+    "causale": "finanziamento",
+    "iuv": "iuv test",
+    "listaCampoDettaglioTransazione": [
+      {
+        "titolo": "titolo test",
+        "valore": "valore test"
+      }
+    ]
+  }
+];
+    return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, "ss",
       {withCredentials: true}).pipe(map((body: any) => {
-        let aa = body as DettaglioTransazioneEsito[];
-        console.log(aa)
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
+      }));
+  }
+
+  inserimentoCarrello(value: DettaglioTransazioneEsito)  {
+    return this.http.post(environment.bffBaseUrl + this.inserimentoCarrelloUrl, value,
+      {withCredentials: true}).pipe(map((body: any) => {
+        return body;
       }),
       catchError((err, caught) => {
         if (err.status == 401 || err.status == 400) {

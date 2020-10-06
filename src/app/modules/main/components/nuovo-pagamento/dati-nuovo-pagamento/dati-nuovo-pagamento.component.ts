@@ -1,18 +1,20 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
-import {DatiPagamentoService} from './DatiPagamentoService';
-import {CompilazioneService} from '../compila-nuovo-pagamento/CompilazioneService';
 import {map} from 'rxjs/operators';
-import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
+import {TipologicaSelectEnum} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
-import {PagamentoService} from '../PagamentoService';
-import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
+import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
-import {livelloIntegrazione} from '../../../../../enums/livelloIntegrazione.enum';
+import {LivelloIntegrazioneEnum} from '../../../../../enums/livelloIntegrazione.enum';
 import {EsitoEnum} from '../../../../../enums/esito.enum';
 import {Bollettino} from '../../../model/bollettino/Bollettino';
+import {ECalendarValue} from 'ng2-date-picker';
+import {Router} from "@angular/router";
+import {DettaglioTransazioneEsito} from "../../../model/bollettino/DettaglioTransazioneEsito";
+import {of} from "rxjs";
+import {CampoDettaglioTransazione} from "../../../model/bollettino/CampoDettaglioTransazione";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -20,69 +22,46 @@ import {Bollettino} from '../../../model/bollettino/Bollettino';
   styleUrls: ['../nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
 export class DatiNuovoPagamentoComponent implements OnInit {
-  tipoCampo = tipoCampo; // per passare l'enum al template html
-
-  livelliIntegrazione = livelloIntegrazione;
+  readonly TipoCampoEnum = TipoCampoEnum;
+  readonly LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
   livelloIntegrazioneId: number = null;
 
   isFaseVerificaPagamento = false;
 
-  servizioSelezionato: Servizio = null;
+  readonly tipoData = ECalendarValue.String;
 
-  listaCampiTipologiaServizio: Array<CampoForm> = [];
-  listaCampiServizio: Array<CampoForm> = [];
+  @Input()
+  servizio: Servizio = null;
+
   listaCampi: Array<CampoForm> = [];
 
   importoFormControl: FormControl = new FormControl();
   form: FormGroup = new FormGroup({importo: this.importoFormControl});
   model = {importo: null};
 
-  minDataDDMMYY = '01/01/1900';
-  minDataMMYY = '01/1900';
-  minDataYY = 1900;
+  readonly minDataDDMMYY = '01/01/1900';
+  readonly minDataMMYY = '01/1900';
+  readonly minDataYY = 1900;
 
-  lunghezzaMaxCol1: number = 5;
-  lunghezzaMaxCol2: number = 10;
-  lunghezzaMaxCol3: number = 15;
+  readonly minInputNumerico = 0;
 
-  mesi: Array<OpzioneSelect> = [
-    {value: 1, label: 'gennaio'},
-    {value: 2, label: 'febbraio'},
-    {value: 3, label: 'marzo'},
-    {value: 4, label: 'aprile'},
-    {value: 5, label: 'maggio'},
-    {value: 6, label: 'giugno'},
-    {value: 7, label: 'luglio'},
-    {value: 8, label: 'agosto'},
-    {value: 9, label: 'settembre'},
-    {value: 10, label: 'ottobre'},
-    {value: 11, label: 'novembre'},
-    {value: 12, label: 'dicembre'}
-  ];
+  readonly lunghezzaMaxCol1: number = 5;
+  readonly lunghezzaMaxCol2: number = 10;
+  readonly lunghezzaMaxCol3: number = 15;
 
   isVisibile = true;
 
   isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private datiPagamentoService: DatiPagamentoService,
-              private compilazioneService: CompilazioneService, private pagamentoService: PagamentoService,
+  constructor(private nuovoPagamentoService: NuovoPagamentoService,
+              private router: Router,
               private cdr: ChangeDetectorRef) {
-
-    this.compilazioneService.compilazioneEvent.pipe(map(servizioSelezionato => {
-      this.compila(servizioSelezionato);
-    })).subscribe();
   }
 
   ngOnInit(): void {
-    this.mockSelezionaServizio();
     this.checkUtenteLoggato();
-  }
-
-  mockSelezionaServizio() {
-    const mockServizio = new Servizio();
-    mockServizio.id = 7;
-    this.compila(mockServizio);
+    this.inizializzazioneForm(this.servizio);
   }
 
   checkUtenteLoggato(): void {
@@ -92,193 +71,30 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       : null;
   }
 
-  procediAVerificaPagamento(): void {
+  tornaAdInserimentoDati(): void {
+    this.isFaseVerificaPagamento = false;
+    // TODO logica bottone indietro
+  }
+
+  clickProcedi(): void {
     this.isFaseVerificaPagamento = true;
-    this.pagamentoService.faseVerificaEvent.emit(this.isFaseVerificaPagamento);
+    // TODO logica bottone procedi
   }
 
   aggiornaVisibilita(): void {
     this.isVisibile = !this.isVisibile;
   }
 
-  mockCampiForm(): Array<CampoForm> {
-    const campiMockati: Array<CampoForm> = [];
-    let campo;
-
-    campo = {
-      id: 1,
-      titolo: 'Importo',
-      obbligatorio: true,
-      tipoCampo: tipoCampo.INPUT_PREZZO,
-      informazioni: 'Inserisci un importo',
-      lunghezzaVariabile: true,
-      lunghezza: 5,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 1,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: false,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 2,
-      titolo: 'Provincia residenza',
-      obbligatorio: true,
-      tipoCampo: tipoCampo.SELECT,
-      informazioni: 'Seleziona',
-      lunghezzaVariabile: true,
-      lunghezza: 8,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 2,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: tipologicaSelect.PROVINCE,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 3,
-      titolo: 'Comune residenza',
-      obbligatorio: true,
-      tipoCampo: tipoCampo.SELECT,
-      informazioni: 'Seleziona',
-      lunghezzaVariabile: true,
-      lunghezza: 8,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 3,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: tipologicaSelect.COMUNI,
-      dipendeDa: 2
-      // dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 4,
-      titolo: 'Testo',
-      obbligatorio: true,
-      tipoCampo: tipoCampo.INPUT_TESTUALE,
-      informazioni: 'Inserisci un testo',
-      lunghezzaVariabile: true,
-      lunghezza: 20,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 4,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 5,
-      titolo: 'Data small',
-      obbligatorio: true,
-      tipoCampo: tipoCampo.DATEDDMMYY,
-      informazioni: 'Inserisci una data',
-      lunghezzaVariabile: true,
-      lunghezza: 5,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 5,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 6,
-      titolo: 'Data large',
-      obbligatorio: true,
-      tipoCampo: tipoCampo.DATEDDMMYY,
-      informazioni: 'Inserisci una data',
-      lunghezzaVariabile: true,
-      lunghezza: 20,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 6,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 7,
-      titolo: 'DataMMYY',
-      obbligatorio: true,
-      tipoCampo: tipoCampo.DATEMMYY,
-      informazioni: 'Inserisci un mese e un anno',
-      lunghezzaVariabile: true,
-      lunghezza: 15,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 7,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    campo = {
-      id: 8,
-      titolo: 'DataYY',
-      obbligatorio: true,
-      tipoCampo: tipoCampo.DATEYY,
-      informazioni: 'Inserisci un anno',
-      lunghezzaVariabile: true,
-      lunghezza: 5,
-      campoFisso: true,
-      disabilitato: false,
-      posizione: 8,
-      chiave: false,
-      controllo_logico: null,
-      campo_input: true,
-      json_path: null,
-      tipologica: null,
-      dipendeDa: null
-    };
-    campiMockati.push(campo);
-
-    return campiMockati;
-  }
-
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
-    if (this.servizioSelezionato?.livelloIntegrazioneId === livelloIntegrazione.LV2_BACK_OFFICE
+    if (this.servizio?.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
-    } else if (campo.tipoCampo === tipoCampo.DATEDDMMYY || campo.tipoCampo === tipoCampo.DATEMMYY || campo.tipoCampo === tipoCampo.DATEYY) {
+    } else if (campo.tipoCampo === TipoCampoEnum.DATEDDMMYY || campo.tipoCampo === TipoCampoEnum.DATEMMYY || campo.tipoCampo === TipoCampoEnum.DATEYY) {
       classe = 'col-md-2';
-    } else if (campo.tipoCampo === tipoCampo.INPUT_PREZZO) {
+    } else if (campo.tipoCampo === TipoCampoEnum.INPUT_PREZZO) {
       classe = 'col-md-2';
     } else {
       if (campo.lunghezza <= this.lunghezzaMaxCol1) {
@@ -295,8 +111,25 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return classe;
   }
 
-  pulisciCampiForm(): void {
-    // TODO implementa logica pulizia
+  clickPulisci(): void {
+    this.form.reset();
+
+    this.listaCampi.forEach(campo => {
+      const nomeCampo = this.getNomeCampoForm(campo);
+
+      this.model[nomeCampo] = null;
+
+      if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {
+        this.form.controls[nomeCampo].disable();
+        campo.opzioni = [];
+      }
+    });
+
+    this.nuovoPagamentoService.pulisciEvent.emit(true);
+  }
+
+  salvaPerDopo(): void {
+    // TODO logica salva per dopo
   }
 
   getNumDocumento(): string {
@@ -313,74 +146,38 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     if (campiChiave.length > 0) {
       chiave = '';
       campiChiave.forEach(campo => {
-        chiave += this.getValoreCampoFormattato(campo);
+        chiave += this.model[this.getNomeCampoForm(campo)];
       });
     }
+
+    chiave = chiave.replace('/', '');
 
     return chiave;
   }
 
-  // Restituisce il valore campo formattato per l'invio al backend
-  getValoreCampoFormattato(campo: CampoForm): any {
-    const valoreModel = this.model[this.getNomeCampoForm(campo)];
-    let valoreFormattato;
-
-    switch (campo.tipoCampo) {
-      case tipoCampo.INPUT_TESTUALE:
-        valoreFormattato = valoreModel;
-        break;
-      case tipoCampo.INPUT_NUMERICO:
-        valoreFormattato = valoreModel;
-        break;
-      case tipoCampo.INPUT_PREZZO:
-        valoreFormattato = valoreModel;
-        break;
-      case tipoCampo.DATEDDMMYY:
-        // TODO convertire stringa data utc in valore da inviare al backend
-        valoreFormattato = null;
-        break;
-      case tipoCampo.DATEMMYY:
-        // TODO convertire stringa data utc in valore da inviare al backend
-        valoreFormattato = null;
-        break;
-      case tipoCampo.DATEYY:
-        valoreFormattato = valoreModel ? valoreModel.toString() : null;
-        break;
-      case tipoCampo.SELECT:
-        valoreFormattato = valoreModel;
-        break;
-    }
-
-    return valoreFormattato;
-  }
-
   precompilaCampiForm(): void {
-    // TODO logica precompila campi form, in caso di LV2_BACK_OFFICE
+    // TODO logica precompila campi form, in caso di LV2BO o LV3
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.datiPagamentoService.prezzoEvent.emit(this.model.importo);
+    this.nuovoPagamentoService.prezzoEvent.emit(this.model.importo);
   }
 
-  compila(servizio: Servizio): void {
-    this.servizioSelezionato = servizio;
-    const isCompilato = this.servizioSelezionato != null;
+  inizializzazioneForm(servizio: Servizio): void {
+    this.servizio = servizio;
+    const isCompilato = this.servizio != null;
 
     if (isCompilato) {
-      this.livelloIntegrazioneId = this.servizioSelezionato.livelloIntegrazioneId;
+      this.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
 
-      this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizioSelezionato.id).pipe(map(campiNuovoPagamento => {
-        this.listaCampiTipologiaServizio = campiNuovoPagamento.campiTipologiaServizio;
-        this.listaCampiServizio = campiNuovoPagamento.campiServizio;
-        // this.listaCampiTipologiaServizio = this.mockCampiForm();
-
+      this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
         this.listaCampi = [];
         this.form = new FormGroup({importo: this.importoFormControl});
         this.model = {
           importo: null
         };
-        this.impostaCampi(this.listaCampiTipologiaServizio);
-        this.impostaCampi(this.listaCampiServizio);
+        this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
+        this.impostaCampi(campiNuovoPagamento.campiServizio);
       })).subscribe();
     }
   }
@@ -390,7 +187,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     const valoreCampo = this.model[nomeCampo];
 
     switch (campo.tipoCampo) {
-      case tipoCampo.INPUT_TESTUALE:
+      case TipoCampoEnum.INPUT_TESTUALE:
         if (valoreCampo === '') {
           this.model[nomeCampo] = null;
         }
@@ -419,19 +216,21 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       }
 
       // TODO testare validazione regex quando è fixato l'invio delle regex dal backend
-      if (campo.controllo_logico?.regex) { validatori.push(Validators.pattern(campo.controllo_logico.regex)); }
+      if (campo.controllo_logico?.regex) {
+        validatori.push(Validators.pattern(campo.controllo_logico.regex));
+      }
 
       switch (campo.tipoCampo) {
-        case tipoCampo.INPUT_NUMERICO:
+        case TipoCampoEnum.INPUT_NUMERICO:
           validatori.push(Validators.min(0));
           break;
-        case tipoCampo.INPUT_PREZZO:
+        case TipoCampoEnum.INPUT_PREZZO:
           validatori.push(Validators.min(0));
           break;
-        case tipoCampo.DATEYY:
+        case TipoCampoEnum.DATEYY:
           validatori.push(Validators.min(this.minDataYY));
           break;
-        case tipoCampo.SELECT:
+        case TipoCampoEnum.SELECT:
           this.impostaOpzioniSelect(campo);
           if (!campo.opzioni?.length) {
             campoForm.disable();
@@ -455,6 +254,18 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return campo.titolo;
   }
 
+  isCampoDisabilitato(campo: CampoForm): boolean {
+    if (this.isFaseVerificaPagamento) {
+      return true;
+    } else {
+      if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {
+        return (campo.disabilitato || !campo.opzioni || campo.opzioni.length === 0) ? true : null;
+      } else {
+        return campo.disabilitato ? true : null;
+      }
+    }
+  }
+
   isCampoObbligatorio(campo: CampoForm): boolean {
     return campo.obbligatorio;
   }
@@ -469,18 +280,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         descrizione = 'Il campo è obbligatorio';
       } else if (formControl.errors?.pattern) {
         descrizione = 'Formato non valido';
-      } else if (formControl.errors?.date) {
-        descrizione = 'Data non valida';
-      } else if (formControl.errors?.minDate) {
+      } else if (formControl.errors?.min) {
         switch (campo.tipoCampo) {
-          case tipoCampo.DATEDDMMYY:
-            descrizione = 'Data inferiore al ' + this.minDataDDMMYY;
+          case TipoCampoEnum.INPUT_NUMERICO:
+            descrizione = 'Valore inferiore a ' + this.minInputNumerico;
             break;
-          case tipoCampo.DATEMMYY:
-            descrizione = 'Data inferiore al ' + this.minDataMMYY;
-            break;
-          case tipoCampo.DATEYY:
-            descrizione = 'Data inferiore al ' + this.minDataYY;
+          case TipoCampoEnum.DATEYY:
+            descrizione = 'Valore inferiore a ' + this.minDataYY;
             break;
         }
       } else {
@@ -513,11 +319,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         const campoForm = this.form.controls[this.getNomeCampoForm(campo)];
         campoForm.setValue(null);
         this.impostaOpzioniSelect(campo);
-        if (!campo.disabilitato && campo.opzioni?.length > 0) {
-          campoForm.enable();
-        } else {
-          campoForm.disable();
-        }
       });
     }
   }
@@ -545,7 +346,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           switch (campo.tipologica) {
             // Inserire qui logica per i vari campi select dipendenti da altre select
 
-            case tipologicaSelect.COMUNI:
+            case TipologicaSelectEnum.COMUNI:
               // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
               valoriSelect = valoriSelect.filter(valore => {
                 return valore.codiceIstat?.substring(0, 3) === valoreSelectPadre;
@@ -564,13 +365,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       switch (campo.tipologica) {
         // Inserire qui logica per l'impostazione delle opzioni dei vari tipi di select
 
-        case tipologicaSelect.PROVINCE:
+        case TipologicaSelectEnum.PROVINCE:
           opzioniSelect.push({
             value: valore.codice,
             label: valore.nome
           });
           break;
-        case tipologicaSelect.COMUNI:
+        case TipologicaSelectEnum.COMUNI:
           opzioniSelect.push({
             value: valore.codiceIstat,
             label: valore.nome
@@ -582,36 +383,94 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     campo.opzioni = opzioniSelect;
   }
 
-  calcolaBollettini(): Array<Bollettino> {
-    const bollettini: Array<Bollettino> = new Array<Bollettino>();
-    // TODO logica di conversione fra oggetto model e array di bollettini
+  creaBollettino(): Bollettino[] {
+    const bollettini: Bollettino[] = [];
+    let bollettino: Bollettino = new Bollettino();
+    bollettino.servizioId = this.servizio.id;
+    bollettino.enteId = this.servizio.enteId;
+    bollettino.numero = this.getNumDocumento();
+    bollettino.anno = 0;
+    bollettino.causale = '';
+    bollettino.cfpiva = '';
+    bollettino.importo = this.model.importo;
+
+    bollettino.listaCampoDettaglioTransazione = [];
+    this.listaCampi.forEach(campo => {
+      const nomeCampo = this.getNomeCampoForm(campo);
+      let field: CampoDettaglioTransazione = new CampoDettaglioTransazione();
+      field.titolo = nomeCampo;
+      field.valore = this.model[nomeCampo];
+      bollettino.listaCampoDettaglioTransazione.push(field);
+    });
+    bollettini.push(bollettino);
     return bollettini;
   }
 
   aggiungiAlCarrello() {
-    const anonimo = true;
+    const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
     if (anonimo) {
       const numeroDoc = this.getNumDocumento();
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .subscribe((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem(numeroDoc, JSON.stringify(this.model));
-            this.clearField();
+            this.aggiornaPrezzoCarrello();
+            this.clickPulisci();
           } else {
             // show err
+
           }
         });
     } else {
-      this.nuovoPagamentoService.inserimentoBollettino(this.calcolaBollettini())
+      this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
         .pipe(map(() => {
           return null;
         })).subscribe();
     }
   }
 
-  private clearField() {
-    this.model = {importo: null};
-    this.cdr.detectChanges();
-  }
+  pagaOra() {
+    const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
+    if (anonimo) {
+      const numeroDoc = this.getNumDocumento();
+      this.nuovoPagamentoService.verificaBollettino(numeroDoc)
+        .subscribe((result) => {
+          if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
+            localStorage.setItem(numeroDoc, JSON.stringify(this.model));
+            this.aggiornaPrezzoCarrello();
+            this.router.navigateByUrl("/carrello");
+          } else {
+            // show err
 
+          }
+        });
+    } else {
+      this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+        .pipe(map((result) => {
+          if (result.length > 0) {
+            let value: DettaglioTransazioneEsito = result[0];
+            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+              return this.nuovoPagamentoService.inserimentoCarrello(value)
+                .pipe(map(() => this.clickPulisci()));
+            } else {
+              // show err
+
+              return of(null);
+            }
+          }
+
+          /*
+          result.forEach((value: DettaglioTransazioneEsito) => {
+            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+
+            } else {
+              // show err
+              return of(null);
+            }
+          });*/
+
+          return null;
+        })).subscribe();
+    }
+  }
 }
