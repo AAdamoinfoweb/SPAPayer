@@ -65,7 +65,7 @@
           </select>
         </div>
         <div class="row">
-          <p [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput)}">
+          <p [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput), 'text-disabled': filtroGestioneUtentiApplicato.livelloTerritorialeId == null || !listaEnti.length}">
             {{setPlaceholder(enteInput, 'select')}}
           </p>
         </div>
@@ -87,7 +87,7 @@
           </select>
         </div>
         <div class="row">
-          <p [ngClass]="{'text-muted': !isCampoInvalido(servizioInput), 'text-invalid': isCampoInvalido(servizioInput)}">
+          <p [ngClass]="{'text-muted': !isCampoInvalido(servizioInput), 'text-invalid': isCampoInvalido(servizioInput), 'text-disabled': filtroGestioneUtentiApplicato.enteId == null || !listaServizi.length}">
             {{setPlaceholder(servizioInput, 'select')}}
           </p>
         </div>
