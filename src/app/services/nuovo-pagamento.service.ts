@@ -5,7 +5,7 @@ import {catchError, map} from 'rxjs/operators';
 import {EventEmitter, Injectable, Output} from '@angular/core';
 import {LivelloTerritoriale} from '../modules/main/model/LivelloTerritoriale';
 import {Ente} from '../modules/main/model/Ente';
-import {Servizio} from '../modules/main/model/Servizio';
+import {FiltroServizio} from '../modules/main/model/FiltroServizio';
 import {CampiNuovoPagamento} from '../modules/main/model/CampiNuovoPagamento';
 import {DettaglioTransazioneEsito} from '../modules/main/model/bollettino/DettaglioTransazioneEsito';
 import {Bollettino} from '../modules/main/model/bollettino/Bollettino';
@@ -26,7 +26,7 @@ export class NuovoPagamentoService {
   private readonly inserimentoCarrelloUrl = '/carrello';
   private readonly campiPrecompilatiUrl = '/datiPagamento';
 
-  compilazioneEvent: EventEmitter<Servizio> = new EventEmitter<Servizio>();
+  compilazioneEvent: EventEmitter<FiltroServizio> = new EventEmitter<FiltroServizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
   pulisciEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -52,7 +52,7 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaFiltroServizi(idEnte): Observable<Servizio[]> {
+  recuperaFiltroServizi(idEnte): Observable<FiltroServizio[]> {
     return this.http.get(environment.bffBaseUrl + this.filtroServiziUrl, {
       withCredentials: true,
       params: {

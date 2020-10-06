@@ -6,7 +6,7 @@ import {map} from 'rxjs/operators';
 import {TipologicaSelectEnum} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
-import {Servizio} from '../../../model/Servizio';
+import {FiltroServizio} from '../../../model/FiltroServizio';
 import {LivelloIntegrazioneEnum} from '../../../../../enums/livelloIntegrazione.enum';
 import {EsitoEnum} from '../../../../../enums/esito.enum';
 import {Bollettino} from '../../../model/bollettino/Bollettino';
@@ -32,7 +32,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   readonly tipoData = ECalendarValue.String;
 
   @Input()
-  servizio: Servizio = null;
+  servizio: FiltroServizio = null;
 
   listaCampi: Array<CampoForm> = [];
 
@@ -173,7 +173,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.nuovoPagamentoService.prezzoEvent.emit(this.model.importo);
   }
 
-  inizializzazioneForm(servizio: Servizio): void {
+  inizializzazioneForm(servizio: FiltroServizio): void {
     this.servizio = servizio;
     const isCompilato = this.servizio != null;
 
