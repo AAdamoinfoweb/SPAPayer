@@ -7,7 +7,7 @@ import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
-import {livelloIntegrazione} from '../../../../../enums/livelloIntegrazione.enum';
+import {LivelloIntegrazioneEnum} from '../../../../../enums/livelloIntegrazione.enum';
 import {EsitoEnum} from '../../../../../enums/esito.enum';
 import {Bollettino} from '../../../model/bollettino/Bollettino';
 import {ECalendarValue} from 'ng2-date-picker';
@@ -20,7 +20,7 @@ import {ECalendarValue} from 'ng2-date-picker';
 export class DatiNuovoPagamentoComponent implements OnInit {
   tipoCampo = tipoCampo; // per passare l'enum al template html
 
-  livelliIntegrazione = livelloIntegrazione;
+  LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
   livelloIntegrazioneId: number = null;
 
   isFaseVerificaPagamento = false;
@@ -269,7 +269,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
-    if (this.servizio?.livelloIntegrazioneId === livelloIntegrazione.LV2_BACK_OFFICE
+    if (this.servizio?.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2_BACK_OFFICE
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
