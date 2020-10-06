@@ -11,6 +11,9 @@ import {LivelloIntegrazioneEnum} from '../../../../../enums/livelloIntegrazione.
 import {EsitoEnum} from '../../../../../enums/esito.enum';
 import {Bollettino} from '../../../model/bollettino/Bollettino';
 import {ECalendarValue} from 'ng2-date-picker';
+import {Router} from "@angular/router";
+import {DettaglioTransazioneEsito} from "../../../model/bollettino/DettaglioTransazioneEsito";
+import {of} from "rxjs";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -52,7 +55,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService) {
+  constructor(private nuovoPagamentoService: NuovoPagamentoService,
+              private router: Router,
+              private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -388,7 +393,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       }
 
       // TODO testare validazione regex quando è fixato l'invio delle regex dal backend
-      if (campo.controllo_logico?.regex) { validatori.push(Validators.pattern(campo.controllo_logico.regex)); }
+      if (campo.controllo_logico?.regex) {
+        validatori.push(Validators.pattern(campo.controllo_logico.regex));
+      }
 
       switch (campo.tipoCampo) {
         case TipoCampoEnum.INPUT_NUMERICO:
@@ -561,8 +568,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiungiAlCarrello() {
-    this.aggiornaPrezzoCarrello();
-
     const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
     if (anonimo) {
       const numeroDoc = this.getNumDocumento();
@@ -570,6 +575,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         .subscribe((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem(numeroDoc, JSON.stringify(this.model));
+            this.aggiornaPrezzoCarrello();
             this.clickPulisci();
           } else {
             // show err
@@ -579,6 +585,51 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     } else {
       this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
         .pipe(map(() => {
+          return null;
+        })).subscribe();
+    }
+  }
+
+  pagaOra() {
+    const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
+    if (anonimo) {
+      const numeroDoc = this.getNumDocumento();
+      this.nuovoPagamentoService.verificaBollettino(numeroDoc)
+        .subscribe((result) => {
+          if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
+            localStorage.setItem(numeroDoc, JSON.stringify(this.model));
+            this.aggiornaPrezzoCarrello();
+            this.router.navigateByUrl("/carrello");
+          } else {
+            // show err
+
+          }
+        });
+    } else {
+      this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+        .pipe(map((result) => {
+          if (result.length > 0) {
+            let value: DettaglioTransazioneEsito = result[0];
+            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+              return this.nuovoPagamentoService.inserimentoCarrello(value)
+                .pipe(map(() => this.pulisciCampiForm()));
+            } else {
+              // show err
+
+              return of(null);
+            }
+          }
+
+          /*
+          result.forEach((value: DettaglioTransazioneEsito) => {
+            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+
+            } else {
+              // show err
+              return of(null);
+            }
+          });*/
+
           return null;
         })).subscribe();
     }

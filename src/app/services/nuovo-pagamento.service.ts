@@ -22,6 +22,7 @@ export class NuovoPagamentoService {
   private campiNuovoPagamentoUrl = '/campiNuovoPagamento';
   private verificaBollettinoUrl = '/verificaBollettino';
   private inserimentoBollettinoUrl = '/bollettino';
+  private inserimentoCarrelloUrl = '/carrello';
 
   compilazioneEvent: EventEmitter<Servizio> = new EventEmitter<Servizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -95,8 +96,21 @@ export class NuovoPagamentoService {
   inserimentoBollettino(bollettini: Bollettino[]): Observable<DettaglioTransazioneEsito[]> {
     return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JSON.stringify(bollettini),
       {withCredentials: true}).pipe(map((body: any) => {
-        let aa = body as DettaglioTransazioneEsito[];
-        console.log(aa)
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
+      }));
+  }
+
+  inserimentoCarrello(value: DettaglioTransazioneEsito)  {
+    return this.http.post(environment.bffBaseUrl + this.inserimentoCarrelloUrl, value,
+      {withCredentials: true}).pipe(map((body: any) => {
+        return body;
       }),
       catchError((err, caught) => {
         if (err.status == 401 || err.status == 400) {
