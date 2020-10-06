@@ -73,7 +73,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkUtenteLoggato();
-    this.compila(this.servizio);
+    this.inizializzazioneForm(this.servizio);
   }
 
   checkUtenteLoggato(): void {
@@ -88,7 +88,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     // TODO logica bottone indietro
   }
 
-  procediAVerificaPagamento(): void {
+  clickProcedi(): void {
     this.isFaseVerificaPagamento = true;
     // TODO logica bottone procedi
   }
@@ -291,7 +291,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     return classe;
   }
 
-  pulisciCampiForm(): void {
+  clickPulisci(): void {
     this.form.reset();
 
     this.listaCampi.forEach(campo => {
@@ -304,6 +304,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         campo.opzioni = [];
       }
     });
+  }
+
+  salvaPerDopo(): void {
+    // TODO logica salva per dopo
+  }
+
+  pagaOra(): void {
+    // TODO logica paga ora
   }
 
   getNumDocumento(): string {
@@ -337,7 +345,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.nuovoPagamentoService.prezzoEvent.emit(this.model.importo);
   }
 
-  compila(servizio: Servizio): void {
+  inizializzazioneForm(servizio: Servizio): void {
     this.servizio = servizio;
     const isCompilato = this.servizio != null;
 
@@ -576,7 +584,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         .subscribe((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem(numeroDoc, JSON.stringify(this.model));
-            this.pulisciCampiForm();
+            this.clickPulisci();
           } else {
             // show err
 
