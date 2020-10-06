@@ -121,7 +121,7 @@ export class NuovoPagamentoService {
   }
 
   inserimentoBollettino(bollettini: Bollettino[]): Observable<DettaglioTransazioneEsito[]> {
-return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, bollettini,
+return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JSON.stringify(bollettini),
       {withCredentials: true}).pipe(map((body: any) => {
         return body;
       }),
