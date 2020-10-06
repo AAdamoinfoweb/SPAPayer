@@ -88,7 +88,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
-    if (this.servizio?.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2_BACK_OFFICE
+    if (this.servizio?.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
@@ -156,7 +156,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   precompilaCampiForm(): void {
-    // TODO logica precompila campi form, in caso di LV2_BACK_OFFICE
+    // TODO logica precompila campi form, in caso di LV2BO o LV3
   }
 
   aggiornaPrezzoCarrello(): void {
