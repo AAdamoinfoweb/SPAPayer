@@ -41,6 +41,8 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
     this.nuovoPagamentoService.compilazioneEvent.emit(null);
     this.enteSelezionato = null;
     this.listaEnti = [];
+    this.servizioSelezionato = null;
+    this.listaServizi = [];
 
     this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato.id);
   }
