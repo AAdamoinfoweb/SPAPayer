@@ -10,7 +10,7 @@ import {map} from 'rxjs/operators';
 })
 export class SocietaService {
 
-  letturaSocietaUrl = '/societa';
+  private letturaSocietaUrl = '/societa';
 
   constructor(private http: HttpClient) { }
 

@@ -24,7 +24,7 @@
         <!--  template ICONA  -->
         <div it-tooltip="{{row[col.field].tooltip}}"
               *ngIf="col.type == tipoColonnaEnum.ICONA"
-             [ngStyle]="{fill: row[col.field] != null ? row[col.field].color : '#403d39'}"
+             [ngStyle]="{fill: row[col.field] != null ? row[col.field].color : '#403d39', display: row[col.field].display}"
               (click)="onIcon(row[dataKey])"
         >
           <svg class="bg-light icon icon-sm">

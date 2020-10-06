@@ -3,8 +3,8 @@ export class Utils {
    return {testo: testo, link: link};
   }
 
-  static creaIcona = (path, color, tooltip) => {
-    return {path: path, color: color, tooltip: tooltip};
+  static creaIcona = (path, color, tooltip, display) => {
+    return {path: path, color: color, tooltip: tooltip, display: display};
   }
 
 }

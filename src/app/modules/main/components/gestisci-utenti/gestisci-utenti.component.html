@@ -9,7 +9,9 @@
   </h3>
 
   <!-- Sottosezione Filtri -->
-  <app-filtro-gestione-utenti></app-filtro-gestione-utenti>
+  <app-filtro-gestione-utenti [listaUtente]="listaUtente"
+                              (listaUtentiFiltrati)="onChangeListaUtenti($event)">
+  </app-filtro-gestione-utenti>
 
   <!-- Sottosezione Lista Utenti -->
   <div class="row subsection-title">

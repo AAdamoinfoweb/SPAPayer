@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
@@ -8,6 +8,8 @@ import {FunzioneService} from '../../../../../services/funzione.service';
 import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
 import {NgForm, NgModel} from '@angular/forms';
 import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
+import {RicercaUtente} from '../../../model/utente/RicercaUtente';
+import {UtenteService} from '../../../../../services/utente.service';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -26,13 +28,20 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   listaFunzioniAbilitate: Array<OpzioneSelect> = [];
 
   isCalendarOpen = false;
-  minDateDDMMYY = '01/01/1900';
-  tipoData = ECalendarValue.String;
+  readonly minDateDDMMYY = '01/01/1900';
+  readonly tipoData = ECalendarValue.String;
 
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
 
+  @Input()
+  listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
+
+  @Output()
+  listaUtentiFiltrati: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
+
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
-              private funzioneService: FunzioneService) { }
+              private funzioneService: FunzioneService, private utenteService: UtenteService) {
+  }
 
   ngOnInit(): void {
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
@@ -147,11 +156,26 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
+    this.listaUtentiFiltrati.emit(this.listaUtente);
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
   }
 
-  cercaUtenti({value}: {value: ParametriRicercaUtente}): void {
-    // TODO logica collegamento operation ricercaUtenti per recupero Lista Utenti
+  cercaUtenti(form: NgForm): void {
+    Object.keys(form.value).forEach(key => {
+      const value = form.value[key];
+      if (value !== undefined) {
+        this.filtroGestioneUtentiApplicato[key] = value;
+      } else {
+        this.filtroGestioneUtentiApplicato[key] = null;
+      }
+    });
+
+    const filtro = this.filtroGestioneUtentiApplicato;
+    this.utenteService.ricercaUtenti(filtro.livelloTerritorialeId, filtro.societaId, filtro.enteId, filtro.servizioId, filtro.funzioneId,
+      filtro.codiceFiscale, filtro.dataScadenzaDa, filtro.dataScadenzaA, filtro.ultimoAccessoDa,
+      filtro.ultimoAccessoA).pipe(map(listaUtenti => {
+        this.listaUtentiFiltrati.emit(listaUtenti);
+    })).subscribe();
   }
 
   disabilitaBottone(filtroGestioneUtentiForm: NgForm, nomeBottone: string): boolean {

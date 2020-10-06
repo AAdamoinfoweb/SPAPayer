@@ -10,7 +10,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class FunzioneService {
 
-  letturaFunzioniUrl = '/funzioni';
+  private letturaFunzioniUrl = '/funzioni';
 
   constructor(private http: HttpClient) { }
 
