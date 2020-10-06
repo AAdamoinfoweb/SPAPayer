@@ -7,7 +7,7 @@ import {SocietaService} from '../../../../../services/societa.service';
 import {FunzioneService} from '../../../../../services/funzione.service';
 import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
 import {NgForm, NgModel} from '@angular/forms';
-import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
+import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
 import {RicercaUtente} from '../../../model/utente/RicercaUtente';
 import {UtenteService} from '../../../../../services/utente.service';
 
@@ -135,9 +135,9 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     if (this.isCampoInvalido(campo)) {
       return 'campo non valido';
     } else {
-      if (tipoCampo.SELECT === tipo) {
+      if (TipoCampoEnum.SELECT === tipo) {
         return 'seleziona un elemento dalla lista';
-      } else if (tipoCampo.INPUT_TESTUALE === tipo) {
+      } else if (TipoCampoEnum.INPUT_TESTUALE === tipo) {
         return 'inserisci testo';
       } else {
         return 'inserisci data';

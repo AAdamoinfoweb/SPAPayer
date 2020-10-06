@@ -44,6 +44,7 @@ import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
 
 @NgModule({
+  declarations: [
     AppComponent,
     HomeComponent,
     SidebarComponent,
@@ -62,8 +63,8 @@ import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
     TabViewComponent,
     ToolbarComponent,
     PaginatorComponent,
-    FiltroGestioneUtentiComponent
-        IntegerNumberDirective
+    FiltroGestioneUtentiComponent,
+    IntegerNumberDirective
   ],
   imports: [
     HttpClientModule,
