@@ -10,25 +10,27 @@ import {CampiNuovoPagamento} from '../modules/main/model/CampiNuovoPagamento';
 import {DettaglioTransazioneEsito} from '../modules/main/model/bollettino/DettaglioTransazioneEsito';
 import {Bollettino} from "../modules/main/model/bollettino/Bollettino";
 import {EsitoEnum} from "../enums/esito.enum";
+import {RichiestaCampiPrecompilati} from '../modules/main/model/RichiestaCampiPrecompilati';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NuovoPagamentoService {
 
-  private filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
-  private filtroEntiUrl = '/filtroEnti';
-  private filtroServiziUrl = '/filtroServizi';
-  private campiNuovoPagamentoUrl = '/campiNuovoPagamento';
-  private verificaBollettinoUrl = '/verificaBollettino';
-  private inserimentoBollettinoUrl = '/bollettino';
-  private inserimentoCarrelloUrl = '/carrello';
+  private readonly filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
+  private readonly filtroEntiUrl = '/filtroEnti';
+  private readonly filtroServiziUrl = '/filtroServizi';
+  private readonly campiNuovoPagamentoUrl = '/campiNuovoPagamento';
+  private readonly verificaBollettinoUrl = '/verificaBollettino';
+  private readonly inserimentoBollettinoUrl = '/bollettino';
+  private readonly inserimentoCarrelloUrl = '/carrello';
+  private readonly campiPrecompilatiUrl = '/datiPagamento';
 
   compilazioneEvent: EventEmitter<Servizio> = new EventEmitter<Servizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
   pulisciEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
   }
 
   recuperaFiltroLivelloTerritoriale(): Observable<LivelloTerritoriale[]> {
@@ -64,6 +66,25 @@ export class NuovoPagamentoService {
     return this.http.get(environment.bffBaseUrl + this.campiNuovoPagamentoUrl, {
       params: {
         servizioId: idServizio
+      }
+    })
+      .pipe(map((body: any) => {
+        return body;
+      }));
+  }
+
+  recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati: RichiestaCampiPrecompilati): Observable<CampiNuovoPagamento> {
+    return this.http.get(environment.bffBaseUrl + this.campiNuovoPagamentoUrl, {
+      params: {
+        servizioId: richiestaCampiPrecompilati.servizioId?.toString() || null,
+        tipologiaServizioId: richiestaCampiPrecompilati?.tipologiaServizioId.toString() || null,
+        livelloIntegrazioneId: richiestaCampiPrecompilati?.livelloIntegrazioneId.toString() || null,
+        identificativoBollettino: richiestaCampiPrecompilati.identificativoBollettino,
+        identificativoVerbale: richiestaCampiPrecompilati.identificativoVerbale,
+        targaVeicolo: richiestaCampiPrecompilati.targaVeicolo,
+        dataVerbale: richiestaCampiPrecompilati.dataVerbale,
+        codiceAvviso: richiestaCampiPrecompilati.codiceAvviso,
+        cfpiva: richiestaCampiPrecompilati.cfpiva
       }
     })
       .pipe(map((body: any) => {
