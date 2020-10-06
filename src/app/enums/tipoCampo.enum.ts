@@ -1,4 +1,4 @@
-export enum tipoCampo {
+export enum TipoCampoEnum {
   INPUT_TESTUALE = 'string',
   INPUT_NUMERICO = 'number',
   INPUT_PREZZO = 'importo',
