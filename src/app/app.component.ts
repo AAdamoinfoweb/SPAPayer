@@ -1,6 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {MenuService} from "./services/menu.service";
-import {tipologicaSelect} from './enums/tipologicaSelect.enum';
+import {TipologicaSelectEnum} from './enums/tipologicaSelect.enum';
 import {ToponomasticaService} from './services/toponomastica.service';
 import {map} from 'rxjs/operators';
 import {UserIdleService} from "angular-user-idle";
@@ -50,11 +50,11 @@ export class AppComponent implements OnInit {
 
   letturatipologicheSelect(): void {
     this.toponomasticaService.recuperaProvince().pipe(map(res => {
-      localStorage.setItem(tipologicaSelect.PROVINCE, JSON.stringify(res));
+      localStorage.setItem(TipologicaSelectEnum.PROVINCE, JSON.stringify(res));
     })).subscribe();
 
     this.toponomasticaService.recuperaComuni().pipe(map(res => {
-      localStorage.setItem(tipologicaSelect.COMUNI, JSON.stringify(res));
+      localStorage.setItem(TipologicaSelectEnum.COMUNI, JSON.stringify(res));
     })).subscribe();
   }
 }

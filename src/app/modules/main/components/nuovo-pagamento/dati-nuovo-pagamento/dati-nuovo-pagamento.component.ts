@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
-import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
+import {TipologicaSelectEnum} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
@@ -137,7 +137,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       controllo_logico: null,
       campo_input: true,
       json_path: null,
-      tipologica: tipologicaSelect.PROVINCE,
+      tipologica: TipologicaSelectEnum.PROVINCE,
       dipendeDa: null
     };
     campiMockati.push(campo);
@@ -157,7 +157,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       controllo_logico: null,
       campo_input: true,
       json_path: null,
-      tipologica: tipologicaSelect.COMUNI,
+      tipologica: TipologicaSelectEnum.COMUNI,
       dipendeDa: 2
       // dipendeDa: null
     };
@@ -523,7 +523,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           switch (campo.tipologica) {
             // Inserire qui logica per i vari campi select dipendenti da altre select
 
-            case tipologicaSelect.COMUNI:
+            case TipologicaSelectEnum.COMUNI:
               // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
               valoriSelect = valoriSelect.filter(valore => {
                 return valore.codiceIstat?.substring(0, 3) === valoreSelectPadre;
@@ -542,13 +542,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       switch (campo.tipologica) {
         // Inserire qui logica per l'impostazione delle opzioni dei vari tipi di select
 
-        case tipologicaSelect.PROVINCE:
+        case TipologicaSelectEnum.PROVINCE:
           opzioniSelect.push({
             value: valore.codice,
             label: valore.nome
           });
           break;
-        case tipologicaSelect.COMUNI:
+        case TipologicaSelectEnum.COMUNI:
           opzioniSelect.push({
             value: valore.codiceIstat,
             label: valore.nome
