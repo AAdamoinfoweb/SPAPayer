@@ -1,6 +1,6 @@
 import {CampoDettaglioTransazione} from './CampoDettaglioTransazione';
 
-export interface Bollettino {
+export class Bollettino {
   servizioId: number;
   enteId: number;
   cfpiva: string;
@@ -9,5 +9,5 @@ export interface Bollettino {
   anno: number;
   causale: string;
   iuv: string;
-  // listaCampoDettaglioTransazione: CampoDettaglioTransazione[];
+  listaCampoDettaglioTransazione: CampoDettaglioTransazione[];
 }

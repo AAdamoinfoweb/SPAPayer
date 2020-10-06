@@ -14,6 +14,7 @@ import {ECalendarValue} from 'ng2-date-picker';
 import {Router} from "@angular/router";
 import {DettaglioTransazioneEsito} from "../../../model/bollettino/DettaglioTransazioneEsito";
 import {of} from "rxjs";
+import {CampoDettaglioTransazione} from "../../../model/bollettino/CampoDettaglioTransazione";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -129,10 +130,6 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   salvaPerDopo(): void {
     // TODO logica salva per dopo
-  }
-
-  pagaOra(): void {
-    // TODO logica paga ora
   }
 
   getNumDocumento(): string {
@@ -386,10 +383,26 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     campo.opzioni = opzioniSelect;
   }
 
-  creaBollettino(): Array<Bollettino> {
-    const bollettini: Array<Bollettino> = new Array<Bollettino>();
-    // TODO logica di conversione fra oggetto model e array di bollettini
+  creaBollettino(): Bollettino[] {
+    const bollettini: Bollettino[] = [];
+    let bollettino: Bollettino = new Bollettino();
+    bollettino.servizioId = this.servizio.id;
+    bollettino.enteId = this.servizio.enteId;
+    bollettino.numero = this.getNumDocumento();
+    bollettino.anno = 0;
+    bollettino.causale = '';
+    bollettino.cfpiva = '';
+    bollettino.importo = this.model.importo;
 
+    bollettino.listaCampoDettaglioTransazione = [];
+    this.listaCampi.forEach(campo => {
+      const nomeCampo = this.getNomeCampoForm(campo);
+      let field: CampoDettaglioTransazione = new CampoDettaglioTransazione();
+      field.titolo = nomeCampo;
+      field.valore = this.model[nomeCampo];
+      bollettino.listaCampoDettaglioTransazione.push(field);
+    });
+    bollettini.push(bollettino);
     return bollettini;
   }
 
