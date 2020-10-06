@@ -10,6 +10,7 @@ import {CampiNuovoPagamento} from '../modules/main/model/CampiNuovoPagamento';
 import {DettaglioTransazioneEsito} from '../modules/main/model/bollettino/DettaglioTransazioneEsito';
 import {Bollettino} from '../modules/main/model/bollettino/Bollettino';
 import {EsitoEnum} from '../enums/esito.enum';
+import {RichiestaCampiPrecompilati} from "../modules/main/model/RichiestaCampiPrecompilati";
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class NuovoPagamentoService {
       withCredentials: true,
       params: {
         livelloTerritorialeId: idLivelloTerritoriale
-      }, withCredentials: true
+      }
     })
       .pipe(map((body: any) => {
         return body;
@@ -56,7 +57,7 @@ export class NuovoPagamentoService {
       withCredentials: true,
       params: {
         enteId: idEnte
-      }, withCredentials: true
+      }
     })
       .pipe(map((body: any) => {
         return body;
@@ -68,7 +69,7 @@ export class NuovoPagamentoService {
       withCredentials: true,
       params: {
         servizioId: idServizio
-      }, withCredentials: true
+      }
     })
       .pipe(map((body: any) => {
         return body;
