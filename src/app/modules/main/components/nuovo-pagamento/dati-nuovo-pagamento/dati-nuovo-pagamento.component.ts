@@ -179,8 +179,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         this.model = {
           importo: null
         };
-        this.impostaCampi(campiNuovoPagamento.);
-        this.impostaCampi(this.listaCampiServizio);
+        this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
+        this.impostaCampi(campiNuovoPagamento.campiServizio);
       })).subscribe();
     }
   }
