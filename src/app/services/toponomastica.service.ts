@@ -16,14 +16,18 @@ export class ToponomasticaService {
   constructor(private http: HttpClient) { }
 
   recuperaProvince(): Observable<Comune[]> {
-    return this.http.get(environment.bffBaseUrl + this.provinceUrl)
+    return this.http.get(environment.bffBaseUrl + this.provinceUrl, {
+      withCredentials: true
+    })
       .pipe(map((body: any) => {
         return body;
       }));
   }
 
   recuperaComuni(): Observable<Comune[]> {
-    return this.http.get(environment.bffBaseUrl + this.comuniUrl)
+    return this.http.get(environment.bffBaseUrl + this.comuniUrl, {
+      withCredentials: true
+    })
       .pipe(map((body: any) => {
         return body;
       }));

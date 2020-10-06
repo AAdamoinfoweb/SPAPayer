@@ -34,7 +34,9 @@ export class NuovoPagamentoService {
   }
 
   recuperaFiltroLivelloTerritoriale(): Observable<LivelloTerritoriale[]> {
-    return this.http.get(environment.bffBaseUrl + this.filtroLivelloTerritorialeUrl)
+    return this.http.get(environment.bffBaseUrl + this.filtroLivelloTerritorialeUrl, {
+      withCredentials: true
+    })
       .pipe(map((body: any) => {
         return body;
       }));
@@ -42,6 +44,7 @@ export class NuovoPagamentoService {
 
   recuperaFiltroEnti(idLivelloTerritoriale): Observable<Ente[]> {
     return this.http.get(environment.bffBaseUrl + this.filtroEntiUrl, {
+      withCredentials: true,
       params: {
         livelloTerritorialeId: idLivelloTerritoriale
       }
@@ -53,6 +56,7 @@ export class NuovoPagamentoService {
 
   recuperaFiltroServizi(idEnte): Observable<Servizio[]> {
     return this.http.get(environment.bffBaseUrl + this.filtroServiziUrl, {
+      withCredentials: true,
       params: {
         enteId: idEnte
       }
@@ -64,6 +68,7 @@ export class NuovoPagamentoService {
 
   recuperaCampiSezioneDati(idServizio): Observable<CampiNuovoPagamento> {
     return this.http.get(environment.bffBaseUrl + this.campiNuovoPagamentoUrl, {
+      withCredentials: true,
       params: {
         servizioId: idServizio
       }
@@ -75,6 +80,7 @@ export class NuovoPagamentoService {
 
   recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati: RichiestaCampiPrecompilati): Observable<CampiNuovoPagamento> {
     return this.http.get(environment.bffBaseUrl + this.campiNuovoPagamentoUrl, {
+      withCredentials: true,
       params: {
         servizioId: richiestaCampiPrecompilati.servizioId?.toString() || null,
         tipologiaServizioId: richiestaCampiPrecompilati?.tipologiaServizioId.toString() || null,
@@ -100,7 +106,8 @@ export class NuovoPagamentoService {
       params = {idDettaglioTransazione};
 
     return this.http.get(environment.bffBaseUrl + this.verificaBollettinoUrl, {
-      params: params, withCredentials: true
+      withCredentials: true,
+      params: params
     })
       .pipe(map((body: any) => EsitoEnum[body]),
         catchError((err, caught) => {
