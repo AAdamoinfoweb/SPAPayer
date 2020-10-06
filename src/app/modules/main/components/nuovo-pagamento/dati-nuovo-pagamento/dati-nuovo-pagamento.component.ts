@@ -130,11 +130,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   salvaPerDopo(): void {
     // TODO logica salva per dopo
   }
-
-  pagaOra(): void {
-    // TODO logica paga ora
-  }
-
+  
   getNumDocumento(): string {
     let chiave: string = null;
 
