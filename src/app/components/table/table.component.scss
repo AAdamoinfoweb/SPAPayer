@@ -196,3 +196,7 @@
     }
   }
 }
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  color: #FFFFFF !important;
+}
