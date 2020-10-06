@@ -34,8 +34,6 @@ export class GestisciUtentiComponent implements OnInit {
       {field: 'iconaUtente', header: '', type: tipoColonna.ICONA},
       {field: 'id', header: 'User ID (Cod. Fisc.)', type: tipoColonna.TESTO},
       {field: 'nome', header: 'Cognome e Nome', type: tipoColonna.TESTO},
-      {field: 'societa', header: 'Società', type: tipoColonna.LINK},
-      {field: 'ente', header: 'Ente', type: tipoColonna.LINK},
       {field: 'gruppoAbilitazioni', header: 'Gruppi Abilitazioni', type: tipoColonna.TESTO},
       {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
       {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
@@ -69,8 +67,6 @@ export class GestisciUtentiComponent implements OnInit {
       iconaUtente: Utils.creaIcona('assets/img/sprite.svg#it-user', '#ef8157', nomeUtente, 'none'),
       id: utente.codiceFiscale.toUpperCase(),
       nome: nomeUtente,
-      societa: Utils.creaLink('DXC Technology', 'www.dxc.com'),
-      ente: Utils.creaLink('INPS', 'www.inps.it'),
       gruppoAbilitazioni: utente.gruppo,
       scadenza: utente.dataFineValidita,
       ultimoAccesso: utente.ultimoAccesso
