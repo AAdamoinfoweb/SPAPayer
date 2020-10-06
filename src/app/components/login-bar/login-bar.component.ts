@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
-import {StickyService} from './StickyService';
+import {LoginBarService} from '../../services/login-bar.service';
 import {MenuService} from '../../services/menu.service';
 import {environment} from 'src/environments/environment';
 
@@ -10,7 +10,7 @@ import {environment} from 'src/environments/environment';
 })
 export class LoginBarComponent implements OnInit, AfterViewInit {
 
-  constructor(private stickyService: StickyService,
+  constructor(private stickyService: LoginBarService,
               private menuService: MenuService) {
   }
 
