@@ -236,7 +236,8 @@
     <div *ngIf="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento)"
          class="col-10 text-right button-space">
           <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top">
-            <button id="bottoneSalvaPerDopo" class="btn btn-secondary" [disabled]="isUtenteAnonimo" (click)="salvaPerDopo()">Salva per dopo</button>
+            <button id="bottoneSalvaPerDopo" class="btn btn-secondary"
+                    [disabled]="isUtenteAnonimo || (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid)" (click)="salvaPerDopo()">Salva per dopo</button>
           </span>
       <button id="bottoneAggiungiAlCarrello" class="btn btn-secondary"
               [disabled]="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid" (click)="aggiungiAlCarrello()">Aggiungi al carrello</button>
@@ -245,7 +246,7 @@
     </div>
     <div *ngIf="livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && !isFaseVerificaPagamento"
          class="col-10 text-right">
-      <button id="bottoneProcedi" class="btn" (click)="clickProcedi()" [disabled]="form.invalid">Procedi</button>
+      <button id="bottoneProcedi" class="btn" [disabled]="form.invalid" (click)="clickProcedi()">Procedi</button>
     </div>
   </div>
 </form>
