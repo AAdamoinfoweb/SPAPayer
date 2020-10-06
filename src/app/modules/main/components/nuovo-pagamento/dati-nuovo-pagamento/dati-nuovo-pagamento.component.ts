@@ -68,8 +68,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService,
-              private cdr: ChangeDetectorRef) {
+  constructor(private nuovoPagamentoService: NuovoPagamentoService) {
   }
 
   ngOnInit(): void {
