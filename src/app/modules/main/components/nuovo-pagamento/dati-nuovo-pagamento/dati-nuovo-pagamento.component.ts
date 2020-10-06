@@ -5,7 +5,7 @@ import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.ser
 import {map} from 'rxjs/operators';
 import {tipologicaSelect} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
-import {tipoCampo} from '../../../../../enums/tipoCampo.enum';
+import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
 import {Servizio} from '../../../model/Servizio';
 import {LivelloIntegrazioneEnum} from '../../../../../enums/livelloIntegrazione.enum';
 import {EsitoEnum} from '../../../../../enums/esito.enum';
@@ -18,7 +18,7 @@ import {ECalendarValue} from 'ng2-date-picker';
   styleUrls: ['../nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
 export class DatiNuovoPagamentoComponent implements OnInit {
-  tipoCampo = tipoCampo; // per passare l'enum al template html
+  TipoCampoEnum = TipoCampoEnum; // per passare l'enum al template html
 
   LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
   livelloIntegrazioneId: number = null;
@@ -106,7 +106,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 1,
       titolo: 'Importo',
       obbligatorio: true,
-      tipoCampo: tipoCampo.INPUT_PREZZO,
+      TipoCampoEnum: TipoCampoEnum.INPUT_PREZZO,
       informazioni: 'Inserisci un importo',
       lunghezzaVariabile: true,
       lunghezza: 5,
@@ -126,7 +126,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 2,
       titolo: 'Provincia residenza',
       obbligatorio: true,
-      tipoCampo: tipoCampo.SELECT,
+      TipoCampoEnum: TipoCampoEnum.SELECT,
       informazioni: 'Seleziona',
       lunghezzaVariabile: true,
       lunghezza: 8,
@@ -146,7 +146,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 3,
       titolo: 'Comune residenza',
       obbligatorio: true,
-      tipoCampo: tipoCampo.SELECT,
+      TipoCampoEnum: TipoCampoEnum.SELECT,
       informazioni: 'Seleziona',
       lunghezzaVariabile: true,
       lunghezza: 8,
@@ -167,7 +167,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 4,
       titolo: 'Testo',
       obbligatorio: true,
-      tipoCampo: tipoCampo.INPUT_TESTUALE,
+      TipoCampoEnum: TipoCampoEnum.INPUT_TESTUALE,
       informazioni: 'Inserisci un testo',
       lunghezzaVariabile: true,
       lunghezza: 20,
@@ -187,7 +187,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 5,
       titolo: 'Data small',
       obbligatorio: true,
-      tipoCampo: tipoCampo.DATEDDMMYY,
+      TipoCampoEnum: TipoCampoEnum.DATEDDMMYY,
       informazioni: 'Inserisci una data',
       lunghezzaVariabile: true,
       lunghezza: 5,
@@ -207,7 +207,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 6,
       titolo: 'Data large',
       obbligatorio: true,
-      tipoCampo: tipoCampo.DATEDDMMYY,
+      TipoCampoEnum: TipoCampoEnum.DATEDDMMYY,
       informazioni: 'Inserisci una data',
       lunghezzaVariabile: true,
       lunghezza: 20,
@@ -227,7 +227,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 7,
       titolo: 'DataMMYY',
       obbligatorio: true,
-      tipoCampo: tipoCampo.DATEMMYY,
+      TipoCampoEnum: TipoCampoEnum.DATEMMYY,
       informazioni: 'Inserisci un mese e un anno',
       lunghezzaVariabile: true,
       lunghezza: 15,
@@ -247,7 +247,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       id: 8,
       titolo: 'DataYY',
       obbligatorio: true,
-      tipoCampo: tipoCampo.DATEYY,
+      TipoCampoEnum: TipoCampoEnum.DATEYY,
       informazioni: 'Inserisci un anno',
       lunghezzaVariabile: true,
       lunghezza: 5,
@@ -273,9 +273,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
-    } else if (campo.tipoCampo === tipoCampo.DATEDDMMYY || campo.tipoCampo === tipoCampo.DATEMMYY || campo.tipoCampo === tipoCampo.DATEYY) {
+    } else if (campo.tipoCampo === TipoCampoEnum.DATEDDMMYY || campo.tipoCampo === TipoCampoEnum.DATEMMYY || campo.tipoCampo === TipoCampoEnum.DATEYY) {
       classe = 'col-md-2';
-    } else if (campo.tipoCampo === tipoCampo.INPUT_PREZZO) {
+    } else if (campo.tipoCampo === TipoCampoEnum.INPUT_PREZZO) {
       classe = 'col-md-2';
     } else {
       if (campo.lunghezza <= this.lunghezzaMaxCol1) {
@@ -300,7 +300,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
       this.model[nomeCampo] = null;
 
-      if (campo.tipoCampo === tipoCampo.SELECT && campo.dipendeDa) {
+      if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {
         this.form.controls[nomeCampo].disable();
         campo.opzioni = [];
       }
@@ -366,7 +366,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     const valoreCampo = this.model[nomeCampo];
 
     switch (campo.tipoCampo) {
-      case tipoCampo.INPUT_TESTUALE:
+      case TipoCampoEnum.INPUT_TESTUALE:
         if (valoreCampo === '') {
           this.model[nomeCampo] = null;
         }
@@ -398,16 +398,16 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       if (campo.controllo_logico?.regex) { validatori.push(Validators.pattern(campo.controllo_logico.regex)); }
 
       switch (campo.tipoCampo) {
-        case tipoCampo.INPUT_NUMERICO:
+        case TipoCampoEnum.INPUT_NUMERICO:
           validatori.push(Validators.min(0));
           break;
-        case tipoCampo.INPUT_PREZZO:
+        case TipoCampoEnum.INPUT_PREZZO:
           validatori.push(Validators.min(0));
           break;
-        case tipoCampo.DATEYY:
+        case TipoCampoEnum.DATEYY:
           validatori.push(Validators.min(this.minDataYY));
           break;
-        case tipoCampo.SELECT:
+        case TipoCampoEnum.SELECT:
           this.impostaOpzioniSelect(campo);
           if (!campo.opzioni?.length) {
             campoForm.disable();
@@ -435,7 +435,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     if (this.isFaseVerificaPagamento) {
       return true;
     } else {
-      if (campo.tipoCampo === tipoCampo.SELECT && campo.dipendeDa) {
+      if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {
         return (campo.disabilitato || !campo.opzioni || campo.opzioni.length === 0) ? true : null;
       } else {
         return campo.disabilitato ? true : null;
@@ -459,10 +459,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         descrizione = 'Formato non valido';
       } else if (formControl.errors?.min) {
         switch (campo.tipoCampo) {
-          case tipoCampo.INPUT_NUMERICO:
+          case TipoCampoEnum.INPUT_NUMERICO:
             descrizione = 'Valore inferiore a ' + this.minInputNumerico;
             break;
-          case tipoCampo.DATEYY:
+          case TipoCampoEnum.DATEYY:
             descrizione = 'Valore inferiore a ' + this.minDataYY;
             break;
         }
