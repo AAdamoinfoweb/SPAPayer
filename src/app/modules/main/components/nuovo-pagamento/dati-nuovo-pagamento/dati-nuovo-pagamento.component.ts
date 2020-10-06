@@ -18,14 +18,13 @@ import {ECalendarValue} from 'ng2-date-picker';
   styleUrls: ['../nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
 export class DatiNuovoPagamentoComponent implements OnInit {
-  TipoCampoEnum = TipoCampoEnum; // per passare l'enum al template html
-
-  LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
+  readonly TipoCampoEnum = TipoCampoEnum;
+  readonly LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
   livelloIntegrazioneId: number = null;
 
   isFaseVerificaPagamento = false;
 
-  tipoData = ECalendarValue.String;
+  readonly tipoData = ECalendarValue.String;
 
   @Input()
   servizio: Servizio = null;
@@ -38,30 +37,15 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   form: FormGroup = new FormGroup({importo: this.importoFormControl});
   model = {importo: null};
 
-  minDataDDMMYY = '01/01/1900';
-  minDataMMYY = '01/1900';
-  minDataYY = 1900;
+  readonly minDataDDMMYY = '01/01/1900';
+  readonly minDataMMYY = '01/1900';
+  readonly minDataYY = 1900;
 
-  minInputNumerico = 0;
+  readonly minInputNumerico = 0;
 
-  lunghezzaMaxCol1: number = 5;
-  lunghezzaMaxCol2: number = 10;
-  lunghezzaMaxCol3: number = 15;
-
-  mesi: Array<OpzioneSelect> = [
-    {value: 1, label: 'gennaio'},
-    {value: 2, label: 'febbraio'},
-    {value: 3, label: 'marzo'},
-    {value: 4, label: 'aprile'},
-    {value: 5, label: 'maggio'},
-    {value: 6, label: 'giugno'},
-    {value: 7, label: 'luglio'},
-    {value: 8, label: 'agosto'},
-    {value: 9, label: 'settembre'},
-    {value: 10, label: 'ottobre'},
-    {value: 11, label: 'novembre'},
-    {value: 12, label: 'dicembre'}
-  ];
+  readonly lunghezzaMaxCol1: number = 5;
+  readonly lunghezzaMaxCol2: number = 10;
+  readonly lunghezzaMaxCol3: number = 15;
 
   isVisibile = true;
 
