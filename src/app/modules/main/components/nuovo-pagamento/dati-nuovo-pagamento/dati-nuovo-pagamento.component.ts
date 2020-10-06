@@ -256,6 +256,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     });
   }
 
+  getCampoDettaglioTransazione(nomeCampo: string) {
+    let campoForms: CampoForm[] = this.listaCampi.filter((value: CampoForm) => value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
+    if (campoForms.length > 0)
+      return this.getIdCampo(campoForms[0]);
+    else
+      return null;
+  }
+
   getNomeCampoForm(campo: CampoForm): string {
     return campo.titolo;
   }
@@ -399,9 +407,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     bollettino.servizioId = this.servizio.id;
     bollettino.enteId = this.servizio.enteId;
     bollettino.numero = this.getNumDocumento();
-    bollettino.anno = 0;
-    bollettino.causale = '';
-    bollettino.cfpiva = '';
+    bollettino.anno = this.model[this.getCampoDettaglioTransazione('anno_documento')];
+    bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
+    bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv')];
+    bollettino.cfpiva = this.model[this.getCampoDettaglioTransazione('codice_fiscale_pagatore')];
     bollettino.importo = this.model.importo;
 
     bollettino.listaCampoDettaglioTransazione = [];

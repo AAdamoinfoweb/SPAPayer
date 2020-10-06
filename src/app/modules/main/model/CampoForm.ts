@@ -17,6 +17,7 @@ export class CampoForm {
   campo_input: boolean;
   json_path: string;
   tipologica: string;
+  campoDettaglioTransazione: string;
   dipendeDa: number;
   opzioni: Array<OpzioneSelect>;
 }
