@@ -15,6 +15,7 @@ import {Router} from "@angular/router";
 import {DettaglioTransazioneEsito} from "../../../model/bollettino/DettaglioTransazioneEsito";
 import {of} from "rxjs";
 import {CampoDettaglioTransazione} from "../../../model/bollettino/CampoDettaglioTransazione";
+import {RichiestaCampiPrecompilati} from '../../../model/RichiestaCampiPrecompilati';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -78,7 +79,16 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   clickProcedi(): void {
     this.isFaseVerificaPagamento = true;
-    // TODO logica bottone procedi
+    const richiestaCampiPrecompilati = new RichiestaCampiPrecompilati();
+    richiestaCampiPrecompilati.servizioId = this.servizio.id;
+    richiestaCampiPrecompilati.tipologiaServizioId = this.servizio.tipologiaServizioId;
+    richiestaCampiPrecompilati.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
+
+    if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2_BACK_OFFICE) {
+      // TODO logica LV2BO
+    } else if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
+      // TODO logica LV3
+    }
   }
 
   aggiornaVisibilita(): void {

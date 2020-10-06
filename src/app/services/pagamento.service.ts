@@ -73,8 +73,7 @@ export class PagamentoService {
     params.set('esito', esito);
 
     return this.http.get(environment.bffBaseUrl + this.quietanzaUrl+'?idSession='+idSession+'&esito='+esito, {
-
-
+      withCredentials: true
     })
       .pipe(map((body: any) => body.url),
         catchError((err, caught) => {
