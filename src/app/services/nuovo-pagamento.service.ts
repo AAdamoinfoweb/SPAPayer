@@ -25,6 +25,7 @@ export class NuovoPagamentoService {
 
   compilazioneEvent: EventEmitter<Servizio> = new EventEmitter<Servizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
+  pulisciEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private http: HttpClient) {
   }

@@ -20,11 +20,22 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   enteSelezionato: Ente = null;
   servizioSelezionato: Servizio = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService) { }
+  constructor(private nuovoPagamentoService: NuovoPagamentoService) {
+    this.nuovoPagamentoService.pulisciEvent.subscribe(() => {
+      this.pulisci();
+    });
+  }
 
   ngOnInit(): void {
     this.recuperaFiltroLivelloTerritoriale();
-}
+  }
+
+  pulisci(): void {
+    this.livelloTerritorialeSelezionato = null;
+    this.enteSelezionato = null;
+    this.servizioSelezionato = null;
+    this.nuovoPagamentoService.compilazioneEvent.emit(null);
+  }
 
   recuperaFiltroLivelloTerritoriale(): void {
     this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {

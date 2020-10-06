@@ -288,6 +288,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
         campo.opzioni = [];
       }
     });
+
+    this.nuovoPagamentoService.pulisciEvent.emit(true);
   }
 
   salvaPerDopo(): void {
