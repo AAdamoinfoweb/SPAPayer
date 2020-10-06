@@ -257,9 +257,9 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   getCampoDettaglioTransazione(nomeCampo: string) {
-    let campoForms: CampoForm[] = this.listaCampi.filter((value: CampoForm) => value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
+    let campoForms: CampoForm[] = this.listaCampi.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
     if (campoForms.length > 0)
-      return this.getIdCampo(campoForms[0]);
+      return this.getNomeCampoForm(campoForms[0]);
     else
       return null;
   }
