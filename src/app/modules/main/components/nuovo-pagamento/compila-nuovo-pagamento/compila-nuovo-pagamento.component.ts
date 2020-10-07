@@ -3,7 +3,7 @@ import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.ser
 import {map} from 'rxjs/operators';
 import {LivelloTerritoriale} from '../../../model/LivelloTerritoriale';
 import {Ente} from '../../../model/Ente';
-import {Servizio} from '../../../model/Servizio';
+import {FiltroServizio} from '../../../model/FiltroServizio';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 
 @Component({
@@ -18,7 +18,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
 
   livelloTerritorialeSelezionato: LivelloTerritoriale = null;
   enteSelezionato: Ente = null;
-  servizioSelezionato: Servizio = null;
+  servizioSelezionato: FiltroServizio = null;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService) {
     this.nuovoPagamentoService.pulisciEvent.subscribe(() => {

@@ -1,12 +1,12 @@
 <div *ngIf="this.banners" class="container-fluid">
   <div *ngFor="let banner of this.banners">
-    <div [ngClass]="classe" role="alert">
+    <div [ngClass]="banner.classe" role="alert">
       <div class="row">
         <div class="col">
           <h5 class="alert-heading">{{banner.titolo}}</h5>
         </div>
         <div class="col">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="onClick(banner)">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>

@@ -1,5 +1,5 @@
 import {Component, HostListener, Input, OnInit} from '@angular/core';
-import {StickyService} from '../login-bar/StickyService';
+import {LoginBarService} from '../../services/login-bar.service';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
 import {MenuService} from '../../services/menu.service';
@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
   testoAccedi = 'Accedi';
   isAnonimo = false;
 
-  constructor(private stickyService: StickyService, private router: Router,
+  constructor(private stickyService: LoginBarService, private router: Router,
               private nuovoPagamentoService: NuovoPagamentoService, private menuService: MenuService) {
   }
 
