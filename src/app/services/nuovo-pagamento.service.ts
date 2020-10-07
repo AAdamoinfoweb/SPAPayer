@@ -11,6 +11,8 @@ import {DettaglioTransazioneEsito} from '../modules/main/model/bollettino/Dettag
 import {Bollettino} from '../modules/main/model/bollettino/Bollettino';
 import {EsitoEnum} from '../enums/esito.enum';
 import {RichiestaCampiPrecompilati} from "../modules/main/model/RichiestaCampiPrecompilati";
+import {DettagliTransazione} from "../modules/main/model/bollettino/DettagliTransazione";
+import {Carrello} from "../modules/main/model/Carrello";
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +22,14 @@ export class NuovoPagamentoService {
   private readonly filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
   private readonly filtroEntiUrl = '/filtroEnti';
   private readonly filtroServiziUrl = '/filtroServizi';
+
   private readonly campiNuovoPagamentoUrl = '/campiNuovoPagamento';
   private readonly verificaBollettinoUrl = '/verificaBollettino';
   private readonly inserimentoBollettinoUrl = '/bollettino';
   private readonly inserimentoCarrelloUrl = '/carrello';
   private readonly campiPrecompilatiUrl = '/datiPagamento';
+  private salvaPerDopoUrl = '/salvaPerDopo';
+  private carrelloUrl = '/carrello';
 
   compilazioneEvent: EventEmitter<FiltroServizio> = new EventEmitter<FiltroServizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -81,8 +86,8 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati: RichiestaCampiPrecompilati): Observable<CampiNuovoPagamento> {
-    return this.http.get(environment.bffBaseUrl + this.campiNuovoPagamentoUrl, {
+  recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati: RichiestaCampiPrecompilati): Observable<Object> {
+    return this.http.get(environment.bffBaseUrl + this.campiPrecompilatiUrl, {
       withCredentials: true,
       params: {
         servizioId: richiestaCampiPrecompilati.servizioId?.toString() || null,
@@ -139,8 +144,8 @@ return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JS
       }));
   }
 
-  inserimentoCarrello(value: DettaglioTransazioneEsito)  {
-    return this.http.post(environment.bffBaseUrl + this.inserimentoCarrelloUrl, value,
+  inserimentoCarrello(value: DettagliTransazione): Observable<any>  {
+    return this.http.post(environment.bffBaseUrl + this.inserimentoCarrelloUrl, JSON.stringify(value),
       {withCredentials: true}).pipe(map((body: any) => {
         return body;
       }),
@@ -151,5 +156,33 @@ return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JS
           return caught;
         }
       }));
+  }
+
+  salvaPerDopo(value: DettagliTransazione): Observable<any> {
+    return this.http.post(environment.bffBaseUrl + this.salvaPerDopoUrl, JSON.stringify(value),
+      {withCredentials: true}).pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
+      }));
+  }
+
+  getCarrello(): Observable<Carrello> {
+    return this.http.get(environment.bffBaseUrl + this.carrelloUrl)
+      .pipe(map((body: any) => body),
+        catchError((err, caught) => {
+          if (err.status == 401) {
+            return of('');
+          } else if (err.status == 500) {
+            return of('');
+          } else {
+            return caught;
+          }
+        }));
   }
 }

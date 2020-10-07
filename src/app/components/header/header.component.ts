@@ -30,9 +30,9 @@ export class HeaderComponent implements OnInit {
     this.stickyService.stickyEvent.subscribe((value: number) => this.maxHeightOffset = value);
     this.router.events.pipe(filter(evento => evento instanceof NavigationEnd)).subscribe(event => {
       this.isPaginaNuovoPagamento = window.location.pathname === this.urlNuovoPagamento;
-    })
+    });
     this.nuovoPagamentoService.prezzoEvent.subscribe((prezzo: number) => {
-      this.prezzoCarrello = prezzo
+      this.prezzoCarrello = this.prezzoCarrello == null ? prezzo : this.prezzoCarrello + prezzo;
     });
   }
 

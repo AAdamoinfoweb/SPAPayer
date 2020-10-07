@@ -20,7 +20,7 @@
   <div id="sezioneDati" class="collapse show">
     <div class="page-section">
       <div class="row">
-        <div *ngFor="let campo of listaCampi" [ngClass]="calcolaDimensioneCampo(campo)">
+        <div *ngFor="let campo of listaCampiDinamici" [ngClass]="calcolaDimensioneCampo(campo)">
           <div [ngSwitch]="campo.tipoCampo" class="form-elem-container">
 
             <div *ngSwitchCase="TipoCampoEnum.INPUT_TESTUALE" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
@@ -194,7 +194,7 @@
   </div>
 
   <!--Input importo-->
-  <div class="page-section" *ngIf="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento)">
+  <div class="page-section" *ngIf="mostraCampoImporto">
     <div class="row">
       <div class="offset-md-8 col-md-4">
         <div class="form-elem-container required">
@@ -208,7 +208,7 @@
               class="price-input"
               id="importoTotale"
               [formControl]="importoFormControl"
-              [(ngModel)]="model.importo"
+              [(ngModel)]="model[importoNomeCampo]"
               type="tel"
               currencyMask
               [options]="{allowNegative: false, prefix: '', precision: 2, decimal: '.', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
@@ -229,15 +229,15 @@
       <button id="bottonePulisci" class="btn btn-secondary" (click)="clickPulisci()">Pulisci</button>
     </div>
     <div *ngIf="livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento" class="col-2">
-      <button id="bottoneIndietro" class="btn btn-secondary" (click)="tornaAdInserimentoDati()">Indietro</button>
+      <button id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">Indietro</button>
     </div>
 
     <!-- Bottoni dx -->
     <div *ngIf="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento)"
          class="col-10 text-right button-space">
           <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top">
-            <button id="bottoneSalvaPerDopo" class="btn btn-secondary"
-                    [disabled]="isUtenteAnonimo || (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid)" (click)="salvaPerDopo()">Salva per dopo</button>
+            <button (click)="salvaPerDopo()" id="bottoneSalvaPerDopo" class="btn btn-secondary"
+                    [disabled]="isUtenteAnonimo || (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid)">Salva per dopo</button>
           </span>
       <button id="bottoneAggiungiAlCarrello" class="btn btn-secondary"
               [disabled]="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid" (click)="aggiungiAlCarrello()">Aggiungi al carrello</button>

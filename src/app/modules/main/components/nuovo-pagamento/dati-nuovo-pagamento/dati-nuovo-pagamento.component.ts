@@ -1,8 +1,8 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
-import {map} from 'rxjs/operators';
+import {flatMap, map} from 'rxjs/operators';
 import {TipologicaSelectEnum} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
@@ -12,18 +12,25 @@ import {EsitoEnum} from '../../../../../enums/esito.enum';
 import {Bollettino} from '../../../model/bollettino/Bollettino';
 import {ECalendarValue} from 'ng2-date-picker';
 import {Router} from '@angular/router';
-import {DettaglioTransazioneEsito} from '../../../model/bollettino/DettaglioTransazioneEsito';
-import {of} from 'rxjs';
 import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettaglioTransazione';
+import {observable, Observable, of} from "rxjs";
 import {RichiestaCampiPrecompilati} from '../../../model/RichiestaCampiPrecompilati';
 import {TipologiaServizioEnum} from '../../../../../enums/tipologiaServizio.enum';
+import {DettagliTransazione} from "../../../model/bollettino/DettagliTransazione";
+import {DettaglioTransazioneEsito} from "../../../model/bollettino/DettaglioTransazioneEsito";
+import {Banner} from "../../../model/Banner";
+import {getBannerType, LivelloBanner} from "../../../../../enums/livelloBanner.enum";
+import {BannerService} from "../../../../../services/banner.service";
+import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mappingCampoInputPrecompilazione.enum';
+
+import {JSONPath} from 'jsonpath-plus';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
   templateUrl: './dati-nuovo-pagamento.component.html',
   styleUrls: ['../nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
-export class DatiNuovoPagamentoComponent implements OnInit {
+export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   readonly TipoCampoEnum = TipoCampoEnum;
   readonly LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
   livelloIntegrazioneId: number = null;
@@ -35,11 +42,13 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   @Input()
   servizio: FiltroServizio = null;
 
-  listaCampi: Array<CampoForm> = [];
+  listaCampiDinamici: Array<CampoForm> = [];
+  form: FormGroup = new FormGroup({});
+  model = {};
 
-  importoFormControl: FormControl = new FormControl(null, Validators.required);
-  form: FormGroup = new FormGroup({importo: this.importoFormControl});
-  model = {importo: null};
+  readonly importoNomeCampo = 'Importo';
+  readonly importoFormControl: FormControl = new FormControl(null, Validators.required);
+  mostraCampoImporto = null;
 
   readonly minDataDDMMYY = '01/01/1900';
   readonly minDataMMYY = '01/1900';
@@ -58,12 +67,19 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private router: Router,
+              private bannerService: BannerService,
               private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
     this.checkUtenteLoggato();
     this.inizializzazioneForm(this.servizio);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.servizio) {
+      this.inizializzazioneForm(this.servizio);
+    }
   }
 
   checkUtenteLoggato(): void {
@@ -73,42 +89,58 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       : null;
   }
 
-  tornaAdInserimentoDati(): void {
+  clickIndietro(): void {
     this.isFaseVerificaPagamento = false;
+    this.rimuoviCampoImporto();
     // TODO logica bottone indietro
   }
 
   clickProcedi(): void {
-    this.isFaseVerificaPagamento = true;
-    const richiestaCampiPrecompilati = new RichiestaCampiPrecompilati();
     const isTipologiaServizioValida = this.servizio.tipologiaServizioCodice in TipologiaServizioEnum;
 
     if (isTipologiaServizioValida) {
+      this.isFaseVerificaPagamento = true;
+      this.aggiungiCampoImporto();
+
+      const richiestaCampiPrecompilati = new RichiestaCampiPrecompilati();
+
       richiestaCampiPrecompilati.servizioId = this.servizio.id;
       richiestaCampiPrecompilati.tipologiaServizioId = this.servizio.tipologiaServizioId;
       richiestaCampiPrecompilati.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
-
-      // TODO sostituire valori undefined con valori reali
 
       if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2_BACK_OFFICE) {
         if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.PRM
           || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.MAV
           || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.FRC) {
-          richiestaCampiPrecompilati.identificativoBollettino = undefined;
+          richiestaCampiPrecompilati.identificativoBollettino = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.identificativoBollettino);
         } else if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.CDS) {
-          richiestaCampiPrecompilati.identificativoVerbale = undefined;
-          richiestaCampiPrecompilati.targaVeicolo = undefined;
-          richiestaCampiPrecompilati.dataVerbale = undefined;
+          richiestaCampiPrecompilati.identificativoVerbale = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.identificativoVerbale);
+          richiestaCampiPrecompilati.targaVeicolo = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.targaVeicolo);
+          richiestaCampiPrecompilati.dataVerbale = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.dataVerbale);
         }
       } else if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
-          richiestaCampiPrecompilati.codiceAvviso = undefined;
-          richiestaCampiPrecompilati.cfpiva = undefined;
+          richiestaCampiPrecompilati.codiceAvviso = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.codiceAvviso);
+          richiestaCampiPrecompilati.cfpiva = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.cfpiva);
       }
 
       this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati).subscribe((valoriCampiPrecompilati) => {
-        // TODO logica mapping valori
+        // TODO (attendere implementazione backend di /datiPagamento) testare mapping campi output con chiamata backend
+        const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+        campiOutput.forEach(campo => {
+          this.model[this.getNomeCampoForm(campo)] = JSONPath({
+            path: campo.jsonPath,
+            json: valoriCampiPrecompilati
+          });
+        });
       });
     }
+  }
+
+  mappaCampoInput(mappingCampoInputPrecompilazioneEnum: MappingCampoInputPrecompilazioneEnum) {
+    const campo = this.listaCampiDinamici.find(campo => campo.campo_input && campo.jsonPath === mappingCampoInputPrecompilazioneEnum);
+    const valoreCampo = campo ? this.model[this.getNomeCampoForm(campo)] : null;
+
+    return valoreCampo;
   }
 
   aggiornaVisibilita(): void {
@@ -144,7 +176,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   clickPulisci(): void {
     this.form.reset();
 
-    this.listaCampi.forEach(campo => {
+    this.listaCampiDinamici.forEach(campo => {
       const nomeCampo = this.getNomeCampoForm(campo);
 
       this.model[nomeCampo] = null;
@@ -158,16 +190,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.nuovoPagamentoService.pulisciEvent.emit(true);
   }
 
-  salvaPerDopo(): void {
-    // TODO logica salva per dopo
-  }
-
   getNumDocumento(): string {
     let chiave: string = null;
 
     const campiChiave = [];
 
-    this.listaCampi.forEach(campo => {
+    this.listaCampiDinamici.forEach(campo => {
       if (campo.chiave) {
         campiChiave.push(campo);
       }
@@ -190,7 +218,32 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.nuovoPagamentoService.prezzoEvent.emit(this.model.importo);
+    this.nuovoPagamentoService.prezzoEvent.emit(this.model[this.importoNomeCampo]);
+  }
+
+  creaForm(): void {
+    this.listaCampiDinamici = [];
+    this.form = new FormGroup({});
+    this.model = {};
+    this.importoFormControl.reset();
+    this.mostraCampoImporto = null;
+    this.isFaseVerificaPagamento = false;
+
+    if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2) {
+      this.aggiungiCampoImporto();
+    }
+  }
+
+  aggiungiCampoImporto(): void {
+    this.mostraCampoImporto = true;
+    this.form.addControl(this.importoNomeCampo, this.importoFormControl);
+    this.model[this.importoNomeCampo] = null;
+  }
+
+  rimuoviCampoImporto(): void {
+    this.mostraCampoImporto = false;
+    this.form.removeControl(this.importoNomeCampo);
+    delete this.model[this.importoNomeCampo];
   }
 
   inizializzazioneForm(servizio: FiltroServizio): void {
@@ -201,11 +254,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
       this.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
 
       this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
-        this.listaCampi = [];
-        this.form = new FormGroup({importo: this.importoFormControl});
-        this.model = {
-          importo: null
-        };
+        this.creaForm();
         this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
         this.impostaCampi(campiNuovoPagamento.campiServizio);
       })).subscribe();
@@ -272,12 +321,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
       this.model[this.getNomeCampoForm(campo)] = null;
       this.form.addControl(this.getNomeCampoForm(campo), campoForm);
-      this.listaCampi.push(campo);
+      this.listaCampiDinamici.push(campo);
     });
   }
 
   getCampoDettaglioTransazione(nomeCampo: string) {
-    let campoForms: CampoForm[] = this.listaCampi.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
+    let campoForms: CampoForm[] = this.listaCampiDinamici.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
     if (campoForms.length > 0)
       return this.getNomeCampoForm(campoForms[0]);
     else
@@ -362,7 +411,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   }
 
   getCampiDipendenti(campo: CampoForm): Array<CampoForm> {
-    return this.listaCampi.filter(item => {
+    return this.listaCampiDinamici.filter(item => {
       return item.dipendeDa === campo.id;
     });
   }
@@ -376,7 +425,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
       // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
       if (campo.dipendeDa) {
-        const selectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa);
+        const selectPadre = this.listaCampiDinamici.find(item => item.id === campo.dipendeDa);
         const valoreSelectPadre = this.form.controls[this.getNomeCampoForm(selectPadre)].value;
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
@@ -431,10 +480,10 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
     bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv')];
     bollettino.cfpiva = this.model[this.getCampoDettaglioTransazione('codice_fiscale_pagatore')];
-    bollettino.importo = this.model.importo;
+    bollettino.importo = this.model[this.importoNomeCampo];
 
     bollettino.listaCampoDettaglioTransazione = [];
-    this.listaCampi.forEach(campo => {
+    this.listaCampiDinamici.forEach(campo => {
       const nomeCampo = this.getNomeCampoForm(campo);
       let field: CampoDettaglioTransazione = new CampoDettaglioTransazione();
       field.titolo = nomeCampo;
@@ -447,25 +496,43 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   aggiungiAlCarrello() {
     const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
+    let observable: Observable<any>;
     if (anonimo) {
       const numeroDoc = this.getNumDocumento();
-      this.nuovoPagamentoService.verificaBollettino(numeroDoc)
-        .subscribe((result) => {
+      observable = this.nuovoPagamentoService.verificaBollettino(numeroDoc)
+        .pipe(map((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem(numeroDoc, JSON.stringify(this.model));
-            this.aggiornaPrezzoCarrello();
-            this.clickPulisci();
+            return null;
           } else {
             // show err
-
+            this.showMessage();
+            return of('error');
           }
-        });
+        }));
     } else {
-      this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
-        .pipe(map(() => {
-          return null;
-        })).subscribe();
+      observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+        .pipe(flatMap((result) => {
+          if (result.length > 0) {
+            let value: DettaglioTransazioneEsito = result[0];
+            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+              let dettaglio: DettagliTransazione = new DettagliTransazione();
+              dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
+              return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
+            } else {
+              // show err
+              this.showMessage();
+              return of('error');
+            }
+          }
+        }));
     }
+    observable.subscribe((result) => {
+      if (result != 'error') {
+        this.aggiornaPrezzoCarrello();
+        this.clickPulisci();
+      }
+    });
   }
 
   pagaOra() {
@@ -480,36 +547,64 @@ export class DatiNuovoPagamentoComponent implements OnInit {
             this.router.navigateByUrl("/carrello");
           } else {
             // show err
-
+            this.showMessage();
+            return of('error');
           }
         });
     } else {
-      this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
-        .pipe(map((result) => {
+      let observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+        .pipe(flatMap((result) => {
           if (result.length > 0) {
             let value: DettaglioTransazioneEsito = result[0];
             if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-              return this.nuovoPagamentoService.inserimentoCarrello(value)
-                .pipe(map(() => this.clickPulisci()));
+              let dettaglio: DettagliTransazione = new DettagliTransazione();
+              dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
+              return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
             } else {
               // show err
-
-              return of(null);
+              this.showMessage();
+              return of('error');
             }
           }
-
-          /*
-          result.forEach((value: DettaglioTransazioneEsito) => {
-            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-
-            } else {
-              // show err
-              return of(null);
-            }
-          });*/
-
-          return null;
-        })).subscribe();
+        }));
+      observable.subscribe((result) => {
+        if (result !== 'error') {
+          this.aggiornaPrezzoCarrello();
+          this.router.navigateByUrl("/carrello");
+        }
+      });
     }
+  }
+
+  salvaPerDopo() {
+    let observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+      .pipe(flatMap((result) => {
+        if (result.length > 0) {
+          let value: DettaglioTransazioneEsito = result[0];
+          if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+            let dettaglio: DettagliTransazione = new DettagliTransazione();
+            dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
+            return this.nuovoPagamentoService.salvaPerDopo(dettaglio);
+          } else {
+            // show err
+            this.showMessage();
+            return of('error');
+          }
+        }
+      }));
+    observable.subscribe((result) => {
+      if (result !== 'error') {
+        this.router.navigateByUrl('/iMieiPagamenti');
+      }
+    });
+  }
+a
+  private showMessage() {
+    const banner: Banner = {
+      titolo: 'Operazione non consentita!',
+      testo: 'Il bollettino è già stato pagato o in corso di pagamento. Per maggiori informazioni consultare la sezione i miei pagamenti o contattare l’help desk',
+      tipo: getBannerType(LivelloBanner.ERROR)
+    };
+    this.bannerService.bannerEvent.emit([banner]);
   }
 }
