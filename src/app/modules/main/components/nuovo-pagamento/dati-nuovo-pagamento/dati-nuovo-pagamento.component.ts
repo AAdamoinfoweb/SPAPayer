@@ -81,7 +81,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   clickProcedi(): void {
     this.isFaseVerificaPagamento = true;
     const richiestaCampiPrecompilati = new RichiestaCampiPrecompilati();
-    const isTipologiaServizioValida = Object.values(TipologiaServizioEnum).includes(this.servizio.tipologiaServizioCodice);
+    const isTipologiaServizioValida = this.servizio.tipologiaServizioCodice in TipologiaServizioEnum;
 
     if (isTipologiaServizioValida) {
       richiestaCampiPrecompilati.servizioId = this.servizio.id;
