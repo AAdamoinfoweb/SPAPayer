@@ -21,6 +21,7 @@ import {DettaglioTransazioneEsito} from "../../../model/bollettino/DettaglioTran
 import {Banner} from "../../../model/Banner";
 import {getBannerType, LivelloBanner} from "../../../../../enums/livelloBanner.enum";
 import {BannerService} from "../../../../../services/banner.service";
+import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mappingCampoInputPrecompilazione.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -111,21 +112,28 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.PRM
           || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.MAV
           || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.FRC) {
-          richiestaCampiPrecompilati.identificativoBollettino = undefined;
+          richiestaCampiPrecompilati.identificativoBollettino = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.identificativoBollettino);
         } else if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.CDS) {
-          richiestaCampiPrecompilati.identificativoVerbale = undefined;
-          richiestaCampiPrecompilati.targaVeicolo = undefined;
-          richiestaCampiPrecompilati.dataVerbale = undefined;
+          richiestaCampiPrecompilati.identificativoVerbale = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.identificativoVerbale);
+          richiestaCampiPrecompilati.targaVeicolo = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.targaVeicolo);
+          richiestaCampiPrecompilati.dataVerbale = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.dataVerbale);
         }
       } else if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
-        richiestaCampiPrecompilati.codiceAvviso = undefined;
-        richiestaCampiPrecompilati.cfpiva = undefined;
+          richiestaCampiPrecompilati.codiceAvviso = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.codiceAvviso);
+          richiestaCampiPrecompilati.cfpiva = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.cfpiva);
       }
 
       this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati).subscribe((valoriCampiPrecompilati) => {
-        // TODO logica mapping valori
+        // TODO logica mapping campi output
       });
     }
+  }
+
+  mappaCampoInput(mappingCampoInputPrecompilazioneEnum: MappingCampoInputPrecompilazioneEnum) {
+    const campo = this.listaCampiDinamici.find(campo => campo.campo_input && campo.jsonPath === mappingCampoInputPrecompilazioneEnum);
+    const valoreCampo = campo ? this.model[this.getNomeCampoForm(campo)] : null;
+
+    return valoreCampo;
   }
 
   aggiornaVisibilita(): void {
@@ -212,6 +220,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.model = {};
     this.importoFormControl.reset();
     this.mostraCampoImporto = null;
+    this.isFaseVerificaPagamento = false;
 
     if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2) {
       this.aggiungiCampoImporto();
