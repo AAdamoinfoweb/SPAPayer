@@ -136,36 +136,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     }
   }
 
-  // testJsonPath(): void {
-  //   let obj = {
-  //       "firstName": "John",
-  //       "lastName" : "doe",
-  //       "age"      : 26,
-  //       "address"  : {
-  //         "streetAddress": "naist street",
-  //         "city"         : "Nara",
-  //         "postalCode"   : "630-0192"
-  //       },
-  //       "phoneNumbers": [
-  //         {
-  //           "type"  : "iPhone",
-  //           "number": "0123-4567-8888"
-  //         },
-  //         {
-  //           "type"  : "home",
-  //           "number": "0123-4567-8910"
-  //         }
-  //       ]
-  //     }
-  //
-  //   const result = JSONPath({
-  //     path: '$.phoneNumbers[:1].type',
-  //     json: obj
-  //   })
-  //
-  //   console.log(result);
-  // }
-
   mappaCampoInput(mappingCampoInputPrecompilazioneEnum: MappingCampoInputPrecompilazioneEnum) {
     const campo = this.listaCampiDinamici.find(campo => campo.campo_input && campo.jsonPath === mappingCampoInputPrecompilazioneEnum);
     const valoreCampo = campo ? this.model[this.getNomeCampoForm(campo)] : null;
