@@ -120,7 +120,6 @@ export class GestisciUtentiComponent implements OnInit {
     listaUtentiFiltrati.forEach(utente => {
       this.tableData.rows.push(this.creaRigaTabella(utente));
     });
-    this.listaUtente = listaUtentiFiltrati;
   }
 
   getTestoConNumeroUtentiAttiviDisabilitati(): string {

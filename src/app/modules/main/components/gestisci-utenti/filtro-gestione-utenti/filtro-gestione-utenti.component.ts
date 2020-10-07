@@ -21,12 +21,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   isSubsectionFiltriVisible = true;
   arrowType = 'assets/img/sprite.svg#it-collapse';
 
-  // TODO recuperare società
-  listaSocieta: Array<OpzioneSelect> = [
-    {value: '1', label: 'mock societa 1'},
-    {value: '2', label: 'mock societa 2'}
-  ];
-
+  listaSocieta: Array<OpzioneSelect> = [];
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
@@ -51,23 +46,23 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   ngOnInit(): void {
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
 
-    // this.letturaSocieta();
+    this.letturaSocieta();
     this.recuperaFiltroLivelloTerritoriale();
     this.recuperaFiltroEnti(null);
     this.recuperaFiltroServizi(null);
     this.letturaFunzioni();
   }
 
-  // letturaSocieta(): void {
-  //   this.societaService.letturaSocieta().pipe(map(societa => {
-  //     societa.forEach(s => {
-  //       this.listaSocieta.push({
-  //         value: s.id,
-  //         label: s.nome
-  //       });
-  //     });
-  //   })).subscribe();
-  // }
+  letturaSocieta(): void {
+    this.societaService.letturaSocieta().pipe(map(societa => {
+      societa.forEach(s => {
+        this.listaSocieta.push({
+          value: s.id,
+          label: s.nome
+        });
+      });
+    })).subscribe();
+  }
 
   recuperaFiltroLivelloTerritoriale(): void {
     this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
@@ -84,10 +79,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.filtroGestioneUtentiApplicato.enteId = null;
     this.listaEnti = [];
 
-    const livelloTerritorialeId = this.filtroGestioneUtentiApplicato?.livelloTerritorialeId;
-    if (livelloTerritorialeId != null) {
-      this.recuperaFiltroEnti(livelloTerritorialeId);
-    }
+    this.recuperaFiltroEnti(this.filtroGestioneUtentiApplicato?.livelloTerritorialeId);
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
@@ -105,10 +97,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.filtroGestioneUtentiApplicato.servizioId = null;
     this.listaServizi = [];
 
-    const enteId = this.filtroGestioneUtentiApplicato?.enteId;
-    if (enteId != null) {
-      this.recuperaFiltroServizi(enteId);
-    }
+    this.recuperaFiltroServizi(this.filtroGestioneUtentiApplicato?.enteId);
   }
 
   recuperaFiltroServizi(idEnte): void {
