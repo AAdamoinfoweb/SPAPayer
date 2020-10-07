@@ -4,5 +4,5 @@
     targaVeicolo = 'targaVeicolo',
     dataVerbale = 'dataVerbale',
     codiceAvviso = 'codiceAvviso',
-    cfpiva = 'undefined'
+    cfpiva = 'cfpiva'
   }
