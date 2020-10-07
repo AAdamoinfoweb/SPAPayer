@@ -13,7 +13,7 @@ import {Bollettino} from '../../../model/bollettino/Bollettino';
 import {ECalendarValue} from 'ng2-date-picker';
 import {Router} from '@angular/router';
 import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettaglioTransazione';
-import {observable, Observable, of} from "rxjs";
+import {observable, Observable, of} from 'rxjs';
 import {RichiestaCampiPrecompilati} from '../../../model/RichiestaCampiPrecompilati';
 import {TipologiaServizioEnum} from '../../../../../enums/tipologiaServizio.enum';
 import {DettagliTransazione} from "../../../model/bollettino/DettagliTransazione";
@@ -31,6 +31,12 @@ import {JSONPath} from 'jsonpath-plus';
   styleUrls: ['../nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
 export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
+
+  constructor(private nuovoPagamentoService: NuovoPagamentoService,
+              private router: Router,
+              private bannerService: BannerService,
+              private cdr: ChangeDetectorRef) {
+  }
   readonly TipoCampoEnum = TipoCampoEnum;
   readonly LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
   livelloIntegrazioneId: number = null;
@@ -64,12 +70,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
-
-  constructor(private nuovoPagamentoService: NuovoPagamentoService,
-              private router: Router,
-              private bannerService: BannerService,
-              private cdr: ChangeDetectorRef) {
-  }
+a;
 
   ngOnInit(): void {
     this.checkUtenteLoggato();
@@ -326,11 +327,13 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   getCampoDettaglioTransazione(nomeCampo: string) {
-    let campoForms: CampoForm[] = this.listaCampiDinamici.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
-    if (campoForms.length > 0)
+    const campoForms: CampoForm[] = this.listaCampiDinamici.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
+    if (campoForms.length > 0) {
       return this.getNomeCampoForm(campoForms[0]);
-    else
+    }
+    else {
       return null;
+    }
   }
 
   getNomeCampoForm(campo: CampoForm): string {
@@ -472,7 +475,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   creaBollettino(): Bollettino[] {
     const bollettini: Bollettino[] = [];
-    let bollettino: Bollettino = new Bollettino();
+    const bollettino: Bollettino = new Bollettino();
     bollettino.servizioId = this.servizio.id;
     bollettino.enteId = this.servizio.enteId;
     bollettino.numero = this.getNumDocumento();
@@ -485,7 +488,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.listaCampoDettaglioTransazione = [];
     this.listaCampiDinamici.forEach(campo => {
       const nomeCampo = this.getNomeCampoForm(campo);
-      let field: CampoDettaglioTransazione = new CampoDettaglioTransazione();
+      const field: CampoDettaglioTransazione = new CampoDettaglioTransazione();
       field.titolo = nomeCampo;
       field.valore = this.model[nomeCampo];
       bollettino.listaCampoDettaglioTransazione.push(field);
@@ -502,7 +505,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       observable = this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .pipe(map((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
-            localStorage.setItem(numeroDoc, JSON.stringify(this.model));
+            localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.model));
+            //cancellaBollettinoParziale()
             return null;
           } else {
             // show err
@@ -514,9 +518,9 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
         .pipe(flatMap((result) => {
           if (result.length > 0) {
-            let value: DettaglioTransazioneEsito = result[0];
+            const value: DettaglioTransazioneEsito = result[0];
             if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-              let dettaglio: DettagliTransazione = new DettagliTransazione();
+              const dettaglio: DettagliTransazione = new DettagliTransazione();
               dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
               return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
             } else {
@@ -542,9 +546,9 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .subscribe((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
-            localStorage.setItem(numeroDoc, JSON.stringify(this.model));
+            localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.model));
             this.aggiornaPrezzoCarrello();
-            this.router.navigateByUrl("/carrello");
+            this.router.navigateByUrl('/carrello');
           } else {
             // show err
             this.showMessage();
@@ -552,12 +556,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           }
         });
     } else {
-      let observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+      const observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
         .pipe(flatMap((result) => {
           if (result.length > 0) {
-            let value: DettaglioTransazioneEsito = result[0];
+            const value: DettaglioTransazioneEsito = result[0];
             if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-              let dettaglio: DettagliTransazione = new DettagliTransazione();
+              const dettaglio: DettagliTransazione = new DettagliTransazione();
               dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
               return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
             } else {
@@ -570,19 +574,19 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       observable.subscribe((result) => {
         if (result !== 'error') {
           this.aggiornaPrezzoCarrello();
-          this.router.navigateByUrl("/carrello");
+          this.router.navigateByUrl('/carrello');
         }
       });
     }
   }
 
   salvaPerDopo() {
-    let observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+    const observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
       .pipe(flatMap((result) => {
         if (result.length > 0) {
-          let value: DettaglioTransazioneEsito = result[0];
+          const value: DettaglioTransazioneEsito = result[0];
           if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-            let dettaglio: DettagliTransazione = new DettagliTransazione();
+            const dettaglio: DettagliTransazione = new DettagliTransazione();
             dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
             return this.nuovoPagamentoService.salvaPerDopo(dettaglio);
           } else {
@@ -598,7 +602,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       }
     });
   }
-a
   private showMessage() {
     const banner: Banner = {
       titolo: 'Operazione non consentita!',
