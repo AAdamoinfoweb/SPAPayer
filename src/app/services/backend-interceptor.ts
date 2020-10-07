@@ -19,8 +19,9 @@ export class BackendInterceptorService {
 
     const accessjwt = localStorage.getItem('access_jwt');
     const username = localStorage.getItem('username');
-    this.reqnew = request;
-    this.reqnew.withCredentials = true;
+    this.reqnew = request.clone({
+      withCredentials: true
+    });
 
     return next.handle(this.reqnew).pipe(tap((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) { // ad ogni risposta dal backend

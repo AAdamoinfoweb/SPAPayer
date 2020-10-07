@@ -13,7 +13,7 @@ import {Bollettino} from '../../../model/bollettino/Bollettino';
 import {ECalendarValue} from 'ng2-date-picker';
 import {Router} from '@angular/router';
 import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettaglioTransazione';
-import {Observable, of} from "rxjs";
+import {observable, Observable, of} from "rxjs";
 import {RichiestaCampiPrecompilati} from '../../../model/RichiestaCampiPrecompilati';
 import {TipologiaServizioEnum} from '../../../../../enums/tipologiaServizio.enum';
 import {DettagliTransazione} from "../../../model/bollettino/DettagliTransazione";
@@ -108,8 +108,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           richiestaCampiPrecompilati.dataVerbale = undefined;
         }
       } else if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
-          richiestaCampiPrecompilati.codiceAvviso = undefined;
-          richiestaCampiPrecompilati.cfpiva = undefined;
+        richiestaCampiPrecompilati.codiceAvviso = undefined;
+        richiestaCampiPrecompilati.cfpiva = undefined;
       }
 
       this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati).subscribe((valoriCampiPrecompilati) => {
@@ -163,10 +163,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     });
 
     this.nuovoPagamentoService.pulisciEvent.emit(true);
-  }
-
-  salvaPerDopo(): void {
-    // TODO logica salva per dopo
   }
 
   getNumDocumento(): string {
@@ -454,25 +450,41 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   aggiungiAlCarrello() {
     const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
+    let observable: Observable<any>;
     if (anonimo) {
       const numeroDoc = this.getNumDocumento();
-      this.nuovoPagamentoService.verificaBollettino(numeroDoc)
-        .subscribe((result) => {
+      observable = this.nuovoPagamentoService.verificaBollettino(numeroDoc)
+        .pipe(map((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem(numeroDoc, JSON.stringify(this.model));
-            this.aggiornaPrezzoCarrello();
-            this.clickPulisci();
+            return null;
           } else {
             // show err
-
+            return of('error');
           }
-        });
+        }));
     } else {
-      this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
-        .pipe(map(() => {
-          return null;
-        })).subscribe();
+      observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+        .pipe(flatMap((result) => {
+          if (result.length > 0) {
+            let value: DettaglioTransazioneEsito = result[0];
+            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+              let dettaglio: DettagliTransazione = new DettagliTransazione();
+              dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
+              return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
+            } else {
+              // show err
+              return of('error');
+            }
+          }
+        }));
     }
+    observable.subscribe((result) => {
+      if (result != 'error') {
+        this.aggiornaPrezzoCarrello();
+        this.clickPulisci();
+      }
+    });
   }
 
   pagaOra() {
@@ -487,7 +499,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             this.router.navigateByUrl("/carrello");
           } else {
             // show err
-
           }
         });
     } else {
@@ -501,24 +512,39 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
               return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
             } else {
               // show err
-
-              return of(null);
+              return of('error');
             }
           }
-
-          /*
-          result.forEach((value: DettaglioTransazioneEsito) => {
-            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-
-            } else {
-              // show err
-              return of(null);
-            }
-          });*/
-
-          return null;
         }));
-      observable.subscribe(() => this.clickPulisci());
+      observable.subscribe((result) => {
+        if (result !== 'error') {
+          this.aggiornaPrezzoCarrello();
+          this.router.navigateByUrl("/carrello");
+        }
+      });
     }
+  }
+
+  salvaPerDopo() {
+    let observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+      .pipe(flatMap((result) => {
+        if (result.length > 0) {
+          let value: DettaglioTransazioneEsito = result[0];
+          if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+            let dettaglio: DettagliTransazione = new DettagliTransazione();
+            dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
+            return this.nuovoPagamentoService.salvaPerDopo(dettaglio);
+          } else {
+            // show err
+            return of('error');
+          }
+        }
+      }));
+    observable.subscribe((result) => {
+      if (result !== 'error') {
+        this.router.navigateByUrl('/iMieiPagamenti');
+      }
+    });
+
   }
 }

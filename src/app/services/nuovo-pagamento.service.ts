@@ -26,6 +26,7 @@ export class NuovoPagamentoService {
   private readonly inserimentoBollettinoUrl = '/bollettino';
   private readonly inserimentoCarrelloUrl = '/carrello';
   private readonly campiPrecompilatiUrl = '/datiPagamento';
+  private salvaPerDopoUrl = '/salvaPerDopo';
 
   compilazioneEvent: EventEmitter<FiltroServizio> = new EventEmitter<FiltroServizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -136,7 +137,21 @@ return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JS
   }
 
   inserimentoCarrello(value: DettagliTransazione): Observable<any>  {
-    return this.http.post(environment.bffBaseUrl + this.inserimentoCarrelloUrl, value,
+    return this.http.post(environment.bffBaseUrl + this.inserimentoCarrelloUrl, JSON.stringify(value),
+      {withCredentials: true}).pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
+      }));
+  }
+
+  salvaPerDopo(value: DettagliTransazione): Observable<any> {
+    return this.http.post(environment.bffBaseUrl + this.salvaPerDopoUrl, JSON.stringify(value),
       {withCredentials: true}).pipe(map((body: any) => {
         return body;
       }),
