@@ -82,7 +82,7 @@ export class NuovoPagamentoService {
   }
 
   recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati: RichiestaCampiPrecompilati): Observable<Object> {
-    return this.http.get(environment.bffBaseUrl + this.campiNuovoPagamentoUrl, {
+    return this.http.get(environment.bffBaseUrl + this.campiPrecompilatiUrl, {
       withCredentials: true,
       params: {
         servizioId: richiestaCampiPrecompilati.servizioId?.toString() || null,
