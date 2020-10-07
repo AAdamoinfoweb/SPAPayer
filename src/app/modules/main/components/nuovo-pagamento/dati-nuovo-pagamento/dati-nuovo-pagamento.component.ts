@@ -106,8 +106,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       richiestaCampiPrecompilati.tipologiaServizioId = this.servizio.tipologiaServizioId;
       richiestaCampiPrecompilati.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
 
-      // TODO sostituire valori undefined con valori reali
-
       if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2_BACK_OFFICE) {
         if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.PRM
           || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.MAV
