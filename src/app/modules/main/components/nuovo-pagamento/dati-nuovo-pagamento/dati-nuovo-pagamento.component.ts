@@ -66,6 +66,12 @@ export class DatiNuovoPagamentoComponent implements OnInit {
     this.inizializzazioneForm(this.servizio);
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.servizio) {
+      this.inizializzazioneForm(this.servizio);
+    }
+  }
+
   checkUtenteLoggato(): void {
     this.isUtenteAnonimo = localStorage.getItem('nome') === 'null';
     this.tooltipBottoneSalvaPerDopo = this.isUtenteAnonimo
