@@ -53,6 +53,13 @@
       </td>
     </tr>
   </ng-template>
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="columns.length+1" class="text-center">
+        <div>Nessun elemento disponibile per la ricerca effettuata</div>
+      </td>
+    </tr>
+  </ng-template>
   <ng-template pTemplate="paginatorleft">
     Totale: {{setTotalRecords()}} {{textLeft}}
   </ng-template>
