@@ -8,6 +8,7 @@ import {PagamentoService} from "../../../../services/pagamento.service";
 import {Bollettino} from "../../model/bollettino/Bollettino";
 import {CampoDettaglioTransazione} from "../../model/bollettino/CampoDettaglioTransazione";
 import {MenuService} from "../../../../services/menu.service";
+import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private nuovoPagamentoService: NuovoPagamentoService,
     private bannerService: BannerService,
     private pagamentoService: PagamentoService,
     private menuService: MenuService
@@ -29,6 +31,9 @@ export class HomeComponent implements OnInit {
       .subscribe((isAnonimo: boolean) => {
         this.isAnonimo = isAnonimo;
         this.testoAccedi = isAnonimo ? 'Accedi' : 'Esci';
+        if (!this.isAnonimo) {
+          nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
+        }
       });
     if (localStorage.getItem('access_jwt')) {
       this.router.navigate(['/riservata']);

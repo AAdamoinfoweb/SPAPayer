@@ -582,7 +582,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       }
     });
   }
-
+a
   private showMessage() {
     const banner: Banner = {
       titolo: 'Operazione non consentita!',
