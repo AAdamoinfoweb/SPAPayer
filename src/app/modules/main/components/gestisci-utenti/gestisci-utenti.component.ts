@@ -101,11 +101,9 @@ export class GestisciUtentiComponent implements OnInit {
       // inserisci utente
     } else if (azioneTool.value === tool.UPDATE.value) {
       // aggiorna utente
-    } else if (azioneTool.value === tool.DELETE.value) {
-      // cancella utente
     } else if (azioneTool.value === tool.EXPORT_PDF.value) {
       // esporta in pdf
-    } else if (azioneTool.value === tool.EXPORT_PDF.value) {
+    } else if (azioneTool.value === tool.EXPORT_XLS.value) {
       // esporta in excel
     }
   }
