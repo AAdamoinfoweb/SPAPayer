@@ -45,7 +45,8 @@ export class NuovoPagamentoService {
     }
 
     return this.http.get(environment.bffBaseUrl + this.filtroEntiUrl, {
-      params: params
+      params: params,
+      withCredentials: true
     })
       .pipe(map((body: any) => {
         return body;
@@ -59,7 +60,8 @@ export class NuovoPagamentoService {
     }
 
     return this.http.get(environment.bffBaseUrl + this.filtroServiziUrl, {
-      params: params
+      params: params,
+      withCredentials: true
     })
       .pipe(map((body: any) => {
         return body;
