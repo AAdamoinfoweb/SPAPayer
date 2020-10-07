@@ -36,11 +36,13 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   @Input()
   servizio: FiltroServizio = null;
 
-  listaCampi: Array<CampoForm> = [];
+  listaCampiDinamici: Array<CampoForm> = [];
+  form: FormGroup = new FormGroup({});
+  model = {};
 
-  importoFormControl: FormControl = new FormControl(null, Validators.required);
-  form: FormGroup = new FormGroup({importo: this.importoFormControl});
-  model = {importo: null};
+  readonly importoNomeCampo = 'Importo';
+  readonly importoFormControl: FormControl = new FormControl(null, Validators.required);
+  mostraCampoImporto = null;
 
   readonly minDataDDMMYY = '01/01/1900';
   readonly minDataMMYY = '01/1900';
@@ -80,17 +82,21 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       : null;
   }
 
-  tornaAdInserimentoDati(): void {
+  clickIndietro(): void {
     this.isFaseVerificaPagamento = false;
+    this.rimuoviCampoImporto();
     // TODO logica bottone indietro
   }
 
   clickProcedi(): void {
-    this.isFaseVerificaPagamento = true;
-    const richiestaCampiPrecompilati = new RichiestaCampiPrecompilati();
     const isTipologiaServizioValida = this.servizio.tipologiaServizioCodice in TipologiaServizioEnum;
 
     if (isTipologiaServizioValida) {
+      this.isFaseVerificaPagamento = true;
+      this.aggiungiCampoImporto();
+
+      const richiestaCampiPrecompilati = new RichiestaCampiPrecompilati();
+
       richiestaCampiPrecompilati.servizioId = this.servizio.id;
       richiestaCampiPrecompilati.tipologiaServizioId = this.servizio.tipologiaServizioId;
       richiestaCampiPrecompilati.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
@@ -151,7 +157,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   clickPulisci(): void {
     this.form.reset();
 
-    this.listaCampi.forEach(campo => {
+    this.listaCampiDinamici.forEach(campo => {
       const nomeCampo = this.getNomeCampoForm(campo);
 
       this.model[nomeCampo] = null;
@@ -174,7 +180,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     const campiChiave = [];
 
-    this.listaCampi.forEach(campo => {
+    this.listaCampiDinamici.forEach(campo => {
       if (campo.chiave) {
         campiChiave.push(campo);
       }
@@ -197,7 +203,31 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.nuovoPagamentoService.prezzoEvent.emit(this.model.importo);
+    this.nuovoPagamentoService.prezzoEvent.emit(this.model[this.importoNomeCampo]);
+  }
+
+  creaForm(): void {
+    this.listaCampiDinamici = [];
+    this.form = new FormGroup({});
+    this.model = {};
+    this.importoFormControl.reset();
+    this.mostraCampoImporto = null;
+
+    if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2) {
+      this.aggiungiCampoImporto();
+    }
+  }
+
+  aggiungiCampoImporto(): void {
+    this.mostraCampoImporto = true;
+    this.form.addControl(this.importoNomeCampo, this.importoFormControl);
+    this.model[this.importoNomeCampo] = null;
+  }
+
+  rimuoviCampoImporto(): void {
+    this.mostraCampoImporto = false;
+    this.form.removeControl(this.importoNomeCampo);
+    delete this.model[this.importoNomeCampo];
   }
 
   inizializzazioneForm(servizio: FiltroServizio): void {
@@ -208,11 +238,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
 
       this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
-        this.listaCampi = [];
-        this.form = new FormGroup({importo: this.importoFormControl});
-        this.model = {
-          importo: null
-        };
+        this.creaForm();
         this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
         this.impostaCampi(campiNuovoPagamento.campiServizio);
       })).subscribe();
@@ -279,12 +305,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
       this.model[this.getNomeCampoForm(campo)] = null;
       this.form.addControl(this.getNomeCampoForm(campo), campoForm);
-      this.listaCampi.push(campo);
+      this.listaCampiDinamici.push(campo);
     });
   }
 
   getCampoDettaglioTransazione(nomeCampo: string) {
-    let campoForms: CampoForm[] = this.listaCampi.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
+    let campoForms: CampoForm[] = this.listaCampiDinamici.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
     if (campoForms.length > 0)
       return this.getNomeCampoForm(campoForms[0]);
     else
@@ -369,7 +395,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   getCampiDipendenti(campo: CampoForm): Array<CampoForm> {
-    return this.listaCampi.filter(item => {
+    return this.listaCampiDinamici.filter(item => {
       return item.dipendeDa === campo.id;
     });
   }
@@ -383,7 +409,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
       // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
       if (campo.dipendeDa) {
-        const selectPadre = this.listaCampi.find(item => item.id === campo.dipendeDa);
+        const selectPadre = this.listaCampiDinamici.find(item => item.id === campo.dipendeDa);
         const valoreSelectPadre = this.form.controls[this.getNomeCampoForm(selectPadre)].value;
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
@@ -438,10 +464,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
     bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv')];
     bollettino.cfpiva = this.model[this.getCampoDettaglioTransazione('codice_fiscale_pagatore')];
-    bollettino.importo = this.model.importo;
+    bollettino.importo = this.model[this.importoNomeCampo];
 
     bollettino.listaCampoDettaglioTransazione = [];
-    this.listaCampi.forEach(campo => {
+    this.listaCampiDinamici.forEach(campo => {
       const nomeCampo = this.getNomeCampoForm(campo);
       let field: CampoDettaglioTransazione = new CampoDettaglioTransazione();
       field.titolo = nomeCampo;
