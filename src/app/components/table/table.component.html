@@ -54,7 +54,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="paginatorleft">
-    Totale: {{totalRecords}} {{textLeft}}
+    Totale: {{setTotalRecords()}} {{textLeft}}
   </ng-template>
   <ng-template pTemplate="paginatorright">
     <app-paginator (onChangePageSize)="onChangePageSize($event)" pageSize="{{rowsPerPageOption[0]}}"

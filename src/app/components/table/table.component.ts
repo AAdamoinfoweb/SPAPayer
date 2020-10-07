@@ -21,12 +21,10 @@ export class TableComponent implements OnInit {
   @Output()
   onClickIcon: EventEmitter<any> = new EventEmitter<any>();
 
-  tipoColonnaEnum = tipoColonna;
-  tipoTabellaEnum = tipoTabella;
+  readonly tipoColonnaEnum = tipoColonna;
+  readonly tipoTabellaEnum = tipoTabella;
 
   selection: any [];
-
-  totalRecords: any;
 
   rowsPerPageOption: number[] = [5, 10, 20];
 
@@ -34,9 +32,7 @@ export class TableComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    this.totalRecords = this.rows.length;
-  }
+  ngOnInit() { }
 
   selectRow(row: any) {
     window.alert(row.name);
@@ -56,6 +52,10 @@ export class TableComponent implements OnInit {
 
   onIcon(dataKey) {
     this.onClickIcon.emit(dataKey);
+  }
+
+  setTotalRecords(): number {
+    return this.rows.length;
   }
 
 }

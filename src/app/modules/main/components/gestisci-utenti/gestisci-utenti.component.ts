@@ -19,8 +19,8 @@ export class GestisciUtentiComponent implements OnInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
-  isSubsectionListaUtentiVisible: boolean = true;
-  arrowType: string = 'assets/img/sprite.svg#it-collapse';
+  isSubsectionListaUtentiVisible = true;
+  arrowType = 'assets/img/sprite.svg#it-collapse';
 
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
@@ -121,6 +121,12 @@ export class GestisciUtentiComponent implements OnInit {
       this.tableData.rows.push(this.creaRigaTabella(utente));
     });
     this.listaUtente = listaUtentiFiltrati;
+  }
+
+  getTestoConNumeroUtentiAttiviDisabilitati(): string {
+    const numeroUtentiAttivi = this.tableData.rows.filter(row => row.iconaUtente.display === 'inline').length;
+    const numeroUtentiDisabilitati = this.tableData.rows.filter(row => row.iconaUtente.display === 'none').length;
+    return '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
   }
 
 }
