@@ -18,6 +18,9 @@ import {RichiestaCampiPrecompilati} from '../../../model/RichiestaCampiPrecompil
 import {TipologiaServizioEnum} from '../../../../../enums/tipologiaServizio.enum';
 import {DettagliTransazione} from "../../../model/bollettino/DettagliTransazione";
 import {DettaglioTransazioneEsito} from "../../../model/bollettino/DettaglioTransazioneEsito";
+import {Banner} from "../../../model/Banner";
+import {getBannerType, LivelloBanner} from "../../../../../enums/livelloBanner.enum";
+import {BannerService} from "../../../../../services/banner.service";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -61,6 +64,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private router: Router,
+              private bannerService: BannerService,
               private cdr: ChangeDetectorRef) {
   }
 
@@ -486,6 +490,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             return null;
           } else {
             // show err
+            this.showMessage();
             return of('error');
           }
         }));
@@ -500,6 +505,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
               return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
             } else {
               // show err
+              this.showMessage();
               return of('error');
             }
           }
@@ -525,6 +531,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             this.router.navigateByUrl("/carrello");
           } else {
             // show err
+            this.showMessage();
+            return of('error');
           }
         });
     } else {
@@ -538,6 +546,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
               return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
             } else {
               // show err
+              this.showMessage();
               return of('error');
             }
           }
@@ -562,6 +571,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             return this.nuovoPagamentoService.salvaPerDopo(dettaglio);
           } else {
             // show err
+            this.showMessage();
             return of('error');
           }
         }
@@ -571,6 +581,14 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.router.navigateByUrl('/iMieiPagamenti');
       }
     });
+  }
 
+  private showMessage() {
+    const banner: Banner = {
+      titolo: 'Operazione non consentita!',
+      testo: 'Il bollettino è già stato pagato o in corso di pagamento. Per maggiori informazioni consultare la sezione i miei pagamenti o contattare l’help desk',
+      tipo: getBannerType(LivelloBanner.ERROR)
+    };
+    this.bannerService.bannerEvent.emit([banner]);
   }
 }
