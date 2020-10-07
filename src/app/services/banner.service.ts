@@ -1,10 +1,10 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {XsrfService} from './xsrf.service';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
 import {Banner} from '../modules/main/model/Banner';
-import {EventEmitter, Injectable, Output} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import * as moment from 'moment';
 
 @Injectable({
@@ -15,7 +15,6 @@ export class BannerService {
   private bannerUrl = '/banner';
   timestamp: string;
   attivo: boolean;
-  banners: Banner[] = null;
 
   bannerEvent: EventEmitter<Banner[]> = new EventEmitter<Banner[]>();
 
@@ -34,10 +33,8 @@ export class BannerService {
       }
     })
       .pipe(map((body: any) => {
-        this.banners = body;
         return body;
       }));
   }
-
 
 }
