@@ -11,6 +11,7 @@ import {DettaglioTransazioneEsito} from '../modules/main/model/bollettino/Dettag
 import {Bollettino} from '../modules/main/model/bollettino/Bollettino';
 import {EsitoEnum} from '../enums/esito.enum';
 import {RichiestaCampiPrecompilati} from "../modules/main/model/RichiestaCampiPrecompilati";
+import {DettagliTransazione} from "../modules/main/model/bollettino/DettagliTransazione";
 
 @Injectable({
   providedIn: 'root'
@@ -134,7 +135,7 @@ return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JS
       }));
   }
 
-  inserimentoCarrello(value: DettaglioTransazioneEsito)  {
+  inserimentoCarrello(value: DettagliTransazione): Observable<any>  {
     return this.http.post(environment.bffBaseUrl + this.inserimentoCarrelloUrl, value,
       {withCredentials: true}).pipe(map((body: any) => {
         return body;

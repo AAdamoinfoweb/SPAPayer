@@ -1,8 +1,8 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampoForm} from '../../../model/CampoForm';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
-import {map} from 'rxjs/operators';
+import {flatMap, map} from 'rxjs/operators';
 import {TipologicaSelectEnum} from '../../../../../enums/tipologicaSelect.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
@@ -12,18 +12,19 @@ import {EsitoEnum} from '../../../../../enums/esito.enum';
 import {Bollettino} from '../../../model/bollettino/Bollettino';
 import {ECalendarValue} from 'ng2-date-picker';
 import {Router} from '@angular/router';
-import {DettaglioTransazioneEsito} from '../../../model/bollettino/DettaglioTransazioneEsito';
-import {of} from 'rxjs';
 import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettaglioTransazione';
+import {Observable, of} from "rxjs";
 import {RichiestaCampiPrecompilati} from '../../../model/RichiestaCampiPrecompilati';
 import {TipologiaServizioEnum} from '../../../../../enums/tipologiaServizio.enum';
+import {DettagliTransazione} from "../../../model/bollettino/DettagliTransazione";
+import {DettaglioTransazioneEsito} from "../../../model/bollettino/DettaglioTransazioneEsito";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
   templateUrl: './dati-nuovo-pagamento.component.html',
   styleUrls: ['../nuovo-pagamento.component.scss', './dati-nuovo-pagamento.component.scss']
 })
-export class DatiNuovoPagamentoComponent implements OnInit {
+export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   readonly TipoCampoEnum = TipoCampoEnum;
   readonly LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
   livelloIntegrazioneId: number = null;
@@ -490,13 +491,14 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           }
         });
     } else {
-      this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
-        .pipe(map((result) => {
+      let observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+        .pipe(flatMap((result) => {
           if (result.length > 0) {
             let value: DettaglioTransazioneEsito = result[0];
             if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-              return this.nuovoPagamentoService.inserimentoCarrello(value)
-                .pipe(map(() => this.clickPulisci()));
+              let dettaglio: DettagliTransazione = new DettagliTransazione();
+              dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
+              return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
             } else {
               // show err
 
@@ -515,7 +517,8 @@ export class DatiNuovoPagamentoComponent implements OnInit {
           });*/
 
           return null;
-        })).subscribe();
+        }));
+      observable.subscribe(() => this.clickPulisci());
     }
   }
 }
