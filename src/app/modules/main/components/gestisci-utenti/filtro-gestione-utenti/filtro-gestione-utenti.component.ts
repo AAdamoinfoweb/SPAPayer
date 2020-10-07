@@ -18,9 +18,6 @@ import {UtenteService} from '../../../../../services/utente.service';
 })
 export class FiltroGestioneUtentiComponent implements OnInit {
 
-  isSubsectionFiltriVisible = true;
-  arrowType = 'assets/img/sprite.svg#it-collapse';
-
   listaSocieta: Array<OpzioneSelect> = [];
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
@@ -120,11 +117,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
         });
       });
     })).subscribe();
-  }
-
-  setArrowType(): void {
-    this.isSubsectionFiltriVisible = !this.isSubsectionFiltriVisible;
-    this.arrowType = !this.isSubsectionFiltriVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse';
   }
 
   setPlaceholder(campo: NgModel, tipo: string): string {

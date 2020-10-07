@@ -19,9 +19,6 @@ export class GestisciUtentiComponent implements OnInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
-  isSubsectionListaUtentiVisible = true;
-  arrowType = 'assets/img/sprite.svg#it-collapse';
-
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
   tabs = [{header: 'Tutti'},
@@ -110,11 +107,6 @@ export class GestisciUtentiComponent implements OnInit {
     } else if (azioneTool.value === tool.EXPORT_XLS.value) {
       // esporta in excel
     }
-  }
-
-  setArrowType(): void {
-    this.isSubsectionListaUtentiVisible = !this.isSubsectionListaUtentiVisible;
-    this.arrowType = !this.isSubsectionListaUtentiVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse';
   }
 
   onChangeListaUtenti(listaUtentiFiltrati: RicercaUtente[]): void {
