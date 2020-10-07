@@ -88,3 +88,18 @@ input {
   background-repeat: no-repeat;
   background-position-x: 5px;
 }
+
+.p-autocomplete.p-component {
+  width: 100%;
+}
+
+.p-autocomplete-input.p-inputtext.p-component {
+  box-shadow: none !important;
+  background-color: transparent;
+  font-weight: normal !important;
+}
+
+.p-autocomplete-input.p-inputtext:enabled:hover,
+.p-autocomplete-input.p-inputtext:enabled:focus {
+  border-color: gray;
+}

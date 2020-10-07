@@ -23,6 +23,9 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
   listaFunzioniAbilitate: Array<OpzioneSelect> = [];
+  listaCodiciFiscali: string[] = [];
+
+  readonly minCharsToRetrieveCF = 1;
 
   isCalendarOpen = false;
   readonly minDateDDMMYY = '01/01/1900';
@@ -109,8 +112,8 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   }
 
   letturaFunzioni(): void {
-    this.funzioneService.letturaFunzioni().pipe(map(funzioneAbilitata => {
-      funzioneAbilitata.forEach(funzione => {
+    this.funzioneService.letturaFunzioni().pipe(map(funzioniAbilitate => {
+      funzioniAbilitate.forEach(funzione => {
         this.listaFunzioniAbilitate.push({
           value: funzione.id,
           label: funzione.nome
@@ -130,6 +133,20 @@ export class FiltroGestioneUtentiComponent implements OnInit {
       } else {
         return 'inserisci data';
       }
+    }
+  }
+
+  loadSuggestions(event): void {
+    const inputCf = event.query;
+
+    if (inputCf.length < this.minCharsToRetrieveCF) {
+        this.listaCodiciFiscali = [];
+    } else if (inputCf.length === this.minCharsToRetrieveCF) {
+      this.utenteService.letturaCodiceFiscale(inputCf).subscribe(data => {
+        this.listaCodiciFiscali = data;
+      });
+    } else {
+      this.listaCodiciFiscali = this.listaCodiciFiscali.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
     }
   }
 
