@@ -1,5 +1,12 @@
-<div class="ml-5">
-  <p>Home / Pagamenti / <strong>I Miei Pagamenti</strong></p>
+<div class="container">
+<!--  breadcrumb -->
+  <it-breadcrumb [dark]="false" [separator]="'/'">
+    <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
+                        [link]="item.link" [icon]="item.icon">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
+<!--  titolo -->
   <h3 class="mb-2 page-title"><strong>I Miei Pagamenti</strong>
     <a it-tooltip="{{tooltipOnPageTitle}}">
       <svg class="bg-light icon icon-lg icon-padded">
@@ -9,137 +16,39 @@
   </h3>
 
   <!-- Sottosezione Filtri -->
-  <div class="row subsection-title">
-    <div class="col-xs-5 pt-4">
-      <p class="title page-subtitle">Filtri</p>
-    </div>
-    <div class="col-xs-4 mb-2">
-      <svg class="bg-light icon"
-           data-toggle="collapse" data-target="#contenutoSezioneFiltri"
-           aria-expanded="true" aria-controls="contenutoSezioneFiltri"
-           (click)="showHideSubsection('filtri')">
-        <use [attr.xlink:href]="displayArrow(isSubsectionFiltriVisible)" xlink:href=""></use>
-      </svg>
-    </div>
-  </div>
-  <div id="contenutoSezioneFiltri" class="collapse show">
-    <!-- Livello Territoriale, Ente, Servizio -->
-    <div class="row section-row">
-      <div class="col-md-4 pb-2">
-        <div class="row">
-          <label for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
-        </div>
-        <div class="row">
-          <select class="form-elem" id="selectLivelloTerritoriale" [(ngModel)]="livelloTerritorialeSelezionato">
-            <option *ngFor="let item of listaLivelliTerritoriali" [value]="item.value">{{item.label}}</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-4 pb-2">
-        <div class="row">
-          <label for="selectEnte" class="title">Ente</label>
-        </div>
-        <div class="row">
-          <select class="form-elem" id="selectEnte" [(ngModel)]="enteSelezionato">
-            <option *ngFor="let item of listaEnti" [value]="item.value">{{item.label}}</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="row">
-          <label for="selectServizio" class="title">Servizio</label>
-        </div>
-        <div class="row">
-          <select class="form-elem" id="selectServizio" [(ngModel)]="servizioSelezionato">
-            <option *ngFor="let item of listaServizi" [value]="item.value">{{item.label}}</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <!-- Documento, Data Inizio, Data Fine, Testo Libero -->
-    <div class="row section-row">
-      <div class="col-md-4 pb-2">
-        <div class="row">
-          <label for="inputDocumento" class="title">Documento</label>
-        </div>
-        <div class="row">
-          <input type="text" class="input-text form-elem pt-0" id="inputDocumento" aria-describedby="inputDocumentoHelpDescription"/>
-        </div>
-        <div class="row">
-          <small id="inputDocumentoHelpDescription" class="form-text text-muted">inserisci testo</small>
-        </div>
-      </div>
-      <div class="col-md-2 pb-2">
-        <div class="row">
-          <label for="dataDa" class="title">Da</label>
-        </div>
-        <div class="row calendar">
-          <svg class="bg-light icon img-datepicker" (click)="da.toggle()">
-            <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
-          </svg>
-          <input type="text" class="input-text form-elem date-input pt-0" id="dataDa" aria-describedby="inputDataDaHelpDescription"
-                 autocomplete="off" ngbDatepicker #da="ngbDatepicker"/>
-        </div>
-        <div class="row">
-          <small id="inputDataDaHelpDescription" class="form-text text-muted">inserisci data</small>
-        </div>
-      </div>
-      <div class="col-md-2 pb-2">
-        <div class="row">
-          <label for="dataA" class="title">A</label>
-        </div>
-        <div class="row calendar">
-          <svg class="bg-light icon img-datepicker" (click)="a.toggle()">
-            <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
-          </svg>
-          <input type="text" class="input-text form-elem date-input pt-0" id="dataA" aria-describedby="inputDataAHelpDescription"
-                 autocomplete="off" ngbDatepicker #a="ngbDatepicker"/>
-        </div>
-        <div class="row">
-          <small id="inputDataAHelpDescription" class="form-text text-muted">inserisci data</small>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="row">
-          <label for="inputTestoLibero" class="title">Testo libero</label>
-        </div>
-        <div class="row">
-          <input type="text" class="input-text form-elem pt-0" id="inputTestoLibero" aria-describedby="inputTestoLiberoHelpDescription"/>
-        </div>
-        <div class="row">
-          <small id="inputTestoLiberoHelpDescription" class="form-text text-muted">inserisci testo</small>
-        </div>
-      </div>
-    </div>
-    <!-- Bottoni Pulisci e Cerca -->
-    <div class="row">
-      <div class="col-6">
-        <button id="bottonePulisci" class="btn btn-secondary">Pulisci</button>
-      </div>
-      <div class="col-6 btn-find">
-        <button id="bottoneCerca" class="btn">Cerca</button>
-      </div>
-    </div>
-  </div>
+  <app-filtri-i-miei-pagamenti></app-filtri-i-miei-pagamenti>
 
   <!-- Sottosezione Lista Pagamenti -->
-  <div class="row subsection-title">
-    <div class="col-xs-5 pt-4">
-      <p class="title page-subtitle">Lista Pagamenti</p>
+    <div class="collapse-header" id="heading2">
+      <button data-toggle="collapse" data-target="#contenutoSezioneListaPagamenti" aria-expanded="true"
+              aria-controls="contenutoSezioneListaPagamenti">
+        Lista Pagamenti
+      </button>
     </div>
-    <div class="col-xs-4">
-      <svg class="bg-light icon mr-2">
-        <use xlink:href="assets/img/sprite.svg#it-list"></use>
-      </svg>
-      <svg class="bg-light icon mb-2"
-           data-toggle="collapse" data-target="#contenutoSezioneListaPagamenti"
-           aria-expanded="true" aria-controls="contenutoSezioneListaPagamenti"
-           (click)="showHideSubsection('listaPagamenti')">
-        <use [attr.xlink:href]="displayArrow(isSubsectionListaPagamentiVisible)" xlink:href=""></use>
-      </svg>
+    <div id="contenutoSezioneListaPagamenti" class="collapse show" role="tabpanel" aria-labelledby="heading2">
+      <div class="collapse-body">
+<!--      tabs -->
+        <div class="row align-items-baseline align-content-lg-around">
+          <div class="col-lg pb-2 pb-sm-2 pb-lg-0">
+            <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>
+          </div>
+<!--      azioni -->
+          <div class="col-auto">
+            <app-toolbar (onClick)="eseguiAzioni($event)"></app-toolbar>
+          </div>
+        </div>
+<!--      table -->
+        <div class="row">
+          <div class="col">
+            <app-table [dataKey]="tableData.dataKey"
+                       [cols]="tableData.cols"
+                       [rows]="tableData.rows"
+                       [tipoTabella]="tableData.tipoTabella"
+                       [textLeft]="getTestoConNumeroUtentiAttiviDisabilitati()">
+            </app-table>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div id="contenutoSezioneListaPagamenti" class="collapse show">
-    <p>Contenuto Sezione Lista Pagamenti</p>
-  </div>
 </div>
+

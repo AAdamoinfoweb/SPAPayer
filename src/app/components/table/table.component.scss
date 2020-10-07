@@ -1,0 +1,223 @@
+.fill svg{
+  fill: #ef8157;
+}
+
+
+// header css
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background: none;
+  color: #77777B;
+  padding: 0.4rem;
+  padding-top: 0.5rem;
+  border-color: #77777B;
+}
+
+:host ::ng-deep .p-datatable:hover .p-datatable-thead:hover > tr > th {
+  background: none;
+  color: #77777B;
+}
+
+// icon header
+:host ::ng-deep .p-datatable .p-sortable-column .p-sortable-column-icon{
+  color: #77777B;
+  transform: scale(0.8);
+}
+
+// row css
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr {
+  background: none;
+  border: #77777B;
+  color: #77777B;
+}
+
+
+// cell css
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.4rem;
+  border-color: #77777B;
+}
+
+:host ::ng-deep .currency {
+  text-align: right;
+}
+
+// checkbox
+:host ::ng-deep .form-check [type=checkbox]:focus + label,
+.form-check [type=radio]:focus + label,
+.toggles label input[type=checkbox]:focus + .lever,
+:focus {
+  box-shadow: none;
+}
+
+:host ::ng-deep p-tableheadercheckbox .p-checkbox .p-checkbox-box .p-checkbox-icon::before {
+  visibility: visible;
+  content: "\e90f";
+  font-family: 'primeicons';
+  font-weight: bolder;
+  font-variant: normal;
+  text-transform: none;
+  color: #004987;
+}
+:host ::ng-deep p-tableheadercheckbox .p-checkbox .p-checkbox-box .p-checkbox-icon:hover::before {
+  color: #ef8157;
+  visibility: visible;
+  content: "\e90f";
+  font-family: 'primeicons';
+  font-weight: bolder;
+  font-variant: normal;
+  text-transform: none;
+}
+
+:host ::ng-deep p-tableheadercheckbox .p-checkbox .p-checkbox-box[aria-checked=true] .p-checkbox-icon::before {
+  content: "\e909";
+  visibility: visible;
+  font-family: 'primeicons';
+  font-weight: bolder;
+  font-variant: normal;
+  text-transform: none;
+  color: #FFFFFF;
+}
+:host ::ng-deep p-tableheadercheckbox .p-checkbox .p-checkbox-box[aria-checked=true] .p-checkbox-icon::before{
+  content: "\e909";
+  visibility: visible;
+  font-family: 'primeicons';
+  font-weight: bolder;
+  font-variant: normal;
+  text-transform: none;
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box {
+  border: 2px solid #004987;
+  transform: scale(0.8);
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box:not(.p-disabled):hover {
+  border-color: #ef8157;
+}
+:host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight{
+  background: #004987;
+  border: 2px solid #004987;
+}
+:host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight:not(.p-disabled):hover {
+  background: #ef8157;
+  border: 2px solid #ef8157;
+}
+
+
+// paginator
+:host ::ng-deep .p-datatable .p-paginator-bottom {
+  background: none;
+}
+
+:host ::ng-deep .p-paginator-first,
+:host ::ng-deep .p-paginator-prev,
+:host ::ng-deep .p-paginator-next,
+:host ::ng-deep .p-paginator-last {
+  transform: scale(0.8);
+  color: #004987;
+}
+
+:host ::ng-deep .p-paginator-first:disabled,
+:host ::ng-deep .p-paginator-prev:disabled,
+:host ::ng-deep .p-paginator-next:disabled,
+:host ::ng-deep .p-paginator-last:disabled {
+  color: #403d39;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-first:not(.p-disabled):not(.p-highlight):hover,
+:host ::ng-deep .p-paginator .p-paginator-prev:not(.p-disabled):not(.p-highlight):hover,
+:host ::ng-deep .p-paginator .p-paginator-next:not(.p-disabled):not(.p-highlight):hover,
+:host ::ng-deep .p-paginator .p-paginator-last:not(.p-disabled):not(.p-highlight):hover {
+  background: none;
+  color: #403d39;
+}
+
+:host ::ng-deep .p-paginator-pages {
+  transform: scale(0.8);
+
+  .p-paginator-page:not(.p-highlight):hover {
+    background: none;
+  }
+
+  .p-paginator-page.p-highlight {
+    background: #004987;
+    border: none;
+  }
+
+}
+
+:host ::ng-deep .p-paginator-page:hover {
+  background: none;
+}
+
+
+// dropdown
+:host ::ng-deep .p-paginator-rpp-options {
+  display: none;
+}
+
+// responsive prime ng
+:host ::ng-deep {
+  .p-datatable-responsive-demo .p-datatable-tbody > tr > td .p-column-title {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 40rem) {
+  :host ::ng-deep {
+    .p-datatable {
+      &.p-datatable-responsive-demo {
+        .p-datatable-thead > tr > th,
+        .p-datatable-tfoot > tr > td {
+          display: none !important;
+        }
+
+        .p-datatable-tbody > tr > td {
+          text-align: left;
+          display: block;
+          width: 100%;
+          float: left;
+          clear: left;
+          border: 0 none;
+
+          .p-column-title {
+            padding: .4rem;
+            min-width: 30%;
+            display: inline-block;
+            margin: -.4em 1em -.4em -.4rem;
+            font-weight: bold;
+          }
+
+          &:last-child {
+            border-bottom: 1px solid var(--surface-d);
+          }
+        }
+      }
+    }
+  }
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  color: #FFFFFF !important;
+}
+
+:host ::ng-deep .p-datatable .p-sortable-column {
+  .p-sortable-column-icon.pi.pi-fw.pi-sort-alt:before {
+    content: '\23F7';
+    vertical-align: super;
+  }
+
+  .p-sortable-column-icon.pi.pi-fw.pi-sort-amount-up-alt:before {
+    content: '\23F6';
+    vertical-align: super;
+  }
+
+  .p-sortable-column-icon.pi.pi-fw.pi-sort-amount-down:before {
+    content: '\23F7';
+    vertical-align: super;
+  }
+}
+
+:host ::ng-deep .p-paginator {
+  flex-wrap: nowrap !important;
+}

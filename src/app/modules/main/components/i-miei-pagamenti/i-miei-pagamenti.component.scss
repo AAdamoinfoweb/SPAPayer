@@ -4,8 +4,6 @@
   align-items: center;
   border-bottom: 1px solid #77777B;
   line-height: 0;
-  margin-right: 7%;
-  margin-left: 0;
 }
 
 .input-text {
@@ -53,4 +51,25 @@ svg {
 
 ::ng-deep .ngb-dp-arrow-btn {
   background-color: transparent !important;
+}
+
+/*prime ng font component*/
+:host ::ng-deep .p-component{
+  font-family: "Titillium Web", Geneva,Tahoma,sans-serif;
+  font-size: 12px;
+}
+
+/*prime ng link*/
+:host ::ng-deep .p-link:focus {
+  box-shadow: none;
+}
+
+:host::ng-deep dp-date-picker, :host::ng-deep .dp-picker-input {
+  width: 100% !important;
+}
+
+@media screen and (max-width: 510px) {
+  .button-space {
+    padding: 0;
+  }
 }

@@ -1,0 +1,71 @@
+<p-table [columns]="cols" [value]="rows" styleClass="p-datatable-responsive-demo"
+         dataKey="{{dataKey}}" [(selection)]="selection"
+         (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+         [paginator]="true" [rows]="pageSize" [showCurrentPageReport]="false">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th style="width: 3rem" *ngIf="tipoTabella == tipoTabellaEnum.CHECKBOX_SELECTION">
+        <p-tableHeaderCheckbox class="icon-box"></p-tableHeaderCheckbox>
+      </th>
+      <th *ngFor="let col of columns" pSortableColumn="{{col.field}}"
+      [ngStyle]="{width: (col.type == tipoColonnaEnum.ICONA) ? '2rem' : ''}">
+        {{col.header.toUpperCase()}}
+        <p-sortIcon field="{{col.field}}" *ngIf="col.type != tipoColonnaEnum.ICONA"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-row let-columns="columns">
+    <tr>
+      <td *ngIf="tipoTabella == tipoTabellaEnum.CHECKBOX_SELECTION">
+        <p-tableCheckbox [value]="row"></p-tableCheckbox>
+      </td>
+      <td *ngFor="let col of columns">
+        <span class="p-column-title">{{col.header}}</span>
+        <!--  template ICONA  -->
+        <div it-tooltip="{{row[col.field].tooltip}}"
+              *ngIf="col.type == tipoColonnaEnum.ICONA"
+             [ngStyle]="{fill: row[col.field] != null ? row[col.field].color : '#403d39', display: row[col.field].display}"
+              (click)="onIcon(row[dataKey])"
+        >
+          <svg class="bg-light icon icon-sm">
+            <use [attr.xlink:href]="row[col.field].path"></use>
+          </svg>
+        </div>
+        <!--  template TESTO  -->
+        <div *ngIf="col.type == tipoColonnaEnum.TESTO">
+          {{row[col.field]}}
+        </div>
+        <!--  template LINK  -->
+        <div *ngIf="col.type == tipoColonnaEnum.LINK">
+          {{row[col.field] != null  ? row[col.field].testo : null}}
+          <a href="{{row[col.field].link}}" *ngIf="row[col.field] != null">
+            <svg class="bg-light icon icon-sm" fill="#004987">
+              <use xlink:href="assets/img/sprite.svg#it-external-link"></use>
+            </svg>
+          </a>
+        </div>
+        <!--  template IMPORTO  -->
+        <div *ngIf="col.type == tipoColonnaEnum.IMPORTO">
+          {{row[col.field]|currency:"EUR":"€ "
+          | replace:'.':'|' | replace:',':'.'
+          | replace:'|':','}}
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="columns.length+1" class="text-center">
+        <div>Nessun elemento disponibile per la ricerca effettuata</div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft">
+    Totale: {{setTotalRecords()}} {{textLeft}}
+  </ng-template>
+  <ng-template pTemplate="paginatorright">
+    <app-paginator (onChangePageSize)="onChangePageSize($event)" pageSize="{{rowsPerPageOption[0]}}"
+                   [rowsPerPageOptions]="rowsPerPageOption"></app-paginator>
+  </ng-template>
+</p-table>
+

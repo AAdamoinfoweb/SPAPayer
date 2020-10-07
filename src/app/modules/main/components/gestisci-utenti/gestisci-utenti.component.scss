@@ -1,0 +1,32 @@
+/*prime ng font component*/
+:host ::ng-deep .p-component{
+  font-family: "Titillium Web", Geneva,Tahoma,sans-serif;
+  font-size: 12px;
+}
+
+/*prime ng link*/
+:host ::ng-deep .p-link:focus {
+  box-shadow: none;
+}
+
+.subsection-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #77777B;
+  line-height: 0;
+  margin-right: 7%;
+  margin-left: 0;
+}
+
+#img-arrow {
+  fill: #004987;
+}
+
+.text-muted {
+  color: #77777B;
+}
+
+.text-invalid {
+  color: #FF0000;
+}

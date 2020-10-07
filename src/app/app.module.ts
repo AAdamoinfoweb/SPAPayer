@@ -26,27 +26,46 @@ import {CompilaNuovoPagamentoComponent} from './modules/main/components/nuovo-pa
 import {DatiNuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
 import {UserIdleModule} from "angular-user-idle";
 import {DpDatePickerModule} from 'ng2-date-picker';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
+import {AccordionModule} from 'primeng/accordion';
+import {TableModule} from "primeng/table";
+import {TableComponent} from './components/table/table.component';
+import {GestisciUtentiComponent} from './modules/main/components/gestisci-utenti/gestisci-utenti.component';
+import {ButtonModule} from "primeng/button";      //accordion and accordion tab
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {TabViewModule} from 'primeng/tabview';
+import {TabViewComponent} from './components/tab-view/tab-view.component';
+import {ToolbarComponent} from './components/toolbar/toolbar.component';
+import {ToolbarModule} from 'primeng/toolbar';
+import { PaginatorComponent } from './components/table/paginator/paginator.component';
+import {FiltroGestioneUtentiComponent} from './modules/main/components/gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomeComponent,
-        SidebarComponent,
-        LoginBarComponent,
-        FooterDirective,
-        NonautorizzatoComponent,
-        GenericErrorComponent,
-        BannerComponent,
-        HeaderComponent,
-        NuovoPagamentoComponent,
-        IMieiPagamentiComponent,
-        CompilaNuovoPagamentoComponent,
-        DatiNuovoPagamentoComponent,
-        IntegerNumberDirective
-    ],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    SidebarComponent,
+    LoginBarComponent,
+    FooterDirective,
+    NonautorizzatoComponent,
+    GenericErrorComponent,
+    BannerComponent,
+    HeaderComponent,
+    NuovoPagamentoComponent,
+    IMieiPagamentiComponent,
+    CompilaNuovoPagamentoComponent,
+    DatiNuovoPagamentoComponent,
+    TableComponent,
+    GestisciUtentiComponent,
+    TabViewComponent,
+    ToolbarComponent,
+    PaginatorComponent,
+    FiltroGestioneUtentiComponent,
+    IntegerNumberDirective
+  ],
   imports: [
     HttpClientModule,
     BrowserModule,
@@ -56,6 +75,15 @@ import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
     FormsModule,
     DesignAngularKitModule,
     ReactiveFormsModule,
+    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    DpDatePickerModule,
+    NgxDatatableModule,
+    AccordionModule,
+    TableModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    TabViewModule,
+    ToolbarModule,
     UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     DpDatePickerModule,
     NgxCurrencyModule,

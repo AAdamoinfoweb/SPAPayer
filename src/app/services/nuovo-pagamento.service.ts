@@ -41,6 +41,11 @@ export class NuovoPagamentoService {
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): Observable<Ente[]> {
+    let params = new HttpParams();
+    if (idLivelloTerritoriale) {
+      params = params.set('livelloTerritorialeId', idLivelloTerritoriale);
+    }
+
     return this.http.get(environment.bffBaseUrl + this.filtroEntiUrl, {
       withCredentials: true,
       params: {

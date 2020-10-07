@@ -12,8 +12,10 @@ import {ListaPagamentiComponent} from './components/lista-pagamenti/lista-pagame
 import {PrivacyComponent} from './components/privacy/privacy.component';
 import {LoginBarComponent} from "../../components/login-bar/login-bar.component";
 import {ReplacePipe} from "../../pipe/ReplacePipe";
-import {NgbDropdownModule, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDatepickerModule, NgbDropdownModule, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
 import { WaitingComponent } from './components/waiting/waiting.component';
+import { FiltriIMieiPagamentiComponent } from './components/i-miei-pagamenti/filtri-i-miei-pagamenti/filtri-i-miei-pagamenti.component';
+import {DpDatePickerModule} from "ng2-date-picker";
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { WaitingComponent } from './components/waiting/waiting.component';
     ListaPagamentiComponent,
     PrivacyComponent,
     ReplacePipe,
-    WaitingComponent
+    WaitingComponent,
+    FiltriIMieiPagamentiComponent
   ],
   imports: [
     CommonModule,
@@ -34,11 +37,14 @@ import { WaitingComponent } from './components/waiting/waiting.component';
     ReactiveFormsModule,
     NgxYoutubePlayerModule,
     NgbPaginationModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    NgbDatepickerModule,
+    DpDatePickerModule
   ],
   exports: [
     FooterComponent,
-    ReplacePipe
+    ReplacePipe,
+    FiltriIMieiPagamentiComponent
   ]
 })
 export class MainModule {
