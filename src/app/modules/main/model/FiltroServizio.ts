@@ -3,5 +3,6 @@ export class FiltroServizio {
   nome: string;
   tipologiaServizioId: number;
   tipologiaServizioCodice: string;
+  enteId: number;
   livelloIntegrazioneId: number;
 }
