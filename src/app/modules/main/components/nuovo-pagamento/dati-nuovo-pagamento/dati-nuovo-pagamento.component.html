@@ -197,7 +197,7 @@
   <div class="page-section" *ngIf="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento)">
     <div class="row">
       <div class="offset-md-8 col-md-4">
-        <div class="form-elem-container">
+        <div class="form-elem-container required">
           <div class="row">
             <label for="importoTotale" class="title form-elem-title" [ngClass]="{'disabled': isFaseVerificaPagamento}">
               Importo totale

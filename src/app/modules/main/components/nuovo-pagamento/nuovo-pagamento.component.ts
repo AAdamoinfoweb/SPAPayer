@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Servizio} from '../../model/Servizio';
+import {FiltroServizio} from '../../model/FiltroServizio';
 import {NuovoPagamentoService} from '../../../../services/nuovo-pagamento.service';
 
 @Component({
@@ -8,7 +8,7 @@ import {NuovoPagamentoService} from '../../../../services/nuovo-pagamento.servic
   styleUrls: ['./nuovo-pagamento.component.scss']
 })
 export class NuovoPagamentoComponent implements OnInit {
-  servizioSelezionato: Servizio;
+  servizioSelezionato: FiltroServizio;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService) {
     this.nuovoPagamentoService.compilazioneEvent.subscribe(servizioSelezionato => {
