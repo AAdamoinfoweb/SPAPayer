@@ -11,11 +11,12 @@ import {LivelloIntegrazioneEnum} from '../../../../../enums/livelloIntegrazione.
 import {EsitoEnum} from '../../../../../enums/esito.enum';
 import {Bollettino} from '../../../model/bollettino/Bollettino';
 import {ECalendarValue} from 'ng2-date-picker';
-import {Router} from "@angular/router";
-import {DettaglioTransazioneEsito} from "../../../model/bollettino/DettaglioTransazioneEsito";
-import {of} from "rxjs";
-import {CampoDettaglioTransazione} from "../../../model/bollettino/CampoDettaglioTransazione";
+import {Router} from '@angular/router';
+import {DettaglioTransazioneEsito} from '../../../model/bollettino/DettaglioTransazioneEsito';
+import {of} from 'rxjs';
+import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettaglioTransazione';
 import {RichiestaCampiPrecompilati} from '../../../model/RichiestaCampiPrecompilati';
+import {TipologiaServizioEnum} from '../../../../../enums/tipologiaServizio.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -80,14 +81,33 @@ export class DatiNuovoPagamentoComponent implements OnInit {
   clickProcedi(): void {
     this.isFaseVerificaPagamento = true;
     const richiestaCampiPrecompilati = new RichiestaCampiPrecompilati();
-    richiestaCampiPrecompilati.servizioId = this.servizio.id;
-    richiestaCampiPrecompilati.tipologiaServizioId = this.servizio.tipologiaServizioId;
-    richiestaCampiPrecompilati.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
+    const isTipologiaServizioValida = Object.values(TipologiaServizioEnum).includes(this.servizio.tipologiaServizioCodice);
 
-    if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2_BACK_OFFICE) {
-      // TODO logica LV2BO
-    } else if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
-      // TODO logica LV3
+    if (isTipologiaServizioValida) {
+      richiestaCampiPrecompilati.servizioId = this.servizio.id;
+      richiestaCampiPrecompilati.tipologiaServizioId = this.servizio.tipologiaServizioId;
+      richiestaCampiPrecompilati.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
+
+      // TODO sostituire valori undefined con valori reali
+
+      if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2_BACK_OFFICE) {
+        if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.PRM
+          || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.MAV
+          || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.FRC) {
+          richiestaCampiPrecompilati.identificativoBollettino = undefined;
+        } else if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.CDS) {
+          richiestaCampiPrecompilati.identificativoVerbale = undefined;
+          richiestaCampiPrecompilati.targaVeicolo = undefined;
+          richiestaCampiPrecompilati.dataVerbale = undefined;
+        }
+      } else if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
+          richiestaCampiPrecompilati.codiceAvviso = undefined;
+          richiestaCampiPrecompilati.cfpiva = undefined;
+      }
+
+      this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati).subscribe((valoriCampiPrecompilati) => {
+        // TODO logica mapping valori
+      });
     }
   }
 
