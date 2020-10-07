@@ -81,7 +81,7 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati: RichiestaCampiPrecompilati): Observable<CampiNuovoPagamento> {
+  recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati: RichiestaCampiPrecompilati): Observable<Object> {
     return this.http.get(environment.bffBaseUrl + this.campiNuovoPagamentoUrl, {
       withCredentials: true,
       params: {

@@ -23,6 +23,8 @@ import {getBannerType, LivelloBanner} from "../../../../../enums/livelloBanner.e
 import {BannerService} from "../../../../../services/banner.service";
 import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mappingCampoInputPrecompilazione.enum';
 
+import {JSONPath} from 'jsonpath-plus';
+
 @Component({
   selector: 'app-dati-nuovo-pagamento',
   templateUrl: './dati-nuovo-pagamento.component.html',
@@ -122,10 +124,47 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       }
 
       this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati).subscribe((valoriCampiPrecompilati) => {
-        // TODO logica mapping campi output
+        // TODO (attendere implementazione backend di /datiPagamento) testare mapping campi output con chiamata backend
+        const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+        campiOutput.forEach(campo => {
+          this.model[this.getNomeCampoForm(campo)] = JSONPath({
+            path: campo.jsonPath,
+            json: valoriCampiPrecompilati
+          });
+        });
       });
     }
   }
+
+  // testJsonPath(): void {
+  //   let obj = {
+  //       "firstName": "John",
+  //       "lastName" : "doe",
+  //       "age"      : 26,
+  //       "address"  : {
+  //         "streetAddress": "naist street",
+  //         "city"         : "Nara",
+  //         "postalCode"   : "630-0192"
+  //       },
+  //       "phoneNumbers": [
+  //         {
+  //           "type"  : "iPhone",
+  //           "number": "0123-4567-8888"
+  //         },
+  //         {
+  //           "type"  : "home",
+  //           "number": "0123-4567-8910"
+  //         }
+  //       ]
+  //     }
+  //
+  //   const result = JSONPath({
+  //     path: '$.phoneNumbers[:1].type',
+  //     json: obj
+  //   })
+  //
+  //   console.log(result);
+  // }
 
   mappaCampoInput(mappingCampoInputPrecompilazioneEnum: MappingCampoInputPrecompilazioneEnum) {
     const campo = this.listaCampiDinamici.find(campo => campo.campo_input && campo.jsonPath === mappingCampoInputPrecompilazioneEnum);

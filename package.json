@@ -1,6 +1,9 @@
 {
   "name": "spapayer",
   "version": "0.0.1",
+  "browser": {
+    "vm": false
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxyconf.json --host 0.0.0.0 --port 80 --disable-host-check",
@@ -34,6 +37,7 @@
     "fp-ts": "^2.6.0",
     "io-ts": "^2.2.2",
     "jquery": "3.4.1",
+    "jsonpath-plus": "4.0.0",
     "moment": "^2.27.0",
     "ng2-date-picker": "10.0.0",
     "ngx-currency": "2.5.1",
