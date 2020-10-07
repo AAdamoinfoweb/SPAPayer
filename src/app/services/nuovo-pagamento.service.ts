@@ -47,10 +47,8 @@ export class NuovoPagamentoService {
     }
 
     return this.http.get(environment.bffBaseUrl + this.filtroEntiUrl, {
-      withCredentials: true,
-      params: {
-        livelloTerritorialeId: idLivelloTerritoriale
-      }
+      params: params,
+      withCredentials: true
     })
       .pipe(map((body: any) => {
         return body;
@@ -58,11 +56,13 @@ export class NuovoPagamentoService {
   }
 
   recuperaFiltroServizi(idEnte): Observable<FiltroServizio[]> {
+    let params = new HttpParams();
+    if (idEnte) {
+      params = params.set('enteId', idEnte);
+    }
     return this.http.get(environment.bffBaseUrl + this.filtroServiziUrl, {
-      withCredentials: true,
-      params: {
-        enteId: idEnte
-      }
+      params: params,
+      withCredentials: true
     })
       .pipe(map((body: any) => {
         return body;
