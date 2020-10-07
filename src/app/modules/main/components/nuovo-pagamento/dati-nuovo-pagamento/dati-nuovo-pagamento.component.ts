@@ -36,7 +36,7 @@ export class DatiNuovoPagamentoComponent implements OnInit {
 
   listaCampi: Array<CampoForm> = [];
 
-  importoFormControl: FormControl = new FormControl();
+  importoFormControl: FormControl = new FormControl(null, Validators.required);
   form: FormGroup = new FormGroup({importo: this.importoFormControl});
   model = {importo: null};
 
