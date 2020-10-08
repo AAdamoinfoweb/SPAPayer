@@ -14,8 +14,16 @@ import {HttpClient} from "@angular/common/http";
 })
 export class HeaderComponent implements OnInit {
   private maxHeightOffset: number;
-  testoAccedi = 'Accedi';
+
   isAnonimo = false;
+  isSticky: boolean = false;
+
+  testoAccedi = 'Accedi';
+  urlNuovoPagamento = "/nuovoPagamento";
+
+  isPaginaNuovoPagamento: boolean = window.location.pathname === this.urlNuovoPagamento;
+  prezzoCarrello: number;
+  isL1: boolean = true;
 
   constructor(private stickyService: LoginBarService, private router: Router,
               private http: HttpClient,
@@ -23,8 +31,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.checkIfL1();
+    this.menuService.infoUtenteEmitter.subscribe(() => this.checkIfL1());
 
     this.menuService.userAutenticatedEvent
       .subscribe((isAnonimo: boolean) => {
@@ -40,14 +47,6 @@ export class HeaderComponent implements OnInit {
       this.prezzoCarrello = this.prezzoCarrello == null ? prezzo : this.prezzoCarrello + prezzo;
     });
   }
-
-  isSticky: boolean = false;
-  urlNuovoPagamento = "/nuovoPagamento";
-  isPaginaNuovoPagamento: boolean = window.location.pathname === this.urlNuovoPagamento;
-  prezzoCarrello: number;
-
-  @Input()
-  isL1: boolean = false;
 
   private checkIfL1() {
     this.isL1 = true;

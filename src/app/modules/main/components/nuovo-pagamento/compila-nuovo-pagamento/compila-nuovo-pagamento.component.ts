@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
 import {LivelloTerritoriale} from '../../../model/LivelloTerritoriale';
@@ -45,7 +45,37 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: livello.nome
         });
       });
-    })).subscribe();
+    })).subscribe(() => this.restoreParziale('livelloTerritorialeId'));
+  }
+
+  private restoreParziale(field: string) {
+    let isUtenteAnonimo = localStorage.getItem('nome') === 'null';
+    if (isUtenteAnonimo) {
+      localStorage.removeItem("parziale");
+    } else {
+      if (localStorage.getItem("parziale") != null) {
+        let item = JSON.parse(localStorage.getItem("parziale"));
+        if (field == 'livelloTerritorialeId') {
+          let filters: OpzioneSelect[] = this.listaLivelliTerritoriali.filter((livello: OpzioneSelect) => livello.value.id == item[field]);
+          if (filters.length > 0) {
+            this.livelloTerritorialeSelezionato = filters[0].value;
+            this.selezionaLivelloTerritoriale();
+          }
+        } else if (field == 'enteId') {
+          let filters: OpzioneSelect[] = this.listaEnti.filter((ente: OpzioneSelect) => ente.value.id == item[field]);
+          if (filters.length > 0) {
+            this.enteSelezionato = filters[0].value;
+            this.selezionaEnte();
+          }
+        } else if (field == 'servizioId') {
+          let filters: OpzioneSelect[] = this.listaServizi.filter((servizio: OpzioneSelect) => servizio.value.id == item[field]);
+          if (filters.length > 0) {
+            this.servizioSelezionato = filters[0].value;
+            this.selezionaServizio();
+          }
+        }
+      }
+    }
   }
 
   selezionaLivelloTerritoriale(): void {
@@ -66,7 +96,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: ente.nome
         });
       });
-    })).subscribe();
+    })).subscribe(() => this.restoreParziale('enteId'));
   }
 
   selezionaEnte(): void {
@@ -85,7 +115,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: servizio.nome
         });
       });
-    })).subscribe();
+    })).subscribe(() => this.restoreParziale('servizioId'));
   }
 
   selezionaServizio(): void {

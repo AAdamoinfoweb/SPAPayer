@@ -73,11 +73,26 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.checkUtenteLoggato();
     this.inizializzazioneForm(this.servizio);
+    this.restoreParziale();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.servizio) {
+      this.restoreParziale();
       this.inizializzazioneForm(this.servizio);
+    }
+  }
+
+  private restoreParziale() {
+    if (this.isUtenteAnonimo) {
+      this.salvaParziale(this.servizio.livelloTerritorialeId, null, 'livelloTerritorialeId');
+      this.salvaParziale(this.servizio.enteId, null, 'enteId');
+      this.salvaParziale(this.servizio.id, null, 'servizioId');
+    } else {
+
+      
+
+      localStorage.removeItem("parziale");
     }
   }
 
@@ -110,16 +125,16 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.tipologiaServizioId,
       this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
       .subscribe((valoriCampiPrecompilati) => {
-      // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO
-      // TODO (attendere implementazione backend) testare mapping campi output per servizio LV3
-      const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
-      campiOutput.forEach(campo => {
-        this.model[this.getNomeCampoForm(campo)] = JSONPath({
-          path: campo.jsonPath,
-          json: valoriCampiPrecompilati
+        // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO
+        // TODO (attendere implementazione backend) testare mapping campi output per servizio LV3
+        const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+        campiOutput.forEach(campo => {
+          this.model[this.getNomeCampoForm(campo)] = JSONPath({
+            path: campo.jsonPath,
+            json: valoriCampiPrecompilati
+          });
         });
       });
-    });
   }
 
   aggiornaVisibilita(): void {

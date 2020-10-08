@@ -17,16 +17,13 @@ export class LoginBarComponent implements OnInit, AfterViewInit {
   }
 
   @ViewChild("containerLoginBar", {static: false}) containerLoginBar: ElementRef;
-
-  @Input()
-  isL1: boolean = false;
+  isL1: boolean = true;
 
   testoAccedi = "Accedi";
   isAnonimo = false;
 
   ngOnInit(): void {
-
-    this.checkIfL1();
+    this.menuService.infoUtenteEmitter.subscribe(() => this.checkIfL1());
 
     this.menuService.userAutenticatedEvent
       .subscribe((isAnonimo: boolean) => {
