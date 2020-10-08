@@ -291,6 +291,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         validatori.push(Validators.pattern(campo.controllo_logico.regex));
       }
 
+      if (!campo.lunghezzaVariabile) {
+        validatori.push(Validators.minLength(campo.lunghezza));
+      }
+
       switch (campo.tipoCampo) {
         case TipoCampoEnum.INPUT_NUMERICO:
           validatori.push(Validators.min(0));
@@ -360,6 +364,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         descrizione = 'Il campo è obbligatorio';
       } else if (formControl.errors?.pattern) {
         descrizione = 'Formato non valido';
+      } else if (formControl.errors?.minlength) {
+        descrizione = 'Il campo deve essere lungo ' + campo.lunghezza + ' caratteri';
       } else if (formControl.errors?.min) {
         switch (campo.tipoCampo) {
           case TipoCampoEnum.INPUT_NUMERICO:
