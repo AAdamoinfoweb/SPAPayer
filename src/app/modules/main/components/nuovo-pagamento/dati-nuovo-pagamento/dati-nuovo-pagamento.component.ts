@@ -122,18 +122,17 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     });
 
     // Mapping valori dei campi output precompilati
-    this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.tipologiaServizioId,
+    this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
       this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
       .subscribe((valoriCampiPrecompilati) => {
-        // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO
-        // TODO (attendere implementazione backend) testare mapping campi output per servizio LV3
-        const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
-        campiOutput.forEach(campo => {
-          this.model[this.getNomeCampoForm(campo)] = JSONPath({
-            path: campo.jsonPath,
-            json: valoriCampiPrecompilati
-          });
-        });
+      // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO
+      // TODO (attendere implementazione backend) testare mapping campi output per servizio LV3
+      const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+      campiOutput.forEach(campo => {
+        this.model[this.getNomeCampoForm(campo)] = JSONPath({
+          path: campo.jsonPath,
+          json: valoriCampiPrecompilati
+        })[0];
       });
   }
 
@@ -280,7 +279,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     campi.forEach(campo => {
       const campoForm = new FormControl();
-      if (campo.disabilitato) {
+      if (campo.disabilitato || !campo.campo_input) {
         campoForm.disable();
       }
 
