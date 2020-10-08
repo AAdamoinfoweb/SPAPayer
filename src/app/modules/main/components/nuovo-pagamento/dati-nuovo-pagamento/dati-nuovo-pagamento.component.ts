@@ -16,11 +16,11 @@ import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettagli
 import {observable, Observable, of} from 'rxjs';
 import {RichiestaCampiPrecompilati} from '../../../model/RichiestaCampiPrecompilati';
 import {TipologiaServizioEnum} from '../../../../../enums/tipologiaServizio.enum';
-import {DettagliTransazione} from "../../../model/bollettino/DettagliTransazione";
-import {DettaglioTransazioneEsito} from "../../../model/bollettino/DettaglioTransazioneEsito";
-import {Banner} from "../../../model/Banner";
-import {getBannerType, LivelloBanner} from "../../../../../enums/livelloBanner.enum";
-import {BannerService} from "../../../../../services/banner.service";
+import {DettagliTransazione} from '../../../model/bollettino/DettagliTransazione';
+import {DettaglioTransazioneEsito} from '../../../model/bollettino/DettaglioTransazioneEsito';
+import {Banner} from '../../../model/Banner';
+import {getBannerType, LivelloBanner} from '../../../../../enums/livelloBanner.enum';
+import {BannerService} from '../../../../../services/banner.service';
 import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mappingCampoInputPrecompilazione.enum';
 
 import {JSONPath} from 'jsonpath-plus';
@@ -37,6 +37,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
               private bannerService: BannerService,
               private cdr: ChangeDetectorRef) {
   }
+
   readonly TipoCampoEnum = TipoCampoEnum;
   readonly LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
   livelloIntegrazioneId: number = null;
@@ -70,7 +71,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
-a;
+  a;
 
   ngOnInit(): void {
     this.checkUtenteLoggato();
@@ -273,7 +274,7 @@ a;
     }
   }
 
-  formattaInput(campo: CampoForm): void {
+  formattaInput(event: any, campo: CampoForm): void {
     const nomeCampo = this.getNomeCampoForm(campo);
     const valoreCampo = this.model[nomeCampo];
 
@@ -284,6 +285,7 @@ a;
         }
         break;
     }
+    this.salvaParziale(this.model[nomeCampo], campo);
   }
 
   ordinaPerPosizione(campi: Array<CampoForm>): void {
@@ -341,8 +343,7 @@ a;
     const campoForms: CampoForm[] = this.listaCampiDinamici.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
     if (campoForms.length > 0) {
       return this.getNomeCampoForm(campoForms[0]);
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -413,7 +414,10 @@ a;
     return campo.id.toString();
   }
 
-  aggiornaSelectDipendenti(campo: CampoForm): void {
+  aggiornaSelectDipendenti(event: Event, campo: CampoForm): void {
+
+    this.salvaParziale(event, campo);
+
     const campiDipendenti = this.getCampiDipendenti(campo);
     if (campiDipendenti) {
       campiDipendenti.forEach(campo => {
@@ -522,7 +526,7 @@ a;
         .pipe(map((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.creaBollettino()));
-            //cancellaBollettinoParziale()
+            // cancellaBollettinoParziale()
             return null;
           } else {
             // show err
@@ -562,7 +566,7 @@ a;
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .subscribe((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
-            localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.model));
+            localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.creaBollettino()));
             this.aggiornaPrezzoCarrello();
             this.router.navigateByUrl('/carrello');
           } else {
@@ -618,6 +622,7 @@ a;
       }
     });
   }
+
   private showMessage() {
     const banner: Banner = {
       titolo: 'Operazione non consentita!',
@@ -625,5 +630,18 @@ a;
       tipo: getBannerType(LivelloBanner.ERROR)
     };
     this.bannerService.bannerEvent.emit([banner]);
+  }
+
+  salvaParziale(event: any, campo: CampoForm, nomeCampo: string = null) {
+    if (this.isUtenteAnonimo) {
+      let item;
+      if (localStorage.getItem('parziale') != null) {
+        item = JSON.parse(localStorage.getItem('parziale'));
+      } else {
+        item = {};
+      }
+      item[campo == null ? nomeCampo : this.getNomeCampoForm(campo)] = event;
+      localStorage.setItem('parziale', JSON.stringify(item));
+    }
   }
 }
