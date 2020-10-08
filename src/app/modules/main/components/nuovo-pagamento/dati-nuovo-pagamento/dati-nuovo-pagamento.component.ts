@@ -156,18 +156,18 @@ a;
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
     } else if (campo.tipoCampo === TipoCampoEnum.DATEDDMMYY || campo.tipoCampo === TipoCampoEnum.DATEMMYY || campo.tipoCampo === TipoCampoEnum.DATEYY) {
-      classe = 'col-md-2';
+      classe = 'col-md-2 form-col-2';
     } else if (campo.tipoCampo === TipoCampoEnum.INPUT_PREZZO) {
-      classe = 'col-md-2';
+      classe = 'col-md-2 form-col-2';
     } else {
       if (campo.lunghezza <= this.lunghezzaMaxCol1) {
-        classe = 'col-md-1';
+        classe = 'col-md-1 form-col-1';
       } else if (campo.lunghezza <= this.lunghezzaMaxCol2) {
-        classe = 'col-md-2';
+        classe = 'col-md-2 form-col-2';
       } else if (campo.lunghezza <= this.lunghezzaMaxCol3) {
-        classe = 'col-md-3';
+        classe = 'col-md-3 form-col-3';
       } else {
-        classe = 'col-md-4';
+        classe = 'col-md-4 form-col-4';
       }
     }
 
