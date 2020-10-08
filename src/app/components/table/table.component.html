@@ -1,7 +1,8 @@
 <p-table [columns]="cols" [value]="rows" styleClass="p-datatable-responsive-demo"
          dataKey="{{dataKey}}" [(selection)]="selection"
          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
-         [paginator]="true" [rows]="pageSize" [showCurrentPageReport]="false">
+         [paginator]="true" [rows]="pageSize" [showCurrentPageReport]="false"
+         (onHeaderCheckboxToggle)="onRowSelect($event)">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th style="width: 3rem" *ngIf="tipoTabella == tipoTabellaEnum.CHECKBOX_SELECTION">

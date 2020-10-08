@@ -39,11 +39,11 @@ export class TableComponent implements OnInit {
   }
 
   onRowSelect(event) {
-    this.onSelection.emit(event.data);
+    this.onSelection.emit(this.selection);
   }
 
   onRowUnselect(event) {
-    this.onSelection.emit(event.data);
+    this.onSelection.emit(this.selection);
   }
 
   onChangePageSize(event) {
