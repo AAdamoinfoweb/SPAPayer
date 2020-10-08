@@ -10,6 +10,7 @@ import {NgForm, NgModel} from '@angular/forms';
 import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
 import {RicercaUtente} from '../../../model/utente/RicercaUtente';
 import {UtenteService} from '../../../../../services/utente.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -29,7 +30,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   isCalendarOpen = false;
   readonly minDateDDMMYY = '01/01/1900';
-  readonly tipoData = ECalendarValue.String;
+  readonly tipoData = ECalendarValue.Moment;
 
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
 
@@ -166,16 +167,21 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   }
 
   cercaUtenti(form: NgForm): void {
+    const filtro = Object.assign({}, this.filtroGestioneUtentiApplicato);
+
     Object.keys(form.value).forEach(key => {
       const value = form.value[key];
       if (value !== undefined) {
-        this.filtroGestioneUtentiApplicato[key] = value;
+        if (typeof value === 'object') {
+          filtro[key] = moment(value).format('YYYY-MM-DD[T]HH:mm:ss');
+        } else {
+          filtro[key] = value;
+        }
       } else {
-        this.filtroGestioneUtentiApplicato[key] = null;
+        filtro[key] = null;
       }
     });
 
-    const filtro = this.filtroGestioneUtentiApplicato;
     this.utenteService.ricercaUtenti(filtro.livelloTerritorialeId, filtro.societaId, filtro.enteId, filtro.servizioId, filtro.funzioneId,
       filtro.codiceFiscale, filtro.dataScadenzaDa, filtro.dataScadenzaA, filtro.ultimoAccessoDa,
       filtro.ultimoAccessoA).pipe(map(listaUtenti => {

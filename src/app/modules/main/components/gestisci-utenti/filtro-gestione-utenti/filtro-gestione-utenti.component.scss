@@ -20,12 +20,10 @@
   fill: #77777B;
   cursor: pointer;
   background: transparent !important;
-  border-bottom: 1px solid grey;
 }
 
 :host::ng-deep dp-date-picker.dp-material .dp-picker-input {
-  width: 72%;
-  margin-left: 21%;
+  padding-left: 40px;
 }
 
 .btn-find {
