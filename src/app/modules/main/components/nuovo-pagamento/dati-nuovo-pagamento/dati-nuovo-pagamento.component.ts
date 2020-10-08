@@ -76,12 +76,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.servizio) {
-      this.inizializzazioneForm(this.servizio);
-      this.restoreParziale();
+      this.inizializzazioneForm(this.servizio).subscribe(() => this.restoreParziale());
     }
   }
 
   private restoreParziale() {
+    this.isUtenteAnonimo = localStorage.getItem('nome') === 'null';
     if (this.isUtenteAnonimo) {
       this.salvaParziale(this.servizio.livelloTerritorialeId, null, 'livelloTerritorialeId');
       this.salvaParziale(this.servizio.enteId, null, 'enteId');
@@ -236,18 +236,20 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     delete this.model[this.importoNomeCampo];
   }
 
-  inizializzazioneForm(servizio: FiltroServizio): void {
+  inizializzazioneForm(servizio: FiltroServizio): Observable<any> {
     this.servizio = servizio;
     const isCompilato = this.servizio != null;
 
     if (isCompilato) {
       this.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
 
-      this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
+      return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
         this.creaForm();
         this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
         this.impostaCampi(campiNuovoPagamento.campiServizio);
-      })).subscribe();
+      }));
+    } else {
+      return of(null);
     }
   }
 
