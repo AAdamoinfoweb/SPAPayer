@@ -117,7 +117,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.model[this.getNomeCampoForm(campo)] = JSONPath({
           path: campo.jsonPath,
           json: valoriCampiPrecompilati
-        });
+        })[0];
       });
     });
   }
