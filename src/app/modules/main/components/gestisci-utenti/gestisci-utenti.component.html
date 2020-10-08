@@ -28,7 +28,7 @@
         </div>
         <!-- azioni -->
         <div class="col-auto">
-          <app-toolbar (onClick)="eseguiAzioni($event)"></app-toolbar>
+          <app-toolbar [toolbarIcons]="toolbarIcons" (onClick)="eseguiAzioni($event)"></app-toolbar>
         </div>
       </div>
       <!-- table -->
@@ -38,7 +38,8 @@
                      [cols]="tempTableData.cols"
                      [rows]="tempTableData.rows"
                      [tipoTabella]="tempTableData.tipoTabella"
-                     [textLeft]="getTestoConNumeroUtentiAttiviDisabilitati()">
+                     [textLeft]="getTestoConNumeroUtentiAttiviDisabilitati()"
+                     (onSelection)="selezionaRigaTabella($event)">
           </app-table>
         </div>
       </div>

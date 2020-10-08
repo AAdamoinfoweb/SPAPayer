@@ -21,6 +21,13 @@ export class GestisciUtentiComponent implements OnInit {
 
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
+  toolbarIcons = [
+    {type: tool.INSERT},
+    {type: tool.UPDATE, disabled: true},
+    {type: tool.EXPORT_PDF},
+    {type: tool.EXPORT_XLS}
+  ];
+
   tabs = [{header: 'Tutti'},
     {header: 'Attivi'},
     {header: 'Disabilitati'}];
@@ -121,6 +128,10 @@ export class GestisciUtentiComponent implements OnInit {
     const numeroUtentiAttivi = this.tableData.rows.filter(row => row.iconaUtente.display === 'inline').length;
     const numeroUtentiDisabilitati = this.tableData.rows.filter(row => row.iconaUtente.display === 'none').length;
     return '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
+  }
+
+  selezionaRigaTabella(rowsChecked): void {
+    this.toolbarIcons[1].disabled = rowsChecked.length !== 1;
   }
 
 }
