@@ -183,7 +183,7 @@
                   showGoToCurrent: false,
                   openOnClick: isCalendarOpen,
                   openOnFocus: false,
-                  min: minDateDDMMYY,
+                  min: filtroGestioneUtentiForm.controls['dataScadenzaA'] ? filtroGestioneUtentiForm.controls['dataScadenzaA'].value : minDateDDMMYY,
                   returnedValueType: tipoData
 	              }"
                 #scadenzaDaInput = "ngModel"
@@ -265,7 +265,7 @@
                   showGoToCurrent: false,
                   openOnClick: isCalendarOpen,
                   openOnFocus: false,
-                  min: minDateDDMMYY,
+                  min: filtroGestioneUtentiForm.controls['ultimoAccessoA'] ? filtroGestioneUtentiForm.controls['ultimoAccessoA'].value : minDateDDMMYY,
                   returnedValueType: tipoData
                 }"
                 #ultimoAccessoDaInput = "ngModel"
