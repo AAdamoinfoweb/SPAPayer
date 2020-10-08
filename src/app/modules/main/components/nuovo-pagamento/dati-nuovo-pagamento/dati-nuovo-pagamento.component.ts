@@ -473,8 +473,14 @@ a;
     campo.opzioni = opzioniSelect;
   }
 
-  creaBollettino(): Bollettino[] {
+  creaListaBollettini(): Bollettino[] {
     const bollettini: Bollettino[] = [];
+    const bollettino = this.creaBollettino();
+    bollettini.push(bollettino);
+    return bollettini;
+  }
+
+  private creaBollettino() {
     const bollettino: Bollettino = new Bollettino();
     bollettino.servizioId = this.servizio.id;
     bollettino.enteId = this.servizio.enteId;
@@ -493,8 +499,7 @@ a;
       field.valore = this.model[nomeCampo];
       bollettino.listaCampoDettaglioTransazione.push(field);
     });
-    bollettini.push(bollettino);
-    return bollettini;
+    return bollettino;
   }
 
   aggiungiAlCarrello() {
@@ -505,7 +510,7 @@ a;
       observable = this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .pipe(map((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
-            localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.model));
+            localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.creaBollettino()));
             //cancellaBollettinoParziale()
             return null;
           } else {
@@ -515,7 +520,7 @@ a;
           }
         }));
     } else {
-      observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+      observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
         .pipe(flatMap((result) => {
           if (result.length > 0) {
             const value: DettaglioTransazioneEsito = result[0];
@@ -556,7 +561,7 @@ a;
           }
         });
     } else {
-      const observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+      const observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
         .pipe(flatMap((result) => {
           if (result.length > 0) {
             const value: DettaglioTransazioneEsito = result[0];
@@ -581,7 +586,7 @@ a;
   }
 
   salvaPerDopo() {
-    const observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
+    const observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
       .pipe(flatMap((result) => {
         if (result.length > 0) {
           const value: DettaglioTransazioneEsito = result[0];
