@@ -68,18 +68,16 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
-  a;
 
   ngOnInit(): void {
     this.checkUtenteLoggato();
     this.inizializzazioneForm(this.servizio);
-    this.restoreParziale();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.servizio) {
-      this.restoreParziale();
       this.inizializzazioneForm(this.servizio);
+      this.restoreParziale();
     }
   }
 
@@ -89,9 +87,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.salvaParziale(this.servizio.enteId, null, 'enteId');
       this.salvaParziale(this.servizio.id, null, 'servizioId');
     } else {
-
-
-      localStorage.removeItem("parziale");
+      let item = JSON.parse(localStorage.getItem("parziale"));
+      for (var key in this.model) {
+        this.model[key] = item[key];
+      }
+      //localStorage.removeItem("parziale");
     }
   }
 
