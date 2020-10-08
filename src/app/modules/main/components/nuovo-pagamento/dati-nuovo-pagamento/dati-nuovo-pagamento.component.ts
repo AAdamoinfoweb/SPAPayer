@@ -555,7 +555,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .subscribe((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
-            localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.model));
+            localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.creaBollettino()));
             this.aggiornaPrezzoCarrello();
             this.router.navigateByUrl('/carrello');
           } else {
@@ -622,13 +622,15 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   salvaParziale(event: any, campo: CampoForm, nomeCampo: string = null) {
-    let item;
-    if (localStorage.getItem('parziale') != null) {
-      item = JSON.parse(localStorage.getItem('parziale'));
-    } else {
-      item = {};
+    if (this.isUtenteAnonimo) {
+      let item;
+      if (localStorage.getItem('parziale') != null) {
+        item = JSON.parse(localStorage.getItem('parziale'));
+      } else {
+        item = {};
+      }
+      item[campo == null ? nomeCampo : this.getNomeCampoForm(campo)] = event;
+      localStorage.setItem('parziale', JSON.stringify(item));
     }
-    item[campo == null ? nomeCampo : this.getNomeCampoForm(campo)] = event;
-    localStorage.setItem('parziale', JSON.stringify(item));
   }
 }
