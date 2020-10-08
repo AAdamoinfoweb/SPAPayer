@@ -34,7 +34,7 @@
                   [(ngModel)]="model[getNomeCampoForm(campo)]"
                   type="text"
                   [maxLength]="getLunghezzaCampo(campo)"
-                  (ngModelChange)="formattaInput(campo)"
+                  (ngModelChange)="formattaInput($event, campo)"
                   autocomplete="off"
                   [attr.disabled]="isCampoDisabilitato(campo)"
                 />
@@ -50,6 +50,7 @@
               </div>
               <div class="row">
                 <input
+                  (ngModelChange)="salvaParziale($event, campo)"
                   [id]="getIdCampo(campo)"
                   [formControl]="form.controls[getNomeCampoForm(campo)]"
                   [(ngModel)]="model[getNomeCampoForm(campo)]"
@@ -72,6 +73,7 @@
               </div>
               <div class="row">
                 <input
+                  (ngModelChange)="salvaParziale($event, campo)"
                   [id]="getIdCampo(campo)"
                   class="price-input"
                   [formControl]="form.controls[getNomeCampoForm(campo)]"
@@ -95,6 +97,7 @@
               </div>
               <div class="row">
                 <dp-date-picker
+                  (ngModelChange)="salvaParziale($event, campo)"
                   mode="day"
                   theme="dp-material"
                   [formControl]="form.controls[getNomeCampoForm(campo)]"
@@ -123,6 +126,7 @@
               </div>
               <div class="row">
                 <dp-date-picker
+                  (ngModelChange)="salvaParziale($event, campo)"
                   mode="month"
                   theme="dp-material"
                   [formControl]="form.controls[getNomeCampoForm(campo)]"
@@ -150,6 +154,7 @@
               </div>
               <div class="row">
                 <input
+                  (ngModelChange)="salvaParziale($event, campo)"
                   [id]="getIdCampo(campo)"
                   [formControl]="form.controls[getNomeCampoForm(campo)]"
                   [(ngModel)]="model[getNomeCampoForm(campo)]"
@@ -174,7 +179,7 @@
                   [id]="getIdCampo(campo)"
                   [formControl]="form.controls[getNomeCampoForm(campo)]"
                   [(ngModel)]="model[getNomeCampoForm(campo)]"
-                  (change)="aggiornaSelectDipendenti(campo)"
+                  (ngModelChange)="aggiornaSelectDipendenti($event, campo)"
                   [attr.disabled]="isCampoDisabilitato(campo)"
                 >
                   <option [ngValue]="null"></option>
@@ -209,6 +214,7 @@
               id="importoTotale"
               [formControl]="importoFormControl"
               [(ngModel)]="model[importoNomeCampo]"
+              (ngModelChange)="salvaParziale($event, null, importoNomeCampo)"
               type="tel"
               currencyMask
               [options]="{allowNegative: false, prefix: '', precision: 2, decimal: '.', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
