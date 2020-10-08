@@ -166,12 +166,12 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
   }
 
-  cercaUtenti(form: NgForm): void {
-    const filtro = Object.assign({}, this.filtroGestioneUtentiApplicato);
+  cercaUtenti(filtroGestioneUtentiForm: NgForm): void {
+    const filtro = {...this.filtroGestioneUtentiApplicato};
 
-    Object.keys(form.value).forEach(key => {
-      const value = form.value[key];
-      if (value !== undefined) {
+    Object.keys(filtroGestioneUtentiForm.value).forEach(key => {
+      const value = filtroGestioneUtentiForm.value[key];
+      if (value !== undefined && value) {
         if (typeof value === 'object') {
           filtro[key] = moment(value).format('YYYY-MM-DD[T]HH:mm:ss');
         } else {
