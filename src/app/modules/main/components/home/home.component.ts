@@ -22,7 +22,7 @@ import {DettagliTransazione} from "../../model/bollettino/DettagliTransazione";
 export class HomeComponent implements OnInit {
 
   testoAccedi = 'Accedi';
-  isAnonimo = false;
+  isAnonimo = true;
 
   constructor(
     private router: Router,
@@ -34,7 +34,6 @@ export class HomeComponent implements OnInit {
     this.menuService.userAutenticatedEvent
       .subscribe((isAnonimo: boolean) => {
         this.isAnonimo = isAnonimo;
-        this.testoAccedi = isAnonimo ? 'Accedi' : 'Esci';
         if (!this.isAnonimo) {
           nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
         }
@@ -47,20 +46,22 @@ export class HomeComponent implements OnInit {
           bollettini.push(bollettino);
         }
       }
-      let observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(bollettini)
-        .pipe(flatMap((result) => {
-          let dettaglio: DettagliTransazione = new DettagliTransazione();
-          result.forEach((value: DettaglioTransazioneEsito) => {
-            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-              dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
-            }
-          });
-          return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
-        }));
-      observable.subscribe(() => {
-        nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
-        this.clearLocalStorage();
-      });
+      if (bollettini.length > 0) {
+        let observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(bollettini)
+          .pipe(flatMap((result) => {
+            let dettaglio: DettagliTransazione = new DettagliTransazione();
+            result.forEach((value: DettaglioTransazioneEsito) => {
+              if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+                dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
+              }
+            });
+            return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
+          }));
+        observable.subscribe(() => {
+          nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
+          this.clearLocalStorage();
+        });
+      }
       localStorage.removeItem('loginDaAnonimo');
     }
 
@@ -68,8 +69,6 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/riservata']);
       return;
     }
-
-    // location.replace(environment.loginSpid);
 
   }
 
@@ -82,7 +81,11 @@ export class HomeComponent implements OnInit {
   }
 
   getLoginLink() {
-    return this.isAnonimo ? environment.bffBaseUrl + '/loginLepida.htm' : environment.bffBaseUrl + '/logout';
+    if (this.isAnonimo) {
+      window.location.href = environment.bffBaseUrl + '/loginLepida.htm';
+    } else {
+      // NOTING TO DO
+    }
   }
 
   private clearLocalStorage() {

@@ -5,6 +5,7 @@ import {filter} from 'rxjs/operators';
 import {MenuService} from '../../services/menu.service';
 import {environment} from 'src/environments/environment';
 import {NuovoPagamentoService} from '../../services/nuovo-pagamento.service';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-header',
@@ -17,10 +18,14 @@ export class HeaderComponent implements OnInit {
   isAnonimo = false;
 
   constructor(private stickyService: LoginBarService, private router: Router,
+              private http: HttpClient,
               private nuovoPagamentoService: NuovoPagamentoService, private menuService: MenuService) {
   }
 
   ngOnInit(): void {
+
+    this.checkIfL1();
+
     this.menuService.userAutenticatedEvent
       .subscribe((isAnonimo: boolean) => {
         this.isAnonimo = isAnonimo;
@@ -44,6 +49,16 @@ export class HeaderComponent implements OnInit {
   @Input()
   isL1: boolean = false;
 
+  private checkIfL1() {
+    this.isL1 = true;
+    for (var key in localStorage) {
+      if (key == 'nome') {
+        this.isL1 = false;
+        break;
+      }
+    }
+  }
+
   @HostListener('window:scroll', ['$event'])
   checkScroll() {
     this.isSticky = window.pageYOffset >= this.maxHeightOffset;
@@ -54,6 +69,15 @@ export class HeaderComponent implements OnInit {
   }
 
   getLoginLink() {
-    return this.isAnonimo ? environment.bffBaseUrl + '/loginLepida.htm' : environment.bffBaseUrl + '/logout';
+    if (this.isAnonimo) {
+      window.location.href = environment.bffBaseUrl + '/loginLepida.htm';
+    } else {
+      this.http.get(environment.bffBaseUrl + '/logout').subscribe((body: any) => {
+        if (body.url) {
+          this.menuService.userAutenticatedEvent.emit(true);
+          window.location.href = body.url;
+        }
+      });
+    }
   }
 }
