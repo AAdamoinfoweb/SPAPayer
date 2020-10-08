@@ -207,10 +207,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     return chiave;
   }
 
-  precompilaCampiForm(): void {
-    // TODO logica precompila campi form, in caso di LV2BO o LV3
-  }
-
   aggiornaPrezzoCarrello(): void {
     this.nuovoPagamentoService.prezzoEvent.emit(this.model[this.importoNomeCampo]);
   }
@@ -289,7 +285,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         validatori.push(Validators.required);
       }
 
-      // TODO testare validazione regex quando è fixato l'invio delle regex dal backend
       if (campo.controllo_logico?.regex) {
         validatori.push(Validators.pattern(campo.controllo_logico.regex));
       }
