@@ -265,7 +265,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     campi.forEach(campo => {
       const campoForm = new FormControl();
-      if (campo.disabilitato) {
+      if (campo.disabilitato || !campo.campo_input) {
         campoForm.disable();
       }
 
