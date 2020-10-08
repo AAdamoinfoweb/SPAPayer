@@ -91,7 +91,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       for (var key in this.model) {
         this.model[key] = item[key];
       }
-      //localStorage.removeItem("parziale");
+      localStorage.removeItem("parziale");
     }
   }
 
