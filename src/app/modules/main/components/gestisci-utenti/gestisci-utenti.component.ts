@@ -73,8 +73,9 @@ export class GestisciUtentiComponent implements OnInit {
       ultimoAccesso: ultimoAccesso
     };
 
-    if (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema) {
-      // UTENTE ABILITATO
+    if (utente.dataFineValidita === null
+          || (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema)) {
+      // UTENTE ATTIVO
       row.iconaUtente = Utils.creaIcona('assets/img/sprite.svg#it-user', '#ef8157', nomeUtente, 'inline');
     } else if (moment(utente.dataInizioValidita) > dataSistema || moment(utente.dataFineValidita) < dataSistema) {
       // UTENTE DISABILITATO
