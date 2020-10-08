@@ -14,14 +14,11 @@ import {ECalendarValue} from 'ng2-date-picker';
 import {Router} from '@angular/router';
 import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettaglioTransazione';
 import {observable, Observable, of} from 'rxjs';
-import {RichiestaCampiPrecompilati} from '../../../model/RichiestaCampiPrecompilati';
-import {TipologiaServizioEnum} from '../../../../../enums/tipologiaServizio.enum';
 import {DettagliTransazione} from '../../../model/bollettino/DettagliTransazione';
 import {DettaglioTransazioneEsito} from '../../../model/bollettino/DettaglioTransazioneEsito';
 import {Banner} from '../../../model/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../enums/livelloBanner.enum';
 import {BannerService} from '../../../../../services/banner.service';
-import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mappingCampoInputPrecompilazione.enum';
 
 import {JSONPath} from 'jsonpath-plus';
 
@@ -98,62 +95,31 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   clickProcedi(): void {
-    const isTipologiaServizioValida = this.servizio.tipologiaServizioCodice in TipologiaServizioEnum;
+    this.isFaseVerificaPagamento = true;
+    this.aggiungiCampoImporto();
 
-    if (isTipologiaServizioValida) {
-      this.isFaseVerificaPagamento = true;
-      this.aggiungiCampoImporto();
-
-      const richiestaCampiPrecompilati = new RichiestaCampiPrecompilati();
-
-      richiestaCampiPrecompilati.servizioId = this.servizio.id;
-      richiestaCampiPrecompilati.tipologiaServizioId = this.servizio.tipologiaServizioId;
-      richiestaCampiPrecompilati.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
-
-      if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2_BACK_OFFICE) {
-        delete richiestaCampiPrecompilati.codiceAvviso;
-        delete richiestaCampiPrecompilati.cfpiva;
-
-        if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.PRM
-          || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.MAV
-          || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.FRC) {
-          richiestaCampiPrecompilati.identificativoBollettino = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.identificativoBollettino);
-          delete richiestaCampiPrecompilati.identificativoVerbale;
-          delete richiestaCampiPrecompilati.targaVeicolo;
-          delete richiestaCampiPrecompilati.dataVerbale;
-        } else if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.CDS) {
-          richiestaCampiPrecompilati.identificativoVerbale = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.identificativoVerbale);
-          richiestaCampiPrecompilati.targaVeicolo = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.targaVeicolo);
-          richiestaCampiPrecompilati.dataVerbale = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.dataVerbale);
-          delete richiestaCampiPrecompilati.identificativoBollettino;
-        }
-      } else if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
-        richiestaCampiPrecompilati.codiceAvviso = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.codiceAvviso);
-        richiestaCampiPrecompilati.cfpiva = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.cfpiva);
-        delete richiestaCampiPrecompilati.identificativoBollettino;
-        delete richiestaCampiPrecompilati.identificativoVerbale;
-        delete richiestaCampiPrecompilati.targaVeicolo;
-        delete richiestaCampiPrecompilati.dataVerbale;
+    // Mapping valori dei campi input da usare per la precompilazione
+    const valoriPerPrecompilazione = {};
+    this.listaCampiDinamici.forEach(campo => {
+      if (campo.campo_input && campo.jsonPath) {
+        valoriPerPrecompilazione[campo.jsonPath] = this.model[this.getNomeCampoForm(campo)];
       }
+    });
 
-      this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati).subscribe((valoriCampiPrecompilati) => {
-        // TODO (attendere implementazione backend di /datiPagamento) testare mapping campi output con chiamata backend
-        const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
-        campiOutput.forEach(campo => {
-          this.model[this.getNomeCampoForm(campo)] = JSONPath({
-            path: campo.jsonPath,
-            json: valoriCampiPrecompilati
-          });
+    // Mapping valori dei campi output precompilati
+    this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.tipologiaServizioId,
+      this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
+      .subscribe((valoriCampiPrecompilati) => {
+      // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO
+      // TODO (attendere implementazione backend) testare mapping campi output per servizio LV3
+      const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+      campiOutput.forEach(campo => {
+        this.model[this.getNomeCampoForm(campo)] = JSONPath({
+          path: campo.jsonPath,
+          json: valoriCampiPrecompilati
         });
       });
-    }
-  }
-
-  mappaCampoInput(mappingCampoInputPrecompilazioneEnum: MappingCampoInputPrecompilazioneEnum) {
-    const campo = this.listaCampiDinamici.find(campo => campo.campo_input && campo.jsonPath === mappingCampoInputPrecompilazioneEnum);
-    const valoreCampo = campo ? this.model[this.getNomeCampoForm(campo)] : null;
-
-    return valoreCampo;
+    });
   }
 
   aggiornaVisibilita(): void {

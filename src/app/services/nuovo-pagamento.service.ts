@@ -10,7 +10,6 @@ import {CampiNuovoPagamento} from '../modules/main/model/CampiNuovoPagamento';
 import {DettaglioTransazioneEsito} from '../modules/main/model/bollettino/DettaglioTransazioneEsito';
 import {Bollettino} from '../modules/main/model/bollettino/Bollettino';
 import {EsitoEnum} from '../enums/esito.enum';
-import {RichiestaCampiPrecompilati} from "../modules/main/model/RichiestaCampiPrecompilati";
 import {DettagliTransazione} from "../modules/main/model/bollettino/DettagliTransazione";
 import {Carrello} from "../modules/main/model/Carrello";
 
@@ -81,11 +80,16 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati: RichiestaCampiPrecompilati): Observable<Object> {
-    const params = {...richiestaCampiPrecompilati};
+  recuperaValoriCampiPrecompilati(servizioId, tipologiaServizioId,
+                                  livelloIntegrazioneId, valoriPerPrecompilazione: object): Observable<Object> {
     return this.http.get(environment.bffBaseUrl + this.campiPrecompilatiUrl, {
       withCredentials: true,
-      params: params
+      params: {
+        servizioId,
+        tipologiaServizioId,
+        livelloIntegrazioneId,
+        ...valoriPerPrecompilazione
+      }
     })
       .pipe(map((body: any) => {
         return body;
