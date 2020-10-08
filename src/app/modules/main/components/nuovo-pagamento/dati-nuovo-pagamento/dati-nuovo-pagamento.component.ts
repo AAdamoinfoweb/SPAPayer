@@ -50,7 +50,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   form: FormGroup = new FormGroup({});
   model = {};
 
-  readonly importoNomeCampo = 'Importo';
+  readonly importoNomeCampo = 'importoTotaleBollettino';
   readonly importoFormControl: FormControl = new FormControl(null, Validators.required);
   mostraCampoImporto = null;
 
@@ -125,7 +125,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
       .subscribe((valoriCampiPrecompilati) => {
         // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO
-        // TODO (attendere implementazione backend) testare mapping campi output per servizio LV3
         const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
         campiOutput.forEach(campo => {
           this.model[this.getNomeCampoForm(campo)] = JSONPath({
@@ -133,6 +132,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             json: valoriCampiPrecompilati
           })[0];
         });
+
+        this.model[this.importoNomeCampo] = valoriCampiPrecompilati[this.importoNomeCampo];
       });
   }
 
