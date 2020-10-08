@@ -110,18 +110,29 @@ a;
       richiestaCampiPrecompilati.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
 
       if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2_BACK_OFFICE) {
+        delete richiestaCampiPrecompilati.codiceAvviso;
+        delete richiestaCampiPrecompilati.cfpiva;
+
         if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.PRM
           || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.MAV
           || this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.FRC) {
           richiestaCampiPrecompilati.identificativoBollettino = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.identificativoBollettino);
+          delete richiestaCampiPrecompilati.identificativoVerbale;
+          delete richiestaCampiPrecompilati.targaVeicolo;
+          delete richiestaCampiPrecompilati.dataVerbale;
         } else if (this.servizio.tipologiaServizioCodice === TipologiaServizioEnum.CDS) {
           richiestaCampiPrecompilati.identificativoVerbale = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.identificativoVerbale);
           richiestaCampiPrecompilati.targaVeicolo = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.targaVeicolo);
           richiestaCampiPrecompilati.dataVerbale = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.dataVerbale);
+          delete richiestaCampiPrecompilati.identificativoBollettino;
         }
       } else if (richiestaCampiPrecompilati.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
-          richiestaCampiPrecompilati.codiceAvviso = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.codiceAvviso);
-          richiestaCampiPrecompilati.cfpiva = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.cfpiva);
+        richiestaCampiPrecompilati.codiceAvviso = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.codiceAvviso);
+        richiestaCampiPrecompilati.cfpiva = this.mappaCampoInput(MappingCampoInputPrecompilazioneEnum.cfpiva);
+        delete richiestaCampiPrecompilati.identificativoBollettino;
+        delete richiestaCampiPrecompilati.identificativoVerbale;
+        delete richiestaCampiPrecompilati.targaVeicolo;
+        delete richiestaCampiPrecompilati.dataVerbale;
       }
 
       this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati).subscribe((valoriCampiPrecompilati) => {

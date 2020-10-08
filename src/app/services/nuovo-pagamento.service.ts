@@ -82,19 +82,10 @@ export class NuovoPagamentoService {
   }
 
   recuperaValoriCampiPrecompilati(richiestaCampiPrecompilati: RichiestaCampiPrecompilati): Observable<Object> {
+    const params = {...richiestaCampiPrecompilati};
     return this.http.get(environment.bffBaseUrl + this.campiPrecompilatiUrl, {
       withCredentials: true,
-      params: {
-        servizioId: richiestaCampiPrecompilati.servizioId?.toString() || null,
-        tipologiaServizioId: richiestaCampiPrecompilati?.tipologiaServizioId.toString() || null,
-        livelloIntegrazioneId: richiestaCampiPrecompilati?.livelloIntegrazioneId.toString() || null,
-        identificativoBollettino: richiestaCampiPrecompilati.identificativoBollettino,
-        identificativoVerbale: richiestaCampiPrecompilati.identificativoVerbale,
-        targaVeicolo: richiestaCampiPrecompilati.targaVeicolo,
-        dataVerbale: richiestaCampiPrecompilati.dataVerbale,
-        codiceAvviso: richiestaCampiPrecompilati.codiceAvviso,
-        cfpiva: richiestaCampiPrecompilati.cfpiva
-      }
+      params: params
     })
       .pipe(map((body: any) => {
         return body;
