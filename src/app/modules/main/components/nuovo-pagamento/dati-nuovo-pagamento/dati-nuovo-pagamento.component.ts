@@ -107,7 +107,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     });
 
     // Mapping valori dei campi output precompilati
-    this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.tipologiaServizioId,
+    this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
       this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
       .subscribe((valoriCampiPrecompilati) => {
       // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO
