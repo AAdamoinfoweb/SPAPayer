@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
 
   title = '';
   caricamento = false;
-  modaleConferma = false;
+  modale = null;
 
   constructor(private menuService: MenuService,
               private router: Router,
@@ -41,6 +41,11 @@ export class AppComponent implements OnInit {
 
     this.overlayService.caricamentoEvent.subscribe(isLoading => {
       this.caricamento = isLoading;
+      this.cdr.detectChanges();
+    });
+
+    this.overlayService.mostraModaleEvent.subscribe(testo => {
+      this.modale = testo;
       this.cdr.detectChanges();
     });
 
