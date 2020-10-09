@@ -16,7 +16,7 @@ import {flatMap, map} from 'rxjs/operators';
 import {Carrello} from '../../model/Carrello';
 import {XsrfService} from "../../../../services/xsrf.service";
 import {Router} from "@angular/router";
-import {SpinnerService} from '../../../../services/spinner.service';
+import {OverlayService} from '../../../../services/overlay.service';
 
 const arrowup = 'assets/img/sprite.svg#it-arrow-up-triangle'
 const arrowdown = 'assets/img/sprite.svg#it-arrow-down-triangle'
@@ -57,12 +57,12 @@ export class ListaPagamentiL1Component implements OnInit {
   urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private listaPagamentiService: ListaPagamentiService, private route: Router,
-              private spinnerService: SpinnerService) {
+              private OverlayService: OverlayService) {
   }
 
 
   ngOnInit(): void {
-    this.spinnerService.caricamentoEvent.emit(true);
+    this.OverlayService.caricamentoEvent.emit(true);
     let observable: Observable<Pagamento[]> = this.listaPagamentiService.verificaRid(this.rid)
       .pipe(flatMap((urlBack) => {
         if (urlBack)
@@ -81,7 +81,7 @@ export class ListaPagamentiL1Component implements OnInit {
           }));
       }));
     observable.subscribe((ret) => {
-      this.spinnerService.caricamentoEvent.emit(false);
+      this.OverlayService.caricamentoEvent.emit(false);
       if (ret == null)
         this.route.navigateByUrl("/nonautorizzato");
     });

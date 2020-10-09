@@ -17,7 +17,7 @@ import {Carrello} from '../../model/Carrello';
 import {XsrfService} from "../../../../services/xsrf.service";
 import {Router} from "@angular/router";
 import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
-import {SpinnerService} from '../../../../services/spinner.service';
+import {OverlayService} from '../../../../services/overlay.service';
 
 const arrowup = 'assets/img/sprite.svg#it-arrow-up-triangle'
 const arrowdown = 'assets/img/sprite.svg#it-arrow-down-triangle'
@@ -58,12 +58,12 @@ export class ListaPagamentiComponent implements OnInit {
   urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private route: Router,
-              private spinnerService: SpinnerService) {
+              private OverlayService: OverlayService) {
   }
 
 
   ngOnInit(): void {
-    this.spinnerService.caricamentoEvent.emit(true);
+    this.OverlayService.caricamentoEvent.emit(true);
     let observable: Observable<Pagamento[]> = this.nuovoPagamentoService.getCarrello()
       .pipe(map((value: Carrello) => {
         this.listaPagamenti = value.dettaglio;
@@ -77,7 +77,7 @@ export class ListaPagamentiComponent implements OnInit {
         return this.listaPagamenti;
       }));
     observable.subscribe((ret) => {
-      this.spinnerService.caricamentoEvent.emit(false);
+      this.OverlayService.caricamentoEvent.emit(false);
       if (ret == null) {
         this.route.navigateByUrl("/nonautorizzato");
       }

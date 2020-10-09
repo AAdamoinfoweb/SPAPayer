@@ -29,7 +29,7 @@ import {DpDatePickerModule} from 'ng2-date-picker';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
-import { SpinnerComponent } from './components/spinner/spinner.component';
+import { OverlayComponent } from './components/overlay/overlay.component';
 
 @NgModule({
     declarations: [
@@ -47,7 +47,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
         CompilaNuovoPagamentoComponent,
         DatiNuovoPagamentoComponent,
         IntegerNumberDirective,
-        SpinnerComponent
+        OverlayComponent
     ],
   imports: [
     HttpClientModule,

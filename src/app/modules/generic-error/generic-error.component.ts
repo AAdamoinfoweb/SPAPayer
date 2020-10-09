@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {map} from "rxjs/operators";
 import {XsrfService} from "../../services/xsrf.service";
-import {SpinnerService} from '../../services/spinner.service';
+import {OverlayService} from '../../services/overlay.service';
 
 @Component({
   selector: 'app-generic-error',
@@ -16,8 +16,8 @@ export class GenericErrorComponent implements OnInit {
   urlBack: string;
   private getUrlBack: string = '/getBackUrl';
 
-  constructor(private route: Router, private http: HttpClient, private xsrfService: XsrfService, private spinnerService: SpinnerService) {
-    this.spinnerService.caricamentoEvent.emit(false);
+  constructor(private route: Router, private http: HttpClient, private xsrfService: XsrfService, private OverlayService: OverlayService) {
+    this.OverlayService.caricamentoEvent.emit(false);
   }
 
   ngOnInit(): void {
