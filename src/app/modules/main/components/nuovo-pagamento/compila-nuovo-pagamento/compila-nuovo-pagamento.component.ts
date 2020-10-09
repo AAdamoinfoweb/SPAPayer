@@ -5,6 +5,7 @@ import {LivelloTerritoriale} from '../../../model/LivelloTerritoriale';
 import {Ente} from '../../../model/Ente';
 import {FiltroServizio} from '../../../model/FiltroServizio';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
+import {SpinnerService} from '../../../../../services/spinner.service';
 
 @Component({
   selector: 'app-compila-nuovo-pagamento',
@@ -20,7 +21,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   enteSelezionato: Ente = null;
   servizioSelezionato: FiltroServizio = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService) {
+  constructor(private nuovoPagamentoService: NuovoPagamentoService, private spinnerService: SpinnerService) {
     this.nuovoPagamentoService.pulisciEvent.subscribe(() => {
       this.pulisci();
     });
@@ -38,6 +39,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroLivelloTerritoriale(): void {
+    this.spinnerService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
       livelliTerritoriali.forEach(livello => {
         this.listaLivelliTerritoriali.push({
@@ -76,6 +78,8 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
         }
       }
     }
+
+    this.spinnerService.caricamentoEvent.emit(false);
   }
 
   selezionaLivelloTerritoriale(): void {
@@ -89,6 +93,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
+    this.spinnerService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
@@ -108,6 +113,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroServizi(idEnte): void {
+    this.spinnerService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
       servizi.forEach(servizio => {
         this.listaServizi.push({
@@ -119,6 +125,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   selezionaServizio(): void {
+    this.spinnerService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.compilazioneEvent.emit(this.servizioSelezionato);
   }
 }

@@ -13,6 +13,7 @@ import {flatMap} from "rxjs/operators";
 import {DettaglioTransazioneEsito} from "../../model/bollettino/DettaglioTransazioneEsito";
 import {EsitoEnum} from "../../../../enums/esito.enum";
 import {DettagliTransazione} from "../../model/bollettino/DettagliTransazione";
+import {SpinnerService} from '../../../../services/spinner.service';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +30,8 @@ export class HomeComponent implements OnInit {
     private nuovoPagamentoService: NuovoPagamentoService,
     private bannerService: BannerService,
     private pagamentoService: PagamentoService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private spinnerService: SpinnerService
   ) {
     this.menuService.userAnonimousEvent
       .subscribe((isAnonimo: boolean) => {
@@ -47,6 +49,7 @@ export class HomeComponent implements OnInit {
         }
       }
       if (bollettini.length > 0) {
+        this.spinnerService.caricamentoEvent.emit(true);
         let observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(bollettini)
           .pipe(flatMap((result) => {
             let dettaglio: DettagliTransazione = new DettagliTransazione();
@@ -60,6 +63,7 @@ export class HomeComponent implements OnInit {
         observable.subscribe(() => {
           nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
           this.clearLocalStorage();
+          this.spinnerService.caricamentoEvent.emit(false);
         });
       }
       localStorage.removeItem('loginDaAnonimo');
