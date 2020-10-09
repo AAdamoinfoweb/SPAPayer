@@ -78,4 +78,8 @@ export class HeaderComponent implements OnInit {
       });
     }
   }
+
+  goToCarrello() {
+    this.router.navigateByUrl('/carrello');
+  }
 }

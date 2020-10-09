@@ -1,0 +1,148 @@
+<div class="container-fluid">
+  <it-breadcrumb [dark]="isDark" [separator]="separator">
+    <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
+                        [link]="item.link" [icon]="item.icon">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
+  <h3 class="pl-3 mb-2 header"><b>Carrello</b>
+    <a it-tooltip="{{tooltipTitle}}">
+      <svg class="bg-light icon icon-lg icon-padded">
+        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+      </svg>
+    </a>
+  </h3>
+
+  <div id="collapseDiv1" class="collapse-div" role="tablist">
+    <div class="collapse-header" id="heading1">
+      <button data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+        Lista pagamenti
+      </button>
+    </div>
+    <div id="collapse1" class="collapse show" role="tabpanel" aria-labelledby="heading1">
+      <div class="collapse-body">
+        <app-lista-pagamenti-l1 [rid]="rid"
+                             (urlBackEmitterChange)="urlBack=$event"
+                             (onChangeTotalePagamento)="totalePagamento = $event"
+                             (onChangeEmailPagamento)="email = $event"
+                             (onChangeNumeroPagamenti)="numeroPagamenti = $event"></app-lista-pagamenti-l1>
+      </div>
+    </div>
+    <div class="collapse-header" id="heading2">
+      <button data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="collapse2">
+        Modalità pagamento
+      </button>
+    </div>
+    <div id="collapse2" class="collapse show" role="tabpanel" aria-labelledby="heading2">
+      <div class="collapse-body">
+        <div class="row">
+          <div class="col-xl-1 col-xs-12">
+            <img alt="" width="100px" src="assets/img/pagopa.png">
+            <it-radio-button name="standard" [value]="'checked'" [checked]="true" label="pagoPA"></it-radio-button>
+          </div>
+          <div class="col-xl-7 col-xs-12 font-msg">
+            <p class="mb-0">
+              PagoPA è il sistema nazionale Italiano, previsto dalle normative vigenti (CAD. Codice dell'Amministrazione
+              Digitale)
+            </p>
+            <p class="mb-0">
+              per effettuare i pagamenti elettronici verso la Pubblica Amministrazione. Per procedere con il pagamento
+              occorre
+            </p>
+            <p class="mb-0">
+              selezionare il bottone Avanti in fondo alla pagina. Tenendo presente che
+            </p>
+            <ul class="mb-0">
+              <li>verrà chiesta la registrazione a pagoPA; tale registrazione è facoltativa e non necessaria a portare a
+                termine
+                il pagamento
+              </li>
+              <li>al termine del pagamento è necessario cliccare il bottone "Chiudi" per ritornare al servizio;</li>
+              <li>il sistema propone tre modalità di pagamento (carta di credito, conto corrente e altro)</li>
+            </ul>
+          </div>
+          <div class="col-xl-2 col-xs-12 pl-0">
+            <div class="video">
+              <video width="300wv" height="180vh" controls (click)="toggleVideo()" #videoPlayer>
+                <source src="https://multipler.lepida.it/lepida/video/lepida_8517.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-1 col-xs-12"></div>
+          <div class="col-xl-10 col-xs-12 font-msg">
+            Si sottolinea che scegliendo il pagamento con carte di Intesa Sanpaolo, seguendo la procedura di seguito
+            riportata, è possibile usufruire di costi di commissione agevolati, ottenuti da Lepida S.c.p.A.
+            (0,50 € per i pagamenti nella fascia 0,01 € - 50,00 €; 0,95 € per i pagamenti nella fascia 50,01 € - 150,00
+            €;
+            1,25 € per i pagamenti nella fascia 150,01 € - 500,00 € e 2,00 € per importi superiori a 500 €). Per
+            usufruire
+            delle commissioni agevolate utilizzando la carta di credito/debito, occorre scegliere "Conto Corrente" e
+            ricercare
+            nella lista "Intesa Sanpaolo Emilia Romagna: pagamenti con carte" (digitando nel campo di ricerca "Emilia
+            Romagna").
+            Per istruzioni maggiormente dettagliate, è disponibile il video sulla destra.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="collapse-header" id="heading3">
+      <button data-toggle="collapse" data-target="#collapse3" aria-expanded="true" aria-controls="collapse3">
+        Email per la notifica
+      </button>
+    </div>
+    <div id="collapse3" class="collapse show" role="tabpanel" aria-labelledby="heading3">
+      <div class="collapse-body">
+        <div class="row">
+          <div class="col-xl-4 col-xs-12">
+            <form #emailForm="ngForm">
+              <it-input [(ngModel)]="email" name="emailInput"
+                        [label]="'E-mail'"
+                        [type]="'email'"
+                        required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                        [icon]="'it-email'"
+                        [note]="getNote(emailForm)"
+              ></it-input>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row pl-4 row justify-content-between align-items-center h-100">
+    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">Disposizioni di
+      pagamento: {{numeroPagamenti}}
+    </div>
+    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
+      <div class="row align-items-center">
+        <div
+          class="text-sm-left text-md-right text-lg-right col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
+          Totale da
+          pagare: {{totalePagamento|currency:"EUR":"€ "
+          | replace:'.':'|' | replace:',':'.'| replace:'|':','}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row pl-4 row justify-content-between align-items-center h-100">
+    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
+      <button *ngIf="urlBack" (click)="tornaAlServizio()" type="button"
+              class="btn btn-secondary">Torna al servizio
+      </button>
+    </div>
+    <div class="col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle">
+      <div class="row align-items-center">
+        <div
+          class="text-sm-left text-md-right text-lg-right col-12 col-sm-12 col-md-auto col-lg-auto font-msg align-middle font-msg align-middle">
+          <button [disabled]="emailForm.invalid" (click)="navigaInPresaInCaricoPagamento()" type="button"
+                  class="btn btn-outline-secondary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Paga
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer footer-directive></app-footer>
+</div>

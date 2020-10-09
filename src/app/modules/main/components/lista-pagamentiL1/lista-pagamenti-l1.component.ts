@@ -16,7 +16,6 @@ import {flatMap, map} from 'rxjs/operators';
 import {Carrello} from '../../model/Carrello';
 import {XsrfService} from "../../../../services/xsrf.service";
 import {Router} from "@angular/router";
-import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
 
 const arrowup = 'assets/img/sprite.svg#it-arrow-up-triangle'
 const arrowdown = 'assets/img/sprite.svg#it-arrow-down-triangle'
@@ -26,11 +25,11 @@ const rotate: { [key: string]: SortDirection } = {asc: 'desc', desc: 'asc'};
 const compare = (v1: any, v2: any) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
 @Component({
-  selector: 'app-lista-pagamenti',
-  templateUrl: './lista-pagamenti.component.html',
-  styleUrls: ['./lista-pagamenti.component.scss']
+  selector: 'app-lista-pagamenti-l1',
+  templateUrl: './lista-pagamenti-l1.component.html',
+  styleUrls: ['./lista-pagamenti-l1.component.scss']
 })
-export class ListaPagamentiComponent implements OnInit {
+export class ListaPagamentiL1Component implements OnInit {
 
   listaPagamenti: Pagamento[];
 
@@ -56,22 +55,27 @@ export class ListaPagamentiComponent implements OnInit {
   @Output()
   urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private route: Router) {
+  constructor(private listaPagamentiService: ListaPagamentiService, private route: Router) {
   }
 
 
   ngOnInit(): void {
-    let observable: Observable<Pagamento[]> = this.nuovoPagamentoService.getCarrello()
-      .pipe(map((value: Carrello) => {
-        this.listaPagamenti = value.dettaglio;
+    let observable: Observable<Pagamento[]> = this.listaPagamentiService.verificaRid(this.rid)
+      .pipe(flatMap((urlBack) => {
+        if (urlBack)
+          this.urlBackEmitterChange.emit(urlBack);
+        return this.listaPagamentiService.getCarrello()
+          .pipe(map((value: Carrello) => {
+            this.listaPagamenti = value.dettaglio;
 
-        this.collectionSize = this.listaPagamenti.length;
+            this.collectionSize = this.listaPagamenti.length
 
-        this.onChangeNumeroPagamenti.emit(this.listaPagamenti.length);
-        this.onChangeTotalePagamento.emit(value.totale);
-        this.onChangeEmailPagamento.emit(value.email);
+            this.onChangeNumeroPagamenti.emit(this.listaPagamenti.length);
+            this.onChangeTotalePagamento.emit(value.totale);
+            this.onChangeEmailPagamento.emit(value.email);
 
-        return this.listaPagamenti;
+            return this.listaPagamenti;
+          }));
       }));
     observable.subscribe((ret) => {
       if (ret == null)
@@ -84,7 +88,7 @@ export class ListaPagamentiComponent implements OnInit {
   }
 
   onSort(column) {
-    this.sort = {...this.sortDefault};
+    this.sort = {...this.sortDefault}
     this.sort[column] = this.direction === 'asc' ? arrowup : arrowdown;
     this.listaPagamenti = [...this.listaPagamenti].sort((a, b) => {
       const res = compare(a[column], b[column]);
