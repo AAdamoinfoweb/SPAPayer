@@ -90,6 +90,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       let item = JSON.parse(localStorage.getItem("parziale"));
       for (var key in this.model) {
         this.model[key] = item[key];
+        this.form.controls[key].enable();
       }
       localStorage.removeItem("parziale");
     }
