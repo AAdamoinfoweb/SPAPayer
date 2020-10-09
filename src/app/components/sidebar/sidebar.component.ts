@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {MenuService} from '../../services/menu.service';
 import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-sidebar',
@@ -15,7 +16,9 @@ export class SidebarComponent implements OnInit {
   menu = [];
   waiting: boolean;
 
-  constructor(private menuService: MenuService, private router: Router) {
+  constructor(private menuService: MenuService,
+              private http: HttpClient,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -51,10 +54,17 @@ export class SidebarComponent implements OnInit {
   }
 
   getRouterLink(sub: any) {
-    if (sub.nome === 'Accedi' || sub.nome === 'Esci') {
+    if (sub.nome === 'Accedi') {
       localStorage.setItem('loginDaAnonimo', 'true');
-      window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta";
-      //environment.bffBaseUrl + sub.route;
+      window.location.href = environment.bffBaseUrl + sub.route;
+      // "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta";
+    } else if (sub.nome === 'Esci') {
+      this.http.get(environment.bffBaseUrl + '/logout').subscribe((body: any) => {
+        if (body.url) {
+          this.menuService.userAnonimousEvent.emit(true);
+          window.location.href = body.url;
+        }
+      });
     } else {
       this.router.navigateByUrl(sub.route);
     }
