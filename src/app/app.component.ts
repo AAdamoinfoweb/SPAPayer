@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
 
   title = '';
   caricamento = false;
+  modaleConferma = false;
 
   constructor(private menuService: MenuService,
               private router: Router,

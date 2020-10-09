@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <app-overlay *ngIf="caricamento"></app-overlay>
+  <app-overlay *ngIf="caricamento || modaleConferma" [caricamento]="caricamento" [modaleConferma]="modaleConferma"></app-overlay>
   <app-login-bar></app-login-bar>
   <app-sidebar></app-sidebar>
   <div class="header">
