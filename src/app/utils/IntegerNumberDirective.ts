@@ -3,7 +3,7 @@ import {Directive, ElementRef, HostListener} from '@angular/core';
   selector: '[integerNumber]'
 })
 export class IntegerNumberDirective {
-  private regex: RegExp = new RegExp(/^[0-9]+$/g);
+  private regex: RegExp = new RegExp(/^[1-9]{1,1}[0-9]*$/g);
   private specialKeys: Array<string> = ['Backspace', 'Tab', 'End', 'Home'];
   constructor(private el: ElementRef) {
   }
