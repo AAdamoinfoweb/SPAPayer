@@ -6,7 +6,7 @@ import {map} from 'rxjs/operators';
 import {UserIdleService} from "angular-user-idle";
 import {AuthguardService} from "./services/authguard.service";
 import {Router} from "@angular/router";
-import {SpinnerService} from './services/spinner.service';
+import {OverlayService} from './services/overlay.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
 
   title = '';
   caricamento = false;
+  modale = null;
 
   constructor(private menuService: MenuService,
               private router: Router,
@@ -24,7 +25,7 @@ export class AppComponent implements OnInit {
               private authGuardService: AuthguardService,
               private idleService: UserIdleService,
               private toponomasticaService: ToponomasticaService,
-              private spinnerService: SpinnerService) {
+              private overlayService: OverlayService) {
   }
 
   ngOnInit(): void {
@@ -38,8 +39,13 @@ export class AppComponent implements OnInit {
       this.menuService.infoUtenteEmitter.emit(info);
     });
 
-    this.spinnerService.caricamentoEvent.subscribe(isLoading => {
+    this.overlayService.caricamentoEvent.subscribe(isLoading => {
       this.caricamento = isLoading;
+      this.cdr.detectChanges();
+    });
+
+    this.overlayService.mostraModaleEvent.subscribe(testo => {
+      this.modale = testo;
       this.cdr.detectChanges();
     });
 

@@ -21,7 +21,7 @@ import {getBannerType, LivelloBanner} from '../../../../../enums/livelloBanner.e
 import {BannerService} from '../../../../../services/banner.service';
 
 import {JSONPath} from 'jsonpath-plus';
-import {SpinnerService} from '../../../../../services/spinner.service';
+import {OverlayService} from '../../../../../services/overlay.service';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -33,7 +33,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private router: Router,
               private bannerService: BannerService,
-              private spinnerService: SpinnerService,
+              private overlayService: OverlayService,
               private cdr: ChangeDetectorRef) {
   }
 
@@ -57,10 +57,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   mostraCampoImporto = null;
 
   readonly minDataDDMMYY = '01/01/1900';
+
   readonly minDataMMYY = '01/1900';
   readonly minDataYY = 1900;
-
   readonly minInputNumerico = 0;
+  readonly minInputPrezzo = 0;
+  readonly cifreDecimaliPrezzo = 2;
 
   readonly lunghezzaMaxCol1: number = 5;
   readonly lunghezzaMaxCol2: number = 10;
@@ -83,7 +85,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   private restoreParziale() {
-    this.spinnerService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
 
     this.isUtenteAnonimo = localStorage.getItem('nome') === 'null';
     if (this.isUtenteAnonimo) {
@@ -99,7 +101,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       localStorage.removeItem("parziale");
     }
 
-    this.spinnerService.caricamentoEvent.emit(false);
+    this.overlayService.caricamentoEvent.emit(false);
   }
 
   checkUtenteLoggato(): void {
@@ -122,7 +124,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   clickProcedi(): void {
-    this.spinnerService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
 
     this.isFaseVerificaPagamento = true;
     this.aggiungiCampoImporto();
@@ -150,7 +152,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         this.model[this.importoNomeCampo] = valoriCampiPrecompilati[this.importoNomeCampo];
 
-        this.spinnerService.caricamentoEvent.emit(false);
+        this.overlayService.caricamentoEvent.emit(false);
       });
   }
 
@@ -265,7 +267,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
         this.impostaCampi(campiNuovoPagamento.campiServizio);
 
-        this.spinnerService.caricamentoEvent.emit(false);
+        this.overlayService.caricamentoEvent.emit(false);
       }));
     } else {
       return of(null);
@@ -310,19 +312,25 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         validatori.push(Validators.pattern(campo.controllo_logico.regex));
       }
 
-      if (!campo.lunghezzaVariabile) {
-        validatori.push(Validators.minLength(campo.lunghezza));
-      }
-
       switch (campo.tipoCampo) {
+        case TipoCampoEnum.INPUT_TESTUALE:
+          if (!campo.lunghezzaVariabile) {
+            validatori.push(Validators.minLength(campo.lunghezza));
+          }
+          break;
         case TipoCampoEnum.INPUT_NUMERICO:
-          validatori.push(Validators.min(0));
+          // Con i numeri non è possibile usare minLength e maxLength
+          validatori.push(Validators.max(this.calcolaMaxInputNumerico(campo)));
+          validatori.push(Validators.min(this.calcolaMinInputNumerico(campo)));
           break;
         case TipoCampoEnum.INPUT_PREZZO:
-          validatori.push(Validators.min(0));
+          // Con i numeri non è possibile usare minLength
+          validatori.push(Validators.min(this.calcolaMinInputPrezzo(campo)));
+          validatori.push(Validators.max(this.calcolaMaxInputNumerico(campo)));
           break;
         case TipoCampoEnum.DATEYY:
           validatori.push(Validators.min(this.minDataYY));
+          validatori.push(Validators.max(this.calcolaMaxInputAnno(campo)));
           break;
         case TipoCampoEnum.SELECT:
           this.impostaOpzioniSelect(campo);
@@ -383,25 +391,41 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         descrizione = 'Il campo è obbligatorio';
       } else if (formControl.errors?.pattern) {
         descrizione = 'Formato non valido';
-      } else if (formControl.errors?.minlength) {
+      } else if (formControl.errors?.minlength
+        || (!campo.lunghezzaVariabile && (formControl.errors?.min || formControl.errors?.max))) {
         descrizione = 'Il campo deve essere lungo ' + campo.lunghezza + ' caratteri';
       } else if (formControl.errors?.min) {
-        switch (campo.tipoCampo) {
-          case TipoCampoEnum.INPUT_NUMERICO:
-            descrizione = 'Valore inferiore a ' + this.minInputNumerico;
-            break;
-          case TipoCampoEnum.DATEYY:
-            descrizione = 'Valore inferiore a ' + this.minDataYY;
-            break;
-        }
+        descrizione = 'Valore inferiore a ' + formControl.errors?.min?.value;
+      } else if (formControl.errors?.max) {
+        descrizione = 'Valore superiore a ' + formControl.errors?.max?.max;
       } else {
-        descrizione = 'Errore';
+        descrizione = 'Campo non valido';
       }
     } else {
       descrizione = campo.informazioni;
     }
 
     return descrizione;
+  }
+
+  calcolaMinInputNumerico(campo): number {
+    // Un numero intero lungo X cifre deve essere grande almeno 10^(X-1)
+    return campo.lunghezzaVariabile ? this.minInputNumerico : Math.pow(10, campo.lunghezza - 1);
+  }
+
+  calcolaMaxInputNumerico(campo): number {
+    // Un numero intero lungo X cifre deve essere grande massimo 10^(X) - 1
+    return Math.pow(10, campo.lunghezza) - 1;
+  }
+
+  calcolaMinInputPrezzo(campo): number {
+    // Un numero decimale lungo X cifre con Y dopo la virgola deve essere grande almeno 10^(X-Y-1)
+    return campo.lunghezzaVariabile ? this.minInputPrezzo : Math.pow(10, campo.lunghezza - this.cifreDecimaliPrezzo - 1);
+  }
+
+  calcolaMaxInputAnno(campo): number {
+    // Data la mancanza di requisiti sulla massima data inseribile, si inserisce come massimo il numero massimo di cifre consentite dal campo
+    return this.calcolaMaxInputNumerico(campo);
   }
 
   isCampoInvalido(campo: CampoForm): boolean {
@@ -523,7 +547,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   aggiungiAlCarrello() {
-    this.spinnerService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
 
     const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
     let observable: Observable<any>;
@@ -541,7 +565,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             return of('error');
           }
 
-          this.spinnerService.caricamentoEvent.emit(false);
+          this.overlayService.caricamentoEvent.emit(false);
         }));
     } else {
       observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
@@ -564,13 +588,13 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       if (result != 'error') {
         this.aggiornaPrezzoCarrello();
         this.clickPulisci();
-        this.spinnerService.caricamentoEvent.emit(false);
+        this.overlayService.caricamentoEvent.emit(false);
       }
     });
   }
 
   pagaOra() {
-    this.spinnerService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
 
     const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
     if (anonimo) {
@@ -588,7 +612,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             return of('error');
           }
 
-          this.spinnerService.caricamentoEvent.emit(false);
+          this.overlayService.caricamentoEvent.emit(false);
         });
     } else {
       const observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
@@ -609,7 +633,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       observable.subscribe((result) => {
         if (result !== 'error') {
           this.aggiornaPrezzoCarrello();
-          this.spinnerService.caricamentoEvent.emit(false);
+          this.overlayService.caricamentoEvent.emit(false);
           this.router.navigateByUrl('/carrello');
         }
       });
@@ -617,7 +641,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   salvaPerDopo() {
-    this.spinnerService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
 
     const observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
       .pipe(flatMap((result) => {
@@ -634,7 +658,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           }
         }
 
-        this.spinnerService.caricamentoEvent.emit(false);
+        this.overlayService.caricamentoEvent.emit(false);
       }));
     observable.subscribe((result) => {
       if (result !== 'error') {
