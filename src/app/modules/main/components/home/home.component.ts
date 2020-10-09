@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     private pagamentoService: PagamentoService,
     private menuService: MenuService
   ) {
-    this.menuService.userAutenticatedEvent
+    this.menuService.userAnonimousEvent
       .subscribe((isAnonimo: boolean) => {
         this.isAnonimo = isAnonimo;
         if (!this.isAnonimo) {

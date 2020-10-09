@@ -28,8 +28,10 @@ export class SidebarComponent implements OnInit {
           localStorage.setItem('cognome', info.cognome);
 
           if (localStorage.getItem('nome') !== 'null') {
-            this.menuService.userAutenticatedEvent.emit(false);
+            this.menuService.userAnonimousEvent.emit(false);
             this.nomeUtente = `${localStorage.getItem('nome')} ${localStorage.getItem('cognome')}`;
+          } else {
+            this.menuService.userAnonimousEvent.emit(true);
           }
           this.menu = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
         }

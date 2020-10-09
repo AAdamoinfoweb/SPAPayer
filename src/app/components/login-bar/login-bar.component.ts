@@ -23,10 +23,9 @@ export class LoginBarComponent implements OnInit, AfterViewInit {
   isAnonimo = false;
 
   ngOnInit(): void {
-    this.menuService.infoUtenteEmitter.subscribe(() => this.checkIfL1());
-
-    this.menuService.userAutenticatedEvent
+    this.menuService.userAnonimousEvent
       .subscribe((isAnonimo: boolean) => {
+        this.checkIfL1();
         this.isAnonimo = isAnonimo;
         this.testoAccedi = isAnonimo ? 'Accedi' : 'Esci';
       });
@@ -57,7 +56,7 @@ export class LoginBarComponent implements OnInit, AfterViewInit {
     } else {
       this.http.get(environment.bffBaseUrl + '/logout').subscribe((body: any) => {
         if (body.url) {
-          this.menuService.userAutenticatedEvent.emit(true);
+          this.menuService.userAnonimousEvent.emit(true);
           window.location.href = body.url;
         }
       });
