@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, OnInit} from '@angular/core';
 import {MenuService} from "./services/menu.service";
 import {TipologicaSelectEnum} from './enums/tipologicaSelect.enum';
 import {ToponomasticaService} from './services/toponomastica.service';
@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
 
   constructor(private menuService: MenuService,
               private router: Router,
+              private cdr: ChangeDetectorRef,
               private authGuardService: AuthguardService,
               private idleService: UserIdleService,
               private toponomasticaService: ToponomasticaService,
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit {
 
     this.spinnerService.caricamentoEvent.subscribe(isLoading => {
       this.caricamento = isLoading;
+      this.cdr.detectChanges();
     });
 
     this.letturatipologicheSelect();
