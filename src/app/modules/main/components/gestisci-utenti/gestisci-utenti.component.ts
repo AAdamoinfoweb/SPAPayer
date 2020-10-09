@@ -8,6 +8,8 @@ import {UtenteService} from '../../../../services/utente.service';
 import {RicercaUtente} from '../../model/utente/RicercaUtente';
 import {map} from 'rxjs/operators';
 import * as moment from 'moment';
+import * as XLSX from 'xlsx';
+import * as FILESAVER from 'file-saver';
 
 
 @Component({
@@ -113,8 +115,34 @@ export class GestisciUtentiComponent implements OnInit {
     } else if (azioneTool.value === tool.EXPORT_PDF.value) {
       // esporta in pdf
     } else if (azioneTool.value === tool.EXPORT_XLS.value) {
-      // esporta in excel
+      this.esportaInFileExcel();
     }
+  }
+
+  esportaInFileExcel(): void {
+    let dataTable = JSON.parse(JSON.stringify(this.tableData));
+    const customHeaders = dataTable.cols.map(col => col.header);
+    dataTable.rows = dataTable.rows.map(row => {
+      let newRow = row;
+      newRow.iconaUtente = row.iconaUtente.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
+      newRow.ultimoAccesso = row.ultimoAccesso?.testo;
+      return newRow;
+    });
+
+    let worksheet = XLSX.utils.json_to_sheet(dataTable.rows);
+    worksheet = XLSX.utils.sheet_add_aoa(worksheet, [customHeaders]);
+    const workbook = { Sheets: { 'Utenti': worksheet }, SheetNames: ['Utenti'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    this.salvaComeFileExcel(excelBuffer, 'Lista Utenti');
+  }
+
+  salvaComeFileExcel(buffer: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FILESAVER.saveAs(data, fileName + '_export_' + moment().format('DD-MM-YYYY HH:mm') + EXCEL_EXTENSION);
   }
 
   onChangeListaUtenti(listaUtentiFiltrati: RicercaUtente[]): void {
