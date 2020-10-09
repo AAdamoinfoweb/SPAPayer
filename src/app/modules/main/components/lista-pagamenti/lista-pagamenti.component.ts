@@ -1,23 +1,10 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  LOCALE_ID,
-  OnDestroy,
-  OnInit,
-  Output,
-  QueryList,
-  ViewChildren
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Pagamento} from '../../model/Pagamento';
-import {ListaPagamentiService} from '../../../../services/lista-pagamenti.service';
-import {Observable, of} from 'rxjs';
-import {flatMap, map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {Carrello} from '../../model/Carrello';
-import {XsrfService} from "../../../../services/xsrf.service";
 import {Router} from "@angular/router";
 import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
-import {SpinnerService} from '../../../../services/spinner.service';
 import {DettagliTransazione} from "../../model/bollettino/DettagliTransazione";
 import {OverlayService} from '../../../../services/overlay.service';
 
