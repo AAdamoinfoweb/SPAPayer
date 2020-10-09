@@ -8,8 +8,6 @@ import {UtenteService} from '../../../../services/utente.service';
 import {RicercaUtente} from '../../model/utente/RicercaUtente';
 import {map} from 'rxjs/operators';
 import * as moment from 'moment';
-import * as XLSX from 'xlsx';
-import * as FILESAVER from 'file-saver';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -110,20 +108,20 @@ export class GestisciUtentiComponent implements OnInit {
 
   // todo logica azioni tool
   eseguiAzioni(azioneTool) {
+    const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
+
     if (azioneTool.value === tool.INSERT.value) {
       // inserisci utente
     } else if (azioneTool.value === tool.UPDATE.value) {
       // aggiorna utente
     } else if (azioneTool.value === tool.EXPORT_PDF.value) {
-      this.esportaTabellaInFilePdf();
+      this.esportaTabellaInFilePdf(dataTable);
     } else if (azioneTool.value === tool.EXPORT_XLS.value) {
-      this.esportaTabellaInFileExcel();
+      this.esportaTabellaInFileExcel(dataTable);
     }
   }
 
-  esportaTabellaInFilePdf(): void {
-    const dataTable = JSON.parse(JSON.stringify(this.tableData));
-
+  esportaTabellaInFilePdf(dataTable: any): void {
     const customHeaders = dataTable.cols.map(col => col.header);
     const customRows = [];
     dataTable.rows.forEach(row => {
@@ -158,8 +156,7 @@ export class GestisciUtentiComponent implements OnInit {
     window.open(URL.createObjectURL(blob));
   }
 
-  esportaTabellaInFileExcel(): void {
-    let dataTable = JSON.parse(JSON.stringify(this.tableData));
+  esportaTabellaInFileExcel(dataTable: any): void {
     const customHeaders = dataTable.cols.map(col => col.header);
     dataTable.rows = dataTable.rows.map(row => {
       let newRow = row;
@@ -168,20 +165,8 @@ export class GestisciUtentiComponent implements OnInit {
       return newRow;
     });
 
-    let worksheet = XLSX.utils.json_to_sheet(dataTable.rows);
-    worksheet = XLSX.utils.sheet_add_aoa(worksheet, [customHeaders]);
-    const workbook = { Sheets: { 'Utenti': worksheet }, SheetNames: ['Utenti'] };
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    this.salvaComeFileExcel(excelBuffer, 'Lista Utenti');
-  }
-
-  salvaComeFileExcel(buffer: any, fileName: string): void {
-    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    const EXCEL_EXTENSION = '.xlsx';
-    const data: Blob = new Blob([buffer], {
-      type: EXCEL_TYPE
-    });
-    FILESAVER.saveAs(data, fileName + '_export_' + moment().format('DD-MM-YYYY HH:mm') + EXCEL_EXTENSION);
+    const workbook = { Sheets: { 'Utenti': null}, SheetNames: [] };
+    Utils.creaFileExcel(dataTable.rows, customHeaders, 'Utenti', ['Utenti'], workbook, 'Lista Utenti');
   }
 
   onChangeListaUtenti(listaUtentiFiltrati: RicercaUtente[]): void {
