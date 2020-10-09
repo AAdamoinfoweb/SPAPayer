@@ -506,7 +506,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.anno = this.model[this.getCampoDettaglioTransazione('anno_documento')];
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
     // rimuovere primi 3 caratteri
-    bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv')];
+    bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv')] != null ?
+      this.model[this.getCampoDettaglioTransazione('iuv')].toString().substring(3) : null;
     bollettino.cfpiva = this.model[this.getCampoDettaglioTransazione('codice_fiscale_pagatore')];
     bollettino.importo = this.model[this.importoNomeCampo];
 
