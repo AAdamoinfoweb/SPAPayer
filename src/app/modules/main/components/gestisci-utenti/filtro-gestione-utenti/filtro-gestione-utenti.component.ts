@@ -10,6 +10,7 @@ import {NgForm, NgModel} from '@angular/forms';
 import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
 import {RicercaUtente} from '../../../model/utente/RicercaUtente';
 import {UtenteService} from '../../../../../services/utente.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -18,18 +19,18 @@ import {UtenteService} from '../../../../../services/utente.service';
 })
 export class FiltroGestioneUtentiComponent implements OnInit {
 
-  isSubsectionFiltriVisible = true;
-  arrowType = 'assets/img/sprite.svg#it-collapse';
-
   listaSocieta: Array<OpzioneSelect> = [];
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
   listaFunzioniAbilitate: Array<OpzioneSelect> = [];
+  listaCodiciFiscali: string[] = [];
+
+  readonly minCharsToRetrieveCF = 1;
 
   isCalendarOpen = false;
   readonly minDateDDMMYY = '01/01/1900';
-  readonly tipoData = ECalendarValue.String;
+  readonly tipoData = ECalendarValue.Moment;
 
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
 
@@ -112,19 +113,14 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   }
 
   letturaFunzioni(): void {
-    this.funzioneService.letturaFunzioni().pipe(map(funzioneAbilitata => {
-      funzioneAbilitata.forEach(funzione => {
+    this.funzioneService.letturaFunzioni().pipe(map(funzioniAbilitate => {
+      funzioniAbilitate.forEach(funzione => {
         this.listaFunzioniAbilitate.push({
           value: funzione.id,
           label: funzione.nome
         });
       });
     })).subscribe();
-  }
-
-  setArrowType(): void {
-    this.isSubsectionFiltriVisible = !this.isSubsectionFiltriVisible;
-    this.arrowType = !this.isSubsectionFiltriVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse';
   }
 
   setPlaceholder(campo: NgModel, tipo: string): string {
@@ -138,6 +134,20 @@ export class FiltroGestioneUtentiComponent implements OnInit {
       } else {
         return 'inserisci data';
       }
+    }
+  }
+
+  loadSuggestions(event): void {
+    const inputCf = event.query;
+
+    if (inputCf.length < this.minCharsToRetrieveCF) {
+        this.listaCodiciFiscali = [];
+    } else if (inputCf.length === this.minCharsToRetrieveCF) {
+      this.utenteService.letturaCodiceFiscale(inputCf).subscribe(data => {
+        this.listaCodiciFiscali = data;
+      });
+    } else {
+      this.listaCodiciFiscali = this.listaCodiciFiscali.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
     }
   }
 
@@ -156,17 +166,22 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
   }
 
-  cercaUtenti(form: NgForm): void {
-    Object.keys(form.value).forEach(key => {
-      const value = form.value[key];
-      if (value !== undefined) {
-        this.filtroGestioneUtentiApplicato[key] = value;
+  cercaUtenti(filtroGestioneUtentiForm: NgForm): void {
+    const filtro = {...this.filtroGestioneUtentiApplicato};
+
+    Object.keys(filtroGestioneUtentiForm.value).forEach(key => {
+      const value = filtroGestioneUtentiForm.value[key];
+      if (value !== undefined && value) {
+        if (typeof value === 'object') {
+          filtro[key] = moment(value).format('YYYY-MM-DD[T]HH:mm:ss');
+        } else {
+          filtro[key] = value;
+        }
       } else {
-        this.filtroGestioneUtentiApplicato[key] = null;
+        filtro[key] = null;
       }
     });
 
-    const filtro = this.filtroGestioneUtentiApplicato;
     this.utenteService.ricercaUtenti(filtro.livelloTerritorialeId, filtro.societaId, filtro.enteId, filtro.servizioId, filtro.funzioneId,
       filtro.codiceFiscale, filtro.dataScadenzaDa, filtro.dataScadenzaA, filtro.ultimoAccessoDa,
       filtro.ultimoAccessoA).pipe(map(listaUtenti => {

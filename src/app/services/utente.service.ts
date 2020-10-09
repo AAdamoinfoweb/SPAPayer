@@ -10,7 +10,8 @@ import {RicercaUtente} from '../modules/main/model/utente/RicercaUtente';
 })
 export class UtenteService {
 
-  private ricercaUtentiUrl = '/utenti';
+  private readonly ricercaUtentiUrl = '/utenti';
+  private readonly letturaCodiceFiscaleUtenteUrl = '/codiceFiscale';
 
   constructor(private http: HttpClient) { }
 
@@ -61,6 +62,17 @@ export class UtenteService {
         } else {
           return caught;
         }
+      }));
+  }
+
+  letturaCodiceFiscale(codiceFiscaleParziale): Observable<string[]> {
+    return this.http.get(environment.bffBaseUrl + this.letturaCodiceFiscaleUtenteUrl, {
+      params: {
+        codiceFiscaleParziale
+      }
+    })
+      .pipe(map((body: any) => {
+        return body;
       }));
   }
 

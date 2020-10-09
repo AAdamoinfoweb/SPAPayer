@@ -1,5 +1,5 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {tool, parse as toolParse} from "../../enums/Tool.enum";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {tool, parse as toolParse} from '../../enums/Tool.enum';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,6 +10,11 @@ export class ToolbarComponent implements OnInit {
 
   @Output()
   onClick: EventEmitter<any> = new EventEmitter<any>();
+
+  @Input()
+  toolbarIcons: any[];
+
+  readonly toolEnum = tool;
 
   constructor() { }
 

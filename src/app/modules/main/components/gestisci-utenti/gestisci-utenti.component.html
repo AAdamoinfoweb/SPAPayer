@@ -14,36 +14,34 @@
   </app-filtro-gestione-utenti>
 
   <!-- Sottosezione Lista Utenti -->
-  <div class="row subsection-title">
-    <div class="col-xs-5 pt-4">
-      <p class="title page-subtitle">Lista Utenti</p>
-    </div>
-    <div class="col-xs-4 mb-2">
-      <svg id="img-arrow" class="bg-light icon"
-           data-toggle="collapse" data-target="#contenutoSezioneListaUtenti"
-           aria-expanded="true" aria-controls="contenutoSezioneListaUtenti"
-           (click)="setArrowType()">
-        <use [attr.xlink:href]="arrowType" xlink:href=""></use>
-      </svg>
-    </div>
+  <div class="collapse-header" id="idCollapseListaUtenti">
+    <button data-toggle="collapse" data-target="#contenutoSezioneListaUtenti" aria-expanded="true" aria-controls="contenutoSezioneListaUtenti">
+      Lista Utenti
+    </button>
   </div>
-  <div id="contenutoSezioneListaUtenti" class="collapse show">
-    <div class="row align-items-baseline align-content-lg-around">
-      <div class="col-lg pb-2 pb-sm-2 pb-lg-0">
-        <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>
+  <div id="contenutoSezioneListaUtenti" class="collapse show" role="tabpanel" aria-labelledby="idCollapseListaUtenti">
+    <div class="collapse-body">
+      <div class="row align-items-baseline align-content-lg-around">
+        <!-- tabs -->
+        <div class="col-lg pb-2 pb-sm-2 pb-lg-0">
+          <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>
+        </div>
+        <!-- azioni -->
+        <div class="col-auto">
+          <app-toolbar [toolbarIcons]="toolbarIcons" (onClick)="eseguiAzioni($event)"></app-toolbar>
+        </div>
       </div>
-      <div class="col-auto">
-        <app-toolbar (onClick)="eseguiAzioni($event)"></app-toolbar>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <app-table [dataKey]="tempTableData.dataKey"
-                   [cols]="tempTableData.cols"
-                   [rows]="tempTableData.rows"
-                   [tipoTabella]="tempTableData.tipoTabella"
-                   [textLeft]="getTestoConNumeroUtentiAttiviDisabilitati()">
-        </app-table>
+      <!-- table -->
+      <div class="row">
+        <div class="col">
+          <app-table [dataKey]="tempTableData.dataKey"
+                     [cols]="tempTableData.cols"
+                     [rows]="tempTableData.rows"
+                     [tipoTabella]="tempTableData.tipoTabella"
+                     [textLeft]="getTestoConNumeroUtentiAttiviDisabilitati()"
+                     (onSelection)="selezionaRigaTabella($event)">
+          </app-table>
+        </div>
       </div>
     </div>
   </div>

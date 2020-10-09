@@ -70,7 +70,7 @@ select {
   background-repeat: no-repeat;
   background-position-x: 100%;
   padding-right: 20px;
-  width: 100%
+  width: 100%;
 }
 
 .disabled {
@@ -87,4 +87,19 @@ input {
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='50px' width='120px'><text x='0' y='15' fill='gray' font-size='16'>€</text></svg>");
   background-repeat: no-repeat;
   background-position-x: 5px;
+}
+
+.p-autocomplete.p-component {
+  width: 100%;
+}
+
+.p-autocomplete-input.p-inputtext.p-component {
+  box-shadow: none !important;
+  background-color: transparent;
+  font-weight: normal !important;
+}
+
+.p-autocomplete-input.p-inputtext:enabled:hover,
+.p-autocomplete-input.p-inputtext:enabled:focus {
+  border-color: gray;
 }

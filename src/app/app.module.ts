@@ -42,6 +42,7 @@ import {FiltroGestioneUtentiComponent} from './modules/main/components/gestisci-
 import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
     UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     DpDatePickerModule,
     NgxCurrencyModule,
-    CustomFormsModule
+    CustomFormsModule,
+    AutoCompleteModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
