@@ -11,6 +11,7 @@
 .spinner-wrapper {
   position: fixed;
   width: 100%;
-  text-align: center;
-  top: 50%;
+  //lo spinner è largo 48px
+  left: calc(50vw - 24px);
+  top: calc(50vh - 24px);
 }
