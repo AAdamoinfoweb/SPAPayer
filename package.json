@@ -37,6 +37,8 @@
     "fp-ts": "^2.6.0",
     "io-ts": "^2.2.2",
     "jquery": "3.4.1",
+    "jspdf": "^2.1.1",
+    "jspdf-autotable": "^3.5.13",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
     "ng2-date-picker": "10.0.0",

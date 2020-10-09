@@ -10,6 +10,8 @@ import {map} from 'rxjs/operators';
 import * as moment from 'moment';
 import * as XLSX from 'xlsx';
 import * as FILESAVER from 'file-saver';
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 
 @Component({
@@ -113,13 +115,50 @@ export class GestisciUtentiComponent implements OnInit {
     } else if (azioneTool.value === tool.UPDATE.value) {
       // aggiorna utente
     } else if (azioneTool.value === tool.EXPORT_PDF.value) {
-      // esporta in pdf
+      this.esportaTabellaInFilePdf();
     } else if (azioneTool.value === tool.EXPORT_XLS.value) {
-      this.esportaInFileExcel();
+      this.esportaTabellaInFileExcel();
     }
   }
 
-  esportaInFileExcel(): void {
+  esportaTabellaInFilePdf(): void {
+    const dataTable = JSON.parse(JSON.stringify(this.tableData));
+
+    const customHeaders = dataTable.cols.map(col => col.header);
+    const customRows = [];
+    dataTable.rows.forEach(row => {
+      const rows = [];
+      for (let key in row) {
+        let temp = null;
+        if (key === 'iconaUtente') {
+          temp = row[key]?.display === 'inline' ? '' : null;
+        } else if (key === 'ultimoAccesso') {
+          temp = row[key]?.testo;
+        } else {
+          temp = row[key];
+        }
+        rows.push(temp);
+      }
+      customRows.push(rows);
+    });
+
+    const filePdf = new jsPDF.default('l', 'pt', 'a4');
+    filePdf.setProperties({ title: 'Lista Utenti' });
+    // @ts-ignore
+    filePdf.autoTable(customHeaders, customRows, {
+      didDrawCell: data => {
+        if (data.section === 'body' && data.column.index === 0 && data.row.raw[0] != null) {
+          let activeUserIcon = new Image();
+          activeUserIcon.src = 'assets/img/active-user.png';
+          filePdf.addImage(activeUserIcon, 'PNG', data.cell.x + 2, data.cell.y + 2, 18, 17);
+        }
+      }
+    });
+    const blob = filePdf.output('blob');
+    window.open(URL.createObjectURL(blob));
+  }
+
+  esportaTabellaInFileExcel(): void {
     let dataTable = JSON.parse(JSON.stringify(this.tableData));
     const customHeaders = dataTable.cols.map(col => col.header);
     dataTable.rows = dataTable.rows.map(row => {
