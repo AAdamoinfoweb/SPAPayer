@@ -24,6 +24,7 @@ export class NuovoPagamentoService {
 
   private readonly campiNuovoPagamentoUrl = '/campiNuovoPagamento';
   private readonly verificaBollettinoUrl = '/verificaBollettino';
+  private readonly eliminaBollettinoUrl = '/eliminaBollettino';
   private readonly inserimentoBollettinoUrl = '/bollettino';
   private readonly inserimentoCarrelloUrl = '/carrello';
   private readonly campiPrecompilatiUrl = '/datiPagamento';
@@ -176,4 +177,18 @@ return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JS
           }
         }));
   }
+
+  eliminaBollettino(value: DettagliTransazione): Observable<any>  {
+      return this.http.post(environment.bffBaseUrl + this.eliminaBollettinoUrl, JSON.stringify(value),
+        {withCredentials: true}).pipe(map((body: any) => {
+          return body;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return caught;
+          }
+        }));
+    }
 }

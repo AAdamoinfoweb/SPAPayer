@@ -18,6 +18,7 @@ import {XsrfService} from "../../../../services/xsrf.service";
 import {Router} from "@angular/router";
 import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
 import {SpinnerService} from '../../../../services/spinner.service';
+import {DettagliTransazione} from "../../model/bollettino/DettagliTransazione";
 
 const arrowup = 'assets/img/sprite.svg#it-arrow-up-triangle'
 const arrowdown = 'assets/img/sprite.svg#it-arrow-down-triangle'
@@ -96,5 +97,21 @@ export class ListaPagamentiComponent implements OnInit {
       return this.direction === 'asc' ? res : -res;
     });
     this.direction = rotate[this.direction];
+  }
+
+  eliminaBollettino(pagamento: Pagamento) {
+    const dettaglio: DettagliTransazione = new DettagliTransazione();
+    dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
+    this.nuovoPagamentoService.eliminaBollettino(dettaglio).subscribe(() => {
+      this.ngOnInit();
+    });
+  }
+
+  salvaPerDopo(pagamento: Pagamento) {
+    const dettaglio: DettagliTransazione = new DettagliTransazione();
+    dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
+    this.nuovoPagamentoService.salvaPerDopo(dettaglio).subscribe(() => {
+      this.ngOnInit();
+    });
   }
 }
