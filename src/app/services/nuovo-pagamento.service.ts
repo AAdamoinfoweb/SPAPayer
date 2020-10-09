@@ -25,10 +25,10 @@ export class NuovoPagamentoService {
   private readonly campiNuovoPagamentoUrl = '/campiNuovoPagamento';
   private readonly verificaBollettinoUrl = '/verificaBollettino';
   private readonly inserimentoBollettinoUrl = '/bollettino';
-  private readonly inserimentoCarrelloUrl = '/carrelloL1';
+  private readonly inserimentoCarrelloUrl = '/carrello';
   private readonly campiPrecompilatiUrl = '/datiPagamento';
   private salvaPerDopoUrl = '/salvaPerDopo';
-  private carrelloUrl = '/carrelloL1';
+  private carrelloUrl = '/carrello';
 
   compilazioneEvent: EventEmitter<FiltroServizio> = new EventEmitter<FiltroServizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();

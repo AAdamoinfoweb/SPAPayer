@@ -553,7 +553,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.creaBollettino()));
             this.aggiornaPrezzoCarrello();
-            this.router.navigateByUrl('/carrelloL1');
+            this.router.navigateByUrl('/carrello');
           } else {
             // show err
             this.showMessage();
@@ -579,7 +579,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       observable.subscribe((result) => {
         if (result !== 'error') {
           this.aggiornaPrezzoCarrello();
-          this.router.navigateByUrl('/carrelloL1');
+          this.router.navigateByUrl('/carrello');
         }
       });
     }
