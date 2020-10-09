@@ -12,7 +12,7 @@ export class IMieiPagamentiComponent implements OnInit {
   tooltipNewPagamento = 'Nuovo Pagamento';
   tooltipDeletePagamento = 'Elimina Pagamento';
   tooltipVisualizeDownloadPagamento = 'Visualizza/Scarica gli attestati del pagamento';
-  tooltipAddToCarrello = 'Aggiungi al carrello';
+  tooltipAddToCarrello = 'Aggiungi al carrelloL1';
 
   isSubsectionFiltriVisible: boolean;
   isSubsectionListaPagamentiVisible: boolean;

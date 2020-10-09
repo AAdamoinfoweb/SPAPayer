@@ -9,11 +9,11 @@ import {map} from "rxjs/operators";
 import {XsrfService} from "../../../../services/xsrf.service";
 
 @Component({
-  selector: 'app-carrello',
-  templateUrl: './carrello.component.html',
-  styleUrls: ['./carrello.component.scss']
+  selector: 'app-carrello-l1',
+  templateUrl: './carrello-l1.component.html',
+  styleUrls: ['./carrello-l1.component.scss']
 })
-export class CarrelloComponent implements OnInit, AfterViewInit {
+export class CarrelloL1Component implements OnInit, AfterViewInit {
 
   isDark = false;
   separator = '/';
@@ -24,7 +24,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   rid: string;
 
-  email = null;
+  email = 'mario.rossi@gmail.com';
 
   @ViewChild('videoPlayer', {static: false}) videoplayer: ElementRef;
 
@@ -34,10 +34,8 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   loading = false;
   urlBack: string;
 
-  constructor(private router: Router, private renderer: Renderer2,
-              private el: ElementRef,
-              private route: ActivatedRoute,
-              private pagamentoService: PagamentoService) {
+  constructor(private router: Router, private renderer: Renderer2, private el: ElementRef, private route: ActivatedRoute,
+              private pagamentoService: PagamentoService, private xsrfService: XsrfService, private http: HttpClient ) {
     this.breadcrumbList = [];
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', null, null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Pagamenti', null, null));
