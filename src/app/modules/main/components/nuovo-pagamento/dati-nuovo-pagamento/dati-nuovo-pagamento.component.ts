@@ -112,7 +112,13 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   clickIndietro(): void {
     this.isFaseVerificaPagamento = false;
     this.rimuoviCampoImporto();
-    // TODO logica bottone indietro
+
+    const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+    campiOutput.forEach(campo => {
+      delete this.model[this.getNomeCampoForm(campo)];
+    });
+
+    // TODO valutare triggerare processo inverso del salvaParziale
   }
 
   clickProcedi(): void {
