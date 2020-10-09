@@ -11,7 +11,7 @@
 <form #filtroPagamentiForm="ngForm" (ngSubmit)="filtroPagamentiForm">
   <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="heading1">
     <div class="collapse-body">
-      <!-- Livello Territoriale, Società, Ente -->
+      <!-- Livello Territoriale, Ente, Servizio -->
       <div class="row mt-2 mb-0">
         <div class="col-md-4 pb-2">
           <div class="row">
@@ -21,11 +21,13 @@
           </div>
           <div class="row">
             <div class="col">
-              <select [ngClass]="{'text-disabled': !listaSocieta.length}"
-                      id="selectLivelloTerritoriale"
-                      name="livelloTerritorialeId"
-                      #livelloTerritorialeInput="ngModel"
-                      [(ngModel)]="filtroRicercaPagamenti.livelloTerritorialeId">
+              <select
+                id="selectLivelloTerritoriale"
+                name="livelloTerritorialeId"
+                #livelloTerritorialeInput="ngModel"
+                [(ngModel)]="filtroRicercaPagamenti.livelloTerritorialeId"
+                (ngModelChange)="selezionaLivelloTerritoriale()"
+                disabled="{{listaLivelliTerritoriali.length == 0}}">
                 <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -47,11 +49,12 @@
           </div>
           <div class="row">
             <div class="col">
-              <select [ngClass]="{'text-disabled': listaEnti.length == 0}"
-                      id="selectEnte" name="enteId"
-                      #enteInput="ngModel"
-                      [(ngModel)]="filtroRicercaPagamenti.enteId"
-                      (ngModelChange)="selezionaEnte()">
+              <select
+                id="selectEnte" name="enteId"
+                #enteInput="ngModel"
+                [(ngModel)]="filtroRicercaPagamenti.enteId"
+                (ngModelChange)="selezionaEnte()"
+                disabled="{{listaEnti.length == 0}}">
                 <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -73,10 +76,11 @@
           </div>
           <div class="row">
             <div class="col">
-              <select [ngClass]="{'input-disabled': !listaServizi.length}"
-                      id="selectServizio" name="servizioId"
-                      #servizioInput="ngModel"
-                      [(ngModel)]="filtroRicercaPagamenti.servizioId">
+              <select
+                id="selectServizio" name="servizioId"
+                #servizioInput="ngModel"
+                [(ngModel)]="filtroRicercaPagamenti.servizioId"
+                disabled="{{listaServizi.length == 0}}">
                 <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -98,7 +102,7 @@
         <div class="col-md-4">
           <div class="row">
             <div class="col">
-              <label for="inputNumero" class="title">Documento</label>
+              <label for="inputNumero" class="title">Numero Documento</label>
             </div>
           </div>
           <div class="row">
@@ -107,7 +111,7 @@
                      id="inputNumero"
                      autocomplete="off"
                      #numeroInput="ngModel"
-                     [(ngModel)]="filtroRicercaPagamenti.numero">
+                     [(ngModel)]="filtroRicercaPagamenti.numeroDocumento">
             </div>
           </div>
           <div class="row">
@@ -123,7 +127,7 @@
         <div class="col-md-2 pb-2">
           <div class="row">
             <div class="col">
-              <label for="scadenzaDataDa" class="title">Da</label>
+              <label for="scadenzaDataDa" class="title">Data Pagamento Da</label>
             </div>
           </div>
           <div class="row">
@@ -146,7 +150,7 @@
               returnedValueType: tipoData
 	          }"
                 #scadenzaDaInput="ngModel"
-                [(ngModel)]="filtroRicercaPagamenti.dataDa"
+                [(ngModel)]="filtroRicercaPagamenti.dataScadenzaDa"
                 name="dataScadenzaDa"
                 #datePickerScadenzaDa
                 (click)="isCalendarOpen = false"
@@ -166,7 +170,7 @@
         <div class="col-md-2 pb-2">
           <div class="row">
             <div class="col">
-              <label for="scadenzaDataA" class="title">A</label>
+              <label for="scadenzaDataA" class="title">Data Pagamento A</label>
             </div>
           </div>
           <div class="row">
@@ -189,7 +193,7 @@
               returnedValueType: tipoData
             }"
                 #scadenzaAInput="ngModel"
-                [(ngModel)]="filtroRicercaPagamenti.dataA"
+                [(ngModel)]="filtroRicercaPagamenti.dataScadenzaA"
                 name="dataScadenzaA"
                 #datePickerScadenzaA
                 (click)="isCalendarOpen = false"
@@ -201,31 +205,6 @@
               <p
                 [ngClass]="{'text-muted': !isCampoInvalido(scadenzaAInput), 'text-invalid': isCampoInvalido(scadenzaAInput)}">
                 {{setPlaceholder(scadenzaAInput, 'date')}}
-              </p>
-            </div>
-          </div>
-        </div>
-        <!--      testo libero -->
-        <div class="col-md-4">
-          <div class="row">
-            <div class="col">
-              <label for="inputTestoLibero" class="title">Testo libero</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <input type="text" class="input-text pt-0" name="testo"
-                     id="inputTestoLibero"
-                     autocomplete="off"
-                     #testoInput="ngModel"
-                     [(ngModel)]="filtroRicercaPagamenti.testoLibero">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p
-                [ngClass]="{'text-muted': !isCampoInvalido(testoInput), 'text-invalid': isCampoInvalido(testoInput)}">
-                {{setPlaceholder(testoInput, 'string')}}
               </p>
             </div>
           </div>
@@ -243,7 +222,7 @@
         </div>
         <div class="col-6 btn-find">
           <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroPagamentiForm, 'Cerca')"
-                  (click)="cercaUtenti(filtroPagamentiForm)">Cerca
+                  (click)="cercaPagamenti(filtroPagamentiForm)">Cerca
           </button>
         </div>
       </div>

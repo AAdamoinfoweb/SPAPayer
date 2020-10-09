@@ -20,8 +20,8 @@ export class TabViewComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  handleChange(value) {
-    this.onChange.emit(value.index);
+  handleChange(event) {
+    this.onChange.emit(event.originalEvent.target.innerText);
   }
 
 }

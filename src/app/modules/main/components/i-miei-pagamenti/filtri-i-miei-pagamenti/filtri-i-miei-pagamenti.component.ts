@@ -1,17 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {CampoForm} from "../../../model/CampoForm";
-import {FormGroup, NgForm, NgModel} from "@angular/forms";
-import {DatePickerComponent, ECalendarValue} from "ng2-date-picker";
-import {ParametriRicercaPagamenti} from "../../../model/utente/ParametriRicercaPagamenti";
-import {TipoCampoEnum} from "../../../../../enums/tipoCampo.enum";
-import {OpzioneSelect} from "../../../model/OpzioneSelect";
-import {ParametriRicercaUtente} from "../../../model/utente/ParametriRicercaUtente";
-import {RicercaUtente} from "../../../model/utente/RicercaUtente";
-import {NuovoPagamentoService} from "../../../../../services/nuovo-pagamento.service";
-import {SocietaService} from "../../../../../services/societa.service";
-import {FunzioneService} from "../../../../../services/funzione.service";
-import {UtenteService} from "../../../../../services/utente.service";
-import {map} from "rxjs/operators";
+import {NgForm, NgModel} from '@angular/forms';
+import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
+import {ParametriRicercaPagamenti} from '../../../model/utente/ParametriRicercaPagamenti';
+import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
+import {OpzioneSelect} from '../../../model/OpzioneSelect';
+import {RicercaUtente} from '../../../model/utente/RicercaUtente';
+import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
+import {SocietaService} from '../../../../../services/societa.service';
+import {FunzioneService} from '../../../../../services/funzione.service';
+import {UtenteService} from '../../../../../services/utente.service';
+import {map} from 'rxjs/operators';
+import {IMieiPagamentiService} from "../../../../../services/i-miei-pagamenti.service";
+import {DatiPagamento} from "../../../model/DatiPagamento";
 
 @Component({
   selector: 'app-filtri-i-miei-pagamenti',
@@ -19,50 +19,35 @@ import {map} from "rxjs/operators";
   styleUrls: ['./filtri-i-miei-pagamenti.component.scss']
 })
 export class FiltriIMieiPagamentiComponent implements OnInit {
-  isSubsectionFiltriVisible = true;
-  arrowType = 'assets/img/sprite.svg#it-collapse';
 
-  listaSocieta: Array<OpzioneSelect> = [];
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
-  listaFunzioniAbilitate: Array<OpzioneSelect> = [];
 
   isCalendarOpen = false;
   readonly minDateDDMMYY = '01/01/1900';
   readonly tipoData = ECalendarValue.String;
 
-  filtroGestioneUtentiApplicato: ParametriRicercaUtente;
   filtroRicercaPagamenti: ParametriRicercaPagamenti;
 
   @Input()
-  listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
+  listaPagamento: Array<DatiPagamento> = new Array<DatiPagamento>();
 
   @Output()
-  listaUtentiFiltrati: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
+  onChangeListaPagamenti: EventEmitter<DatiPagamento[]> = new EventEmitter<DatiPagamento[]>();
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
-              private funzioneService: FunzioneService, private utenteService: UtenteService) {
+  constructor(private nuovoPagamentoService: NuovoPagamentoService,
+              private funzioneService: FunzioneService, private iMieiPagamentiService: IMieiPagamentiService ) {
   }
 
   ngOnInit(): void {
-    this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
-    this.filtroRicercaPagamenti = new  ParametriRicercaPagamenti();
+    this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
 
+    // recupero dati select
+    this.recuperaLivelloTerritoriale();
   }
 
-  letturaSocieta(): void {
-    this.societaService.letturaSocieta().pipe(map(societa => {
-      societa.forEach(s => {
-        this.listaSocieta.push({
-          value: s.id,
-          label: s.nome
-        });
-      });
-    })).subscribe();
-  }
-
-  recuperaFiltroLivelloTerritoriale(): void {
+  recuperaLivelloTerritoriale(): void {
     this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
       livelliTerritoriali.forEach(livello => {
         this.listaLivelliTerritoriali.push({
@@ -74,14 +59,15 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   selezionaLivelloTerritoriale(): void {
-    this.filtroGestioneUtentiApplicato.enteId = null;
+    // pulisci select ente
+    this.filtroRicercaPagamenti.enteId = null;
     this.listaEnti = [];
 
-    this.recuperaFiltroEnti(this.filtroGestioneUtentiApplicato?.livelloTerritorialeId);
+    this.recuperaEnti(this.filtroRicercaPagamenti?.livelloTerritorialeId);
   }
 
-  recuperaFiltroEnti(idLivelloTerritoriale): void {
-    this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
+  recuperaEnti(livelloTerritorialeId): void {
+    this.nuovoPagamentoService.recuperaFiltroEnti(livelloTerritorialeId).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
           value: ente.id,
@@ -92,14 +78,15 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   selezionaEnte(): void {
-    this.filtroGestioneUtentiApplicato.servizioId = null;
+    // pulisci select servizio
+    this.filtroRicercaPagamenti.servizioId = null;
     this.listaServizi = [];
 
-    this.recuperaFiltroServizi(this.filtroGestioneUtentiApplicato?.enteId);
+    this.recuperaFiltroServizi(this.filtroRicercaPagamenti?.enteId);
   }
 
-  recuperaFiltroServizi(idEnte): void {
-    this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
+  recuperaFiltroServizi(enteId): void {
+    this.nuovoPagamentoService.recuperaFiltroServizi(enteId).pipe(map(servizi => {
       servizi.forEach(servizio => {
         this.listaServizi.push({
           value: servizio.id,
@@ -107,22 +94,6 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
         });
       });
     })).subscribe();
-  }
-
-  letturaFunzioni(): void {
-    this.funzioneService.letturaFunzioni().pipe(map(funzioneAbilitata => {
-      funzioneAbilitata.forEach(funzione => {
-        this.listaFunzioniAbilitate.push({
-          value: funzione.id,
-          label: funzione.nome
-        });
-      });
-    })).subscribe();
-  }
-
-  setArrowType(): void {
-    this.isSubsectionFiltriVisible = !this.isSubsectionFiltriVisible;
-    this.arrowType = !this.isSubsectionFiltriVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse';
   }
 
   setPlaceholder(campo: NgModel, tipo: string): string {
@@ -150,34 +121,32 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
-    this.listaUtentiFiltrati.emit(this.listaUtente);
-    this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
+    this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
   }
 
-  cercaUtenti(form: NgForm): void {
+  cercaPagamenti(form: NgForm): void {
     Object.keys(form.value).forEach(key => {
       const value = form.value[key];
       if (value !== undefined) {
-        this.filtroGestioneUtentiApplicato[key] = value;
+        this.filtroRicercaPagamenti[key] = value;
       } else {
-        this.filtroGestioneUtentiApplicato[key] = null;
+        this.filtroRicercaPagamenti[key] = null;
       }
     });
 
-    const filtro = this.filtroGestioneUtentiApplicato;
-    this.utenteService.ricercaUtenti(filtro.livelloTerritorialeId, filtro.societaId, filtro.enteId, filtro.servizioId, filtro.funzioneId,
-      filtro.codiceFiscale, filtro.dataScadenzaDa, filtro.dataScadenzaA, filtro.ultimoAccessoDa,
-      filtro.ultimoAccessoA).pipe(map(listaUtenti => {
-      this.listaUtentiFiltrati.emit(listaUtenti);
+    const filtri = this.filtroRicercaPagamenti;
+    this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
+      this.onChangeListaPagamenti.emit(listaPagamenti);
     })).subscribe();
   }
 
-  disabilitaBottone(filtroGestioneUtentiForm: NgForm, nomeBottone: string): boolean {
-    const isAtLeastOneFieldValued = Object.keys(filtroGestioneUtentiForm.value).some(key => filtroGestioneUtentiForm.value[key]);
-    if (nomeBottone === 'Pulisci') {
-      return !isAtLeastOneFieldValued;
-    } else {
-      return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued;
-    }
+  disabilitaBottone(filtroIMieiPagamenti: NgForm, nomeBottone: string): boolean {
+    // const isAtLeastOneFieldValued = Object.keys(filtroIMieiPagamenti.value).some(key => filtroIMieiPagamenti.value[key]);
+    // if (nomeBottone === 'Pulisci') {
+    //   return !isAtLeastOneFieldValued;
+    // } else {
+    //   return !filtroIMieiPagamenti.valid || !isAtLeastOneFieldValued;
+    // }
+    return false;
   }
 }

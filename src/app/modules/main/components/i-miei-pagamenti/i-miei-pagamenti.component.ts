@@ -1,10 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {tipoUtente} from "../../../../enums/TipoUtente.enum";
-import {tool} from "../../../../enums/Tool.enum";
-import {tipoColonna} from "../../../../enums/TipoColonna.enum";
-import {tipoTabella} from "../../../../enums/TipoTabella.enum";
-import {Utils} from "../../../../utils/Utils";
-import {Breadcrumb} from "../../dto/Breadcrumb";
+import {tool} from '../../../../enums/Tool.enum';
+import {tipoColonna} from '../../../../enums/TipoColonna.enum';
+import {tipoTabella} from '../../../../enums/TipoTabella.enum';
+import {Utils} from '../../../../utils/Utils';
+import {Breadcrumb} from '../../dto/Breadcrumb';
+import {DatiPagamento} from '../../model/DatiPagamento';
+import {map} from 'rxjs/operators';
+import {IMieiPagamentiService} from '../../../../services/i-miei-pagamenti.service';
+import {ParametriRicercaPagamenti} from '../../model/utente/ParametriRicercaPagamenti';
+import {TipoPagamentoEnum} from '../../../../enums/tipoPagamento.enum';
+import {EsitoEnum} from '../../../../enums/esito.enum';
+import {StatoPagamentoEnum} from '../../../../enums/statoPagamento.enum';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-i-miei-pagamenti',
@@ -23,57 +30,33 @@ export class IMieiPagamentiComponent implements OnInit {
   // breadcrumb
   breadcrumbList = [];
 
-  isSubsectionFiltriVisible: boolean;
-  isSubsectionListaPagamentiVisible: boolean;
-
-  listaLivelliTerritoriali: Array<any> = [
-    {value: 'mock livello1 val', label: 'mock livello1 label'},
-    {value: 'mock livello2 val', label: 'mock livello2 label'}
-  ];
-
-  listaEnti: Array<any> = [
-    {value: 'mock ente1 val', label: 'mock ente1 label'},
-    {value: 'mock ente2 val', label: 'mock ente2 label'}
-  ];
-
-  listaServizi: Array<any> = [
-    {value: 'mock servizio1 val', label: 'mock servizio1 label'},
-    {value: 'mock servizio2 val', label: 'mock servizio2 label'}
-  ];
-
-  livelloTerritorialeSelezionato: string;
-  enteSelezionato: string;
-  servizioSelezionato: string;
-
-  // collapse
-  isSubsectionListaUtentiVisible = true;
-  arrowType = 'assets/img/sprite.svg#it-collapse';
 
   // tabs
-  tabs = [{header: 'Tutti'},
-    {header: 'In Attesa'},
-    {header: 'Pagati'}];
+  tabs = [{value: TipoPagamentoEnum.TUTTI},
+    {value: TipoPagamentoEnum.IN_ATTESA},
+    {value: TipoPagamentoEnum.PAGATI}];
 
   // table
   tableData = {
     rows: [],
     cols: [
       {field: 'icona', header: '', type: tipoColonna.ICONA},
-      {field: 'numero', header: 'N.ro Documento', type: tipoColonna.TESTO},
-      {field: 'descrizione', header: 'Descrizione', type: tipoColonna.TESTO},
-      {field: 'ente', header: 'Ente', type: tipoColonna.TESTO},
-      {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
+      {field: 'numeroDocumento', header: 'N.ro Documento', type: tipoColonna.TESTO},
+      {field: 'nomeServizio', header: 'Descrizione', type: tipoColonna.TESTO},
+      {field: 'nomeEnte', header: 'Ente', type: tipoColonna.TESTO},
+      {field: 'dataScadenza', header: 'Scadenza', type: tipoColonna.TESTO},
       {field: 'importo', header: 'Importo', type: tipoColonna.IMPORTO},
-      {field: 'data', header: 'Data Pagamento', type: tipoColonna.TESTO}
+      {field: 'dataPagamento', header: 'Data Pagamento', type: tipoColonna.TESTO}
     ],
     dataKey: 'numero',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
   tempTableData;
+  private listaPagamenti: DatiPagamento[];
 
 
-  constructor() {
+  constructor(private iMieiPagamentiService: IMieiPagamentiService) {
     // init breadcrumb
     this.inizializzaBreadcrumb();
   }
@@ -85,26 +68,33 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isSubsectionListaPagamentiVisible = true;
-    this.riempiTabella();
-    this.tempTableData = Object.assign({}, this.tableData);
+    this.inizializzaListaPagamenti();
   }
 
-  setArrowType(): void {
-    this.isSubsectionListaUtentiVisible = !this.isSubsectionListaUtentiVisible;
-    this.arrowType = !this.isSubsectionListaUtentiVisible ? 'assets/img/sprite.svg#it-expand' : 'assets/img/sprite.svg#it-collapse';
+  private inizializzaListaPagamenti() {
+    const filtri = new ParametriRicercaPagamenti();
+    this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
+      this.riempiListaPagamenti(listaPagamenti);
+    })).subscribe();
   }
+
 
   onChangeTab(value) {
-    // let tabRows = this.tableData.rows.map(row => row);
-    //
-    // if (value === tipoUtente.ATTIVI.value) {
-    //   tabRows = tabRows.filter(row => row.iconaUtente.display === 'inline');
-    // } else if (value === tipoUtente.DISABILITATI.value) {
-    //   tabRows = tabRows.filter(row => row.iconaUtente.display === 'none');
-    // }
-    //
-    // this.tempTableData.rows = tabRows;
+    let tempListaPagamenti;
+    if (value === TipoPagamentoEnum.TUTTI) {
+      tempListaPagamenti = this.listaPagamenti;
+    } else if (value === TipoPagamentoEnum.IN_ATTESA) {
+      tempListaPagamenti = this.listaPagamenti.filter(pagamento =>
+        pagamento.esitoPagamento !== EsitoEnum.OK && (
+          pagamento.statoPagamento != null ? pagamento.statoPagamento === StatoPagamentoEnum.IN_ATTESA : true
+        )
+      );
+    } else if (value === TipoPagamentoEnum.PAGATI) {
+      tempListaPagamenti = this.listaPagamenti.filter(pagamento =>
+        pagamento.esitoPagamento === EsitoEnum.OK);
+    }
+
+    this.riempiTabella(tempListaPagamenti);
   }
 
   // todo logica azioni tool
@@ -121,18 +111,29 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
   getTestoConNumeroUtentiAttiviDisabilitati(): string {
-  return '';
+    return '';
   }
 
-  riempiTabella() {
-    this.tableData.rows = [{
-      icona: Utils.creaIcona('assets/img/sprite.svg#it-pencil', '#ef8157', 'tooltip', null),
-      numero: '12345',
-      descrizione: 'descrizione',
-      ente: 'Comune di Bologna',
-      scadenza: '10/2020',
-      importo: 100,
-      data: '20/10/2020'
-    }];
+  riempiListaPagamenti(lista: DatiPagamento[]) {
+    this.listaPagamenti = lista;
+    this.riempiTabella(lista);
+  }
+
+  riempiTabella(listaPagamenti: DatiPagamento[]) {
+    const pagamenti = listaPagamenti.map(pagamento => {
+      const row = {
+        icona: Utils.creaIcona('assets/img/sprite.svg#it-pencil', '#ef8157', 'tooltip', null),
+        numeroDocumento: pagamento.numeroDocumento,
+        nomeServizio: pagamento.nomeServizio,
+        nomeEnte: pagamento.nomeEnte,
+        dataScadenza: pagamento.dataScadenza ? moment(pagamento.dataScadenza).format('DD/MM/YYYY') : null,
+        importo: pagamento.importo,
+        dataPagamento: pagamento.dataPagamento ? moment(pagamento.dataPagamento).format('DD/MM/YYYY') : null,
+      };
+      return row;
+    });
+    this.tableData.rows = pagamenti;
+    // oggetto contenente le rows recuperate dalla ricerca
+    this.tempTableData.rows = Object.assign({}, this.tableData.rows);
   }
 }
