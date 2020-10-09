@@ -81,7 +81,7 @@
                   [maxLength]="getLunghezzaCampo(campo)"
                   type="tel"
                   currencyMask
-                  [options]="{allowNegative: false, prefix: '', precision: 2, decimal: '.', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
+                  [options]="{allowNegative: false, prefix: '', precision: 2, decimal: ',', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
                   autocomplete="off"
                   [attr.disabled]="isCampoDisabilitato(campo)"
                 />
@@ -217,7 +217,7 @@
               (ngModelChange)="salvaParziale($event, null, importoNomeCampo)"
               type="tel"
               currencyMask
-              [options]="{allowNegative: false, prefix: '', precision: 2, decimal: '.', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
+              [options]="{allowNegative: false, prefix: '', precision: 2, decimal: ',', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
               autocomplete="off"
             />
           </div>
