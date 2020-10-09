@@ -505,6 +505,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.numero = this.getNumDocumento();
     bollettino.anno = this.model[this.getCampoDettaglioTransazione('anno_documento')];
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
+    // rimuovere primi 3 caratteri
     bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv')];
     bollettino.cfpiva = this.model[this.getCampoDettaglioTransazione('codice_fiscale_pagatore')];
     bollettino.importo = this.model[this.importoNomeCampo];
@@ -531,7 +532,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         .pipe(map((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.creaBollettino()));
-            // cancellaBollettinoParziale()
+            localStorage.removeItem("parziale");
             return null;
           } else {
             // show err
@@ -577,6 +578,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         .subscribe((result) => {
           if (result !== EsitoEnum.OK && result !== EsitoEnum.PENDING) {
             localStorage.setItem('boll-' + numeroDoc, JSON.stringify(this.creaBollettino()));
+            localStorage.removeItem("parziale");
             this.aggiornaPrezzoCarrello();
             this.router.navigateByUrl('/carrello');
           } else {

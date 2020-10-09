@@ -64,6 +64,7 @@ export class HomeComponent implements OnInit {
           nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
           this.clearLocalStorage();
           this.spinnerService.caricamentoEvent.emit(false);
+          this.router.navigateByUrl("/nuovoPagamento");
         });
       }
       localStorage.removeItem('loginDaAnonimo');
