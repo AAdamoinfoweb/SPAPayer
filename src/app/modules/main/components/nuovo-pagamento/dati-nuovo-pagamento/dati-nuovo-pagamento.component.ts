@@ -139,7 +139,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
       this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
       .subscribe((valoriCampiPrecompilati) => {
-        // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO
+        // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO (NB: al momento la chiamata crasha lato backend per servizio LV2BO)
         const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
         campiOutput.forEach(campo => {
           this.model[this.getNomeCampoForm(campo)] = JSONPath({
