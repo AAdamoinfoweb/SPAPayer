@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {UserIdleService} from "angular-user-idle";
 import {AuthguardService} from "./services/authguard.service";
 import {Router} from "@angular/router";
+import {SpinnerService} from './services/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -15,12 +16,14 @@ import {Router} from "@angular/router";
 export class AppComponent implements OnInit {
 
   title = '';
+  caricamento = false;
 
   constructor(private menuService: MenuService,
               private router: Router,
               private authGuardService: AuthguardService,
               private idleService: UserIdleService,
-              private toponomasticaService: ToponomasticaService) {
+              private toponomasticaService: ToponomasticaService,
+              private spinnerService: SpinnerService) {
   }
 
   ngOnInit(): void {
@@ -32,6 +35,10 @@ export class AppComponent implements OnInit {
 
     this.menuService.getInfoUtente().subscribe((info) => {
       this.menuService.infoUtenteEmitter.emit(info);
+    });
+
+    this.spinnerService.caricamentoEvent.subscribe(isLoading => {
+      this.caricamento = isLoading;
     });
 
     this.letturatipologicheSelect();
