@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
               private authGuardService: AuthguardService,
               private idleService: UserIdleService,
               private toponomasticaService: ToponomasticaService,
-              private OverlayService: OverlayService) {
+              private overlayService: OverlayService) {
   }
 
   ngOnInit(): void {
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
       this.menuService.infoUtenteEmitter.emit(info);
     });
 
-    this.OverlayService.caricamentoEvent.subscribe(isLoading => {
+    this.overlayService.caricamentoEvent.subscribe(isLoading => {
       this.caricamento = isLoading;
       this.cdr.detectChanges();
     });

@@ -57,12 +57,12 @@ export class ListaPagamentiL1Component implements OnInit {
   urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private listaPagamentiService: ListaPagamentiService, private route: Router,
-              private OverlayService: OverlayService) {
+              private overlayService: OverlayService) {
   }
 
 
   ngOnInit(): void {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
     let observable: Observable<Pagamento[]> = this.listaPagamentiService.verificaRid(this.rid)
       .pipe(flatMap((urlBack) => {
         if (urlBack)
@@ -81,7 +81,7 @@ export class ListaPagamentiL1Component implements OnInit {
           }));
       }));
     observable.subscribe((ret) => {
-      this.OverlayService.caricamentoEvent.emit(false);
+      this.overlayService.caricamentoEvent.emit(false);
       if (ret == null)
         this.route.navigateByUrl("/nonautorizzato");
     });

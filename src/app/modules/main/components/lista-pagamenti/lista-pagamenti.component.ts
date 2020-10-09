@@ -58,12 +58,12 @@ export class ListaPagamentiComponent implements OnInit {
   urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private route: Router,
-              private OverlayService: OverlayService) {
+              private overlayService: OverlayService) {
   }
 
 
   ngOnInit(): void {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
     let observable: Observable<Pagamento[]> = this.nuovoPagamentoService.getCarrello()
       .pipe(map((value: Carrello) => {
         this.listaPagamenti = value.dettaglio;
@@ -77,7 +77,7 @@ export class ListaPagamentiComponent implements OnInit {
         return this.listaPagamenti;
       }));
     observable.subscribe((ret) => {
-      this.OverlayService.caricamentoEvent.emit(false);
+      this.overlayService.caricamentoEvent.emit(false);
       if (ret == null) {
         this.route.navigateByUrl("/nonautorizzato");
       }

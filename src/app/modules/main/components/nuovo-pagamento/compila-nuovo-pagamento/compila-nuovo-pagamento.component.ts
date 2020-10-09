@@ -21,7 +21,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   enteSelezionato: Ente = null;
   servizioSelezionato: FiltroServizio = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private OverlayService: OverlayService) {
+  constructor(private nuovoPagamentoService: NuovoPagamentoService, private overlayService: OverlayService) {
     this.nuovoPagamentoService.pulisciEvent.subscribe(() => {
       this.pulisci();
     });
@@ -39,7 +39,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroLivelloTerritoriale(): void {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
       livelliTerritoriali.forEach(livello => {
         this.listaLivelliTerritoriali.push({
@@ -79,7 +79,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       }
     }
 
-    this.OverlayService.caricamentoEvent.emit(false);
+    this.overlayService.caricamentoEvent.emit(false);
   }
 
   selezionaLivelloTerritoriale(): void {
@@ -93,7 +93,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
@@ -113,7 +113,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroServizi(idEnte): void {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
       servizi.forEach(servizio => {
         this.listaServizi.push({
@@ -125,7 +125,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   selezionaServizio(): void {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.compilazioneEvent.emit(this.servizioSelezionato);
   }
 }

@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     private bannerService: BannerService,
     private pagamentoService: PagamentoService,
     private menuService: MenuService,
-    private OverlayService: OverlayService
+    private overlayService: OverlayService
   ) {
     this.menuService.userAnonimousEvent
       .subscribe((isAnonimo: boolean) => {
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
         }
       }
       if (bollettini.length > 0) {
-        this.OverlayService.caricamentoEvent.emit(true);
+        this.overlayService.caricamentoEvent.emit(true);
         let observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(bollettini)
           .pipe(flatMap((result) => {
             let dettaglio: DettagliTransazione = new DettagliTransazione();
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
         observable.subscribe(() => {
           nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
           this.clearLocalStorage();
-          this.OverlayService.caricamentoEvent.emit(false);
+          this.overlayService.caricamentoEvent.emit(false);
           this.router.navigateByUrl("/nuovoPagamento");
         });
       }

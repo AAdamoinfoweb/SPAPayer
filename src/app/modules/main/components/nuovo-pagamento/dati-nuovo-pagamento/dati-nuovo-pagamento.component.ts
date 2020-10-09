@@ -33,7 +33,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private router: Router,
               private bannerService: BannerService,
-              private OverlayService: OverlayService,
+              private overlayService: OverlayService,
               private cdr: ChangeDetectorRef) {
   }
 
@@ -85,7 +85,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   private restoreParziale() {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
 
     this.isUtenteAnonimo = localStorage.getItem('nome') === 'null';
     if (this.isUtenteAnonimo) {
@@ -101,7 +101,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       localStorage.removeItem("parziale");
     }
 
-    this.OverlayService.caricamentoEvent.emit(false);
+    this.overlayService.caricamentoEvent.emit(false);
   }
 
   checkUtenteLoggato(): void {
@@ -124,7 +124,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   clickProcedi(): void {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
 
     this.isFaseVerificaPagamento = true;
     this.aggiungiCampoImporto();
@@ -152,7 +152,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         this.model[this.importoNomeCampo] = valoriCampiPrecompilati[this.importoNomeCampo];
 
-        this.OverlayService.caricamentoEvent.emit(false);
+        this.overlayService.caricamentoEvent.emit(false);
       });
   }
 
@@ -267,7 +267,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
         this.impostaCampi(campiNuovoPagamento.campiServizio);
 
-        this.OverlayService.caricamentoEvent.emit(false);
+        this.overlayService.caricamentoEvent.emit(false);
       }));
     } else {
       return of(null);
@@ -547,7 +547,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   aggiungiAlCarrello() {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
 
     const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
     let observable: Observable<any>;
@@ -565,7 +565,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             return of('error');
           }
 
-          this.OverlayService.caricamentoEvent.emit(false);
+          this.overlayService.caricamentoEvent.emit(false);
         }));
     } else {
       observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
@@ -588,13 +588,13 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       if (result != 'error') {
         this.aggiornaPrezzoCarrello();
         this.clickPulisci();
-        this.OverlayService.caricamentoEvent.emit(false);
+        this.overlayService.caricamentoEvent.emit(false);
       }
     });
   }
 
   pagaOra() {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
 
     const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
     if (anonimo) {
@@ -612,7 +612,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             return of('error');
           }
 
-          this.OverlayService.caricamentoEvent.emit(false);
+          this.overlayService.caricamentoEvent.emit(false);
         });
     } else {
       const observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
@@ -633,7 +633,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       observable.subscribe((result) => {
         if (result !== 'error') {
           this.aggiornaPrezzoCarrello();
-          this.OverlayService.caricamentoEvent.emit(false);
+          this.overlayService.caricamentoEvent.emit(false);
           this.router.navigateByUrl('/carrello');
         }
       });
@@ -641,7 +641,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   salvaPerDopo() {
-    this.OverlayService.caricamentoEvent.emit(true);
+    this.overlayService.caricamentoEvent.emit(true);
 
     const observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
       .pipe(flatMap((result) => {
@@ -658,7 +658,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           }
         }
 
-        this.OverlayService.caricamentoEvent.emit(false);
+        this.overlayService.caricamentoEvent.emit(false);
       }));
     observable.subscribe((result) => {
       if (result !== 'error') {
