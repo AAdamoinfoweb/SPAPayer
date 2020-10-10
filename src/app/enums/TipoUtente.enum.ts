@@ -1,6 +1,5 @@
-export const tipoUtente = {
-  TUTTI: {value: 0},
-  ATTIVI: {value: 1},
-  DISABILITATI: {value: 2}
-};
-
+export enum TipoUtenteEnum {
+  TUTTI = 'Tutti',
+  ATTIVI = 'Attivi',
+  DISABILITATI = 'Disabilitati'
+}

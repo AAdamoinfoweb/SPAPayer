@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {tipoColonna} from '../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../enums/TipoTabella.enum';
-import {tipoUtente} from '../../../../enums/TipoUtente.enum';
+import {TipoUtenteEnum} from '../../../../enums/TipoUtente.enum';
 import {tool} from '../../../../enums/Tool.enum';
 import {Utils} from '../../../../utils/Utils';
 import {UtenteService} from '../../../../services/utente.service';
@@ -30,9 +30,11 @@ export class GestisciUtentiComponent implements OnInit {
     {type: tool.EXPORT_XLS}
   ];
 
-  tabs = [{header: 'Tutti'},
-    {header: 'Attivi'},
-    {header: 'Disabilitati'}];
+  tabs = [
+    {value: TipoUtenteEnum.TUTTI},
+    {value: TipoUtenteEnum.ATTIVI},
+    {value: TipoUtenteEnum.DISABILITATI}
+  ];
 
   tableData = {
     rows: [],
@@ -97,9 +99,9 @@ export class GestisciUtentiComponent implements OnInit {
   onChangeTab(value) {
     let tabRows = this.tableData.rows.map(row => row);
 
-    if (value === tipoUtente.ATTIVI.value) {
+    if (value === TipoUtenteEnum.ATTIVI) {
       tabRows = tabRows.filter(row => row.iconaUtente.display === 'inline');
-    } else if (value === tipoUtente.DISABILITATI.value) {
+    } else if (value === TipoUtenteEnum.DISABILITATI) {
       tabRows = tabRows.filter(row => row.iconaUtente.display === 'none');
     }
 
