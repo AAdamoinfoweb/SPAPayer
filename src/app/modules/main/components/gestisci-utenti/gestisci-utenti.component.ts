@@ -36,6 +36,8 @@ export class GestisciUtentiComponent implements OnInit {
     {value: TipoUtenteEnum.DISABILITATI}
   ];
 
+  nomeTabCorrente: string;
+
   tableData = {
     rows: [],
     cols: [
@@ -106,6 +108,7 @@ export class GestisciUtentiComponent implements OnInit {
     }
 
     this.tempTableData.rows = tabRows;
+    this.nomeTabCorrente = value;
   }
 
   // todo logica azioni tool
@@ -176,6 +179,7 @@ export class GestisciUtentiComponent implements OnInit {
     listaUtentiFiltrati.forEach(utente => {
       this.tableData.rows.push(this.creaRigaTabella(utente));
     });
+    this.onChangeTab(this.nomeTabCorrente);
   }
 
   getTotaliPerRecord(): string {
