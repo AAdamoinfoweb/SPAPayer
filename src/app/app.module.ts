@@ -43,10 +43,12 @@ import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
 import {AutoCompleteModule} from 'primeng/autocomplete';
+import {AggiungiUtentePermessiComponent} from './modules/main/components/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AggiungiUtentePermessiComponent,
     HomeComponent,
     SidebarComponent,
     LoginBarComponent,

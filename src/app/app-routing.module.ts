@@ -11,6 +11,7 @@ import {GenericErrorComponent} from "./modules/generic-error/generic-error.compo
 import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/nuovo-pagamento.component';
 import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {GestisciUtentiComponent} from './modules/main/components/gestisci-utenti/gestisci-utenti.component';
+import {AggiungiUtentePermessiComponent} from './modules/main/components/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
 
 const routes: Routes = [
   { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -30,7 +31,8 @@ const routes: Routes = [
   {path: 'privacy', component: PrivacyComponent},
   {path: 'nuovoPagamento', component: NuovoPagamentoComponent},
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
-  {path: 'gestisciutenti', component: GestisciUtentiComponent}
+  {path: 'gestisciutenti', component: GestisciUtentiComponent},
+  {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent}
 ];
 
 @NgModule({
