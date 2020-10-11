@@ -128,7 +128,7 @@ export class GestisciUtentiComponent implements OnInit {
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
 
     if (azioneTool.value === tool.INSERT.value) {
-      // inserisci utente
+      window.open('/aggiungiUtentePermessi', '_self');
     } else if (azioneTool.value === tool.UPDATE.value) {
       // aggiorna utente
     } else if (azioneTool.value === tool.EXPORT_PDF.value) {
