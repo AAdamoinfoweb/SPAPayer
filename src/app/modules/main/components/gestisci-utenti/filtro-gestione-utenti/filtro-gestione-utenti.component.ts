@@ -182,9 +182,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
       }
     });
 
-    this.utenteService.ricercaUtenti(filtro.livelloTerritorialeId, filtro.societaId, filtro.enteId, filtro.servizioId, filtro.funzioneId,
-      filtro.codiceFiscale, filtro.dataScadenzaDa, filtro.dataScadenzaA, filtro.ultimoAccessoDa,
-      filtro.ultimoAccessoA).pipe(map(listaUtenti => {
+    this.utenteService.ricercaUtenti(filtro).pipe(map(listaUtenti => {
         this.onChangeListaUtenti.emit(listaUtenti);
     })).subscribe();
   }

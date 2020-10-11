@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import {Breadcrumb} from '../../dto/Breadcrumb';
+import {ParametriRicercaUtente} from "../../model/utente/ParametriRicercaUtente";
 
 
 @Component({
@@ -60,8 +61,8 @@ export class GestisciUtentiComponent implements OnInit {
   constructor(private utenteService: UtenteService) {
     this.inizializzaBreadcrumbList();
 
-    this.utenteService.ricercaUtenti(null, null, null, null, null,
-      null, null, null, null, null).pipe(map(utenti => {
+    const parametriRicercaUtente = new ParametriRicercaUtente();
+    this.utenteService.ricercaUtenti(parametriRicercaUtente).pipe(map(utenti => {
       utenti.forEach(utente => {
         this.listaUtente.push(utente);
         this.tableData.rows.push(this.creaRigaTabella(utente));
