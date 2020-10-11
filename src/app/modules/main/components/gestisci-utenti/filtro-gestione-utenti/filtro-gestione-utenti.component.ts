@@ -29,7 +29,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   readonly minCharsToRetrieveCF = 1;
 
   isCalendarOpen = false;
-  readonly minDateDDMMYY = '01/01/1900';
+  readonly minDateDDMMYYYY = '01/01/1900';
   readonly tipoData = ECalendarValue.Moment;
 
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
@@ -158,6 +158,16 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   openDatepicker(datePickerComponent: DatePickerComponent): void {
     datePickerComponent.api.open();
     this.isCalendarOpen = !this.isCalendarOpen;
+  }
+
+  setMinDate(datePicker: DatePickerComponent): string {
+    return datePicker.inputElementValue
+      ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').add(1, 'day').format('DD/MM/YYYY') : this.minDateDDMMYYYY;
+  }
+
+  setMaxDate(datePicker: DatePickerComponent): string {
+    return datePicker.inputElementValue
+      ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
   }
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
