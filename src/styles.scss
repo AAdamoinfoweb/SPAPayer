@@ -103,3 +103,11 @@ input {
 .p-autocomplete-input.p-inputtext:enabled:focus {
   border-color: gray;
 }
+
+.breadcrumb-container .breadcrumb .breadcrumb-item a {
+  font-weight: normal;
+}
+
+.breadcrumb-container .breadcrumb .breadcrumb-item a:last-child {
+  font-weight: bold;
+}

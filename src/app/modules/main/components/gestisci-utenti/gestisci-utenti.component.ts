@@ -10,6 +10,7 @@ import {map} from 'rxjs/operators';
 import * as moment from 'moment';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import {Breadcrumb} from '../../dto/Breadcrumb';
 
 
 @Component({
@@ -20,6 +21,8 @@ import 'jspdf-autotable';
 export class GestisciUtentiComponent implements OnInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
+
+  breadcrumbList = [];
 
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
@@ -55,6 +58,8 @@ export class GestisciUtentiComponent implements OnInit {
   tempTableData;
 
   constructor(private utenteService: UtenteService) {
+    this.inizializzaBreadcrumbList();
+
     this.utenteService.ricercaUtenti(null, null, null, null, null,
       null, null, null, null, null).pipe(map(utenti => {
       utenti.forEach(utente => {
@@ -62,6 +67,12 @@ export class GestisciUtentiComponent implements OnInit {
         this.tableData.rows.push(this.creaRigaTabella(utente));
       });
     })).subscribe();
+  }
+
+  inizializzaBreadcrumbList(): void {
+    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
+    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
+    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', null, null));
   }
 
   ngOnInit(): void {
