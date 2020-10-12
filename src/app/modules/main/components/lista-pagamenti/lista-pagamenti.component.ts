@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
 import {DettagliTransazione} from "../../model/bollettino/DettagliTransazione";
 import {OverlayService} from '../../../../services/overlay.service';
+import {ConfirmationService} from "primeng/api";
 
 const arrowup = 'assets/img/sprite.svg#it-arrow-up-triangle'
 const arrowdown = 'assets/img/sprite.svg#it-arrow-down-triangle'
@@ -47,6 +48,7 @@ export class ListaPagamentiComponent implements OnInit {
   urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private route: Router,
+              private confirmationService: ConfirmationService,
               private overlayService: OverlayService) {
   }
 
@@ -88,10 +90,21 @@ export class ListaPagamentiComponent implements OnInit {
   }
 
   eliminaBollettino(pagamento: Pagamento) {
-    const dettaglio: DettagliTransazione = new DettagliTransazione();
-    dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
-    this.nuovoPagamentoService.eliminaBollettino(dettaglio).subscribe(() => {
-      this.ngOnInit();
+    this.confirmationService.confirm({
+      message: 'Procedere con la cancellazione del bollettino?',
+      acceptButtonStyleClass: 'okButton',
+      rejectButtonStyleClass: 'undoButton',
+      acceptLabel: 'Conferma',
+      rejectLabel: 'Annulla',
+
+      reject: () => {},
+      accept: () => {
+        const dettaglio: DettagliTransazione = new DettagliTransazione();
+        dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
+        this.nuovoPagamentoService.eliminaBollettino(dettaglio).subscribe(() => {
+          this.ngOnInit();
+        });
+      }
     });
   }
 
@@ -102,4 +115,5 @@ export class ListaPagamentiComponent implements OnInit {
       this.ngOnInit();
     });
   }
+
 }

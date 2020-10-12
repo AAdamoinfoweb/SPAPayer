@@ -76,6 +76,17 @@ select {
   color: #77777B;
 }
 
+.okButton {
+  background-color: #004987 !important;
+}
+
+.undoButton{
+  background-color: #fff !important;
+  color: #004987 !important;
+  box-shadow: none;
+  border: 2px solid #004987 !important;
+}
+
 .price-input {
   text-align: right;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='50px' width='120px'><text x='0' y='15' fill='gray' font-size='16'>€</text></svg>");

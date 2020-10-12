@@ -32,6 +32,7 @@ import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
 import { OverlayComponent } from './components/overlay/overlay.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ConfirmationService} from "primeng/api";
 
 @NgModule({
     declarations: [
@@ -68,6 +69,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserAnimationsModule
   ],
   providers: [
+    ConfirmationService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
     {provide: ErrorHandler, useClass: ErrorHandlerGenerico},

@@ -40,7 +40,7 @@
   <ng-container *ngFor="let pagamento of listaPagamenti | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
     <div class="row pt-2 pb-2 table-item">
       <div class="col-lg-1 col-md-1 d-none d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">
-        <svg fill="#004987" (click)="eliminaBollettino(pagamento)" class="bg-light icon icon-sm" style="margin-right: 30px">
+        <svg fill="#004987" (click)="eliminaBollettino(pagamento)" class="bg-light icon icon-sm" style="margin-right: 0.4rem">
           <use xlink:href="assets/img/sprite.svg#it-delete"></use>
         </svg>
         <svg fill="#004987" (click)="salvaPerDopo(pagamento)" class="bg-light icon icon-sm">
@@ -80,3 +80,9 @@
     </div>
   </div>
 </div>
+<p-confirmDialog #cb header="Conferma cancellazione" icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
+    <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
+  </p-footer>
+</p-confirmDialog>

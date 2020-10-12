@@ -16,6 +16,7 @@ import {NgbDropdownModule, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap
 import { WaitingComponent } from './components/waiting/waiting.component';
 import {CarrelloComponent} from "./components/carrello/carrello.component";
 import {ListaPagamentiL1Component} from "./components/lista-pagamentiL1/lista-pagamenti-l1.component";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   declarations: [
@@ -30,16 +31,17 @@ import {ListaPagamentiL1Component} from "./components/lista-pagamentiL1/lista-pa
     ReplacePipe,
     WaitingComponent
   ],
-  imports: [
-    CommonModule,
-    MainRoutingModule,
-    DesignAngularKitModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgxYoutubePlayerModule,
-    NgbPaginationModule,
-    NgbDropdownModule
-  ],
+    imports: [
+        CommonModule,
+        MainRoutingModule,
+        DesignAngularKitModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgxYoutubePlayerModule,
+        NgbPaginationModule,
+        NgbDropdownModule,
+        ConfirmDialogModule
+    ],
   exports: [
     FooterComponent,
     ReplacePipe
