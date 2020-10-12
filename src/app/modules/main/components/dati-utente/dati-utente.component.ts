@@ -18,7 +18,7 @@ export class DatiUtenteComponent implements OnInit {
   codiceFiscaleExists = false;
 
   isCalendarOpen = false;
-  readonly minDateDDMMYYYY = '01/01/1900';
+  readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
   readonly tipoData = ECalendarValue.Moment;
 
   @ViewChild('aggiungiUtenteForm') form: NgForm;
