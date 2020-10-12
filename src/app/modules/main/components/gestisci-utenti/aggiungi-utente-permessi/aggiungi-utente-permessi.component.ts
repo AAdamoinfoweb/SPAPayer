@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Breadcrumb} from '../../../dto/Breadcrumb';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -7,7 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AggiungiUtentePermessiComponent implements OnInit {
 
-  constructor() { }
+  breadcrumbList = [];
+
+  readonly tooltipAggiungiUtentePermessiTitle = 'In questa pagina puoi aggiungere un utente amministratore e abilitarlo a specifici servizi';
+
+  constructor() {
+    this.inizializzaBreadcrumbList();
+  }
+
+  inizializzaBreadcrumbList(): void {
+    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
+    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
+    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', '/gestisciutenti', null));
+    this.breadcrumbList.push(new Breadcrumb(3, 'Aggiungi Utente/Permessi', null, null));
+  }
 
   ngOnInit(): void {
   }

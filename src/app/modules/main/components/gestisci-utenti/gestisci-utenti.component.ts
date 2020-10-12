@@ -11,7 +11,7 @@ import * as moment from 'moment';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import {Breadcrumb} from '../../dto/Breadcrumb';
-import {ParametriRicercaUtente} from "../../model/utente/ParametriRicercaUtente";
+import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
 
 
 @Component({
