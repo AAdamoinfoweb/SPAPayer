@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Breadcrumb} from '../../../dto/Breadcrumb';
+import {InserimentoModificaUtente} from '../../../model/utente/InserimentoModificaUtente';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -11,6 +12,8 @@ export class AggiungiUtentePermessiComponent implements OnInit {
   breadcrumbList = [];
 
   readonly tooltipAggiungiUtentePermessiTitle = 'In questa pagina puoi aggiungere un utente amministratore e abilitarlo a specifici servizi';
+
+  utentiPermessi: InserimentoModificaUtente = new InserimentoModificaUtente();
 
   constructor() {
     this.inizializzaBreadcrumbList();
@@ -24,6 +27,14 @@ export class AggiungiUtentePermessiComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  onChangeDatiUtenti(utentiPermessi: InserimentoModificaUtente): void {
+    this.utentiPermessi = utentiPermessi;
+  }
+
+  disabilitaBottone(): boolean {
+    return this.utentiPermessi?.codiceFiscale === '' || this.utentiPermessi?.codiceFiscale == null;
   }
 
 }

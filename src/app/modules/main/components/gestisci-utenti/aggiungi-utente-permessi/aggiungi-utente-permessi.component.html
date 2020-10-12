@@ -15,4 +15,20 @@
       </svg>
     </span>
   </h3>
+
+  <!-- sezione aggiungi dati-utente -->
+  <app-dati-utente (onChangeDatiUtente)="onChangeDatiUtenti($event)"></app-dati-utente>
+
+  <!-- Bottoni -->
+  <div class="row">
+    <!-- Bottone sx -->
+    <div class="col-6">
+      <button id="buttonAnnulla" class="btn btn-secondary">Annulla</button>
+    </div>
+    <!-- Bottoni dx -->
+    <div class="col-6 text-right">
+      <button id="buttonAggiungiPermessi" class="btn btn-secondary" [disabled]="disabilitaBottone()">Aggiungi permessi</button>
+      <button id="buttonSalva" class="btn" [disabled]="disabilitaBottone()">Salva</button>
+    </div>
+  </div>
 </div>

@@ -44,6 +44,7 @@ import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {AggiungiUtentePermessiComponent} from './modules/main/components/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
+import {DatiUtenteComponent} from './modules/main/components/dati-utente/dati-utente.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import {AggiungiUtentePermessiComponent} from './modules/main/components/gestisc
     ToolbarComponent,
     PaginatorComponent,
     FiltroGestioneUtentiComponent,
-    IntegerNumberDirective
+    IntegerNumberDirective,
+    DatiUtenteComponent,
   ],
   imports: [
     HttpClientModule,
