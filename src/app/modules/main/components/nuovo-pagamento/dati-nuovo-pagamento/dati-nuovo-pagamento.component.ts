@@ -94,9 +94,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.salvaParziale(this.servizio.id, null, 'servizioId');
     } else {
       let item = JSON.parse(localStorage.getItem("parziale"));
-      for (var key in this.model) {
-        this.model[key] = item[key];
-        this.form.controls[key].enable();
+      if (item != null) {
+        for (var key in this.model) {
+          this.model[key] = item[key];
+          this.form.controls[key].enable();
+        }
       }
       localStorage.removeItem("parziale");
     }
