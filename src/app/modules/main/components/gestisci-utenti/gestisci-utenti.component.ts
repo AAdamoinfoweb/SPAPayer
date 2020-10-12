@@ -12,6 +12,7 @@ import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import {Breadcrumb} from '../../dto/Breadcrumb';
 import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -58,7 +59,7 @@ export class GestisciUtentiComponent implements OnInit {
 
   tempTableData;
 
-  constructor(private utenteService: UtenteService) {
+  constructor(private router: Router, private utenteService: UtenteService) {
     this.inizializzaBreadcrumbList();
 
     const parametriRicercaUtente = new ParametriRicercaUtente();
@@ -128,7 +129,7 @@ export class GestisciUtentiComponent implements OnInit {
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
 
     if (azioneTool.value === tool.INSERT.value) {
-      window.open('/aggiungiUtentePermessi', '_self');
+      this.router.navigateByUrl('/aggiungiUtentePermessi');
     } else if (azioneTool.value === tool.UPDATE.value) {
       // aggiorna utente
     } else if (azioneTool.value === tool.EXPORT_PDF.value) {
