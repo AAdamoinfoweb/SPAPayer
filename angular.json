@@ -31,7 +31,10 @@
               "node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/css/main.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -102,7 +105,10 @@
               "node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/css/main.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

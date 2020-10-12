@@ -30,6 +30,8 @@ import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
 import { OverlayComponent } from './components/overlay/overlay.component';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -61,7 +63,9 @@ import { OverlayComponent } from './components/overlay/overlay.component';
     UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     DpDatePickerModule,
     NgxCurrencyModule,
-    CustomFormsModule
+    CustomFormsModule,
+    ConfirmDialogModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
