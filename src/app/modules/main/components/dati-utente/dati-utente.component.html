@@ -5,16 +5,16 @@
       <div class="col-md-4 pb-2">
         <div class="row">
           <div class="col">
-            <label for="inputUserId" class="title required">Codice fiscale</label>
+            <label for="codiceFiscaleId" class="title required">Codice fiscale</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p-autoComplete id="inputUserId" class="input-text pt-0" name="codiceFiscale" aria-describedby="inputUserIdHelpDescription"
+            <p-autoComplete id="codiceFiscaleId" class="input-text pt-0" name="codiceFiscale" aria-describedby="codiceFiscaleIdHelpDescription"
                             pattern="^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$" required
                             #codicefiscaleinput = "ngModel" [(ngModel)]="datiUtente.codiceFiscale"
                             [suggestions]="listaCodiciFiscali" (completeMethod)="loadSuggestions($event)" (onClear)="clearAutocompleteCodiceFiscale()"
-                            (ngModelChange)="modificaModel('codiceFiscale', datiUtente.codiceFiscale)"
+                            (ngModelChange)="onChangeModel('codiceFiscale')"
                             [minLength]="minCharsToRetrieveCF" maxlength="16" delay="0" autoHighlight="true">
             </p-autoComplete>
           </div>
@@ -36,15 +36,15 @@
         </div>
         <div class="row">
           <div class="col">
-            <input type="text" id="nomeUtente" name="nome" #nomeUtenteInput="ngModel"
-                   [(ngModel)]="datiUtente.nome" (ngModelChange)="modificaModel('nome', datiUtente.nome)"
+            <input type="text" id="nomeUtente" name="nome" #nomeInput="ngModel" aria-describedby="nomeUtenteHelpDescription"
+                   [(ngModel)]="datiUtente.nome" (ngModelChange)="onChangeModel('nome')"
                    class="input-text pt-0" autocomplete="off">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p [ngClass]="{'text-muted': !isCampoInvalido(nomeUtenteInput), 'text-invalid': isCampoInvalido(nomeUtenteInput)}">
-              {{setPlaceholder(nomeUtenteInput, 'string')}}
+            <p [ngClass]="{'text-muted': !isCampoInvalido(nomeInput), 'text-invalid': isCampoInvalido(nomeInput)}">
+              {{setPlaceholder(nomeInput, 'string')}}
             </p>
           </div>
         </div>
@@ -57,15 +57,15 @@
         </div>
         <div class="row">
           <div class="col">
-            <input type="text" id="cognomeUtente" name="cognome" #cognomeUtenteInput="ngModel"
-                   [(ngModel)]="datiUtente.cognome" (ngModelChange)="modificaModel('cognome', datiUtente.cognome)"
+            <input type="text" id="cognomeUtente" name="cognome" #cognomeInput="ngModel" aria-describedby="cognomeUtenteHelpDescription"
+                   [(ngModel)]="datiUtente.cognome" (ngModelChange)="onChangeModel('cognome')"
                    class="input-text pt-0" autocomplete="off">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p [ngClass]="{'text-muted': !isCampoInvalido(cognomeUtenteInput), 'text-invalid': isCampoInvalido(cognomeUtenteInput)}">
-              {{setPlaceholder(cognomeUtenteInput, 'string')}}
+            <p [ngClass]="{'text-muted': !isCampoInvalido(cognomeInput), 'text-invalid': isCampoInvalido(cognomeInput)}">
+              {{setPlaceholder(cognomeInput, 'string')}}
             </p>
           </div>
         </div>
@@ -81,16 +81,16 @@
         </div>
         <div class="row">
           <div class="col">
-            <input type="email" id="emailUtente" name="email" #emailUtenteInput="ngModel"
+            <input type="email" id="emailUtente" name="email" #emailInput="ngModel"
                    pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                   [(ngModel)]="datiUtente.email" (ngModelChange)="modificaModel('email', datiUtente.email)"
-                   class="input-text pt-0" autocomplete="off">
+                   [(ngModel)]="datiUtente.email" (ngModelChange)="onChangeModel('email')"
+                   class="input-text pt-0" autocomplete="off" aria-describedby="emailUtenteHelpDescription">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p [ngClass]="{'text-muted': !isCampoInvalido(emailUtenteInput), 'text-invalid': isCampoInvalido(emailUtenteInput)}">
-              {{setPlaceholder(emailUtenteInput, 'email')}}
+            <p [ngClass]="{'text-muted': !isCampoInvalido(emailInput), 'text-invalid': isCampoInvalido(emailInput)}">
+              {{setPlaceholder(emailInput, 'email')}}
             </p>
           </div>
         </div>
@@ -103,16 +103,16 @@
         </div>
         <div class="row">
           <div class="col">
-            <input type="text" id="telefonoUtente" name="telefono" #telefonoUtenteInput="ngModel"
+            <input type="text" id="telefonoUtente" name="telefono" #telefonoInput="ngModel"
                    pattern="^[(+|[0-9]]*[0-9]{0,14}$"
-                   [(ngModel)]="datiUtente.telefono" (ngModelChange)="modificaModel('telefono', datiUtente.telefono)"
-                   class="input-text pt-0" autocomplete="off">
+                   [(ngModel)]="datiUtente.telefono" (ngModelChange)="onChangeModel('telefono')"
+                   class="input-text pt-0" autocomplete="off" aria-describedby="telefonoUtenteHelpDescription">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p [ngClass]="{'text-muted': !isCampoInvalido(telefonoUtenteInput), 'text-invalid': isCampoInvalido(telefonoUtenteInput)}">
-              {{setPlaceholder(telefonoUtenteInput, 'string')}}
+            <p [ngClass]="{'text-muted': !isCampoInvalido(telefonoInput), 'text-invalid': isCampoInvalido(telefonoInput)}">
+              {{setPlaceholder(telefonoInput, 'string')}}
             </p>
           </div>
         </div>
@@ -148,7 +148,7 @@
               name="attivazione"
               #datePickerAttivazione
               (click)="isCalendarOpen = false"
-              (onSelect)="modificaModel('attivazione', datiUtente.attivazione)"
+              (onSelect)="onChangeModel('attivazione')"
             ></dp-date-picker>
           </div>
         </div>
@@ -190,7 +190,7 @@
               name="scadenza"
               #datePickerScadenza
               (click)="isCalendarOpen = false"
-              (onSelect)="modificaModel('scadenza', datiUtente.scadenza)"
+              (onSelect)="onChangeModel('scadenza')"
             ></dp-date-picker>
           </div>
         </div>

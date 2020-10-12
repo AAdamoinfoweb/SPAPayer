@@ -94,18 +94,19 @@ export class DatiUtenteComponent implements OnInit {
       ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
   }
 
-  modificaModel(nomeCampo: string, valoreCampo: any): void {
+  onChangeModel(nomeCampo: string): void {
     let model = {...this.datiUtente};
-    if (this.form.valid) {
-      if (nomeCampo === 'codiceFiscale') {
-        this.codiceFiscaleExists = this.listaCodiciFiscali.includes(valoreCampo);
-        model.codiceFiscale = this.codiceFiscaleExists ? null : valoreCampo;
-      } else {
-        model[nomeCampo] = valoreCampo;
-      }
-    } else {
-      model = null;
+
+    if (nomeCampo === 'codiceFiscale') {
+      this.codiceFiscaleExists = this.listaCodiciFiscali.includes(model[nomeCampo]);
+      model.codiceFiscale = !this.form.controls[nomeCampo].valid || this.codiceFiscaleExists ? null : model[nomeCampo];
+    } else if (typeof model[nomeCampo] === 'object') {
+      model[nomeCampo] = moment(model[nomeCampo]).format('YYYY-MM-DD[T]HH:mm:ss');
     }
+    for (let field in model) {
+      model[field] = model[field] !== undefined ? model[field] : null;
+    }
+
     this.onChangeDatiUtente.emit(model);
   }
 

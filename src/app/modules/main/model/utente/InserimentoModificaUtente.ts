@@ -1,9 +1,9 @@
 export class InserimentoModificaUtente {
-  codiceFiscale: string;
-  nome?: string;
-  cognome?: string;
-  email?: string;
-  telefono?: string;
-  attivazione?: Date;
-  scadenza?: Date;
+  codiceFiscale: string = null;
+  nome?: string = null;
+  cognome?: string = null;
+  email?: string = null;
+  telefono?: string = null;
+  attivazione?: Date = null;
+  scadenza?: Date = null;
 }

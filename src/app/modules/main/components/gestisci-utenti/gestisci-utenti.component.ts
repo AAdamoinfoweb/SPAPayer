@@ -12,7 +12,7 @@ import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import {Breadcrumb} from '../../dto/Breadcrumb';
 import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 
 @Component({
