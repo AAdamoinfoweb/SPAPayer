@@ -29,6 +29,8 @@ import {DpDatePickerModule} from 'ng2-date-picker';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
+import {DayInputDirective} from './utils/DayInputDirective';
+import {MonthInputDirective} from './utils/MonthInputDirective';
 import { OverlayComponent } from './components/overlay/overlay.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -50,6 +52,8 @@ import {ConfirmationService} from "primeng/api";
         CompilaNuovoPagamentoComponent,
         DatiNuovoPagamentoComponent,
         IntegerNumberDirective,
+        DayInputDirective,
+        MonthInputDirective,
         OverlayComponent
     ],
   imports: [
