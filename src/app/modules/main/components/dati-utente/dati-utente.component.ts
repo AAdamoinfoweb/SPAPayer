@@ -23,7 +23,7 @@ export class DatiUtenteComponent implements OnInit {
 
   @ViewChild('aggiungiUtenteForm') form: NgForm;
 
-  utentePermessi: InserimentoModificaUtente;
+  datiUtente: InserimentoModificaUtente;
 
   @Output()
   onChangeDatiUtente: EventEmitter<InserimentoModificaUtente> = new EventEmitter<InserimentoModificaUtente>();
@@ -31,7 +31,7 @@ export class DatiUtenteComponent implements OnInit {
   constructor(private utenteService: UtenteService) { }
 
   ngOnInit(): void {
-    this.utentePermessi = new InserimentoModificaUtente();
+    this.datiUtente = new InserimentoModificaUtente();
   }
 
   loadSuggestions(event): void {
@@ -50,7 +50,7 @@ export class DatiUtenteComponent implements OnInit {
 
   clearAutocompleteCodiceFiscale(): void {
     this.listaCodiciFiscali = [];
-    let model = {...this.utentePermessi};
+    let model = {...this.datiUtente};
     model.codiceFiscale = null;
     this.onChangeDatiUtente.emit(model);
   }
@@ -95,7 +95,7 @@ export class DatiUtenteComponent implements OnInit {
   }
 
   modificaModel(nomeCampo: string, valoreCampo: any): void {
-    let model = {...this.utentePermessi};
+    let model = {...this.datiUtente};
     if (this.form.valid) {
       if (nomeCampo === 'codiceFiscale') {
         this.codiceFiscaleExists = this.listaCodiciFiscali.includes(valoreCampo);

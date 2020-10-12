@@ -12,9 +12,9 @@
           <div class="col">
             <p-autoComplete id="inputUserId" class="input-text pt-0" name="codiceFiscale" aria-describedby="inputUserIdHelpDescription"
                             pattern="^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$" required
-                            #codicefiscaleinput = "ngModel" [(ngModel)]="utentePermessi.codiceFiscale"
+                            #codicefiscaleinput = "ngModel" [(ngModel)]="datiUtente.codiceFiscale"
                             [suggestions]="listaCodiciFiscali" (completeMethod)="loadSuggestions($event)" (onClear)="clearAutocompleteCodiceFiscale()"
-                            (ngModelChange)="modificaModel('codiceFiscale', utentePermessi.codiceFiscale)"
+                            (ngModelChange)="modificaModel('codiceFiscale', datiUtente.codiceFiscale)"
                             [minLength]="minCharsToRetrieveCF" maxlength="16" emptyMessage="Nessun risultato trovato"
                             delay="0" autoHighlight="true">
             </p-autoComplete>
@@ -38,7 +38,7 @@
         <div class="row">
           <div class="col">
             <input type="text" id="nomeUtente" name="nome" #nomeUtenteInput="ngModel"
-                   [(ngModel)]="utentePermessi.nome" (ngModelChange)="modificaModel('nome', utentePermessi.nome)"
+                   [(ngModel)]="datiUtente.nome" (ngModelChange)="modificaModel('nome', datiUtente.nome)"
                    class="input-text pt-0" autocomplete="off">
           </div>
         </div>
@@ -59,7 +59,7 @@
         <div class="row">
           <div class="col">
             <input type="text" id="cognomeUtente" name="cognome" #cognomeUtenteInput="ngModel"
-                   [(ngModel)]="utentePermessi.cognome" (ngModelChange)="modificaModel('cognome', utentePermessi.cognome)"
+                   [(ngModel)]="datiUtente.cognome" (ngModelChange)="modificaModel('cognome', datiUtente.cognome)"
                    class="input-text pt-0" autocomplete="off">
           </div>
         </div>
@@ -84,7 +84,7 @@
           <div class="col">
             <input type="email" id="emailUtente" name="email" #emailUtenteInput="ngModel"
                    pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                   [(ngModel)]="utentePermessi.email" (ngModelChange)="modificaModel('email', utentePermessi.email)"
+                   [(ngModel)]="datiUtente.email" (ngModelChange)="modificaModel('email', datiUtente.email)"
                    class="input-text pt-0" autocomplete="off">
           </div>
         </div>
@@ -105,7 +105,7 @@
         <div class="row">
           <div class="col">
             <input type="text" id="telefonoUtente" name="telefono" #telefonoUtenteInput="ngModel"
-                   [(ngModel)]="utentePermessi.telefono" (ngModelChange)="modificaModel('telefono', utentePermessi.telefono)"
+                   [(ngModel)]="datiUtente.telefono" (ngModelChange)="modificaModel('telefono', datiUtente.telefono)"
                    class="input-text pt-0" autocomplete="off">
           </div>
         </div>
@@ -144,11 +144,11 @@
                 returnedValueType: tipoData
               }"
               #attivazioneInput = "ngModel"
-              [(ngModel)]="utentePermessi.attivazione"
+              [(ngModel)]="datiUtente.attivazione"
               name="attivazione"
               #datePickerAttivazione
               (click)="isCalendarOpen = false"
-              (onSelect)="modificaModel('attivazione', utentePermessi.attivazione)"
+              (onSelect)="modificaModel('attivazione', datiUtente.attivazione)"
             ></dp-date-picker>
           </div>
         </div>
@@ -186,11 +186,11 @@
                 returnedValueType: tipoData
               }"
               #scadenzaInput = "ngModel"
-              [(ngModel)]="utentePermessi.scadenza"
+              [(ngModel)]="datiUtente.scadenza"
               name="scadenza"
               #datePickerScadenza
               (click)="isCalendarOpen = false"
-              (onSelect)="modificaModel('scadenza', utentePermessi.scadenza)"
+              (onSelect)="modificaModel('scadenza', datiUtente.scadenza)"
             ></dp-date-picker>
           </div>
         </div>

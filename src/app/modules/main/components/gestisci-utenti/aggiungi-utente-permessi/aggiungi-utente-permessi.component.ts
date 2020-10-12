@@ -13,7 +13,7 @@ export class AggiungiUtentePermessiComponent implements OnInit {
 
   readonly tooltipAggiungiUtentePermessiTitle = 'In questa pagina puoi aggiungere un utente amministratore e abilitarlo a specifici servizi';
 
-  utentiPermessi: InserimentoModificaUtente = new InserimentoModificaUtente();
+  datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
 
   constructor() {
     this.inizializzaBreadcrumbList();
@@ -29,12 +29,12 @@ export class AggiungiUtentePermessiComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onChangeDatiUtenti(utentiPermessi: InserimentoModificaUtente): void {
-    this.utentiPermessi = utentiPermessi;
+  onChangeDatiUtenti(datiUtente: InserimentoModificaUtente): void {
+    this.datiUtente = datiUtente;
   }
 
   disabilitaBottone(): boolean {
-    return this.utentiPermessi?.codiceFiscale === '' || this.utentiPermessi?.codiceFiscale == null;
+    return this.datiUtente?.codiceFiscale === '' || this.datiUtente?.codiceFiscale == null;
   }
 
 }
