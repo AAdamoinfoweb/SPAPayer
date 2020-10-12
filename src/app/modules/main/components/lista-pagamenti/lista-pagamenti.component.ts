@@ -91,13 +91,14 @@ export class ListaPagamentiComponent implements OnInit {
 
   eliminaBollettino(pagamento: Pagamento) {
     this.confirmationService.confirm({
+      header: 'Conferma cancellazione',
       message: 'Procedere con la cancellazione del bollettino?',
       acceptButtonStyleClass: 'okButton',
       rejectButtonStyleClass: 'undoButton',
       acceptLabel: 'Conferma',
       rejectLabel: 'Annulla',
-
-      reject: () => {},
+      reject: () => {
+      },
       accept: () => {
         const dettaglio: DettagliTransazione = new DettagliTransazione();
         dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
@@ -109,10 +110,22 @@ export class ListaPagamentiComponent implements OnInit {
   }
 
   salvaPerDopo(pagamento: Pagamento) {
-    const dettaglio: DettagliTransazione = new DettagliTransazione();
-    dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
-    this.nuovoPagamentoService.salvaPerDopo(dettaglio).subscribe(() => {
-      this.ngOnInit();
+    this.confirmationService.confirm({
+      header: 'Salva per dopo',
+      message: 'Procedere con il salvataggio per dopo del bollettino?',
+      acceptButtonStyleClass: 'okButton',
+      rejectButtonStyleClass: 'undoButton',
+      acceptLabel: 'Conferma',
+      rejectLabel: 'Annulla',
+      reject: () => {
+      },
+      accept: () => {
+        const dettaglio: DettagliTransazione = new DettagliTransazione();
+        dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
+        this.nuovoPagamentoService.salvaPerDopo(dettaglio).subscribe(() => {
+          this.ngOnInit();
+        });
+      }
     });
   }
 
