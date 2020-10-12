@@ -1,3 +1,4 @@
+@import "~bootstrap-italia";
 
 .tooltip {
   font-family: "Titillium Web", "Lora" !important;
@@ -7077,4 +7078,9 @@ font-weight: bold!important;
 .navbar-line {
   box-shadow: none;
   border-bottom: 1px solid #ddd
+}
+
+input {
+  @extend .form-control;
+  height: 2.5rem !important;
 }
