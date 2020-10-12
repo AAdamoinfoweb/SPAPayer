@@ -11,6 +11,7 @@ import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
 import {RicercaUtente} from '../../../model/utente/RicercaUtente';
 import {UtenteService} from '../../../../../services/utente.service';
 import * as moment from 'moment';
+import {BottoneEnum} from '../../../../../enums/bottone.enum';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -199,9 +200,9 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   disabilitaBottone(filtroGestioneUtentiForm: NgForm, nomeBottone: string): boolean {
     const isAtLeastOneFieldValued = Object.keys(filtroGestioneUtentiForm.value).some(key => filtroGestioneUtentiForm.value[key]);
-    if (nomeBottone === 'Pulisci') {
+    if (nomeBottone === BottoneEnum.PULISCI) {
       return !isAtLeastOneFieldValued;
-    } else {
+    } else if (nomeBottone === BottoneEnum.CERCA) {
       return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued;
     }
   }
