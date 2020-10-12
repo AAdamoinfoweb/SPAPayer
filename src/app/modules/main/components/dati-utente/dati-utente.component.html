@@ -21,10 +21,10 @@
         </div>
         <div class="row">
           <div class="col">
-            <p *ngIf="!codiceFiscaleExists" [ngClass]="{'text-muted': !isCampoInvalido(codicefiscaleinput), 'text-invalid': isCampoInvalido(codicefiscaleinput)}">
+            <p *ngIf="!codiceFiscaleExists || datiUtente.codiceFiscale.length < 16" [ngClass]="{'text-muted': !isCampoInvalido(codicefiscaleinput), 'text-invalid': isCampoInvalido(codicefiscaleinput)}">
               {{setPlaceholder(codicefiscaleinput, 'string')}}
             </p>
-            <p *ngIf="codiceFiscaleExists" class="text-invalid">Attenzione! L'utente è già presente</p>
+            <p *ngIf="codiceFiscaleExists && datiUtente.codiceFiscale.length === 16" class="text-invalid">Attenzione! L'utente è già presente</p>
           </div>
         </div>
       </div>
