@@ -2,10 +2,12 @@ import {date} from "fp-ts";
 
 export class DatiPagamento {
   dettaglioTransazioneId: number;
-  annoDocumento: string;
+  annoDocumento: number;
   numeroDocumento: string;
   nomeServizio: string;
+  servizioId: number;
   nomeEnte: string;
+  enteId: number;
   dataScadenza: Date;
   importo: number;
   dataPagamento: Date;
@@ -13,4 +15,5 @@ export class DatiPagamento {
   statoPagamento: string;
   codiceAvviso: string;
   causale: string;
+  flagCarrello: boolean;
 }

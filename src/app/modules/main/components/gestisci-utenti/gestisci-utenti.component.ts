@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {tipoColonna} from '../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../enums/TipoTabella.enum';
 import {tipoUtente} from '../../../../enums/TipoUtente.enum';
-import {tool} from '../../../../enums/Tool.enum';
 import {Utils} from '../../../../utils/Utils';
 import {UtenteService} from '../../../../services/utente.service';
 import {RicercaUtente} from '../../model/utente/RicercaUtente';
@@ -10,6 +9,7 @@ import {map} from 'rxjs/operators';
 import * as moment from 'moment';
 import * as XLSX from 'xlsx';
 import * as FILESAVER from 'file-saver';
+import {ToolEnum} from "../../../../enums/Tool.enum";
 
 
 @Component({
@@ -24,10 +24,10 @@ export class GestisciUtentiComponent implements OnInit {
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
   toolbarIcons = [
-    {type: tool.INSERT},
-    {type: tool.UPDATE, disabled: true},
-    {type: tool.EXPORT_PDF},
-    {type: tool.EXPORT_XLS}
+    {type: ToolEnum.INSERT},
+    {type: ToolEnum.UPDATE, disabled: true},
+    {type: ToolEnum.EXPORT_PDF},
+    {type: ToolEnum.EXPORT_XLS}
   ];
 
   tabs = [{header: 'Tutti'},
@@ -108,13 +108,13 @@ export class GestisciUtentiComponent implements OnInit {
 
   // todo logica azioni tool
   eseguiAzioni(azioneTool) {
-    if (azioneTool.value === tool.INSERT.value) {
+    if (azioneTool.value === ToolEnum.INSERT) {
       // inserisci utente
-    } else if (azioneTool.value === tool.UPDATE.value) {
+    } else if (azioneTool.value === ToolEnum.UPDATE) {
       // aggiorna utente
-    } else if (azioneTool.value === tool.EXPORT_PDF.value) {
+    } else if (azioneTool.value === ToolEnum.EXPORT_PDF) {
       // esporta in pdf
-    } else if (azioneTool.value === tool.EXPORT_XLS.value) {
+    } else if (azioneTool.value === ToolEnum.EXPORT_XLS) {
       this.esportaInFileExcel();
     }
   }

@@ -140,13 +140,12 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     })).subscribe();
   }
 
-  disabilitaBottone(filtroIMieiPagamenti: NgForm, nomeBottone: string): boolean {
-    // const isAtLeastOneFieldValued = Object.keys(filtroIMieiPagamenti.value).some(key => filtroIMieiPagamenti.value[key]);
-    // if (nomeBottone === 'Pulisci') {
-    //   return !isAtLeastOneFieldValued;
-    // } else {
-    //   return !filtroIMieiPagamenti.valid || !isAtLeastOneFieldValued;
-    // }
-    return false;
+  disabilitaBottone(filtroGestioneUtentiForm: NgForm, nomeBottone: string): boolean {
+    const isAtLeastOneFieldValued = Object.keys(filtroGestioneUtentiForm.value).some(key => filtroGestioneUtentiForm.value[key]);
+    if (nomeBottone === 'Pulisci') {
+      return !isAtLeastOneFieldValued;
+    } else {
+      return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued;
+    }
   }
 }

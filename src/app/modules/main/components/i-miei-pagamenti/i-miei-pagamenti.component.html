@@ -34,7 +34,7 @@
           </div>
 <!--      azioni -->
           <div class="col-auto">
-            <app-toolbar (onClick)="eseguiAzioni($event)"></app-toolbar>
+            <app-toolbar (onClick)="eseguiAzioni($event)" [toolbarIcons]="toolbarIcons"></app-toolbar>
           </div>
         </div>
 <!--      table -->
@@ -44,7 +44,7 @@
                        [cols]="tableData.cols"
                        [rows]="tableData.rows"
                        [tipoTabella]="tableData.tipoTabella"
-                       [textLeft]="getTestoConNumeroUtentiAttiviDisabilitati()">
+            (onSelection)="selezionaPagamenti($event)">
             </app-table>
           </div>
         </div>

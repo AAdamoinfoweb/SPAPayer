@@ -1,11 +1,14 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Ente} from '../modules/main/model/Ente';
-import {DatiPagamento} from "../modules/main/model/DatiPagamento";
-import {ParametriRicercaPagamenti} from "../modules/main/model/utente/ParametriRicercaPagamenti";
+import {DatiPagamento} from '../modules/main/model/DatiPagamento';
+import {ParametriRicercaPagamenti} from '../modules/main/model/utente/ParametriRicercaPagamenti';
+import {DettagliTransazione} from '../modules/main/model/bollettino/DettagliTransazione';
+import {CampoDettaglioTransazione} from '../modules/main/model/bollettino/CampoDettaglioTransazione';
+import {DettaglioTransazioneEsito} from '../modules/main/model/bollettino/DettaglioTransazioneEsito';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +16,9 @@ import {ParametriRicercaPagamenti} from "../modules/main/model/utente/ParametriR
 export class IMieiPagamentiService {
 
   private readonly ricercaPagamentiUrl = '/pagamenti';
+  private readonly eliminaBollettinoUrl = '/eliminaBollettino';
+  private readonly letturaCampiUrl = '/letturaCampi';
+  private readonly stampaAttestatiPagamentoUrl = '/stampaAttestatiPagamento';
 
   constructor(private readonly http: HttpClient) {
   }
@@ -46,4 +52,51 @@ export class IMieiPagamentiService {
         return body;
       }));
   }
+
+  eliminaBollettino(value: DettagliTransazione) {
+    return this.http.post(environment.bffBaseUrl + this.eliminaBollettinoUrl, value,
+      {withCredentials: true}).pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
+      }));
+  }
+
+  letturaCampi(codiceAvviso: string): Observable<CampoDettaglioTransazione[]> {
+    const pathVariable = '/' + codiceAvviso;
+    return this.http.get(environment.bffBaseUrl + this.letturaCampiUrl + pathVariable,
+      {withCredentials: true}).pipe(map((body: CampoDettaglioTransazione[]) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
+      }));
+  }
+
+  stampaAttestatiPagamento(listaIdentificativi: number[]): Observable<string[]> {
+    const params = new HttpParams();
+    const listaIdentficativiString = listaIdentificativi.join(',');
+    params.set('listaIdentificativi', listaIdentficativiString);
+    return this.http.get(environment.bffBaseUrl + this.stampaAttestatiPagamentoUrl,
+      {withCredentials: true, params}).pipe(map((body: string[]) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
+      }));
+  }
+
 }
