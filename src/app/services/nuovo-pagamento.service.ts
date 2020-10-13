@@ -1,4 +1,4 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
@@ -31,6 +31,7 @@ export class NuovoPagamentoService {
   private salvaPerDopoUrl = '/salvaPerDopo';
   private carrelloUrl = '/carrello';
   private confermaPagamentoUrl = '/confermaPagamento';
+  private verificaQuietanzaUrl = '/verificaQuietanza';
 
   compilazioneEvent: EventEmitter<FiltroServizio> = new EventEmitter<FiltroServizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -208,5 +209,21 @@ export class NuovoPagamentoService {
             return caught;
         }));
     return observable;
+  }
+
+  public verificaQuietanza(idSession: string, esito: string): Observable<string> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append("XSRF-TOKEN", idSession);
+    return this.http.post(environment.bffBaseUrl + this.verificaQuietanzaUrl, esito, {
+      withCredentials: true,
+      headers: headers
+    })
+      .pipe(map((body: any) => body.url),
+        catchError((err, caught) => {
+          if (err.status == 401) {
+            return of("");
+          } else
+            return caught;
+        }));
   }
 }

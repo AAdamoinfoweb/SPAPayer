@@ -14,8 +14,8 @@ export class PagamentoService {
 
   private confermaPagamentoUrl = '/confermaPagamento';
   private confermaPagamentoL1Url = '/confermaPagamentoL1';
-  private verificaEsitoPagamentoUrl = '/verificaEsitoPagamento';
-  private verificaQuietanzaUrl = '/verificaQuietanza';
+  private verificaEsitoPagamentoUrl = '/verificaEsitoPagamentoL1';
+  private verificaQuietanzaUrl = '/verificaQuietanzaL1';
   private quietanzaUrl = '/quietanza';
   private redirectCarrelloUrl = '/cart/extCart.do';
 

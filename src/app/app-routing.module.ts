@@ -11,6 +11,7 @@ import {GenericErrorComponent} from "./modules/generic-error/generic-error.compo
 import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/nuovo-pagamento.component';
 import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
+import {WaitingL1Component} from "./modules/main/components/waiting-l1/waiting-l1.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -27,7 +28,8 @@ const routes: Routes = [
   {path: 'carrelloL1', component: CarrelloL1Component, pathMatch: 'full'},
   {path: 'carrello', component: CarrelloComponent, pathMatch: 'full'},
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
-  {path: 'waiting', component: WaitingComponent},
+  {path: 'waitingL1', component: WaitingL1Component, pathMatch: 'full'},
+  {path: 'waiting', component: WaitingComponent, pathMatch: 'full'},
   {path: 'privacy', component: PrivacyComponent},
   {path: 'nuovoPagamento', component: NuovoPagamentoComponent},
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent}

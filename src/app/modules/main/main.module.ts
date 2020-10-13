@@ -17,6 +17,7 @@ import { WaitingComponent } from './components/waiting/waiting.component';
 import {CarrelloComponent} from "./components/carrello/carrello.component";
 import {ListaPagamentiL1Component} from "./components/lista-pagamentiL1/lista-pagamenti-l1.component";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {WaitingL1Component} from "./components/waiting-l1/waiting-l1.component";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     ListaPagamentiComponent,
     PrivacyComponent,
     ReplacePipe,
+    WaitingL1Component,
     WaitingComponent
   ],
     imports: [
