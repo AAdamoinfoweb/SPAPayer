@@ -79,10 +79,14 @@ export class ListaPagamentiComponent implements OnInit {
         this.listaPagamenti.push(pagamento);
       }
     }
+    this.callChangeEvent();
+    this.overlayService.caricamentoEvent.emit(false);
+  }
+
+  private callChangeEvent() {
     this.onChangeNumeroPagamenti.emit(this.listaPagamenti.length);
     let totale = this.listaPagamenti.reduce((a, b) => a + b.importo, 0);
     this.onChangeTotalePagamento.emit(totale);
-    this.overlayService.caricamentoEvent.emit(false);
   }
 
   private getCarrelloAutenticato() {
@@ -171,5 +175,6 @@ export class ListaPagamentiComponent implements OnInit {
   private eliminaBollettinoAnonimo(pagamento: Pagamento) {
     this.listaPagamenti.splice(this.listaPagamenti.findIndex((p: Pagamento) => p.numDocumento == pagamento.numDocumento), 1);
     localStorage.removeItem("boll-" + pagamento.numDocumento);
+    this.callChangeEvent();
   }
 }
