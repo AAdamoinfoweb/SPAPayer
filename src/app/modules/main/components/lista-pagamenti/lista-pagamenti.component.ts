@@ -169,6 +169,7 @@ export class ListaPagamentiComponent implements OnInit {
   }
 
   private eliminaBollettinoAnonimo(pagamento: Pagamento) {
-    //this.listaPagamenti.splice()
+    this.listaPagamenti.splice(this.listaPagamenti.findIndex((p: Pagamento) => p.numDocumento == pagamento.numDocumento), 1);
+    localStorage.removeItem("boll-" + pagamento.numDocumento);
   }
 }
