@@ -16,6 +16,8 @@ export class AggiungiUtentePermessiComponent implements OnInit {
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
 
   isFormDatiUtenteValido = false;
+
+  constructor() {
     this.inizializzaBreadcrumbList();
   }
 
