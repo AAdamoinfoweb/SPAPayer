@@ -15,7 +15,7 @@ export class AggiungiUtentePermessiComponent implements OnInit {
 
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
 
-  constructor() {
+  isFormDatiUtenteValido = false;
     this.inizializzaBreadcrumbList();
   }
 
@@ -34,7 +34,7 @@ export class AggiungiUtentePermessiComponent implements OnInit {
   }
 
   disabilitaBottone(): boolean {
-    return this.datiUtente?.codiceFiscale === '' || this.datiUtente?.codiceFiscale == null;
+    return this.datiUtente?.codiceFiscale === null || !this.isFormDatiUtenteValido;
   }
 
 }

@@ -28,6 +28,9 @@ export class DatiUtenteComponent implements OnInit {
   @Output()
   onChangeDatiUtente: EventEmitter<InserimentoModificaUtente> = new EventEmitter<InserimentoModificaUtente>();
 
+  @Output()
+  onValidaFormDatiUtenti: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor(private utenteService: UtenteService) { }
 
   ngOnInit(): void {
@@ -94,20 +97,27 @@ export class DatiUtenteComponent implements OnInit {
       ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
   }
 
-  onChangeModel(nomeCampo: string): void {
+  onChangeModel(): void {
     let model = {...this.datiUtente};
 
-    if (nomeCampo === 'codiceFiscale') {
-      this.codiceFiscaleExists = this.listaCodiciFiscali.includes(model[nomeCampo]);
-      model.codiceFiscale = !this.form.controls[nomeCampo].valid || this.codiceFiscaleExists ? null : model[nomeCampo];
-    } else if (typeof model[nomeCampo] === 'object') {
-      model[nomeCampo] = moment(model[nomeCampo]).format('YYYY-MM-DD[T]HH:mm:ss');
+    if (this.form.valid) {
+      for (let nomeCampo in model) {
+        if (model[nomeCampo] !== undefined && model[nomeCampo]) {
+          if (nomeCampo === 'codiceFiscale') {
+            this.codiceFiscaleExists = this.listaCodiciFiscali.includes(model[nomeCampo]);
+            model.codiceFiscale = this.codiceFiscaleExists ? null : model[nomeCampo];
+          } else if (typeof model[nomeCampo] === 'object') {
+            model[nomeCampo] = moment(model[nomeCampo]).format('YYYY-MM-DD[T]HH:mm:ss');
+          }
+        } else {
+          model[nomeCampo] = null;
+        }
+      }
+      this.onChangeDatiUtente.emit(model);
+      this.onValidaFormDatiUtenti.emit(true);
+    } else {
+      this.onValidaFormDatiUtenti.emit(false);
     }
-    for (let field in model) {
-      model[field] = model[field] !== undefined ? model[field] : null;
-    }
-
-    this.onChangeDatiUtente.emit(model);
   }
 
 }

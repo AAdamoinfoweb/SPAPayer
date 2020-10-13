@@ -17,7 +17,11 @@
   </h3>
 
   <!-- sezione aggiungi dati-utente -->
-  <app-dati-utente (onChangeDatiUtente)="onChangeDatiUtenti($event)"></app-dati-utente>
+  <app-dati-utente (onChangeDatiUtente)="onChangeDatiUtenti($event)"
+                   (onValidaFormDatiUtenti)="isFormDatiUtenteValido = $event"></app-dati-utente>
+
+  <!-- sezione aggiungi dati-permesso -->
+  <!-- <app-dati-permesso></app-dati-permesso> -->
 
   <!-- Bottoni -->
   <div class="row">
