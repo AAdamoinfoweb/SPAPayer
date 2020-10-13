@@ -75,7 +75,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           let filters: OpzioneSelect[] = this.listaServizi.filter((servizio: OpzioneSelect) => servizio.value.id == item[field]);
           if (filters.length > 0) {
             this.servizioSelezionato = filters[0].value;
-            this.servizioSelezionato.enteNome = this.enteSelezionato.nome;
             this.selezionaServizio();
           }
         }
@@ -129,6 +128,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
 
   selezionaServizio(): void {
     this.overlayService.caricamentoEvent.emit(true);
+    this.servizioSelezionato.enteNome = this.enteSelezionato.nome;
     this.nuovoPagamentoService.compilazioneEvent.emit(this.servizioSelezionato);
   }
 }
