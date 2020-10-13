@@ -8,6 +8,8 @@ import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.servic
 import {DettagliTransazione} from "../../model/bollettino/DettagliTransazione";
 import {OverlayService} from '../../../../services/overlay.service';
 import {ConfirmationService} from "primeng/api";
+import {Bollettino} from "../../model/bollettino/Bollettino";
+import {CampoDettaglioTransazione} from "../../model/bollettino/CampoDettaglioTransazione";
 
 const arrowup = 'assets/img/sprite.svg#it-arrow-up-triangle'
 const arrowdown = 'assets/img/sprite.svg#it-arrow-down-triangle'
@@ -52,9 +54,38 @@ export class ListaPagamentiComponent implements OnInit {
               private overlayService: OverlayService) {
   }
 
-
   ngOnInit(): void {
     this.overlayService.caricamentoEvent.emit(true);
+    let isUtenteAnonimo = localStorage.getItem('nome') === 'null';
+    if (isUtenteAnonimo) {
+      this.getCarrelloAnonimo();
+    } else {
+      this.getCarrelloAutenticato();
+    }
+  }
+
+  private getCarrelloAnonimo() {
+    this.listaPagamenti = [];
+    for (var key in localStorage) {
+      if (key.startsWith("boll-")) {
+        let bollettino: Bollettino = JSON.parse(localStorage.getItem(key));
+        let pagamento: Pagamento = new Pagamento();
+        pagamento.numDocumento = bollettino.numero;
+        pagamento.importo = bollettino.importo;
+        pagamento.causale = bollettino.causale;
+        pagamento.anno = bollettino.anno;
+        pagamento.ente = bollettino.ente;
+        pagamento.servizio = bollettino.servizio;
+        this.listaPagamenti.push(pagamento);
+      }
+    }
+    this.onChangeNumeroPagamenti.emit(this.listaPagamenti.length);
+    let totale = this.listaPagamenti.reduce((a, b) => a + b.importo, 0);
+    this.onChangeTotalePagamento.emit(totale);
+    this.overlayService.caricamentoEvent.emit(false);
+  }
+
+  private getCarrelloAutenticato() {
     let observable: Observable<Pagamento[]> = this.nuovoPagamentoService.getCarrello()
       .pipe(map((value: Carrello) => {
         this.listaPagamenti = value.dettaglio;

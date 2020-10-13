@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
       this.logout();
     });
 
+
     this.menuService.getInfoUtente().subscribe((info) => {
       this.menuService.infoUtenteEmitter.emit(info);
     });
@@ -52,7 +53,7 @@ export class AppComponent implements OnInit {
     this.letturatipologicheSelect();
   }
 
-  @HostListener('window:beforeunload')
+  // @HostListener('window:beforeunload')
   logout() {
     this.authGuardService.logout().subscribe((url) => {
       this.idleService.stopWatching();

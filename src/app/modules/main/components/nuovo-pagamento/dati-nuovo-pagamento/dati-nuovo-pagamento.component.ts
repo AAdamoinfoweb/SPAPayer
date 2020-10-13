@@ -527,7 +527,9 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   private creaBollettino() {
     const bollettino: Bollettino = new Bollettino();
     bollettino.servizioId = this.servizio.id;
+    bollettino.servizio = this.servizio.nome;
     bollettino.enteId = this.servizio.enteId;
+    bollettino.ente = this.servizio.enteNome;
     bollettino.numero = this.getNumDocumento();
     bollettino.anno = this.model[this.getCampoDettaglioTransazione('anno_documento')];
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
