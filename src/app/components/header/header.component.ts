@@ -15,7 +15,6 @@ import {HttpClient} from "@angular/common/http";
 export class HeaderComponent implements OnInit {
   private maxHeightOffset: number;
 
-  isAnonimo = false;
   isSticky: boolean = false;
 
   testoAccedi = 'Accedi';
@@ -31,11 +30,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.menuService.userAnonimousEvent
-      .subscribe((isAnonimo: boolean) => {
+    this.menuService.userEventChange
+      .subscribe(() => {
         this.checkIfL1();
-        this.isAnonimo = isAnonimo;
-        this.testoAccedi = isAnonimo ? 'Accedi' : 'Esci';
+        this.testoAccedi = this.menuService.isUtenteAnonimo ? 'Accedi' : 'Esci';
       });
 
     this.stickyService.stickyEvent.subscribe((value: number) => this.maxHeightOffset = value);
@@ -67,12 +65,12 @@ export class HeaderComponent implements OnInit {
   }
 
   getLoginLink() {
-    if (this.isAnonimo) {
+    if (this.menuService.isUtenteAnonimo) {
       window.location.href = environment.bffBaseUrl + '/loginLepida.htm';
     } else {
       this.http.get(environment.bffBaseUrl + '/logout').subscribe((body: any) => {
         if (body.url) {
-          this.menuService.userAnonimousEvent.emit(true);
+          this.menuService.userEventChange.emit();
           window.location.href = body.url;
         }
       });

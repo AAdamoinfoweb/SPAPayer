@@ -2,7 +2,9 @@ import {CampoDettaglioTransazione} from './CampoDettaglioTransazione';
 
 export class Bollettino {
   servizioId: number;
+  servizio: string;
   enteId: number;
+  ente: string;
   cfpiva: string;
   importo: number;
   numero: string;

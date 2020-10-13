@@ -23,20 +23,18 @@ import {OverlayService} from '../../../../services/overlay.service';
 export class HomeComponent implements OnInit {
 
   testoAccedi = 'Accedi';
-  isAnonimo = true;
 
   constructor(
     private router: Router,
     private nuovoPagamentoService: NuovoPagamentoService,
     private bannerService: BannerService,
     private pagamentoService: PagamentoService,
-    private menuService: MenuService,
+    public menuService: MenuService,
     private overlayService: OverlayService
   ) {
-    this.menuService.userAnonimousEvent
-      .subscribe((isAnonimo: boolean) => {
-        this.isAnonimo = isAnonimo;
-        if (!this.isAnonimo) {
+    this.menuService.userEventChange
+      .subscribe(() => {
+        if (!this.menuService.isUtenteAnonimo) {
           nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
         }
       });
@@ -88,7 +86,7 @@ export class HomeComponent implements OnInit {
   }
 
   getLoginLink() {
-    if (this.isAnonimo) {
+    if (this.menuService.isUtenteAnonimo) {
       window.location.href = environment.bffBaseUrl + '/loginLepida.htm';
     } else {
       // NOTING TO DO

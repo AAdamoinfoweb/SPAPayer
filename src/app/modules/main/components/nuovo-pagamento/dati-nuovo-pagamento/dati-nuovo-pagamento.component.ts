@@ -22,6 +22,7 @@ import {BannerService} from '../../../../../services/banner.service';
 
 import {JSONPath} from 'jsonpath-plus';
 import {OverlayService} from '../../../../../services/overlay.service';
+import {MenuService} from "../../../../../services/menu.service";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -34,6 +35,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
               private router: Router,
               private bannerService: BannerService,
               private overlayService: OverlayService,
+              public menuService: MenuService,
               private cdr: ChangeDetectorRef) {
   }
 
@@ -69,8 +71,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   readonly lunghezzaMaxCol3: number = 15;
 
   isVisibile = true;
-
-  isUtenteAnonimo: boolean = null;
   tooltipBottoneSalvaPerDopo: string = null;
 
   ngOnInit(): void {
@@ -87,8 +87,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   private restoreParziale() {
     this.overlayService.caricamentoEvent.emit(true);
 
-    this.isUtenteAnonimo = localStorage.getItem('nome') === 'null';
-    if (this.isUtenteAnonimo) {
+    if (this.menuService.isUtenteAnonimo) {
       this.salvaParziale(this.servizio.livelloTerritorialeId, null, 'livelloTerritorialeId');
       this.salvaParziale(this.servizio.enteId, null, 'enteId');
       this.salvaParziale(this.servizio.id, null, 'servizioId');
@@ -107,8 +106,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   checkUtenteLoggato(): void {
-    this.isUtenteAnonimo = localStorage.getItem('nome') === 'null';
-    this.tooltipBottoneSalvaPerDopo = this.isUtenteAnonimo
+    this.tooltipBottoneSalvaPerDopo = this.menuService.isUtenteAnonimo
       ? 'É necessario autenticarsi per poter premere questo bottone e salvare il bollettino appena compilato nella sezione \"I miei pagamenti\"'
       : null;
   }
@@ -529,7 +527,9 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   private creaBollettino() {
     const bollettino: Bollettino = new Bollettino();
     bollettino.servizioId = this.servizio.id;
+    bollettino.servizio = this.servizio.nome;
     bollettino.enteId = this.servizio.enteId;
+    bollettino.ente = this.servizio.enteNome;
     bollettino.numero = this.getNumDocumento();
     bollettino.anno = this.model[this.getCampoDettaglioTransazione('anno_documento')];
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
@@ -553,9 +553,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   aggiungiAlCarrello() {
     this.overlayService.caricamentoEvent.emit(true);
 
-    const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
     let observable: Observable<any>;
-    if (anonimo) {
+    if (this.menuService.isUtenteAnonimo) {
       const numeroDoc = this.getNumDocumento();
       observable = this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .pipe(map((result) => {
@@ -599,9 +598,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   pagaOra() {
     this.overlayService.caricamentoEvent.emit(true);
-
-    const anonimo = localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
-    if (anonimo) {
+    if (this.menuService.isUtenteAnonimo) {
       const numeroDoc = this.getNumDocumento();
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)
         .subscribe((result) => {
@@ -681,7 +678,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   salvaParziale(event: any, campo: CampoForm, nomeCampo: string = null) {
-    if (this.isUtenteAnonimo) {
+    if (this.menuService.isUtenteAnonimo) {
       let item;
       if (localStorage.getItem('parziale') != null) {
         item = JSON.parse(localStorage.getItem('parziale'));

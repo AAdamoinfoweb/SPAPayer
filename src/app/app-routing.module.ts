@@ -13,7 +13,7 @@ import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagament
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
 
 const routes: Routes = [
-  { path: '',   redirectTo: '/home', pathMatch: 'full' },
+  // { path: '',   redirectTo: '/home', pathMatch: 'full' },
   {path: 'home', component: HomeComponent},
   {
     path: 'riservata',

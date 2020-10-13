@@ -5,5 +5,6 @@ export class FiltroServizio {
   tipologiaServizioCodice: string;
   livelloTerritorialeId: number;
   enteId: number;
+  enteNome: string;
   livelloIntegrazioneId: number;
 }

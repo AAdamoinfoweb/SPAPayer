@@ -8,6 +8,8 @@ import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.servic
 import {DettagliTransazione} from "../../model/bollettino/DettagliTransazione";
 import {OverlayService} from '../../../../services/overlay.service';
 import {ConfirmationService} from "primeng/api";
+import {Bollettino} from "../../model/bollettino/Bollettino";
+import {MenuService} from "../../../../services/menu.service";
 
 const arrowup = 'assets/img/sprite.svg#it-arrow-up-triangle'
 const arrowdown = 'assets/img/sprite.svg#it-arrow-down-triangle'
@@ -48,13 +50,42 @@ export class ListaPagamentiComponent implements OnInit {
   urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private route: Router,
+              private menuService: MenuService,
               private confirmationService: ConfirmationService,
               private overlayService: OverlayService) {
   }
 
-
   ngOnInit(): void {
     this.overlayService.caricamentoEvent.emit(true);
+    if (this.menuService.isUtenteAnonimo) {
+      this.getCarrelloAnonimo();
+    } else {
+      this.getCarrelloAutenticato();
+    }
+  }
+
+  private getCarrelloAnonimo() {
+    this.listaPagamenti = [];
+    for (var key in localStorage) {
+      if (key.startsWith("boll-")) {
+        let bollettino: Bollettino = JSON.parse(localStorage.getItem(key));
+        let pagamento: Pagamento = new Pagamento();
+        pagamento.numDocumento = bollettino.numero;
+        pagamento.importo = bollettino.importo;
+        pagamento.causale = bollettino.causale;
+        pagamento.anno = bollettino.anno;
+        pagamento.ente = bollettino.ente;
+        pagamento.servizio = bollettino.servizio;
+        this.listaPagamenti.push(pagamento);
+      }
+    }
+    this.onChangeNumeroPagamenti.emit(this.listaPagamenti.length);
+    let totale = this.listaPagamenti.reduce((a, b) => a + b.importo, 0);
+    this.onChangeTotalePagamento.emit(totale);
+    this.overlayService.caricamentoEvent.emit(false);
+  }
+
+  private getCarrelloAutenticato() {
     let observable: Observable<Pagamento[]> = this.nuovoPagamentoService.getCarrello()
       .pipe(map((value: Carrello) => {
         this.listaPagamenti = value.dettaglio;
@@ -100,12 +131,20 @@ export class ListaPagamentiComponent implements OnInit {
       reject: () => {
       },
       accept: () => {
-        const dettaglio: DettagliTransazione = new DettagliTransazione();
-        dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
-        this.nuovoPagamentoService.eliminaBollettino(dettaglio).subscribe(() => {
-          this.ngOnInit();
-        });
+        if (this.menuService.isUtenteAnonimo) {
+          this.eliminaBollettinoAnonimo(pagamento);
+        } else {
+          this.eliminaBollettinoAutenticato(pagamento);
+        }
       }
+    });
+  }
+
+  private eliminaBollettinoAutenticato(pagamento: Pagamento) {
+    const dettaglio: DettagliTransazione = new DettagliTransazione();
+    dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
+    this.nuovoPagamentoService.eliminaBollettino(dettaglio).subscribe(() => {
+      this.ngOnInit();
     });
   }
 
@@ -129,4 +168,8 @@ export class ListaPagamentiComponent implements OnInit {
     });
   }
 
+  private eliminaBollettinoAnonimo(pagamento: Pagamento) {
+    this.listaPagamenti.splice(this.listaPagamenti.findIndex((p: Pagamento) => p.numDocumento == pagamento.numDocumento), 1);
+    localStorage.removeItem("boll-" + pagamento.numDocumento);
+  }
 }

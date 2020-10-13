@@ -30,6 +30,7 @@ export class NuovoPagamentoService {
   private readonly campiPrecompilatiUrl = '/datiPagamento';
   private salvaPerDopoUrl = '/salvaPerDopo';
   private carrelloUrl = '/carrello';
+  private confermaPagamentoUrl = '/confermaPagamento';
 
   compilazioneEvent: EventEmitter<FiltroServizio> = new EventEmitter<FiltroServizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -102,10 +103,9 @@ export class NuovoPagamentoService {
     let params = {};
     if (numero) {
       params = {numero};
-    }
-    else if (idDettaglioTransazione) {
+    } else if (idDettaglioTransazione) {
       params = {idDettaglioTransazione};
- }
+    }
 
     return this.http.get(environment.bffBaseUrl + this.verificaBollettinoUrl, {
       params, withCredentials: true
@@ -123,7 +123,7 @@ export class NuovoPagamentoService {
   }
 
   inserimentoBollettino(bollettini: Bollettino[]): Observable<DettaglioTransazioneEsito[]> {
-return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JSON.stringify(bollettini),
+    return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JSON.stringify(bollettini),
       {withCredentials: true}).pipe(map((body: any) => {
         return body;
       }),
@@ -136,7 +136,7 @@ return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JS
       }));
   }
 
-  inserimentoCarrello(value: DettagliTransazione): Observable<any>  {
+  inserimentoCarrello(value: DettagliTransazione): Observable<any> {
     return this.http.post(environment.bffBaseUrl + this.inserimentoCarrelloUrl, JSON.stringify(value),
       {withCredentials: true}).pipe(map((body: any) => {
         return body;
@@ -178,17 +178,35 @@ return this.http.post(environment.bffBaseUrl + this.inserimentoBollettinoUrl, JS
         }));
   }
 
-  eliminaBollettino(value: DettagliTransazione): Observable<any>  {
-      return this.http.post(environment.bffBaseUrl + this.eliminaBollettinoUrl, JSON.stringify(value),
-        {withCredentials: true}).pipe(map((body: any) => {
-          return body;
+  eliminaBollettino(value: DettagliTransazione): Observable<any> {
+    return this.http.post(environment.bffBaseUrl + this.eliminaBollettinoUrl, JSON.stringify(value),
+      {withCredentials: true}).pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
+      }));
+  }
+
+  confermaPagamento(email: string, list: Bollettino[] = []): Observable<any> {
+    let observable: Observable<any> = this.http.post(environment.bffBaseUrl + this.confermaPagamentoUrl + "?email=" + email,
+      JSON.stringify(list), {withCredentials: true})
+      .pipe(map((body: any) => {
+          if (body.url)
+            return body.url;
+          else
+            return body;
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
             return of(null);
-          } else {
+          } else
             return caught;
-          }
         }));
-    }
+    return observable;
+  }
 }
