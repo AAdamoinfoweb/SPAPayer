@@ -400,6 +400,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         descrizione = 'Valore inferiore a ' + formControl.errors?.min?.value;
       } else if (formControl.errors?.max) {
         descrizione = 'Valore superiore a ' + formControl.errors?.max?.max;
+      } else if (formControl.errors?.format) {
+        descrizione = 'Data non valida';
       } else {
         descrizione = 'Campo non valido';
       }

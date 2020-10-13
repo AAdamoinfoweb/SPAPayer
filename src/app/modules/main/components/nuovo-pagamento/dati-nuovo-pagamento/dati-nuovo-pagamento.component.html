@@ -98,6 +98,7 @@
                 <dp-date-picker
                   (ngModelChange)="salvaParziale($event, campo)"
                   mode="day"
+                  dayInput
                   theme="dp-material"
                   [formControl]="form.controls[getNomeCampoForm(campo)]"
                   [(ngModel)]="model[getNomeCampoForm(campo)]"
@@ -108,7 +109,6 @@
                     firstDayOfWeek: 'mo',
                     showGoToCurrent: false,
                     min: this.minDataDDMMYY,
-                    disableKeypress: true,
                     returnedValueType: tipoData
                   }"
                   [attr.disabled]="isCampoDisabilitato(campo)"
@@ -127,6 +127,7 @@
                 <dp-date-picker
                   (ngModelChange)="salvaParziale($event, campo)"
                   mode="month"
+                  monthInput
                   theme="dp-material"
                   [formControl]="form.controls[getNomeCampoForm(campo)]"
                   [(ngModel)]="model[getNomeCampoForm(campo)]"
@@ -136,7 +137,6 @@
                     format: 'MM/YYYY',
                     showGoToCurrent: false,
                     min: this.minDataMMYY,
-                    disableKeypress: true,
                     returnedValueType: tipoData
                   }"
                   [attr.disabled]="isCampoDisabilitato(campo)"
