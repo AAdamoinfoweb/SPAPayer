@@ -9,7 +9,7 @@ import {DettagliTransazione} from "../../model/bollettino/DettagliTransazione";
 import {OverlayService} from '../../../../services/overlay.service';
 import {ConfirmationService} from "primeng/api";
 import {Bollettino} from "../../model/bollettino/Bollettino";
-import {CampoDettaglioTransazione} from "../../model/bollettino/CampoDettaglioTransazione";
+import {MenuService} from "../../../../services/menu.service";
 
 const arrowup = 'assets/img/sprite.svg#it-arrow-up-triangle'
 const arrowdown = 'assets/img/sprite.svg#it-arrow-down-triangle'
@@ -50,14 +50,14 @@ export class ListaPagamentiComponent implements OnInit {
   urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private route: Router,
+              private menuService: MenuService,
               private confirmationService: ConfirmationService,
               private overlayService: OverlayService) {
   }
 
   ngOnInit(): void {
     this.overlayService.caricamentoEvent.emit(true);
-    let isUtenteAnonimo = localStorage.getItem('nome') === 'null';
-    if (isUtenteAnonimo) {
+    if (this.menuService.isUtenteAnonimo) {
       this.getCarrelloAnonimo();
     } else {
       this.getCarrelloAutenticato();
@@ -131,12 +131,20 @@ export class ListaPagamentiComponent implements OnInit {
       reject: () => {
       },
       accept: () => {
-        const dettaglio: DettagliTransazione = new DettagliTransazione();
-        dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
-        this.nuovoPagamentoService.eliminaBollettino(dettaglio).subscribe(() => {
-          this.ngOnInit();
-        });
+        if (this.menuService.isUtenteAnonimo) {
+          this.eliminaBollettinoAnonimo(pagamento);
+        } else {
+          this.eliminaBollettinoAutenticato(pagamento);
+        }
       }
+    });
+  }
+
+  private eliminaBollettinoAutenticato(pagamento: Pagamento) {
+    const dettaglio: DettagliTransazione = new DettagliTransazione();
+    dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
+    this.nuovoPagamentoService.eliminaBollettino(dettaglio).subscribe(() => {
+      this.ngOnInit();
     });
   }
 
@@ -160,4 +168,7 @@ export class ListaPagamentiComponent implements OnInit {
     });
   }
 
+  private eliminaBollettinoAnonimo(pagamento: Pagamento) {
+    //this.listaPagamenti.splice()
+  }
 }

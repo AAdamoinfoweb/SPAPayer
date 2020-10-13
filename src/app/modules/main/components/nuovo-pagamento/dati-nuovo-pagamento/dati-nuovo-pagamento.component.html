@@ -242,7 +242,7 @@
          class="col-10 text-right button-space">
           <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top">
             <button (click)="salvaPerDopo()" id="bottoneSalvaPerDopo" class="btn btn-secondary"
-                    [disabled]="isUtenteAnonimo || (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid)">Salva per dopo</button>
+                    [disabled]="menuService.isUtenteAnonimo || (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid)">Salva per dopo</button>
           </span>
       <button id="bottoneAggiungiAlCarrello" class="btn btn-secondary"
               [disabled]="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid" (click)="aggiungiAlCarrello()">Aggiungi al carrello</button>

@@ -6,6 +6,7 @@ import {Ente} from '../../../model/Ente';
 import {FiltroServizio} from '../../../model/FiltroServizio';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {OverlayService} from '../../../../../services/overlay.service';
+import {MenuService} from "../../../../../services/menu.service";
 
 @Component({
   selector: 'app-compila-nuovo-pagamento',
@@ -21,7 +22,9 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   enteSelezionato: Ente = null;
   servizioSelezionato: FiltroServizio = null;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private overlayService: OverlayService) {
+  constructor(private nuovoPagamentoService: NuovoPagamentoService,
+              private menuService: MenuService,
+              private overlayService: OverlayService) {
     this.nuovoPagamentoService.pulisciEvent.subscribe(() => {
       this.pulisci();
     });
@@ -51,8 +54,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   private restoreParziale(field: string) {
-    let isUtenteAnonimo = localStorage.getItem('nome') === 'null';
-    if (isUtenteAnonimo) {
+    if (this.menuService.isUtenteAnonimo) {
       localStorage.removeItem("parziale");
     } else {
       if (localStorage.getItem("parziale") != null) {

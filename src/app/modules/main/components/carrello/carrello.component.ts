@@ -19,6 +19,7 @@ import {Observable} from "rxjs";
 import {DettaglioTransazioneEsito} from "../../model/bollettino/DettaglioTransazioneEsito";
 import {EsitoEnum} from "../../../../enums/esito.enum";
 import {OverlayService} from "../../../../services/overlay.service";
+import {MenuService} from "../../../../services/menu.service";
 
 @Component({
   selector: 'app-carrello',
@@ -49,6 +50,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   constructor(private router: Router, private renderer: Renderer2,
               private nuovoPagamentoService: NuovoPagamentoService,
               private overlayService: OverlayService,
+              private menuService: MenuService,
               private bannerService: BannerService,
               private el: ElementRef,
               private route: ActivatedRoute) {
@@ -104,9 +106,8 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   confermaPagamento() {
     this.overlayService.caricamentoEvent.emit(true);
-    let isUtenteAnonimo = localStorage.getItem('nome') === 'null';
     let observable;
-    if (isUtenteAnonimo) {
+    if (this.menuService.isUtenteAnonimo) {
       observable = this.nuovoPagamentoService.confermaPagamento(this.email, this.creaListaBollettini());
     } else {
       observable = this.nuovoPagamentoService.confermaPagamento(this.email);
