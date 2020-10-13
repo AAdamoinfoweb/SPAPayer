@@ -10,7 +10,7 @@ import {FiltroServizio} from '../../../model/FiltroServizio';
 import {LivelloIntegrazioneEnum} from '../../../../../enums/livelloIntegrazione.enum';
 import {EsitoEnum} from '../../../../../enums/esito.enum';
 import {Bollettino} from '../../../model/bollettino/Bollettino';
-import {ECalendarValue} from 'ng2-date-picker';
+import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {Router} from '@angular/router';
 import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettaglioTransazione';
 import {observable, Observable, of} from 'rxjs';
@@ -408,6 +408,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     }
 
     return descrizione;
+  }
+
+  apriDatePicker(dp: DatePickerComponent) {
+    dp.api.open();
   }
 
   calcolaMinInputNumerico(campo): number {

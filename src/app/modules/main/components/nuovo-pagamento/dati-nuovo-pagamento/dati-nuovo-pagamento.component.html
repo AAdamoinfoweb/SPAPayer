@@ -95,24 +95,32 @@
                 <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
-                <dp-date-picker
-                  (ngModelChange)="salvaParziale($event, campo)"
-                  mode="day"
-                  dayInput
-                  theme="dp-material"
-                  [formControl]="form.controls[getNomeCampoForm(campo)]"
-                  [(ngModel)]="model[getNomeCampoForm(campo)]"
-                  [id]="getIdCampo(campo)"
-                  [config]="{
+                <div class="calendar-wrapper">
+                  <svg class="bg-light icon img-calendar" (click)="apriDatePicker(dayPicker)">
+                    <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+                  </svg>
+                  <dp-date-picker
+                    (ngModelChange)="salvaParziale($event, campo)"
+                    mode="day"
+                    #dayPicker
+                    dayInput
+                    theme="dp-material"
+                    [formControl]="form.controls[getNomeCampoForm(campo)]"
+                    [(ngModel)]="model[getNomeCampoForm(campo)]"
+                    [id]="getIdCampo(campo)"
+                    [config]="{
                     locale: 'it',
                     format: 'DD/MM/YYYY',
                     firstDayOfWeek: 'mo',
                     showGoToCurrent: false,
                     min: this.minDataDDMMYY,
-                    returnedValueType: tipoData
+                    returnedValueType: tipoData,
+                    openOnClick: false,
+                    openOnFocus: false
                   }"
-                  [attr.disabled]="isCampoDisabilitato(campo)"
-                ></dp-date-picker>
+                    [attr.disabled]="isCampoDisabilitato(campo)"
+                  ></dp-date-picker>
+                </div>
               </div>
               <div class="row">
                 <p [ngClass]="{'placeholder': !isCampoInvalido(campo), 'form-elem-error': isCampoInvalido(campo)}">{{getDescrizioneCampo(campo)}}</p>
@@ -124,23 +132,31 @@
                 <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
-                <dp-date-picker
-                  (ngModelChange)="salvaParziale($event, campo)"
-                  mode="month"
-                  monthInput
-                  theme="dp-material"
-                  [formControl]="form.controls[getNomeCampoForm(campo)]"
-                  [(ngModel)]="model[getNomeCampoForm(campo)]"
-                  [id]="getIdCampo(campo)"
-                  [config]="{
+                <div class="calendar-wrapper">
+                  <svg class="bg-light icon img-calendar" (click)="apriDatePicker(monthPicker)">
+                    <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+                  </svg>
+                  <dp-date-picker
+                    (ngModelChange)="salvaParziale($event, campo)"
+                    mode="month"
+                    #monthPicker
+                    monthInput
+                    theme="dp-material"
+                    [formControl]="form.controls[getNomeCampoForm(campo)]"
+                    [(ngModel)]="model[getNomeCampoForm(campo)]"
+                    [id]="getIdCampo(campo)"
+                    [config]="{
                     locale: 'it',
                     format: 'MM/YYYY',
                     showGoToCurrent: false,
                     min: this.minDataMMYY,
-                    returnedValueType: tipoData
+                    returnedValueType: tipoData,
+                    openOnClick: false,
+                    openOnFocus: false
                   }"
-                  [attr.disabled]="isCampoDisabilitato(campo)"
-                ></dp-date-picker>
+                    [attr.disabled]="isCampoDisabilitato(campo)"
+                  ></dp-date-picker>
+                </div>
               </div>
               <div class="row">
                 <p [ngClass]="{'placeholder': !isCampoInvalido(campo), 'form-elem-error': isCampoInvalido(campo)}">{{getDescrizioneCampo(campo)}}</p>
