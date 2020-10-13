@@ -121,3 +121,7 @@ select:focus {
   //background-color: red !important;
   z-index: 1;
 }
+
+.img-calendar.disabled {
+  cursor: not-allowed;
+}

@@ -410,8 +410,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     return descrizione;
   }
 
-  apriDatePicker(dp: DatePickerComponent) {
-    dp.api.open();
+  apriDatePicker(dp: DatePickerComponent, campo: CampoForm) {
+    if (!this.isCampoDisabilitato(campo)) {
+      dp.api.open();
+    }
   }
 
   calcolaMinInputNumerico(campo): number {
