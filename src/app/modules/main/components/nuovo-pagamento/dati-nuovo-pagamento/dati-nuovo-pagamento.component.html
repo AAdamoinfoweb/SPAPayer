@@ -25,7 +25,7 @@
 
             <div *ngSwitchCase="TipoCampoEnum.INPUT_TESTUALE" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -46,7 +46,7 @@
 
             <div *ngSwitchCase="TipoCampoEnum.INPUT_NUMERICO" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -68,7 +68,7 @@
 
             <div *ngSwitchCase="TipoCampoEnum.INPUT_PREZZO" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -92,27 +92,35 @@
 
             <div *ngSwitchCase="TipoCampoEnum.DATEDDMMYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
-                <dp-date-picker
-                  (ngModelChange)="salvaParziale($event, campo)"
-                  mode="day"
-                  dayInput
-                  theme="dp-material"
-                  [formControl]="form.controls[getNomeCampoForm(campo)]"
-                  [(ngModel)]="model[getNomeCampoForm(campo)]"
-                  [id]="getIdCampo(campo)"
-                  [config]="{
+                <div class="calendar-wrapper">
+                  <svg class="bg-light icon img-calendar" [ngClass]="{'disabled': isCampoDisabilitato(campo)}" (click)="apriDatePicker(dayPicker, campo)">
+                    <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+                  </svg>
+                  <dp-date-picker
+                    (ngModelChange)="salvaParziale($event, campo)"
+                    mode="day"
+                    #dayPicker
+                    dayInput
+                    theme="dp-material"
+                    [formControl]="form.controls[getNomeCampoForm(campo)]"
+                    [(ngModel)]="model[getNomeCampoForm(campo)]"
+                    [id]="getIdCampo(campo)"
+                    [config]="{
                     locale: 'it',
                     format: 'DD/MM/YYYY',
                     firstDayOfWeek: 'mo',
                     showGoToCurrent: false,
                     min: this.minDataDDMMYY,
-                    returnedValueType: tipoData
+                    returnedValueType: tipoData,
+                    openOnClick: false,
+                    openOnFocus: false
                   }"
-                  [attr.disabled]="isCampoDisabilitato(campo)"
-                ></dp-date-picker>
+                    [attr.disabled]="isCampoDisabilitato(campo)"
+                  ></dp-date-picker>
+                </div>
               </div>
               <div class="row">
                 <p [ngClass]="{'placeholder': !isCampoInvalido(campo), 'form-elem-error': isCampoInvalido(campo)}">{{getDescrizioneCampo(campo)}}</p>
@@ -121,26 +129,34 @@
 
             <div *ngSwitchCase="TipoCampoEnum.DATEMMYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
-                <dp-date-picker
-                  (ngModelChange)="salvaParziale($event, campo)"
-                  mode="month"
-                  monthInput
-                  theme="dp-material"
-                  [formControl]="form.controls[getNomeCampoForm(campo)]"
-                  [(ngModel)]="model[getNomeCampoForm(campo)]"
-                  [id]="getIdCampo(campo)"
-                  [config]="{
+                <div class="calendar-wrapper">
+                  <svg class="bg-light icon img-calendar" [ngClass]="{'disabled': isCampoDisabilitato(campo)}" (click)="apriDatePicker(monthPicker, campo)">
+                    <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+                  </svg>
+                  <dp-date-picker
+                    (ngModelChange)="salvaParziale($event, campo)"
+                    mode="month"
+                    #monthPicker
+                    monthInput
+                    theme="dp-material"
+                    [formControl]="form.controls[getNomeCampoForm(campo)]"
+                    [(ngModel)]="model[getNomeCampoForm(campo)]"
+                    [id]="getIdCampo(campo)"
+                    [config]="{
                     locale: 'it',
                     format: 'MM/YYYY',
                     showGoToCurrent: false,
                     min: this.minDataMMYY,
-                    returnedValueType: tipoData
+                    returnedValueType: tipoData,
+                    openOnClick: false,
+                    openOnFocus: false
                   }"
-                  [attr.disabled]="isCampoDisabilitato(campo)"
-                ></dp-date-picker>
+                    [attr.disabled]="isCampoDisabilitato(campo)"
+                  ></dp-date-picker>
+                </div>
               </div>
               <div class="row">
                 <p [ngClass]="{'placeholder': !isCampoInvalido(campo), 'form-elem-error': isCampoInvalido(campo)}">{{getDescrizioneCampo(campo)}}</p>
@@ -149,7 +165,7 @@
 
             <div *ngSwitchCase="TipoCampoEnum.DATEYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <input
@@ -171,7 +187,7 @@
 
             <div *ngSwitchCase="TipoCampoEnum.SELECT" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
               <div class="row">
-                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo) || isFaseVerificaPagamento}">{{getTitoloCampo(campo)}}</label>
+                <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
               <div class="row">
                 <select

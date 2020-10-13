@@ -107,3 +107,25 @@ select:focus {
   background-position-x: 5px !important;
   padding-left: 15px !important;
 }
+
+.calendar-wrapper {
+  position: relative;
+}
+
+.img-calendar {
+  position: absolute;
+  bottom: 5px;
+  fill: #77777B !important;
+  cursor: pointer;
+  background: transparent !important;
+  //background-color: red !important;
+  z-index: 1;
+}
+
+.img-calendar.disabled {
+  cursor: not-allowed;
+}
+
+select:disabled {
+  background-color: #E3E3E3;
+}
