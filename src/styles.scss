@@ -125,3 +125,7 @@ select:focus {
 .img-calendar.disabled {
   cursor: not-allowed;
 }
+
+select:disabled {
+  background-color: #E3E3E3;
+}
