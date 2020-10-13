@@ -4,6 +4,6 @@ export class InserimentoModificaUtente {
   cognome?: string = null;
   email?: string = null;
   telefono?: string = null;
-  attivazione?: Date = null;
-  scadenza?: Date = null;
+  attivazione?: moment.Moment = null;
+  scadenza?: moment.Moment = null;
 }

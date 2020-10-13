@@ -35,6 +35,7 @@ export class DatiUtenteComponent implements OnInit {
 
   ngOnInit(): void {
     this.datiUtente = new InserimentoModificaUtente();
+    this.datiUtente.attivazione = moment();
   }
 
   loadSuggestions(event): void {
