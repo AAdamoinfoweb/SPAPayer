@@ -69,7 +69,16 @@ select {
   background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
   background-repeat: no-repeat;
   background-position-x: 100%;
+  background-position-y: 50%;
   padding-right: 20px;
+  padding-left: 2px;
+  height: 2.5rem;
+}
+
+select:focus {
+  background-color: white;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 -5 5+5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-position-y: calc(50% + 5px);
 }
 
 .disabled {
