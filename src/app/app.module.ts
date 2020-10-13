@@ -46,6 +46,7 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {AggiungiUtentePermessiComponent} from './modules/main/components/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
 import {DatiUtenteComponent} from './modules/main/components/dati-utente/dati-utente.component';
 import {DatiPermessoComponent} from './modules/main/components/dati-permesso/dati-permesso.component';
+import {ModificaUtentePermessiComponent} from './modules/main/components/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import {DatiPermessoComponent} from './modules/main/components/dati-permesso/dat
     FiltroGestioneUtentiComponent,
     IntegerNumberDirective,
     DatiUtenteComponent,
-    DatiPermessoComponent
+    DatiPermessoComponent,
+    ModificaUtentePermessiComponent
   ],
   imports: [
     HttpClientModule,

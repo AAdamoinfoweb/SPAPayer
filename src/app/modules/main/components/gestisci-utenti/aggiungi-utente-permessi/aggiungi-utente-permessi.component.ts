@@ -5,7 +5,7 @@ import {InserimentoModificaUtente} from '../../../model/utente/InserimentoModifi
 @Component({
   selector: 'app-aggiungi-utente-permessi',
   templateUrl: './aggiungi-utente-permessi.component.html',
-  styleUrls: ['./aggiungi-utente-permessi.component.scss']
+  styleUrls: ['../gestisci-utenti.component.scss', './aggiungi-utente-permessi.component.scss']
 })
 export class AggiungiUtentePermessiComponent implements OnInit {
 
