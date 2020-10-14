@@ -1,4 +1,4 @@
-export class RichiestaDettaglioPagamento {
+export class DatiPagamento {
   idBollettino: number;
   idLivelloTerritoriale: number;
   idEnte: number;

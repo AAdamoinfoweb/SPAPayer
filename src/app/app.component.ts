@@ -7,7 +7,7 @@ import {UserIdleService} from "angular-user-idle";
 import {AuthguardService} from "./services/authguard.service";
 import {Router} from "@angular/router";
 import {OverlayService} from './services/overlay.service';
-import {RichiestaDettaglioPagamento} from './modules/main/model/bollettino/RichiestaDettaglioPagamento';
+import {DatiPagamento} from './modules/main/model/bollettino/DatiPagamento';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
   title = '';
   caricamento = false;
-  dettaglioPagamento = null;
+  datiPagamento = null;
 
   constructor(private menuService: MenuService,
               private router: Router,
@@ -45,8 +45,8 @@ export class AppComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
-    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(richiestaDettaglioPagamento => {
-      this.dettaglioPagamento = richiestaDettaglioPagamento;
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(datiPagamento => {
+      this.datiPagamento = datiPagamento;
       this.cdr.detectChanges();
     });
 
@@ -77,7 +77,7 @@ export class AppComponent implements OnInit {
   }
 
   mockModaleDettaglioPagamento(): void {
-    const mockDettaglioPagamento = new RichiestaDettaglioPagamento();
+    const mockDettaglioPagamento = new DatiPagamento();
     mockDettaglioPagamento.idBollettino = 1;
     mockDettaglioPagamento.idLivelloTerritoriale = 1;
     mockDettaglioPagamento.idEnte = 4;

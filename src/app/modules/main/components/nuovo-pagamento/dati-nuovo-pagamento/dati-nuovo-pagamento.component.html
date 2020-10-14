@@ -246,18 +246,18 @@
   <!--Bottoni-->
   <div class="row">
     <!-- Bottone sx -->
-    <div *ngIf="!dettaglioPagamento && (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && !isFaseVerificaPagamento))" class="col-2">
+    <div *ngIf="!datiPagamento && (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && !isFaseVerificaPagamento))" class="col-2">
       <button id="bottonePulisci" class="btn btn-secondary" (click)="clickPulisci()">Pulisci</button>
     </div>
-    <div *ngIf="(livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento) || dettaglioPagamento" class="col-2">
+    <div *ngIf="(livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento) || datiPagamento" class="col-2">
       <button id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">Indietro</button>
     </div>
 
     <!-- Bottoni dx -->
-    <div *ngIf="(!dettaglioPagamento && (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento)))
-                || (dettaglioPagamento && !isBollettinoPagato)"
+    <div *ngIf="(!datiPagamento && (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento)))
+                || (datiPagamento && !isBollettinoPagato)"
          class="col-10 text-right button-space">
-          <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top" *ngIf="!dettaglioPagamento">
+          <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top" *ngIf="!datiPagamento">
             <button (click)="salvaPerDopo()" id="bottoneSalvaPerDopo" class="btn btn-secondary"
                     [disabled]="menuService.isUtenteAnonimo || (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid)">Salva per dopo</button>
           </span>

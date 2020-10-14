@@ -23,7 +23,7 @@ import {BannerService} from '../../../../../services/banner.service';
 import {JSONPath} from 'jsonpath-plus';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from '../../../../../services/menu.service';
-import {RichiestaDettaglioPagamento} from '../../../model/bollettino/RichiestaDettaglioPagamento';
+import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -52,7 +52,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   servizio: FiltroServizio = null;
 
   @Input()
-  dettaglioPagamento: RichiestaDettaglioPagamento;
+  datiPagamento: DatiPagamento;
   isBollettinoPagato: boolean;
 
   listaCampiDinamici: Array<CampoForm> = [];
@@ -91,7 +91,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   impostaDettaglioPagamento(): void {
     this.isFaseVerificaPagamento = true;
-    this.nuovoPagamentoService.verificaBollettino(this.dettaglioPagamento.idBollettino).subscribe((esitoBollettino) => {
+    this.nuovoPagamentoService.verificaBollettino(this.datiPagamento.idBollettino).subscribe((esitoBollettino) => {
       this.isBollettinoPagato = esitoBollettino === EsitoEnum.OK || esitoBollettino === EsitoEnum.PENDING;
     });
     // TODO valorizzare i campi input
@@ -282,7 +282,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
         this.impostaCampi(campiNuovoPagamento.campiServizio);
 
-        if (this.dettaglioPagamento) {
+        if (this.datiPagamento) {
           this.impostaDettaglioPagamento();
         } else {
           this.overlayService.caricamentoEvent.emit(false);
@@ -318,7 +318,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     campi.forEach(campo => {
       const campoForm = new FormControl();
-      if (campo.disabilitato || !campo.campo_input || this.dettaglioPagamento) {
+      if (campo.disabilitato || !campo.campo_input || this.datiPagamento) {
         campoForm.disable();
       }
 
@@ -385,7 +385,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   isCampoDisabilitato(campo: CampoForm): boolean {
-    if (this.isFaseVerificaPagamento || this.dettaglioPagamento) {
+    if (this.isFaseVerificaPagamento || this.datiPagamento) {
       return true;
     } else {
       if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {

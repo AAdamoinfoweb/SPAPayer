@@ -7,7 +7,7 @@ import {FiltroServizio} from '../../../model/FiltroServizio';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from "../../../../../services/menu.service";
-import {RichiestaDettaglioPagamento} from '../../../model/bollettino/RichiestaDettaglioPagamento';
+import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
 
 @Component({
   selector: 'app-compila-nuovo-pagamento',
@@ -24,7 +24,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   servizioSelezionato: FiltroServizio = null;
 
   @Input()
-  dettaglioPagamento: RichiestaDettaglioPagamento;
+  datiPagamento: DatiPagamento;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private menuService: MenuService,
@@ -55,8 +55,8 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
         });
       });
 
-      if (this.dettaglioPagamento) {
-        this.livelloTerritorialeSelezionato = this.listaLivelliTerritoriali.find(item => item.value.id === this.dettaglioPagamento.idLivelloTerritoriale)?.value;
+      if (this.datiPagamento) {
+        this.livelloTerritorialeSelezionato = this.listaLivelliTerritoriali.find(item => item.value.id === this.datiPagamento.idLivelloTerritoriale)?.value;
         this.selezionaLivelloTerritoriale();
       }
     })).subscribe(() => this.restoreParziale('livelloTerritorialeId'));
@@ -113,8 +113,8 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
         });
       });
 
-      if (this.dettaglioPagamento) {
-        this.enteSelezionato = this.listaEnti.find(item => item.value.id === this.dettaglioPagamento.idEnte)?.value;
+      if (this.datiPagamento) {
+        this.enteSelezionato = this.listaEnti.find(item => item.value.id === this.datiPagamento.idEnte)?.value;
         this.selezionaEnte();
       }
     })).subscribe(() => this.restoreParziale('enteId'));
@@ -138,8 +138,8 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
         });
       });
 
-      if (this.dettaglioPagamento) {
-        this.servizioSelezionato = this.listaServizi.find(item => item.value.id === this.dettaglioPagamento.idServizio)?.value;
+      if (this.datiPagamento) {
+        this.servizioSelezionato = this.listaServizi.find(item => item.value.id === this.datiPagamento.idServizio)?.value;
         this.selezionaServizio();
       }
     })).subscribe(() => this.restoreParziale('servizioId'));
