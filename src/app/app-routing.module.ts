@@ -36,7 +36,7 @@ const routes: Routes = [
   {path: 'privacy', component: PrivacyComponent},
   {path: 'nuovoPagamento', component: NuovoPagamentoComponent},
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
-  {path: 'gestisciutenti', component: GestisciUtentiComponent},
+  {path: 'gestioneUtenti', component: GestisciUtentiComponent},
   {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent},
   {path: 'modificaUtentePermessi', component: ModificaUtentePermessiComponent}
 ];
