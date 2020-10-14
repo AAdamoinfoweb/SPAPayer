@@ -31,13 +31,13 @@ import {AccordionModule} from 'primeng/accordion';
 import {TableModule} from "primeng/table";
 import {TableComponent} from './components/table/table.component';
 import {GestisciUtentiComponent} from './modules/main/components/gestisci-utenti/gestisci-utenti.component';
-import {ButtonModule} from "primeng/button";      //accordion and accordion tab
+import {ButtonModule} from "primeng/button"; //accordion and accordion tab
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TabViewModule} from 'primeng/tabview';
 import {TabViewComponent} from './components/tab-view/tab-view.component';
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {ToolbarModule} from 'primeng/toolbar';
-import { PaginatorComponent } from './components/table/paginator/paginator.component';
+import {PaginatorComponent} from './components/table/paginator/paginator.component';
 import {FiltroGestioneUtentiComponent} from './modules/main/components/gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
@@ -49,9 +49,8 @@ import {DatiPermessoComponent} from './modules/main/components/dati-permesso/dat
 import {ModificaUtentePermessiComponent} from './modules/main/components/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
 import {DayInputDirective} from './utils/DayInputDirective';
 import {MonthInputDirective} from './utils/MonthInputDirective';
-import { OverlayComponent } from './components/overlay/overlay.component';
+import {OverlayComponent} from './components/overlay/overlay.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ConfirmationService} from "primeng/api";
 
 @NgModule({
@@ -79,27 +78,25 @@ import {ConfirmationService} from "primeng/api";
     IntegerNumberDirective,
     DatiUtenteComponent,
     DatiPermessoComponent,
-    ModificaUtentePermessiComponent
+    ModificaUtentePermessiComponent,
+    AppComponent,
+    HomeComponent,
+    SidebarComponent,
+    LoginBarComponent,
+    FooterDirective,
+    NonautorizzatoComponent,
+    GenericErrorComponent,
+    BannerComponent,
+    HeaderComponent,
+    NuovoPagamentoComponent,
+    IMieiPagamentiComponent,
+    CompilaNuovoPagamentoComponent,
+    DatiNuovoPagamentoComponent,
+    IntegerNumberDirective,
+    DayInputDirective,
+    MonthInputDirective,
+    OverlayComponent
   ],
-    declarations: [
-        AppComponent,
-        HomeComponent,
-        SidebarComponent,
-        LoginBarComponent,
-        FooterDirective,
-        NonautorizzatoComponent,
-        GenericErrorComponent,
-        BannerComponent,
-        HeaderComponent,
-        NuovoPagamentoComponent,
-        IMieiPagamentiComponent,
-        CompilaNuovoPagamentoComponent,
-        DatiNuovoPagamentoComponent,
-        IntegerNumberDirective,
-        DayInputDirective,
-        MonthInputDirective,
-        OverlayComponent
-    ],
   imports: [
     HttpClientModule,
     BrowserModule,
@@ -123,7 +120,7 @@ import {ConfirmationService} from "primeng/api";
     NgxCurrencyModule,
     CustomFormsModule,
     ConfirmDialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
     CustomFormsModule,
     AutoCompleteModule
   ],
