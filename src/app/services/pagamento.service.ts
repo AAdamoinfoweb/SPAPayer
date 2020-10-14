@@ -87,7 +87,7 @@ export class PagamentoService {
   public redirectCarrello(buffer: any): Observable<string> {
 
     let s = '?buffer=' + buffer
-    return this.http.get(environment.bffBaseUrl + this.redirectCarrelloUrl +s)
+    return this.http.get(environment.bffBaseUrl + this.redirectCarrelloUrl +s, {withCredentials: true})
       .pipe(map((body: any) => body.url),
         catchError((err, caught) => {
           if (err.status == 401) {
