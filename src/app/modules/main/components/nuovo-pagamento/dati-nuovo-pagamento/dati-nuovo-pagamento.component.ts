@@ -386,25 +386,29 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     const formControl = this.form.controls[this.getNomeCampoForm(campo)];
 
-    if (this.isCampoInvalido(campo)) {
-      if (formControl.errors?.required) {
-        descrizione = 'Il campo è obbligatorio';
-      } else if (formControl.errors?.pattern) {
-        descrizione = 'Formato non valido';
-      } else if (formControl.errors?.minlength
-        || (!campo.lunghezzaVariabile && (formControl.errors?.min || formControl.errors?.max))) {
-        descrizione = 'Il campo deve essere lungo ' + campo.lunghezza + ' caratteri';
-      } else if (formControl.errors?.min) {
-        descrizione = 'Valore inferiore a ' + formControl.errors?.min?.value;
-      } else if (formControl.errors?.max) {
-        descrizione = 'Valore superiore a ' + formControl.errors?.max?.max;
-      } else if (formControl.errors?.format) {
-        descrizione = 'Data non valida';
-      } else {
-        descrizione = 'Campo non valido';
-      }
+    if (this.isFaseVerificaPagamento) {
+      descrizione = '';
     } else {
-      descrizione = campo.informazioni;
+      if (this.isCampoInvalido(campo)) {
+        if (formControl.errors?.required) {
+          descrizione = 'Il campo è obbligatorio';
+        } else if (formControl.errors?.pattern) {
+          descrizione = 'Formato non valido';
+        } else if (formControl.errors?.minlength
+          || (!campo.lunghezzaVariabile && (formControl.errors?.min || formControl.errors?.max))) {
+          descrizione = 'Il campo deve essere lungo ' + campo.lunghezza + ' caratteri';
+        } else if (formControl.errors?.min) {
+          descrizione = 'Valore inferiore a ' + formControl.errors?.min?.value;
+        } else if (formControl.errors?.max) {
+          descrizione = 'Valore superiore a ' + formControl.errors?.max?.max;
+        } else if (formControl.errors?.format) {
+          descrizione = 'Data non valida';
+        } else {
+          descrizione = 'Campo non valido';
+        }
+      } else {
+        descrizione = campo.informazioni;
+      }
     }
 
     return descrizione;
