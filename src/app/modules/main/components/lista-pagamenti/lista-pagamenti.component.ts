@@ -44,9 +44,6 @@ export class ListaPagamentiComponent implements OnInit {
   onChangeTotalePagamento: EventEmitter<number> = new EventEmitter<number>();
 
   @Output()
-  onChangeEmailPagamento: EventEmitter<string> = new EventEmitter<string>();
-
-  @Output()
   urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private route: Router,
@@ -98,7 +95,6 @@ export class ListaPagamentiComponent implements OnInit {
 
         this.onChangeNumeroPagamenti.emit(this.listaPagamenti.length);
         this.onChangeTotalePagamento.emit(value.totale);
-        this.onChangeEmailPagamento.emit(value.email);
 
         return this.listaPagamenti;
       }));
