@@ -1,23 +1,12 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Breadcrumb} from '../../dto/Breadcrumb';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
-import {PagamentoService} from '../../../../services/pagamento.service';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {environment} from "../../../../../environments/environment";
-import {flatMap, map} from "rxjs/operators";
-import {XsrfService} from "../../../../services/xsrf.service";
 import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
-import {DettagliTransazione} from "../../model/bollettino/DettagliTransazione";
 import {Banner} from "../../model/Banner";
 import {getBannerType, LivelloBanner} from "../../../../enums/livelloBanner.enum";
 import {BannerService} from "../../../../services/banner.service";
 import {Bollettino} from "../../model/bollettino/Bollettino";
-import {CampoDettaglioTransazione} from "../../model/bollettino/CampoDettaglioTransazione";
-import {Pagamento} from "../../model/Pagamento";
-import {Observable} from "rxjs";
-import {DettaglioTransazioneEsito} from "../../model/bollettino/DettaglioTransazioneEsito";
-import {EsitoEnum} from "../../../../enums/esito.enum";
 import {OverlayService} from "../../../../services/overlay.service";
 import {MenuService} from "../../../../services/menu.service";
 
@@ -76,15 +65,26 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
         let banner: Banner;
         if (params.esito == "OK") {
+          let mail = localStorage.getItem("email");
           banner = {
             titolo: 'Avviso',
-            testo: '',
+            testo: 'Il pagamento è andato a buon fine, abbiamo inviato una mail di conferma all\'indirizzo: ' + mail,
             tipo: getBannerType(LivelloBanner.SUCCESS)
           };
-        } else if (params.esito == "ERROR") {
+        } else if (params.esito == "ERROR" || params.esito == "KO") {
+          let msg = menuService.isUtenteAnonimo ? 'Rivolgersi all\'help desk per ulteriori informazioni' :
+            'Consultare la sezione i Miei Pagamenti o rivolgersi all\'help desk per ulteriori informazioni';
           banner = {
             titolo: 'Avviso',
-            testo: '',
+            testo: 'Il pagamento non è andato a buon fine. ' + msg,
+            tipo: getBannerType(LivelloBanner.ERROR)
+          };
+        } else if (params.esito == "OP") {
+          let msg = menuService.isUtenteAnonimo ? 'Rivolgersi all\'help desk per ulteriori informazioni' :
+            'Consultare la sezione i Miei Pagamenti o rivolgersi all\'help desk per ulteriori informazioni';
+          banner = {
+            titolo: 'Avviso',
+            testo: 'Non è stato possibile conoscere l\'esito del pagamento. ' + msg,
             tipo: getBannerType(LivelloBanner.WARNING)
           };
         }
@@ -114,6 +114,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   }
 
   navigaInPresaInCaricoPagamento() {
+    localStorage.setItem("email", this.email);
     this.confermaPagamento();
   }
 
