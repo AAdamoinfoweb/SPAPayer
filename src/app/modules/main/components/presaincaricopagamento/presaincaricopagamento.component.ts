@@ -53,9 +53,9 @@ export class PresaincaricopagamentoComponent implements OnInit {
     }
     let observable;
     if (localStorage.getItem("nome") == null) {
-      observable = this.pagamentoService.verificaEsitoPagamento(this.idSession, false);
+      observable = this.pagamentoService.verificaEsitoPagamento(this.idSession, ultima);
     } else {
-      observable = this.nuovoPagamentoService.verificaEsitoPagamento(this.idSession, false);
+      observable = this.nuovoPagamentoService.verificaEsitoPagamento(this.idSession, ultima);
     }
     let subscr = observable.subscribe((url) => {
       subscr.unsubscribe();
