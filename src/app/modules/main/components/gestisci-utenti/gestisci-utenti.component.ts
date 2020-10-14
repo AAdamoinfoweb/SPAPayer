@@ -90,8 +90,10 @@ export class GestisciUtentiComponent implements OnInit {
     } else {
       if (utente.cognome) {
         nomeUtente = utente.cognome?.charAt(0).toUpperCase() + utente.cognome?.slice(1);
-      } else {
+      } else if (utente.nome) {
         nomeUtente = utente.nome?.charAt(0).toUpperCase() + utente.nome?.slice(1);
+      } else {
+        nomeUtente = null;
       }
     }
 
