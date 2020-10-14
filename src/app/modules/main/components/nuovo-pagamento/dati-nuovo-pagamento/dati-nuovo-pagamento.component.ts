@@ -91,7 +91,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   impostaDettaglioPagamento(): void {
     this.isFaseVerificaPagamento = true;
-    this.nuovoPagamentoService.verificaBollettino(this.datiPagamento.idBollettino).subscribe((esitoBollettino) => {
+    this.nuovoPagamentoService.verificaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((esitoBollettino) => {
       this.isBollettinoPagato = esitoBollettino === EsitoEnum.OK || esitoBollettino === EsitoEnum.PENDING;
     });
     // TODO valorizzare i campi input
