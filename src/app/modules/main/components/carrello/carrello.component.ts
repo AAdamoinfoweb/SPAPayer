@@ -26,7 +26,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   rid: string;
 
-  email = null;
+  email;
 
   @ViewChild('videoPlayer', {static: false}) videoplayer: ElementRef;
 
@@ -106,13 +106,13 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem("email") != 'null')
-      this.email = localStorage.getItem("email");
     this.userEmail = new FormGroup({
       emailInput: new FormControl(this.email, [
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')])
     });
+    if (localStorage.getItem("email") != 'null')
+      this.email = localStorage.getItem("email");
   }
 
   navigaInPresaInCaricoPagamento() {
