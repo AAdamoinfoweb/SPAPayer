@@ -19,7 +19,7 @@ export class ModificaUtentePermessiComponent implements OnInit {
   inizializzaBreadcrumbList(): void {
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', '/gestisciutenti', null));
+    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', '/gestioneUtenti', null));
     this.breadcrumbList.push(new Breadcrumb(3, 'Modifica Utente/Permessi', null, null));
   }
 
