@@ -13,7 +13,7 @@ import {Bollettino} from '../../../model/bollettino/Bollettino';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {Router} from '@angular/router';
 import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettaglioTransazione';
-import {observable, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {DettagliTransazione} from '../../../model/bollettino/DettagliTransazione';
 import {DettaglioTransazioneEsito} from '../../../model/bollettino/DettaglioTransazioneEsito';
 import {Banner} from '../../../model/Banner';
@@ -22,7 +22,7 @@ import {BannerService} from '../../../../../services/banner.service';
 
 import {JSONPath} from 'jsonpath-plus';
 import {OverlayService} from '../../../../../services/overlay.service';
-import {MenuService} from "../../../../../services/menu.service";
+import {MenuService} from '../../../../../services/menu.service';
 import {RichiestaDettaglioPagamento} from '../../../model/bollettino/RichiestaDettaglioPagamento';
 
 @Component({
@@ -53,7 +53,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   @Input()
   dettaglioPagamento: RichiestaDettaglioPagamento;
-  isBollettinoVerificato: boolean;
+  isBollettinoPagato: boolean;
 
   listaCampiDinamici: Array<CampoForm> = [];
   form: FormGroup = new FormGroup({});
@@ -91,7 +91,9 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   impostaDettaglioPagamento(): void {
     this.isFaseVerificaPagamento = true;
-    // TODO verificare bollettino
+    this.nuovoPagamentoService.verificaBollettino(this.dettaglioPagamento.idBollettino).subscribe((esitoBollettino) => {
+      this.isBollettinoPagato = esitoBollettino === EsitoEnum.OK || esitoBollettino === EsitoEnum.PENDING;
+    });
     // TODO valorizzare i campi input
     // TODO valorizzare i campi output
     this.overlayService.caricamentoEvent.emit(false);

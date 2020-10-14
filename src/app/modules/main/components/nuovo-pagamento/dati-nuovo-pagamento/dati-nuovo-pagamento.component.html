@@ -254,7 +254,8 @@
     </div>
 
     <!-- Bottoni dx -->
-    <div *ngIf="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento)"
+    <div *ngIf="(!dettaglioPagamento && (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento)))
+                || (dettaglioPagamento && !isBollettinoPagato)"
          class="col-10 text-right button-space">
           <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top" *ngIf="!dettaglioPagamento">
             <button (click)="salvaPerDopo()" id="bottoneSalvaPerDopo" class="btn btn-secondary"
