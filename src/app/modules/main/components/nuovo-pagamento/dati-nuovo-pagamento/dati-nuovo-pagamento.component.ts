@@ -23,6 +23,7 @@ import {BannerService} from '../../../../../services/banner.service';
 import {JSONPath} from 'jsonpath-plus';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from "../../../../../services/menu.service";
+import {RichiestaDettaglioPagamento} from '../../../model/bollettino/RichiestaDettaglioPagamento';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -49,6 +50,9 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   @Input()
   servizio: FiltroServizio = null;
+
+  @Input()
+  dettaglioPagamento: RichiestaDettaglioPagamento;
 
   listaCampiDinamici: Array<CampoForm> = [];
   form: FormGroup = new FormGroup({});

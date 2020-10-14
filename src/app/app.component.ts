@@ -7,6 +7,7 @@ import {UserIdleService} from "angular-user-idle";
 import {AuthguardService} from "./services/authguard.service";
 import {Router} from "@angular/router";
 import {OverlayService} from './services/overlay.service';
+import {RichiestaDettaglioPagamento} from './modules/main/model/bollettino/RichiestaDettaglioPagamento';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit {
 
   title = '';
   caricamento = false;
-  modale = null;
+  dettaglioPagamento = null;
 
   constructor(private menuService: MenuService,
               private router: Router,
@@ -35,7 +36,6 @@ export class AppComponent implements OnInit {
       this.logout();
     });
 
-
     this.menuService.getInfoUtente().subscribe((info) => {
       this.menuService.infoUtenteEmitter.emit(info);
     });
@@ -45,12 +45,14 @@ export class AppComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
-    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(id => {
-      this.modale = id;
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(richiestaDettaglioPagamento => {
+      this.dettaglioPagamento = richiestaDettaglioPagamento;
       this.cdr.detectChanges();
     });
 
     this.letturatipologicheSelect();
+
+    // this.mockModaleDettaglioPagamento();
   }
 
   // @HostListener('window:beforeunload')
@@ -72,5 +74,14 @@ export class AppComponent implements OnInit {
     this.toponomasticaService.recuperaComuni().pipe(map(res => {
       localStorage.setItem(TipologicaSelectEnum.COMUNI, JSON.stringify(res));
     })).subscribe();
+  }
+
+  mockModaleDettaglioPagamento(): void {
+    const mockDettaglioPagamento = new RichiestaDettaglioPagamento();
+    mockDettaglioPagamento.idBollettino = 1;
+    mockDettaglioPagamento.idLivelloTerritoriale = 1;
+    mockDettaglioPagamento.idEnte = 4;
+    mockDettaglioPagamento.idServizio = 101;
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(mockDettaglioPagamento);
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
 import {LivelloTerritoriale} from '../../../model/LivelloTerritoriale';
@@ -7,6 +7,7 @@ import {FiltroServizio} from '../../../model/FiltroServizio';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from "../../../../../services/menu.service";
+import {RichiestaDettaglioPagamento} from '../../../model/bollettino/RichiestaDettaglioPagamento';
 
 @Component({
   selector: 'app-compila-nuovo-pagamento',
@@ -21,6 +22,9 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   livelloTerritorialeSelezionato: LivelloTerritoriale = null;
   enteSelezionato: Ente = null;
   servizioSelezionato: FiltroServizio = null;
+
+  @Input()
+  dettaglioPagamento: RichiestaDettaglioPagamento;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private menuService: MenuService,
@@ -50,6 +54,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: livello.nome
         });
       });
+
+      if (this.dettaglioPagamento) {
+        this.livelloTerritorialeSelezionato = this.listaLivelliTerritoriali.find(item => item.value.id === this.dettaglioPagamento.idLivelloTerritoriale)?.value;
+        this.selezionaLivelloTerritoriale();
+      }
     })).subscribe(() => this.restoreParziale('livelloTerritorialeId'));
   }
 
@@ -91,7 +100,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
     this.servizioSelezionato = null;
     this.listaServizi = [];
 
-    this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato.id);
+    this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato?.id);
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
@@ -103,6 +112,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: ente.nome
         });
       });
+
+      if (this.dettaglioPagamento) {
+        this.enteSelezionato = this.listaEnti.find(item => item.value.id === this.dettaglioPagamento.idEnte)?.value;
+        this.selezionaEnte();
+      }
     })).subscribe(() => this.restoreParziale('enteId'));
   }
 
@@ -111,7 +125,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
     this.servizioSelezionato = null;
     this.listaServizi = [];
 
-    this.recuperaFiltroServizi(this.enteSelezionato.id);
+    this.recuperaFiltroServizi(this.enteSelezionato?.id);
   }
 
   recuperaFiltroServizi(idEnte): void {
@@ -123,6 +137,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: servizio.nome
         });
       });
+
+      if (this.dettaglioPagamento) {
+        this.servizioSelezionato = this.listaServizi.find(item => item.value.id === this.dettaglioPagamento.idServizio)?.value;
+        this.selezionaServizio();
+      }
     })).subscribe(() => this.restoreParziale('servizioId'));
   }
 
