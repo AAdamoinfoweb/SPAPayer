@@ -79,7 +79,9 @@ export class AppComponent implements OnInit {
   mockModaleDettaglioPagamento(): void {
     const mockDettaglioPagamento = new RichiestaDettaglioPagamento();
     mockDettaglioPagamento.idBollettino = 1;
-    mockDettaglioPagamento.idServizio = 1;
+    mockDettaglioPagamento.idLivelloTerritoriale = 1;
+    mockDettaglioPagamento.idEnte = 4;
+    mockDettaglioPagamento.idServizio = 101;
     this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(mockDettaglioPagamento);
   }
 }

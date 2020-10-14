@@ -54,6 +54,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: livello.nome
         });
       });
+
+      if (this.dettaglioPagamento) {
+        this.livelloTerritorialeSelezionato = this.listaLivelliTerritoriali.find(item => item.value.id === this.dettaglioPagamento.idLivelloTerritoriale)?.value;
+        this.selezionaLivelloTerritoriale();
+      }
     })).subscribe(() => this.restoreParziale('livelloTerritorialeId'));
   }
 
@@ -95,7 +100,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
     this.servizioSelezionato = null;
     this.listaServizi = [];
 
-    this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato.id);
+    this.recuperaFiltroEnti(this.livelloTerritorialeSelezionato?.id);
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
@@ -107,6 +112,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: ente.nome
         });
       });
+
+      if (this.dettaglioPagamento) {
+        this.enteSelezionato = this.listaEnti.find(item => item.value.id === this.dettaglioPagamento.idEnte)?.value;
+        this.selezionaEnte();
+      }
     })).subscribe(() => this.restoreParziale('enteId'));
   }
 
@@ -115,7 +125,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
     this.servizioSelezionato = null;
     this.listaServizi = [];
 
-    this.recuperaFiltroServizi(this.enteSelezionato.id);
+    this.recuperaFiltroServizi(this.enteSelezionato?.id);
   }
 
   recuperaFiltroServizi(idEnte): void {
@@ -127,6 +137,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: servizio.nome
         });
       });
+
+      if (this.dettaglioPagamento) {
+        this.servizioSelezionato = this.listaServizi.find(item => item.value.id === this.dettaglioPagamento.idServizio)?.value;
+        this.selezionaServizio();
+      }
     })).subscribe(() => this.restoreParziale('servizioId'));
   }
 

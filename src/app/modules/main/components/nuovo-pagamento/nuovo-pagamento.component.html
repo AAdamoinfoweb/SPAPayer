@@ -1,6 +1,13 @@
 <div id="nuovoPagamento">
-  <p>Home / Pagamento / <strong>Nuovo pagamento</strong></p>
-  <p class="title page-title">Nuovo pagamento</p>
+  <div *ngIf="!dettaglioPagamento">
+    <p>Home / Pagamento / <strong>Nuovo Pagamento</strong></p>
+    <p class="title page-title">Nuovo Pagamento</p>
+  </div>
+
+  <div *ngIf="dettaglioPagamento">
+    <p>< I Miei Pagamenti</p>
+    <p class="title page-title">Dettaglio Pagamento</p>
+  </div>
 
   <app-compila-nuovo-pagamento [dettaglioPagamento]="dettaglioPagamento"></app-compila-nuovo-pagamento>
 
