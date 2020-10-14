@@ -46,6 +46,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   loading = false;
   urlBack: string;
+  isShow = true;
 
   constructor(private router: Router, private renderer: Renderer2,
               private nuovoPagamentoService: NuovoPagamentoService,
@@ -59,7 +60,38 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     this.breadcrumbList.push(new Breadcrumb(1, 'Pagamenti', null, null));
     this.breadcrumbList.push(new Breadcrumb(2, 'Carrello', null, null));
     this.route.queryParams.subscribe((params) => {
-      this.rid = params.rid;
+      if (params.esito) {
+        this.isShow = false;
+
+        if (menuService.isUtenteAnonimo) {
+          for (var key in localStorage) {
+            if (key.startsWith("boll-"))
+              localStorage.removeItem(key);
+          }
+        } else {
+          this.overlayService.caricamentoEvent.emit(true);
+          this.nuovoPagamentoService.svuotaCarrello()
+            .subscribe(() => this.overlayService.caricamentoEvent.emit(false));
+        }
+
+        let banner: Banner;
+        if (params.esito == "OK") {
+          banner = {
+            titolo: 'Avviso',
+            testo: '',
+            tipo: getBannerType(LivelloBanner.SUCCESS)
+          };
+        } else if (params.esito == "ERROR") {
+          banner = {
+            titolo: 'Avviso',
+            testo: '',
+            tipo: getBannerType(LivelloBanner.WARNING)
+          };
+        }
+        this.bannerService.bannerEvent.emit([banner]);
+      } else {
+        this.rid = params.rid;
+      }
     });
   }
 

@@ -32,6 +32,7 @@ export class NuovoPagamentoService {
   private carrelloUrl = '/carrello';
   private confermaPagamentoUrl = '/confermaPagamento';
   private verificaQuietanzaUrl = '/verificaQuietanza';
+  private svuotaCarrelloUrl = '/svuotaCarrello';
 
   compilazioneEvent: EventEmitter<FiltroServizio> = new EventEmitter<FiltroServizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -225,5 +226,19 @@ export class NuovoPagamentoService {
           } else
             return caught;
         }));
+  }
+
+  svuotaCarrello(): Observable<any> {
+    return this.http.post(environment.bffBaseUrl + this.svuotaCarrelloUrl, null,
+      {withCredentials: true}).pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
+      }));
   }
 }
