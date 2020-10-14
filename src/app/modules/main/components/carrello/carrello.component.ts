@@ -26,7 +26,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   rid: string;
 
-  email;
+  email = null;
 
   @ViewChild('videoPlayer', {static: false}) videoplayer: ElementRef;
 
@@ -36,6 +36,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   loading = false;
   urlBack: string;
   isShow = true;
+  private doSvuotaCarrello = false;
 
   constructor(private router: Router, private renderer: Renderer2,
               private nuovoPagamentoService: NuovoPagamentoService,
@@ -58,9 +59,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
               localStorage.removeItem(key);
           }
         } else {
-          this.overlayService.caricamentoEvent.emit(true);
-          this.nuovoPagamentoService.svuotaCarrello()
-            .subscribe(() => this.overlayService.caricamentoEvent.emit(false));
+          this.doSvuotaCarrello = true;
         }
 
         let banner: Banner;
@@ -106,6 +105,19 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    if (this.doSvuotaCarrello) {
+      this.overlayService.caricamentoEvent.emit(true);
+      this.nuovoPagamentoService.svuotaCarrello()
+        .subscribe(() => {
+          this.initForm();
+          this.overlayService.caricamentoEvent.emit(false);
+        });
+    } else {
+      this.initForm();
+    }
+  }
+
+  private initForm() {
     this.userEmail = new FormGroup({
       emailInput: new FormControl(this.email, [
         Validators.required,
@@ -113,6 +125,8 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     });
     if (this.isShow && localStorage.getItem("email") != 'null')
       this.email = localStorage.getItem("email");
+    else
+      this.email = null;
   }
 
   navigaInPresaInCaricoPagamento() {
