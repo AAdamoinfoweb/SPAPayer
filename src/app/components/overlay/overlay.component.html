@@ -4,24 +4,8 @@
     <span class="sr-only">Loading...</span>
   </div>
 </div>
-<div id="modal-wrapper" *ngIf="modale">
-  <div id="modal-background">
-    <div id="modal-content">
-      <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8">
-          <p id="modal-text">{{modale}}</p>
-        </div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <button class="btn btn-secondary btn-sm" (click)="annulla()">Annulla</button>
-        </div>
-        <div class="col">
-          <button class="btn btn-primary btn-sm" (click)="conferma()">Conferma</button>
-        </div>
-      </div>
-    </div>
+<div id="component-modal-wrapper" *ngIf="modale">
+  <div id="component-modal-background">
+    <app-nuovo-pagamento></app-nuovo-pagamento>
   </div>
 </div>

@@ -45,8 +45,8 @@ export class AppComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
-    this.overlayService.mostraModaleEvent.subscribe(testo => {
-      this.modale = testo;
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(id => {
+      this.modale = id;
       this.cdr.detectChanges();
     });
 

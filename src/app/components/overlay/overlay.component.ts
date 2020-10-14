@@ -17,12 +17,4 @@ export class OverlayComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  conferma(): void {
-    this.overlayService.risultatoModaleEvent.emit(true);
-  }
-
-  annulla(): void {
-    this.overlayService.risultatoModaleEvent.emit(false);
-  }
 }
