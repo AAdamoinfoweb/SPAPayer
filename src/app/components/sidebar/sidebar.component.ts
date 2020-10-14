@@ -29,6 +29,7 @@ export class SidebarComponent implements OnInit {
         if (info) {
           localStorage.setItem('nome', info.nome);
           localStorage.setItem('cognome', info.cognome);
+          localStorage.setItem('email', info.email);
 
           if (!this.menuService.isUtenteAnonimo) {
             this.nomeUtente = `${localStorage.getItem('nome')} ${localStorage.getItem('cognome')}`;
@@ -54,7 +55,7 @@ export class SidebarComponent implements OnInit {
   getRouterLink(sub: any) {
     if (sub.nome === 'Accedi') {
       localStorage.setItem('loginDaAnonimo', 'true');
-      window.location.href = environment.bffBaseUrl + sub.route;
+     window.location.href = environment.bffBaseUrl + sub.route;
       //window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta";
     } else if (sub.nome === 'Esci') {
       this.http.get(environment.bffBaseUrl + '/logout').subscribe((body: any) => {

@@ -106,6 +106,8 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    if (localStorage.getItem("email") != 'null')
+      this.email = localStorage.getItem("email");
     this.userEmail = new FormGroup({
       emailInput: new FormControl(this.email, [
         Validators.required,
