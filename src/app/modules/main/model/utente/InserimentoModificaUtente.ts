@@ -1,5 +1,4 @@
 export class InserimentoModificaUtente {
-  codiceFiscale: string = null;
   nome?: string = null;
   cognome?: string = null;
   email?: string = null;

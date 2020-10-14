@@ -21,8 +21,9 @@ export class DatiUtenteComponent implements OnInit {
   readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
   readonly tipoData = ECalendarValue.Moment;
 
-  @ViewChild('aggiungiUtenteForm') form: NgForm;
+  @ViewChild('datiUtenteForm') form: NgForm;
 
+  codiceFiscale: string;
   datiUtente: InserimentoModificaUtente;
 
   @Output()
@@ -34,6 +35,7 @@ export class DatiUtenteComponent implements OnInit {
   constructor(private utenteService: UtenteService) { }
 
   ngOnInit(): void {
+    this.codiceFiscale = null;
     this.datiUtente = new InserimentoModificaUtente();
     this.datiUtente.attivazione = moment();
   }
@@ -54,8 +56,8 @@ export class DatiUtenteComponent implements OnInit {
 
   clearAutocompleteCodiceFiscale(): void {
     this.listaCodiciFiscali = [];
-    let model = {...this.datiUtente};
-    model.codiceFiscale = null;
+    const model = {...this.datiUtente};
+    this.utenteService.codiceFiscaleEvent.emit(null);
     this.onChangeDatiUtente.emit(model);
   }
 
@@ -99,14 +101,18 @@ export class DatiUtenteComponent implements OnInit {
   }
 
   onChangeModel(): void {
-    let model = {...this.datiUtente};
+    let model = {...this.form.value};
 
     if (this.form.valid) {
       for (let nomeCampo in model) {
         if (model[nomeCampo] !== undefined && model[nomeCampo]) {
           if (nomeCampo === 'codiceFiscale') {
-            this.codiceFiscaleExists = this.listaCodiciFiscali.includes(model[nomeCampo]);
-            model.codiceFiscale = this.codiceFiscaleExists ? null : model[nomeCampo];
+            this.codiceFiscaleExists = this.listaCodiciFiscali.includes(this.codiceFiscale);
+            if (this.codiceFiscaleExists) {
+              this.utenteService.codiceFiscaleEvent.emit(null);
+            } else {
+              this.utenteService.codiceFiscaleEvent.emit(this.codiceFiscale);
+            }
           } else if (typeof model[nomeCampo] === 'object') {
             model[nomeCampo] = moment(model[nomeCampo]).format('YYYY-MM-DD[T]HH:mm:ss');
           }
@@ -114,6 +120,7 @@ export class DatiUtenteComponent implements OnInit {
           model[nomeCampo] = null;
         }
       }
+      delete model.codiceFiscale;
       this.onChangeDatiUtente.emit(model);
       this.onValidaFormDatiUtenti.emit(true);
     } else {

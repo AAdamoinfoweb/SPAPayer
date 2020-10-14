@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
@@ -11,8 +11,10 @@ import {RicercaUtente} from '../modules/main/model/utente/RicercaUtente';
 })
 export class UtenteService {
 
-  private readonly ricercaUtentiUrl = '/utenti';
+  private readonly utentiBaseUrl = '/utenti';
   private readonly letturaCodiceFiscaleUtenteUrl = '/codiceFiscale';
+
+  codiceFiscaleEvent: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private http: HttpClient) { }
 
@@ -49,7 +51,7 @@ export class UtenteService {
       params = params.set('ultimoAccessoA', String(parametriRicercaUtente.ultimoAccessoA));
     }
 
-    return this.http.get(environment.bffBaseUrl + this.ricercaUtentiUrl, {
+    return this.http.get(environment.bffBaseUrl + this.utentiBaseUrl, {
       params: params,
       withCredentials: true
     })

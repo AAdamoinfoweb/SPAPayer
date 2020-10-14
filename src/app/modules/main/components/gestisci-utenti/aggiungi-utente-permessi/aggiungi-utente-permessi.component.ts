@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {Breadcrumb} from '../../../dto/Breadcrumb';
 import {InserimentoModificaUtente} from '../../../model/utente/InserimentoModificaUtente';
+import {UtenteService} from '../../../../../services/utente.service';
+import {Router} from '@angular/router';
+import {DatiPermessoComponent} from '../../dati-permesso/dati-permesso.component';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -13,11 +16,19 @@ export class AggiungiUtentePermessiComponent implements OnInit {
 
   readonly tooltipAggiungiUtentePermessiTitle = 'In questa pagina puoi aggiungere un utente amministratore e abilitarlo a specifici servizi';
 
+  codiceFiscale: string;
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
 
   isFormDatiUtenteValido = false;
 
-  constructor() {
+  @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
+  private componentRef: ComponentRef<any>;
+
+  constructor(private utenteService: UtenteService, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) {
+    this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
+      this.codiceFiscale = codiceFiscale;
+    });
+
     this.inizializzaBreadcrumbList();
   }
 
@@ -35,8 +46,20 @@ export class AggiungiUtentePermessiComponent implements OnInit {
     this.datiUtente = datiUtente;
   }
 
+  aggiungiSezionePermesso(): void {
+    const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiPermessoComponent);
+    this.componentRef = this.target.createComponent(childComponent);
+    this.componentRef.instance.indexSezionePermesso = this.target.length - 1;
+    this.componentRef.instance.onDeletePermesso.subscribe(index => this.target.remove(index));
+  }
+
   disabilitaBottone(): boolean {
-    return this.datiUtente?.codiceFiscale === null || !this.isFormDatiUtenteValido;
+    return this.codiceFiscale === null || !this.isFormDatiUtenteValido;
+  }
+
+  inserimentoDatiUtentePermessi(): void {
+    // this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, this.datiUtente).subscribe();
+    // this.router.navigateByUrl('/modificaUtentePermessi');
   }
 
 }
