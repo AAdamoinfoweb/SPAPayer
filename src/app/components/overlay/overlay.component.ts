@@ -11,7 +11,7 @@ export class OverlayComponent implements OnInit {
   caricamento: boolean;
 
   @Input()
-  modale: string;
+  idBollettino: number;
 
   constructor(private overlayService: OverlayService) { }
 

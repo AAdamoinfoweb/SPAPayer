@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
 
   title = '';
   caricamento = false;
-  modale = null;
+  idBollettino = null;
 
   constructor(private menuService: MenuService,
               private router: Router,
@@ -35,7 +35,6 @@ export class AppComponent implements OnInit {
       this.logout();
     });
 
-
     this.menuService.getInfoUtente().subscribe((info) => {
       this.menuService.infoUtenteEmitter.emit(info);
     });
@@ -46,11 +45,13 @@ export class AppComponent implements OnInit {
     });
 
     this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(id => {
-      this.modale = id;
+      this.idBollettino = id;
       this.cdr.detectChanges();
     });
 
     this.letturatipologicheSelect();
+
+    // this.mockModaleDettaglioPagamento();
   }
 
   // @HostListener('window:beforeunload')
@@ -72,5 +73,9 @@ export class AppComponent implements OnInit {
     this.toponomasticaService.recuperaComuni().pipe(map(res => {
       localStorage.setItem(TipologicaSelectEnum.COMUNI, JSON.stringify(res));
     })).subscribe();
+  }
+
+  mockModaleDettaglioPagamento(): void {
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(1);
   }
 }
