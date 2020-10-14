@@ -53,6 +53,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   @Input()
   dettaglioPagamento: RichiestaDettaglioPagamento;
+  isBollettinoVerificato: boolean;
 
   listaCampiDinamici: Array<CampoForm> = [];
   form: FormGroup = new FormGroup({});
@@ -86,6 +87,14 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     if (changes.servizio) {
       this.inizializzazioneForm(this.servizio).subscribe(() => this.restoreParziale());
     }
+  }
+
+  impostaDettaglioPagamento(): void {
+    this.isFaseVerificaPagamento = true;
+    // TODO verificare bollettino
+    // TODO valorizzare i campi input
+    // TODO valorizzare i campi output
+    this.overlayService.caricamentoEvent.emit(false);
   }
 
   private restoreParziale() {
@@ -271,7 +280,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
         this.impostaCampi(campiNuovoPagamento.campiServizio);
 
-        this.overlayService.caricamentoEvent.emit(false);
+        if (this.dettaglioPagamento) {
+          this.impostaDettaglioPagamento();
+        } else {
+          this.overlayService.caricamentoEvent.emit(false);
+        }
       }));
     } else {
       return of(null);
@@ -303,7 +316,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     campi.forEach(campo => {
       const campoForm = new FormControl();
-      if (campo.disabilitato || !campo.campo_input) {
+      if (campo.disabilitato || !campo.campo_input || this.dettaglioPagamento) {
         campoForm.disable();
       }
 
@@ -370,7 +383,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   isCampoDisabilitato(campo: CampoForm): boolean {
-    if (this.isFaseVerificaPagamento) {
+    if (this.isFaseVerificaPagamento || this.dettaglioPagamento) {
       return true;
     } else {
       if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {
