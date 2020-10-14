@@ -58,7 +58,7 @@ export class AggiungiUtentePermessiComponent implements OnInit {
   }
 
   inserimentoDatiUtentePermessi(): void {
-    // this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, this.datiUtente).subscribe();
+    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, this.datiUtente).subscribe();
     // this.router.navigateByUrl('/modificaUtentePermessi');
   }
 

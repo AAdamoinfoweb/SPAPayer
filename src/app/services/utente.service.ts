@@ -5,6 +5,7 @@ import {catchError, map} from 'rxjs/operators';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {ParametriRicercaUtente} from '../modules/main/model/utente/ParametriRicercaUtente';
 import {RicercaUtente} from '../modules/main/model/utente/RicercaUtente';
+import {InserimentoModificaUtente} from '../modules/main/model/utente/InserimentoModificaUtente';
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +76,22 @@ export class UtenteService {
     })
       .pipe(map((body: any) => {
         return body;
+      }));
+  }
+
+  inserimentoAggiornamentoUtente(codiceFiscale: string, datiUtente: InserimentoModificaUtente): Observable<any> {
+    const url = environment.bffBaseUrl + this.utentiBaseUrl;
+
+    return this.http.put(`${url}/${codiceFiscale}`, datiUtente,
+      {withCredentials: true}).pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
       }));
   }
 
