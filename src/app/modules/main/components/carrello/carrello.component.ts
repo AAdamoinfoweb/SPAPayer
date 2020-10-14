@@ -111,7 +111,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')])
     });
-    if (localStorage.getItem("email") != 'null')
+    if (this.isShow && localStorage.getItem("email") != 'null')
       this.email = localStorage.getItem("email");
   }
 
