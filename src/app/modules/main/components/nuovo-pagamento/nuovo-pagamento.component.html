@@ -2,10 +2,10 @@
   <p>Home / Pagamento / <strong>Nuovo pagamento</strong></p>
   <p class="title page-title">Nuovo pagamento</p>
 
-  <app-compila-nuovo-pagamento></app-compila-nuovo-pagamento>
+  <app-compila-nuovo-pagamento [dettaglioPagamento]="dettaglioPagamento"></app-compila-nuovo-pagamento>
 
   <div *ngIf="servizioSelezionato">
-    <app-dati-nuovo-pagamento [servizio]="servizioSelezionato"></app-dati-nuovo-pagamento>
+    <app-dati-nuovo-pagamento [servizio]="servizioSelezionato" [dettaglioPagamento]="dettaglioPagamento"></app-dati-nuovo-pagamento>
   </div>
 </div>
 

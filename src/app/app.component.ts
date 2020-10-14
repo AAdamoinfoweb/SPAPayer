@@ -7,6 +7,7 @@ import {UserIdleService} from "angular-user-idle";
 import {AuthguardService} from "./services/authguard.service";
 import {Router} from "@angular/router";
 import {OverlayService} from './services/overlay.service';
+import {RichiestaDettaglioPagamento} from './modules/main/model/bollettino/RichiestaDettaglioPagamento';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit {
 
   title = '';
   caricamento = false;
-  idBollettino = null;
+  dettaglioPagamento = null;
 
   constructor(private menuService: MenuService,
               private router: Router,
@@ -44,8 +45,8 @@ export class AppComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
-    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(id => {
-      this.idBollettino = id;
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(richiestaDettaglioPagamento => {
+      this.dettaglioPagamento = richiestaDettaglioPagamento;
       this.cdr.detectChanges();
     });
 
@@ -76,6 +77,9 @@ export class AppComponent implements OnInit {
   }
 
   mockModaleDettaglioPagamento(): void {
-    this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(1);
+    const mockDettaglioPagamento = new RichiestaDettaglioPagamento();
+    mockDettaglioPagamento.idBollettino = 1;
+    mockDettaglioPagamento.idServizio = 1;
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(mockDettaglioPagamento);
   }
 }

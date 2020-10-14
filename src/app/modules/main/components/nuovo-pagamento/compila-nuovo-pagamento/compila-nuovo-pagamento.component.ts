@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
 import {map} from 'rxjs/operators';
 import {LivelloTerritoriale} from '../../../model/LivelloTerritoriale';
@@ -7,6 +7,7 @@ import {FiltroServizio} from '../../../model/FiltroServizio';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from "../../../../../services/menu.service";
+import {RichiestaDettaglioPagamento} from '../../../model/bollettino/RichiestaDettaglioPagamento';
 
 @Component({
   selector: 'app-compila-nuovo-pagamento',
@@ -21,6 +22,9 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   livelloTerritorialeSelezionato: LivelloTerritoriale = null;
   enteSelezionato: Ente = null;
   servizioSelezionato: FiltroServizio = null;
+
+  @Input()
+  dettaglioPagamento: RichiestaDettaglioPagamento;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private menuService: MenuService,
