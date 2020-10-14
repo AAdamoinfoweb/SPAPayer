@@ -83,7 +83,7 @@ export class GestisciUtentiComponent implements OnInit {
 
   creaRigaTabella(utente: RicercaUtente): object {
     const dataSistema = moment();
-    const nomeUtente = utente.cognome.charAt(0).toUpperCase() + utente.cognome.slice(1) + ' ' + utente.nome.charAt(0).toUpperCase() + utente.nome.slice(1);
+    const nomeUtente = utente.cognome?.charAt(0).toUpperCase() + utente.cognome?.slice(1) + ' ' + utente.nome?.charAt(0).toUpperCase() + utente.nome?.slice(1);
 
     // TODO sostituire link mockato con redirect a monitoraAccessi
     const ultimoAccesso = utente.ultimoAccesso ? Utils.creaLink(moment(utente.ultimoAccesso).format('DD/MM/YYYY'), 'www.dxc.com') : null;
