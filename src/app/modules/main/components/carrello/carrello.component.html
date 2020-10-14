@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="!waiting">
   <it-breadcrumb [dark]="isDark" [separator]="separator">
     <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
                         [link]="item.link" [icon]="item.icon">

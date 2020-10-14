@@ -36,6 +36,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   loading = false;
   urlBack: string;
   isShow = true;
+  waiting = false;
   private doSvuotaCarrello = false;
 
   constructor(private router: Router, private renderer: Renderer2,
@@ -106,9 +107,11 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     if (this.doSvuotaCarrello) {
+      this.waiting = true;
       this.overlayService.caricamentoEvent.emit(true);
       this.nuovoPagamentoService.svuotaCarrello()
         .subscribe(() => {
+          this.waiting = false;
           this.initForm();
           this.overlayService.caricamentoEvent.emit(false);
         });
