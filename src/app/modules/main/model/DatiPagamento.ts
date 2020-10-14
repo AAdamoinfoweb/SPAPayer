@@ -1,5 +1,3 @@
-import {date} from "fp-ts";
-
 export class DatiPagamento {
   dettaglioTransazioneId: number;
   annoDocumento: number;

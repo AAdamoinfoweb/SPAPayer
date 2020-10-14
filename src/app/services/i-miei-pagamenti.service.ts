@@ -17,7 +17,7 @@ export class IMieiPagamentiService {
 
   private readonly ricercaPagamentiUrl = '/pagamenti';
   private readonly eliminaBollettinoUrl = '/eliminaBollettino';
-  private readonly letturaCampiUrl = '/letturaCampi';
+  private readonly inserimentoPagamentiUrl = '/inserimentoPagamentiCarrello';
   private readonly stampaAttestatiPagamentoUrl = '/stampaAttestatiPagamento';
 
   constructor(private readonly http: HttpClient) {
@@ -54,7 +54,7 @@ export class IMieiPagamentiService {
   }
 
   eliminaBollettino(value: DettagliTransazione) {
-    return this.http.post(environment.bffBaseUrl + this.eliminaBollettinoUrl, value,
+    return this.http.post(environment.bffBaseUrl + this.eliminaBollettinoUrl, JSON.stringify(value),
       {withCredentials: true}).pipe(map((body: any) => {
         return body;
       }),
@@ -67,10 +67,12 @@ export class IMieiPagamentiService {
       }));
   }
 
-  letturaCampi(codiceAvviso: string): Observable<CampoDettaglioTransazione[]> {
-    const pathVariable = '/' + codiceAvviso;
-    return this.http.get(environment.bffBaseUrl + this.letturaCampiUrl + pathVariable,
-      {withCredentials: true}).pipe(map((body: CampoDettaglioTransazione[]) => {
+  stampaAttestatiPagamento(listaIdentificativi: number[]): Observable<string[]> {
+    let params = new HttpParams();
+    const listaIdentficativiString = listaIdentificativi.join(',');
+    params = params.set('listaIdentificativi', listaIdentficativiString);
+    return this.http.get(environment.bffBaseUrl + this.stampaAttestatiPagamentoUrl,
+      {params: params, withCredentials: true}).pipe(map((body: string[]) => {
         return body;
       }),
       catchError((err, caught) => {
@@ -82,14 +84,11 @@ export class IMieiPagamentiService {
       }));
   }
 
-  stampaAttestatiPagamento(listaIdentificativi: number[]): Observable<string[]> {
-    const params = new HttpParams();
-    const listaIdentficativiString = listaIdentificativi.join(',');
-    params.set('listaIdentificativi', listaIdentficativiString);
-    return this.http.get(environment.bffBaseUrl + this.stampaAttestatiPagamentoUrl,
-      {withCredentials: true, params}).pipe(map((body: string[]) => {
-        return body;
-      }),
+
+  inserimentoPagamentiCarrello(pagamenti: DatiPagamento[]): Observable<any> {
+    const url = environment.bffBaseUrl + this.inserimentoPagamentiUrl;
+    return this.http.post(url , JSON.stringify(pagamenti),
+      {withCredentials: true}).pipe(map((body: any) => body),
       catchError((err, caught) => {
         if (err.status == 401 || err.status == 400) {
           return of(null);
