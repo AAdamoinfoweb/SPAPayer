@@ -52,7 +52,7 @@ export class LoginBarComponent implements OnInit, AfterViewInit {
     if (this.menuService.isUtenteAnonimo) {
       window.location.href = environment.bffBaseUrl + '/loginLepida.htm';
     } else {
-      this.http.get(environment.bffBaseUrl + '/logout').subscribe((body: any) => {
+      this.http.get(environment.bffBaseUrl + '/logout', {withCredentials: true}).subscribe((body: any) => {
         if (body.url) {
           this.menuService.userEventChange.emit();
           window.location.href = body.url;

@@ -36,6 +36,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   loading = false;
   urlBack: string;
   isShow = true;
+  waiting = false;
   private doSvuotaCarrello = false;
 
   constructor(private router: Router, private renderer: Renderer2,
@@ -95,9 +96,11 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-0 > li'), 'active');
-    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
-    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-2 > li > a'), 'active-bold');
+    if (!this.waiting) {
+      this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-0 > li'), 'active');
+      this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+      this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-2 > li > a'), 'active-bold');
+    }
   }
 
   toggleVideo() {
@@ -106,9 +109,11 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     if (this.doSvuotaCarrello) {
+      this.waiting = true;
       this.overlayService.caricamentoEvent.emit(true);
       this.nuovoPagamentoService.svuotaCarrello()
         .subscribe(() => {
+          this.waiting = false;
           this.initForm();
           this.overlayService.caricamentoEvent.emit(false);
         });

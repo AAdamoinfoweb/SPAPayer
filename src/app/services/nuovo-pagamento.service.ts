@@ -168,7 +168,7 @@ export class NuovoPagamentoService {
   }
 
   getCarrello(): Observable<Carrello> {
-    return this.http.get(environment.bffBaseUrl + this.carrelloUrl)
+    return this.http.get(environment.bffBaseUrl + this.carrelloUrl, {withCredentials: true})
       .pipe(map((body: any) => body),
         catchError((err, caught) => {
           if (err.status == 401) {

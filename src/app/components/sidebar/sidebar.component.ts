@@ -55,10 +55,10 @@ export class SidebarComponent implements OnInit {
   getRouterLink(sub: any) {
     if (sub.nome === 'Accedi') {
       localStorage.setItem('loginDaAnonimo', 'true');
-     window.location.href = environment.bffBaseUrl + sub.route;
+      window.location.href = environment.bffBaseUrl + sub.route;
       //window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
     } else if (sub.nome === 'Esci') {
-      this.http.get(environment.bffBaseUrl + '/logout').subscribe((body: any) => {
+      this.http.get(environment.bffBaseUrl + '/logout', {withCredentials: true}).subscribe((body: any) => {
         if (body.url) {
           this.menuService.userEventChange.emit();
           window.location.href = body.url;

@@ -42,7 +42,7 @@
         </div>
         <div class="row">
           <div id="cart-price-container">
-            <div id="cart-price" class="rounded-pill" [ngClass]="{'hide': prezzoCarrello == null}">
+            <div id="cart-price" class="rounded-pill" [ngClass]="{'hide': prezzoCarrello == null || prezzoCarrello == 0}">
               {{prezzoCarrello}}€
             </div>
           </div>
