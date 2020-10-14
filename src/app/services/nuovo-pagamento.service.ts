@@ -33,6 +33,7 @@ export class NuovoPagamentoService {
   private confermaPagamentoUrl = '/confermaPagamento';
   private verificaQuietanzaUrl = '/verificaQuietanza';
   private svuotaCarrelloUrl = '/svuotaCarrello';
+  private verificaEsitoPagamentoUrl = '/verificaEsitoPagamento';
 
   compilazioneEvent: EventEmitter<FiltroServizio> = new EventEmitter<FiltroServizio>();
   prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -239,6 +240,20 @@ export class NuovoPagamentoService {
         } else {
           return caught;
         }
+      }));
+  }
+
+  public verificaEsitoPagamento(idSession: string, ultima: boolean): Observable<any> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append("XSRF-TOKEN", idSession)
+    return this.http.post(environment.bffBaseUrl + this.verificaEsitoPagamentoUrl, ultima, {withCredentials: true, headers: headers})
+      .pipe(map((json: any) => {
+        return json ? json.url : null;
+      }), catchError((err, caught) => {
+        if (err.status == 401) {
+          return of(null);
+        } else
+          return caught;
       }));
   }
 }

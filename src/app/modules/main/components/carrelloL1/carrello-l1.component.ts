@@ -56,6 +56,7 @@ export class CarrelloL1Component implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    localStorage.clear();
     this.userEmail = new FormGroup({
       emailInput: new FormControl(this.email, [
         Validators.required,
