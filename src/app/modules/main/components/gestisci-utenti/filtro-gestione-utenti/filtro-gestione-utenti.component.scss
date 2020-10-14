@@ -1,29 +1,11 @@
 .input-disabled {
   pointer-events: none;
   opacity: 0.7;
-  border-bottom-color: rgba(118, 118, 118, 0.3);
+  background-color: #E3E3E3;
 }
 
 .text-disabled {
   opacity: 0.7;
-}
-
-.input-text {
-  background-color: transparent;
-  height: auto;
-  font-weight: normal;
-}
-
-.img-calendar {
-  position: absolute;
-  bottom: 0;
-  fill: #77777B;
-  cursor: pointer;
-  background: transparent !important;
-}
-
-:host::ng-deep dp-date-picker.dp-material .dp-picker-input {
-  padding-left: 40px;
 }
 
 .btn-find {

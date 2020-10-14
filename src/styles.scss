@@ -129,3 +129,18 @@ select:focus {
 select:disabled {
   background-color: #E3E3E3;
 }
+
+.p-autocomplete.p-component {
+  width: 85%;
+}
+
+.p-autocomplete-input.p-inputtext.p-component {
+  box-shadow: none !important;
+  background-color: transparent;
+  font-weight: normal !important;
+}
+
+.p-autocomplete-input.p-inputtext:enabled:hover,
+.p-autocomplete-input.p-inputtext:enabled:focus {
+  border-color: #77777B;
+}

@@ -1,9 +1,3 @@
-.input-text {
-  background-color: transparent;
-  height: auto;
-  font-weight: normal;
-}
-
 .text-muted {
   color: #77777B;
 }
@@ -15,17 +9,4 @@
 .required:after {
   content: ' *';
   color: red;
-}
-
-.img-calendar {
-  position: absolute;
-  bottom: 0;
-  fill: #77777B;
-  cursor: pointer;
-  background: transparent !important;
-}
-
-:host::ng-deep dp-date-picker.dp-material .dp-picker-input {
-  padding-left: 40px;
-  width: 100%;
 }

@@ -10,7 +10,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <p-autoComplete id="codiceFiscaleId" class="input-text pt-0" name="codiceFiscale" aria-describedby="codiceFiscaleIdHelpDescription"
+            <p-autoComplete id="codiceFiscaleId" class="pt-0" name="codiceFiscale" aria-describedby="codiceFiscaleIdHelpDescription"
                             pattern="^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$" required
                             #codicefiscaleinput = "ngModel" [(ngModel)]="codiceFiscale"
                             [suggestions]="listaCodiciFiscali" (completeMethod)="loadSuggestions($event)"
@@ -38,7 +38,7 @@
           <div class="col">
             <input type="text" id="nomeUtente" name="nome" #nomeInput="ngModel" aria-describedby="nomeUtenteHelpDescription"
                    [(ngModel)]="datiUtente.nome" (ngModelChange)="onChangeModel()"
-                   class="input-text pt-0" autocomplete="off">
+                   class="pt-0" autocomplete="off">
           </div>
         </div>
         <div class="row">
@@ -59,7 +59,7 @@
           <div class="col">
             <input type="text" id="cognomeUtente" name="cognome" #cognomeInput="ngModel" aria-describedby="cognomeUtenteHelpDescription"
                    [(ngModel)]="datiUtente.cognome" (ngModelChange)="onChangeModel()"
-                   class="input-text pt-0" autocomplete="off">
+                   class="pt-0" autocomplete="off">
           </div>
         </div>
         <div class="row">
@@ -84,7 +84,7 @@
             <input type="email" id="emailUtente" name="email" #emailInput="ngModel"
                    pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                    [(ngModel)]="datiUtente.email" (ngModelChange)="onChangeModel()"
-                   class="input-text pt-0" autocomplete="off" aria-describedby="emailUtenteHelpDescription">
+                   class="pt-0" autocomplete="off" aria-describedby="emailUtenteHelpDescription">
           </div>
         </div>
         <div class="row">
@@ -106,7 +106,7 @@
             <input type="text" id="telefonoUtente" name="telefono" #telefonoInput="ngModel"
                    pattern="^[(+|[0-9]]*[0-9]{0,14}$"
                    [(ngModel)]="datiUtente.telefono" (ngModelChange)="onChangeModel()"
-                   class="input-text pt-0" autocomplete="off" aria-describedby="telefonoUtenteHelpDescription">
+                   class="pt-0" autocomplete="off" aria-describedby="telefonoUtenteHelpDescription">
           </div>
         </div>
         <div class="row">
@@ -124,7 +124,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col">
+          <div class="col calendar-wrapper">
             <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerAttivazione)">
               <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
             </svg>
@@ -167,7 +167,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col">
+          <div class="col calendar-wrapper">
             <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenza)">
               <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
             </svg>
