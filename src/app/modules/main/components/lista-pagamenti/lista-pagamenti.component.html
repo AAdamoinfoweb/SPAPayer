@@ -19,7 +19,8 @@
         <use [attr.xlink:href]=this.sort.causale></use>
       </svg>
     </div>
-    <div class="col-lg-2 col-md-2 col-sm-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0" (click)="onSort('servizio')">Servizio
+    <div class="col-lg-2 col-md-2 col-sm-2 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0" (click)="onSort('servizio')">
+      Servizio
       <svg class="bg-light icon icon-sm align-items-center">
         <use [attr.xlink:href]=this.sort.servizio></use>
       </svg>
@@ -39,8 +40,11 @@
   <ng-container *ngFor="let pagamento of listaPagamenti | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
     <div class="row pt-2 pb-2 table-item">
       <div class="col-lg-1 col-md-1 d-none d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">
-        <svg class="bg-light icon icon-sm">
+        <svg fill="#004987" (click)="eliminaBollettino(pagamento)" class="bg-light icon icon-sm" style="margin-right: 0.4rem">
           <use xlink:href="assets/img/sprite.svg#it-delete"></use>
+        </svg>
+        <svg fill="#004987" (click)="salvaPerDopo(pagamento)" class="bg-light icon icon-sm">
+          <use xlink:href="assets/img/sprite.svg#it-pin"></use>
         </svg>
       </div>
       <div
@@ -55,23 +59,30 @@
   </ng-container>
   <div class="row pt-3 align-items-center justify-content-between">
     <div class="col-auto">Mostra
-        <div ngbDropdown class="d-inline-block pl-2">
-          <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{pageSize}}</button>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <button ngbDropdownItem (click)="onChangePageSize($event)">5</button>
-            <button ngbDropdownItem (click)="onChangePageSize($event)">10</button>
-            <button ngbDropdownItem (click)="onChangePageSize($event)">15</button>
-          </div>
-      </div>risultati
-    </div>
-      <div class="col-auto">
-        <ngb-pagination
-          [(page)]="page"
-          [pageSize]="pageSize"
-          [collectionSize]="collectionSize"
-          [boundaryLinks]="true"
-          [maxSize]="5"
-          size="sm"></ngb-pagination>
+      <div ngbDropdown class="d-inline-block pl-2">
+        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{pageSize}}</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem (click)="onChangePageSize($event)">5</button>
+          <button ngbDropdownItem (click)="onChangePageSize($event)">10</button>
+          <button ngbDropdownItem (click)="onChangePageSize($event)">15</button>
+        </div>
       </div>
+      risultati
+    </div>
+    <div class="col-auto">
+      <ngb-pagination
+        [(page)]="page"
+        [pageSize]="pageSize"
+        [collectionSize]="collectionSize"
+        [boundaryLinks]="true"
+        [maxSize]="5"
+        size="sm"></ngb-pagination>
+    </div>
   </div>
 </div>
+<p-confirmDialog #cb icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
+    <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
+  </p-footer>
+</p-confirmDialog>

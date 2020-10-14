@@ -1,6 +1,9 @@
 {
   "name": "spapayer",
   "version": "0.0.1",
+  "browser": {
+    "vm": false
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxyconf.json --host 0.0.0.0 --port 80 --disable-host-check",
@@ -40,13 +43,14 @@
     "jspdf": "^2.1.1",
     "jspdf-autotable": "^3.5.13",
     "lodash": "^4.17.20",
+    "jsonpath-plus": "4.0.0",
     "moment": "^2.27.0",
     "ng2-date-picker": "10.0.0",
     "ngx-currency": "2.5.1",
     "ngx-custom-validators": "9.1.0",
     "ngx-youtube-player": "^7.1.5",
-    "primeicons": "^4.0.0",
-    "primeng": "^10.0.0",
+    "primeicons": "4.0.0",
+    "primeng": "10.0.3",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
     "xlsx": "^0.16.8",

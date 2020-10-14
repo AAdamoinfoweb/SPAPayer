@@ -11,7 +11,11 @@ export class MenuService {
   private getInfoUtenteUrl: string = '/getInfoUtente';
 
   infoUtenteEmitter: EventEmitter<any> = new EventEmitter<any>();
-  userAutenticatedEvent: EventEmitter<any> = new EventEmitter<any>();
+  userEventChange: EventEmitter<any> = new EventEmitter<any>();
+
+  get isUtenteAnonimo(): boolean {
+    return localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';
+  }
 
   constructor(private http: HttpClient) {
   }

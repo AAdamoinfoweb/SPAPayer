@@ -14,8 +14,8 @@ export class PagamentoService {
 
   private confermaPagamentoUrl = '/confermaPagamento';
   private confermaPagamentoL1Url = '/confermaPagamentoL1';
-  private verificaEsitoPagamentoUrl = '/verificaEsitoPagamento';
-  private verificaQuietanzaUrl = '/verificaQuietanza';
+  private verificaEsitoPagamentoUrl = '/verificaEsitoPagamentoL1';
+  private verificaQuietanzaUrl = '/verificaQuietanzaL1';
   private quietanzaUrl = '/quietanza';
   private redirectCarrelloUrl = '/cart/extCart.do';
 
@@ -87,7 +87,7 @@ export class PagamentoService {
   public redirectCarrello(buffer: any): Observable<string> {
 
     let s = '?buffer=' + buffer
-    return this.http.get(environment.bffBaseUrl + this.redirectCarrelloUrl +s)
+    return this.http.get(environment.bffBaseUrl + this.redirectCarrelloUrl +s, {withCredentials: true})
       .pipe(map((body: any) => body.url),
         catchError((err, caught) => {
           if (err.status == 401) {

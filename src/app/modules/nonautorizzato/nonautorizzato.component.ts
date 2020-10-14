@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {XsrfService} from "../../services/xsrf.service";
 import {environment} from "../../../environments/environment";
 import {map} from "rxjs/operators";
+import {OverlayService} from '../../services/overlay.service';
 
 @Component({
   selector: 'app-nonautorizzato',
@@ -15,7 +16,8 @@ export class NonautorizzatoComponent implements OnInit {
   urlBack: string;
   private getUrlBack: string = '/getBackUrl';
 
-  constructor(private route: Router, private http: HttpClient, private xsrfService: XsrfService) {
+  constructor(private route: Router, private http: HttpClient, private xsrfService: XsrfService, private overlayService: OverlayService) {
+    this.overlayService.caricamentoEvent.emit(false);
   }
 
   ngOnInit(): void {

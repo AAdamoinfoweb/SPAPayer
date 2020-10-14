@@ -5,5 +5,6 @@ export class Pagamento {
   ente: string;
   anno: number;
   importo: number;
+  id: number;
 
 }

@@ -47,6 +47,12 @@ import {AggiungiUtentePermessiComponent} from './modules/main/components/gestisc
 import {DatiUtenteComponent} from './modules/main/components/dati-utente/dati-utente.component';
 import {DatiPermessoComponent} from './modules/main/components/dati-permesso/dati-permesso.component';
 import {ModificaUtentePermessiComponent} from './modules/main/components/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
+import {DayInputDirective} from './utils/DayInputDirective';
+import {MonthInputDirective} from './utils/MonthInputDirective';
+import { OverlayComponent } from './components/overlay/overlay.component';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ConfirmationService} from "primeng/api";
 
 @NgModule({
   declarations: [
@@ -75,6 +81,25 @@ import {ModificaUtentePermessiComponent} from './modules/main/components/gestisc
     DatiPermessoComponent,
     ModificaUtentePermessiComponent
   ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        SidebarComponent,
+        LoginBarComponent,
+        FooterDirective,
+        NonautorizzatoComponent,
+        GenericErrorComponent,
+        BannerComponent,
+        HeaderComponent,
+        NuovoPagamentoComponent,
+        IMieiPagamentiComponent,
+        CompilaNuovoPagamentoComponent,
+        DatiNuovoPagamentoComponent,
+        IntegerNumberDirective,
+        DayInputDirective,
+        MonthInputDirective,
+        OverlayComponent
+    ],
   imports: [
     HttpClientModule,
     BrowserModule,
@@ -97,9 +122,13 @@ import {ModificaUtentePermessiComponent} from './modules/main/components/gestisc
     DpDatePickerModule,
     NgxCurrencyModule,
     CustomFormsModule,
+    ConfirmDialogModule,
+    BrowserAnimationsModule
+    CustomFormsModule,
     AutoCompleteModule
   ],
   providers: [
+    ConfirmationService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
     {provide: ErrorHandler, useClass: ErrorHandlerGenerico},

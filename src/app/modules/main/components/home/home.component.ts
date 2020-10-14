@@ -1,13 +1,19 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {environment} from '../../../../../environments/environment';
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {Banner} from "../../model/Banner";
 import {BannerService} from "../../../../services/banner.service";
 import {PagamentoService} from "../../../../services/pagamento.service";
 import {Bollettino} from "../../model/bollettino/Bollettino";
 import {CampoDettaglioTransazione} from "../../model/bollettino/CampoDettaglioTransazione";
 import {MenuService} from "../../../../services/menu.service";
+import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
+import {flatMap} from "rxjs/operators";
+import {DettaglioTransazioneEsito} from "../../model/bollettino/DettaglioTransazioneEsito";
+import {EsitoEnum} from "../../../../enums/esito.enum";
+import {DettagliTransazione} from "../../model/bollettino/DettagliTransazione";
+import {OverlayService} from '../../../../services/overlay.service';
 
 @Component({
   selector: 'app-home',
@@ -17,25 +23,57 @@ import {MenuService} from "../../../../services/menu.service";
 export class HomeComponent implements OnInit {
 
   testoAccedi = 'Accedi';
-  isAnonimo = false;
 
   constructor(
     private router: Router,
+    private nuovoPagamentoService: NuovoPagamentoService,
     private bannerService: BannerService,
     private pagamentoService: PagamentoService,
-    private menuService: MenuService
+    public menuService: MenuService,
+    private overlayService: OverlayService
   ) {
-    this.menuService.userAutenticatedEvent
-      .subscribe((isAnonimo: boolean) => {
-        this.isAnonimo = isAnonimo;
-        this.testoAccedi = isAnonimo ? 'Accedi' : 'Esci';
+    this.menuService.userEventChange
+      .subscribe(() => {
+        if (!this.menuService.isUtenteAnonimo) {
+          nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
+        }
       });
+    if (localStorage.getItem('loginDaAnonimo')) {
+      let bollettini: Bollettino[] = [];
+      for (var key in localStorage) {
+        if (key.startsWith("boll-")) {
+          let bollettino: Bollettino = JSON.parse(localStorage.getItem(key));
+          bollettini.push(bollettino);
+        }
+      }
+      if (bollettini.length > 0) {
+        this.overlayService.caricamentoEvent.emit(true);
+        let observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(bollettini)
+          .pipe(flatMap((result) => {
+            let dettaglio: DettagliTransazione = new DettagliTransazione();
+            result.forEach((value: DettaglioTransazioneEsito) => {
+              if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+                dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
+              }
+            });
+            return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
+          }));
+        observable.subscribe(() => {
+          nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
+          this.clearLocalStorage();
+          this.overlayService.caricamentoEvent.emit(false);
+          this.router.navigateByUrl("/nuovoPagamento");
+        });
+      }
+      if (localStorage.getItem("parziale") != null)
+        this.router.navigateByUrl("/nuovoPagamento");
+      localStorage.removeItem('loginDaAnonimo');
+    }
+
     if (localStorage.getItem('access_jwt')) {
       this.router.navigate(['/riservata']);
       return;
     }
-
-    // location.replace(environment.loginSpid);
 
   }
 
@@ -48,6 +86,18 @@ export class HomeComponent implements OnInit {
   }
 
   getLoginLink() {
-    return this.isAnonimo ? environment.bffBaseUrl + '/loginLepida.htm' : environment.bffBaseUrl + '/logout';
+    if (this.menuService.isUtenteAnonimo) {
+      window.location.href = environment.bffBaseUrl + '/loginLepida.htm';
+    } else {
+      // NOTING TO DO
+    }
+  }
+
+  private clearLocalStorage() {
+    for (var key in localStorage) {
+      if (key.startsWith("boll-")) {
+        localStorage.removeItem(key);
+      }
+    }
   }
 }

@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {map} from "rxjs/operators";
 import {XsrfService} from "../../services/xsrf.service";
+import {OverlayService} from '../../services/overlay.service';
 
 @Component({
   selector: 'app-generic-error',
@@ -15,7 +16,8 @@ export class GenericErrorComponent implements OnInit {
   urlBack: string;
   private getUrlBack: string = '/getBackUrl';
 
-  constructor(private route: Router, private http: HttpClient, private xsrfService: XsrfService) {
+  constructor(private route: Router, private http: HttpClient, private xsrfService: XsrfService, private overlayService: OverlayService) {
+    this.overlayService.caricamentoEvent.emit(false);
   }
 
   ngOnInit(): void {

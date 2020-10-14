@@ -16,12 +16,11 @@
       </li>
       <ng-container *ngFor="let item of menu">
         <li>
-          <a class="list-item medium active" data-toggle="collapse" aria-expanded="true"><span>{{item.nome}}</span></a>
+          <a (click)="getRouterLink(item)" class="list-item medium active" data-toggle="collapse" aria-expanded="true"><span>{{item.nome}}</span></a>
           <ul class="link-sublist collapse show" *ngIf="item.sotto_menu">
             <ng-container *ngFor="let sub of item.sotto_menu">
               <li>
-                <a class="list-item medium active"
-                   [routerLink]="getRouterLink(sub)"
+                <a (click)="getRouterLink(sub)" class="list-item medium active"
                    data-toggle="collapse" aria-expanded="true"><span>{{sub.nome}}</span></a>
               </li>
             </ng-container>
