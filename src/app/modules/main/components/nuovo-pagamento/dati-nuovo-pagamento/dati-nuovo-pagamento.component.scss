@@ -48,8 +48,11 @@
   min-height: 42px;
 }
 
-:host::ng-deep dp-date-picker, :host::ng-deep .dp-picker-input {
-  width: 100% !important;
+@media screen and (min-width: 768px) {
+  .form-col-1, .form-col-2, .form-col-3 {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 
 @media screen and (max-width: 510px) {

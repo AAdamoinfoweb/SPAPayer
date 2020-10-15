@@ -1,55 +1,58 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
 import {HttpClient, HttpParams} from '@angular/common/http';
+import {ParametriRicercaUtente} from '../modules/main/model/utente/ParametriRicercaUtente';
 import {RicercaUtente} from '../modules/main/model/utente/RicercaUtente';
+import {InserimentoModificaUtente} from '../modules/main/model/utente/InserimentoModificaUtente';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtenteService {
 
-  private readonly ricercaUtentiUrl = '/utenti';
+  private readonly utentiBaseUrl = '/utenti';
   private readonly letturaCodiceFiscaleUtenteUrl = '/codiceFiscale';
+
+  codiceFiscaleEvent: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private http: HttpClient) { }
 
-  ricercaUtenti(livelloTerritorialeId?, societaId?, enteId?, servizioId?, funzioneId?, codiceFiscale?,
-                dataScadenzaDa?, dataScadenzaA?, ultimoAccessoDa?, ultimoAccessoA?): Observable<RicercaUtente[]> {
+  ricercaUtenti(parametriRicercaUtente: ParametriRicercaUtente): Observable<RicercaUtente[]> {
     let params = new HttpParams();
-    if (livelloTerritorialeId != null) {
-      params = params.set('livelloTerritorialeId', livelloTerritorialeId);
+    if (parametriRicercaUtente.livelloTerritorialeId != null) {
+      params = params.set('livelloTerritorialeId', String(parametriRicercaUtente.livelloTerritorialeId));
     }
-    if (societaId != null) {
-      params = params.set('societaId', societaId);
+    if (parametriRicercaUtente.societaId != null) {
+      params = params.set('societaId', String(parametriRicercaUtente.societaId));
     }
-    if (enteId != null) {
-      params = params.set('enteId', enteId);
+    if (parametriRicercaUtente.enteId != null) {
+      params = params.set('enteId', String(parametriRicercaUtente.enteId));
     }
-    if (servizioId != null) {
-      params = params.set('servizioId', servizioId);
+    if (parametriRicercaUtente.servizioId != null) {
+      params = params.set('servizioId', String(parametriRicercaUtente.servizioId));
     }
-    if (funzioneId != null) {
-      params = params.set('funzioneId', funzioneId);
+    if (parametriRicercaUtente.funzioneId != null) {
+      params = params.set('funzioneId', String(parametriRicercaUtente.funzioneId));
     }
-    if (codiceFiscale != null) {
-      params = params.set('codiceFiscale', codiceFiscale);
+    if (parametriRicercaUtente.codiceFiscale != null) {
+      params = params.set('codiceFiscale', parametriRicercaUtente.codiceFiscale);
     }
-    if (dataScadenzaDa != null) {
-      params = params.set('dataScadenzaDa', dataScadenzaDa);
+    if (parametriRicercaUtente.dataScadenzaDa != null) {
+      params = params.set('dataScadenzaDa', String(parametriRicercaUtente.dataScadenzaDa));
     }
-    if (dataScadenzaA != null) {
-      params = params.set('dataScadenzaA', dataScadenzaA);
+    if (parametriRicercaUtente.dataScadenzaA != null) {
+      params = params.set('dataScadenzaA', String(parametriRicercaUtente.dataScadenzaA));
     }
-    if (ultimoAccessoDa != null) {
-      params = params.set('ultimoAccessoDa', ultimoAccessoDa);
+    if (parametriRicercaUtente.ultimoAccessoDa != null) {
+      params = params.set('ultimoAccessoDa', String(parametriRicercaUtente.ultimoAccessoDa));
     }
-    if (ultimoAccessoA != null) {
-      params = params.set('ultimoAccessoA', ultimoAccessoA);
+    if (parametriRicercaUtente.ultimoAccessoA != null) {
+      params = params.set('ultimoAccessoA', String(parametriRicercaUtente.ultimoAccessoA));
     }
 
-    return this.http.get(environment.bffBaseUrl + this.ricercaUtentiUrl, {
+    return this.http.get(environment.bffBaseUrl + this.utentiBaseUrl, {
       params: params,
       withCredentials: true
     })
@@ -73,6 +76,22 @@ export class UtenteService {
     })
       .pipe(map((body: any) => {
         return body;
+      }));
+  }
+
+  inserimentoAggiornamentoUtente(codiceFiscale: string, datiUtente: InserimentoModificaUtente): Observable<any> {
+    const url = environment.bffBaseUrl + this.utentiBaseUrl;
+
+    return this.http.put(`${url}/${codiceFiscale}`, datiUtente,
+      {withCredentials: true}).pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return caught;
+        }
       }));
   }
 

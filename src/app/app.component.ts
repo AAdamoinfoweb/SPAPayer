@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, OnInit} from '@angular/core';
 import {MenuService} from "./services/menu.service";
 import {TipologicaSelectEnum} from './enums/tipologicaSelect.enum';
 import {ToponomasticaService} from './services/toponomastica.service';
@@ -6,6 +6,8 @@ import {map} from 'rxjs/operators';
 import {UserIdleService} from "angular-user-idle";
 import {AuthguardService} from "./services/authguard.service";
 import {Router} from "@angular/router";
+import {OverlayService} from './services/overlay.service';
+import {RichiestaDettaglioPagamento} from './modules/main/model/bollettino/RichiestaDettaglioPagamento';
 
 @Component({
   selector: 'app-root',
@@ -15,12 +17,16 @@ import {Router} from "@angular/router";
 export class AppComponent implements OnInit {
 
   title = '';
+  caricamento = false;
+  dettaglioPagamento = null;
 
   constructor(private menuService: MenuService,
               private router: Router,
+              private cdr: ChangeDetectorRef,
               private authGuardService: AuthguardService,
               private idleService: UserIdleService,
-              private toponomasticaService: ToponomasticaService) {
+              private toponomasticaService: ToponomasticaService,
+              private overlayService: OverlayService) {
   }
 
   ngOnInit(): void {
@@ -34,10 +40,22 @@ export class AppComponent implements OnInit {
       this.menuService.infoUtenteEmitter.emit(info);
     });
 
+    this.overlayService.caricamentoEvent.subscribe(isLoading => {
+      this.caricamento = isLoading;
+      this.cdr.detectChanges();
+    });
+
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(richiestaDettaglioPagamento => {
+      this.dettaglioPagamento = richiestaDettaglioPagamento;
+      this.cdr.detectChanges();
+    });
+
     this.letturatipologicheSelect();
+
+    // this.mockModaleDettaglioPagamento();
   }
 
-  @HostListener('window:beforeunload')
+  // @HostListener('window:beforeunload')
   logout() {
     this.authGuardService.logout().subscribe((url) => {
       this.idleService.stopWatching();
@@ -56,5 +74,14 @@ export class AppComponent implements OnInit {
     this.toponomasticaService.recuperaComuni().pipe(map(res => {
       localStorage.setItem(TipologicaSelectEnum.COMUNI, JSON.stringify(res));
     })).subscribe();
+  }
+
+  mockModaleDettaglioPagamento(): void {
+    const mockDettaglioPagamento = new RichiestaDettaglioPagamento();
+    mockDettaglioPagamento.idBollettino = 1;
+    mockDettaglioPagamento.idLivelloTerritoriale = 1;
+    mockDettaglioPagamento.idEnte = 4;
+    mockDettaglioPagamento.idServizio = 101;
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(mockDettaglioPagamento);
   }
 }

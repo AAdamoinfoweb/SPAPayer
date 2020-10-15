@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="!waiting">
   <it-breadcrumb [dark]="isDark" [separator]="separator">
     <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
                         [link]="item.link" [icon]="item.icon">
@@ -19,12 +19,12 @@
         Lista pagamenti
       </button>
     </div>
-    <div id="collapse1" class="collapse show" role="tabpanel" aria-labelledby="heading1">
+    <div id="collapse1" [ngClass]="{'collapse': true, 'show': isShow}" role="tabpanel" aria-labelledby="heading1">
       <div class="collapse-body">
         <app-lista-pagamenti [rid]="rid"
                              (urlBackEmitterChange)="urlBack=$event"
                              (onChangeTotalePagamento)="totalePagamento = $event"
-                             (onChangeEmailPagamento)="email = $event"
+
                              (onChangeNumeroPagamenti)="numeroPagamenti = $event"></app-lista-pagamenti>
       </div>
     </div>
@@ -33,7 +33,7 @@
         Modalità pagamento
       </button>
     </div>
-    <div id="collapse2" class="collapse show" role="tabpanel" aria-labelledby="heading2">
+    <div id="collapse2"  [ngClass]="{'collapse': true, 'show': isShow}" role="tabpanel" aria-labelledby="heading2">
       <div class="collapse-body">
         <div class="row">
           <div class="col-xl-1 col-xs-12">
@@ -92,7 +92,7 @@
         Email per la notifica
       </button>
     </div>
-    <div id="collapse3" class="collapse show" role="tabpanel" aria-labelledby="heading3">
+    <div id="collapse3"  [ngClass]="{'collapse': true, 'show': isShow}" role="tabpanel" aria-labelledby="heading3">
       <div class="collapse-body">
         <div class="row">
           <div class="col-xl-4 col-xs-12">
@@ -144,5 +144,4 @@
       </div>
     </div>
   </div>
-  <app-footer footer-directive></app-footer>
 </div>

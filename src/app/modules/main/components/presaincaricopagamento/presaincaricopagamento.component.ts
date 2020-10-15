@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {PagamentoService} from "../../../../services/pagamento.service";
 import {interval} from "rxjs";
+import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
 
 const source = interval(10000);
 
@@ -15,21 +16,30 @@ export class PresaincaricopagamentoComponent implements OnInit {
   idSession: string;
   timerId;
   runCount = 0;
+  msg;
 
-  constructor(private route: ActivatedRoute, private pagamentoService: PagamentoService) {
+  constructor(private route: ActivatedRoute,
+              private nuovoPagamentoService: NuovoPagamentoService,
+              private pagamentoService: PagamentoService) {
     this.route.queryParams.subscribe((params) => {
       this.idSession = params.idSession;
-
     });
   }
 
   ngOnInit(): void {
     this.runCount = this.runCount + 1;
-    const observable = this.pagamentoService.verificaEsitoPagamento(this.idSession, false);
+    let observable;
+    if (localStorage.getItem("nome") == null) {
+      this.msg = "Appena possibile o al massimo entro 2 minuti verrà reindirizzato sul portale dell'ente.";
+      observable = this.pagamentoService.verificaEsitoPagamento(this.idSession, false);
+    } else {
+      this.msg = "Appena possibile o al massimo entro 2 minuti verrà notificato l'esito del pagamento.";
+      observable = this.nuovoPagamentoService.verificaEsitoPagamento(this.idSession, false);
+    }
 
     let subscr = observable.subscribe((url) => {
       subscr.unsubscribe();
-      return this.goToUrl(url)
+      return this.goToUrl(url);
     });
     this.timerId = source.subscribe(() => this.timerMethod());
   }
@@ -41,10 +51,15 @@ export class PresaincaricopagamentoComponent implements OnInit {
       ultima = true
       this.timerId.unsubscribe();
     }
-    const observable = this.pagamentoService.verificaEsitoPagamento(this.idSession, ultima);
+    let observable;
+    if (localStorage.getItem("nome") == null) {
+      observable = this.pagamentoService.verificaEsitoPagamento(this.idSession, ultima);
+    } else {
+      observable = this.nuovoPagamentoService.verificaEsitoPagamento(this.idSession, ultima);
+    }
     let subscr = observable.subscribe((url) => {
       subscr.unsubscribe();
-      return this.goToUrl(url)
+      return this.goToUrl(url);
     });
   }
 

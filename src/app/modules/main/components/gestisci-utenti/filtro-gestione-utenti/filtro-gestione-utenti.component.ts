@@ -11,6 +11,7 @@ import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
 import {RicercaUtente} from '../../../model/utente/RicercaUtente';
 import {UtenteService} from '../../../../../services/utente.service';
 import * as moment from 'moment';
+import {BottoneEnum} from '../../../../../enums/bottone.enum';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -29,7 +30,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   readonly minCharsToRetrieveCF = 1;
 
   isCalendarOpen = false;
-  readonly minDateDDMMYY = '01/01/1900';
+  readonly minDateDDMMYYYY = '01/01/1900';
   readonly tipoData = ECalendarValue.Moment;
 
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
@@ -38,7 +39,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
   @Output()
-  listaUtentiFiltrati: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
+  onChangeListaUtenti: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService, private utenteService: UtenteService) {
@@ -160,9 +161,19 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.isCalendarOpen = !this.isCalendarOpen;
   }
 
+  setMinDate(datePicker: DatePickerComponent): string {
+    return datePicker.inputElementValue
+      ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').add(1, 'day').format('DD/MM/YYYY') : this.minDateDDMMYYYY;
+  }
+
+  setMaxDate(datePicker: DatePickerComponent): string {
+    return datePicker.inputElementValue
+      ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
+  }
+
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
-    this.listaUtentiFiltrati.emit(this.listaUtente);
+    this.onChangeListaUtenti.emit(this.listaUtente);
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
   }
 
@@ -182,18 +193,16 @@ export class FiltroGestioneUtentiComponent implements OnInit {
       }
     });
 
-    this.utenteService.ricercaUtenti(filtro.livelloTerritorialeId, filtro.societaId, filtro.enteId, filtro.servizioId, filtro.funzioneId,
-      filtro.codiceFiscale, filtro.dataScadenzaDa, filtro.dataScadenzaA, filtro.ultimoAccessoDa,
-      filtro.ultimoAccessoA).pipe(map(listaUtenti => {
-        this.listaUtentiFiltrati.emit(listaUtenti);
+    this.utenteService.ricercaUtenti(filtro).pipe(map(listaUtenti => {
+        this.onChangeListaUtenti.emit(listaUtenti);
     })).subscribe();
   }
 
   disabilitaBottone(filtroGestioneUtentiForm: NgForm, nomeBottone: string): boolean {
     const isAtLeastOneFieldValued = Object.keys(filtroGestioneUtentiForm.value).some(key => filtroGestioneUtentiForm.value[key]);
-    if (nomeBottone === 'Pulisci') {
+    if (nomeBottone === BottoneEnum.PULISCI) {
       return !isAtLeastOneFieldValued;
-    } else {
+    } else if (nomeBottone === BottoneEnum.CERCA) {
       return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued;
     }
   }

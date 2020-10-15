@@ -1,14 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {tipoColonna} from '../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../enums/TipoTabella.enum';
-import {tipoUtente} from '../../../../enums/TipoUtente.enum';
+import {TipoUtenteEnum} from '../../../../enums/TipoUtente.enum';
+import {tool} from '../../../../enums/Tool.enum';
 import {Utils} from '../../../../utils/Utils';
 import {UtenteService} from '../../../../services/utente.service';
 import {RicercaUtente} from '../../model/utente/RicercaUtente';
 import {map} from 'rxjs/operators';
 import * as moment from 'moment';
-import * as XLSX from 'xlsx';
-import * as FILESAVER from 'file-saver';
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import {Breadcrumb} from '../../dto/Breadcrumb';
+import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
+import {Router} from '@angular/router';
 import {ToolEnum} from "../../../../enums/Tool.enum";
 
 
@@ -21,6 +25,8 @@ export class GestisciUtentiComponent implements OnInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
+  breadcrumbList = [];
+
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
   toolbarIcons = [
@@ -30,9 +36,13 @@ export class GestisciUtentiComponent implements OnInit {
     {type: ToolEnum.EXPORT_XLS}
   ];
 
-  tabs = [{header: 'Tutti'},
-    {header: 'Attivi'},
-    {header: 'Disabilitati'}];
+  tabs = [
+    {value: TipoUtenteEnum.TUTTI},
+    {value: TipoUtenteEnum.ATTIVI},
+    {value: TipoUtenteEnum.DISABILITATI}
+  ];
+
+  nomeTabCorrente: string;
 
   tableData = {
     rows: [],
@@ -50,14 +60,22 @@ export class GestisciUtentiComponent implements OnInit {
 
   tempTableData;
 
-  constructor(private utenteService: UtenteService) {
-    this.utenteService.ricercaUtenti(null, null, null, null, null,
-      null, null, null, null, null).pipe(map(utenti => {
+  constructor(private router: Router, private utenteService: UtenteService) {
+    this.inizializzaBreadcrumbList();
+
+    const parametriRicercaUtente = new ParametriRicercaUtente();
+    this.utenteService.ricercaUtenti(parametriRicercaUtente).pipe(map(utenti => {
       utenti.forEach(utente => {
         this.listaUtente.push(utente);
         this.tableData.rows.push(this.creaRigaTabella(utente));
       });
     })).subscribe();
+  }
+
+  inizializzaBreadcrumbList(): void {
+    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
+    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
+    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', null, null));
   }
 
   ngOnInit(): void {
@@ -66,7 +84,19 @@ export class GestisciUtentiComponent implements OnInit {
 
   creaRigaTabella(utente: RicercaUtente): object {
     const dataSistema = moment();
-    const nomeUtente = utente.cognome.charAt(0).toUpperCase() + utente.cognome.slice(1) + ' ' + utente.nome.charAt(0).toUpperCase() + utente.nome.slice(1);
+
+    let nomeUtente;
+    if (utente.cognome && utente.nome) {
+      nomeUtente = utente.cognome?.charAt(0).toUpperCase() + utente.cognome?.slice(1) + ' ' + utente.nome?.charAt(0).toUpperCase() + utente.nome?.slice(1);
+    } else {
+      if (utente.cognome) {
+        nomeUtente = utente.cognome?.charAt(0).toUpperCase() + utente.cognome?.slice(1);
+      } else if (utente.nome) {
+        nomeUtente = utente.nome?.charAt(0).toUpperCase() + utente.nome?.slice(1);
+      } else {
+        nomeUtente = null;
+      }
+    }
 
     // TODO sostituire link mockato con redirect a monitoraAccessi
     const ultimoAccesso = utente.ultimoAccesso ? Utils.creaLink(moment(utente.ultimoAccesso).format('DD/MM/YYYY'), 'www.dxc.com') : null;
@@ -97,30 +127,66 @@ export class GestisciUtentiComponent implements OnInit {
   onChangeTab(value) {
     let tabRows = this.tableData.rows.map(row => row);
 
-    if (value === tipoUtente.ATTIVI.value) {
+    if (value === TipoUtenteEnum.ATTIVI) {
       tabRows = tabRows.filter(row => row.iconaUtente.display === 'inline');
-    } else if (value === tipoUtente.DISABILITATI.value) {
+    } else if (value === TipoUtenteEnum.DISABILITATI) {
       tabRows = tabRows.filter(row => row.iconaUtente.display === 'none');
     }
 
     this.tempTableData.rows = tabRows;
+    this.nomeTabCorrente = value;
   }
 
   // todo logica azioni tool
   eseguiAzioni(azioneTool) {
+    const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     if (azioneTool.value === ToolEnum.INSERT) {
-      // inserisci utente
+      this.router.navigateByUrl('/aggiungiUtentePermessi');
     } else if (azioneTool.value === ToolEnum.UPDATE) {
       // aggiorna utente
     } else if (azioneTool.value === ToolEnum.EXPORT_PDF) {
-      // esporta in pdf
+      this.esportaTabellaInFilePdf(dataTable);
     } else if (azioneTool.value === ToolEnum.EXPORT_XLS) {
-      this.esportaInFileExcel();
+      this.esportaTabellaInFileExcel(dataTable);
     }
   }
 
-  esportaInFileExcel(): void {
-    let dataTable = JSON.parse(JSON.stringify(this.tableData));
+  esportaTabellaInFilePdf(dataTable: any): void {
+    const customHeaders = dataTable.cols.map(col => col.header);
+    const customRows = [];
+    dataTable.rows.forEach(row => {
+      const rows = [];
+      for (let key in row) {
+        let temp = null;
+        if (key === 'iconaUtente') {
+          temp = row[key]?.display === 'inline' ? '' : null;
+        } else if (key === 'ultimoAccesso') {
+          temp = row[key]?.testo;
+        } else {
+          temp = row[key];
+        }
+        rows.push(temp);
+      }
+      customRows.push(rows);
+    });
+
+    const filePdf = new jsPDF.default('l', 'pt', 'a4');
+    filePdf.setProperties({ title: 'Lista Utenti' });
+    // @ts-ignore
+    filePdf.autoTable(customHeaders, customRows, {
+      didDrawCell: data => {
+        if (data.section === 'body' && data.column.index === 0 && data.row.raw[0] != null) {
+          let activeUserIcon = new Image();
+          activeUserIcon.src = 'assets/img/active-user.png';
+          filePdf.addImage(activeUserIcon, 'PNG', data.cell.x + 2, data.cell.y + 2, 18, 17);
+        }
+      }
+    });
+    const blob = filePdf.output('blob');
+    window.open(URL.createObjectURL(blob));
+  }
+
+  esportaTabellaInFileExcel(dataTable: any): void {
     const customHeaders = dataTable.cols.map(col => col.header);
     dataTable.rows = dataTable.rows.map(row => {
       let newRow = row;
@@ -129,20 +195,8 @@ export class GestisciUtentiComponent implements OnInit {
       return newRow;
     });
 
-    let worksheet = XLSX.utils.json_to_sheet(dataTable.rows);
-    worksheet = XLSX.utils.sheet_add_aoa(worksheet, [customHeaders]);
-    const workbook = { Sheets: { 'Utenti': worksheet }, SheetNames: ['Utenti'] };
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    this.salvaComeFileExcel(excelBuffer, 'Lista Utenti');
-  }
-
-  salvaComeFileExcel(buffer: any, fileName: string): void {
-    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    const EXCEL_EXTENSION = '.xlsx';
-    const data: Blob = new Blob([buffer], {
-      type: EXCEL_TYPE
-    });
-    FILESAVER.saveAs(data, fileName + '_export_' + moment().format('DD-MM-YYYY HH:mm') + EXCEL_EXTENSION);
+    const workbook = { Sheets: { 'Utenti': null}, SheetNames: [] };
+    Utils.creaFileExcel(dataTable.rows, customHeaders, 'Utenti', ['Utenti'], workbook, 'Lista Utenti');
   }
 
   onChangeListaUtenti(listaUtentiFiltrati: RicercaUtente[]): void {
@@ -150,12 +204,13 @@ export class GestisciUtentiComponent implements OnInit {
     listaUtentiFiltrati.forEach(utente => {
       this.tableData.rows.push(this.creaRigaTabella(utente));
     });
+    this.onChangeTab(this.nomeTabCorrente);
   }
 
-  getTestoConNumeroUtentiAttiviDisabilitati(): string {
+  getTotaliPerRecord(): string {
     const numeroUtentiAttivi = this.tableData.rows.filter(row => row.iconaUtente.display === 'inline').length;
     const numeroUtentiDisabilitati = this.tableData.rows.filter(row => row.iconaUtente.display === 'none').length;
-    return '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
+    return 'Totale: ' + this.tableData.rows.length + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
   }
 
   selezionaRigaTabella(rowsChecked): void {
