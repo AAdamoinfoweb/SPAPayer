@@ -170,11 +170,9 @@
     </div>
 
     <div *ngIf="isSelectValida(datiPermesso.enteId, listaEnti) && datiPermesso.servizioId !== listaServizi[listaServizi.length - 1]?.value">
-      <div *ngFor="let funzione of listaFunzioni; let i = index">
-        <div class="row">
-          <div class="col-3">
-            <it-checkbox [id]="i" [label]="funzione.label"></it-checkbox>
-          </div>
+      <div class="row">
+        <div *ngFor="let funzione of listaFunzioni; let i = index" class="col-3">
+          <it-checkbox [id]="i" [label]="funzione.label"></it-checkbox>
         </div>
       </div>
     </div>
