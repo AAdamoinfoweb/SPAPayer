@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
 
     this.letturatipologicheSelect();
 
-    // this.mockModaleDettaglioPagamento();
+    this.mockModaleDettaglioPagamento();
   }
 
   // @HostListener('window:beforeunload')
@@ -79,7 +79,6 @@ export class AppComponent implements OnInit {
   mockModaleDettaglioPagamento(): void {
     const mockDettaglioPagamento = new DatiPagamento();
     mockDettaglioPagamento.dettaglioTransazioneId = 1;
-    mockDettaglioPagamento['livelloTerritorialeId'] = 1; // TODO rimpiazzare con lettura tramite enteId
     mockDettaglioPagamento.enteId = 4;
     mockDettaglioPagamento.servizioId = 101;
     this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(mockDettaglioPagamento);
