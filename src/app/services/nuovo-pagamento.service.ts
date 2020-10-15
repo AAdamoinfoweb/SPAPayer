@@ -49,7 +49,7 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaFiltroEnti(idLivelloTerritoriale): Observable<Ente[]> {
+  recuperaFiltroEnti(idLivelloTerritoriale?): Observable<Ente[]> {
     let params = new HttpParams();
     if (idLivelloTerritoriale) {
       params = params.set('livelloTerritorialeId', idLivelloTerritoriale);
@@ -64,7 +64,7 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaFiltroServizi(idEnte): Observable<FiltroServizio[]> {
+  recuperaFiltroServizi(idEnte?): Observable<FiltroServizio[]> {
     let params = new HttpParams();
     if (idEnte) {
       params = params.set('enteId', idEnte);
