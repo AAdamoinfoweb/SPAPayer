@@ -9,6 +9,7 @@ import {FunzioneService} from '../../../../../services/funzione.service';
 import {map} from 'rxjs/operators';
 import {IMieiPagamentiService} from '../../../../../services/i-miei-pagamenti.service';
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
+import {ListaPagamentiFiltri} from "../../../model/bollettino/imieipagamenti/ListaPagamentiFiltri";
 
 
 @Component({
@@ -32,7 +33,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   listaPagamento: Array<DatiPagamento> = new Array<DatiPagamento>();
 
   @Output()
-  onChangeListaPagamenti: EventEmitter<DatiPagamento[]> = new EventEmitter<DatiPagamento[]>();
+  onChangeListaPagamenti: EventEmitter<ListaPagamentiFiltri> = new EventEmitter<ListaPagamentiFiltri>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private funzioneService: FunzioneService, private iMieiPagamentiService: IMieiPagamentiService ) {
@@ -134,7 +135,10 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
     const filtri = this.filtroRicercaPagamenti;
     this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
-      this.onChangeListaPagamenti.emit(listaPagamenti);
+      const listaPagamentiFiltri: ListaPagamentiFiltri = new ListaPagamentiFiltri();
+      listaPagamentiFiltri.listaPagamenti = listaPagamenti;
+      listaPagamentiFiltri.filtri = filtri;
+      this.onChangeListaPagamenti.emit(listaPagamentiFiltri);
     })).subscribe();
   }
 

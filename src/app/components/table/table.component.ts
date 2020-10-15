@@ -14,12 +14,15 @@ export class TableComponent implements OnInit {
   @Input() cols: any[];
   @Input() tipoTabella: tipoTabella;
   @Input() textLeft: string;
+  @Input() selectedRows: boolean;
 
   @Output()
   onSelection: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
   onClickIcon: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  onClickRow: EventEmitter<any> = new EventEmitter<any>();
 
   readonly tipoColonnaEnum = tipoColonna;
   readonly tipoTabellaEnum = tipoTabella;
@@ -30,13 +33,10 @@ export class TableComponent implements OnInit {
 
   pageSize = this.rowsPerPageOption[0];
 
+
   constructor() { }
 
   ngOnInit() { }
-
-  selectRow(row: any) {
-    window.alert(row.name);
-  }
 
   onRowSelect(event) {
     this.onSelection.emit(this.selection);
@@ -58,5 +58,8 @@ export class TableComponent implements OnInit {
     return this.rows.length;
   }
 
+  clickOnRow(row: any) {
+   this.onClickRow.emit(row);
+  }
 }
 

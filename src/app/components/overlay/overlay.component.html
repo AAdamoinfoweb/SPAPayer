@@ -1,11 +1,16 @@
-<div id="background"></div>
-<div id="spinner-wrapper" *ngIf="caricamento">
-  <div class="progress-spinner progress-spinner-active" role="status">
-    <span class="sr-only">Loading...</span>
+<div *ngIf="datiPagamento">
+  <div class="background"></div>
+  <div id="component-modal-wrapper" *ngIf="datiPagamento">
+    <div id="component-modal-background">
+      <app-nuovo-pagamento [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
+    </div>
   </div>
 </div>
-<div id="component-modal-wrapper" *ngIf="datiPagamento">
-  <div id="component-modal-background">
-    <app-nuovo-pagamento [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
+<div *ngIf="caricamento">
+  <div class="background"></div>
+  <div id="spinner-wrapper">
+    <div class="progress-spinner progress-spinner-active" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
   </div>
 </div>

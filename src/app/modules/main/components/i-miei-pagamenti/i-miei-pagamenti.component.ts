@@ -19,6 +19,8 @@ import {BannerService} from '../../../../services/banner.service';
 import {DettagliTransazione} from '../../model/bollettino/DettagliTransazione';
 import {AsyncSubject} from 'rxjs';
 import {DatiPagamento} from '../../model/bollettino/DatiPagamento';
+import {OverlayService} from '../../../../services/overlay.service';
+import {ListaPagamentiFiltri} from "../../model/bollettino/imieipagamenti/ListaPagamentiFiltri";
 
 @Component({
   selector: 'app-i-miei-pagamenti',
@@ -67,16 +69,18 @@ export class IMieiPagamentiComponent implements OnInit {
       {field: 'importo', header: 'Importo', type: tipoColonna.IMPORTO},
       {field: 'dataPagamento', header: 'Data Pagamento', type: tipoColonna.TESTO}
     ],
-    dataKey: 'numeroDocumento',
+    dataKey: 'numeroDocumento.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
   tempTableData;
   private listaPagamenti: DatiPagamento[];
   private pagamentiSelezionati: DatiPagamento[];
+  private filtri: ParametriRicercaPagamenti;
 
   constructor(private iMieiPagamentiService: IMieiPagamentiService, private router: Router,
-              private nuovoPagamentoService: NuovoPagamentoService, private bannerService: BannerService) {
+              private nuovoPagamentoService: NuovoPagamentoService, private bannerService: BannerService,
+              private overlayService: OverlayService) {
     // init breadcrumb
     this.inizializzaBreadcrumb();
   }
@@ -88,13 +92,12 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.inizializzaListaPagamenti();
+    this.inizializzaListaPagamenti(new ParametriRicercaPagamenti());
   }
 
-  private inizializzaListaPagamenti() {
-    const filtri = new ParametriRicercaPagamenti();
+  private inizializzaListaPagamenti(filtri: ParametriRicercaPagamenti) {
     this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
-      this.riempiListaPagamenti(listaPagamenti);
+      this.riempiListaPagamenti({listaPagamenti, filtri});
     })).subscribe();
   }
 
@@ -117,7 +120,6 @@ export class IMieiPagamentiComponent implements OnInit {
     this.riempiTabella(tempListaPagamenti);
   }
 
-  // todo logica azioni tool
   eseguiAzioni(tool) {
     if (tool === ToolEnum.INSERT) {
       // redirect nuovo pagamento page
@@ -134,25 +136,39 @@ export class IMieiPagamentiComponent implements OnInit {
     }
   }
 
-  getTestoConNumeroUtentiAttiviDisabilitati(): string {
-    return '';
+  testoTabella(): string {
+    if (this.listaPagamenti) {
+      const numeroPagati = this.listaPagamenti.filter(pagamento =>
+        pagamento.esitoPagamento === EsitoEnum.OK).length;
+      const numeroInAttesa = this.listaPagamenti.filter(pagamento =>
+        pagamento.esitoPagamento !== EsitoEnum.OK && (
+          pagamento.statoPagamento != null ? pagamento.statoPagamento === StatoPagamentoEnum.IN_ATTESA : true
+        )).length;
+      return 'Totale: ' + this.listaPagamenti.length + '\b Di cui pagati: ' + numeroPagati + '\b\b Di cui in attesa: ' + numeroInAttesa;
+    } else {
+      return '';
+    }
   }
 
-  riempiListaPagamenti(lista: DatiPagamento[]) {
-    this.listaPagamenti = lista;
-    this.riempiTabella(lista);
+  riempiListaPagamenti(listaPagamentiFiltri: ListaPagamentiFiltri) {
+    this.listaPagamenti = listaPagamentiFiltri.listaPagamenti;
+    this.filtri = listaPagamentiFiltri.filtri;
+    this.riempiTabella(listaPagamentiFiltri.listaPagamenti);
   }
 
   riempiTabella(listaPagamenti: DatiPagamento[]) {
     const pagamenti = listaPagamenti.map(pagamento => {
       const row = {
-        icona: Utils.creaIcona('assets/img/sprite.svg#it-pencil', '#ef8157', 'tooltip', null),
-        numeroDocumento: pagamento.numeroDocumento,
-        nomeServizio: pagamento.nomeServizio,
-        nomeEnte: pagamento.nomeEnte,
-        dataScadenza: pagamento.dataScadenza ? moment(pagamento.dataScadenza).format('DD/MM/YYYY') : null,
-        importo: pagamento.importo,
-        dataPagamento: pagamento.dataPagamento ? moment(pagamento.dataPagamento).format('DD/MM/YYYY') : null
+        icona: pagamento.statoPagamento == null && Utils.creaIcona('assets/img/sprite.svg#it-pencil', '#EE7622', 'tooltip', null),
+        numeroDocumento: {value: pagamento.numeroDocumento},
+        nomeServizio: {value: pagamento.nomeServizio},
+        nomeEnte: {value: pagamento.nomeEnte},
+        dataScadenza: {value: pagamento.dataScadenza ? moment(pagamento.dataScadenza).format('DD/MM/YYYY') : null},
+        importo: {value: pagamento.importo,
+          class: (pagamento.statoPagamento !== StatoPagamentoEnum.PAGATO &&
+            pagamento.esitoPagamento !== EsitoEnum.OK)
+            && 'evidenziato'},
+        dataPagamento: {value: pagamento.dataPagamento ? moment(pagamento.dataPagamento).format('DD/MM/YYYY') : null}
       };
       return row;
     });
@@ -166,7 +182,7 @@ export class IMieiPagamentiComponent implements OnInit {
     let tempPagamentiSelezionati: DatiPagamento[] = [];
     rows.forEach(value => {
       const pagamentoSelezionato: DatiPagamento[] = this.listaPagamenti
-        .filter(pagamento => pagamento.numeroDocumento === value.numeroDocumento);
+        .filter(pagamento => pagamento.numeroDocumento === value.numeroDocumento.value);
       tempPagamentiSelezionati.push(...pagamentoSelezionato);
     });
     this.pagamentiSelezionati = tempPagamentiSelezionati;
@@ -178,7 +194,7 @@ export class IMieiPagamentiComponent implements OnInit {
       this.iMieiPagamentiService.inserimentoPagamentiCarrello(this.pagamentiSelezionati).pipe(map(res => {
         // refresh table
         // todo prendere filtri se valorizzati
-        this.inizializzaListaPagamenti();
+        this.inizializzaListaPagamenti(this.filtri);
       })).subscribe();
     } else {
       this.mostraBannerError(messaggioInserimentoCarrello);
@@ -191,7 +207,7 @@ export class IMieiPagamentiComponent implements OnInit {
       const dettagliTransazione: DettagliTransazione = new DettagliTransazione();
       dettagliTransazione.listaDettaglioTransazioneId = this.pagamentiSelezionati.map(pagamento => pagamento.dettaglioTransazioneId);
       this.iMieiPagamentiService.eliminaBollettino(dettagliTransazione).pipe(map(value => {
-        this.inizializzaListaPagamenti();
+        this.inizializzaListaPagamenti(this.filtri);
       })).subscribe();
     } else {
       this.mostraBannerError(this.MESSAGGIO_ERRORE_AZIONE);
@@ -263,4 +279,8 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
 
+  dettaglioPagamento(row: any) {
+    const pagamento: DatiPagamento = this.listaPagamenti.find(datiPagamento => datiPagamento.numeroDocumento === row.numeroDocumento.value);
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(pagamento);
+  }
 }

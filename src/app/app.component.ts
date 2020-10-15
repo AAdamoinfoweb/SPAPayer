@@ -8,6 +8,7 @@ import {AuthguardService} from "./services/authguard.service";
 import {Router} from "@angular/router";
 import {OverlayService} from './services/overlay.service';
 import {DatiPagamento} from './modules/main/model/bollettino/DatiPagamento';
+import {EsitoEnum} from './enums/esito.enum';
 
 @Component({
   selector: 'app-root',
@@ -78,9 +79,10 @@ export class AppComponent implements OnInit {
 
   mockModaleDettaglioPagamento(): void {
     const mockDettaglioPagamento = new DatiPagamento();
-    mockDettaglioPagamento.dettaglioTransazioneId = 1;
+    mockDettaglioPagamento.dettaglioTransazioneId = null;
     mockDettaglioPagamento.enteId = 4;
     mockDettaglioPagamento.servizioId = 101;
+    mockDettaglioPagamento.esitoPagamento = EsitoEnum.NON_PRESENTE;
     this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(mockDettaglioPagamento);
   }
 }

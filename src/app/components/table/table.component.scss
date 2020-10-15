@@ -1,5 +1,5 @@
 .fill svg{
-  fill: #ef8157;
+  fill: #EE7622;
 }
 
 
@@ -30,6 +30,11 @@
   color: #77777B;
 }
 
+:host ::ng-deep .p-datatable .p-datatable-tbody > .row-selected:hover{
+  background: #e9ecef;
+  cursor: pointer;
+}
+
 
 // cell css
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
@@ -39,6 +44,12 @@
 
 :host ::ng-deep .currency {
   text-align: right;
+}
+
+// contenuto celle
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td > .evidenziato {
+  color: #EE7622;
+  font-weight: bold;
 }
 
 // checkbox
@@ -59,7 +70,7 @@
   color: #004987;
 }
 :host ::ng-deep p-tableheadercheckbox .p-checkbox .p-checkbox-box .p-checkbox-icon:hover::before {
-  color: #ef8157;
+  color: #EE7622;
   visibility: visible;
   content: "\e90f";
   font-family: 'primeicons';
@@ -92,15 +103,15 @@
 }
 
 :host ::ng-deep .p-checkbox .p-checkbox-box:not(.p-disabled):hover {
-  border-color: #ef8157;
+  border-color: #EE7622;
 }
 :host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight{
   background: #004987;
   border: 2px solid #004987;
 }
 :host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight:not(.p-disabled):hover {
-  background: #ef8157;
-  border: 2px solid #ef8157;
+  background: #EE7622;
+  border: 2px solid #EE7622;
 }
 
 

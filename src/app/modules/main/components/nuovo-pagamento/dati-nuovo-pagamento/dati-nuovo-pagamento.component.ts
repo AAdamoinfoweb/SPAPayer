@@ -80,28 +80,30 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.checkUtenteLoggato();
-    this.inizializzazioneForm(this.servizio);
+    this.inizializzazioneForm(this.servizio).subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.servizio) {
-      this.inizializzazioneForm(this.servizio).subscribe(() => this.restoreParziale());
+      this.inizializzazioneForm(this.servizio).subscribe();
     }
   }
 
   impostaDettaglioPagamento(): void {
     this.isFaseVerificaPagamento = true;
-    this.nuovoPagamentoService.verificaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((esitoBollettino) => {
-      this.isBollettinoPagato = esitoBollettino === EsitoEnum.OK || esitoBollettino === EsitoEnum.PENDING;
-    });
+    this.isBollettinoPagato = this.datiPagamento.esitoPagamento === EsitoEnum.OK || this.datiPagamento.esitoPagamento === EsitoEnum.PENDING;
+    if (this.datiPagamento.dettaglioTransazioneId) {
+      this.nuovoPagamentoService.letturaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((bollettino) => {
+        console.log(bollettino);
+      });
+    }
+
     // TODO valorizzare i campi input
     // TODO valorizzare i campi output
     this.overlayService.caricamentoEvent.emit(false);
   }
 
   private restoreParziale() {
-    this.overlayService.caricamentoEvent.emit(true);
-
     if (this.menuService.isUtenteAnonimo) {
       this.salvaParziale(this.servizio.livelloTerritorialeId, null, 'livelloTerritorialeId');
       this.salvaParziale(this.servizio.enteId, null, 'enteId');
@@ -116,8 +118,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       }
       localStorage.removeItem("parziale");
     }
-
-    this.overlayService.caricamentoEvent.emit(false);
   }
 
   checkUtenteLoggato(): void {
@@ -127,6 +127,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   clickIndietro(): void {
+    if (this.datiPagamento) {
+      this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+    }
+
     this.isFaseVerificaPagamento = false;
     this.rimuoviCampoImporto();
 
@@ -134,8 +138,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     campiOutput.forEach(campo => {
       delete this.model[this.getNomeCampoForm(campo)];
     });
-
-    // TODO valutare triggerare processo inverso del salvaParziale
   }
 
   clickProcedi(): void {
@@ -281,6 +283,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.creaForm();
         this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
         this.impostaCampi(campiNuovoPagamento.campiServizio);
+
+        this.restoreParziale();
 
         if (this.datiPagamento) {
           this.impostaDettaglioPagamento();

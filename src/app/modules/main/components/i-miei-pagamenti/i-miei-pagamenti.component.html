@@ -1,12 +1,12 @@
 <div class="container">
-<!--  breadcrumb -->
+  <!--  breadcrumb -->
   <it-breadcrumb [dark]="false" [separator]="'/'">
     <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
                         [link]="item.link" [icon]="item.icon">
       {{item.label}}
     </it-breadcrumb-item>
   </it-breadcrumb>
-<!--  titolo -->
+  <!--  titolo -->
   <h3 class="mb-2 page-title"><strong>I Miei Pagamenti</strong>
     <a it-tooltip="{{tooltipOnPageTitle}}">
       <svg class="bg-light icon icon-lg icon-padded">
@@ -19,36 +19,39 @@
   <app-filtri-i-miei-pagamenti (onChangeListaPagamenti)="riempiListaPagamenti($event)"></app-filtri-i-miei-pagamenti>
 
   <!-- Sottosezione Lista Pagamenti -->
-    <div class="collapse-header" id="heading2">
-      <button data-toggle="collapse" data-target="#contenutoSezioneListaPagamenti" aria-expanded="true"
-              aria-controls="contenutoSezioneListaPagamenti">
-        Lista Pagamenti
-      </button>
-    </div>
-    <div id="contenutoSezioneListaPagamenti" class="collapse show" role="tabpanel" aria-labelledby="heading2">
-      <div class="collapse-body">
-<!--      tabs -->
-        <div class="row align-items-baseline align-content-lg-around">
-          <div class="col-lg pb-2 pb-sm-2 pb-lg-0">
-            <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>
-          </div>
-<!--      azioni -->
-          <div class="col-auto">
-            <app-toolbar (onClick)="eseguiAzioni($event)" [toolbarIcons]="toolbarIcons"></app-toolbar>
-          </div>
+  <div class="collapse-header" id="heading2">
+    <button data-toggle="collapse" data-target="#contenutoSezioneListaPagamenti" aria-expanded="true"
+            aria-controls="contenutoSezioneListaPagamenti">
+      Lista Pagamenti
+    </button>
+  </div>
+  <div id="contenutoSezioneListaPagamenti" class="collapse show" role="tabpanel" aria-labelledby="heading2">
+    <div class="collapse-body">
+      <!--      tabs -->
+      <div class="row align-items-baseline align-content-lg-around">
+        <div class="col-lg pb-2 pb-sm-2 pb-lg-0">
+          <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>
         </div>
-<!--      table -->
-        <div class="row">
-          <div class="col">
-            <app-table [dataKey]="tableData.dataKey"
-                       [cols]="tableData.cols"
-                       [rows]="tableData.rows"
-                       [tipoTabella]="tableData.tipoTabella"
-            (onSelection)="selezionaPagamenti($event)">
-            </app-table>
-          </div>
+        <!--      azioni -->
+        <div class="col-auto">
+          <app-toolbar (onClick)="eseguiAzioni($event)" [toolbarIcons]="toolbarIcons"></app-toolbar>
+        </div>
+      </div>
+      <!--      table -->
+      <div class="row">
+        <div class="col">
+          <app-table [dataKey]="tableData.dataKey"
+                     [cols]="tableData.cols"
+                     [rows]="tableData.rows"
+                     [tipoTabella]="tableData.tipoTabella"
+                     (onSelection)="selezionaPagamenti($event)"
+                     [selectedRows]="true"
+                     (onClickRow)="dettaglioPagamento($event)"
+                     [textLeft]="testoTabella()">
+          </app-table>
         </div>
       </div>
     </div>
+  </div>
 </div>
 

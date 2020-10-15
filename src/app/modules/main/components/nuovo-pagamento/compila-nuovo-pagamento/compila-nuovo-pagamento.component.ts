@@ -98,7 +98,9 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       }
     }
 
-    this.overlayService.caricamentoEvent.emit(false);
+    if (!this.datiPagamento) {
+      this.overlayService.caricamentoEvent.emit(false);
+    }
   }
 
   selezionaLivelloTerritoriale(): void {

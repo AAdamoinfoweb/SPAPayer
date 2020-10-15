@@ -37,7 +37,7 @@
   background: none;
 }
 :host ::ng-deep .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):focus .p-tabview-nav-link {
-  color: #ffc0a4;
+  color: #EE7622;
 }
 
 :host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
@@ -61,6 +61,6 @@
 // headers disattivi
 :host ::ng-deep  .p-tabview:hover .p-tabview-nav:hover li .p-tabview-nav-link:hover {
   background: none;
-  color: #EC6C25;
-  border-color: #EC6C25;
+  color: #EE7622;
+  border-color: #EE7622;
 }
