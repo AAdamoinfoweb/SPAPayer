@@ -16,11 +16,11 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-row let-columns="columns">
-    <tr>
+    <tr [ngClass]="{'row-selected':selectedRows}">
       <td *ngIf="tipoTabella == tipoTabellaEnum.CHECKBOX_SELECTION">
         <p-tableCheckbox [value]="row"></p-tableCheckbox>
       </td>
-      <td *ngFor="let col of columns">
+      <td *ngFor="let col of columns" (click)="selectedRows ? clickOnRow(row) : null">
         <span class="p-column-title">{{col.header}}</span>
         <!--  template ICONA  -->
         <div it-tooltip="{{row[col.field].tooltip}}"
@@ -28,13 +28,13 @@
              [ngStyle]="{fill: row[col.field] != null ? row[col.field].color : '#403d39', display: row[col.field].display}"
               (click)="onIcon(row[dataKey])"
         >
-          <svg class="bg-light icon icon-sm">
+          <svg class="icon icon-sm">
             <use [attr.xlink:href]="row[col.field].path"></use>
           </svg>
         </div>
         <!--  template TESTO  -->
-        <div *ngIf="col.type == tipoColonnaEnum.TESTO">
-          {{row[col.field]}}
+        <div *ngIf="col.type == tipoColonnaEnum.TESTO" class="{{row[col.field].class}}">
+          {{row[col.field].value}}
         </div>
         <!--  template LINK  -->
         <div *ngIf="col.type == tipoColonnaEnum.LINK">
@@ -46,8 +46,8 @@
           </a>
         </div>
         <!--  template IMPORTO  -->
-        <div *ngIf="col.type == tipoColonnaEnum.IMPORTO">
-          {{row[col.field]|currency:"EUR":"€ "
+        <div *ngIf="col.type == tipoColonnaEnum.IMPORTO" class="{{row[col.field].class}}">
+          {{row[col.field].value|currency:"EUR":"€ "
           | replace:'.':'|' | replace:',':'.'
           | replace:'|':','}}
         </div>
