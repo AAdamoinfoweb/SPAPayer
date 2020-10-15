@@ -52,6 +52,7 @@ import {MonthInputDirective} from './utils/MonthInputDirective';
 import {OverlayComponent} from './components/overlay/overlay.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
+import {TreeTableModule} from "primeng/treetable";
 
 @NgModule({
   declarations: [
@@ -97,33 +98,34 @@ import {ConfirmationService} from 'primeng/api';
     MonthInputDirective,
     OverlayComponent
   ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    MainModule,
-    NgbModule,
-    FormsModule,
-    DesignAngularKitModule,
-    ReactiveFormsModule,
-    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
-    DpDatePickerModule,
-    NgxDatatableModule,
-    AccordionModule,
-    TableModule,
-    ButtonModule,
-    BrowserAnimationsModule,
-    TabViewModule,
-    ToolbarModule,
-    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
-    DpDatePickerModule,
-    NgxCurrencyModule,
-    CustomFormsModule,
-    ConfirmDialogModule,
-    BrowserAnimationsModule,
-    CustomFormsModule,
-    AutoCompleteModule
-  ],
+    imports: [
+        HttpClientModule,
+        BrowserModule,
+        AppRoutingModule,
+        MainModule,
+        NgbModule,
+        FormsModule,
+        DesignAngularKitModule,
+        ReactiveFormsModule,
+        UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+        DpDatePickerModule,
+        NgxDatatableModule,
+        AccordionModule,
+        TableModule,
+        ButtonModule,
+        BrowserAnimationsModule,
+        TabViewModule,
+        ToolbarModule,
+        UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
+        DpDatePickerModule,
+        NgxCurrencyModule,
+        CustomFormsModule,
+        ConfirmDialogModule,
+        BrowserAnimationsModule,
+        CustomFormsModule,
+        AutoCompleteModule,
+        TreeTableModule
+    ],
   providers: [
     ConfirmationService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},

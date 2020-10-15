@@ -19,6 +19,7 @@ import {BannerService} from '../../../../services/banner.service';
 import {DettagliTransazione} from '../../model/bollettino/DettagliTransazione';
 import {AsyncSubject} from 'rxjs';
 import {DatiPagamento} from '../../model/bollettino/DatiPagamento';
+import {OverlayService} from '../../../../services/overlay.service';
 
 @Component({
   selector: 'app-i-miei-pagamenti',
@@ -76,7 +77,8 @@ export class IMieiPagamentiComponent implements OnInit {
   private pagamentiSelezionati: DatiPagamento[];
 
   constructor(private iMieiPagamentiService: IMieiPagamentiService, private router: Router,
-              private nuovoPagamentoService: NuovoPagamentoService, private bannerService: BannerService) {
+              private nuovoPagamentoService: NuovoPagamentoService, private bannerService: BannerService,
+              private overlayService: OverlayService) {
     // init breadcrumb
     this.inizializzaBreadcrumb();
   }
@@ -117,7 +119,6 @@ export class IMieiPagamentiComponent implements OnInit {
     this.riempiTabella(tempListaPagamenti);
   }
 
-  // todo logica azioni tool
   eseguiAzioni(tool) {
     if (tool === ToolEnum.INSERT) {
       // redirect nuovo pagamento page
@@ -134,8 +135,18 @@ export class IMieiPagamentiComponent implements OnInit {
     }
   }
 
-  getTestoConNumeroUtentiAttiviDisabilitati(): string {
-    return '';
+  testoTabella(): string {
+    if (this.listaPagamenti) {
+      const numeroPagati = this.listaPagamenti.filter(pagamento =>
+        pagamento.esitoPagamento === EsitoEnum.OK).length;
+      const numeroInAttesa = this.listaPagamenti.filter(pagamento =>
+        pagamento.esitoPagamento !== EsitoEnum.OK && (
+          pagamento.statoPagamento != null ? pagamento.statoPagamento === StatoPagamentoEnum.IN_ATTESA : true
+        )).length;
+      return 'Totale: ' + this.listaPagamenti.length + '\b Di cui pagati: ' + numeroPagati + '\b\b Di cui in attesa: ' + numeroInAttesa;
+    } else {
+      return '';
+    }
   }
 
   riempiListaPagamenti(lista: DatiPagamento[]) {
@@ -146,13 +157,16 @@ export class IMieiPagamentiComponent implements OnInit {
   riempiTabella(listaPagamenti: DatiPagamento[]) {
     const pagamenti = listaPagamenti.map(pagamento => {
       const row = {
-        icona: Utils.creaIcona('assets/img/sprite.svg#it-pencil', '#ef8157', 'tooltip', null),
-        numeroDocumento: pagamento.numeroDocumento,
-        nomeServizio: pagamento.nomeServizio,
-        nomeEnte: pagamento.nomeEnte,
-        dataScadenza: pagamento.dataScadenza ? moment(pagamento.dataScadenza).format('DD/MM/YYYY') : null,
-        importo: pagamento.importo,
-        dataPagamento: pagamento.dataPagamento ? moment(pagamento.dataPagamento).format('DD/MM/YYYY') : null
+        icona: pagamento.statoPagamento == null && Utils.creaIcona('assets/img/sprite.svg#it-pencil', '#EE7622', 'tooltip', null),
+        numeroDocumento: {value: pagamento.numeroDocumento},
+        nomeServizio: {value: pagamento.nomeServizio},
+        nomeEnte: {value: pagamento.nomeEnte},
+        dataScadenza: {value: pagamento.dataScadenza ? moment(pagamento.dataScadenza).format('DD/MM/YYYY') : null},
+        importo: {value: pagamento.importo,
+          class: (pagamento.statoPagamento !== StatoPagamentoEnum.PAGATO &&
+            pagamento.esitoPagamento !== EsitoEnum.OK)
+            && 'evidenziato'},
+        dataPagamento: {value: pagamento.dataPagamento ? moment(pagamento.dataPagamento).format('DD/MM/YYYY') : null}
       };
       return row;
     });
@@ -263,4 +277,7 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
 
+  dettaglioPagamento() {
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe();
+  }
 }
