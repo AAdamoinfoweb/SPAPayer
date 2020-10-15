@@ -49,8 +49,8 @@ export class AggiungiUtentePermessiComponent implements OnInit {
   aggiungiSezionePermesso(): void {
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiPermessoComponent);
     this.componentRef = this.target.createComponent(childComponent);
-    this.componentRef.instance.indexSezionePermesso = this.target.length - 1;
-    this.componentRef.instance.onDeletePermesso.subscribe(index => this.target.remove(index));
+    this.componentRef.instance.indexSezionePermesso = this.target.length;
+    this.componentRef.instance.onDeletePermesso.subscribe(index => this.target.remove(index - 1));
   }
 
   disabilitaBottone(): boolean {
