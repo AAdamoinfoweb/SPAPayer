@@ -56,7 +56,8 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       });
 
       if (this.datiPagamento) {
-        this.livelloTerritorialeSelezionato = this.listaLivelliTerritoriali.find(item => item.value.id === this.datiPagamento.idLivelloTerritoriale)?.value;
+        // TODO rimpiazzare con lettura tramite enteId
+        this.livelloTerritorialeSelezionato = this.listaLivelliTerritoriali.find(item => item.value.id === this.datiPagamento['livelloTerritorialeId'])?.value;
         this.selezionaLivelloTerritoriale();
       }
     })).subscribe(() => this.restoreParziale('livelloTerritorialeId'));
@@ -114,7 +115,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       });
 
       if (this.datiPagamento) {
-        this.enteSelezionato = this.listaEnti.find(item => item.value.id === this.datiPagamento.idEnte)?.value;
+        this.enteSelezionato = this.listaEnti.find(item => item.value.id === this.datiPagamento.enteId)?.value;
         this.selezionaEnte();
       }
     })).subscribe(() => this.restoreParziale('enteId'));
@@ -139,7 +140,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       });
 
       if (this.datiPagamento) {
-        this.servizioSelezionato = this.listaServizi.find(item => item.value.id === this.datiPagamento.idServizio)?.value;
+        this.servizioSelezionato = this.listaServizi.find(item => item.value.id === this.datiPagamento.servizioId)?.value;
         this.selezionaServizio();
       }
     })).subscribe(() => this.restoreParziale('servizioId'));
