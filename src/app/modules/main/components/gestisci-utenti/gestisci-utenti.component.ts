@@ -26,6 +26,7 @@ export class GestisciUtentiComponent implements OnInit {
 
   breadcrumbList = [];
 
+  codiceFiscaleUtenteDaModificare: string;
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
   toolbarIcons = [
@@ -136,13 +137,12 @@ export class GestisciUtentiComponent implements OnInit {
     this.nomeTabCorrente = value;
   }
 
-  // todo logica azioni tool
   eseguiAzioni(azioneTool) {
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     if (azioneTool === ToolEnum.INSERT) {
       this.router.navigateByUrl('/aggiungiUtentePermessi');
     } else if (azioneTool === ToolEnum.UPDATE) {
-      // aggiorna utente
+      this.router.navigate(['/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare]);
     } else if (azioneTool === ToolEnum.EXPORT_PDF) {
       this.esportaTabellaInFilePdf(dataTable);
     } else if (azioneTool === ToolEnum.EXPORT_XLS) {
@@ -217,7 +217,13 @@ export class GestisciUtentiComponent implements OnInit {
   }
 
   selezionaRigaTabella(rowsChecked): void {
-    this.toolbarIcons[1].disabled = rowsChecked.length !== 1;
+    if (rowsChecked.length === 1) {
+      this.codiceFiscaleUtenteDaModificare = rowsChecked[0].id.value;
+      this.toolbarIcons[1].disabled = false;
+    } else {
+      this.codiceFiscaleUtenteDaModificare = null;
+      this.toolbarIcons[1].disabled = true;
+    }
   }
 
 }
