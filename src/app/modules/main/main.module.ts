@@ -13,8 +13,8 @@ import {PrivacyComponent} from './components/privacy/privacy.component';
 import {LoginBarComponent} from "../../components/login-bar/login-bar.component";
 import {ReplacePipe} from "../../pipe/ReplacePipe";
 import {NgbDatepickerModule, NgbDropdownModule, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
-import { WaitingComponent } from './components/waiting/waiting.component';
-import { FiltriIMieiPagamentiComponent } from './components/i-miei-pagamenti/filtri-i-miei-pagamenti/filtri-i-miei-pagamenti.component';
+import {WaitingComponent} from './components/waiting/waiting.component';
+import {FiltriIMieiPagamentiComponent} from './components/i-miei-pagamenti/filtri-i-miei-pagamenti/filtri-i-miei-pagamenti.component';
 import {DpDatePickerModule} from "ng2-date-picker";
 import {CarrelloComponent} from "./components/carrello/carrello.component";
 import {ListaPagamentiL1Component} from "./components/lista-pagamentiL1/lista-pagamenti-l1.component";
@@ -46,8 +46,9 @@ import {WaitingL1Component} from "./components/waiting-l1/waiting-l1.component";
     NgbPaginationModule,
     NgbDropdownModule,
     NgbDatepickerModule,
-        ConfirmDialogModule
+    ConfirmDialogModule,
     DpDatePickerModule
+  ],
   exports: [
     FooterComponent,
     ReplacePipe,

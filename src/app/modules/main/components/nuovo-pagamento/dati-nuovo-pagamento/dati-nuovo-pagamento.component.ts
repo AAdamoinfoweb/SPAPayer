@@ -24,6 +24,7 @@ import {JSONPath} from 'jsonpath-plus';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from "../../../../../services/menu.service";
 import {RichiestaDettaglioPagamento} from '../../../model/bollettino/RichiestaDettaglioPagamento';
+import {MappingCampoInputPrecompilazioneEnum} from "../../../../../enums/mappingCampoInputPrecompilazione.enum";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -711,35 +712,4 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     }
   }
 
-  salvaPerDopo() {
-    let observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaBollettino())
-      .pipe(flatMap((result) => {
-        if (result.length > 0) {
-          let value: DettaglioTransazioneEsito = result[0];
-          if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-            let dettaglio: DettagliTransazione = new DettagliTransazione();
-            dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
-            return this.nuovoPagamentoService.salvaPerDopo(dettaglio);
-          } else {
-            // show err
-            this.showMessage();
-            return of('error');
-          }
-        }
-      }));
-    observable.subscribe((result) => {
-      if (result !== 'error') {
-        this.router.navigateByUrl('/iMieiPagamenti');
-      }
-    });
-  }
-a
-  private showMessage() {
-    const banner: Banner = {
-      titolo: 'Operazione non consentita!',
-      testo: 'Il bollettino è già stato pagato o in corso di pagamento. Per maggiori informazioni consultare la sezione i miei pagamenti o contattare l’help desk',
-      tipo: getBannerType(LivelloBanner.ERROR)
-    };
-    this.bannerService.bannerEvent.emit([banner]);
-  }
 }

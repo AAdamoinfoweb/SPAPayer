@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {tipoColonna} from '../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../enums/TipoTabella.enum';
 import {TipoUtenteEnum} from '../../../../enums/TipoUtente.enum';
-import {tool} from '../../../../enums/Tool.enum';
 import {Utils} from '../../../../utils/Utils';
 import {UtenteService} from '../../../../services/utente.service';
 import {RicercaUtente} from '../../model/utente/RicercaUtente';
