@@ -7,7 +7,7 @@
   opacity: 0.5;
 
   background-color: gray;
-  z-index: 2;
+  z-index: 4;
 }
 
 #spinner-wrapper {
@@ -17,7 +17,7 @@
   left: calc(50vw - 24px);
   top: calc(50vh - 24px);
 
-  z-index: 2;
+  z-index: 4;
 }
 
 #component-modal-wrapper {
@@ -26,7 +26,7 @@
   left: 10vw;
   top: 10vh;
 
-  z-index: 2;
+  z-index: 4;
 }
 
 #component-modal-background {
