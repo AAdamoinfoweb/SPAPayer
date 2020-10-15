@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<span>Tutti campi contrassegnati con * sono obbligatori</span>
+<span *ngIf="!isFaseVerificaPagamento">Tutti campi contrassegnati con * sono obbligatori</span>
 
 <form [formGroup]="form">
   <div id="sezioneDati" class="collapse show">
@@ -23,7 +23,7 @@
         <div *ngFor="let campo of listaCampiDinamici" [ngClass]="calcolaDimensioneCampo(campo)">
           <div [ngSwitch]="campo.tipoCampo" class="form-elem-container">
 
-            <div *ngSwitchCase="TipoCampoEnum.INPUT_TESTUALE" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
+            <div *ngSwitchCase="TipoCampoEnum.INPUT_TESTUALE" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)} && !isFaseVerificaPagamento">
               <div class="row">
                 <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
