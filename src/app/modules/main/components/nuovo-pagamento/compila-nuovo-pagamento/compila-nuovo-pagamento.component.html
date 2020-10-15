@@ -4,10 +4,10 @@
     <div class="col-md-4">
       <div class="form-elem-container">
         <div class="row">
-          <label [ngClass]="{'disabled': dettaglioPagamento}" for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
+          <label [ngClass]="{'disabled': datiPagamento}" for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
         </div>
         <div class="row">
-          <select [disabled]="dettaglioPagamento" id="selectLivelloTerritoriale"
+          <select [disabled]="datiPagamento" id="selectLivelloTerritoriale"
                   [(ngModel)]="livelloTerritorialeSelezionato" (ngModelChange)="selezionaLivelloTerritoriale()">
             <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
           </select>
@@ -18,10 +18,10 @@
     <div class="col-md-4">
       <div class="form-elem-container">
         <div class="row">
-          <label [ngClass]="{'disabled': dettaglioPagamento}" for="selectEnte" class="title">Ente</label>
+          <label [ngClass]="{'disabled': datiPagamento}" for="selectEnte" class="title">Ente</label>
         </div>
         <div class="row">
-          <select [disabled]="livelloTerritorialeSelezionato == null || !listaEnti.length || dettaglioPagamento" id="selectEnte"
+          <select [disabled]="livelloTerritorialeSelezionato == null || !listaEnti.length || datiPagamento" id="selectEnte"
                   [(ngModel)]="enteSelezionato" (ngModelChange)="selezionaEnte()">
             <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
           </select>
@@ -32,10 +32,10 @@
     <div class="col-md-4">
       <div class="form-elem-container">
         <div class="row">
-          <label [ngClass]="{'disabled': dettaglioPagamento}" for="selectServizio" class="title">Servizio</label>
+          <label [ngClass]="{'disabled': datiPagamento}" for="selectServizio" class="title">Servizio</label>
         </div>
         <div class="row">
-          <select [disabled]="enteSelezionato == null || !listaServizi.length || dettaglioPagamento" id="selectServizio"
+          <select [disabled]="enteSelezionato == null || !listaServizi.length || datiPagamento" id="selectServizio"
                   [(ngModel)]="servizioSelezionato" (ngModelChange)="selezionaServizio()">
             <option *ngFor="let item of listaServizi" [ngValue]="item.value">{{item.label}}</option>
           </select>

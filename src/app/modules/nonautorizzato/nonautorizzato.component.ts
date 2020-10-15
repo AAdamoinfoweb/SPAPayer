@@ -16,8 +16,7 @@ export class NonautorizzatoComponent implements OnInit {
   urlBack: string;
   private getUrlBack: string = '/getBackUrl';
 
-  constructor(private route: Router, private http: HttpClient, private xsrfService: XsrfService, private overlayService: OverlayService) {
-    this.overlayService.caricamentoEvent.emit(false);
+  constructor(private route: Router, private http: HttpClient, private xsrfService: XsrfService) {
   }
 
   ngOnInit(): void {

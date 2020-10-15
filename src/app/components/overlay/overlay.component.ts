@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {OverlayService} from '../../services/overlay.service';
-import {RichiestaDettaglioPagamento} from '../../modules/main/model/bollettino/RichiestaDettaglioPagamento';
+import {DatiPagamento} from '../../modules/main/model/bollettino/DatiPagamento';
 
 @Component({
   selector: 'app-overlay',
@@ -12,7 +12,7 @@ export class OverlayComponent implements OnInit {
   caricamento: boolean;
 
   @Input()
-  dettaglioPagamento: RichiestaDettaglioPagamento;
+  datiPagamento: DatiPagamento;
 
   constructor(private overlayService: OverlayService) { }
 

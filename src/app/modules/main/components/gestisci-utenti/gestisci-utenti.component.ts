@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {tipoColonna} from '../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../enums/TipoTabella.enum';
 import {TipoUtenteEnum} from '../../../../enums/TipoUtente.enum';
-import {tool} from '../../../../enums/Tool.enum';
 import {Utils} from '../../../../utils/Utils';
 import {UtenteService} from '../../../../services/utente.service';
 import {RicercaUtente} from '../../model/utente/RicercaUtente';
@@ -13,6 +12,7 @@ import 'jspdf-autotable';
 import {Breadcrumb} from '../../dto/Breadcrumb';
 import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
 import {Router} from '@angular/router';
+import {ToolEnum} from "../../../../enums/Tool.enum";
 
 
 @Component({
@@ -29,10 +29,10 @@ export class GestisciUtentiComponent implements OnInit {
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
   toolbarIcons = [
-    {type: tool.INSERT},
-    {type: tool.UPDATE, disabled: true},
-    {type: tool.EXPORT_PDF},
-    {type: tool.EXPORT_XLS}
+    {type: ToolEnum.INSERT},
+    {type: ToolEnum.UPDATE, disabled: true},
+    {type: ToolEnum.EXPORT_PDF},
+    {type: ToolEnum.EXPORT_XLS}
   ];
 
   tabs = [
@@ -139,14 +139,13 @@ export class GestisciUtentiComponent implements OnInit {
   // todo logica azioni tool
   eseguiAzioni(azioneTool) {
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
-
-    if (azioneTool.value === tool.INSERT.value) {
+    if (azioneTool.value === ToolEnum.INSERT) {
       this.router.navigateByUrl('/aggiungiUtentePermessi');
-    } else if (azioneTool.value === tool.UPDATE.value) {
+    } else if (azioneTool.value === ToolEnum.UPDATE) {
       // aggiorna utente
-    } else if (azioneTool.value === tool.EXPORT_PDF.value) {
+    } else if (azioneTool.value === ToolEnum.EXPORT_PDF) {
       this.esportaTabellaInFilePdf(dataTable);
-    } else if (azioneTool.value === tool.EXPORT_XLS.value) {
+    } else if (azioneTool.value === ToolEnum.EXPORT_XLS) {
       this.esportaTabellaInFileExcel(dataTable);
     }
   }
