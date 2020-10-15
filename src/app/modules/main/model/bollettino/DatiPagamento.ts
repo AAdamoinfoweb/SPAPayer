@@ -1,6 +1,6 @@
 export class DatiPagamento {
   dettaglioTransazioneId: number;
-  annoDocumento: string;
+  annoDocumento: number;
   numeroDocumento: string;
   nomeServizio: string;
   servizioId: number;

@@ -4,14 +4,12 @@ import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {ParametriRicercaPagamenti} from '../../../model/utente/ParametriRicercaPagamenti';
 import {TipoCampoEnum} from '../../../../../enums/tipoCampo.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
-import {RicercaUtente} from '../../../model/utente/RicercaUtente';
 import {NuovoPagamentoService} from '../../../../../services/nuovo-pagamento.service';
-import {SocietaService} from '../../../../../services/societa.service';
 import {FunzioneService} from '../../../../../services/funzione.service';
-import {UtenteService} from '../../../../../services/utente.service';
 import {map} from 'rxjs/operators';
-import {IMieiPagamentiService} from "../../../../../services/i-miei-pagamenti.service";
-import {DatiPagamento} from "../../../model/DatiPagamento";
+import {IMieiPagamentiService} from '../../../../../services/i-miei-pagamenti.service';
+import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
+
 
 @Component({
   selector: 'app-filtri-i-miei-pagamenti',

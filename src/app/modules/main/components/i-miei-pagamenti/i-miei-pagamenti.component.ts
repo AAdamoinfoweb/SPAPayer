@@ -4,8 +4,7 @@ import {tipoColonna} from '../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../enums/TipoTabella.enum';
 import {Utils} from '../../../../utils/Utils';
 import {Breadcrumb} from '../../dto/Breadcrumb';
-import {DatiPagamento} from '../../model/DatiPagamento';
-import {flatMap, map, switchMap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {IMieiPagamentiService} from '../../../../services/i-miei-pagamenti.service';
 import {ParametriRicercaPagamenti} from '../../model/utente/ParametriRicercaPagamenti';
 import {TipoPagamentoEnum} from '../../../../enums/tipoPagamento.enum';
@@ -18,11 +17,8 @@ import {Banner} from '../../model/Banner';
 import {getBannerType, LivelloBanner} from '../../../../enums/livelloBanner.enum';
 import {BannerService} from '../../../../services/banner.service';
 import {DettagliTransazione} from '../../model/bollettino/DettagliTransazione';
-import {DettaglioTransazioneEsito} from '../../model/bollettino/DettaglioTransazioneEsito';
-import {AsyncSubject, BehaviorSubject, of} from 'rxjs';
-import {Bollettino} from '../../model/bollettino/Bollettino';
-import {CampoDettaglioTransazione} from '../../model/bollettino/CampoDettaglioTransazione';
-import {Util} from 'design-angular-kit/lib/util/util';
+import {AsyncSubject} from 'rxjs';
+import {DatiPagamento} from '../../model/bollettino/DatiPagamento';
 
 @Component({
   selector: 'app-i-miei-pagamenti',
@@ -78,10 +74,6 @@ export class IMieiPagamentiComponent implements OnInit {
   tempTableData;
   private listaPagamenti: DatiPagamento[];
   private pagamentiSelezionati: DatiPagamento[];
-
-  private behavior$: AsyncSubject<number[]> = new AsyncSubject<number[]>();
-  private subject$: AsyncSubject<number[]> = new AsyncSubject<number[]>();
-
 
   constructor(private iMieiPagamentiService: IMieiPagamentiService, private router: Router,
               private nuovoPagamentoService: NuovoPagamentoService, private bannerService: BannerService) {

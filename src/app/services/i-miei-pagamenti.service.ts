@@ -3,12 +3,9 @@ import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {Ente} from '../modules/main/model/Ente';
-import {DatiPagamento} from '../modules/main/model/DatiPagamento';
 import {ParametriRicercaPagamenti} from '../modules/main/model/utente/ParametriRicercaPagamenti';
 import {DettagliTransazione} from '../modules/main/model/bollettino/DettagliTransazione';
-import {CampoDettaglioTransazione} from '../modules/main/model/bollettino/CampoDettaglioTransazione';
-import {DettaglioTransazioneEsito} from '../modules/main/model/bollettino/DettaglioTransazioneEsito';
+import {DatiPagamento} from '../modules/main/model/bollettino/DatiPagamento';
 
 @Injectable({
   providedIn: 'root'
@@ -72,7 +69,7 @@ export class IMieiPagamentiService {
     const listaIdentficativiString = listaIdentificativi.join(',');
     params = params.set('listaIdentificativi', listaIdentficativiString);
     return this.http.get(environment.bffBaseUrl + this.stampaAttestatiPagamentoUrl,
-      {params: params, withCredentials: true}).pipe(map((body: string[]) => {
+      {params, withCredentials: true}).pipe(map((body: string[]) => {
         return body;
       }),
       catchError((err, caught) => {
