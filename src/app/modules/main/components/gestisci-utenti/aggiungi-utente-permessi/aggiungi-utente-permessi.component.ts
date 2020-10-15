@@ -4,6 +4,8 @@ import {InserimentoModificaUtente} from '../../../model/utente/InserimentoModifi
 import {UtenteService} from '../../../../../services/utente.service';
 import {Router} from '@angular/router';
 import {DatiPermessoComponent} from '../../dati-permesso/dati-permesso.component';
+import {AsyncSubject} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -18,13 +20,15 @@ export class AggiungiUtentePermessiComponent implements OnInit {
 
   codiceFiscale: string;
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
+  asyncSubject: AsyncSubject<string> = new AsyncSubject<string>();
 
   isFormDatiUtenteValido = false;
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
 
-  constructor(private utenteService: UtenteService, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(private utenteService: UtenteService, private router: Router,
+              private componentFactoryResolver: ComponentFactoryResolver) {
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
@@ -58,8 +62,11 @@ export class AggiungiUtentePermessiComponent implements OnInit {
   }
 
   inserimentoDatiUtentePermessi(): void {
-    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, this.datiUtente).subscribe();
-    // this.router.navigateByUrl('/modificaUtentePermessi');
+    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, this.datiUtente).pipe(map(datiUtente => {
+      this.asyncSubject.next(this.codiceFiscale);
+      this.asyncSubject.complete();
+    })).subscribe();
+    this.asyncSubject.subscribe(codiceFiscale => this.router.navigate(['/modificaUtentePermessi', codiceFiscale]));
   }
 
 }

@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Breadcrumb} from '../../../dto/Breadcrumb';
+import {UtenteService} from '../../../../../services/utente.service';
+import {ActivatedRoute} from '@angular/router';
+import {InserimentoModificaUtente} from '../../../model/utente/InserimentoModificaUtente';
 
 @Component({
   selector: 'app-modifica-utente-permessi',
@@ -12,7 +15,10 @@ export class ModificaUtentePermessiComponent implements OnInit {
 
   readonly tooltipModificaUtentePermessiTitle = 'In questa pagina puoi aggiornare i dati di un utente già censito e modificare o aggiungere i relativi permessi';
 
-  constructor() {
+  codiceFiscale: string;
+  datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
+
+  constructor(private utenteService: UtenteService, private route: ActivatedRoute) {
     this.inizializzaBreadcrumbList();
   }
 
@@ -24,6 +30,15 @@ export class ModificaUtentePermessiComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.codiceFiscale = this.route.snapshot.paramMap.get('userid');
+  }
+
+  onChangeDatiUtenti(datiUtente: InserimentoModificaUtente): void {
+    this.datiUtente = datiUtente;
+  }
+
+  modificaDatiUtentePermessi(): void {
+    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, this.datiUtente).subscribe();
   }
 
 }

@@ -17,7 +17,9 @@
   </h3>
 
   <!-- sezione aggiungi dati-utente -->
-  <app-dati-utente></app-dati-utente>
+  <app-dati-utente [codiceFiscale]="codiceFiscale" (onChangeDatiUtente)="onChangeDatiUtenti($event)"></app-dati-utente>
+
+  <hr>
 
   <!-- sezione aggiungi dati-permesso -->
   <!-- <app-dati-permesso></app-dati-permesso> -->
@@ -31,7 +33,7 @@
     <!-- Bottoni dx -->
     <div class="col-10 text-right">
       <button id="buttonAggiungiPermessi" class="btn btn-secondary">Aggiungi permessi</button>
-      <button id="buttonSalva" class="btn">Salva</button>
+      <button id="buttonSalva" class="btn" (click)="modificaDatiUtentePermessi()">Salva</button>
     </div>
   </div>
 </div>

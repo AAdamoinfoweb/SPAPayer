@@ -12,7 +12,7 @@ import 'jspdf-autotable';
 import {Breadcrumb} from '../../dto/Breadcrumb';
 import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
 import {Router} from '@angular/router';
-import {ToolEnum} from "../../../../enums/Tool.enum";
+import {ToolEnum} from '../../../../enums/Tool.enum';
 
 
 @Component({
@@ -139,13 +139,13 @@ export class GestisciUtentiComponent implements OnInit {
   // todo logica azioni tool
   eseguiAzioni(azioneTool) {
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
-    if (azioneTool.value === ToolEnum.INSERT) {
+    if (azioneTool === ToolEnum.INSERT) {
       this.router.navigateByUrl('/aggiungiUtentePermessi');
-    } else if (azioneTool.value === ToolEnum.UPDATE) {
+    } else if (azioneTool === ToolEnum.UPDATE) {
       // aggiorna utente
-    } else if (azioneTool.value === ToolEnum.EXPORT_PDF) {
+    } else if (azioneTool === ToolEnum.EXPORT_PDF) {
       this.esportaTabellaInFilePdf(dataTable);
-    } else if (azioneTool.value === ToolEnum.EXPORT_XLS) {
+    } else if (azioneTool === ToolEnum.EXPORT_XLS) {
       this.esportaTabellaInFileExcel(dataTable);
     }
   }
