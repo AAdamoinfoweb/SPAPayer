@@ -9,7 +9,8 @@ import {FunzioneService} from '../../../../../services/funzione.service';
 import {map} from 'rxjs/operators';
 import {IMieiPagamentiService} from '../../../../../services/i-miei-pagamenti.service';
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
-import {ListaPagamentiFiltri} from "../../../model/bollettino/imieipagamenti/ListaPagamentiFiltri";
+import {ListaPagamentiFiltri} from '../../../model/bollettino/imieipagamenti/ListaPagamentiFiltri';
+import * as moment from 'moment';
 
 
 @Component({
@@ -59,10 +60,12 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
   selezionaLivelloTerritoriale(): void {
     // pulisci select ente
-    this.filtroRicercaPagamenti.enteId = null;
-    this.listaEnti = [];
+    if (this.filtroRicercaPagamenti.livelloTerritorialeId != null) {
+      this.filtroRicercaPagamenti.enteId = null;
+      this.listaEnti = [];
 
-    this.recuperaEnti(this.filtroRicercaPagamenti?.livelloTerritorialeId);
+      this.recuperaEnti(this.filtroRicercaPagamenti?.livelloTerritorialeId);
+    }
   }
 
   recuperaEnti(livelloTerritorialeId): void {
@@ -78,10 +81,13 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
   selezionaEnte(): void {
     // pulisci select servizio
-    this.filtroRicercaPagamenti.servizioId = null;
-    this.listaServizi = [];
+    if (this.filtroRicercaPagamenti.enteId != null) {
 
-    this.recuperaFiltroServizi(this.filtroRicercaPagamenti?.enteId);
+      this.filtroRicercaPagamenti.servizioId = null;
+      this.listaServizi = [];
+
+      this.recuperaFiltroServizi(this.filtroRicercaPagamenti?.enteId);
+    }
   }
 
   recuperaFiltroServizi(enteId): void {
@@ -110,7 +116,14 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
-    return campo?.errors;
+    if (campo?.name === 'dataScadenzaA') {
+      const momentDataDa = moment(this.filtroRicercaPagamenti.dataScadenzaDa, 'DD/MM/YYYY');
+      const momentDataA = moment(this.filtroRicercaPagamenti.dataScadenzaA, 'DD/MM/YYYY');
+      return this.filtroRicercaPagamenti.dataScadenzaDa != null && moment(momentDataA).isBefore(momentDataDa);
+    } else {
+      return campo?.errors;
+    }
+
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -120,7 +133,10 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
+    this.listaEnti = [];
+    this.listaServizi = [];
     this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
+    console.log(this.filtroRicercaPagamenti);
   }
 
   cercaPagamenti(form: NgForm): void {
