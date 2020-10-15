@@ -26,6 +26,7 @@ export class NuovoPagamentoService {
   private readonly verificaBollettinoUrl = '/verificaBollettino';
   private readonly eliminaBollettinoUrl = '/eliminaBollettino';
   private readonly inserimentoBollettinoUrl = '/bollettino';
+  private readonly letturaBollettinoUrl = '/bollettino/';
   private readonly inserimentoCarrelloUrl = '/carrello';
   private readonly campiPrecompilatiUrl = '/datiPagamento';
   private salvaPerDopoUrl = '/salvaPerDopo';
@@ -105,6 +106,24 @@ export class NuovoPagamentoService {
       .pipe(map((body: any) => {
         return body;
       }));
+  }
+
+  letturaBollettino(idDettaglioTransazione): Observable<Bollettino> {
+    return this.http.get(environment.bffBaseUrl + this.letturaBollettinoUrl + idDettaglioTransazione, {
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401) {
+            return of('');
+          } else if (err.status == 500) {
+            return of('');
+          } else {
+            return caught;
+          }
+        }));
   }
 
   verificaBollettino(numero = null, idDettaglioTransazione = null): Observable<EsitoEnum> {
