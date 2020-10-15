@@ -20,6 +20,7 @@ import {DettagliTransazione} from '../../model/bollettino/DettagliTransazione';
 import {AsyncSubject} from 'rxjs';
 import {DatiPagamento} from '../../model/bollettino/DatiPagamento';
 import {OverlayService} from '../../../../services/overlay.service';
+import {ListaPagamentiFiltri} from "../../model/bollettino/imieipagamenti/ListaPagamentiFiltri";
 
 @Component({
   selector: 'app-i-miei-pagamenti',
@@ -68,13 +69,14 @@ export class IMieiPagamentiComponent implements OnInit {
       {field: 'importo', header: 'Importo', type: tipoColonna.IMPORTO},
       {field: 'dataPagamento', header: 'Data Pagamento', type: tipoColonna.TESTO}
     ],
-    dataKey: 'numeroDocumento',
+    dataKey: 'numeroDocumento.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
   tempTableData;
   private listaPagamenti: DatiPagamento[];
   private pagamentiSelezionati: DatiPagamento[];
+  private filtri: ParametriRicercaPagamenti;
 
   constructor(private iMieiPagamentiService: IMieiPagamentiService, private router: Router,
               private nuovoPagamentoService: NuovoPagamentoService, private bannerService: BannerService,
@@ -90,13 +92,12 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.inizializzaListaPagamenti();
+    this.inizializzaListaPagamenti(new ParametriRicercaPagamenti());
   }
 
-  private inizializzaListaPagamenti() {
-    const filtri = new ParametriRicercaPagamenti();
+  private inizializzaListaPagamenti(filtri: ParametriRicercaPagamenti) {
     this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
-      this.riempiListaPagamenti(listaPagamenti);
+      this.riempiListaPagamenti({listaPagamenti, filtri});
     })).subscribe();
   }
 
@@ -149,9 +150,10 @@ export class IMieiPagamentiComponent implements OnInit {
     }
   }
 
-  riempiListaPagamenti(lista: DatiPagamento[]) {
-    this.listaPagamenti = lista;
-    this.riempiTabella(lista);
+  riempiListaPagamenti(listaPagamentiFiltri: ListaPagamentiFiltri) {
+    this.listaPagamenti = listaPagamentiFiltri.listaPagamenti;
+    this.filtri = listaPagamentiFiltri.filtri;
+    this.riempiTabella(listaPagamentiFiltri.listaPagamenti);
   }
 
   riempiTabella(listaPagamenti: DatiPagamento[]) {
@@ -180,7 +182,7 @@ export class IMieiPagamentiComponent implements OnInit {
     let tempPagamentiSelezionati: DatiPagamento[] = [];
     rows.forEach(value => {
       const pagamentoSelezionato: DatiPagamento[] = this.listaPagamenti
-        .filter(pagamento => pagamento.numeroDocumento === value.numeroDocumento);
+        .filter(pagamento => pagamento.numeroDocumento === value.numeroDocumento.value);
       tempPagamentiSelezionati.push(...pagamentoSelezionato);
     });
     this.pagamentiSelezionati = tempPagamentiSelezionati;
@@ -192,7 +194,7 @@ export class IMieiPagamentiComponent implements OnInit {
       this.iMieiPagamentiService.inserimentoPagamentiCarrello(this.pagamentiSelezionati).pipe(map(res => {
         // refresh table
         // todo prendere filtri se valorizzati
-        this.inizializzaListaPagamenti();
+        this.inizializzaListaPagamenti(this.filtri);
       })).subscribe();
     } else {
       this.mostraBannerError(messaggioInserimentoCarrello);
@@ -205,7 +207,7 @@ export class IMieiPagamentiComponent implements OnInit {
       const dettagliTransazione: DettagliTransazione = new DettagliTransazione();
       dettagliTransazione.listaDettaglioTransazioneId = this.pagamentiSelezionati.map(pagamento => pagamento.dettaglioTransazioneId);
       this.iMieiPagamentiService.eliminaBollettino(dettagliTransazione).pipe(map(value => {
-        this.inizializzaListaPagamenti();
+        this.inizializzaListaPagamenti(this.filtri);
       })).subscribe();
     } else {
       this.mostraBannerError(this.MESSAGGIO_ERRORE_AZIONE);
@@ -277,7 +279,8 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
 
-  dettaglioPagamento() {
-    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe();
+  dettaglioPagamento(row: any) {
+    const pagamento: DatiPagamento = this.listaPagamenti.find(datiPagamento => datiPagamento.numeroDocumento === row.numeroDocumento.value);
+    this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(pagamento);
   }
 }

@@ -46,7 +46,7 @@
                      [tipoTabella]="tableData.tipoTabella"
                      (onSelection)="selezionaPagamenti($event)"
                      [selectedRows]="true"
-                     (onClickRow)="dettaglioPagamento()"
+                     (onClickRow)="dettaglioPagamento($event)"
                      [textLeft]="testoTabella()">
           </app-table>
         </div>
