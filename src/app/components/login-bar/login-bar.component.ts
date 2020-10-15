@@ -54,6 +54,7 @@ export class LoginBarComponent implements OnInit, AfterViewInit {
     } else {
       this.http.get(environment.bffBaseUrl + '/logout', {withCredentials: true}).subscribe((body: any) => {
         if (body.url) {
+          localStorage.clear();
           this.menuService.userEventChange.emit();
           window.location.href = body.url;
         }
