@@ -58,6 +58,7 @@ export class DatiPermessoComponent implements OnInit {
 
   selezionaServizio(): void {
     this.datiPermesso.servizioId = null;
+    this.listaFunzioni = [];
 
     // TODO lista Servizio relativa all'utente amministratore inserito/modificato mockata temporaneamente in attesa di informazioni su come recuperarla
     this.listaServizi = [
@@ -71,7 +72,7 @@ export class DatiPermessoComponent implements OnInit {
   letturaFunzioniGestioneUtente(): void {
     this.funzioneService.letturaFunzioni().pipe(map(funzioniAbilitate => {
       funzioniAbilitate.forEach(funzione => {
-        if (GruppoEnum.GESTIONE === funzione.gruppo) {
+        if (GruppoEnum.GESTIONE === funzione.gruppo && funzione.applicabileAServizio === 0) {
           this.listaFunzioni.push({
             value: funzione,
             label: funzione.nome
@@ -81,8 +82,12 @@ export class DatiPermessoComponent implements OnInit {
     })).subscribe();
   }
 
-  setListaFunzioniPerServizio(): void {
-    this.listaFunzioni = this.listaFunzioni.filter(funzione => funzione.value.applicabileAServizio === this.datiPermesso.servizioId);
+  isSelectValida(valoreCampo: number, listaOpzioniSelect: Array<OpzioneSelect>): boolean {
+    return valoreCampo !== null && valoreCampo !== listaOpzioniSelect[listaOpzioniSelect.length - 1]?.value;
+  }
+
+  getNomeEnte(enteId: number): string {
+    return this.listaEnti.filter(ente => ente.value === enteId)[0].label;
   }
 
   setPlaceholder(campo: NgModel, tipo: string): string {

@@ -33,7 +33,7 @@
       <div class="col-md-3 pb-2">
         <div class="row">
           <div class="col">
-            <label for="selectEnte" [ngClass]="{'title': true, 'required': datiPermesso.enteId === null}">Ente</label>
+            <label for="selectEnte" [ngClass]="{'title': true, 'required': !isSelectValida(datiPermesso.enteId, listaEnti)}">Ente</label>
           </div>
         </div>
         <div class="row">
@@ -57,24 +57,30 @@
       <div class="col-md-2 pb-2">
         <div class="row">
           <div class="col">
-            <label for="selectServizio" [ngClass]="{'title': true, 'text-muted': datiPermesso.enteId === null || datiPermesso.enteId === listaEnti[listaEnti.length - 1].value}">Servizio</label>
+            <label for="selectServizio" [ngClass]="{'title': true, 'text-muted': !isSelectValida(datiPermesso.enteId, listaEnti), 'required': isSelectValida(datiPermesso.enteId, listaEnti)}">
+              Servizio
+            </label>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <select [ngClass]="{'input-disabled': datiPermesso.enteId === null || datiPermesso.enteId === listaEnti[listaEnti.length - 1].value}"
+            <select [ngClass]="{'input-disabled': !isSelectValida(datiPermesso.enteId, listaEnti)}"
                     id="selectServizio" name="servizioId"
-                    #servizioInput = "ngModel" [(ngModel)]="datiPermesso.servizioId" (ngModelChange)="setListaFunzioniPerServizio()">
-              <option [ngValue]="null" selected>Seleziona</option>
+                    #servizioInput = "ngModel" [(ngModel)]="datiPermesso.servizioId">
+              <option [ngValue]="null" selected *ngIf="!isSelectValida(datiPermesso.enteId, listaEnti)"></option>
+              <option [ngValue]="null" selected *ngIf="isSelectValida(datiPermesso.enteId, listaEnti)">Seleziona</option>
               <option *ngFor="let item of listaServizi" [ngValue]="item.value">{{item.label}}</option>
             </select>
           </div>
         </div>
         <div class="row">
-          <div class="col">
-            <p [ngClass]="{'text-muted': !isCampoInvalido(servizioInput), 'text-invalid': isCampoInvalido(servizioInput), 'text-disabled': datiPermesso.enteId === null || datiPermesso.enteId === listaEnti[listaEnti.length - 1].value}">
+          <div *ngIf="isSelectValida(datiPermesso.servizioId, listaServizi)" class="col">
+            <p [ngClass]="{'text-muted': !isCampoInvalido(servizioInput), 'text-invalid': isCampoInvalido(servizioInput), 'text-disabled': !isSelectValida(datiPermesso.enteId, listaEnti)}">
               {{setPlaceholder(servizioInput, 'select')}}
             </p>
+          </div>
+          <div *ngIf="isSelectValida(datiPermesso.enteId, listaEnti) && !isSelectValida(datiPermesso.servizioId, listaServizi)" class="col">
+            <p class="text-invalid">Selezionare un servizio per l'ente {{getNomeEnte(datiPermesso.enteId)}}</p>
           </div>
         </div>
       </div>
@@ -163,7 +169,7 @@
       </div>
     </div>
 
-    <div *ngIf="datiPermesso?.servizioId !== listaServizi[listaServizi.length - 1]?.value">
+    <div *ngIf="isSelectValida(datiPermesso.enteId, listaEnti) && datiPermesso.servizioId !== listaServizi[listaServizi.length - 1]?.value">
       <div *ngFor="let funzione of listaFunzioni; let i = index">
         <div class="row">
           <div class="col-3">
