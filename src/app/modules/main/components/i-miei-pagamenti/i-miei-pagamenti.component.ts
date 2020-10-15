@@ -96,6 +96,8 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
   private inizializzaListaPagamenti(filtri: ParametriRicercaPagamenti) {
+    // spinner
+    this.overlayService.caricamentoEvent.emit(true);
     this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
       this.riempiListaPagamenti({listaPagamenti, filtri});
     })).subscribe();
@@ -173,6 +175,9 @@ export class IMieiPagamentiComponent implements OnInit {
       return row;
     });
     this.tableData.rows = pagamenti;
+
+    // termina spinner
+    this.overlayService.caricamentoEvent.emit(false);
     // oggetto contenente le rows recuperate dalla ricerca
     // this.tempTableData.rows = Object.assign({}, this.tableData.rows);
   }

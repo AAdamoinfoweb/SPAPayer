@@ -11,6 +11,7 @@ import {IMieiPagamentiService} from '../../../../../services/i-miei-pagamenti.se
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
 import {ListaPagamentiFiltri} from '../../../model/bollettino/imieipagamenti/ListaPagamentiFiltri';
 import * as moment from 'moment';
+import {OverlayService} from "../../../../../services/overlay.service";
 
 
 @Component({
@@ -37,13 +38,15 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   onChangeListaPagamenti: EventEmitter<ListaPagamentiFiltri> = new EventEmitter<ListaPagamentiFiltri>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
-              private funzioneService: FunzioneService, private iMieiPagamentiService: IMieiPagamentiService ) {
+              private funzioneService: FunzioneService, private iMieiPagamentiService: IMieiPagamentiService,
+              private overlayService: OverlayService) {
   }
 
   ngOnInit(): void {
     this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
 
     // recupero dati select
+    this.overlayService.caricamentoEvent.emit(true);
     this.recuperaLivelloTerritoriale();
   }
 
@@ -61,6 +64,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   selezionaLivelloTerritoriale(): void {
     // pulisci select ente
     if (this.filtroRicercaPagamenti.livelloTerritorialeId != null) {
+      this.overlayService.caricamentoEvent.emit(true);
       this.filtroRicercaPagamenti.enteId = null;
       this.listaEnti = [];
 
@@ -75,6 +79,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           value: ente.id,
           label: ente.nome
         });
+        this.overlayService.caricamentoEvent.emit(false);
       });
     })).subscribe();
   }
@@ -82,7 +87,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   selezionaEnte(): void {
     // pulisci select servizio
     if (this.filtroRicercaPagamenti.enteId != null) {
-
+      this.overlayService.caricamentoEvent.emit(true);
       this.filtroRicercaPagamenti.servizioId = null;
       this.listaServizi = [];
 
@@ -97,6 +102,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           value: servizio.id,
           label: servizio.nome
         });
+        this.overlayService.caricamentoEvent.emit(false);
       });
     })).subscribe();
   }
@@ -140,6 +146,9 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   cercaPagamenti(form: NgForm): void {
+    // inizia spinner
+    this.overlayService.caricamentoEvent.emit(true);
+
     Object.keys(form.value).forEach(key => {
       const value = form.value[key];
       if (value !== undefined) {
@@ -163,7 +172,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     if (nomeBottone === 'Pulisci') {
       return !isAtLeastOneFieldValued;
     } else {
-      return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued;
+      return !filtroGestioneUtentiForm.valid;
     }
   }
 }
