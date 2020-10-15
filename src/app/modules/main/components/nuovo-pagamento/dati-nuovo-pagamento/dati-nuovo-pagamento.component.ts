@@ -24,6 +24,7 @@ import {JSONPath} from 'jsonpath-plus';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from '../../../../../services/menu.service';
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
+import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mappingCampoInputPrecompilazione.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -92,15 +93,41 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   impostaDettaglioPagamento(): void {
     this.isFaseVerificaPagamento = true;
     this.isBollettinoPagato = this.datiPagamento.esitoPagamento === EsitoEnum.OK || this.datiPagamento.esitoPagamento === EsitoEnum.PENDING;
+
     if (this.datiPagamento.dettaglioTransazioneId) {
       this.nuovoPagamentoService.letturaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((bollettino) => {
-        console.log(bollettino);
+        // TODO valorizzare i campi input (attendere fix in MieiPagamenti)
+        this.overlayService.caricamentoEvent.emit(false);
       });
-    }
+    } else {
+      this.model[this.importoNomeCampo] = this.datiPagamento.importo;
+      const campoCodiceAvviso = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.codiceAvviso);
+      if (campoCodiceAvviso) {
+        this.model[this.getNomeCampoForm(campoCodiceAvviso)] = this.datiPagamento.codiceAvviso;
 
-    // TODO valorizzare i campi input
-    // TODO valorizzare i campi output
-    this.overlayService.caricamentoEvent.emit(false);
+        const valoriPerPrecompilazione = {};
+        valoriPerPrecompilazione[MappingCampoInputPrecompilazioneEnum.codiceAvviso] = this.datiPagamento.codiceAvviso;
+
+        this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
+          this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
+          .subscribe((valoriCampiPrecompilati) => {
+            this.impostaValoriCampiOutput(valoriCampiPrecompilati);
+
+            // Per i pagamenti lv3 senza dettaglioTransazione (non salvati sul db, provenienti da servizioEsterno), non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
+            const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
+            if (cfpiva) {
+              const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
+              this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
+            }
+
+            this.overlayService.caricamentoEvent.emit(false);
+          });
+      }
+    }
+  }
+
+  private recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriPrecompilati): string {
+    return valoriPrecompilati?.pagamento[0]?.anagrafica_pagatore?.codice_pagatore;
   }
 
   private restoreParziale() {
@@ -159,18 +186,21 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
       .subscribe((valoriCampiPrecompilati) => {
         // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO (NB: al momento la chiamata crasha lato backend per servizio LV2BO)
-        const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
-        campiOutput.forEach(campo => {
-          this.model[this.getNomeCampoForm(campo)] = JSONPath({
-            path: campo.jsonPath,
-            json: valoriCampiPrecompilati
-          })[0];
-        });
-
-        this.model[this.importoNomeCampo] = valoriCampiPrecompilati[this.importoNomeCampo];
-
+        this.impostaValoriCampiOutput(valoriCampiPrecompilati);
         this.overlayService.caricamentoEvent.emit(false);
       });
+  }
+
+  impostaValoriCampiOutput(valoriCampiPrecompilati): void {
+    const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+    campiOutput.forEach(campo => {
+      this.model[this.getNomeCampoForm(campo)] = JSONPath({
+        path: campo.jsonPath,
+        json: valoriCampiPrecompilati
+      })[0];
+    });
+
+    this.model[this.importoNomeCampo] = valoriCampiPrecompilati[this.importoNomeCampo];
   }
 
   aggiornaVisibilita(): void {

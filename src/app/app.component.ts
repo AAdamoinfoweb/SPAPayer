@@ -82,6 +82,8 @@ export class AppComponent implements OnInit {
     mockDettaglioPagamento.dettaglioTransazioneId = null;
     mockDettaglioPagamento.enteId = 4;
     mockDettaglioPagamento.servizioId = 101;
+    mockDettaglioPagamento.importo = 123;
+    mockDettaglioPagamento.codiceAvviso = '001000000001066001';
     mockDettaglioPagamento.esitoPagamento = EsitoEnum.NON_PRESENTE;
     this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(mockDettaglioPagamento);
   }
