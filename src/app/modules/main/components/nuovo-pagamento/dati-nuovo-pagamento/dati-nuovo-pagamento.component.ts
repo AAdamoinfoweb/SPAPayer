@@ -127,6 +127,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   clickIndietro(): void {
+    if (this.datiPagamento) {
+      this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+    }
+
     this.isFaseVerificaPagamento = false;
     this.rimuoviCampoImporto();
 
@@ -134,8 +138,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     campiOutput.forEach(campo => {
       delete this.model[this.getNomeCampoForm(campo)];
     });
-
-    // TODO valutare triggerare processo inverso del salvaParziale
   }
 
   clickProcedi(): void {
