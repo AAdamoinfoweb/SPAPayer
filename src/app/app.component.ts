@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
 
     this.letturatipologicheSelect();
 
-    this.mockModaleDettaglioPagamento();
+    // this.mockModaleDettaglioPagamento();
   }
 
   // @HostListener('window:beforeunload')
