@@ -5,6 +5,7 @@ import {throwError} from 'rxjs';
 import {environment} from 'src/environments/environment';
 import {RenewToken} from '../interfaces/renew-token';
 import * as Sentry from '@sentry/browser';
+import {OverlayService} from './overlay.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class BackendInterceptorService {
 
   reqnew: any;
 
-  constructor( private http: HttpClient  ) { }
+  constructor( private http: HttpClient, private overlayService: OverlayService ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
 
@@ -33,6 +34,8 @@ export class BackendInterceptorService {
       }
     }),
     catchError(err => { // gestisco gli errori verso il backend
+      this.overlayService.caricamentoEvent.emit(false);
+
       if (err.status === 401 && accessjwt && !err.url.includes(environment.renewJwtUrl)) { // accesso negato
         const renew = this.renewToken();
         return renew.pipe(

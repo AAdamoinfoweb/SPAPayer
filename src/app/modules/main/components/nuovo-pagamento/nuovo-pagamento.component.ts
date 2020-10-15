@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FiltroServizio} from '../../model/FiltroServizio';
 import {NuovoPagamentoService} from '../../../../services/nuovo-pagamento.service';
-import {RichiestaDettaglioPagamento} from '../../model/bollettino/RichiestaDettaglioPagamento';
+import {DatiPagamento} from '../../model/bollettino/DatiPagamento';
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -12,7 +12,7 @@ export class NuovoPagamentoComponent implements OnInit {
   servizioSelezionato: FiltroServizio;
 
   @Input()
-  dettaglioPagamento: RichiestaDettaglioPagamento;
+  datiPagamento: DatiPagamento;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService) {
     this.nuovoPagamentoService.compilazioneEvent.subscribe(servizioSelezionato => {

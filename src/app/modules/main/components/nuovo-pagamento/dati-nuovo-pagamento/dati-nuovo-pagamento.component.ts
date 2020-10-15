@@ -13,7 +13,7 @@ import {Bollettino} from '../../../model/bollettino/Bollettino';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {Router} from '@angular/router';
 import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettaglioTransazione';
-import {observable, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {DettagliTransazione} from '../../../model/bollettino/DettagliTransazione';
 import {DettaglioTransazioneEsito} from '../../../model/bollettino/DettaglioTransazioneEsito';
 import {Banner} from '../../../model/Banner';
@@ -22,9 +22,8 @@ import {BannerService} from '../../../../../services/banner.service';
 
 import {JSONPath} from 'jsonpath-plus';
 import {OverlayService} from '../../../../../services/overlay.service';
-import {MenuService} from "../../../../../services/menu.service";
-import {RichiestaDettaglioPagamento} from '../../../model/bollettino/RichiestaDettaglioPagamento';
-import {MappingCampoInputPrecompilazioneEnum} from "../../../../../enums/mappingCampoInputPrecompilazione.enum";
+import {MenuService} from '../../../../../services/menu.service';
+import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -53,7 +52,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   servizio: FiltroServizio = null;
 
   @Input()
-  dettaglioPagamento: RichiestaDettaglioPagamento;
+  datiPagamento: DatiPagamento;
+  isBollettinoPagato: boolean;
 
   listaCampiDinamici: Array<CampoForm> = [];
   form: FormGroup = new FormGroup({});
@@ -87,6 +87,16 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     if (changes.servizio) {
       this.inizializzazioneForm(this.servizio).subscribe(() => this.restoreParziale());
     }
+  }
+
+  impostaDettaglioPagamento(): void {
+    this.isFaseVerificaPagamento = true;
+    this.nuovoPagamentoService.verificaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((esitoBollettino) => {
+      this.isBollettinoPagato = esitoBollettino === EsitoEnum.OK || esitoBollettino === EsitoEnum.PENDING;
+    });
+    // TODO valorizzare i campi input
+    // TODO valorizzare i campi output
+    this.overlayService.caricamentoEvent.emit(false);
   }
 
   private restoreParziale() {
@@ -159,13 +169,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         this.overlayService.caricamentoEvent.emit(false);
       });
-  }
-
-  mappaCampoInput(mappingCampoInputPrecompilazioneEnum: MappingCampoInputPrecompilazioneEnum) {
-    const campo = this.listaCampiDinamici.find(campo => campo.campo_input && campo.jsonPath === mappingCampoInputPrecompilazioneEnum);
-    const valoreCampo = campo ? this.model[this.getNomeCampoForm(campo)] : null;
-
-    return valoreCampo;
   }
 
   aggiornaVisibilita(): void {
@@ -279,7 +282,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
         this.impostaCampi(campiNuovoPagamento.campiServizio);
 
-        this.overlayService.caricamentoEvent.emit(false);
+        if (this.datiPagamento) {
+          this.impostaDettaglioPagamento();
+        } else {
+          this.overlayService.caricamentoEvent.emit(false);
+        }
       }));
     } else {
       return of(null);
@@ -311,7 +318,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     campi.forEach(campo => {
       const campoForm = new FormControl();
-      if (campo.disabilitato || !campo.campo_input) {
+      if (campo.disabilitato || !campo.campo_input || this.datiPagamento) {
         campoForm.disable();
       }
 
@@ -378,7 +385,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   isCampoDisabilitato(campo: CampoForm): boolean {
-    if (this.isFaseVerificaPagamento) {
+    if (this.isFaseVerificaPagamento || this.datiPagamento) {
       return true;
     } else {
       if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {

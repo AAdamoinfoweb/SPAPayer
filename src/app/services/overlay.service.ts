@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable} from "@angular/core";
-import {RichiestaDettaglioPagamento} from '../modules/main/model/bollettino/RichiestaDettaglioPagamento';
+import {DatiPagamento} from '../modules/main/model/bollettino/DatiPagamento';
 
 @Injectable({
   providedIn: 'root'
@@ -7,5 +7,5 @@ import {RichiestaDettaglioPagamento} from '../modules/main/model/bollettino/Rich
 export class OverlayService {
 
   caricamentoEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
-  mostraModaleDettaglioPagamentoEvent: EventEmitter<RichiestaDettaglioPagamento> = new EventEmitter<RichiestaDettaglioPagamento>();
+  mostraModaleDettaglioPagamentoEvent: EventEmitter<DatiPagamento> = new EventEmitter<DatiPagamento>();
 }
