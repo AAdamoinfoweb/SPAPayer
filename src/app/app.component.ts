@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
 
   mockModaleDettaglioPagamento(): void {
     const mockDettaglioPagamento = new DatiPagamento();
-    mockDettaglioPagamento.dettaglioTransazioneId = 1;
+    mockDettaglioPagamento.dettaglioTransazioneId = null;
     mockDettaglioPagamento.enteId = 4;
     mockDettaglioPagamento.servizioId = 101;
     mockDettaglioPagamento.esitoPagamento = EsitoEnum.NON_PRESENTE;

@@ -114,15 +114,6 @@ export class NuovoPagamentoService {
     })
       .pipe(map((body: any) => {
           return body;
-        }),
-        catchError((err, caught) => {
-          if (err.status == 401) {
-            return of('');
-          } else if (err.status == 500) {
-            return of('');
-          } else {
-            return caught;
-          }
         }));
   }
 
