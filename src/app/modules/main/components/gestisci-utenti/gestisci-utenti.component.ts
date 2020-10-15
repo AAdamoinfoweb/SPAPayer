@@ -53,7 +53,7 @@ export class GestisciUtentiComponent implements OnInit {
       {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
       {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
     ],
-    dataKey: 'nome',
+    dataKey: 'nome.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
@@ -104,10 +104,10 @@ export class GestisciUtentiComponent implements OnInit {
 
     row = {
       iconaUtente: Utils.creaIcona('assets/img/sprite.svg#it-user', '#ef8157', nomeUtente, 'none'),
-      id: utente.codiceFiscale.toUpperCase(),
-      nome: nomeUtente,
-      gruppoAbilitazioni: utente.gruppo,
-      scadenza: utente.dataFineValidita ? moment(utente.dataFineValidita).format('DD/MM/YYYY') : null,
+      id: {value: utente.codiceFiscale.toUpperCase()},
+      nome: {value: nomeUtente},
+      gruppoAbilitazioni: {value: utente.gruppo},
+      scadenza: {value: utente.dataFineValidita ? moment(utente.dataFineValidita).format('DD/MM/YYYY') : null},
       ultimoAccesso: ultimoAccesso
     };
 
@@ -162,7 +162,7 @@ export class GestisciUtentiComponent implements OnInit {
         } else if (key === 'ultimoAccesso') {
           temp = row[key]?.testo;
         } else {
-          temp = row[key];
+          temp = row[key]?.value;
         }
         rows.push(temp);
       }
@@ -190,6 +190,10 @@ export class GestisciUtentiComponent implements OnInit {
     dataTable.rows = dataTable.rows.map(row => {
       let newRow = row;
       newRow.iconaUtente = row.iconaUtente.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
+      newRow.id = row.id.value;
+      newRow.nome = row.nome.value;
+      newRow.gruppoAbilitazioni = row.gruppoAbilitazioni.value;
+      newRow.scadenza = row.scadenza.value;
       newRow.ultimoAccesso = row.ultimoAccesso?.testo;
       return newRow;
     });
