@@ -40,12 +40,19 @@
   <ng-container *ngFor="let pagamento of listaPagamenti | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
     <div class="row pt-2 pb-2 table-item">
       <div class="col-lg-1 col-md-1 d-none d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">
-        <svg fill="#004987" (click)="eliminaBollettino(pagamento)" class="bg-light icon icon-sm" style="margin-right: 0.4rem">
+        <svg fill="#004987" (click)="eliminaBollettino(pagamento)" class="bg-light icon icon-sm"
+             style="margin-right: 0.4rem">
           <use xlink:href="assets/img/sprite.svg#it-delete"></use>
         </svg>
-        <svg fill="#004987" (click)="salvaPerDopo(pagamento)" class="bg-light icon icon-sm">
+        <svg *ngIf="!menuService.isUtenteAnonimo" fill="#004987" (click)="salvaPerDopo(pagamento)"
+             class="bg-light icon icon-sm">
           <use xlink:href="assets/img/sprite.svg#it-pin"></use>
         </svg>
+        <span *ngIf="menuService.isUtenteAnonimo" it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top">
+        <svg fill="#737574" class="bg-light icon icon-sm">
+          <use xlink:href="assets/img/sprite.svg#it-pin"></use>
+        </svg>
+        </span>
       </div>
       <div
         class="col-lg-1 col-md-1 d-sm-flex d-md-flex d-lg-flex d-none col-sm-0">{{pagamento.anno}}</div>
