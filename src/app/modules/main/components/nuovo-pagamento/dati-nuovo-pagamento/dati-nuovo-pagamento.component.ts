@@ -718,4 +718,5 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       localStorage.setItem('parziale', JSON.stringify(item));
     }
   }
+
 }

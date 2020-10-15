@@ -73,6 +73,7 @@ select {
   padding-right: 20px;
   padding-left: 2px;
   height: 2.5rem;
+  width: 100%;
 }
 
 select:focus {
@@ -128,4 +129,19 @@ select:focus {
 
 select:disabled {
   background-color: #E3E3E3;
+}
+
+.p-autocomplete-input.p-inputtext.p-component {
+  box-shadow: none !important;
+  background-color: transparent;
+  font-weight: normal !important;
+}
+
+.p-autocomplete-input.p-inputtext:enabled:hover,
+.p-autocomplete-input.p-inputtext:enabled:focus {
+  border-color: #77777B;
+}
+
+.p-autocomplete-input.p-inputtext:enabled:focus {
+  background-color: #FFFFFF;
 }

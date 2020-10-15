@@ -11,11 +11,11 @@ import {BackendInterceptorService} from './services/backend-interceptor';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {MainModule} from './modules/main/main.module';
 import {LoginBarComponent} from './components/login-bar/login-bar.component';
-import {FooterDirective} from "./components/footer/FooterDirective";
+import {FooterDirective} from './components/footer/FooterDirective';
 import {NonautorizzatoComponent} from './modules/nonautorizzato/nonautorizzato.component';
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {GenericErrorComponent} from './modules/generic-error/generic-error.component';
-import {UrlBackInterceptor} from "./services/urlBack.interceptor";
+import {UrlBackInterceptor} from './services/urlBack.interceptor';
 import {BannerComponent} from './components/banner/banner.component';
 import {HeaderComponent} from './components/header/header.component';
 import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/nuovo-pagamento.component';
@@ -24,38 +24,79 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DesignAngularKitModule} from 'design-angular-kit';
 import {CompilaNuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/compila-nuovo-pagamento/compila-nuovo-pagamento.component';
 import {DatiNuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/dati-nuovo-pagamento/dati-nuovo-pagamento.component';
-import {UserIdleModule} from "angular-user-idle";
+import {UserIdleModule} from 'angular-user-idle';
 import {DpDatePickerModule} from 'ng2-date-picker';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
+import {AccordionModule} from 'primeng/accordion';
+import {TableModule} from 'primeng/table';
+import {TableComponent} from './components/table/table.component';
+import {GestisciUtentiComponent} from './modules/main/components/gestisci-utenti/gestisci-utenti.component';
+import {ButtonModule} from 'primeng/button';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {TabViewModule} from 'primeng/tabview';
+import {TabViewComponent} from './components/tab-view/tab-view.component';
+import {ToolbarComponent} from './components/toolbar/toolbar.component';
+import {ToolbarModule} from 'primeng/toolbar';
+import {PaginatorComponent} from './components/table/paginator/paginator.component';
+import {FiltroGestioneUtentiComponent} from './modules/main/components/gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import {AggiungiUtentePermessiComponent} from './modules/main/components/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
+import {DatiUtenteComponent} from './modules/main/components/dati-utente/dati-utente.component';
+import {DatiPermessoComponent} from './modules/main/components/dati-permesso/dati-permesso.component';
+import {ModificaUtentePermessiComponent} from './modules/main/components/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
 import {DayInputDirective} from './utils/DayInputDirective';
 import {MonthInputDirective} from './utils/MonthInputDirective';
-import { OverlayComponent } from './components/overlay/overlay.component';
+import {OverlayComponent} from './components/overlay/overlay.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ConfirmationService} from "primeng/api";
+import {ConfirmationService} from 'primeng/api';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomeComponent,
-        SidebarComponent,
-        LoginBarComponent,
-        FooterDirective,
-        NonautorizzatoComponent,
-        GenericErrorComponent,
-        BannerComponent,
-        HeaderComponent,
-        NuovoPagamentoComponent,
-        IMieiPagamentiComponent,
-        CompilaNuovoPagamentoComponent,
-        DatiNuovoPagamentoComponent,
-        IntegerNumberDirective,
-        DayInputDirective,
-        MonthInputDirective,
-        OverlayComponent
-    ],
+  declarations: [
+    AppComponent,
+    AggiungiUtentePermessiComponent,
+    HomeComponent,
+    SidebarComponent,
+    LoginBarComponent,
+    FooterDirective,
+    NonautorizzatoComponent,
+    GenericErrorComponent,
+    BannerComponent,
+    HeaderComponent,
+    NuovoPagamentoComponent,
+    IMieiPagamentiComponent,
+    CompilaNuovoPagamentoComponent,
+    DatiNuovoPagamentoComponent,
+    TableComponent,
+    GestisciUtentiComponent,
+    TabViewComponent,
+    ToolbarComponent,
+    PaginatorComponent,
+    FiltroGestioneUtentiComponent,
+    IntegerNumberDirective,
+    DatiUtenteComponent,
+    DatiPermessoComponent,
+    ModificaUtentePermessiComponent,
+    AppComponent,
+    HomeComponent,
+    SidebarComponent,
+    LoginBarComponent,
+    FooterDirective,
+    NonautorizzatoComponent,
+    GenericErrorComponent,
+    BannerComponent,
+    HeaderComponent,
+    NuovoPagamentoComponent,
+    IMieiPagamentiComponent,
+    CompilaNuovoPagamentoComponent,
+    DatiNuovoPagamentoComponent,
+    IntegerNumberDirective,
+    DayInputDirective,
+    MonthInputDirective,
+    OverlayComponent
+  ],
   imports: [
     HttpClientModule,
     BrowserModule,
@@ -65,12 +106,23 @@ import {ConfirmationService} from "primeng/api";
     FormsModule,
     DesignAngularKitModule,
     ReactiveFormsModule,
+    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    DpDatePickerModule,
+    NgxDatatableModule,
+    AccordionModule,
+    TableModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    TabViewModule,
+    ToolbarModule,
     UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     DpDatePickerModule,
     NgxCurrencyModule,
     CustomFormsModule,
     ConfirmDialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CustomFormsModule,
+    AutoCompleteModule
   ],
   providers: [
     ConfirmationService,

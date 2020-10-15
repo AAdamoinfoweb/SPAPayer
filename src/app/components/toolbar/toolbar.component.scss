@@ -1,0 +1,23 @@
+.pointer {cursor: pointer;}
+
+// tool bar
+:host ::ng-deep .p-toolbar{
+  background: none;
+  padding: 0;
+  border: none;
+}
+
+svg{
+  fill: #004987;
+}
+
+svg:hover{
+  fill: #EC6C25;
+}
+
+.img-not-active,
+.img-not-active:hover {
+  fill: #77777B;
+  cursor: default;
+}
+

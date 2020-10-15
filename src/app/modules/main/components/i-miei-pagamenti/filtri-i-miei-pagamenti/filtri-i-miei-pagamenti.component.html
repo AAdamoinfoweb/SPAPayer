@@ -1,0 +1,231 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="heading1">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true"
+          aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+
+<!-- Form filtri -->
+<form #filtroPagamentiForm="ngForm" (ngSubmit)="filtroPagamentiForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="heading1">
+    <div class="collapse-body">
+      <!-- Livello Territoriale, Ente, Servizio -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectLivelloTerritoriale" class="title">Livello Territoriale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectLivelloTerritoriale"
+                name="livelloTerritorialeId"
+                #livelloTerritorialeInput="ngModel"
+                [(ngModel)]="filtroRicercaPagamenti.livelloTerritorialeId"
+                (ngModelChange)="selezionaLivelloTerritoriale()"
+                disabled="{{listaLivelliTerritoriali.length == 0}}">
+                <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(livelloTerritorialeInput), 'text-invalid': isCampoInvalido(livelloTerritorialeInput), 'text-disabled': !listaLivelliTerritoriali.length}">
+                {{setPlaceholder(livelloTerritorialeInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectEnte" class="title">Ente</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectEnte" name="enteId"
+                #enteInput="ngModel"
+                [(ngModel)]="filtroRicercaPagamenti.enteId"
+                (ngModelChange)="selezionaEnte()"
+                disabled="{{listaEnti.length == 0}}">
+                <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput), 'text-disabled': !listaEnti.length}">
+                {{setPlaceholder(enteInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col">
+              <label for="selectServizio" class="title">Servizio</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectServizio" name="servizioId"
+                #servizioInput="ngModel"
+                [(ngModel)]="filtroRicercaPagamenti.servizioId"
+                disabled="{{listaServizi.length == 0}}">
+                <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(servizioInput), 'text-invalid': isCampoInvalido(servizioInput), 'text-disabled': !listaServizi.length}">
+                {{setPlaceholder(servizioInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documento, Da, A, Testo Libero -->
+      <!--      documento -->
+      <div class="row mt-1 mb-0">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col">
+              <label for="inputNumero" class="title">Numero Documento</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="input-text pt-0" name="numero"
+                     id="inputNumero"
+                     autocomplete="off"
+                     #numeroInput="ngModel"
+                     [(ngModel)]="filtroRicercaPagamenti.numeroDocumento">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(numeroInput), 'text-invalid': isCampoInvalido(numeroInput)}">
+                {{setPlaceholder(numeroInput, 'string')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--        DA -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="scadenzaDataDa" class="title">Data Pagamento Da</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaDa)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="scadenzaDataDa"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYY,
+              returnedValueType: tipoData
+	          }"
+                #scadenzaDaInput="ngModel"
+                [(ngModel)]="filtroRicercaPagamenti.dataScadenzaDa"
+                name="dataScadenzaDa"
+                #datePickerScadenzaDa
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(scadenzaDaInput), 'text-invalid': isCampoInvalido(scadenzaDaInput)}">
+                {{setPlaceholder(scadenzaDaInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--        A -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="scadenzaDataA" class="title">Data Pagamento A</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaA)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="scadenzaDataA"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: filtroPagamentiForm.controls['dataScadenzaDa']?.value,
+              returnedValueType: tipoData
+            }"
+                #scadenzaAInput="ngModel"
+                [(ngModel)]="filtroRicercaPagamenti.dataScadenzaA"
+                name="dataScadenzaA"
+                #datePickerScadenzaA
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(scadenzaAInput), 'text-invalid': isCampoInvalido(scadenzaAInput)}">
+                {{setPlaceholder(scadenzaAInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Bottoni Pulisci e Cerca -->
+      <div class="row">
+        <div class="col-6">
+          <button id="bottonePulisci" class="btn btn-secondary"
+                  [disabled]="disabilitaBottone(filtroPagamentiForm, 'Pulisci')"
+                  (click)="pulisciFiltri(filtroPagamentiForm)">Pulisci
+          </button>
+        </div>
+        <div class="col-6 btn-find">
+          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroPagamentiForm, 'Cerca')"
+                  (click)="cercaPagamenti(filtroPagamentiForm)">Cerca
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -12,6 +12,9 @@ import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento
 import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
 import {WaitingL1Component} from "./modules/main/components/waiting-l1/waiting-l1.component";
+import {GestisciUtentiComponent} from './modules/main/components/gestisci-utenti/gestisci-utenti.component';
+import {AggiungiUtentePermessiComponent} from './modules/main/components/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
+import {ModificaUtentePermessiComponent} from './modules/main/components/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -32,7 +35,10 @@ const routes: Routes = [
   {path: 'waiting', component: WaitingComponent, pathMatch: 'full'},
   {path: 'privacy', component: PrivacyComponent},
   {path: 'nuovoPagamento', component: NuovoPagamentoComponent},
-  {path: 'iMieiPagamenti', component: IMieiPagamentiComponent}
+  {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
+  {path: 'gestioneUtenti', component: GestisciUtentiComponent},
+  {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent},
+  {path: 'modificaUtentePermessi', component: ModificaUtentePermessiComponent}
 ];
 
 @NgModule({
