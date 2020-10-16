@@ -1,19 +1,19 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {tipoColonna} from '../../../../enums/TipoColonna.enum';
-import {tipoTabella} from '../../../../enums/TipoTabella.enum';
-import {TipoUtenteEnum} from '../../../../enums/TipoUtente.enum';
-import {Utils} from '../../../../utils/Utils';
-import {UtenteService} from '../../../../services/utente.service';
-import {RicercaUtente} from '../../model/utente/RicercaUtente';
+import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
+import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
+import {TipoUtenteEnum} from '../../../../../enums/TipoUtente.enum';
+import {Utils} from '../../../../../utils/Utils';
+import {UtenteService} from '../../../../../services/utente.service';
+import {RicercaUtente} from '../../../model/utente/RicercaUtente';
 import {map} from 'rxjs/operators';
 import * as moment from 'moment';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import {Breadcrumb} from '../../dto/Breadcrumb';
-import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
+import {Breadcrumb} from '../../../dto/Breadcrumb';
+import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
 import {Router} from '@angular/router';
-import {ToolEnum} from '../../../../enums/Tool.enum';
-import {OverlayService} from '../../../../services/overlay.service';
+import {ToolEnum} from '../../../../../enums/Tool.enum';
+import {OverlayService} from '../../../../../services/overlay.service';
 
 
 @Component({

@@ -1,11 +1,13 @@
 import {AfterViewInit, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, Renderer2, ViewChild, ViewContainerRef} from '@angular/core';
-import {Breadcrumb} from '../../../dto/Breadcrumb';
-import {InserimentoModificaUtente} from '../../../model/utente/InserimentoModificaUtente';
-import {UtenteService} from '../../../../../services/utente.service';
+import {Breadcrumb} from '../../../../dto/Breadcrumb';
+import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
+import {UtenteService} from '../../../../../../services/utente.service';
 import {Router} from '@angular/router';
-import {DatiPermessoComponent} from '../../dati-permesso/dati-permesso.component';
+import {DatiPermessoComponent} from '../../../dati-permesso/dati-permesso.component';
 import {AsyncSubject} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {NgModel} from "@angular/forms";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -63,7 +65,18 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   }
 
   disabilitaBottone(): boolean {
-    return this.codiceFiscale === null || !this.isFormDatiUtenteValido;
+    return this.codiceFiscale === null || !this.isFormDatiUtenteValido || this.controlloDate();
+  }
+
+  controlloDate(): boolean {
+    const momentAttivazione = moment(moment(this.datiUtente.attivazione, 'YYYY-MM-DD[T]hh:mm:ss').format('DD/MM/YYYY'), 'DD/MM/YYYY');
+    const momentScadenza = this.datiUtente.scadenza
+      ? moment(moment(this.datiUtente.scadenza, 'YYYY-MM-DD[T]hh:mm:ss').format('DD/MM/YYYY'), 'DD/MM/YYYY')
+      : null;
+    const momentSistema = moment(moment().format('DD/MM/YYYY'), 'DD/MM/YYYY');
+    const ret = moment(momentAttivazione).isBefore(momentSistema) ||
+      (this.datiUtente.scadenza ? moment(momentScadenza).isBefore(momentSistema) : false);
+    return ret ;
   }
 
   inserimentoDatiUtentePermessi(): void {

@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {Breadcrumb} from '../../../dto/Breadcrumb';
-import {UtenteService} from '../../../../../services/utente.service';
+import {Breadcrumb} from '../../../../dto/Breadcrumb';
+import {UtenteService} from '../../../../../../services/utente.service';
 import {ActivatedRoute} from '@angular/router';
-import {InserimentoModificaUtente} from '../../../model/utente/InserimentoModificaUtente';
+import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
 
 @Component({
   selector: 'app-modifica-utente-permessi',
