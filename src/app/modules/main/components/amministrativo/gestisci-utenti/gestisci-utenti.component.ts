@@ -61,7 +61,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
 
   tempTableData;
 
-  constructor(private router: Router, private utenteService: UtenteService, private overlayService: OverlayService,
+  constructor(public router: Router, private utenteService: UtenteService, private overlayService: OverlayService,
               private renderer: Renderer2, private el: ElementRef) {
     super(router);
     this.inizializzaBreadcrumbList();
