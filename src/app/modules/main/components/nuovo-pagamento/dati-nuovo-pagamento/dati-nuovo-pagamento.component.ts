@@ -95,27 +95,48 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.isFaseVerificaPagamento = true;
     this.isBollettinoPagato = this.datiPagamento.esitoPagamento === EsitoEnum.OK || this.datiPagamento.esitoPagamento === EsitoEnum.PENDING;
 
+    if (this.datiPagamento.importo) {
+      this.model[this.importoNomeCampo] = this.datiPagamento.importo;
+    } else {
+      console.log('Importo mancante');
+      this.overlayService.gestisciErrore();
+    }
+
+    if (this.datiPagamento.numeroDocumento) {
+      const campoNumeroDocumento = this.listaCampiDinamici.find(campo => campo.jsonPath && campo.jsonPath.endsWith(MappingCampoOutputPrecompilazioneEnum.numeroDocumento));
+      if (campoNumeroDocumento) {
+        this.model[this.getNomeCampoForm(campoNumeroDocumento)] = this.datiPagamento.numeroDocumento;
+      } else {
+        console.log('Campo numero documento mancante');
+        this.overlayService.gestisciErrore();
+      }
+    }
+
+    if (this.datiPagamento.codiceAvviso) {
+      const campoCodiceAvviso = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.codiceAvviso);
+      if (campoCodiceAvviso) {
+        this.model[this.getNomeCampoForm(campoCodiceAvviso)] = this.datiPagamento.codiceAvviso;
+      } else {
+        console.log('Campo codice avviso mancante');
+        this.overlayService.gestisciErrore();
+      }
+    }
+
     if (this.datiPagamento.dettaglioTransazioneId) {
       this.nuovoPagamentoService.letturaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((bollettino) => {
-        if (bollettino.importo) {
-          this.model[this.importoNomeCampo] = bollettino.importo;
-        } else {
-          console.log('Importo mancante');
-          this.overlayService.gestisciErrore();
-        }
         if (bollettino.cfpiva) {
-          const campoCfpiva = this.listaCampiDinamici.find(campo => this.getNomeCampoForm(campo) === MappingCampoInputPrecompilazioneEnum.cfpiva);
+          const campoCfpiva = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
           if (campoCfpiva) {
-            this.model[MappingCampoInputPrecompilazioneEnum.cfpiva] = bollettino.cfpiva;
+            this.model[this.getNomeCampoForm(campoCfpiva)] = bollettino.cfpiva;
           } else {
             console.log('Campo cfpiva mancante');
             this.overlayService.gestisciErrore();
           }
         }
         if (bollettino.iuv) {
-          const campoIuv = this.listaCampiDinamici.find(campo => this.getNomeCampoForm(campo) === MappingCampoOutputPrecompilazioneEnum.iuv);
+          const campoIuv = this.listaCampiDinamici.find(campo => campo.jsonPath && campo.jsonPath.endsWith(MappingCampoOutputPrecompilazioneEnum.iuv));
           if (campoIuv) {
-            this.model[MappingCampoOutputPrecompilazioneEnum.iuv] = bollettino.iuv;
+            this.model[this.getNomeCampoForm(campoIuv)] = bollettino.iuv;
           } else {
             console.log('Campo iuv mancante');
             this.overlayService.gestisciErrore();
