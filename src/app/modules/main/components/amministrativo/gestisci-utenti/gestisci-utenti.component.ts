@@ -11,10 +11,11 @@ import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import {Breadcrumb} from '../../../dto/Breadcrumb';
 import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ToolEnum} from '../../../../../enums/Tool.enum';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {AmministrativoParentComponent} from "../amministrativo-parent.component";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-gestione-utenti',
@@ -61,9 +62,12 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
 
   tempTableData;
 
-  constructor(public router: Router, private utenteService: UtenteService, private overlayService: OverlayService,
+  constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
+              route: ActivatedRoute, http: HttpClient,
               private renderer: Renderer2, private el: ElementRef) {
-    super(router);
+    super( router, overlayService, route, http);
+    super.functionEndpoint = 'utenti';
+
     this.inizializzaBreadcrumbList();
 
     const parametriRicercaUtente = new ParametriRicercaUtente();
