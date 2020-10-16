@@ -14,14 +14,14 @@ import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUten
 import {Router} from '@angular/router';
 import {ToolEnum} from '../../../../../enums/Tool.enum';
 import {OverlayService} from '../../../../../services/overlay.service';
-
+import {AmministrativoParentComponent} from "../amministrativo-parent.component";
 
 @Component({
   selector: 'app-gestione-utenti',
   templateUrl: './gestisci-utenti.component.html',
   styleUrls: ['./gestisci-utenti.component.scss']
 })
-export class GestisciUtentiComponent implements OnInit, AfterViewInit {
+export class GestisciUtentiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
@@ -63,6 +63,7 @@ export class GestisciUtentiComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private utenteService: UtenteService, private overlayService: OverlayService,
               private renderer: Renderer2, private el: ElementRef) {
+    super(router);
     this.inizializzaBreadcrumbList();
 
     const parametriRicercaUtente = new ParametriRicercaUtente();
