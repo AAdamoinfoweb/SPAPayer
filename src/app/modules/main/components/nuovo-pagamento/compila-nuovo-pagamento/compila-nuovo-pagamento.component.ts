@@ -64,9 +64,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
               this.livelloTerritorialeSelezionato = livelloTerritoriale;
               this.selezionaLivelloTerritoriale();
             } else {
+              console.log('Livello territoriale mancante');
               this.overlayService.gestisciErrore();
             }
           } else {
+            console.log('Ente mancante');
             this.overlayService.gestisciErrore();
           }
         })).subscribe();
@@ -133,6 +135,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           this.enteSelezionato = this.listaEnti.find(item => item.value.id === this.datiPagamento.enteId)?.value;
           this.selezionaEnte();
         } else {
+          console.log('Ente mancante');
           this.overlayService.gestisciErrore();
         }
       }
@@ -163,6 +166,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           this.servizioSelezionato = servizio;
           this.selezionaServizio();
         } else {
+          console.log('Servizio mancante');
           this.overlayService.gestisciErrore();
         }
       }

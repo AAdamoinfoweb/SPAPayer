@@ -160,9 +160,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
               this.overlayService.caricamentoEvent.emit(false);
             });
         } else {
+          console.log('Campo codice avviso mancante');
           this.overlayService.gestisciErrore();
         }
       } else {
+        console.log('Dettaglio transazione id mancante su servizio diverso da LV3');
         this.overlayService.gestisciErrore();
       }
     }
