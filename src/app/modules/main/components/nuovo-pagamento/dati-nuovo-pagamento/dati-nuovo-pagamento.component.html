@@ -252,7 +252,7 @@
     </div>
 
     <!-- Bottoni dx -->
-    <div *ngIf="!isBollettinoPagato"
+    <div *ngIf="isBollettinoPagato === false"
          class="col-10 text-right button-space">
       <button id="bottoneAggiungiAlCarrello" class="btn btn-secondary"
               (click)="aggiungiAlCarrello()">Aggiungi al carrello</button>

@@ -49,16 +49,16 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   ngOnInit(): void {
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
 
-    this.letturaSocieta();
+    this.filtroSocieta();
     this.recuperaFiltroLivelloTerritoriale();
     this.recuperaFiltroEnti(null);
     this.recuperaFiltroServizi(null);
     this.letturaFunzioni();
   }
 
-  letturaSocieta(): void {
+  filtroSocieta(): void {
     this.overlayService.caricamentoEvent.emit(true);
-    this.societaService.letturaSocieta().pipe(map(societa => {
+    this.societaService.filtroSocieta().pipe(map(societa => {
       societa.forEach(s => {
         this.listaSocieta.push({
           value: s.id,
