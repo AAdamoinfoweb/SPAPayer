@@ -8,6 +8,7 @@ import {AsyncSubject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {NgModel} from "@angular/forms";
 import * as moment from "moment";
+import {Utils} from "../../../../../../utils/Utils";
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -69,13 +70,11 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   }
 
   controlloDate(): boolean {
-    const momentAttivazione = moment(moment(this.datiUtente.attivazione, 'YYYY-MM-DD[T]hh:mm:ss').format('DD/MM/YYYY'), 'DD/MM/YYYY');
-    const momentScadenza = this.datiUtente.scadenza
-      ? moment(moment(this.datiUtente.scadenza, 'YYYY-MM-DD[T]hh:mm:ss').format('DD/MM/YYYY'), 'DD/MM/YYYY')
-      : null;
-    const momentSistema = moment(moment().format('DD/MM/YYYY'), 'DD/MM/YYYY');
-    const ret = moment(momentAttivazione).isBefore(momentSistema) ||
-      (this.datiUtente.scadenza ? moment(momentScadenza).isBefore(momentSistema) : false);
+    const dataAttivazione = this.datiUtente.attivazione;
+    const dataScadenza = this.datiUtente.scadenza;
+    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    const ret = Utils.isBefore(dataAttivazione, dataSistema) ||
+      (this.datiUtente.scadenza ? Utils.isBefore(dataScadenza, dataSistema) : false);
     return ret ;
   }
 
