@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {Breadcrumb} from '../../../dto/Breadcrumb';
 import {UtenteService} from '../../../../../services/utente.service';
 import {ActivatedRoute} from '@angular/router';
@@ -9,7 +9,7 @@ import {InserimentoModificaUtente} from '../../../model/utente/InserimentoModifi
   templateUrl: './modifica-utente-permessi.component.html',
   styleUrls: ['../gestisci-utenti.component.scss', './modifica-utente-permessi.component.scss']
 })
-export class ModificaUtentePermessiComponent implements OnInit {
+export class ModificaUtentePermessiComponent implements OnInit, AfterViewInit {
 
   breadcrumbList = [];
 
@@ -18,7 +18,8 @@ export class ModificaUtentePermessiComponent implements OnInit {
   codiceFiscale: string;
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
 
-  constructor(private utenteService: UtenteService, private route: ActivatedRoute) {
+  constructor(private utenteService: UtenteService, private route: ActivatedRoute, private renderer: Renderer2,
+              private el: ElementRef) {
     this.inizializzaBreadcrumbList();
   }
 
@@ -31,6 +32,10 @@ export class ModificaUtentePermessiComponent implements OnInit {
 
   ngOnInit(): void {
     this.codiceFiscale = this.route.snapshot.paramMap.get('userid');
+  }
+
+  ngAfterViewInit(): void {
+    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
   onChangeDatiUtenti(datiUtente: InserimentoModificaUtente): void {

@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, Renderer2, ViewChild, ViewContainerRef} from '@angular/core';
 import {Breadcrumb} from '../../../dto/Breadcrumb';
 import {InserimentoModificaUtente} from '../../../model/utente/InserimentoModificaUtente';
 import {UtenteService} from '../../../../../services/utente.service';
@@ -12,7 +12,7 @@ import {map} from 'rxjs/operators';
   templateUrl: './aggiungi-utente-permessi.component.html',
   styleUrls: ['../gestisci-utenti.component.scss', './aggiungi-utente-permessi.component.scss']
 })
-export class AggiungiUtentePermessiComponent implements OnInit {
+export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
 
   breadcrumbList = [];
 
@@ -28,7 +28,8 @@ export class AggiungiUtentePermessiComponent implements OnInit {
   private componentRef: ComponentRef<any>;
 
   constructor(private utenteService: UtenteService, private router: Router,
-              private componentFactoryResolver: ComponentFactoryResolver) {
+              private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
+              private el: ElementRef) {
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
@@ -44,6 +45,10 @@ export class AggiungiUtentePermessiComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
   onChangeDatiUtenti(datiUtente: InserimentoModificaUtente): void {
