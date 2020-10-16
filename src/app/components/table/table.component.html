@@ -29,7 +29,7 @@
               (click)="onIcon(row[dataKey])"
         >
           <svg class="icon icon-sm">
-            <use [attr.xlink:href]="row[col.field].path"></use>
+            <use [attr.xlink:href]="sprite + row[col.field].path"></use>
           </svg>
         </div>
         <!--  template TESTO  -->

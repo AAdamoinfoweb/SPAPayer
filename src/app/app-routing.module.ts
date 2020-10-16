@@ -38,7 +38,7 @@ const routes: Routes = [
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
   {path: 'gestioneUtenti', component: GestisciUtentiComponent},
   {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent},
-  {path: 'modificaUtentePermessi', component: ModificaUtentePermessiComponent}
+  {path: 'modificaUtentePermessi/:userid', component: ModificaUtentePermessiComponent}
 ];
 
 @NgModule({

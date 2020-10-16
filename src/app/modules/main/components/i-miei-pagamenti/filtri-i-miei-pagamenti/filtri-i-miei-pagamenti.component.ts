@@ -46,7 +46,6 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
 
     // recupero dati select
-    this.overlayService.caricamentoEvent.emit(true);
     this.recuperaLivelloTerritoriale();
   }
 
@@ -79,8 +78,8 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           value: ente.id,
           label: ente.nome
         });
-        this.overlayService.caricamentoEvent.emit(false);
       });
+      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 
@@ -102,8 +101,8 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           value: servizio.id,
           label: servizio.nome
         });
-        this.overlayService.caricamentoEvent.emit(false);
       });
+      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 
@@ -123,13 +122,16 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
   isCampoInvalido(campo: NgModel) {
     if (campo?.name === 'dataScadenzaA') {
-      const momentDataDa = moment(this.filtroRicercaPagamenti.dataScadenzaDa, 'DD/MM/YYYY');
-      const momentDataA = moment(this.filtroRicercaPagamenti.dataScadenzaA, 'DD/MM/YYYY');
-      return this.filtroRicercaPagamenti.dataScadenzaDa != null && moment(momentDataA).isBefore(momentDataDa);
-    } else {
+     return this.controlloDate(campo);
+      } else {
       return campo?.errors;
     }
+  }
 
+  controlloDate(campo?: NgModel): boolean{
+    const momentDataDa = moment(this.filtroRicercaPagamenti.dataScadenzaDa, 'DD/MM/YYYY');
+    const momentDataA = moment(this.filtroRicercaPagamenti.dataScadenzaA, 'DD/MM/YYYY');
+    return this.filtroRicercaPagamenti.dataScadenzaDa != null ? (moment(momentDataA).isBefore(momentDataDa) || campo?.errors != null) : campo?.errors != null;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -172,7 +174,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     if (nomeBottone === 'Pulisci') {
       return !isAtLeastOneFieldValued;
     } else {
-      return !filtroGestioneUtentiForm.valid;
+      return !filtroGestioneUtentiForm.valid || this.controlloDate();
     }
   }
 }
