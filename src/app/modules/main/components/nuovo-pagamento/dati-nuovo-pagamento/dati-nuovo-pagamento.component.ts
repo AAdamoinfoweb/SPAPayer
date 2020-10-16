@@ -285,7 +285,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.mostraCampoImporto = null;
     this.isFaseVerificaPagamento = false;
 
-    if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2) {
+    if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || this.datiPagamento) {
       this.aggiungiCampoImporto();
     }
   }

@@ -39,7 +39,7 @@ export class IMieiPagamentiComponent implements OnInit {
   MESSAGGIO_ERRORE_AZIONE = 'Operazione non consentita! Uno o più bollettini sono già stati pagati o in corso di pagamento. Per maggiori informazioni contattare l’help desk';
   MESSAGGIO_ERRORE_AZIONE_INSERIMENTO_CARRELLO = 'Operazione non consentita! Uno o più bollettini sono già presenti nel tuo carrello';
   MESSAGGIO_ERRORE_AZIONE_STAMPA_ATTESTATO = 'Operazione non consentita! Uno o più bollettini non sono stati pagati o in corso di pagamento. Per maggiori informazioni contattare l’help desk';
-
+  TOOLTIP_ICONA_MATITA = 'Attenzione: questo non è un pagamento inserito automaticamente dall\'Ente';
   // breadcrumb
   breadcrumbList = [];
 
@@ -163,7 +163,8 @@ export class IMieiPagamentiComponent implements OnInit {
   riempiTabella(listaPagamenti: DatiPagamento[]) {
     const pagamenti = listaPagamenti.map(pagamento => {
       const row = {
-        icona: pagamento.statoPagamento == null && Utils.creaIcona('#it-pencil', '#EE7622', 'tooltip', null),
+        icona: pagamento.statoPagamento == null && Utils.creaIcona('#it-pencil', '#EE7622',
+          this.TOOLTIP_ICONA_MATITA, null),
         numeroDocumento: {value: pagamento.numeroDocumento},
         nomeServizio: {value: pagamento.nomeServizio},
         nomeEnte: {value: pagamento.nomeEnte},

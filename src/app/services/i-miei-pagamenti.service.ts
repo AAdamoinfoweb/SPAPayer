@@ -34,11 +34,11 @@ export class IMieiPagamentiService {
     if (filtro.numeroDocumento) {
       params = params.set('numeroDocumento', filtro.numeroDocumento);
     }
-    if (filtro.dataScadenzaDa) {
-      params = params.set('dataScadenzaDa', filtro.dataScadenzaDa.toString());
+    if (filtro.dataPagamentoDa) {
+      params = params.set('dataPagamentoDa', filtro.dataPagamentoDa.toString());
     }
-    if (filtro.dataScadenzaA) {
-      params = params.set('dataScadenzaDa', filtro.dataScadenzaDa.toString());
+    if (filtro.dataPagamentoA) {
+      params = params.set('dataPagamentoA', filtro.dataPagamentoA.toString());
     }
 
     return this.http.get(environment.bffBaseUrl + this.ricercaPagamentiUrl, {
