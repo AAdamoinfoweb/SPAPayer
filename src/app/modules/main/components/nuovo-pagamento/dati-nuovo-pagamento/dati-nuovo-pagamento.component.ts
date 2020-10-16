@@ -82,7 +82,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.checkUtenteLoggato();
-    this.inizializzazioneForm(this.servizio).subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
