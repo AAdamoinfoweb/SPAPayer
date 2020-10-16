@@ -3,8 +3,12 @@ import * as XLSX from 'xlsx';
 import * as FILESAVER from 'file-saver';
 
 export class Utils {
+
+  static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00';
+  static FORMAT_DATE_CALENDAR = 'DD/MM/YYYY';
+
   static creaLink = (testo, link) => {
-    return {testo: testo, link: link};
+    return {testo, link};
   }
 
   static creaIcona = (path, color, tooltip, display) => {
@@ -14,8 +18,8 @@ export class Utils {
   static creaFileExcel(rows: any, headers: string[], sheet: any, sheetNames: any, workbook: any, fileName: string): void {
     let worksheet = XLSX.utils.json_to_sheet(rows);
     worksheet = XLSX.utils.sheet_add_aoa(worksheet, [headers]);
-    workbook['Sheets'][sheet] = worksheet;
-    workbook['SheetNames'] = sheetNames;
+    workbook.Sheets[sheet] = worksheet;
+    workbook.SheetNames = sheetNames;
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
 
     this.salvaComeFileExcel(excelBuffer, fileName);
