@@ -113,9 +113,9 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           }
         }
         if (bollettino.iuv) {
-          const campoIuv = this.listaCampiDinamici.find(campo => this.getNomeCampoForm(campo) === MappingCampoInputPrecompilazioneEnum.iuv);
+          const campoIuv = this.listaCampiDinamici.find(campo => this.getNomeCampoForm(campo) === MappingCampoOutputPrecompilazioneEnum.iuv);
           if (campoIuv) {
-            this.model[MappingCampoInputPrecompilazioneEnum.iuv] = bollettino.iuv;
+            this.model[MappingCampoOutputPrecompilazioneEnum.iuv] = bollettino.iuv;
           } else {
             console.log('Campo iuv mancante');
             this.overlayService.gestisciErrore();
