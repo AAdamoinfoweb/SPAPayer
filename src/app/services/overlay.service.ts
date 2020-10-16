@@ -8,4 +8,9 @@ export class OverlayService {
 
   caricamentoEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
   mostraModaleDettaglioPagamentoEvent: EventEmitter<DatiPagamento> = new EventEmitter<DatiPagamento>();
+
+  gestisciErrore(): void {
+    this.caricamentoEvent.emit(false);
+    window.open('/erroregenerico', '_self');
+  }
 }
