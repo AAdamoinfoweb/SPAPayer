@@ -59,4 +59,10 @@ export class Utils {
     return uuid;
   }
 
+  static isBefore(date: string, otherDate: string){
+    const momentDate = moment(date, Utils.FORMAT_DATE_CALENDAR)
+    const momentOtherDate = moment(otherDate, Utils.FORMAT_DATE_CALENDAR);
+    return moment(momentDate).isBefore(momentOtherDate);
+  }
+
 }

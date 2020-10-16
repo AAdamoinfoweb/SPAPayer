@@ -7,6 +7,7 @@ import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
 import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
 import {map} from 'rxjs/operators';
+import {Utils} from '../../../../utils/Utils';
 
 @Component({
   selector: 'app-dati-utente',
@@ -21,7 +22,7 @@ export class DatiUtenteComponent implements OnInit {
 
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
-  readonly tipoData = ECalendarValue.Moment;
+  readonly tipoData = ECalendarValue.String;
 
   @ViewChild('datiUtenteForm') form: NgForm;
 
@@ -41,13 +42,13 @@ export class DatiUtenteComponent implements OnInit {
     this.datiUtente = new InserimentoModificaUtente();
 
     if (this.codiceFiscale) {
-      let parametriRicerca = new ParametriRicercaUtente();
+      const parametriRicerca = new ParametriRicercaUtente();
       parametriRicerca.codiceFiscale = this.codiceFiscale;
       this.ricercaUtente(parametriRicerca);
       this.isModificaUtente = true;
     } else {
       this.codiceFiscale = null;
-      this.datiUtente.attivazione = moment();
+      this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
     }
   }
 
@@ -58,8 +59,8 @@ export class DatiUtenteComponent implements OnInit {
       this.datiUtente.cognome = utente?.cognome;
       this.datiUtente.email = utente?.email;
       this.datiUtente.telefono = utente?.telefono;
-      this.datiUtente.attivazione = utente?.dataInizioValidita ? moment(utente.dataInizioValidita) : null;
-      this.datiUtente.scadenza = utente?.dataFineValidita ? moment(utente.dataFineValidita) : null;
+      this.datiUtente.attivazione = utente?.dataInizioValidita;
+      this.datiUtente.scadenza = utente?.dataFineValidita;
     })).subscribe();
   }
 
@@ -105,7 +106,19 @@ export class DatiUtenteComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
-    return campo?.errors;
+    if (campo?.name === 'attivazione' || campo?.name === 'scadenza') {
+      return this.controlloDate(campo, campo.model);
+    } else {
+      return campo?.errors != null;
+    }
+  }
+
+  controlloDate(campo: NgModel, value: string): boolean {
+    const dataDaControllare = value;
+    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    const ret = Utils.isBefore(dataDaControllare, dataSistema) ||
+   campo?.errors != null;
+    return ret ;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -124,10 +137,10 @@ export class DatiUtenteComponent implements OnInit {
   }
 
   onChangeModel(): void {
-    let model = {...this.form.value};
+    const model = {...this.form.value};
 
     if (this.form.valid) {
-      for (let nomeCampo in model) {
+      for (const nomeCampo in model) {
         if (model[nomeCampo] !== undefined && model[nomeCampo]) {
           if (nomeCampo === 'codiceFiscale') {
             this.codiceFiscaleExists = this.listaCodiciFiscali.includes(this.codiceFiscale);

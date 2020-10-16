@@ -1,8 +1,8 @@
 import {Utente} from './Utente';
 
 export class RicercaUtente extends Utente {
-  dataFineValidita: Date;
-  dataInizioValidita: Date;
+  dataFineValidita: string;
+  dataInizioValidita: string;
   gruppo: string;
-  ultimoAccesso: Date;
+  ultimoAccesso: string;
 }
