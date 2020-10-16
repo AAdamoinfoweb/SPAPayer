@@ -217,7 +217,7 @@
   <div class="page-section" *ngIf="mostraCampoImporto">
     <div class="row">
       <div class="offset-md-8 col-md-4">
-        <div class="form-elem-container required">
+        <div class="form-elem-container" [ngClass]="{'required': !isFaseVerificaPagamento}">
           <div class="row">
             <label for="importoTotale" class="title form-elem-title" [ngClass]="{'disabled': isFaseVerificaPagamento}">
               Importo totale
