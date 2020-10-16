@@ -112,7 +112,7 @@ export class GestisciUtentiComponent implements OnInit, AfterViewInit {
     let row;
 
     row = {
-      iconaUtente: Utils.creaIcona('assets/img/sprite.svg#it-user', '#ef8157', nomeUtente, 'none'),
+      iconaUtente: Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'none'),
       id: {value: utente.codiceFiscale.toUpperCase()},
       nome: {value: nomeUtente},
       gruppoAbilitazioni: {value: utente.gruppo},
