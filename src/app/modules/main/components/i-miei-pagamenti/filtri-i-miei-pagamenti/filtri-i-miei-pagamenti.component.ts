@@ -11,7 +11,7 @@ import {IMieiPagamentiService} from '../../../../../services/i-miei-pagamenti.se
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
 import {ListaPagamentiFiltri} from '../../../model/bollettino/imieipagamenti/ListaPagamentiFiltri';
 import * as moment from 'moment';
-import {OverlayService} from "../../../../../services/overlay.service";
+import {OverlayService} from '../../../../../services/overlay.service';
 
 
 @Component({
@@ -129,9 +129,10 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   controlloDate(campo?: NgModel): boolean{
-    const momentDataDa = moment(this.filtroRicercaPagamenti.dataScadenzaDa, 'DD/MM/YYYY');
-    const momentDataA = moment(this.filtroRicercaPagamenti.dataScadenzaA, 'DD/MM/YYYY');
-    return this.filtroRicercaPagamenti.dataScadenzaDa != null ? (moment(momentDataA).isBefore(momentDataDa) || campo?.errors != null) : campo?.errors != null;
+    const momentDataDa = moment(this.filtroRicercaPagamenti.dataPagamentoDa, 'DD/MM/YYYY');
+    const momentDataA = moment(this.filtroRicercaPagamenti.dataPagamentoA, 'DD/MM/YYYY');
+    // tslint:disable-next-line:max-line-length
+    return this.filtroRicercaPagamenti.dataPagamentoDa != null ? (moment(momentDataA).isBefore(momentDataDa) || campo?.errors != null) : campo?.errors != null;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -144,7 +145,14 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     this.listaEnti = [];
     this.listaServizi = [];
     this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
-    console.log(this.filtroRicercaPagamenti);
+    const filtri = this.filtroRicercaPagamenti;
+    this.overlayService.caricamentoEvent.emit(true);
+    this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
+      const listaPagamentiFiltri: ListaPagamentiFiltri = new ListaPagamentiFiltri();
+      listaPagamentiFiltri.listaPagamenti = listaPagamenti;
+      listaPagamentiFiltri.filtri = filtri;
+      this.onChangeListaPagamenti.emit(listaPagamentiFiltri);
+    })).subscribe();
   }
 
   cercaPagamenti(form: NgForm): void {
@@ -174,7 +182,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     if (nomeBottone === 'Pulisci') {
       return !isAtLeastOneFieldValued;
     } else {
-      return !filtroGestioneUtentiForm.valid || this.controlloDate();
+      return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued || this.controlloDate();
     }
   }
 }

@@ -150,8 +150,8 @@
               returnedValueType: tipoData
 	          }"
                 #scadenzaDaInput="ngModel"
-                [(ngModel)]="filtroRicercaPagamenti.dataScadenzaDa"
-                name="dataScadenzaDa"
+                [(ngModel)]="filtroRicercaPagamenti.dataPagamentoDa"
+                name="dataPagamentoDa"
                 #datePickerScadenzaDa
                 (click)="isCalendarOpen = false"
               ></dp-date-picker>
@@ -189,12 +189,12 @@
               showGoToCurrent: false,
               openOnClick: isCalendarOpen,
               openOnFocus: false,
-              min: filtroPagamentiForm.controls['dataScadenzaDa']?.value,
+              min: filtroPagamentiForm.controls['dataPagamentoDa']?.value,
               returnedValueType: tipoData
             }"
                 #scadenzaAInput="ngModel"
-                [(ngModel)]="filtroRicercaPagamenti.dataScadenzaA"
-                name="dataScadenzaA"
+                [(ngModel)]="filtroRicercaPagamenti.dataPagamentoA"
+                name="dataPagamentoA"
                 #datePickerScadenzaA
                 (click)="isCalendarOpen = false"
               ></dp-date-picker>
