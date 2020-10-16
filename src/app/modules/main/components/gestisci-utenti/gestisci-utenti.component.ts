@@ -123,10 +123,10 @@ export class GestisciUtentiComponent implements OnInit, AfterViewInit {
     if (utente.dataFineValidita === null
           || (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema)) {
       // UTENTE ATTIVO
-      row.iconaUtente = Utils.creaIcona('assets/img/sprite.svg#it-user', '#ef8157', nomeUtente, 'inline');
+      row.iconaUtente = Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'inline');
     } else if (moment(utente.dataInizioValidita) > dataSistema || moment(utente.dataFineValidita) < dataSistema) {
       // UTENTE DISABILITATO
-      row.iconaUtente = Utils.creaIcona('assets/img/sprite.svg#it-user', '#ef8157', nomeUtente, 'none');
+      row.iconaUtente = Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'none');
     }
 
     return row;
