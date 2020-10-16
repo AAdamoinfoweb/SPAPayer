@@ -3,6 +3,6 @@ export class ParametriRicercaPagamenti {
   enteId?: number;
   servizioId?: number;
   numeroDocumento?: string;
-  dataScadenzaDa?: Date;
-  dataScadenzaA?: Date;
+  dataPagamentoDa?: Date;
+  dataPagamentoA?: Date;
 }
