@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {tipoColonna} from '../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../enums/TipoTabella.enum';
 import {TipoUtenteEnum} from '../../../../enums/TipoUtente.enum';
@@ -12,7 +12,8 @@ import 'jspdf-autotable';
 import {Breadcrumb} from '../../dto/Breadcrumb';
 import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
 import {Router} from '@angular/router';
-import {ToolEnum} from "../../../../enums/Tool.enum";
+import {ToolEnum} from '../../../../enums/Tool.enum';
+import {OverlayService} from '../../../../services/overlay.service';
 
 
 @Component({
@@ -20,12 +21,13 @@ import {ToolEnum} from "../../../../enums/Tool.enum";
   templateUrl: './gestisci-utenti.component.html',
   styleUrls: ['./gestisci-utenti.component.scss']
 })
-export class GestisciUtentiComponent implements OnInit {
+export class GestisciUtentiComponent implements OnInit, AfterViewInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
   breadcrumbList = [];
 
+  codiceFiscaleUtenteDaModificare: string;
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
   toolbarIcons = [
@@ -53,21 +55,24 @@ export class GestisciUtentiComponent implements OnInit {
       {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
       {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
     ],
-    dataKey: 'nome',
+    dataKey: 'nome.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
   tempTableData;
 
-  constructor(private router: Router, private utenteService: UtenteService) {
+  constructor(private router: Router, private utenteService: UtenteService, private overlayService: OverlayService,
+              private renderer: Renderer2, private el: ElementRef) {
     this.inizializzaBreadcrumbList();
 
     const parametriRicercaUtente = new ParametriRicercaUtente();
+    this.overlayService.caricamentoEvent.emit(true);
     this.utenteService.ricercaUtenti(parametriRicercaUtente).pipe(map(utenti => {
       utenti.forEach(utente => {
         this.listaUtente.push(utente);
         this.tableData.rows.push(this.creaRigaTabella(utente));
       });
+      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 
@@ -79,6 +84,10 @@ export class GestisciUtentiComponent implements OnInit {
 
   ngOnInit(): void {
     this.tempTableData = Object.assign({}, this.tableData);
+  }
+
+  ngAfterViewInit(): void {
+    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
   creaRigaTabella(utente: RicercaUtente): object {
@@ -103,21 +112,21 @@ export class GestisciUtentiComponent implements OnInit {
     let row;
 
     row = {
-      iconaUtente: Utils.creaIcona('assets/img/sprite.svg#it-user', '#ef8157', nomeUtente, 'none'),
-      id: utente.codiceFiscale.toUpperCase(),
-      nome: nomeUtente,
-      gruppoAbilitazioni: utente.gruppo,
-      scadenza: utente.dataFineValidita ? moment(utente.dataFineValidita).format('DD/MM/YYYY') : null,
+      iconaUtente: Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'none'),
+      id: {value: utente.codiceFiscale.toUpperCase()},
+      nome: {value: nomeUtente},
+      gruppoAbilitazioni: {value: utente.gruppo},
+      scadenza: {value: utente.dataFineValidita ? moment(utente.dataFineValidita).format('DD/MM/YYYY') : null},
       ultimoAccesso: ultimoAccesso
     };
 
     if (utente.dataFineValidita === null
           || (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema)) {
       // UTENTE ATTIVO
-      row.iconaUtente = Utils.creaIcona('assets/img/sprite.svg#it-user', '#ef8157', nomeUtente, 'inline');
+      row.iconaUtente = Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'inline');
     } else if (moment(utente.dataInizioValidita) > dataSistema || moment(utente.dataFineValidita) < dataSistema) {
       // UTENTE DISABILITATO
-      row.iconaUtente = Utils.creaIcona('assets/img/sprite.svg#it-user', '#ef8157', nomeUtente, 'none');
+      row.iconaUtente = Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'none');
     }
 
     return row;
@@ -136,16 +145,15 @@ export class GestisciUtentiComponent implements OnInit {
     this.nomeTabCorrente = value;
   }
 
-  // todo logica azioni tool
   eseguiAzioni(azioneTool) {
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
-    if (azioneTool.value === ToolEnum.INSERT) {
+    if (azioneTool === ToolEnum.INSERT) {
       this.router.navigateByUrl('/aggiungiUtentePermessi');
-    } else if (azioneTool.value === ToolEnum.UPDATE) {
-      // aggiorna utente
-    } else if (azioneTool.value === ToolEnum.EXPORT_PDF) {
+    } else if (azioneTool === ToolEnum.UPDATE) {
+      this.router.navigate(['/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare]);
+    } else if (azioneTool === ToolEnum.EXPORT_PDF) {
       this.esportaTabellaInFilePdf(dataTable);
-    } else if (azioneTool.value === ToolEnum.EXPORT_XLS) {
+    } else if (azioneTool === ToolEnum.EXPORT_XLS) {
       this.esportaTabellaInFileExcel(dataTable);
     }
   }
@@ -162,7 +170,7 @@ export class GestisciUtentiComponent implements OnInit {
         } else if (key === 'ultimoAccesso') {
           temp = row[key]?.testo;
         } else {
-          temp = row[key];
+          temp = row[key]?.value;
         }
         rows.push(temp);
       }
@@ -190,6 +198,10 @@ export class GestisciUtentiComponent implements OnInit {
     dataTable.rows = dataTable.rows.map(row => {
       let newRow = row;
       newRow.iconaUtente = row.iconaUtente.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
+      newRow.id = row.id.value;
+      newRow.nome = row.nome.value;
+      newRow.gruppoAbilitazioni = row.gruppoAbilitazioni.value;
+      newRow.scadenza = row.scadenza.value;
       newRow.ultimoAccesso = row.ultimoAccesso?.testo;
       return newRow;
     });
@@ -213,7 +225,13 @@ export class GestisciUtentiComponent implements OnInit {
   }
 
   selezionaRigaTabella(rowsChecked): void {
-    this.toolbarIcons[1].disabled = rowsChecked.length !== 1;
+    if (rowsChecked.length === 1) {
+      this.codiceFiscaleUtenteDaModificare = rowsChecked[0].id.value;
+      this.toolbarIcons[1].disabled = false;
+    } else {
+      this.codiceFiscaleUtenteDaModificare = null;
+      this.toolbarIcons[1].disabled = true;
+    }
   }
 
 }

@@ -145,3 +145,8 @@ select:disabled {
 .p-autocomplete-input.p-inputtext:enabled:focus {
   background-color: #FFFFFF;
 }
+
+.p-autocomplete-input.p-inputtext:disabled {
+  background-color: #E3E3E3;
+  opacity: 0.8;
+}

@@ -1,10 +1,12 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {UtenteService} from '../../../../services/utente.service';
 import {InserimentoModificaUtente} from '../../model/utente/InserimentoModificaUtente';
 import {NgForm, NgModel} from '@angular/forms';
 import {TipoCampoEnum} from '../../../../enums/tipoCampo.enum';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
+import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-dati-utente',
@@ -23,8 +25,9 @@ export class DatiUtenteComponent implements OnInit {
 
   @ViewChild('datiUtenteForm') form: NgForm;
 
-  codiceFiscale: string;
+  @Input() codiceFiscale: string;
   datiUtente: InserimentoModificaUtente;
+  isModificaUtente = false;
 
   @Output()
   onChangeDatiUtente: EventEmitter<InserimentoModificaUtente> = new EventEmitter<InserimentoModificaUtente>();
@@ -35,9 +38,29 @@ export class DatiUtenteComponent implements OnInit {
   constructor(private utenteService: UtenteService) { }
 
   ngOnInit(): void {
-    this.codiceFiscale = null;
     this.datiUtente = new InserimentoModificaUtente();
-    this.datiUtente.attivazione = moment();
+
+    if (this.codiceFiscale) {
+      let parametriRicerca = new ParametriRicercaUtente();
+      parametriRicerca.codiceFiscale = this.codiceFiscale;
+      this.ricercaUtente(parametriRicerca);
+      this.isModificaUtente = true;
+    } else {
+      this.codiceFiscale = null;
+      this.datiUtente.attivazione = moment();
+    }
+  }
+
+  ricercaUtente(parametriRicerca: ParametriRicercaUtente): void {
+    this.utenteService.ricercaUtenti(parametriRicerca).pipe(map(utenti => {
+      const utente = utenti[0];
+      this.datiUtente.nome = utente?.nome;
+      this.datiUtente.cognome = utente?.cognome;
+      this.datiUtente.email = utente?.email;
+      this.datiUtente.telefono = utente?.telefono;
+      this.datiUtente.attivazione = utente?.dataInizioValidita ? moment(utente.dataInizioValidita) : null;
+      this.datiUtente.scadenza = utente?.dataFineValidita ? moment(utente.dataFineValidita) : null;
+    })).subscribe();
   }
 
   loadSuggestions(event): void {

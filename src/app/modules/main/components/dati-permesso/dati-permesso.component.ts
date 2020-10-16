@@ -72,7 +72,7 @@ export class DatiPermessoComponent implements OnInit {
   letturaFunzioniGestioneUtente(): void {
     this.funzioneService.letturaFunzioni().pipe(map(funzioniAbilitate => {
       funzioniAbilitate.forEach(funzione => {
-        if (GruppoEnum.GESTIONE === funzione.gruppo && funzione.applicabileAServizio === 0) {
+        if (GruppoEnum.GESTIONE === funzione.gruppo && funzione.applicabileAServizio === 1) {
           this.listaFunzioni.push({
             value: funzione,
             label: funzione.nome

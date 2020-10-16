@@ -77,6 +77,7 @@ export class IMieiPagamentiComponent implements OnInit {
   private listaPagamenti: DatiPagamento[];
   private pagamentiSelezionati: DatiPagamento[];
   private filtri: ParametriRicercaPagamenti;
+  private nomeTabCorrente: string;
 
   constructor(private iMieiPagamentiService: IMieiPagamentiService, private router: Router,
               private nuovoPagamentoService: NuovoPagamentoService, private bannerService: BannerService,
@@ -118,7 +119,7 @@ export class IMieiPagamentiComponent implements OnInit {
       tempListaPagamenti = this.listaPagamenti.filter(pagamento =>
         pagamento.esitoPagamento === EsitoEnum.OK);
     }
-
+    this.nomeTabCorrente = value
     this.riempiTabella(tempListaPagamenti);
   }
 
@@ -156,6 +157,7 @@ export class IMieiPagamentiComponent implements OnInit {
     this.listaPagamenti = listaPagamentiFiltri.listaPagamenti;
     this.filtri = listaPagamentiFiltri.filtri;
     this.riempiTabella(listaPagamentiFiltri.listaPagamenti);
+    this.onChangeTab(this.nomeTabCorrente)
   }
 
   riempiTabella(listaPagamenti: DatiPagamento[]) {
