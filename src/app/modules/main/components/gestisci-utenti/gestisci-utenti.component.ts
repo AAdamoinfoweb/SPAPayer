@@ -13,6 +13,7 @@ import {Breadcrumb} from '../../dto/Breadcrumb';
 import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
 import {Router} from '@angular/router';
 import {ToolEnum} from '../../../../enums/Tool.enum';
+import {OverlayService} from '../../../../services/overlay.service';
 
 
 @Component({
@@ -60,15 +61,17 @@ export class GestisciUtentiComponent implements OnInit {
 
   tempTableData;
 
-  constructor(private router: Router, private utenteService: UtenteService) {
+  constructor(private router: Router, private utenteService: UtenteService, private overlayService: OverlayService) {
     this.inizializzaBreadcrumbList();
 
     const parametriRicercaUtente = new ParametriRicercaUtente();
+    this.overlayService.caricamentoEvent.emit(true);
     this.utenteService.ricercaUtenti(parametriRicercaUtente).pipe(map(utenti => {
       utenti.forEach(utente => {
         this.listaUtente.push(utente);
         this.tableData.rows.push(this.creaRigaTabella(utente));
       });
+      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 
