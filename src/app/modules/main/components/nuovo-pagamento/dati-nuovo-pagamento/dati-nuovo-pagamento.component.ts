@@ -709,6 +709,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       if (result != 'error') {
         this.aggiornaPrezzoCarrello();
         this.clickPulisci();
+
+        if (this.datiPagamento) {
+          this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+        }
+
         this.overlayService.caricamentoEvent.emit(false);
       }
     });
@@ -752,6 +757,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       observable.subscribe((result) => {
         if (result !== 'error') {
           this.aggiornaPrezzoCarrello();
+
+          // Se sono nella modale, la chiudo dopo aver aggiunto il pagamento al carrello
+          if (this.datiPagamento) {
+            this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+          }
+
           this.overlayService.caricamentoEvent.emit(false);
           this.router.navigateByUrl('/carrello');
         }
