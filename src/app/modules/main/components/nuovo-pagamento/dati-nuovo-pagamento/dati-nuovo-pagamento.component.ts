@@ -100,28 +100,35 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.overlayService.caricamentoEvent.emit(false);
       });
     } else {
-      this.model[this.importoNomeCampo] = this.datiPagamento.importo;
-      const campoCodiceAvviso = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.codiceAvviso);
-      if (campoCodiceAvviso) {
-        this.model[this.getNomeCampoForm(campoCodiceAvviso)] = this.datiPagamento.codiceAvviso;
+      // Un pagamento può non avere il dettaglioTransazioneId (quindi non essere sul db) solo se è di un servizio LV3 esterno
+      if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
+        this.model[this.importoNomeCampo] = this.datiPagamento.importo;
+        const campoCodiceAvviso = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.codiceAvviso);
+        if (campoCodiceAvviso) {
+          this.model[this.getNomeCampoForm(campoCodiceAvviso)] = this.datiPagamento.codiceAvviso;
 
-        const valoriPerPrecompilazione = {};
-        valoriPerPrecompilazione[MappingCampoInputPrecompilazioneEnum.codiceAvviso] = this.datiPagamento.codiceAvviso;
+          const valoriPerPrecompilazione = {};
+          valoriPerPrecompilazione[MappingCampoInputPrecompilazioneEnum.codiceAvviso] = this.datiPagamento.codiceAvviso;
 
-        this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
-          this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
-          .subscribe((valoriCampiPrecompilati) => {
-            this.impostaValoriCampiOutput(valoriCampiPrecompilati);
+          this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
+            this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
+            .subscribe((valoriCampiPrecompilati) => {
+              this.impostaValoriCampiOutput(valoriCampiPrecompilati);
 
-            // Per i pagamenti lv3 senza dettaglioTransazione (non salvati sul db, provenienti da servizioEsterno), non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
-            const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
-            if (cfpiva) {
-              const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
-              this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
-            }
+              // Per i pagamenti lv3 da servizio esterno, non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
+              const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
+              if (cfpiva) {
+                const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
+                this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
+              }
 
-            this.overlayService.caricamentoEvent.emit(false);
-          });
+              this.overlayService.caricamentoEvent.emit(false);
+            });
+        } else {
+          this.overlayService.gestisciErrore();
+        }
+      } else {
+        this.overlayService.gestisciErrore();
       }
     }
   }
