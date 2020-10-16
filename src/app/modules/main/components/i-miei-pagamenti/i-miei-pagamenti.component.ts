@@ -161,7 +161,7 @@ export class IMieiPagamentiComponent implements OnInit {
   riempiTabella(listaPagamenti: DatiPagamento[]) {
     const pagamenti = listaPagamenti.map(pagamento => {
       const row = {
-        icona: pagamento.statoPagamento == null && Utils.creaIcona('assets/img/sprite.svg#it-pencil', '#EE7622', 'tooltip', null),
+        icona: pagamento.statoPagamento == null && Utils.creaIcona('#it-pencil', '#EE7622', 'tooltip', null),
         numeroDocumento: {value: pagamento.numeroDocumento},
         nomeServizio: {value: pagamento.nomeServizio},
         nomeEnte: {value: pagamento.nomeEnte},
