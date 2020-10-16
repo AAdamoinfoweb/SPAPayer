@@ -25,6 +25,7 @@ import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from '../../../../../services/menu.service';
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
 import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mappingCampoInputPrecompilazione.enum';
+import {MappingCampoOutputPrecompilazioneEnum} from '../../../../../enums/mappingCampoOutputPrecompilazione.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -96,7 +97,41 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     if (this.datiPagamento.dettaglioTransazioneId) {
       this.nuovoPagamentoService.letturaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((bollettino) => {
-        // TODO valorizzare i campi input (attendere fix in MieiPagamenti)
+        if (bollettino.importo) {
+          this.model[this.importoNomeCampo] = bollettino.importo;
+        } else {
+          console.log('Importo mancante');
+          this.overlayService.gestisciErrore();
+        }
+        if (bollettino.cfpiva) {
+          const campoCfpiva = this.listaCampiDinamici.find(campo => this.getNomeCampoForm(campo) === MappingCampoInputPrecompilazioneEnum.cfpiva);
+          if (campoCfpiva) {
+            this.model[MappingCampoInputPrecompilazioneEnum.cfpiva] = bollettino.cfpiva;
+          } else {
+            console.log('Campo cfpiva mancante');
+            this.overlayService.gestisciErrore();
+          }
+        }
+        if (bollettino.iuv) {
+          const campoIuv = this.listaCampiDinamici.find(campo => this.getNomeCampoForm(campo) === MappingCampoInputPrecompilazioneEnum.iuv);
+          if (campoIuv) {
+            this.model[MappingCampoInputPrecompilazioneEnum.iuv] = bollettino.iuv;
+          } else {
+            console.log('Campo iuv mancante');
+            this.overlayService.gestisciErrore();
+          }
+        }
+        if (bollettino.listaCampoDettaglioTransazione) {
+          bollettino.listaCampoDettaglioTransazione.forEach(dettaglio => {
+            const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
+            if (campo) {
+              this.model[this.getNomeCampoForm(campo)] = dettaglio.valore;
+            } else {
+              console.log('Campo dettaglio transazione mancante');
+              this.overlayService.gestisciErrore();
+            }
+          });
+        }
         this.overlayService.caricamentoEvent.emit(false);
       });
     } else {
