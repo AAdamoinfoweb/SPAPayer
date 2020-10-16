@@ -81,7 +81,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.checkUtenteLoggato();
-    this.inizializzazioneForm(this.servizio).subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -94,17 +93,31 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.isFaseVerificaPagamento = true;
     this.isBollettinoPagato = this.datiPagamento.esitoPagamento === EsitoEnum.OK || this.datiPagamento.esitoPagamento === EsitoEnum.PENDING;
 
+    if (this.datiPagamento.importo) {
+      this.model[this.importoNomeCampo] = this.datiPagamento.importo;
+    } else {
+      console.log('Importo mancante');
+      this.overlayService.gestisciErrore();
+    }
+
     if (this.datiPagamento.dettaglioTransazioneId) {
       this.nuovoPagamentoService.letturaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((bollettino) => {
-        // TODO valorizzare i campi input (attendere fix in MieiPagamenti)
+        if (bollettino.listaCampoDettaglioTransazione) {
+          bollettino.listaCampoDettaglioTransazione.forEach(dettaglio => {
+            const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
+            if (campo) {
+              this.model[this.getNomeCampoForm(campo)] = dettaglio.valore;
+            } else {
+              console.log('Campo dettaglio transazione mancante');
+              this.overlayService.gestisciErrore();
+            }
+          });
+        }
         this.overlayService.caricamentoEvent.emit(false);
       });
     } else {
-      this.model[this.importoNomeCampo] = this.datiPagamento.importo;
-      const campoCodiceAvviso = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.codiceAvviso);
-      if (campoCodiceAvviso) {
-        this.model[this.getNomeCampoForm(campoCodiceAvviso)] = this.datiPagamento.codiceAvviso;
-
+      // Un pagamento può non avere il dettaglioTransazioneId (quindi non essere sul db) solo se è di un servizio LV3 esterno
+      if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
         const valoriPerPrecompilazione = {};
         valoriPerPrecompilazione[MappingCampoInputPrecompilazioneEnum.codiceAvviso] = this.datiPagamento.codiceAvviso;
 
@@ -113,7 +126,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           .subscribe((valoriCampiPrecompilati) => {
             this.impostaValoriCampiOutput(valoriCampiPrecompilati);
 
-            // Per i pagamenti lv3 senza dettaglioTransazione (non salvati sul db, provenienti da servizioEsterno), non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
+            // Per i pagamenti lv3 da servizio esterno, non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
             const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
             if (cfpiva) {
               const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
@@ -122,6 +135,9 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
             this.overlayService.caricamentoEvent.emit(false);
           });
+      } else {
+        console.log('Dettaglio transazione id mancante su servizio diverso da LV3');
+        this.overlayService.gestisciErrore();
       }
     }
   }
@@ -654,6 +670,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       if (result != 'error') {
         this.aggiornaPrezzoCarrello();
         this.clickPulisci();
+
+        if (this.datiPagamento) {
+          this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+        }
+
         this.overlayService.caricamentoEvent.emit(false);
       }
     });
@@ -697,6 +718,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       observable.subscribe((result) => {
         if (result !== 'error') {
           this.aggiornaPrezzoCarrello();
+
+          // Se sono nella modale, la chiudo dopo aver aggiunto il pagamento al carrello
+          if (this.datiPagamento) {
+            this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+          }
+
           this.overlayService.caricamentoEvent.emit(false);
           this.router.navigateByUrl('/carrello');
         }

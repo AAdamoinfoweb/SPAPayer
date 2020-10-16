@@ -1,13 +1,11 @@
 <div id="nuovoPagamento">
-  <div *ngIf="!datiPagamento">
-    <p>Home / Pagamento / <strong>Nuovo Pagamento</strong></p>
-    <p class="title page-title">Nuovo Pagamento</p>
-  </div>
-
-  <div *ngIf="datiPagamento">
-    <p>< I Miei Pagamenti</p>
-    <p class="title page-title">Dettaglio Pagamento</p>
-  </div>
+  <it-breadcrumb [dark]="false" [separator]="'/'">
+    <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
+                        [link]="item.link" [icon]="item.icon">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
+  <h3 class="mb-2 page-title"><strong>{{titolo}}</strong></h3>
 
   <app-compila-nuovo-pagamento [datiPagamento]="datiPagamento"></app-compila-nuovo-pagamento>
 
