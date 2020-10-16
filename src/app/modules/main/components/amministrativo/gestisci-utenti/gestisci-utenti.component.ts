@@ -65,7 +65,9 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
   constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient,
               private renderer: Renderer2, private el: ElementRef) {
-    super('utenti', router, overlayService, route, http);
+    super( router, overlayService, route, http);
+    super.functionEndpoint = 'utenti';
+
     this.inizializzaBreadcrumbList();
 
     const parametriRicercaUtente = new ParametriRicercaUtente();

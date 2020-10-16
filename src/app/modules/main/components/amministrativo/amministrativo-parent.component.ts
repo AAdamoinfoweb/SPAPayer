@@ -5,17 +5,18 @@ import {environment} from "../../../../../environments/environment";
 import {OverlayService} from "../../../../services/overlay.service";
 
 @Component({
-  template: ''
+  selector: 'base-amm',
+  template: '<div></div>'
 })
 export class AmministrativoParentComponent implements OnInit {
 
   constructor(
-    protected functionEndpoint: string,
     protected router: Router,
     protected  overlayService: OverlayService,
     protected  route: ActivatedRoute, private http: HttpClient) {
   }
 
+  protected functionEndpoint;
   protected idFunzione;
 
   ngOnInit(): void {
