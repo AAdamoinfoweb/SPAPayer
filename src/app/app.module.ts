@@ -53,6 +53,7 @@ import {OverlayComponent} from './components/overlay/overlay.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import {TreeTableModule} from "primeng/treetable";
+import {AmministrativoParentComponent} from "./modules/main/components/amministrativo/amministrativo-parent.component";
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import {TreeTableModule} from "primeng/treetable";
     IntegerNumberDirective,
     DayInputDirective,
     MonthInputDirective,
-    OverlayComponent
+    OverlayComponent,
+    AmministrativoParentComponent
   ],
     imports: [
         HttpClientModule,
