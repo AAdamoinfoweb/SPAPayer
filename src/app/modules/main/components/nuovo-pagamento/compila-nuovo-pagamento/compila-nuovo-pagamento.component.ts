@@ -63,7 +63,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
             if (livelloTerritoriale) {
               this.livelloTerritorialeSelezionato = livelloTerritoriale;
               this.selezionaLivelloTerritoriale();
+            } else {
+              this.overlayService.gestisciErrore();
             }
+          } else {
+            this.overlayService.gestisciErrore();
           }
         })).subscribe();
       }
@@ -124,8 +128,13 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       });
 
       if (this.datiPagamento) {
-        this.enteSelezionato = this.listaEnti.find(item => item.value.id === this.datiPagamento.enteId)?.value;
-        this.selezionaEnte();
+        const ente = this.listaEnti.find(item => item.value.id === this.datiPagamento.enteId)?.value;
+        if (ente) {
+          this.enteSelezionato = this.listaEnti.find(item => item.value.id === this.datiPagamento.enteId)?.value;
+          this.selezionaEnte();
+        } else {
+          this.overlayService.gestisciErrore();
+        }
       }
     })).subscribe(() => this.restoreParziale('enteId'));
   }
@@ -149,8 +158,13 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       });
 
       if (this.datiPagamento) {
-        this.servizioSelezionato = this.listaServizi.find(item => item.value.id === this.datiPagamento.servizioId)?.value;
-        this.selezionaServizio();
+        const servizio = this.listaServizi.find(item => item.value.id === this.datiPagamento.servizioId)?.value;
+        if (servizio) {
+          this.servizioSelezionato = servizio;
+          this.selezionaServizio();
+        } else {
+          this.overlayService.gestisciErrore();
+        }
       }
     })).subscribe(() => this.restoreParziale('servizioId'));
   }

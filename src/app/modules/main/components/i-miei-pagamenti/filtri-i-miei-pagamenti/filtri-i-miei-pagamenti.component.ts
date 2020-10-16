@@ -9,7 +9,9 @@ import {FunzioneService} from '../../../../../services/funzione.service';
 import {map} from 'rxjs/operators';
 import {IMieiPagamentiService} from '../../../../../services/i-miei-pagamenti.service';
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
-import {ListaPagamentiFiltri} from "../../../model/bollettino/imieipagamenti/ListaPagamentiFiltri";
+import {ListaPagamentiFiltri} from '../../../model/bollettino/imieipagamenti/ListaPagamentiFiltri';
+import * as moment from 'moment';
+import {OverlayService} from "../../../../../services/overlay.service";
 
 
 @Component({
@@ -36,7 +38,8 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   onChangeListaPagamenti: EventEmitter<ListaPagamentiFiltri> = new EventEmitter<ListaPagamentiFiltri>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
-              private funzioneService: FunzioneService, private iMieiPagamentiService: IMieiPagamentiService ) {
+              private funzioneService: FunzioneService, private iMieiPagamentiService: IMieiPagamentiService,
+              private overlayService: OverlayService) {
   }
 
   ngOnInit(): void {
@@ -59,10 +62,13 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
   selezionaLivelloTerritoriale(): void {
     // pulisci select ente
-    this.filtroRicercaPagamenti.enteId = null;
-    this.listaEnti = [];
+    if (this.filtroRicercaPagamenti.livelloTerritorialeId != null) {
+      this.overlayService.caricamentoEvent.emit(true);
+      this.filtroRicercaPagamenti.enteId = null;
+      this.listaEnti = [];
 
-    this.recuperaEnti(this.filtroRicercaPagamenti?.livelloTerritorialeId);
+      this.recuperaEnti(this.filtroRicercaPagamenti?.livelloTerritorialeId);
+    }
   }
 
   recuperaEnti(livelloTerritorialeId): void {
@@ -73,15 +79,19 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           label: ente.nome
         });
       });
+      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 
   selezionaEnte(): void {
     // pulisci select servizio
-    this.filtroRicercaPagamenti.servizioId = null;
-    this.listaServizi = [];
+    if (this.filtroRicercaPagamenti.enteId != null) {
+      this.overlayService.caricamentoEvent.emit(true);
+      this.filtroRicercaPagamenti.servizioId = null;
+      this.listaServizi = [];
 
-    this.recuperaFiltroServizi(this.filtroRicercaPagamenti?.enteId);
+      this.recuperaFiltroServizi(this.filtroRicercaPagamenti?.enteId);
+    }
   }
 
   recuperaFiltroServizi(enteId): void {
@@ -92,6 +102,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           label: servizio.nome
         });
       });
+      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 
@@ -110,7 +121,17 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
-    return campo?.errors;
+    if (campo?.name === 'dataScadenzaA') {
+     return this.controlloDate(campo);
+      } else {
+      return campo?.errors;
+    }
+  }
+
+  controlloDate(campo?: NgModel): boolean{
+    const momentDataDa = moment(this.filtroRicercaPagamenti.dataScadenzaDa, 'DD/MM/YYYY');
+    const momentDataA = moment(this.filtroRicercaPagamenti.dataScadenzaA, 'DD/MM/YYYY');
+    return this.filtroRicercaPagamenti.dataScadenzaDa != null ? (moment(momentDataA).isBefore(momentDataDa) || campo?.errors != null) : campo?.errors != null;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -120,10 +141,16 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
+    this.listaEnti = [];
+    this.listaServizi = [];
     this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
+    console.log(this.filtroRicercaPagamenti);
   }
 
   cercaPagamenti(form: NgForm): void {
+    // inizia spinner
+    this.overlayService.caricamentoEvent.emit(true);
+
     Object.keys(form.value).forEach(key => {
       const value = form.value[key];
       if (value !== undefined) {
@@ -147,7 +174,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     if (nomeBottone === 'Pulisci') {
       return !isAtLeastOneFieldValued;
     } else {
-      return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued;
+      return !filtroGestioneUtentiForm.valid || this.controlloDate();
     }
   }
 }

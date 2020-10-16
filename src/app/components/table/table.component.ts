@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {tipoColonna} from '../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../enums/TipoTabella.enum';
+// @ts-ignore
+import sprite from '../../../assets/img/sprite.svg';
 
 @Component({
   selector: 'app-table',
@@ -32,6 +34,8 @@ export class TableComponent implements OnInit {
   rowsPerPageOption: number[] = [5, 10, 20];
 
   pageSize = this.rowsPerPageOption[0];
+  sprite: string | SVGPathElement = sprite;
+
 
 
   constructor() { }

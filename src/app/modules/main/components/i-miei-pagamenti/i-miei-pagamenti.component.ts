@@ -96,6 +96,8 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
   private inizializzaListaPagamenti(filtri: ParametriRicercaPagamenti) {
+    // spinner
+    this.overlayService.caricamentoEvent.emit(true);
     this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
       this.riempiListaPagamenti({listaPagamenti, filtri});
     })).subscribe();
@@ -159,7 +161,7 @@ export class IMieiPagamentiComponent implements OnInit {
   riempiTabella(listaPagamenti: DatiPagamento[]) {
     const pagamenti = listaPagamenti.map(pagamento => {
       const row = {
-        icona: pagamento.statoPagamento == null && Utils.creaIcona('assets/img/sprite.svg#it-pencil', '#EE7622', 'tooltip', null),
+        icona: pagamento.statoPagamento == null && Utils.creaIcona('#it-pencil', '#EE7622', 'tooltip', null),
         numeroDocumento: {value: pagamento.numeroDocumento},
         nomeServizio: {value: pagamento.nomeServizio},
         nomeEnte: {value: pagamento.nomeEnte},
@@ -173,6 +175,9 @@ export class IMieiPagamentiComponent implements OnInit {
       return row;
     });
     this.tableData.rows = pagamenti;
+
+    // termina spinner
+    this.overlayService.caricamentoEvent.emit(false);
     // oggetto contenente le rows recuperate dalla ricerca
     // this.tempTableData.rows = Object.assign({}, this.tableData.rows);
   }
