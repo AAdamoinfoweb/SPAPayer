@@ -56,16 +56,17 @@ export class SidebarComponent implements OnInit {
     if (sub.nome === 'Accedi') {
       localStorage.setItem('loginDaAnonimo', 'true');
       window.location.href = environment.bffBaseUrl + sub.route;
-      //window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
+      //window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975I&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
     } else if (sub.nome === 'Esci') {
       this.http.get(environment.bffBaseUrl + '/logout', {withCredentials: true}).subscribe((body: any) => {
         if (body.url) {
+          localStorage.clear();
           this.menuService.userEventChange.emit();
           window.location.href = body.url;
         }
       });
     } else {
-      this.router.navigateByUrl(sub.route);
+      this.router.navigateByUrl(sub.route + '?funzione=' + btoa(sub.id));
     }
   }
 }
