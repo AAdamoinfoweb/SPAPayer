@@ -25,7 +25,6 @@ import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from '../../../../../services/menu.service';
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
 import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mappingCampoInputPrecompilazione.enum';
-import {MappingCampoOutputPrecompilazioneEnum} from '../../../../../enums/mappingCampoOutputPrecompilazione.enum';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -101,46 +100,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.overlayService.gestisciErrore();
     }
 
-    if (this.datiPagamento.numeroDocumento) {
-      const campoNumeroDocumento = this.listaCampiDinamici.find(campo => campo.jsonPath && campo.jsonPath.endsWith(MappingCampoOutputPrecompilazioneEnum.numeroDocumento));
-      if (campoNumeroDocumento) {
-        this.model[this.getNomeCampoForm(campoNumeroDocumento)] = this.datiPagamento.numeroDocumento;
-      } else {
-        console.log('Campo numero documento mancante');
-        this.overlayService.gestisciErrore();
-      }
-    }
-
-    if (this.datiPagamento.codiceAvviso) {
-      const campoCodiceAvviso = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.codiceAvviso);
-      if (campoCodiceAvviso) {
-        this.model[this.getNomeCampoForm(campoCodiceAvviso)] = this.datiPagamento.codiceAvviso;
-      } else {
-        console.log('Campo codice avviso mancante');
-        this.overlayService.gestisciErrore();
-      }
-    }
-
     if (this.datiPagamento.dettaglioTransazioneId) {
       this.nuovoPagamentoService.letturaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((bollettino) => {
-        if (bollettino.cfpiva) {
-          const campoCfpiva = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
-          if (campoCfpiva) {
-            this.model[this.getNomeCampoForm(campoCfpiva)] = bollettino.cfpiva;
-          } else {
-            console.log('Campo cfpiva mancante');
-            this.overlayService.gestisciErrore();
-          }
-        }
-        if (bollettino.iuv) {
-          const campoIuv = this.listaCampiDinamici.find(campo => campo.jsonPath && campo.jsonPath.endsWith(MappingCampoOutputPrecompilazioneEnum.iuv));
-          if (campoIuv) {
-            this.model[this.getNomeCampoForm(campoIuv)] = bollettino.iuv;
-          } else {
-            console.log('Campo iuv mancante');
-            this.overlayService.gestisciErrore();
-          }
-        }
         if (bollettino.listaCampoDettaglioTransazione) {
           bollettino.listaCampoDettaglioTransazione.forEach(dettaglio => {
             const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
