@@ -10,12 +10,12 @@ import {map} from 'rxjs/operators';
 })
 export class SocietaService {
 
-  private letturaSocietaUrl = '/societa';
+  private filtroSocietaUrl = '/filtroSocieta';
 
   constructor(private http: HttpClient) { }
 
-  letturaSocieta(): Observable<Societa[]> {
-    return this.http.get(environment.bffBaseUrl + this.letturaSocietaUrl)
+  filtroSocieta(): Observable<Societa[]> {
+    return this.http.get(environment.bffBaseUrl + this.filtroSocietaUrl)
       .pipe(map((body: any) => {
         return body;
       }));
