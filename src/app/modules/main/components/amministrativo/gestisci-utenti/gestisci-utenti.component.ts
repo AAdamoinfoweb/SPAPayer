@@ -86,7 +86,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
 
       const parametriRicercaUtente = new ParametriRicercaUtente();
       this.overlayService.caricamentoEvent.emit(true);
-      this.utenteService.ricercaUtenti(parametriRicercaUtente).pipe(map(utenti => {
+      this.utenteService.ricercaUtenti(parametriRicercaUtente, this.idFunzione).pipe(map(utenti => {
         utenti.forEach(utente => {
           this.listaUtente.push(utente);
           this.tableData.rows.push(this.creaRigaTabella(utente));
