@@ -25,6 +25,14 @@
               </li>
             </ng-container>
           </ul>
+          <ul class="link-sublist collapse show" *ngIf="item.funzioni">
+            <ng-container *ngFor="let sub of item.funzioni">
+              <li>
+                <a (click)="getRouterLink(sub)" class="list-item medium active"
+                   data-toggle="collapse" aria-expanded="true"><span>{{sub.nome}}</span></a>
+              </li>
+            </ng-container>
+          </ul>
         </li>
       </ng-container>
     </ul>

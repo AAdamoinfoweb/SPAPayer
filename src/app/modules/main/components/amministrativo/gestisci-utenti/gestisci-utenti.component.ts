@@ -66,7 +66,6 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
               route: ActivatedRoute, http: HttpClient,
               private renderer: Renderer2, private el: ElementRef) {
     super(router, overlayService, route, http);
-    this.functionEndpointEmitter.emit('utenti');
   }
 
   inizializzaBreadcrumbList(): void {
@@ -76,18 +75,20 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
   }
 
   ngOnInit(): void {
-    this.inizializzaBreadcrumbList();
+    if (!this.waiting) {
+      this.inizializzaBreadcrumbList();
 
-    const parametriRicercaUtente = new ParametriRicercaUtente();
-    this.overlayService.caricamentoEvent.emit(true);
-    this.utenteService.ricercaUtenti(parametriRicercaUtente).pipe(map(utenti => {
-      utenti.forEach(utente => {
-        this.listaUtente.push(utente);
-        this.tableData.rows.push(this.creaRigaTabella(utente));
-      });
-      this.overlayService.caricamentoEvent.emit(false);
-    })).subscribe();
-    this.tempTableData = Object.assign({}, this.tableData);
+      const parametriRicercaUtente = new ParametriRicercaUtente();
+      this.overlayService.caricamentoEvent.emit(true);
+      this.utenteService.ricercaUtenti(parametriRicercaUtente).pipe(map(utenti => {
+        utenti.forEach(utente => {
+          this.listaUtente.push(utente);
+          this.tableData.rows.push(this.creaRigaTabella(utente));
+        });
+        this.overlayService.caricamentoEvent.emit(false);
+      })).subscribe();
+      this.tempTableData = Object.assign({}, this.tableData);
+    }
   }
 
   ngAfterViewInit(): void {

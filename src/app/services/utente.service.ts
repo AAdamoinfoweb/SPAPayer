@@ -12,8 +12,8 @@ import {InserimentoModificaUtente} from '../modules/main/model/utente/Inseriment
 })
 export class UtenteService {
 
-  private readonly utentiBaseUrl = '/utenti';
-  private readonly letturaCodiceFiscaleUtenteUrl = '/codiceFiscale';
+  private readonly utentiBaseUrl = '/gestioneUtenti/utenti';
+  private readonly letturaCodiceFiscaleUtenteUrl = '/gestioneUtenti/codiceFiscale';
 
   codiceFiscaleEvent: EventEmitter<string> = new EventEmitter<string>();
 
