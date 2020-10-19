@@ -74,7 +74,7 @@ export class IMieiPagamentiComponent implements OnInit {
   };
 
   tempTableData;
-  private listaPagamenti: DatiPagamento[];
+  private listaPagamenti: DatiPagamento[] = [];
   private pagamentiSelezionati: DatiPagamento[];
   private filtri: ParametriRicercaPagamenti;
   private nomeTabCorrente: string;
@@ -156,33 +156,39 @@ export class IMieiPagamentiComponent implements OnInit {
   riempiListaPagamenti(listaPagamentiFiltri: ListaPagamentiFiltri) {
     this.listaPagamenti = listaPagamentiFiltri.listaPagamenti;
     this.filtri = listaPagamentiFiltri.filtri;
-    this.riempiTabella(listaPagamentiFiltri.listaPagamenti);
-    this.onChangeTab(this.nomeTabCorrente)
+    if (listaPagamentiFiltri.listaPagamenti != null) {
+      this.riempiTabella(listaPagamentiFiltri.listaPagamenti);
+      this.onChangeTab(this.nomeTabCorrente);
+    }
   }
 
   riempiTabella(listaPagamenti: DatiPagamento[]) {
-    const pagamenti = listaPagamenti.map(pagamento => {
-      const row = {
-        icona: pagamento.statoPagamento == null && Utils.creaIcona('#it-pencil', '#EE7622',
-          this.TOOLTIP_ICONA_MATITA, null),
-        numeroDocumento: {value: pagamento.numeroDocumento},
-        nomeServizio: {value: pagamento.nomeServizio},
-        nomeEnte: {value: pagamento.nomeEnte},
-        dataScadenza: {value: pagamento.dataScadenza ? moment(pagamento.dataScadenza).format('DD/MM/YYYY') : null},
-        importo: {value: pagamento.importo,
-          class: (pagamento.statoPagamento !== StatoPagamentoEnum.PAGATO &&
-            pagamento.esitoPagamento !== EsitoEnum.OK)
-            && 'evidenziato'},
-        dataPagamento: {value: pagamento.dataPagamento ? moment(pagamento.dataPagamento).format('DD/MM/YYYY') : null}
-      };
-      return row;
-    });
-    this.tableData.rows = pagamenti;
+    if (listaPagamenti != null) {
+      const pagamenti = listaPagamenti.map(pagamento => {
+        const row = {
+          icona: pagamento.statoPagamento == null && Utils.creaIcona('#it-pencil', '#EE7622',
+            this.TOOLTIP_ICONA_MATITA, null),
+          numeroDocumento: {value: pagamento.numeroDocumento},
+          nomeServizio: {value: pagamento.nomeServizio},
+          nomeEnte: {value: pagamento.nomeEnte},
+          dataScadenza: {value: pagamento.dataScadenza ? moment(pagamento.dataScadenza).format('DD/MM/YYYY') : null},
+          importo: {
+            value: pagamento.importo,
+            class: (pagamento.statoPagamento !== StatoPagamentoEnum.PAGATO &&
+              pagamento.esitoPagamento !== EsitoEnum.OK)
+              && 'evidenziato'
+          },
+          dataPagamento: {value: pagamento.dataPagamento ? moment(pagamento.dataPagamento).format('DD/MM/YYYY') : null}
+        };
+        return row;
+      });
+      this.tableData.rows = pagamenti;
 
-    // termina spinner
-    this.overlayService.caricamentoEvent.emit(false);
-    // oggetto contenente le rows recuperate dalla ricerca
-    // this.tempTableData.rows = Object.assign({}, this.tableData.rows);
+      // termina spinner
+      this.overlayService.caricamentoEvent.emit(false);
+      // oggetto contenente le rows recuperate dalla ricerca
+      // this.tempTableData.rows = Object.assign({}, this.tableData.rows);
+    }
   }
 
   selezionaPagamenti(rows: any[]) {

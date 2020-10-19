@@ -166,7 +166,8 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   ricercaPagamenti(filtri: ParametriRicercaPagamenti) {
-    const filtriToBE: ParametriRicercaPagamenti = new ParametriRicercaPagamenti();
+    let filtriToBE: ParametriRicercaPagamenti;
+    filtriToBE = filtri;
     filtriToBE.dataPagamentoDa = filtri.dataPagamentoDa ? moment(filtri.dataPagamentoDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     filtriToBE.dataPagamentoA = filtri.dataPagamentoA ? moment(filtri.dataPagamentoA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     this.iMieiPagamentiService.ricercaPagamenti(filtriToBE).pipe(map(listaPagamenti => {
@@ -174,6 +175,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
       listaPagamentiFiltri.listaPagamenti = listaPagamenti;
       listaPagamentiFiltri.filtri = filtri;
       this.onChangeListaPagamenti.emit(listaPagamentiFiltri);
+      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 
