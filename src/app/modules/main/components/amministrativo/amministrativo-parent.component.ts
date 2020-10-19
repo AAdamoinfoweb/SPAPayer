@@ -10,7 +10,7 @@ import {OverlayService} from "../../../../services/overlay.service";
 })
 export class AmministrativoParentComponent implements OnInit {
 
-  public waiting = false;
+  public waitingEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
   public idFunzione;
 
   constructor(
@@ -18,14 +18,14 @@ export class AmministrativoParentComponent implements OnInit {
     protected  overlayService: OverlayService,
     protected  route: ActivatedRoute, private http: HttpClient) {
       this.overlayService.caricamentoEvent.emit(true);
-      this.waiting = true;
+      this.waitingEmitter.emit(true);
       this.route.queryParams.subscribe(value => {
         this.idFunzione = atob(value.funzione);
         let h: HttpHeaders = new HttpHeaders();
         h = h.append('idFunzione', this.idFunzione);
         this.http.get(environment.bffBaseUrl + '/verificaAbilitazione', {headers: h, withCredentials: true}).subscribe(() => {
           this.overlayService.caricamentoEvent.emit(false);
-          this.waiting = false;
+          this.waitingEmitter.emit(false);
         });
       });
   }

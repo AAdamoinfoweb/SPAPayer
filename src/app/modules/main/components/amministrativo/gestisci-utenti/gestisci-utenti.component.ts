@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnChanges, OnInit, Renderer2, SimpleChanges} from '@angular/core';
 import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
 import {TipoUtenteEnum} from '../../../../../enums/TipoUtente.enum';
@@ -22,7 +22,7 @@ import {HttpClient} from "@angular/common/http";
   templateUrl: './gestisci-utenti.component.html',
   styleUrls: ['./gestisci-utenti.component.scss']
 })
-export class GestisciUtentiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciUtentiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit, OnChanges {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
@@ -61,12 +61,17 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
   };
 
   tempTableData;
+  waiting = true;
 
   constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient,
               private renderer: Renderer2, private el: ElementRef) {
     super(router, overlayService, route, http);
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    }
 
   inizializzaBreadcrumbList(): void {
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
@@ -75,7 +80,8 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
   }
 
   ngOnInit(): void {
-    if (!this.waiting) {
+    this.waitingEmitter.subscribe((value) => {
+      this.waiting = value;
       this.inizializzaBreadcrumbList();
 
       const parametriRicercaUtente = new ParametriRicercaUtente();
@@ -88,7 +94,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
         this.overlayService.caricamentoEvent.emit(false);
       })).subscribe();
       this.tempTableData = Object.assign({}, this.tableData);
-    }
+    });
   }
 
   ngAfterViewInit(): void {
