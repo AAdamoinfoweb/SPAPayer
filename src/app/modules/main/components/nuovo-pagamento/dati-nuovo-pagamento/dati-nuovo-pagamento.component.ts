@@ -100,6 +100,14 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.overlayService.gestisciErrore();
     }
 
+    // In modalità compilazione automatica, carico tutte le opzioni per le select dipendenti (in quanto i valori delle select da cui dipendono potrebbero arrivare successivamente)
+    this.listaCampiDinamici.forEach(campo => {
+      if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {
+        campo.dipendeDa = null;
+        this.impostaOpzioniSelect(campo);
+      }
+    });
+
     if (this.datiPagamento.dettaglioTransazioneId) {
       this.nuovoPagamentoService.letturaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((bollettino) => {
         if (bollettino.listaCampoDettaglioTransazione) {
@@ -552,7 +560,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
       if (campo.dipendeDa) {
         const selectPadre = this.listaCampiDinamici.find(item => item.id === campo.dipendeDa);
-        const valoreSelectPadre = this.form.controls[this.getNomeCampoForm(selectPadre)].value;
+        const valoreSelectPadre = this.model[this.getNomeCampoForm(selectPadre)];
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {
