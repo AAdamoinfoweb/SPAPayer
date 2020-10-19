@@ -9,7 +9,7 @@
       {{ nomeUtente }}
     </a>
   </div>
-  <div *ngIf="!waiting" class="sidebar-wrapper sidebar-no-overflow">
+  <div *ngIf="!waiting" [ngClass]="{'sidebar-wrapper': true, 'overflow-hidden': isUtenteAnonimo, 'pb-0': !isUtenteAnonimo}">
     <ul class="nav">
       <li>
         <h3 class="no_toc">Funzioni</h3>

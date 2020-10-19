@@ -15,6 +15,7 @@ export class SidebarComponent implements OnInit {
   nomeUtente = '-----';
   menu = [];
   waiting: boolean;
+  isUtenteAnonimo: boolean;
 
   constructor(private menuService: MenuService,
               private http: HttpClient,
@@ -31,8 +32,11 @@ export class SidebarComponent implements OnInit {
           localStorage.setItem('cognome', info.cognome);
 
           if (!this.menuService.isUtenteAnonimo) {
+            this.isUtenteAnonimo = false;
             this.nomeUtente = `${localStorage.getItem('nome')} ${localStorage.getItem('cognome')}`;
             localStorage.setItem('email', info.email);
+          } else {
+            this.isUtenteAnonimo = true;
           }
           this.menuService.userEventChange.emit();
           this.menu = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
