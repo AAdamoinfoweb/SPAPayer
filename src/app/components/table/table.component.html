@@ -33,7 +33,7 @@
           </svg>
         </div>
         <!--  template TESTO  -->
-        <div *ngIf="col.type == tipoColonnaEnum.TESTO" class="{{row[col.field].class}}">
+        <div *ngIf="col.type == tipoColonnaEnum.TESTO"  [ngClass]="row[col.field].class">
           {{row[col.field].value}}
         </div>
         <!--  template LINK  -->
@@ -46,7 +46,7 @@
           </a>
         </div>
         <!--  template IMPORTO  -->
-        <div *ngIf="col.type == tipoColonnaEnum.IMPORTO" class="{{row[col.field].class}}">
+        <div *ngIf="col.type == tipoColonnaEnum.IMPORTO" [ngClass]="row[col.field].class">
           {{row[col.field].value|currency:"EUR":"€ "
           | replace:'.':'|' | replace:',':'.'
           | replace:'|':','}}

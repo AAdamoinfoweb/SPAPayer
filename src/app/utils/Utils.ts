@@ -3,6 +3,10 @@ import * as XLSX from 'xlsx';
 import * as FILESAVER from 'file-saver';
 
 export class Utils {
+
+  static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00';
+  static FORMAT_DATE_CALENDAR = 'DD/MM/YYYY';
+
   static creaLink = (testo, link) => {
     return {testo: testo, link: link};
   }

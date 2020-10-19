@@ -12,6 +12,7 @@ import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
 import {ListaPagamentiFiltri} from '../../../model/bollettino/imieipagamenti/ListaPagamentiFiltri';
 import * as moment from 'moment';
 import {OverlayService} from '../../../../../services/overlay.service';
+import {Utils} from "../../../../../utils/Utils";
 
 
 @Component({
@@ -167,13 +168,20 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
         this.filtroRicercaPagamenti[key] = null;
       }
     });
+    this.ricercaPagamenti(this.filtroRicercaPagamenti);
+  }
 
-    const filtri = this.filtroRicercaPagamenti;
-    this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
+  ricercaPagamenti(filtri: ParametriRicercaPagamenti) {
+    let filtriToBE: ParametriRicercaPagamenti;
+    filtriToBE = filtri;
+    filtriToBE.dataPagamentoDa = filtri.dataPagamentoDa ? moment(filtri.dataPagamentoDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    filtriToBE.dataPagamentoA = filtri.dataPagamentoA ? moment(filtri.dataPagamentoA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    this.iMieiPagamentiService.ricercaPagamenti(filtriToBE).pipe(map(listaPagamenti => {
       const listaPagamentiFiltri: ListaPagamentiFiltri = new ListaPagamentiFiltri();
       listaPagamentiFiltri.listaPagamenti = listaPagamenti;
       listaPagamentiFiltri.filtri = filtri;
       this.onChangeListaPagamenti.emit(listaPagamentiFiltri);
+      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 

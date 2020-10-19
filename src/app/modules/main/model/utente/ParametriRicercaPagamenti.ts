@@ -3,6 +3,6 @@ export class ParametriRicercaPagamenti {
   enteId?: number;
   servizioId?: number;
   numeroDocumento?: string;
-  dataPagamentoDa?: Date;
-  dataPagamentoA?: Date;
+  dataPagamentoDa?: string;
+  dataPagamentoA?: string;
 }
