@@ -138,7 +138,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
             if (cfpiva) {
               const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
-              this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
+              // Valorizzo il campo codice fiscale (se presente)
+              if (campoCodicePagatore) {
+                this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
+              }
             }
 
             this.overlayService.caricamentoEvent.emit(false);
