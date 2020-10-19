@@ -24,21 +24,44 @@ div.logo{
 div.logo-rer{
  position: relative;
  z-index: 99;
- bottom: 57px;
  left: 28px;
+ max-height: 23%;
 }
 
-div.sidebar-no-overflow{
- overflow: hidden;
- /* ul{ */
- /*    li { */
- /*        max-height: 20px; */
- /*    } */
- /* } */
+//div.sidebar-no-overflow{
+// overflow: hidden;
+//  ul{
+//     li {
+//         max-height: 20px;
+//     }
+//  }
+//}
+
+.sidebar-overflow {
+  overflow: hidden;
 }
 
 li > a {
   margin: 0 0 0 15px !important;
   display: unset !important;
   line-height: 40px !important;
+}
+
+li > a > span {
+  font-size: 18px;
+}
+
+@media screen and (max-width: 992px) {
+  li > a > span {
+    font-size: 16px
+  }
+
+  .sidebar-overflow {
+    overflow: auto;
+  }
+}
+
+.sidebar .sidebar-wrapper,
+.off-canvas-sidebar .sidebar-wrapper {
+  max-height: 77%;
 }
