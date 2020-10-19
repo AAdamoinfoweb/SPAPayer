@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaUtente';
 import {map} from 'rxjs/operators';
 import {Utils} from '../../../../../../utils/Utils';
+import {AmministrativoService} from "../../../../../../services/amministrativo.service";
 
 @Component({
   selector: 'app-dati-utente',
@@ -36,7 +37,7 @@ export class DatiUtenteComponent implements OnInit {
   @Output()
   onValidaFormDatiUtenti: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private utenteService: UtenteService) { }
+  constructor(private utenteService: UtenteService, private amministrativoService: AmministrativoService) { }
 
   ngOnInit(): void {
     this.datiUtente = new InserimentoModificaUtente();
@@ -53,7 +54,7 @@ export class DatiUtenteComponent implements OnInit {
   }
 
   ricercaUtente(parametriRicerca: ParametriRicercaUtente): void {
-    this.utenteService.ricercaUtenti(parametriRicerca).pipe(map(utenti => {
+    this.utenteService.ricercaUtenti(parametriRicerca, this.amministrativoService.idFunzione).pipe(map(utenti => {
       const utente = utenti[0];
       this.datiUtente.nome = utente?.nome;
       this.datiUtente.cognome = utente?.cognome;
@@ -136,10 +137,10 @@ export class DatiUtenteComponent implements OnInit {
       ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
   }
 
-  onChangeModel(): void {
-    const model = {...this.form.value};
+  onChangeForm(datiUtenteForm: NgForm) {
+    const model = {...datiUtenteForm.value};
 
-    if (this.form.valid) {
+    if (datiUtenteForm.valid) {
       for (const nomeCampo in model) {
         if (model[nomeCampo] !== undefined && model[nomeCampo]) {
           if (nomeCampo === 'codiceFiscale') {
@@ -163,5 +164,4 @@ export class DatiUtenteComponent implements OnInit {
       this.onValidaFormDatiUtenti.emit(false);
     }
   }
-
 }

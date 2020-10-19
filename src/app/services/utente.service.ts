@@ -20,7 +20,7 @@ export class UtenteService {
   constructor(private http: HttpClient) {
   }
 
-  ricercaUtenti(parametriRicercaUtente: ParametriRicercaUtente, idFunzione: string = ''): Observable<RicercaUtente[]> {
+  ricercaUtenti(parametriRicercaUtente: ParametriRicercaUtente, idFunzione: string): Observable<RicercaUtente[]> {
     let params = new HttpParams();
     if (parametriRicercaUtente.livelloTerritorialeId != null) {
       params = params.set('livelloTerritorialeId', String(parametriRicercaUtente.livelloTerritorialeId));

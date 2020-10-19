@@ -10,12 +10,17 @@ import {map} from 'rxjs/operators';
 import {GruppoEnum} from '../../../../../../enums/gruppo.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {PermessoSingolo} from "../../../../model/permesso/PermessoSingolo";
+import {CheckboxChange} from "design-angular-kit";
+import {Funzione} from "../../../../model/Funzione";
+import {PermessoFunzione} from "../../../../model/permesso/PermessoFunzione";
 
 @Component({
   selector: 'app-dati-permesso',
   templateUrl: './dati-permesso.component.html',
   styleUrls: ['./dati-permesso.component.scss']
 })
+
+
 export class DatiPermessoComponent implements OnInit {
 
   @Input() indexSezionePermesso: number;
@@ -25,6 +30,7 @@ export class DatiPermessoComponent implements OnInit {
   readonly tipoData = ECalendarValue.String;
 
   datiPermesso: PermessoCompleto;
+  listaPermessoFunzione: PermessoFunzione[] = [];
 
   listaSocieta: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
@@ -160,5 +166,12 @@ export class DatiPermessoComponent implements OnInit {
     permesso.permessoCompleto = this.datiPermesso;
     this.onChangeDatiPermesso.emit(permesso);
   }
+
+  onChangeCheckBox($event: CheckboxChange, funzione: Funzione) {
+    if ($event.checked === true) {
+
+    }
+  }
+
 
 }

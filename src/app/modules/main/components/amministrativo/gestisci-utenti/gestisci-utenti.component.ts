@@ -16,6 +16,7 @@ import {ToolEnum} from '../../../../../enums/Tool.enum';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {AmministrativoParentComponent} from "../amministrativo-parent.component";
 import {HttpClient} from "@angular/common/http";
+import {AmministrativoService} from "../../../../../services/amministrativo.service";
 
 @Component({
   selector: 'app-gestione-utenti',
@@ -65,8 +66,8 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
 
   constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient,
-              private renderer: Renderer2, private el: ElementRef) {
-    super(router, overlayService, route, http);
+              private renderer: Renderer2, private el: ElementRef, amministrativoService: AmministrativoService) {
+    super(router, overlayService, route, http, amministrativoService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -86,12 +87,11 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
 
       const parametriRicercaUtente = new ParametriRicercaUtente();
       this.overlayService.caricamentoEvent.emit(true);
-      this.utenteService.ricercaUtenti(parametriRicercaUtente, this.idFunzione).pipe(map(utenti => {
+      this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
         utenti.forEach(utente => {
           this.listaUtente.push(utente);
           this.tableData.rows.push(this.creaRigaTabella(utente));
         });
-        this.overlayService.caricamentoEvent.emit(false);
       })).subscribe();
       this.tempTableData = Object.assign({}, this.tableData);
     });
