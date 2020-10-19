@@ -1,14 +1,26 @@
-import {AfterViewInit, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, Renderer2, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ComponentFactoryResolver,
+  ComponentRef,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import {Breadcrumb} from '../../../../dto/Breadcrumb';
 import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
 import {UtenteService} from '../../../../../../services/utente.service';
 import {Router} from '@angular/router';
-import {DatiPermessoComponent} from '../../../dati-permesso/dati-permesso.component';
+import {DatiPermessoComponent} from '../dati-permesso/dati-permesso.component';
 import {AsyncSubject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {NgModel} from "@angular/forms";
 import * as moment from "moment";
 import {Utils} from "../../../../../../utils/Utils";
+import {PermessoCompleto} from "../../../../model/permesso/PermessoCompleto";
+import {PermessoSingolo} from "../../../../model/permesso/PermessoSingolo";
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -24,6 +36,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   codiceFiscale: string;
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
   asyncSubject: AsyncSubject<string> = new AsyncSubject<string>();
+  mapPermessi: Map<number, PermessoCompleto> = new Map();
 
   isFormDatiUtenteValido = false;
 
@@ -62,7 +75,13 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiPermessoComponent);
     this.componentRef = this.target.createComponent(childComponent);
     this.componentRef.instance.indexSezionePermesso = this.target.length;
-    this.componentRef.instance.onDeletePermesso.subscribe(index => this.target.remove(index - 1));
+    this.componentRef.instance.onDeletePermesso.subscribe(index => {
+      this.target.remove(index - 1);
+    });
+    this.componentRef.instance.onChangeDatiPermesso.subscribe((permesso: PermessoSingolo) => {
+        this.mapPermessi.set(permesso.index, permesso.permessoCompleto);
+    });
+    this.componentRef.changeDetectorRef.detectChanges();
   }
 
   disabilitaBottone(): boolean {
@@ -73,9 +92,13 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     const dataAttivazione = this.datiUtente.attivazione;
     const dataScadenza = this.datiUtente.scadenza;
     const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    const listaPermessi: PermessoCompleto[] = Array.from(this.mapPermessi,  ([name, value]) =>  value );
+    const datePermesso = listaPermessi && listaPermessi.length > 0
+      ? listaPermessi.filter((permesso: PermessoCompleto) => Utils.isBefore(permesso.dataInizioValidita, dataSistema) ||
+      Utils.isBefore(permesso.dataFineValidita, dataSistema)) : [];
     const ret = Utils.isBefore(dataAttivazione, dataSistema) ||
-      (this.datiUtente.scadenza ? Utils.isBefore(dataScadenza, dataSistema) : false);
-    return ret ;
+      (this.datiUtente.scadenza ? Utils.isBefore(dataScadenza, dataSistema) : false) || datePermesso.length > 0;
+    return ret;
   }
 
   inserimentoDatiUtentePermessi(): void {

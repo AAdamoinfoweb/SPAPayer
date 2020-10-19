@@ -1,13 +1,15 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import * as moment from 'moment';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
-import {PermessoCompleto} from '../../model/permesso/PermessoCompleto';
-import {NgModel} from '@angular/forms';
-import {TipoCampoEnum} from '../../../../enums/tipoCampo.enum';
-import {OpzioneSelect} from '../../model/OpzioneSelect';
-import {FunzioneService} from '../../../../services/funzione.service';
+import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
+import {FormGroup, NgForm, NgModel} from '@angular/forms';
+import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
+import {OpzioneSelect} from '../../../../model/OpzioneSelect';
+import {FunzioneService} from '../../../../../../services/funzione.service';
 import {map} from 'rxjs/operators';
-import {GruppoEnum} from '../../../../enums/gruppo.enum';
+import {GruppoEnum} from '../../../../../../enums/gruppo.enum';
+import {Utils} from '../../../../../../utils/Utils';
+import {PermessoSingolo} from "../../../../model/permesso/PermessoSingolo";
 
 @Component({
   selector: 'app-dati-permesso',
@@ -19,8 +21,8 @@ export class DatiPermessoComponent implements OnInit {
   @Input() indexSezionePermesso: number;
 
   isCalendarOpen = false;
-  readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
-  readonly tipoData = ECalendarValue.Moment;
+  readonly minDateDDMMYYYY = 'DD/MM/YYYY';
+  readonly tipoData = ECalendarValue.String;
 
   datiPermesso: PermessoCompleto;
 
@@ -30,12 +32,17 @@ export class DatiPermessoComponent implements OnInit {
   listaFunzioni: Array<any> = [];
 
   @Output()
-  onChangeDatiPermesso: EventEmitter<PermessoCompleto> = new EventEmitter<PermessoCompleto>();
+  onChangeDatiPermesso: EventEmitter<PermessoSingolo> = new EventEmitter<PermessoSingolo>();
 
   @Output()
   onDeletePermesso: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private funzioneService: FunzioneService) { }
+  @ViewChild('datiPermessoForm') datiPermessoForm: NgForm;
+
+
+  constructor(private funzioneService: FunzioneService) {
+  }
+
 
   ngOnInit(): void {
     this.datiPermesso = new PermessoCompleto();
@@ -53,7 +60,7 @@ export class DatiPermessoComponent implements OnInit {
     // prevalorizzo il campo societaId con la società avente id minore nella lista recuperata
     this.datiPermesso.societaId = this.listaSocieta.reduce((prev, curr) => prev.value < curr.value ? prev : curr).value;
     this.datiPermesso.enteId = null;
-    this.datiPermesso.dataInizioValidita = moment();
+    this.datiPermesso.dataInizioValidita = moment().format(Utils.FORMAT_DATE_CALENDAR);
   }
 
   selezionaServizio(): void {
@@ -111,7 +118,18 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
+    if (campo?.name === 'attivazione' || campo?.name === 'scadenza') {
+      return this.controlloDate(campo, campo.model);
+    }
     return campo?.errors;
+  }
+
+  controlloDate(campo: NgModel, value: string): boolean {
+    const dataDaControllare = value;
+    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    const ret = Utils.isBefore(dataDaControllare, dataSistema) ||
+      campo?.errors != null;
+    return ret;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -130,7 +148,17 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   onClickDeleteIcon(event) {
-    this.onDeletePermesso.emit(event.currentTarget.id);
+    this.onDeletePermesso.emit();
+  }
+
+  onChangeModel(campo: NgModel) {
+    if (campo?.name === 'enteId') {
+      this.selezionaServizio();
+    }
+    const permesso = new PermessoSingolo();
+    permesso.index = this.indexSezionePermesso;
+    permesso.permessoCompleto = this.datiPermesso;
+    this.onChangeDatiPermesso.emit(permesso);
   }
 
 }

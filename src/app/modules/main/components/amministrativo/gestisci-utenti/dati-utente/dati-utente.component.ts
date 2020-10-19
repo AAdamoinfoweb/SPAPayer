@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {UtenteService} from '../../../../services/utente.service';
-import {InserimentoModificaUtente} from '../../model/utente/InserimentoModificaUtente';
+import {UtenteService} from '../../../../../../services/utente.service';
+import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
 import {NgForm, NgModel} from '@angular/forms';
-import {TipoCampoEnum} from '../../../../enums/tipoCampo.enum';
+import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
-import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
+import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaUtente';
 import {map} from 'rxjs/operators';
-import {Utils} from '../../../../utils/Utils';
+import {Utils} from '../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-dati-utente',
