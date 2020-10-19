@@ -1,4 +1,4 @@
-<div class="ml-5">
+<div class="ml-5" *ngIf="!waiting">
   <!-- breadcrumb -->
   <it-breadcrumb [dark]="false" [separator]="'/'">
     <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"

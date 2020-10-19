@@ -65,9 +65,17 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
   constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient,
               private renderer: Renderer2, private el: ElementRef) {
-    super( router, overlayService, route, http);
-    super.functionEndpoint = 'utenti';
+    super(router, overlayService, route, http);
+    this.functionEndpointEmitter.emit('utenti');
+  }
 
+  inizializzaBreadcrumbList(): void {
+    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
+    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
+    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', null, null));
+  }
+
+  ngOnInit(): void {
     this.inizializzaBreadcrumbList();
 
     const parametriRicercaUtente = new ParametriRicercaUtente();
@@ -79,20 +87,12 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
       });
       this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
-  }
-
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', null, null));
-  }
-
-  ngOnInit(): void {
     this.tempTableData = Object.assign({}, this.tableData);
   }
 
   ngAfterViewInit(): void {
-    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+    if (!this.waiting)
+      this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
   creaRigaTabella(utente: RicercaUtente): object {
@@ -126,7 +126,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
     };
 
     if (utente.dataFineValidita === null
-          || (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema)) {
+      || (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema)) {
       // UTENTE ATTIVO
       row.iconaUtente = Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'inline');
     } else if (moment(utente.dataInizioValidita) > dataSistema || moment(utente.dataFineValidita) < dataSistema) {
@@ -183,7 +183,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
     });
 
     const filePdf = new jsPDF.default('l', 'pt', 'a4');
-    filePdf.setProperties({ title: 'Lista Utenti' });
+    filePdf.setProperties({title: 'Lista Utenti'});
     // @ts-ignore
     filePdf.autoTable(customHeaders, customRows, {
       didDrawCell: data => {
@@ -211,7 +211,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
       return newRow;
     });
 
-    const workbook = { Sheets: { 'Utenti': null}, SheetNames: [] };
+    const workbook = {Sheets: {'Utenti': null}, SheetNames: []};
     Utils.creaFileExcel(dataTable.rows, customHeaders, 'Utenti', ['Utenti'], workbook, 'Lista Utenti');
   }
 
