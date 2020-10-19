@@ -23,7 +23,7 @@
                 <a (click)="getRouterLink(sub)" class="list-item medium active"
                    data-toggle="collapse" aria-expanded="true"><span>{{sub.nome}}</span></a>
               </li>
-              <ul class="link-sublist collapse show" *ngIf="sub.funzioni">
+              <ul class="link-sublist collapse show" *ngIf="item.funzioni">
                 <ng-container *ngFor="let subItem of item.funzioni">
                   <li>
                     <a (click)="getRouterLink(subItem)" class="list-item medium active"
