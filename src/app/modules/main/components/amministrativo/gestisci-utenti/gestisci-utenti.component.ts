@@ -23,7 +23,7 @@ import {AmministrativoService} from "../../../../../services/amministrativo.serv
   templateUrl: './gestisci-utenti.component.html',
   styleUrls: ['./gestisci-utenti.component.scss']
 })
-export class GestisciUtentiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit, OnChanges {
+export class GestisciUtentiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
@@ -69,10 +69,6 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
               private renderer: Renderer2, private el: ElementRef, amministrativoService: AmministrativoService) {
     super(router, overlayService, route, http, amministrativoService);
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-
-    }
 
   inizializzaBreadcrumbList(): void {
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
