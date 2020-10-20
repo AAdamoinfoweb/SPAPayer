@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Societa} from '../../../../../model/Societa';
+import {Societa} from '../../../../../model/societa/Societa';
 import {NgForm} from '@angular/forms';
 
 @Component({
