@@ -3,6 +3,7 @@ import {Breadcrumb} from '../../../../dto/Breadcrumb';
 import {UtenteService} from '../../../../../../services/utente.service';
 import {ActivatedRoute} from '@angular/router';
 import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
+import {AmministrativoService} from "../../../../../../services/amministrativo.service";
 
 @Component({
   selector: 'app-modifica-utente-permessi',
@@ -19,7 +20,7 @@ export class ModificaUtentePermessiComponent implements OnInit, AfterViewInit {
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
 
   constructor(private utenteService: UtenteService, private route: ActivatedRoute, private renderer: Renderer2,
-              private el: ElementRef) {
+              private el: ElementRef, private amministrativoService: AmministrativoService) {
     this.inizializzaBreadcrumbList();
   }
 
@@ -43,7 +44,7 @@ export class ModificaUtentePermessiComponent implements OnInit, AfterViewInit {
   }
 
   modificaDatiUtentePermessi(): void {
-    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, this.datiUtente).subscribe();
+    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, this.datiUtente, this.amministrativoService.idFunzione).subscribe();
   }
 
 }

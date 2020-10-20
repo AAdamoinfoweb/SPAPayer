@@ -82,7 +82,6 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
       this.inizializzaBreadcrumbList();
 
       const parametriRicercaUtente = new ParametriRicercaUtente();
-      this.overlayService.caricamentoEvent.emit(true);
       this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
         utenti.forEach(utente => {
           this.listaUtente.push(utente);
