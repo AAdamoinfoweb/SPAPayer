@@ -15,7 +15,7 @@ import {Funzione} from "../../../../model/Funzione";
 import {PermessoFunzione} from "../../../../model/permesso/PermessoFunzione";
 import {SocietaService} from "../../../../../../services/societa.service";
 import {AmministrativoService} from "../../../../../../services/amministrativo.service";
-import {Societa} from "../../../../model/Societa";
+import {Societa} from '../../../../model/societa/Societa';
 import {NuovoPagamentoService} from "../../../../../../services/nuovo-pagamento.service";
 import {Ente} from "../../../../model/Ente";
 import {FiltroServizio} from "../../../../model/FiltroServizio";
