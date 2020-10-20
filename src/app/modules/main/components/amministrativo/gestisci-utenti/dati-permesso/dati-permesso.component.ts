@@ -31,6 +31,7 @@ export class DatiPermessoComponent implements OnInit {
 
   datiPermesso: PermessoCompleto;
   listaPermessoFunzione: PermessoFunzione[] = [];
+  mapPermessoFunzione: Map<number, PermessoFunzione> = new Map()
 
   listaSocieta: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
@@ -154,24 +155,36 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   onClickDeleteIcon(event) {
-    this.onDeletePermesso.emit();
+    this.onDeletePermesso.emit(this.indexSezionePermesso);
   }
 
   onChangeModel(campo: NgModel) {
     if (campo?.name === 'enteId') {
       this.selezionaServizio();
     }
-    const permesso = new PermessoSingolo();
-    permesso.index = this.indexSezionePermesso;
-    permesso.permessoCompleto = this.datiPermesso;
+    const permesso: PermessoSingolo = this.setPermessoSingolo();
     this.onChangeDatiPermesso.emit(permesso);
   }
 
   onChangeCheckBox($event: CheckboxChange, funzione: Funzione) {
-    if ($event.checked === true) {
-
+    if (this.mapPermessoFunzione.has(funzione.id) && $event.checked === false) {
+        this.mapPermessoFunzione.delete(funzione.id);
+    } else if ($event.checked === true) {
+      const permessoFunzione: PermessoFunzione = new PermessoFunzione();
+      permessoFunzione.funzioneId = funzione.id;
+      permessoFunzione.permessoCancellato = false;
+      this.mapPermessoFunzione.set(funzione.id, permessoFunzione);
     }
+    const permesso: PermessoSingolo = this.setPermessoSingolo();
+    this.onChangeDatiPermesso.emit(permesso);
   }
 
-
+  private setPermessoSingolo(): PermessoSingolo {
+    const permesso = new PermessoSingolo();
+    permesso.index = this.indexSezionePermesso;
+    this.listaPermessoFunzione = Array.from(this.mapPermessoFunzione, ([name, value]) => value);
+    this.datiPermesso.listaFunzioni = this.listaPermessoFunzione;
+    permesso.permessoCompleto = this.datiPermesso;
+    return permesso;
+  }
 }

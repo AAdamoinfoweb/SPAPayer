@@ -73,22 +73,31 @@ export class UtenteService {
         }));
   }
 
-  letturaCodiceFiscale(codiceFiscaleParziale): Observable<string[]> {
+  letturaCodiceFiscale(codiceFiscaleParziale, idFunzione: string): Observable<string[]> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
     return this.http.get(environment.bffBaseUrl + this.letturaCodiceFiscaleUtenteUrl, {
       params: {
         codiceFiscaleParziale
-      }
+      },
+      headers: h,
+      withCredentials: true
     })
       .pipe(map((body: any) => {
         return body;
       }));
   }
 
-  inserimentoAggiornamentoUtente(codiceFiscale: string, datiUtente: InserimentoModificaUtente): Observable<any> {
+  inserimentoAggiornamentoUtente(codiceFiscale: string, datiUtente: InserimentoModificaUtente, idFunzione: string): Observable<any> {
     const url = environment.bffBaseUrl + this.utentiBaseUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
 
     return this.http.put(`${url}/${codiceFiscale}`, datiUtente,
-      {withCredentials: true}).pipe(map((body: any) => {
+      {
+        withCredentials: true,
+        headers: h
+      }).pipe(map((body: any) => {
         return body;
       }),
       catchError((err, caught) => {

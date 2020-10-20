@@ -16,11 +16,11 @@ import {Router} from '@angular/router';
 import {DatiPermessoComponent} from '../dati-permesso/dati-permesso.component';
 import {AsyncSubject} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {NgModel} from "@angular/forms";
-import * as moment from "moment";
-import {Utils} from "../../../../../../utils/Utils";
-import {PermessoCompleto} from "../../../../model/permesso/PermessoCompleto";
-import {PermessoSingolo} from "../../../../model/permesso/PermessoSingolo";
+import * as moment from 'moment';
+import {Utils} from '../../../../../../utils/Utils';
+import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
+import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -45,7 +45,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
 
   constructor(private utenteService: UtenteService, private router: Router,
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
-              private el: ElementRef) {
+              private el: ElementRef, private amministrativoService: AmministrativoService) {
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
@@ -76,6 +76,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     this.componentRef = this.target.createComponent(childComponent);
     this.componentRef.instance.indexSezionePermesso = this.target.length;
     this.componentRef.instance.onDeletePermesso.subscribe(index => {
+      this.mapPermessi.delete(index);
       this.target.remove(index - 1);
     });
     this.componentRef.instance.onChangeDatiPermesso.subscribe((permesso: PermessoSingolo) => {
@@ -102,11 +103,14 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   }
 
   inserimentoDatiUtentePermessi(): void {
-    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, this.datiUtente).pipe(map(datiUtente => {
+    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, this.datiUtente, this.amministrativoService.idFunzione).pipe(map(datiUtente => {
       this.asyncSubject.next(this.codiceFiscale);
       this.asyncSubject.complete();
     })).subscribe();
     this.asyncSubject.subscribe(codiceFiscale => this.router.navigate(['/modificaUtentePermessi', codiceFiscale]));
   }
 
+  onClickAnnulla() {
+    this.router.navigateByUrl( '/gestioneUtenti?funzione=' + this.amministrativoService.idFunzione);
+  }
 }
