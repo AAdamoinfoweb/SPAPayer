@@ -15,6 +15,7 @@ import {WaitingL1Component} from "./modules/main/components/waiting-l1/waiting-l
 import {GestisciUtentiComponent} from './modules/main/components/amministrativo/gestisci-utenti/gestisci-utenti.component';
 import {AggiungiUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
 import {ModificaUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
+import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -38,7 +39,8 @@ const routes: Routes = [
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
   {path: 'gestioneUtenti', component: GestisciUtentiComponent},
   {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent},
-  {path: 'modificaUtentePermessi/:userid', component: ModificaUtentePermessiComponent}
+  {path: 'modificaUtentePermessi/:userid', component: ModificaUtentePermessiComponent},
+  {path: 'societa', component: GestisciSocietaComponent}
 ];
 
 @NgModule({
