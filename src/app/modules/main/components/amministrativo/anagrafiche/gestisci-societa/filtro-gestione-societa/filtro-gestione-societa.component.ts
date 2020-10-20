@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Societa} from '../../../../../model/societa/Societa';
 import {NgForm} from '@angular/forms';
+import {ParametriRicercaSocieta} from '../../../../../model/societa/ParametriRicercaSocieta';
+import {ParametriRicercaUtente} from '../../../../../model/utente/ParametriRicercaUtente';
 
 @Component({
   selector: 'app-filtro-gestione-societa',
@@ -15,6 +17,8 @@ export class FiltroGestioneSocietaComponent implements OnInit {
   @Output()
   onChangeListaSocieta: EventEmitter<Societa[]> = new EventEmitter<Societa[]>();
 
+  filtroApplicato = new ParametriRicercaSocieta();
+
   constructor() {
   }
 
@@ -22,7 +26,9 @@ export class FiltroGestioneSocietaComponent implements OnInit {
   }
 
   pulisciFiltri(filtroForm: NgForm): void {
-    // TODO metodo pulisciFiltri
+    filtroForm.resetForm();
+    this.onChangeListaSocieta.emit(this.listaSocieta);
+    this.filtroApplicato = new ParametriRicercaSocieta();
   }
 
   cercaSocieta(filtroForm: NgForm): void {
