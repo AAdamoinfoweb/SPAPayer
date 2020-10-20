@@ -170,7 +170,9 @@ export class DatiPermessoComponent implements OnInit {
     if (this.mapPermessoFunzione.has(funzione.id) && $event.checked === false) {
         this.mapPermessoFunzione.delete(funzione.id);
     } else if ($event.checked === true) {
+      // inserimento NUOVO permesso
       const permessoFunzione: PermessoFunzione = new PermessoFunzione();
+      permessoFunzione.permessoId = null
       permessoFunzione.funzioneId = funzione.id;
       permessoFunzione.permessoCancellato = false;
       this.mapPermessoFunzione.set(funzione.id, permessoFunzione);
