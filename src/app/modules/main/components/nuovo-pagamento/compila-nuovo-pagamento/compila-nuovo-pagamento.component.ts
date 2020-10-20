@@ -132,7 +132,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       if (this.datiPagamento) {
         const ente = this.listaEnti.find(item => item.value.id === this.datiPagamento.enteId)?.value;
         if (ente) {
-          this.enteSelezionato = this.listaEnti.find(item => item.value.id === this.datiPagamento.enteId)?.value;
+          this.enteSelezionato = ente;
           this.selezionaEnte();
         } else {
           console.log('Ente mancante');

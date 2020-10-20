@@ -23,7 +23,7 @@
         <div *ngFor="let campo of listaCampiDinamici" [ngClass]="calcolaDimensioneCampo(campo)">
           <div [ngSwitch]="campo.tipoCampo" class="form-elem-container">
 
-            <div *ngSwitchCase="TipoCampoEnum.INPUT_TESTUALE" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)} && !isFaseVerificaPagamento">
+            <div *ngSwitchCase="TipoCampoEnum.INPUT_TESTUALE" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo) && !isFaseVerificaPagamento}">
               <div class="row">
                 <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
@@ -44,7 +44,7 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="TipoCampoEnum.INPUT_NUMERICO" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
+            <div *ngSwitchCase="TipoCampoEnum.INPUT_NUMERICO" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo) && !isFaseVerificaPagamento}">
               <div class="row">
                 <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
@@ -66,7 +66,7 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="TipoCampoEnum.INPUT_PREZZO" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
+            <div *ngSwitchCase="TipoCampoEnum.INPUT_PREZZO" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo) && !isFaseVerificaPagamento}">
               <div class="row">
                 <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
@@ -90,7 +90,7 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="TipoCampoEnum.DATEDDMMYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
+            <div *ngSwitchCase="TipoCampoEnum.DATEDDMMYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo) && !isFaseVerificaPagamento}">
               <div class="row">
                 <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
@@ -118,7 +118,7 @@
                     openOnClick: false,
                     openOnFocus: false
                   }"
-                    [attr.disabled]="isCampoDisabilitato(campo)"
+                    [disabled]="isCampoDisabilitato(campo)"
                   ></dp-date-picker>
                 </div>
               </div>
@@ -127,7 +127,7 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="TipoCampoEnum.DATEMMYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
+            <div *ngSwitchCase="TipoCampoEnum.DATEMMYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo) && !isFaseVerificaPagamento}">
               <div class="row">
                 <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
@@ -154,7 +154,7 @@
                     openOnClick: false,
                     openOnFocus: false
                   }"
-                    [attr.disabled]="isCampoDisabilitato(campo)"
+                    [disabled]="isCampoDisabilitato(campo)"
                   ></dp-date-picker>
                 </div>
               </div>
@@ -163,7 +163,7 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="TipoCampoEnum.DATEYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
+            <div *ngSwitchCase="TipoCampoEnum.DATEYY" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo) && !isFaseVerificaPagamento}">
               <div class="row">
                 <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
@@ -185,7 +185,7 @@
               </div>
             </div>
 
-            <div *ngSwitchCase="TipoCampoEnum.SELECT" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo)}">
+            <div *ngSwitchCase="TipoCampoEnum.SELECT" class="dynamic-form-elem" [ngClass]="{'required': isCampoObbligatorio(campo) && !isFaseVerificaPagamento}">
               <div class="row">
                 <label [htmlFor]="getIdCampo(campo)" class="title form-elem-title" [ngClass]="{'disabled': isCampoDisabilitato(campo)}">{{getTitoloCampo(campo)}}</label>
               </div>
@@ -217,7 +217,7 @@
   <div class="page-section" *ngIf="mostraCampoImporto">
     <div class="row">
       <div class="offset-md-8 col-md-4">
-        <div class="form-elem-container required">
+        <div class="form-elem-container" [ngClass]="{'required': !isFaseVerificaPagamento}">
           <div class="row">
             <label for="importoTotale" class="title form-elem-title" [ngClass]="{'disabled': isFaseVerificaPagamento}">
               Importo totale
@@ -234,7 +234,7 @@
               currencyMask
               [options]="{allowNegative: false, prefix: '', precision: cifreDecimaliPrezzo, decimal: ',', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
               autocomplete="off"
-              [attr.disabled]="isFaseVerificaPagamento"
+              [attr.disabled]="isFaseVerificaPagamento ? true : null"
             />
           </div>
         </div>
