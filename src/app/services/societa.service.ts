@@ -33,7 +33,7 @@ export class SocietaService {
       params = params.set('societaId', String(societaId));
     }
 
-    return this.http.put(`${url}`,
+    return this.http.get(`${url}`,
       {
         withCredentials: true,
         headers: h,

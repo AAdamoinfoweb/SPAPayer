@@ -88,7 +88,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
-    this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
+    this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale, null, null).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
           value: ente.id,

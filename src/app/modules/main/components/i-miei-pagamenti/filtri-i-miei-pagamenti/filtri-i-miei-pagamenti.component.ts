@@ -73,7 +73,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   recuperaEnti(livelloTerritorialeId): void {
-    this.nuovoPagamentoService.recuperaFiltroEnti(livelloTerritorialeId).pipe(map(enti => {
+    this.nuovoPagamentoService.recuperaFiltroEnti(livelloTerritorialeId, null, null).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
           value: ente.id,
