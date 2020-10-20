@@ -69,6 +69,12 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
       this.waiting = value;
       this.inizializzaBreadcrumbList();
 
+      this.societaService.filtroSocieta().subscribe(listaSocieta => {
+        this.listaSocieta = listaSocieta;
+        this.listaSocieta.forEach(societa => {
+          this.tableData.rows.push(this.creaRigaTabella(societa));
+        });
+      });
       // TODO metodo societaservice
     });
   }
@@ -108,7 +114,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   getTotaliPerRecord(): string {
-    // TODO metodo getTotaliPerRecord 
+    // TODO metodo getTotaliPerRecord
     return null;
   }
 
