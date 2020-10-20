@@ -28,32 +28,32 @@
       Lista Società
     </button>
   </div>
-  <div id="contenutoSezioneLista" class="collapse show" role="tabpanel" aria-labelledby="idCollapseLista">
-    <div class="collapse-body">
-      <div class="row align-items-baseline align-content-lg-around">
-        <!-- tabs -->
-        <div class="col-lg pb-2 pb-sm-2 pb-lg-0">
-          <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>
-        </div>
-        <!-- azioni -->
-        <div class="col-auto">
-          <app-toolbar [toolbarIcons]="toolbarIcons" (onClick)="eseguiAzioni($event)"></app-toolbar>
-        </div>
-      </div>
-      <!-- table -->
-      <div class="row">
-        <div class="col">
-          <app-table [dataKey]="tempTableData.dataKey"
-                     [cols]="tempTableData.cols"
-                     [rows]="tempTableData.rows"
-                     [tipoTabella]="tempTableData.tipoTabella"
-                     [textLeft]="getTotaliPerRecord()"
-                     (onSelection)="selezionaRigaTabella($event)">
-          </app-table>
-        </div>
-      </div>
-    </div>
-  </div>
+<!--  <div id="contenutoSezioneLista" class="collapse show" role="tabpanel" aria-labelledby="idCollapseLista">-->
+<!--    <div class="collapse-body">-->
+<!--      <div class="row align-items-baseline align-content-lg-around">-->
+<!--        &lt;!&ndash; tabs &ndash;&gt;-->
+<!--        <div class="col-lg pb-2 pb-sm-2 pb-lg-0">-->
+<!--          <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; azioni &ndash;&gt;-->
+<!--        <div class="col-auto">-->
+<!--          <app-toolbar [toolbarIcons]="toolbarIcons" (onClick)="eseguiAzioni($event)"></app-toolbar>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; table &ndash;&gt;-->
+<!--      <div class="row">-->
+<!--        <div class="col">-->
+<!--          <app-table [dataKey]="tempTableData.dataKey"-->
+<!--                     [cols]="tempTableData.cols"-->
+<!--                     [rows]="tempTableData.rows"-->
+<!--                     [tipoTabella]="tempTableData.tipoTabella"-->
+<!--                     [textLeft]="getTotaliPerRecord()"-->
+<!--                     (onSelection)="selezionaRigaTabella($event)">-->
+<!--          </app-table>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 </div>
 
 

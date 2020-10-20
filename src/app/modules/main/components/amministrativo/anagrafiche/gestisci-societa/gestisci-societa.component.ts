@@ -71,11 +71,13 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
       this.societaService.filtroSocieta().subscribe(listaSocieta => {
         this.listaSocieta = listaSocieta;
-        this.listaSocieta.forEach(societa => {
-          this.tableData.rows.push(this.creaRigaTabella(societa));
-        });
+
+        // TODO metodo societaservice
+
+        // this.listaSocieta.forEach(societa => {
+        //   this.tableData.rows.push(this.creaRigaTabella(societa));
+        // });
       });
-      // TODO metodo societaservice
     });
   }
 

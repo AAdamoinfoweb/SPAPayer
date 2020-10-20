@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Societa} from '../../../../../model/Societa';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-filtro-gestione-societa',
@@ -18,6 +19,19 @@ export class FiltroGestioneSocietaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  pulisciFiltri(filtroForm: NgForm): void {
+    // TODO metodo pulisciFiltri
+  }
+
+  cercaSocieta(filtroForm: NgForm): void {
+    // TODO metodo cercaSocieta
+  }
+
+  disabilitaBottone(filtroForm: NgForm, nomeBottone: string): boolean {
+    // TODO metodo disabilitaBottone
+    return null;
   }
 
 }
