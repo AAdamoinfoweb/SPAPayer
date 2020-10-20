@@ -18,7 +18,7 @@ import {SocietaService} from '../../../../../../services/societa.service';
 })
 export class GestisciSocietaComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
 
-  readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei associato e filtrarle';
+  readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
 
   breadcrumbList = [];
 
