@@ -82,13 +82,13 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
       this.inizializzaBreadcrumbList();
 
       const parametriRicercaUtente = new ParametriRicercaUtente();
-      this.overlayService.caricamentoEvent.emit(true);
+      //this.overlayService.caricamentoEvent.emit(true);
       this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
         utenti.forEach(utente => {
           this.listaUtente.push(utente);
           this.tableData.rows.push(this.creaRigaTabella(utente));
         });
-      })).subscribe();
+      })).subscribe(() =>  this.overlayService.caricamentoEvent.emit(false));
       this.tempTableData = Object.assign({}, this.tableData);
     });
   }
