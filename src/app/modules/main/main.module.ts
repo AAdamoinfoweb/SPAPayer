@@ -20,8 +20,6 @@ import {CarrelloComponent} from "./components/carrello/carrello.component";
 import {ListaPagamentiL1Component} from "./components/lista-pagamentiL1/lista-pagamenti-l1.component";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {WaitingL1Component} from "./components/waiting-l1/waiting-l1.component";
-import { GestisciSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
-import { FiltroGestioneSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/filtro-gestione-societa/filtro-gestione-societa.component';
 
 @NgModule({
   declarations: [
@@ -36,9 +34,7 @@ import { FiltroGestioneSocietaComponent } from './components/amministrativo/anag
     ReplacePipe,
     WaitingComponent,
     WaitingL1Component,
-    FiltriIMieiPagamentiComponent,
-    GestisciSocietaComponent,
-    FiltroGestioneSocietaComponent
+    FiltriIMieiPagamentiComponent
   ],
   imports: [
     CommonModule,
