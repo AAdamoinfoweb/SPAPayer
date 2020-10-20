@@ -197,9 +197,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   clickProcedi(): void {
     this.overlayService.caricamentoEvent.emit(true);
 
-    this.isFaseVerificaPagamento = true;
-    this.aggiungiCampoImporto();
-
     // Mapping valori dei campi input da usare per la precompilazione
     const valoriPerPrecompilazione = {};
     this.listaCampiDinamici.forEach(campo => {
@@ -212,6 +209,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
       this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
       .subscribe((valoriCampiPrecompilati) => {
+        this.isFaseVerificaPagamento = true;
+        this.aggiungiCampoImporto();
         // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO (NB: al momento la chiamata crasha lato backend per servizio LV2BO)
         this.impostaValoriCampiOutput(valoriCampiPrecompilati);
         this.overlayService.caricamentoEvent.emit(false);

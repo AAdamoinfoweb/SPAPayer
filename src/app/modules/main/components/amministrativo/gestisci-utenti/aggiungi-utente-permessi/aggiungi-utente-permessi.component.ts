@@ -21,6 +21,7 @@ import {Utils} from '../../../../../../utils/Utils';
 import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
 import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {PermessoService} from '../../../../../../services/permesso.service';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -37,15 +38,18 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
   asyncSubject: AsyncSubject<string> = new AsyncSubject<string>();
   mapPermessi: Map<number, PermessoCompleto> = new Map();
-
   isFormDatiUtenteValido = false;
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
 
+  getListaPermessi = (mapPermessi: Map<number, PermessoCompleto>) => Array.from(mapPermessi, ([name, value]) => value);
+
+
   constructor(private utenteService: UtenteService, private router: Router,
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
-              private el: ElementRef, private amministrativoService: AmministrativoService) {
+              private el: ElementRef, private amministrativoService: AmministrativoService,
+              private permessoService: PermessoService) {
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
@@ -80,7 +84,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
       this.target.remove(index - 1);
     });
     this.componentRef.instance.onChangeDatiPermesso.subscribe((permesso: PermessoSingolo) => {
-        this.mapPermessi.set(permesso.index, permesso.permessoCompleto);
+      this.mapPermessi.set(permesso.index, permesso.permessoCompleto);
     });
     this.componentRef.changeDetectorRef.detectChanges();
   }
@@ -93,24 +97,50 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     const dataAttivazione = this.datiUtente.attivazione;
     const dataScadenza = this.datiUtente.scadenza;
     const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    const listaPermessi: PermessoCompleto[] = Array.from(this.mapPermessi,  ([name, value]) =>  value );
+    const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
     const datePermesso = listaPermessi && listaPermessi.length > 0
       ? listaPermessi.filter((permesso: PermessoCompleto) => Utils.isBefore(permesso.dataInizioValidita, dataSistema) ||
-      Utils.isBefore(permesso.dataFineValidita, dataSistema)) : [];
+        Utils.isBefore(permesso.dataFineValidita, dataSistema)) : [];
     const ret = Utils.isBefore(dataAttivazione, dataSistema) ||
       (this.datiUtente.scadenza ? Utils.isBefore(dataScadenza, dataSistema) : false) || datePermesso.length > 0;
     return ret;
   }
 
   inserimentoDatiUtentePermessi(): void {
-    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, this.datiUtente, this.amministrativoService.idFunzione).pipe(map(datiUtente => {
-      this.asyncSubject.next(this.codiceFiscale);
-      this.asyncSubject.complete();
-    })).subscribe();
+    // inserimento utente
+    let utente = new InserimentoModificaUtente();
+    utente = this.datiUtente;
+    utente.scadenza = utente.scadenza ?
+      moment(utente.scadenza, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    utente.attivazione = utente.attivazione ?
+      moment(utente.attivazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, utente, this.amministrativoService.idFunzione)
+      .pipe(map(datiUtente => {
+        // se presenti inserimento permessi
+        let listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
+        if (listaPermessi.length > 0) {
+          listaPermessi = listaPermessi.map(permesso => {
+            permesso.dataFineValidita = permesso.dataFineValidita ?
+              moment(permesso.dataFineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+            permesso.dataInizioValidita = permesso.dataInizioValidita ?
+              moment(permesso.dataInizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+            return permesso;
+          });
+          this.permessoService.inserimentoModificaPermessi(this.codiceFiscale, listaPermessi, this.amministrativoService.idFunzione)
+            .pipe(map(res => {
+            this.asyncSubject.next(this.codiceFiscale);
+            this.asyncSubject.complete();
+          }))
+            .subscribe();
+        } else {
+          this.asyncSubject.next(this.codiceFiscale);
+          this.asyncSubject.complete();
+        }
+      })).subscribe();
     this.asyncSubject.subscribe(codiceFiscale => this.router.navigate(['/modificaUtentePermessi', codiceFiscale]));
   }
 
   onClickAnnulla() {
-    this.router.navigateByUrl( '/gestioneUtenti?funzione=' + this.amministrativoService.idFunzione);
+    this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 }
