@@ -8,7 +8,7 @@ import {OverlayService} from '../../../../../../services/overlay.service';
 import {AmministrativoParentComponent} from '../../amministrativo-parent.component';
 import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {Societa} from '../../../../model/societa/Societa';
+import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
 
 @Component({
@@ -18,7 +18,7 @@ import {SocietaService} from '../../../../../../services/societa.service';
 })
 export class GestisciSocietaComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
 
-  readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei associato e filtrarle';
+  readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
 
   breadcrumbList = [];
 
@@ -69,10 +69,10 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
       this.waiting = value;
       this.inizializzaBreadcrumbList();
 
-      this.societaService.filtroSocieta().subscribe(listaSocieta => {
+      this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
         this.listaSocieta = listaSocieta;
 
-        // TODO metodo societaservice
+        // TODO subscribe societaservice
 
         // this.listaSocieta.forEach(societa => {
         //   this.tableData.rows.push(this.creaRigaTabella(societa));
