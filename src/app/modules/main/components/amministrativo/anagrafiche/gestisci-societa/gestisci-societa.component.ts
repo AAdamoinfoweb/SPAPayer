@@ -69,10 +69,10 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
       this.waiting = value;
       this.inizializzaBreadcrumbList();
 
-      this.societaService.filtroSocieta().subscribe(listaSocieta => {
+      this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
         this.listaSocieta = listaSocieta;
 
-        // TODO metodo societaservice
+        // TODO subscribe societaservice
 
         // this.listaSocieta.forEach(societa => {
         //   this.tableData.rows.push(this.creaRigaTabella(societa));
