@@ -18,7 +18,9 @@
 
   <!-- Sottosezione Filtri -->
   <app-filtro-gestione-utenti [listaUtente]="listaUtente"
-                              (onChangeListaUtenti)="onChangeListaUtenti($event)">
+                              (onChangeListaUtenti)="onChangeListaUtenti($event)"
+                              [filtroSocieta]="filtroSocieta"
+  >
   </app-filtro-gestione-utenti>
 
   <!-- Sottosezione Lista Utenti -->

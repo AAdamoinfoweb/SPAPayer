@@ -40,6 +40,9 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   @Input()
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
 
+  @Input()
+  filtroSocieta = null;
+
   @Output()
   onChangeListaUtenti: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
 
@@ -51,14 +54,14 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   ngOnInit(): void {
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
 
-    this.filtroSocieta();
+    this.recuperaFiltroSocieta();
     this.recuperaFiltroLivelloTerritoriale();
     this.recuperaFiltroEnti(null);
     this.recuperaFiltroServizi(null);
     this.letturaFunzioni();
   }
 
-  filtroSocieta(): void {
+  recuperaFiltroSocieta(): void {
     this.societaService.filtroSocieta().pipe(map(societa => {
       societa.forEach(s => {
         this.listaSocieta.push({
@@ -66,6 +69,23 @@ export class FiltroGestioneUtentiComponent implements OnInit {
           label: s.nome
         });
       });
+
+      if (this.filtroSocieta) {
+        this.overlayService.caricamentoEvent.emit(true);
+        const isFiltoSocietaValido = this.listaSocieta.some(item => item.value === this.filtroSocieta);
+        if (isFiltoSocietaValido) {
+          this.filtroGestioneUtentiApplicato.societaId = this.filtroSocieta;
+          const parametriRicercaUtente = new ParametriRicercaUtente();
+          parametriRicercaUtente.societaId = this.filtroSocieta;
+          this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).subscribe(utenti => {
+            this.onChangeListaUtenti.emit(utenti);
+            this.overlayService.caricamentoEvent.emit(false);
+          });
+        } else {
+          this.overlayService.caricamentoEvent.emit(false);
+          window.open('/nonautorizzato', '_self');
+        }
+      }
     })).subscribe();
   }
 
