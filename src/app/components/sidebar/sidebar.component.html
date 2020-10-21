@@ -9,24 +9,25 @@
       {{ nomeUtente }}
     </a>
   </div>
+  {{selectedElement}}
   <div *ngIf="!waiting"
        [ngClass]="{'sidebar-wrapper': true, 'sidebar-overflow': isUtenteAnonimo, 'pb-0': !isUtenteAnonimo}">
-    <ul class="link-list none">
+    <ul class="link-list none-parent">
       <ng-container *ngFor="let item of menu; let i = index">
-        <li>
-          <a (click)="getRouterLink(item)" class="list-item medium active"
-             data-toggle="collapse" [attr.aria-expanded]="false"
-             ><span>{{item.nome}}</span>
+        <li [ngClass]="{'active': item.nome == selectedElement}">
+          <a (click)="getRouterLink(item)" class="list-item medium" [ngClass]="{'active': item.nome == selectedElement}"
+             data-toggle="collapse" [attr.aria-expanded]="false">
+            <span>{{item.nome}}</span>
             <ng-container *ngIf="!item.route">
-              <svg *ngIf="!item['isCollapsed']" class="icon icon-sm icon-primary right" aria-hidden="true">
+              <svg *ngIf="!item['isExpanded']" class="icon icon-sm icon-primary right" aria-hidden="true">
                 <use xlink:href="assets/img/sprite.svg#it-expand"></use>
               </svg>
-              <svg *ngIf="item['isCollapsed']" class="icon icon-sm icon-primary right" aria-hidden="true">
+              <svg *ngIf="item['isExpanded']" class="icon icon-sm icon-primary right" aria-hidden="true">
                 <use xlink:href="assets/img/sprite.svg#it-collapse"></use>
               </svg>
             </ng-container>
           </a>
-          <ul [id]="'coll-' + i" class="link-sublist collapse none" [ngClass]="{'show': !item['isCollapsed']}" *ngIf="item.sotto_menu">
+          <ul [id]="'coll-' + i" class="link-sublist collapse none" [ngClass]="{'show': item.nome == selectedElement}" *ngIf="item.sotto_menu">
             <ng-container *ngFor="let sub of item.sotto_menu; let j = index">
               <li>
                 <a (click)="getRouterLink(sub)" class="list-item medium active"
