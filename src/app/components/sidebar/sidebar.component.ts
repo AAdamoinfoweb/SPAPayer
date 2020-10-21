@@ -16,6 +16,7 @@ export class SidebarComponent implements OnInit {
   menu = [];
   waiting: boolean;
   isUtenteAnonimo: boolean;
+  selectedElement: string = '';
 
   constructor(public menuService: MenuService,
               private http: HttpClient,
@@ -77,7 +78,8 @@ export class SidebarComponent implements OnInit {
         this.router.navigateByUrl(item.route + param);
       }
     } else {
-      item['isCollapsed'] = !item['isCollapsed'];
+      item['isExpanded'] = !item['isExpanded'];
+      this.selectedElement = item['nome'];
     }
   }
 }
