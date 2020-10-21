@@ -40,7 +40,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
       {field: 'nome', header: 'Nome', type: tipoColonna.TESTO},
       {field: 'telefono', header: 'Telefono', type: tipoColonna.TESTO},
       {field: 'email', header: 'Email', type: tipoColonna.TESTO},
-      // {field: 'utentiAbilitati', header: 'Utenti abilitati', type: tipoColonna.LINK}
+      {field: 'utentiAbilitati', header: 'Utenti abilitati', type: tipoColonna.LINK}
     ],
     dataKey: 'nome.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
@@ -87,12 +87,16 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   creaRigaTabella(societa: Societa): object {
-    // TODO aggiungere link utenti abilitati
+
+    // TODO fixare icona utenti (sostituire icona link con icona gruppo di utenti)
+
+    // TODO inserire logica del redirect a gestioneUtenti con idFunzione e filtro società
 
     const riga = {
       nome: {value: societa.nome},
       telefono: {value: societa.telefono},
-      email: {value: societa.email}
+      email: {value: societa.email},
+      utentiAbilitati: {testo: '', link: 'gestioneUtenti'}
     };
     return riga;
   }
