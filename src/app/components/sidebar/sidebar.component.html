@@ -14,8 +14,8 @@
        [ngClass]="{'sidebar-wrapper': true, 'sidebar-overflow': isUtenteAnonimo, 'pb-0': !isUtenteAnonimo}">
     <ul class="link-list none-parent">
       <ng-container *ngFor="let item of menu; let i = index">
-        <li [ngClass]="{'active': item.nome == selectedElement}">
-          <a (click)="getRouterLink(item)" class="list-item medium" [ngClass]="{'active': item.nome == selectedElement}"
+        <li [ngClass]="{'active': item.nome == selectedElement}" (click)="getRouterLink(item)">
+          <a class="list-item medium" [ngClass]="{'active': item.nome == selectedElement}"
              data-toggle="collapse" [attr.aria-expanded]="false">
             {{item.nome}}
             <ng-container *ngIf="!item.route">
@@ -61,8 +61,8 @@
           </ul>
           <ul class="link-sublist collapse none" [ngClass]="{'show': item.nome == selectedElement}" *ngIf="item.funzioni">
             <ng-container *ngFor="let sub of item.funzioni">
-              <li>
-                <a (click)="getRouterLink(sub)" class="list-item medium" [ngClass]="{'active': sub.nome == selectedElement}"
+              <li (click)="getRouterLink(sub)">
+                <a class="list-item medium" [ngClass]="{'active': sub.nome == selectedElement}"
                    data-toggle="collapse" [attr.aria-expanded]="false">
                   {{sub.nome}}
                   <ng-container *ngIf="!sub.route">
@@ -82,11 +82,6 @@
         </li>
       </ng-container>
     </ul>
-    <!--ul class="nav">
-      <li>
-        <a (click)="logout()" class="logout navbar-brand">Logout</a>
-      </li>
-    </ul-->
   </div>
   <div class="logo-rer">
     <small>Versione: {{ versionApplicativo }}</small>

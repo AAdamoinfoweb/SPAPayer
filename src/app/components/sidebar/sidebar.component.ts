@@ -78,8 +78,12 @@ export class SidebarComponent implements OnInit {
         this.router.navigateByUrl(item.route + param);
       }
     } else {
+      if (item['isExpanded']) {
+        this.selectedElement = null;
+      } else {
+        this.selectedElement = item['nome'];
+      }
       item['isExpanded'] = !item['isExpanded'];
-      this.selectedElement = item['nome'];
     }
   }
 }
