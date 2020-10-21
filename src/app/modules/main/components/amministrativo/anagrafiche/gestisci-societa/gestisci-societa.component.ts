@@ -8,7 +8,7 @@ import {OverlayService} from '../../../../../../services/overlay.service';
 import {AmministrativoParentComponent} from '../../amministrativo-parent.component';
 import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {Societa} from '../../../../model/societa/Societa';
+import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
 
 @Component({

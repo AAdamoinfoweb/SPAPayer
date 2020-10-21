@@ -11,29 +11,29 @@
     <div class="collapse-body">
       <!-- Filtri -->
       <div class="row mt-2 mb-0">
-<!--        <div class="col-md-4 pb-2">-->
-<!--          <div class="row">-->
-<!--            <div class="col">-->
-<!--              <label for="selectSocieta" class="title">Società</label>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="row">-->
-<!--            <div class="col">-->
-<!--              <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"-->
-<!--                      #societaInput = "ngModel"-->
-<!--                      [(ngModel)]="filtroGestioneUtentiApplicato.societaId">-->
-<!--                <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>-->
-<!--              </select>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="row">-->
-<!--            <div class="col">-->
-<!--              <p [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">-->
-<!--                {{setPlaceholder(societaInput, 'select')}}-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectSocieta" class="title">Società</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select [ngClass]="{'text-disabled': !opzioniFiltroSocieta.length}" id="selectSocieta" name="societaId"
+                      #societaInput = "ngModel"
+                      [(ngModel)]="filtroSocieta">
+                <option *ngFor="let item of opzioniFiltroSocieta" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
+                {{setPlaceholder(societaInput)}}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Bottoni Pulisci e Cerca -->
