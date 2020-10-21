@@ -62,13 +62,13 @@ export class FiltroGestioneSocietaComponent implements OnInit, OnChanges {
     this.onChangeListaSocieta.emit(this.listaSocieta);
   }
 
-  cercaSocieta(campo: NgModel): void {
+  cercaSocieta(): void {
     this.societaService.ricercaSocieta(this.filtroSocieta, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
       this.onChangeListaSocieta.emit(listaSocieta);
     });
   }
 
-  disabilitaBottone(filtroForm: NgForm, nomeBottone: string): boolean {
+  disabilitaBottone(filtroForm: NgForm): boolean {
     return !this.filtroSocieta;
   }
 

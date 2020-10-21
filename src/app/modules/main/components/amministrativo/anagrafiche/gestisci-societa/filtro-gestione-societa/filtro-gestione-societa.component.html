@@ -39,12 +39,12 @@
       <!-- Bottoni Pulisci e Cerca -->
       <div class="row">
         <div class="col-6">
-          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroForm, 'Pulisci')"
+          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroForm)"
                   (click)="pulisciFiltri(filtroForm)">Pulisci</button>
         </div>
         <div class="col-6 btn-find">
-          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroForm, 'Cerca')"
-                  (click)="cercaSocieta(filtroForm)">Cerca</button>
+          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroForm)"
+                  (click)="cercaSocieta()">Cerca</button>
         </div>
       </div>
     </div>
