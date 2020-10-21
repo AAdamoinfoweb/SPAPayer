@@ -90,8 +90,6 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
   creaRigaTabella(societa: Societa): object {
 
-    // TODO fixare icona utenti (sostituire icona link con icona gruppo di utenti)
-
     // TODO inserire logica del redirect a gestioneUtenti con idFunzione e filtro società
 
     const linkGestioneUtenti = '/gestioneUtenti?funzione=XXX&societaId=XXX';
