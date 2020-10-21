@@ -33,12 +33,6 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     {type: ToolEnum.EXPORT_XLS}
   ];
 
-  // TODO imposta tabs
-  tabs = [
-  ];
-
-  nomeTabCorrente: string;
-
   // TODO imposta tableData
   tableData = {
     rows: [],
@@ -103,10 +97,6 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     return riga;
   }
 
-  onChangeTab(value) {
-    // TODO metodo onChangeTab
-  }
-
   eseguiAzioni(azioneTool) {
     // TODO metodo eseguiAzioni
   }
@@ -124,7 +114,6 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     listaSocietaFiltrate.forEach(societa => {
       this.tableData.rows.push(this.creaRigaTabella(societa));
     });
-    this.onChangeTab(this.nomeTabCorrente);
   }
 
   getTotaliPerRecord(): string {
