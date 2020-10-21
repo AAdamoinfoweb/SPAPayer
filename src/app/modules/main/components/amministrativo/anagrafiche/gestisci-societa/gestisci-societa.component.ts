@@ -11,6 +11,7 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
 import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
+import {Utils} from '../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -20,6 +21,7 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 export class GestisciSocietaComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
+  readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
 
   breadcrumbList = [];
 
@@ -92,11 +94,13 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
     // TODO inserire logica del redirect a gestioneUtenti con idFunzione e filtro società
 
+    const linkGestioneUtenti = '/gestioneUtenti?funzione=XXX&societaId=XXX';
+
     const riga = {
       nome: {value: societa.nome},
       telefono: {value: societa.telefono},
       email: {value: societa.email},
-      utentiAbilitati: {testo: '', link: 'gestioneUtenti'}
+      utentiAbilitati: Utils.creaLink(null, linkGestioneUtenti, this.iconaGruppoUtenti)
     };
     return riga;
   }
