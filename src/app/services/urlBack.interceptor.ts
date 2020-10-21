@@ -28,7 +28,7 @@ export class UrlBackInterceptor {
         if (error.status === 400) {
           const banner: Banner = {
             titolo: 'BAD REQUEST',
-            testo: error.message,
+            testo: error.error.message,
             tipo: getBannerType(LivelloBanner.ERROR)
           };
           this.bannerService.bannerEvent.emit([banner]);

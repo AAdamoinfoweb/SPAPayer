@@ -13,7 +13,7 @@ import {InserimentoModificaUtente} from '../modules/main/model/utente/Inseriment
 export class UtenteService {
 
   private readonly utentiBaseUrl = '/gestioneUtenti/utenti';
-  private readonly letturaCodiceFiscaleUtenteUrl = '/gestioneUtenti/codiceFiscale';
+  private readonly letturaCodiceFiscaleUtenteUrl = '/codiceFiscale';
 
   codiceFiscaleEvent: EventEmitter<string> = new EventEmitter<string>();
 
@@ -74,12 +74,14 @@ export class UtenteService {
   }
 
   letturaCodiceFiscale(codiceFiscaleParziale, idFunzione: string): Observable<string[]> {
+    let params = new HttpParams();
+    if (codiceFiscaleParziale != null) {
+      params = params.set('codiceFiscaleParziale', codiceFiscaleParziale);
+    }
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     return this.http.get(environment.bffBaseUrl + this.letturaCodiceFiscaleUtenteUrl, {
-      params: {
-        codiceFiscaleParziale
-      },
+      params: params,
       headers: h,
       withCredentials: true
     })
