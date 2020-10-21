@@ -9,17 +9,16 @@ import {FunzioneService} from '../../../../../../services/funzione.service';
 import {map} from 'rxjs/operators';
 import {GruppoEnum} from '../../../../../../enums/gruppo.enum';
 import {Utils} from '../../../../../../utils/Utils';
-import {PermessoSingolo} from "../../../../model/permesso/PermessoSingolo";
-import {CheckboxChange} from "design-angular-kit";
-import {Funzione} from "../../../../model/Funzione";
-import {PermessoFunzione} from "../../../../model/permesso/PermessoFunzione";
-import {SocietaService} from "../../../../../../services/societa.service";
-import {AmministrativoService} from "../../../../../../services/amministrativo.service";
-import {Societa} from "../../../../model/Societa";
-import {NuovoPagamentoService} from "../../../../../../services/nuovo-pagamento.service";
-import {Ente} from "../../../../model/Ente";
-import {FiltroServizio} from "../../../../model/FiltroServizio";
-import {newArray} from "@angular/compiler/src/util";
+import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
+import {CheckboxChange} from 'design-angular-kit';
+import {Funzione} from '../../../../model/Funzione';
+import {PermessoFunzione} from '../../../../model/permesso/PermessoFunzione';
+import {SocietaService} from '../../../../../../services/societa.service';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {Societa} from '../../../../model/societa/Societa';
+import {NuovoPagamentoService} from '../../../../../../services/nuovo-pagamento.service';
+import {Ente} from '../../../../model/Ente';
+import {FiltroServizio} from '../../../../model/FiltroServizio';
 
 @Component({
   selector: 'app-dati-permesso',
@@ -38,11 +37,10 @@ export class DatiPermessoComponent implements OnInit {
 
   datiPermesso: PermessoCompleto;
   listaPermessoFunzione: PermessoFunzione[] = [];
-  mapPermessoFunzione: Map<number, PermessoFunzione> = new Map()
+  mapPermessoFunzione: Map<number, PermessoFunzione> = new Map();
 
   listaSocieta: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
-  TUTTO_VALUE = 'Tutto';
   listaServizi: Array<OpzioneSelect> = [];
   listaFunzioni: Array<any> = [];
 
@@ -72,7 +70,7 @@ export class DatiPermessoComponent implements OnInit {
       // prevalorizzo il campo societaId con la società avente id minore nella lista recuperata
       if (this.listaSocieta.length > 0) {
         if (this.listaSocieta.length > 1) {
-          this.datiPermesso.societaId = this.listaSocieta.reduce((prev, curr) => prev.value < curr.value ? prev : curr).value
+          this.datiPermesso.societaId = this.listaSocieta.reduce((prev, curr) => prev.value < curr.value ? prev : curr).value;
         } else {
           this.datiPermesso.societaId = this.listaSocieta[0].value;
         }
@@ -87,7 +85,7 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   letturaEnti(): void {
-    this.datiPermesso.enteId = null;
+    this.datiPermesso.enteId = undefined;
     this.listaEnti = [];
 
     this.nuovoPagamentoService.recuperaFiltroEnti(null, this.datiPermesso.societaId, null).pipe(map((listaEnti: Ente[]) => {
@@ -96,7 +94,7 @@ export class DatiPermessoComponent implements OnInit {
         this.listaEnti.push(enteElement);
       });
 
-      this.listaEnti.push({value: this.TUTTO_VALUE, label: this.TUTTO_VALUE});
+      this.listaEnti.push({value: null, label: 'Tutto'});
     })).subscribe();
   }
 
@@ -106,18 +104,15 @@ export class DatiPermessoComponent implements OnInit {
     this.listaFunzioni = [];
 
     // TODO lista Servizio relativa all'utente amministratore inserito/modificato mockata temporaneamente in attesa di informazioni su come recuperarla
-    if (this.datiPermesso.enteId != null) {
-      // assegna valore 'Tutto'
-      this.datiPermesso.enteId = this.datiPermesso.enteId === this.TUTTO_VALUE ? null : this.datiPermesso.enteId
-      this.nuovoPagamentoService.recuperaFiltroServizi(this.datiPermesso.enteId).pipe(map((listaServizi: FiltroServizio[]) => {
-        listaServizi.forEach(servizio => {
-          const servizioElement = {value: servizio.id, label: servizio.nome};
-          this.listaServizi.push(servizioElement);
-        });
-        this.listaServizi.push({value: this.TUTTO_VALUE, label: this.TUTTO_VALUE});
-      })).subscribe();
+    if(this.datiPermesso.enteId != null) {
+    this.nuovoPagamentoService.recuperaFiltroServizi(this.datiPermesso.enteId).pipe(map((listaServizi: FiltroServizio[]) => {
+      listaServizi.forEach(servizio => {
+        const servizioElement = {value: servizio.id, label: servizio.nome};
+        this.listaServizi.push(servizioElement);
+      });
+    })).subscribe();
 
-      this.letturaFunzioniGestioneUtente();
+    this.letturaFunzioniGestioneUtente();
     }
   }
 
@@ -135,7 +130,7 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   isSelectValida(valoreCampo: number | string, listaOpzioniSelect: Array<OpzioneSelect>): boolean {
-    return valoreCampo !== null && valoreCampo !== listaOpzioniSelect[listaOpzioniSelect.length - 1]?.value;
+    return valoreCampo !== undefined && valoreCampo !== listaOpzioniSelect[listaOpzioniSelect.length - 1]?.value;;
   }
 
   getNomeEnte(enteId: number | string): string {
@@ -212,7 +207,7 @@ export class DatiPermessoComponent implements OnInit {
     } else if ($event.checked === true) {
       // inserimento NUOVO permesso
       const permessoFunzione: PermessoFunzione = new PermessoFunzione();
-      permessoFunzione.permessoId = null
+      permessoFunzione.permessoId = null;
       permessoFunzione.funzioneId = funzione.id;
       permessoFunzione.permessoCancellato = false;
       this.mapPermessoFunzione.set(funzione.id, permessoFunzione);

@@ -39,7 +39,7 @@ const routes: Routes = [
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
   {path: 'gestioneUtenti', component: GestisciUtentiComponent},
   {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent},
-  {path: 'modificaUtentePermessi/:userid', component: ModificaUtentePermessiComponent},
+  {path: 'modificaUtentePermessi/:userid', component: AggiungiUtentePermessiComponent},
   {path: 'societa', component: GestisciSocietaComponent}
 ];
 

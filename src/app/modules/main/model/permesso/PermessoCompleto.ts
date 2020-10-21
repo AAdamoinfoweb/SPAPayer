@@ -2,7 +2,7 @@ import {PermessoFunzione} from './PermessoFunzione';
 
 export class PermessoCompleto {
   societaId?: number;
-  enteId?: number | string;
+  enteId?: number;
   servizioId?: number;
   dataInizioValidita?: string;
   dataFineValidita?: string;
