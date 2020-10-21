@@ -1,5 +1,5 @@
 <div class="sidebar" data-color="white" data-active-color="danger">
-  <div class="logo">
+  <div class="logo" *ngIf="!menuService.isUtenteAnonimo">
     <a routerLink="/" class="navbar-toggle simple-text logo-mini">
       <div class="logo-image-small">
         <img alt="" src="../assets/img/logo-small.png">
@@ -9,21 +9,35 @@
       {{ nomeUtente }}
     </a>
   </div>
-  <div *ngIf="!waiting" [ngClass]="{'sidebar-wrapper': true, 'sidebar-overflow': isUtenteAnonimo, 'pb-0': !isUtenteAnonimo}">
-    <ul class="nav">
-      <li>
-        <h3 class="no_toc">Funzioni</h3>
-      </li>
-      <ng-container *ngFor="let item of menu">
+  <div *ngIf="!waiting"
+       [ngClass]="{'sidebar-wrapper': true, 'sidebar-overflow': isUtenteAnonimo, 'pb-0': !isUtenteAnonimo}">
+    <ul class="link-list none">
+      <ng-container *ngFor="let item of menu; let i = index">
         <li>
-          <a (click)="getRouterLink(item)" class="list-item medium active" data-toggle="collapse" aria-expanded="true"><span>{{item.nome}}</span></a>
-          <ul class="link-sublist collapse show" *ngIf="item.sotto_menu">
-            <ng-container *ngFor="let sub of item.sotto_menu">
+          <a (click)="getRouterLink(item)" class="list-item medium active"
+             data-toggle="collapse" [attr.aria-expanded]="false"
+             ><span>{{item.nome}}</span>
+            <ng-container *ngIf="!item.route">
+              <svg *ngIf="!item['isCollapsed']" class="icon icon-sm icon-primary right" aria-hidden="true">
+                <use xlink:href="assets/img/sprite.svg#it-expand"></use>
+              </svg>
+              <svg *ngIf="item['isCollapsed']" class="icon icon-sm icon-primary right" aria-hidden="true">
+                <use xlink:href="assets/img/sprite.svg#it-collapse"></use>
+              </svg>
+            </ng-container>
+          </a>
+          <ul [id]="'coll-' + i" class="link-sublist collapse none" [ngClass]="{'show': !item['isCollapsed']}" *ngIf="item.sotto_menu">
+            <ng-container *ngFor="let sub of item.sotto_menu; let j = index">
               <li>
                 <a (click)="getRouterLink(sub)" class="list-item medium active"
-                   data-toggle="collapse" aria-expanded="true"><span>{{sub.nome}}</span></a>
+                   data-toggle="collapse" aria-expanded="false"
+                   [href]="'#collSub-' + j"><span>{{sub.nome}}</span>
+                  <svg *ngIf="!sub.route" class="icon icon-sm icon-primary right" aria-hidden="true">
+                    <use xlink:href="assets/img/sprite.svg#it-expand"></use>
+                  </svg>
+                </a>
               </li>
-              <ul class="link-sublist collapse show" *ngIf="sub.funzioni">
+              <ul [id]="'collSub-' + j" class="link-sublist collapse" *ngIf="sub.funzioni">
                 <ng-container *ngFor="let subItem of sub.funzioni">
                   <li>
                     <a (click)="getRouterLink(subItem)" class="list-item medium active"
@@ -33,7 +47,7 @@
               </ul>
             </ng-container>
           </ul>
-          <ul class="link-sublist collapse show" *ngIf="item.funzioni">
+          <ul class="link-sublist collapse show none" *ngIf="item.funzioni">
             <ng-container *ngFor="let sub of item.funzioni">
               <li>
                 <a (click)="getRouterLink(sub)" class="list-item medium active"
@@ -52,6 +66,5 @@
   </div>
   <div class="logo-rer">
     <small>Versione: {{ versionApplicativo }}</small>
-    <img alt="" src="../assets/images/re-logo.png">
   </div>
 </div>

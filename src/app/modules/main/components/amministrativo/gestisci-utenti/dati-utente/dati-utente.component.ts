@@ -37,7 +37,8 @@ export class DatiUtenteComponent implements OnInit {
   @Output()
   onValidaFormDatiUtenti: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private utenteService: UtenteService, private amministrativoService: AmministrativoService) { }
+  constructor(private utenteService: UtenteService, private amministrativoService: AmministrativoService) {
+  }
 
   ngOnInit(): void {
     this.datiUtente = new InserimentoModificaUtente();
@@ -94,7 +95,7 @@ export class DatiUtenteComponent implements OnInit {
         return 'campo non valido';
       }
     } else {
-       if (TipoCampoEnum.SELECT === tipo) {
+      if (TipoCampoEnum.SELECT === tipo) {
         return 'seleziona un elemento dalla lista';
       } else if (TipoCampoEnum.INPUT_TESTUALE === tipo) {
         return 'inserisci testo';
@@ -118,8 +119,8 @@ export class DatiUtenteComponent implements OnInit {
     const dataDaControllare = value;
     const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
     const ret = Utils.isBefore(dataDaControllare, dataSistema) ||
-   campo?.errors != null;
-    return ret ;
+      campo?.errors != null;
+    return ret;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -143,14 +144,7 @@ export class DatiUtenteComponent implements OnInit {
     if (datiUtenteForm.valid) {
       for (const nomeCampo in model) {
         if (model[nomeCampo] !== undefined && model[nomeCampo]) {
-          if (nomeCampo === 'codiceFiscale') {
-            this.codiceFiscaleExists = this.listaCodiciFiscali.includes(this.codiceFiscale);
-            if (this.codiceFiscaleExists) {
-              this.utenteService.codiceFiscaleEvent.emit(null);
-            } else {
-              this.utenteService.codiceFiscaleEvent.emit(this.codiceFiscale);
-            }
-          } else if (typeof model[nomeCampo] === 'object') {
+          if (typeof model[nomeCampo] === 'object') {
             model[nomeCampo] = moment(model[nomeCampo]).format('YYYY-MM-DD[T]HH:mm:ss');
           }
         } else {
@@ -164,4 +158,14 @@ export class DatiUtenteComponent implements OnInit {
       this.onValidaFormDatiUtenti.emit(false);
     }
   }
+
+  controlloCodiceFiscale($event) {
+    this.codiceFiscaleExists = this.listaCodiciFiscali.includes($event);
+    if (this.codiceFiscaleExists) {
+      this.utenteService.codiceFiscaleEvent.emit(null);
+    } else {
+      this.utenteService.codiceFiscaleEvent.emit($event);
+    }
+  }
+
 }

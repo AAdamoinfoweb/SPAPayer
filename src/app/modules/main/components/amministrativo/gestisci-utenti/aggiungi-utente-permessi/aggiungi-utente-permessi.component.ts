@@ -12,7 +12,7 @@ import {
 import {Breadcrumb} from '../../../../dto/Breadcrumb';
 import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
 import {UtenteService} from '../../../../../../services/utente.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Params, Router, UrlSegment} from '@angular/router';
 import {DatiPermessoComponent} from '../dati-permesso/dati-permesso.component';
 import {AsyncSubject} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -22,6 +22,7 @@ import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
 import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {PermessoService} from '../../../../../../services/permesso.service';
+import {PermessoFunzione} from "../../../../model/permesso/PermessoFunzione";
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -47,9 +48,20 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
 
 
   constructor(private utenteService: UtenteService, private router: Router,
+              private activatedRoute: ActivatedRoute,
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, private amministrativoService: AmministrativoService,
               private permessoService: PermessoService) {
+    // get route per logica inserimento o modifica
+    this.activatedRoute.url.subscribe((urlSegments: UrlSegment[]) => {
+      if (urlSegments[0].path === 'modificaUtentePermessi') {
+        this.activatedRoute.params.subscribe((params: Params) => {
+          this.codiceFiscale = params.userid;
+        });
+      }
+    });
+
+    // codice fiscale da utente service per inserimento
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
@@ -90,7 +102,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   }
 
   disabilitaBottone(): boolean {
-    return this.codiceFiscale === null || !this.isFormDatiUtenteValido || this.controlloDate();
+    return this.codiceFiscale === null || !this.isFormDatiUtenteValido || this.controlloDate() || this.controlloDatiPermesso();
   }
 
   controlloDate(): boolean {
@@ -106,10 +118,27 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     return ret;
   }
 
+  controlloDatiPermesso(): boolean {
+    let ret = false;
+    const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
+    listaPermessi.forEach(permesso => {
+      if (permesso.enteId !== null) {
+        if (permesso.servizioId == null) {
+          ret = true;
+        } else {
+          if (permesso.listaFunzioni.length === 0) {
+            ret = true;
+          }
+        }
+      }
+    });
+    return ret;
+  }
+
   inserimentoDatiUtentePermessi(): void {
     // inserimento utente
     let utente = new InserimentoModificaUtente();
-    utente = this.datiUtente;
+    utente = {...this.datiUtente};
     utente.scadenza = utente.scadenza ?
       moment(utente.scadenza, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     utente.attivazione = utente.attivazione ?
@@ -120,6 +149,15 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
         let listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
         if (listaPermessi.length > 0) {
           listaPermessi = listaPermessi.map(permesso => {
+            if (permesso.enteId === null) {
+              // creazione funzione per permesso amministrativo
+              const funzionePermessoAmministrativo = new PermessoFunzione();
+              funzionePermessoAmministrativo.permessoId = null;
+              funzionePermessoAmministrativo.permessoCancellato = false;
+              funzionePermessoAmministrativo.funzioneId = null;
+              const listaFunzioniAmministrative: PermessoFunzione[] = [funzionePermessoAmministrativo];
+              permesso.listaFunzioni = listaFunzioniAmministrative;
+            }
             permesso.dataFineValidita = permesso.dataFineValidita ?
               moment(permesso.dataFineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
             permesso.dataInizioValidita = permesso.dataInizioValidita ?
@@ -128,9 +166,9 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
           });
           this.permessoService.inserimentoModificaPermessi(this.codiceFiscale, listaPermessi, this.amministrativoService.idFunzione)
             .pipe(map(res => {
-            this.asyncSubject.next(this.codiceFiscale);
-            this.asyncSubject.complete();
-          }))
+              this.asyncSubject.next(this.codiceFiscale);
+              this.asyncSubject.complete();
+            }))
             .subscribe();
         } else {
           this.asyncSubject.next(this.codiceFiscale);

@@ -1,31 +1,35 @@
-a.is-active{
- color: #78C2AD !important;
+a.active {
+  color: #78C2AD !important;
+  list-style-type: none !important;
 }
 
+ul.none {
+  list-style-type: none;
+}
 
 .nav-100 {
- width: 100%;
+  width: 100%;
 }
 
-a.logout{
- cursor: pointer;
+a.logout {
+  cursor: pointer;
 }
 
-div.logo{
- a.logo-normal{
-     white-space: pre-wrap;
-     white-space: -moz-pre-wrap;
-     white-space: -pre-wrap;
-     white-space: -o-pre-wrap;
-     word-wrap: break-word;
- }
+div.logo {
+  a.logo-normal {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+  }
 }
 
-div.logo-rer{
- position: relative;
- z-index: 99;
- left: 28px;
- max-height: 23%;
+div.logo-rer {
+  position: fixed;
+  z-index: 99;
+  left: 28px;
+  bottom: 8px;
 }
 
 //div.sidebar-no-overflow{
@@ -49,11 +53,13 @@ li > a {
 
 li > a > span {
   font-size: 18px;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 992px) {
   li > a > span {
-    font-size: 16px
+    font-size: 16px;
+    cursor: pointer;
   }
 
   .sidebar-overflow {
