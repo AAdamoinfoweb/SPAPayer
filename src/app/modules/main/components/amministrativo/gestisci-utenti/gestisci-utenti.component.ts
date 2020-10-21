@@ -64,10 +64,17 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
   tempTableData;
   waiting = true;
 
+  filtroSocieta = null;
+
   constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient,
               private renderer: Renderer2, private el: ElementRef, amministrativoService: AmministrativoService) {
     super(router, overlayService, route, http, amministrativoService);
+    this.route.queryParams.subscribe(params => {
+      if (params.societaId) {
+        this.filtroSocieta = parseInt(params.societaId);
+      }
+    })
   }
 
   inizializzaBreadcrumbList(): void {

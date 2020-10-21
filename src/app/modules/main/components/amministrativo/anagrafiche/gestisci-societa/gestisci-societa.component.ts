@@ -92,7 +92,10 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
     // TODO inserire logica del redirect a gestioneUtenti con idFunzione e filtro società
 
-    const linkGestioneUtenti = '/gestioneUtenti?funzione=XXX&societaId=XXX';
+
+    const linkGestioneUtenti = this.amministrativoService.funzioni.gestisciUtenti.link
+      + '?funzione=' + btoa(this.amministrativoService.funzioni.gestisciUtenti.idFunzione.toString())
+      + '&societaId=' + societa.id;
 
     const riga = {
       nome: {value: societa.nome},
