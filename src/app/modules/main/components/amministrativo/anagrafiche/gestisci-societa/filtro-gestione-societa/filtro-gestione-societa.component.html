@@ -22,6 +22,7 @@
               <select [ngClass]="{'text-disabled': !opzioniFiltroSocieta.length}" id="selectSocieta" name="societaId"
                       #societaInput = "ngModel"
                       [(ngModel)]="filtroSocieta">
+                <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of opzioniFiltroSocieta" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -43,7 +44,7 @@
                   (click)="pulisciFiltri(filtroForm)">Pulisci</button>
         </div>
         <div class="col-6 btn-find">
-          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroForm)"
+          <button id="bottoneCerca" class="btn"
                   (click)="cercaSocieta()">Cerca</button>
         </div>
       </div>

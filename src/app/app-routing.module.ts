@@ -16,6 +16,9 @@ import {GestisciUtentiComponent} from './modules/main/components/amministrativo/
 import {AggiungiUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
 import {ModificaUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
+import {AggiungiSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/aggiungi-societa/aggiungi-societa.component';
+import {ModificaSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/modifica-societa/modifica-societa.component';
+import {DettaglioSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/dettaglio-societa/dettaglio-societa.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -40,7 +43,10 @@ const routes: Routes = [
   {path: 'gestioneUtenti', component: GestisciUtentiComponent},
   {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent},
   {path: 'modificaUtentePermessi/:userid', component: AggiungiUtentePermessiComponent},
-  {path: 'societa', component: GestisciSocietaComponent}
+  {path: 'societa', component: GestisciSocietaComponent},
+  {path: 'aggiungiSocieta', component: AggiungiSocietaComponent},
+  {path: 'modificaSocieta', component: ModificaSocietaComponent},
+  {path: 'dettaglioSocieta', component: DettaglioSocietaComponent}
 ];
 
 @NgModule({
