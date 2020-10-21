@@ -10,6 +10,7 @@ import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
+import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -42,6 +43,10 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   tableData = {
     rows: [],
     cols: [
+      {field: 'nome', header: 'Nome', type: tipoColonna.TESTO},
+      {field: 'telefono', header: 'Telefono', type: tipoColonna.TESTO},
+      {field: 'email', header: 'Email', type: tipoColonna.TESTO},
+      // {field: 'utentiAbilitati', header: 'Utenti abilitati', type: tipoColonna.LINK}
     ],
     dataKey: 'nome.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
@@ -74,9 +79,10 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
         // TODO subscribe societaservice
 
-        // this.listaSocieta.forEach(societa => {
-        //   this.tableData.rows.push(this.creaRigaTabella(societa));
-        // });
+        this.listaSocieta.forEach(societa => {
+          this.tableData.rows.push(this.creaRigaTabella(societa));
+        });
+        this.tempTableData = Object.assign({}, this.tableData);
       });
     });
   }
@@ -87,8 +93,14 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   creaRigaTabella(societa: Societa): object {
-    // TODO metodo creaRigaTabella
-    return null;
+    // TODO aggiungere link utenti abilitati
+
+    const riga = {
+      nome: {value: societa.nome},
+      telefono: {value: societa.telefono},
+      email: {value: societa.email}
+    };
+    return riga;
   }
 
   onChangeTab(value) {
