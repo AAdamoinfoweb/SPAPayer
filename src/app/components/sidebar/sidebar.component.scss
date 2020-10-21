@@ -1,4 +1,4 @@
-a.is-active {
+a.active {
   color: #78C2AD !important;
   list-style-type: none !important;
 }
@@ -26,10 +26,10 @@ div.logo {
 }
 
 div.logo-rer {
-  position: relative;
+  position: fixed;
   z-index: 99;
   left: 28px;
-  max-height: 23%;
+  bottom: 8px;
 }
 
 //div.sidebar-no-overflow{
@@ -53,11 +53,13 @@ li > a {
 
 li > a > span {
   font-size: 18px;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 992px) {
   li > a > span {
-    font-size: 16px
+    font-size: 16px;
+    cursor: pointer;
   }
 
   .sidebar-overflow {
