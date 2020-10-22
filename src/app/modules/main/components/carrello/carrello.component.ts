@@ -170,9 +170,15 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
       this.overlayService.caricamentoEvent.emit(false);
       if (resp instanceof Array) {
         //esito OK
+        let numDocs = [];
+        resp.forEach((value: any) => {
+          if (value.esito == "OK" || value.esito == "DIFFERITO" || value == "PENDING") {
+            numDocs.push(value.numeroDocumento);
+          }
+        });
         const banner: Banner = {
           titolo: 'Operazione non consentita!',
-          testo: 'Uno o più bollettini sono già stati pagati o in corso di pagamento. Per maggiori informazioni contattare l’help desk',
+          testo: 'I bollettini numero ' + numDocs.join(", ") + ' sono già stati pagati o in corso di pagamento. Per maggiori informazioni consultare la sezione i miei pagamenti o contattare l’help desk',
           tipo: getBannerType(LivelloBanner.ERROR)
         };
         this.bannerService.bannerEvent.emit([banner]);
