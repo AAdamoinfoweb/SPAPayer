@@ -32,16 +32,19 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   isMenuCarico = false;
 
   listaSocieta: Array<Societa> = new Array<Societa>();
-  societaDaModificare: number = null;
+  listaIdSocietaSelezionate: Array<number> = [];
 
-  toolbarIcons = [
+  readonly toolbarIcons = [
     {type: ToolEnum.INSERT},
     {type: ToolEnum.UPDATE, disabled: true},
+    {type: ToolEnum.DELETE, disabled: true},
     {type: ToolEnum.EXPORT_PDF},
     {type: ToolEnum.EXPORT_XLS}
   ];
 
-  // TODO imposta tableData
+  readonly indiceIconaModifica = 1;
+  readonly indiceIconaElimina = 2;
+
   tableData = {
     rows: [],
     cols: [
@@ -126,15 +129,29 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   eseguiAzioni(azioneTool) {
-    if (azioneTool === ToolEnum.INSERT) {
-      this.router.navigateByUrl('/aggiungiSocieta');
-    } else if (azioneTool === ToolEnum.UPDATE) {
-      this.router.navigate(['/modificaSocieta', this.societaDaModificare]);
-    } else if (azioneTool === ToolEnum.EXPORT_PDF) {
-      this.esportaTabellaInFilePdf();
-    } else if (azioneTool === ToolEnum.EXPORT_XLS) {
-      this.esportaTabellaInFileExcel();
+    switch (azioneTool) {
+      case ToolEnum.INSERT:
+        this.router.navigateByUrl('/aggiungiSocieta');
+        break;
+      case ToolEnum.UPDATE:
+        this.router.navigate(['/modificaSocieta', this.listaIdSocietaSelezionate[0]]);
+        break;
+      case ToolEnum.DELETE:
+        this.cancellaSocietaSelezionate();
+        break;
+      case ToolEnum.EXPORT_PDF:
+        this.esportaTabellaInFilePdf();
+        break;
+      case ToolEnum.EXPORT_XLS:
+        this.esportaTabellaInFileExcel();
+        break;
     }
+  }
+
+  cancellaSocietaSelezionate() {
+    this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe((item) => {
+      console.log('risultato elimina: ', item);
+    });
   }
 
   esportaTabellaInFilePdf(): void {
@@ -177,13 +194,9 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   selezionaRigaTabella(righeSelezionate): void {
-    if (righeSelezionate.length === 1) {
-      this.societaDaModificare = righeSelezionate[0].id.value;
-      this.toolbarIcons[1].disabled = false;
-    } else {
-      this.societaDaModificare = null;
-      this.toolbarIcons[1].disabled = true;
-    }
+    this.listaIdSocietaSelezionate = righeSelezionate.map(riga => riga.id.value);
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdSocietaSelezionate.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdSocietaSelezionate.length === 0;
   }
 
 }
