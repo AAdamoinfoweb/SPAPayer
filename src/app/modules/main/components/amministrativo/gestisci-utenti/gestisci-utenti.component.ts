@@ -8,7 +8,6 @@ import {RicercaUtente} from '../../../model/utente/RicercaUtente';
 import {map} from 'rxjs/operators';
 import * as moment from 'moment';
 import * as jsPDF from 'jspdf';
-import 'jspdf-autotable';
 import {Breadcrumb} from '../../../dto/Breadcrumb';
 import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -17,6 +16,7 @@ import {OverlayService} from '../../../../../services/overlay.service';
 import {AmministrativoParentComponent} from "../amministrativo-parent.component";
 import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from "../../../../../services/amministrativo.service";
+import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 
 @Component({
   selector: 'app-gestione-utenti',
@@ -173,38 +173,16 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
   }
 
   esportaTabellaInFilePdf(dataTable: any): void {
-    const customHeaders = dataTable.cols.map(col => col.header);
-    const customRows = [];
-    dataTable.rows.forEach(row => {
-      const rows = [];
-      for (let key in row) {
-        let temp = null;
-        if (key === 'iconaUtente') {
-          temp = row[key]?.display === 'inline' ? '' : null;
-        } else if (key === 'ultimoAccesso') {
-          temp = row[key]?.testo;
-        } else {
-          temp = row[key]?.value;
-        }
-        rows.push(temp);
-      }
-      customRows.push(rows);
-    });
-
-    const filePdf = new jsPDF.default('l', 'pt', 'a4');
-    filePdf.setProperties({title: 'Lista Utenti'});
-    // @ts-ignore
-    filePdf.autoTable(customHeaders, customRows, {
-      didDrawCell: data => {
-        if (data.section === 'body' && data.column.index === 0 && data.row.raw[0] != null) {
-          let activeUserIcon = new Image();
-          activeUserIcon.src = 'assets/img/active-user.png';
-          filePdf.addImage(activeUserIcon, 'PNG', data.cell.x + 2, data.cell.y + 2, 18, 17);
-        }
-      }
-    });
-    const blob = filePdf.output('blob');
-    window.open(URL.createObjectURL(blob));
+    const iconaUtenteAttivo = new ImmaginePdf();
+    iconaUtenteAttivo.indiceColonna = 0;
+    iconaUtenteAttivo.srcIcona = 'assets/img/active-user.png';
+    iconaUtenteAttivo.posizioneX = 2;
+    iconaUtenteAttivo.posizioneY = 2;
+    iconaUtenteAttivo.larghezza = 18;
+    iconaUtenteAttivo.altezza = 17;
+    Utils.esportaTabellaInFilePdf(dataTable, 'Lista Utenti', [
+      iconaUtenteAttivo
+    ]);
   }
 
   esportaTabellaInFileExcel(dataTable: any): void {
