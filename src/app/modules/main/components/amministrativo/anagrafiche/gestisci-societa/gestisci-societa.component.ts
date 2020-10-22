@@ -72,7 +72,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
     this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Societa', null, null));
+    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Società', null, null));
   }
 
   ngOnInit(): void {

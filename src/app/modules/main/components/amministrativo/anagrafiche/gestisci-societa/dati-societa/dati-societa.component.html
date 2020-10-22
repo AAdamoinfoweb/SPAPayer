@@ -1,1 +1,102 @@
-<p>dati-societa works!</p>
+<span>Tutti i campi contrassegnati con * sono obbligatori</span>
+<div class="ml-3">
+  <form #societaForm="ngForm" (input)="onChangeForm(societaForm)">
+
+    <div class="row mt-4 mb-0">
+
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="nomeSocieta" class="title required text-muted">Nome</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input
+              id="nomeSocieta"
+              autocomplete="off"
+              [(ngModel)]="societa.nome"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>Inserisci nome società</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="telefonoSocieta" class="title required text-muted">Telefono</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input
+              id="telefonoSocieta"
+              autocomplete="off"
+              [(ngModel)]="societa.telefono"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>Inserisci telefono società</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="emailSocieta" class="title required text-muted">Email</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input
+              id="emailSocieta"
+              autocomplete="off"
+              [(ngModel)]="societa.email"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>Inserisci email società</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-4 mb-0">
+      <div class="col pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="descrizioneSocieta" class="title required text-muted">Descrizione</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input
+              id="descrizioneSocieta"
+              autocomplete="off"
+              [(ngModel)]="societa.descrizione"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>Inserisci descrizione società</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </form>
+</div>

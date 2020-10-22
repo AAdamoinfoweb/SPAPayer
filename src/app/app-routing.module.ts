@@ -44,9 +44,9 @@ const routes: Routes = [
   {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent},
   {path: 'modificaUtentePermessi/:userid', component: AggiungiUtentePermessiComponent},
   {path: 'societa', component: GestisciSocietaComponent},
-  {path: 'aggiungiSocieta', component: AggiungiSocietaComponent},
-  {path: 'modificaSocieta/:societaId', component: ModificaSocietaComponent},
-  {path: 'dettaglioSocieta', component: DettaglioSocietaComponent}
+  {path: 'aggiungiSocieta', component: DettaglioSocietaComponent},
+  {path: 'modificaSocieta/:societaId', component: DettaglioSocietaComponent},
+  {path: 'dettaglioSocieta/:societaId', component: DettaglioSocietaComponent}
 ];
 
 @NgModule({
