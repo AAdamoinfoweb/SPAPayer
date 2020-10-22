@@ -42,12 +42,13 @@ export class SidebarComponent implements OnInit {
             this.isUtenteAnonimo = true;
           }
           this.menuService.userEventChange.emit();
-          this.menu = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
-          let idx = this.menu.findIndex(o => o["mappaFunzioni"]);
-          if (this.menu[idx]["mappaFunzioni"]) {
-            this.amministrativoService.mappaFunzioni = JSON.parse(this.menu[idx]["mappaFunzioni"]);
-            delete this.menu[idx];
+          let menuTemp = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
+          let idx = menuTemp.findIndex(o => o["mappaFunzioni"]);
+          if (menuTemp[idx]["mappaFunzioni"]) {
+            this.amministrativoService.mappaFunzioni = JSON.parse(menuTemp[idx]["mappaFunzioni"]);
+            menuTemp.splice([idx], 1);
           }
+          this.menu = menuTemp;
           this.waiting = false;
         }
       });
