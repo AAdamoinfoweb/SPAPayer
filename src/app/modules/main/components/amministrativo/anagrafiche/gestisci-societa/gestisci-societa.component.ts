@@ -90,12 +90,12 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
   creaRigaTabella(societa: Societa): object {
 
-    // TODO inserire logica del redirect a gestioneUtenti con idFunzione e filtro società
+    // TODO fixare logica lettura idfunzione
 
-
-    const linkGestioneUtenti = this.amministrativoService.funzioni.gestisciUtenti.link
-      + '?funzione=' + btoa(this.amministrativoService.funzioni.gestisciUtenti.idFunzione.toString())
-      + '&societaId=' + societa.id;
+    // const linkGestioneUtenti = this.amministrativoService.funzioni.gestisciUtenti.link
+    //   + '?funzione=' + btoa(this.amministrativoService.funzioni.gestisciUtenti.idFunzione.toString())
+    //   + '&societaId=' + societa.id;
+    const linkGestioneUtenti = 'gestioneUtenti';
 
     const riga = {
       nome: {value: societa.nome},
