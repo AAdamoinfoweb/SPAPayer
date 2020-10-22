@@ -24,23 +24,26 @@ export class Utils {
     const righePdf = [];
     tabella.rows.forEach(riga => {
       const rigaPdf = [];
-      Object.keys(riga).forEach((elemento, indice) => {
-        let elementoRigaPdf;
-        switch (tabella.cols[indice].type) {
-          case tipoColonna.ICONA:
-            elementoRigaPdf = riga[elemento]?.display === 'inline' ? '' : null;
-            break;
-          case tipoColonna.LINK:
-            elementoRigaPdf = riga[elemento]?.testo || null;
-            break;
-          case tipoColonna.TESTO:
-            elementoRigaPdf = riga[elemento]?.value || null;
-            break;
-          default:
-            elementoRigaPdf = null;
-            break;
+      Object.keys(riga).forEach(elemento => {
+        const indiceColonna = tabella.cols.indexOf(tabella.cols.find(col => col.field === elemento));
+        if (indiceColonna > -1) {
+          let elementoRigaPdf;
+          switch (tabella.cols[indiceColonna].type) {
+            case tipoColonna.ICONA:
+              elementoRigaPdf = riga[elemento]?.display === 'inline' ? '' : null;
+              break;
+            case tipoColonna.LINK:
+              elementoRigaPdf = riga[elemento]?.testo || null;
+              break;
+            case tipoColonna.TESTO:
+              elementoRigaPdf = riga[elemento]?.value || null;
+              break;
+            default:
+              elementoRigaPdf = null;
+              break;
+          }
+          rigaPdf.push(elementoRigaPdf);
         }
-        rigaPdf.push(elementoRigaPdf);
       });
       righePdf.push(rigaPdf);
     });
