@@ -56,6 +56,7 @@ import {TreeTableModule} from "primeng/treetable";
 import {AmministrativoParentComponent} from "./modules/main/components/amministrativo/amministrativo-parent.component";
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
 import {FiltroGestioneSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/filtro-gestione-societa/filtro-gestione-societa.component';
+import {OrderByPipe} from "./pipe/orderby-pipe";
 
 @NgModule({
   declarations: [
@@ -102,7 +103,8 @@ import {FiltroGestioneSocietaComponent} from './modules/main/components/amminist
     OverlayComponent,
     AmministrativoParentComponent,
     GestisciSocietaComponent,
-    FiltroGestioneSocietaComponent
+    FiltroGestioneSocietaComponent,
+    OrderByPipe
   ],
     imports: [
         HttpClientModule,

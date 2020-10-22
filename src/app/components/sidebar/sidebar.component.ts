@@ -57,7 +57,7 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  getRouterLink(item: any) {
+  getRouterLink(item: any, allItem: any[] = []) {
     if (item.route) {
       if (item.nome === 'Accedi') {
         localStorage.setItem('loginDaAnonimo', 'true');
@@ -82,6 +82,7 @@ export class SidebarComponent implements OnInit {
         this.selectedElement = null;
       } else {
         this.selectedElement = item['nome'];
+        allItem.forEach(value => value['isExpanded'] = false);
       }
       item['isExpanded'] = !item['isExpanded'];
     }

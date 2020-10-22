@@ -13,8 +13,8 @@
   <div *ngIf="!waiting"
        [ngClass]="{'sidebar-wrapper': true, 'sidebar-overflow': isUtenteAnonimo, 'pb-0': !isUtenteAnonimo}">
     <ul class="link-list none-parent">
-      <ng-container *ngFor="let item of menu; let i = index">
-        <li [ngClass]="{'active': item.nome == selectedElement}" (click)="getRouterLink(item)">
+      <ng-container *ngFor="let item of menu | orderBy:'posizione'; let i = index">
+        <li [ngClass]="{'active': item.nome == selectedElement}" (click)="getRouterLink(item, menu)">
           <a class="list-item medium" [ngClass]="{'active': item.nome == selectedElement}"
              data-toggle="collapse" [attr.aria-expanded]="false">
             {{item.nome}}
@@ -31,7 +31,7 @@
           </a>
           <ul [id]="'coll-' + i" class="link-sublist collapse none" [ngClass]="{'show': item.nome == selectedElement}"
               *ngIf="item.sotto_menu">
-            <ng-container *ngFor="let sub of item.sotto_menu; let j = index">
+            <ng-container *ngFor="let sub of item.sotto_menu | orderBy:'posizione'; let j = index">
               <li>
                 <a (click)="getRouterLink(sub)" class="list-item medium"
                    [ngClass]="{'active': sub.nome == selectedElement}"
@@ -59,7 +59,8 @@
               </ul>
             </ng-container>
           </ul>
-          <ul class="link-sublist collapse none" [ngClass]="{'show': item.nome == selectedElement}" *ngIf="item.funzioni">
+          <ul class="link-sublist collapse none" [ngClass]="{'show': item.nome == selectedElement}"
+              *ngIf="item.funzioni">
             <ng-container *ngFor="let sub of item.funzioni">
               <li (click)="getRouterLink(sub)">
                 <a class="list-item medium" [ngClass]="{'active': sub.nome == selectedElement}"
