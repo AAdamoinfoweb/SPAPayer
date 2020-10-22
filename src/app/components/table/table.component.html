@@ -2,7 +2,7 @@
          dataKey="{{dataKey}}" [(selection)]="selection"
          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
          [paginator]="true" [rows]="pageSize" [showCurrentPageReport]="false"
-         (onHeaderCheckboxToggle)="onRowSelect($event)">
+         (onHeaderCheckboxToggle)="onRowSelect($event)" (sortFunction)="customSort($event)" [customSort]="true">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th style="width: 3rem" *ngIf="tipoTabella == tipoTabellaEnum.CHECKBOX_SELECTION">
@@ -15,7 +15,7 @@
       </th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-row let-columns="columns">
+  <ng-template pTemplate="body" let-row let-columns="columns" >
     <tr [ngClass]="{'row-selected':selectedRows}">
       <td *ngIf="tipoTabella == tipoTabellaEnum.CHECKBOX_SELECTION">
         <p-tableCheckbox [value]="row"></p-tableCheckbox>
