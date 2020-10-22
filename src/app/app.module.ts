@@ -30,7 +30,7 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {AccordionModule} from 'primeng/accordion';
 import {TableModule} from 'primeng/table';
 import {TableComponent} from './components/table/table.component';
-import {GestisciUtentiComponent} from './modules/main/components/gestisci-utenti/gestisci-utenti.component';
+import {GestisciUtentiComponent} from './modules/main/components/amministrativo/gestisci-utenti/gestisci-utenti.component';
 import {ButtonModule} from 'primeng/button';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TabViewModule} from 'primeng/tabview';
@@ -38,21 +38,25 @@ import {TabViewComponent} from './components/tab-view/tab-view.component';
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {ToolbarModule} from 'primeng/toolbar';
 import {PaginatorComponent} from './components/table/paginator/paginator.component';
-import {FiltroGestioneUtentiComponent} from './modules/main/components/gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
+import {FiltroGestioneUtentiComponent} from './modules/main/components/amministrativo/gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
 import {AutoCompleteModule} from 'primeng/autocomplete';
-import {AggiungiUtentePermessiComponent} from './modules/main/components/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
-import {DatiUtenteComponent} from './modules/main/components/dati-utente/dati-utente.component';
-import {DatiPermessoComponent} from './modules/main/components/dati-permesso/dati-permesso.component';
-import {ModificaUtentePermessiComponent} from './modules/main/components/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
+import {AggiungiUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
+import {DatiUtenteComponent} from './modules/main/components/amministrativo/gestisci-utenti/dati-utente/dati-utente.component';
+import {DatiPermessoComponent} from './modules/main/components/amministrativo/gestisci-utenti/dati-permesso/dati-permesso.component';
+import {ModificaUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
 import {DayInputDirective} from './utils/DayInputDirective';
 import {MonthInputDirective} from './utils/MonthInputDirective';
 import {OverlayComponent} from './components/overlay/overlay.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import {TreeTableModule} from "primeng/treetable";
+import {AmministrativoParentComponent} from "./modules/main/components/amministrativo/amministrativo-parent.component";
+import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
+import {FiltroGestioneSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/filtro-gestione-societa/filtro-gestione-societa.component';
+import {OrderByPipe} from "./pipe/orderby-pipe";
 
 @NgModule({
   declarations: [
@@ -96,7 +100,11 @@ import {TreeTableModule} from "primeng/treetable";
     IntegerNumberDirective,
     DayInputDirective,
     MonthInputDirective,
-    OverlayComponent
+    OverlayComponent,
+    AmministrativoParentComponent,
+    GestisciSocietaComponent,
+    FiltroGestioneSocietaComponent,
+    OrderByPipe
   ],
     imports: [
         HttpClientModule,

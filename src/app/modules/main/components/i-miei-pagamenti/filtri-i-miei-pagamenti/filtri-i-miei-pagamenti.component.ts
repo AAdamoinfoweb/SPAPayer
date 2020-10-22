@@ -73,7 +73,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   recuperaEnti(livelloTerritorialeId): void {
-    this.nuovoPagamentoService.recuperaFiltroEnti(livelloTerritorialeId).pipe(map(enti => {
+    this.nuovoPagamentoService.recuperaFiltroEnti(livelloTerritorialeId, null, null).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
           value: ente.id,
@@ -146,14 +146,8 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     this.listaEnti = [];
     this.listaServizi = [];
     this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
-    const filtri = this.filtroRicercaPagamenti;
     this.overlayService.caricamentoEvent.emit(true);
-    this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
-      const listaPagamentiFiltri: ListaPagamentiFiltri = new ListaPagamentiFiltri();
-      listaPagamentiFiltri.listaPagamenti = listaPagamenti;
-      listaPagamentiFiltri.filtri = filtri;
-      this.onChangeListaPagamenti.emit(listaPagamentiFiltri);
-    })).subscribe();
+    this.ricercaPagamenti(this.filtroRicercaPagamenti);
   }
 
   cercaPagamenti(form: NgForm): void {

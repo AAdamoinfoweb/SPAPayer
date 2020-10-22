@@ -121,7 +121,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
 
   recuperaFiltroEnti(idLivelloTerritoriale?): void {
     this.overlayService.caricamentoEvent.emit(true);
-    this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale).pipe(map(enti => {
+    this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale, null, null).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
           value: ente,

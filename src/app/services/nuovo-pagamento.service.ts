@@ -50,10 +50,16 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaFiltroEnti(idLivelloTerritoriale?): Observable<Ente[]> {
+  recuperaFiltroEnti(idLivelloTerritoriale?, societaId?: number, filtroPagamento?: boolean): Observable<Ente[]> {
     let params = new HttpParams();
     if (idLivelloTerritoriale) {
       params = params.set('livelloTerritorialeId', idLivelloTerritoriale);
+    }
+    if (societaId) {
+      params = params.set('societaId', String(societaId));
+    }
+    if (filtroPagamento) {
+      params = params.set('filtroPagamento', String(filtroPagamento));
     }
 
     return this.http.get(environment.bffBaseUrl + this.filtroEntiUrl, {

@@ -84,7 +84,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
             'Consultare la sezione i Miei Pagamenti o rivolgersi all\'help desk per ulteriori informazioni';
           banner = {
             titolo: 'Avviso',
-            testo: 'Non è stato possibile conoscere l\'esito del pagamento. ' + msg,
+            testo: 'Il pagamento è in corso, al momento non è possibile conoscerne l\'esito del pagamento. ' + msg,
             tipo: getBannerType(LivelloBanner.WARNING)
           };
         }
@@ -169,9 +169,16 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     observable.subscribe(resp => {
       this.overlayService.caricamentoEvent.emit(false);
       if (resp instanceof Array) {
+        //esito OK
+        let numDocs = [];
+        resp.forEach((value: any) => {
+          if (value.esito == "OK" || value.esito == "DIFFERITO" || value == "PENDING") {
+            numDocs.push(value.numeroDocumento);
+          }
+        });
         const banner: Banner = {
           titolo: 'Operazione non consentita!',
-          testo: 'Uno o più bollettini sono già stati pagati o in corso di pagamento. Per maggiori informazioni contattare l’help desk',
+          testo: 'I bollettini numero ' + numDocs.join(", ") + ' sono già stati pagati o in corso di pagamento. Per maggiori informazioni consultare la sezione i miei pagamenti o contattare l’help desk',
           tipo: getBannerType(LivelloBanner.ERROR)
         };
         this.bannerService.bannerEvent.emit([banner]);

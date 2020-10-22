@@ -37,10 +37,6 @@ export class AppComponent implements OnInit {
       this.logout();
     });
 
-    this.menuService.getInfoUtente().subscribe((info) => {
-      this.menuService.infoUtenteEmitter.emit(info);
-    });
-
     this.overlayService.caricamentoEvent.subscribe(isLoading => {
       this.caricamento = isLoading;
       this.cdr.detectChanges();
@@ -51,12 +47,18 @@ export class AppComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
+    this.overlayService.caricamentoEvent.emit(true);
+    this.menuService.getInfoUtente().subscribe((info) => {
+      this.menuService.infoUtenteEmitter.emit(info);
+    });
+
     this.letturatipologicheSelect();
 
     // this.mockModaleDettaglioPagamento();
   }
 
   // @HostListener('window:beforeunload')
+
   logout() {
     this.authGuardService.logout().subscribe((url) => {
       this.idleService.stopWatching();

@@ -1,27 +1,29 @@
-import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {tipoColonna} from '../../../../enums/TipoColonna.enum';
-import {tipoTabella} from '../../../../enums/TipoTabella.enum';
-import {TipoUtenteEnum} from '../../../../enums/TipoUtente.enum';
-import {Utils} from '../../../../utils/Utils';
-import {UtenteService} from '../../../../services/utente.service';
-import {RicercaUtente} from '../../model/utente/RicercaUtente';
+import {AfterViewInit, Component, ElementRef, OnChanges, OnInit, Renderer2, SimpleChanges} from '@angular/core';
+import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
+import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
+import {TipoUtenteEnum} from '../../../../../enums/TipoUtente.enum';
+import {Utils} from '../../../../../utils/Utils';
+import {UtenteService} from '../../../../../services/utente.service';
+import {RicercaUtente} from '../../../model/utente/RicercaUtente';
 import {map} from 'rxjs/operators';
 import * as moment from 'moment';
 import * as jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import {Breadcrumb} from '../../dto/Breadcrumb';
-import {ParametriRicercaUtente} from '../../model/utente/ParametriRicercaUtente';
-import {Router} from '@angular/router';
-import {ToolEnum} from '../../../../enums/Tool.enum';
-import {OverlayService} from '../../../../services/overlay.service';
-
+import {Breadcrumb} from '../../../dto/Breadcrumb';
+import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToolEnum} from '../../../../../enums/Tool.enum';
+import {OverlayService} from '../../../../../services/overlay.service';
+import {AmministrativoParentComponent} from "../amministrativo-parent.component";
+import {HttpClient} from "@angular/common/http";
+import {AmministrativoService} from "../../../../../services/amministrativo.service";
+import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 
 @Component({
   selector: 'app-gestione-utenti',
   templateUrl: './gestisci-utenti.component.html',
   styleUrls: ['./gestisci-utenti.component.scss']
 })
-export class GestisciUtentiComponent implements OnInit, AfterViewInit {
+export class GestisciUtentiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
@@ -60,20 +62,19 @@ export class GestisciUtentiComponent implements OnInit, AfterViewInit {
   };
 
   tempTableData;
+  waiting = true;
 
-  constructor(private router: Router, private utenteService: UtenteService, private overlayService: OverlayService,
-              private renderer: Renderer2, private el: ElementRef) {
-    this.inizializzaBreadcrumbList();
+  filtroSocieta = null;
 
-    const parametriRicercaUtente = new ParametriRicercaUtente();
-    this.overlayService.caricamentoEvent.emit(true);
-    this.utenteService.ricercaUtenti(parametriRicercaUtente).pipe(map(utenti => {
-      utenti.forEach(utente => {
-        this.listaUtente.push(utente);
-        this.tableData.rows.push(this.creaRigaTabella(utente));
-      });
-      this.overlayService.caricamentoEvent.emit(false);
-    })).subscribe();
+  constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
+              route: ActivatedRoute, http: HttpClient,
+              private renderer: Renderer2, private el: ElementRef, amministrativoService: AmministrativoService) {
+    super(router, overlayService, route, http, amministrativoService);
+    this.route.queryParams.subscribe(params => {
+      if (params.societaId) {
+        this.filtroSocieta = parseInt(params.societaId);
+      }
+    })
   }
 
   inizializzaBreadcrumbList(): void {
@@ -83,11 +84,24 @@ export class GestisciUtentiComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.tempTableData = Object.assign({}, this.tableData);
+    this.waitingEmitter.subscribe((value) => {
+      this.waiting = value;
+      this.inizializzaBreadcrumbList();
+
+      const parametriRicercaUtente = new ParametriRicercaUtente();
+      this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
+        utenti.forEach(utente => {
+          this.listaUtente.push(utente);
+          this.tableData.rows.push(this.creaRigaTabella(utente));
+        });
+      })).subscribe();
+      this.tempTableData = Object.assign({}, this.tableData);
+    });
   }
 
   ngAfterViewInit(): void {
-    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+    if (!this.waiting)
+      this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
   creaRigaTabella(utente: RicercaUtente): object {
@@ -121,7 +135,7 @@ export class GestisciUtentiComponent implements OnInit, AfterViewInit {
     };
 
     if (utente.dataFineValidita === null
-          || (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema)) {
+      || (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema)) {
       // UTENTE ATTIVO
       row.iconaUtente = Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'inline');
     } else if (moment(utente.dataInizioValidita) > dataSistema || moment(utente.dataFineValidita) < dataSistema) {
@@ -159,38 +173,16 @@ export class GestisciUtentiComponent implements OnInit, AfterViewInit {
   }
 
   esportaTabellaInFilePdf(dataTable: any): void {
-    const customHeaders = dataTable.cols.map(col => col.header);
-    const customRows = [];
-    dataTable.rows.forEach(row => {
-      const rows = [];
-      for (let key in row) {
-        let temp = null;
-        if (key === 'iconaUtente') {
-          temp = row[key]?.display === 'inline' ? '' : null;
-        } else if (key === 'ultimoAccesso') {
-          temp = row[key]?.testo;
-        } else {
-          temp = row[key]?.value;
-        }
-        rows.push(temp);
-      }
-      customRows.push(rows);
-    });
-
-    const filePdf = new jsPDF.default('l', 'pt', 'a4');
-    filePdf.setProperties({ title: 'Lista Utenti' });
-    // @ts-ignore
-    filePdf.autoTable(customHeaders, customRows, {
-      didDrawCell: data => {
-        if (data.section === 'body' && data.column.index === 0 && data.row.raw[0] != null) {
-          let activeUserIcon = new Image();
-          activeUserIcon.src = 'assets/img/active-user.png';
-          filePdf.addImage(activeUserIcon, 'PNG', data.cell.x + 2, data.cell.y + 2, 18, 17);
-        }
-      }
-    });
-    const blob = filePdf.output('blob');
-    window.open(URL.createObjectURL(blob));
+    const iconaUtenteAttivo = new ImmaginePdf();
+    iconaUtenteAttivo.indiceColonna = 0;
+    iconaUtenteAttivo.srcIcona = 'assets/img/active-user.png';
+    iconaUtenteAttivo.posizioneX = 2;
+    iconaUtenteAttivo.posizioneY = 2;
+    iconaUtenteAttivo.larghezza = 18;
+    iconaUtenteAttivo.altezza = 17;
+    Utils.esportaTabellaInFilePdf(dataTable, 'Lista Utenti', [
+      iconaUtenteAttivo
+    ]);
   }
 
   esportaTabellaInFileExcel(dataTable: any): void {
@@ -206,7 +198,7 @@ export class GestisciUtentiComponent implements OnInit, AfterViewInit {
       return newRow;
     });
 
-    const workbook = { Sheets: { 'Utenti': null}, SheetNames: [] };
+    const workbook = {Sheets: {'Utenti': null}, SheetNames: []};
     Utils.creaFileExcel(dataTable.rows, customHeaders, 'Utenti', ['Utenti'], workbook, 'Lista Utenti');
   }
 

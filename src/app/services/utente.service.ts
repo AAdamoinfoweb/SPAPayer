@@ -2,7 +2,7 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {ParametriRicercaUtente} from '../modules/main/model/utente/ParametriRicercaUtente';
 import {RicercaUtente} from '../modules/main/model/utente/RicercaUtente';
 import {InserimentoModificaUtente} from '../modules/main/model/utente/InserimentoModificaUtente';
@@ -12,14 +12,15 @@ import {InserimentoModificaUtente} from '../modules/main/model/utente/Inseriment
 })
 export class UtenteService {
 
-  private readonly utentiBaseUrl = '/utenti';
+  private readonly utentiBaseUrl = '/gestioneUtenti/utenti';
   private readonly letturaCodiceFiscaleUtenteUrl = '/codiceFiscale';
 
   codiceFiscaleEvent: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  ricercaUtenti(parametriRicercaUtente: ParametriRicercaUtente): Observable<RicercaUtente[]> {
+  ricercaUtenti(parametriRicercaUtente: ParametriRicercaUtente, idFunzione: string): Observable<RicercaUtente[]> {
     let params = new HttpParams();
     if (parametriRicercaUtente.livelloTerritorialeId != null) {
       params = params.set('livelloTerritorialeId', String(parametriRicercaUtente.livelloTerritorialeId));
@@ -52,38 +53,53 @@ export class UtenteService {
       params = params.set('ultimoAccessoA', String(parametriRicercaUtente.ultimoAccessoA));
     }
 
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
     return this.http.get(environment.bffBaseUrl + this.utentiBaseUrl, {
       params: params,
+      headers: h,
       withCredentials: true
     })
       .pipe(map((body: any) => {
-        return body as RicercaUtente[];
-      }),
-      catchError((err, caught) => {
-        if (err.status == 401 || err.status == 400) {
-          return of(null);
-        } else {
-          return caught;
-        }
-      }));
+          return body as RicercaUtente[];
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return caught;
+          }
+        }));
   }
 
-  letturaCodiceFiscale(codiceFiscaleParziale): Observable<string[]> {
+  letturaCodiceFiscale(codiceFiscaleParziale, idFunzione: string): Observable<string[]> {
+    let params = new HttpParams();
+    if (codiceFiscaleParziale != null) {
+      params = params.set('codiceFiscaleParziale', codiceFiscaleParziale);
+    }
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
     return this.http.get(environment.bffBaseUrl + this.letturaCodiceFiscaleUtenteUrl, {
-      params: {
-        codiceFiscaleParziale
-      }
+      params: params,
+      headers: h,
+      withCredentials: true
     })
       .pipe(map((body: any) => {
         return body;
       }));
   }
 
-  inserimentoAggiornamentoUtente(codiceFiscale: string, datiUtente: InserimentoModificaUtente): Observable<any> {
+  inserimentoAggiornamentoUtente(codiceFiscale: string, datiUtente: InserimentoModificaUtente, idFunzione: string): Observable<any> {
     const url = environment.bffBaseUrl + this.utentiBaseUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
 
     return this.http.put(`${url}/${codiceFiscale}`, datiUtente,
-      {withCredentials: true}).pipe(map((body: any) => {
+      {
+        withCredentials: true,
+        headers: h
+      }).pipe(map((body: any) => {
         return body;
       }),
       catchError((err, caught) => {
