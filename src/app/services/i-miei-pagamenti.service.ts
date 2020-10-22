@@ -59,7 +59,7 @@ export class IMieiPagamentiService {
         if (err.status == 401 || err.status == 400) {
           return of(null);
         } else {
-          return caught;
+           return of(null);
         }
       }));
   }
@@ -76,7 +76,7 @@ export class IMieiPagamentiService {
         if (err.status == 401 || err.status == 400) {
           return of(null);
         } else {
-          return caught;
+           return of(null);
         }
       }));
   }
@@ -90,7 +90,7 @@ export class IMieiPagamentiService {
         if (err.status == 401 || err.status == 400) {
           return of(null);
         } else {
-          return caught;
+           return of(null);
         }
       }));
   }

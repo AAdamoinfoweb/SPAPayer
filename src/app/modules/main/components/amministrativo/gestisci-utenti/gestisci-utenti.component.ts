@@ -57,7 +57,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
       {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
       {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
     ],
-    dataKey: 'nome.value',
+    dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
@@ -94,8 +94,8 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
           this.listaUtente.push(utente);
           this.tableData.rows.push(this.creaRigaTabella(utente));
         });
+        this.tempTableData = Object.assign({}, this.tableData);
       })).subscribe();
-      this.tempTableData = Object.assign({}, this.tableData);
     });
   }
 

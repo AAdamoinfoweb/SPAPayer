@@ -19,6 +19,9 @@ import {Societa} from '../../../../model/Societa';
 import {NuovoPagamentoService} from '../../../../../../services/nuovo-pagamento.service';
 import {Ente} from '../../../../model/Ente';
 import {FiltroServizio} from '../../../../model/FiltroServizio';
+import {ParametriRicercaUtente} from "../../../../model/utente/ParametriRicercaUtente";
+import {PermessoService} from "../../../../../../services/permesso.service";
+import {AsyncSubject, Observable} from "rxjs";
 
 @Component({
   selector: 'app-dati-permesso',
@@ -30,12 +33,14 @@ import {FiltroServizio} from '../../../../model/FiltroServizio';
 export class DatiPermessoComponent implements OnInit {
 
   @Input() indexSezionePermesso: number;
+  @Input() codiceFiscale: string;
 
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = 'DD/MM/YYYY';
   readonly tipoData = ECalendarValue.String;
 
-  datiPermesso: PermessoCompleto;
+  @Input() datiPermesso: PermessoCompleto;
+  isModificaPermessi = false;
   listaPermessoFunzione: PermessoFunzione[] = [];
   mapPermessoFunzione: Map<number, PermessoFunzione> = new Map();
 
@@ -43,6 +48,7 @@ export class DatiPermessoComponent implements OnInit {
   listaEnti: Array<OpzioneSelect> = [];
   listaServizi: Array<OpzioneSelect> = [];
   listaFunzioni: Array<any> = [];
+  asyncSubject: AsyncSubject<Array<any>> = new AsyncSubject<Array<any>>();
 
   @Output()
   onChangeDatiPermesso: EventEmitter<PermessoSingolo> = new EventEmitter<PermessoSingolo>();
@@ -54,15 +60,48 @@ export class DatiPermessoComponent implements OnInit {
 
 
   constructor(private funzioneService: FunzioneService, private societaService: SocietaService,
-              private amministrativoService: AmministrativoService, private nuovoPagamentoService: NuovoPagamentoService) {
+              private amministrativoService: AmministrativoService, private nuovoPagamentoService: NuovoPagamentoService,
+              private permessoService: PermessoService) {
   }
 
 
   ngOnInit(): void {
-    this.datiPermesso = new PermessoCompleto();
+    if (this.datiPermesso == null) {
+      this.datiPermesso = new PermessoCompleto();
+      // TODO liste Società, Ente relative all'utente amministratore inserito/modificato mockate temporaneamente in attesa di informazioni su come recuperarle
+      this.letturaSocieta(null).subscribe();
 
-    // TODO liste Società, Ente relative all'utente amministratore inserito/modificato mockate temporaneamente in attesa di informazioni su come recuperarle
-    this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).pipe(map((listaSocieta: Societa[]) => {
+      this.datiPermesso.enteId = undefined;
+      this.datiPermesso.dataInizioValidita = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    } else {
+      this.isModificaPermessi = true;
+      this.letturaSocieta(this.datiPermesso.societaId).subscribe((value) => {
+        const mapPermessoFunzioni: Map<number, PermessoFunzione> =
+          new Map(this.datiPermesso.listaFunzioni.map(permessoFunzione => [permessoFunzione.funzioneId, permessoFunzione]));
+        this.mapPermessoFunzione = mapPermessoFunzioni;
+        if (this.datiPermesso.servizioId != null) {
+          this.letturaServizi();
+          this.asyncSubject.subscribe((listaFunzioni) => {
+            this.listaFunzioni = [];
+            listaFunzioni.forEach(funzione => {
+              if (this.mapPermessoFunzione.has(funzione.value.id)) {
+                funzione.checked = true;
+              }
+              this.listaFunzioni.push(funzione);
+            });
+            const permesso: PermessoSingolo = this.setPermessoSingolo();
+            this.onChangeDatiPermesso.emit(permesso);
+          });
+        } else {
+          const permesso: PermessoSingolo = this.setPermessoSingolo();
+          this.onChangeDatiPermesso.emit(permesso);
+        }
+      });
+    }
+  }
+
+  letturaSocieta(societaId: number) {
+    return this.societaService.ricercaSocieta(societaId, this.amministrativoService.idFunzione).pipe(map((listaSocieta: Societa[]) => {
       listaSocieta.forEach(societa => {
         const societaElement = {value: societa.id, label: societa.nome};
         this.listaSocieta.push(societaElement);
@@ -78,14 +117,10 @@ export class DatiPermessoComponent implements OnInit {
       } else {
         this.datiPermesso.societaId = null;
       }
-    })).subscribe();
-
-    this.datiPermesso.enteId = null;
-    this.datiPermesso.dataInizioValidita = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    }));
   }
 
   letturaEnti(): void {
-    this.datiPermesso.enteId = undefined;
     this.listaEnti = [];
 
     this.nuovoPagamentoService.recuperaFiltroEnti(null, this.datiPermesso.societaId, null).pipe(map((listaEnti: Ente[]) => {
@@ -99,43 +134,43 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   letturaServizi(): void {
-    this.datiPermesso.servizioId = null;
     this.listaServizi = [];
     this.listaFunzioni = [];
 
     // TODO lista Servizio relativa all'utente amministratore inserito/modificato mockata temporaneamente in attesa di informazioni su come recuperarla
-    if(this.datiPermesso.enteId != null) {
-    this.nuovoPagamentoService.recuperaFiltroServizi(this.datiPermesso.enteId).pipe(map((listaServizi: FiltroServizio[]) => {
-      listaServizi.forEach(servizio => {
-        const servizioElement = {value: servizio.id, label: servizio.nome};
-        this.listaServizi.push(servizioElement);
-      });
-    })).subscribe();
+    if (this.datiPermesso.enteId != null) {
+      this.nuovoPagamentoService.recuperaFiltroServizi(this.datiPermesso.enteId).pipe(map((listaServizi: FiltroServizio[]) => {
+        listaServizi.forEach(servizio => {
+          const servizioElement = {value: servizio.id, label: servizio.nome};
+          this.listaServizi.push(servizioElement);
+        });
+      })).subscribe();
 
-    this.letturaFunzioniGestioneUtente();
+      this.letturaFunzioniGestioneUtente();
     }
   }
 
   letturaFunzioniGestioneUtente(): void {
-    this.funzioneService.letturaFunzioni().pipe(map(funzioniAbilitate => {
+    this.funzioneService.letturaFunzioni().pipe(map((funzioniAbilitate) => {
       funzioniAbilitate.forEach(funzione => {
         if (GruppoEnum.GESTIONE === funzione.gruppo && funzione.applicabileAServizio === 1) {
           this.listaFunzioni.push({
             value: funzione,
-            label: funzione.nome
+            label: funzione.nome,
+            checked: false
           });
         }
       });
+      this.asyncSubject.next(this.listaFunzioni);
+      this.asyncSubject.complete();
     })).subscribe();
   }
 
   isSelectValida(valoreCampo: number | string, listaOpzioniSelect: Array<OpzioneSelect>): boolean {
-    return valoreCampo !== undefined && valoreCampo !== listaOpzioniSelect[listaOpzioniSelect.length - 1]?.value;;
+    return valoreCampo !== undefined && valoreCampo !== listaOpzioniSelect[listaOpzioniSelect.length - 1]?.value;
+    ;
   }
 
-  getNomeEnte(enteId: number | string): string {
-    return this.listaEnti.filter(ente => ente.value === enteId)[0].label;
-  }
 
   setPlaceholder(campo: NgModel, tipo: string): string {
     if (this.isCampoInvalido(campo)) {
@@ -169,7 +204,7 @@ export class DatiPermessoComponent implements OnInit {
     const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
     const ret = Utils.isBefore(dataDaControllare, dataSistema) ||
       campo?.errors != null;
-    return ret;
+    return !this.isModificaPermessi ? ret : false;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -188,13 +223,30 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   onClickDeleteIcon(event) {
-    this.onDeletePermesso.emit(this.indexSezionePermesso);
+    if (!this.isModificaPermessi) {
+      this.onDeletePermesso.emit(this.indexSezionePermesso);
+    } else {
+      let mapPermessoFunzione: Map<number, PermessoFunzione> = new Map<number, PermessoFunzione>();
+      this.mapPermessoFunzione.forEach((permessoFunzione: PermessoFunzione, key: number) => {
+        permessoFunzione.permessoCancellato = true;
+        mapPermessoFunzione.set(key, permessoFunzione);
+      });
+      this.mapPermessoFunzione = mapPermessoFunzione;
+      const permesso: PermessoSingolo = this.setPermessoSingolo();
+      this.onChangeDatiPermesso.emit(permesso);
+      this.onDeletePermesso.emit(this.indexSezionePermesso);
+    }
   }
 
   onChangeModel(campo: NgModel) {
     if (campo?.name === 'societaId') {
+      this.datiPermesso.enteId = undefined;
       this.letturaEnti();
     } else if (campo?.name === 'enteId') {
+      if (this.datiPermesso.enteId == null) {
+        this.mapPermessoFunzione = new Map<number, PermessoFunzione>();
+      }
+      this.datiPermesso.servizioId = null;
       this.letturaServizi();
     }
     const permesso: PermessoSingolo = this.setPermessoSingolo();
@@ -202,16 +254,37 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   onChangeCheckBox($event: CheckboxChange, funzione: Funzione) {
-    if (this.mapPermessoFunzione.has(funzione.id) && $event.checked === false) {
-      this.mapPermessoFunzione.delete(funzione.id);
-    } else if ($event.checked === true) {
-      // inserimento NUOVO permesso
-      const permessoFunzione: PermessoFunzione = new PermessoFunzione();
-      permessoFunzione.permessoId = null;
-      permessoFunzione.funzioneId = funzione.id;
-      permessoFunzione.permessoCancellato = false;
-      this.mapPermessoFunzione.set(funzione.id, permessoFunzione);
+    if (!this.isModificaPermessi) {
+      if (this.mapPermessoFunzione.has(funzione.id) && $event.checked === false) {
+        this.mapPermessoFunzione.delete(funzione.id);
+      } else if ($event.checked === true) {
+        // inserimento NUOVO permesso
+        const permessoFunzione: PermessoFunzione = new PermessoFunzione();
+        permessoFunzione.permessoId = null;
+        permessoFunzione.funzioneId = funzione.id;
+        permessoFunzione.permessoCancellato = false;
+        this.mapPermessoFunzione.set(funzione.id, permessoFunzione);
+      }
+    } else {
+      // modifica NUOVO permesso
+      if (this.mapPermessoFunzione.has(funzione.id) && $event.checked === false) {
+        const permessoFunzione: PermessoFunzione = this.mapPermessoFunzione.get(funzione.id);
+        permessoFunzione.permessoCancellato = true;
+        this.mapPermessoFunzione.set(funzione.id, permessoFunzione);
+      } else if (this.mapPermessoFunzione.has(funzione.id) && $event.checked === true) {
+        const permessoFunzione: PermessoFunzione = this.mapPermessoFunzione.get(funzione.id);
+        permessoFunzione.permessoCancellato = false;
+        this.mapPermessoFunzione.set(funzione.id, permessoFunzione);
+      }  else if ($event.checked === true) {
+        // inserimento NUOVO permesso
+        const permessoFunzione: PermessoFunzione = new PermessoFunzione();
+        permessoFunzione.permessoId = null;
+        permessoFunzione.funzioneId = funzione.id;
+        permessoFunzione.permessoCancellato = false;
+        this.mapPermessoFunzione.set(funzione.id, permessoFunzione);
+      }
     }
+
     const permesso: PermessoSingolo = this.setPermessoSingolo();
     this.onChangeDatiPermesso.emit(permesso);
   }
@@ -220,8 +293,10 @@ export class DatiPermessoComponent implements OnInit {
     const permesso = new PermessoSingolo();
     permesso.index = this.indexSezionePermesso;
     this.listaPermessoFunzione = Array.from(this.mapPermessoFunzione, ([name, value]) => value);
-    this.datiPermesso.listaFunzioni = this.listaPermessoFunzione;
-    permesso.permessoCompleto = this.datiPermesso;
+    let permessoCompleto = new PermessoCompleto();
+    permessoCompleto = {...this.datiPermesso};
+    permessoCompleto.listaFunzioni = this.listaPermessoFunzione;
+    permesso.permessoCompleto = permessoCompleto;
     return permesso;
   }
 }

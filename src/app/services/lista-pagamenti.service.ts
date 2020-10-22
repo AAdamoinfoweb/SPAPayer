@@ -34,7 +34,7 @@ export class ListaPagamentiService {
         if (err.status == 401) {
           return of(null);
         } else
-          return caught;
+           return of(null);
       }));
   }
 
@@ -79,7 +79,7 @@ export class ListaPagamentiService {
         if (err.status == 401) {
           return of(null);
         } else
-          return caught;
+           return of(null);
       }));
   }
 }

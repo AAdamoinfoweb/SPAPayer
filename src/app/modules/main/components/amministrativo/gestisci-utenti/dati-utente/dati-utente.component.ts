@@ -43,6 +43,8 @@ export class DatiUtenteComponent implements OnInit {
   ngOnInit(): void {
     this.datiUtente = new InserimentoModificaUtente();
 
+    this.onValidaFormDatiUtenti.emit(true);
+
     if (this.codiceFiscale) {
       const parametriRicerca = new ParametriRicercaUtente();
       parametriRicerca.codiceFiscale = this.codiceFiscale;
@@ -61,8 +63,10 @@ export class DatiUtenteComponent implements OnInit {
       this.datiUtente.cognome = utente?.cognome;
       this.datiUtente.email = utente?.email;
       this.datiUtente.telefono = utente?.telefono;
-      this.datiUtente.attivazione = utente?.dataInizioValidita;
-      this.datiUtente.scadenza = utente?.dataFineValidita;
+      this.datiUtente.attivazione = utente?.dataInizioValidita ?
+        moment(utente?.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
+      this.datiUtente.scadenza = utente?.dataFineValidita ?
+        moment(utente?.dataFineValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
     })).subscribe();
   }
 
@@ -120,7 +124,7 @@ export class DatiUtenteComponent implements OnInit {
     const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
     const ret = Utils.isBefore(dataDaControllare, dataSistema) ||
       campo?.errors != null;
-    return ret;
+    return !this.isModificaUtente ? ret : false;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {

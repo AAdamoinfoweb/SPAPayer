@@ -8,8 +8,8 @@
   </it-breadcrumb>
 
   <!-- titolo -->
-  <h3 class="mb-2 page-title"><strong>Aggiungi Utente/Permessi</strong>
-    <span it-tooltip="{{tooltipAggiungiUtentePermessiTitle}}">
+  <h3 class="mb-2 page-title"><strong>{{titoloPagina}}</strong>
+    <span it-tooltip="{{tooltipTitle}}">
       <svg class="bg-light icon icon-lg icon-padded">
         <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
       </svg>
@@ -18,7 +18,8 @@
 
   <!-- sezione aggiungi dati-utente -->
   <app-dati-utente (onChangeDatiUtente)="onChangeDatiUtenti($event)"
-                   (onValidaFormDatiUtenti)="isFormDatiUtenteValido = $event"></app-dati-utente>
+                   (onValidaFormDatiUtenti)="isFormDatiUtenteValido = $event"
+                   [codiceFiscale]="codiceFiscaleModifica"></app-dati-utente>
 
   <hr>
 

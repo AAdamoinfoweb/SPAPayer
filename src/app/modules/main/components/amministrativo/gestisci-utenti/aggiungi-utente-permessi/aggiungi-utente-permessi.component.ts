@@ -3,7 +3,7 @@ import {
   Component,
   ComponentFactoryResolver,
   ComponentRef,
-  ElementRef,
+  ElementRef, Input,
   OnInit,
   Renderer2,
   ViewChild,
@@ -33,13 +33,18 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
 
   breadcrumbList = [];
 
-  readonly tooltipAggiungiUtentePermessiTitle = 'In questa pagina puoi aggiungere un utente amministratore e abilitarlo a specifici servizi';
+  tooltipTitle: string = `In questa pagina puoi aggiungere un utente amministratore e abilitarlo a specifici servizi`;
+  titoloPagina: string = `Aggiungi Utente/Permessi`;
 
   codiceFiscale: string;
+  codiceFiscaleModifica: string;
+
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
+  datiPermesso: PermessoCompleto;
   asyncSubject: AsyncSubject<string> = new AsyncSubject<string>();
   mapPermessi: Map<number, PermessoCompleto> = new Map();
   isFormDatiUtenteValido = false;
+  isModifica = false;
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
@@ -52,31 +57,37 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, private amministrativoService: AmministrativoService,
               private permessoService: PermessoService) {
-    // get route per logica inserimento o modifica
-    this.activatedRoute.url.subscribe((urlSegments: UrlSegment[]) => {
-      if (urlSegments[0].path === 'modificaUtentePermessi') {
-        this.activatedRoute.params.subscribe((params: Params) => {
-          this.codiceFiscale = params.userid;
-        });
-      }
-    });
-
     // codice fiscale da utente service per inserimento
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
 
-    this.inizializzaBreadcrumbList();
   }
+
 
   inizializzaBreadcrumbList(): void {
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', '/gestioneUtenti', null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Aggiungi Utente/Permessi', null, null));
+    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', '/gestioneUtenti/' + this.amministrativoService.idFunzione, null));
+    this.breadcrumbList.push(new Breadcrumb(3, this.isModifica ? 'Modifica Utente/Permessi' : 'Aggiungi Utente/Permessi', null, null));
   }
 
   ngOnInit(): void {
+    // get route per logica inserimento o modifica
+    this.activatedRoute.params.subscribe((params) => {
+      if (this.activatedRoute.snapshot.url[0].path === 'modificaUtentePermessi') {
+        this.isModifica = true;
+        this.titoloPagina = `${this.isModifica ? 'Modifica' : 'Aggiungi'}  Utente/Permessi`;
+        this.tooltipTitle =
+          // tslint:disable-next-line:max-line-length
+          `In questa pagina puoi ${this.isModifica ? 'modificare' : 'aggiungere'} un utente amministratore e abilitarlo a specifici servizi`;
+        this.inizializzaBreadcrumbList();
+        this.codiceFiscaleModifica = this.activatedRoute.snapshot.paramMap.get('userid');
+        this.letturaPermessi(this.codiceFiscaleModifica);
+      } else {
+        this.inizializzaBreadcrumbList();
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -87,18 +98,65 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     this.datiUtente = datiUtente;
   }
 
-  aggiungiSezionePermesso(): void {
+  aggiungiSezionePermesso(datiPermesso?: PermessoCompleto): number {
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiPermessoComponent);
     this.componentRef = this.target.createComponent(childComponent);
-    this.componentRef.instance.indexSezionePermesso = this.target.length;
+    const indexPermesso = this.target.length;
+    this.componentRef.instance.indexSezionePermesso = indexPermesso;
     this.componentRef.instance.onDeletePermesso.subscribe(index => {
-      this.mapPermessi.delete(index);
+      // todo controllare cancellazione permesso su icona cestino e valorizzare permessoId
+      const permessoCompleto = this.mapPermessi.get(index);
+      const isPermessoDaModificare: boolean = permessoCompleto.listaFunzioni
+        .some((permessoFunzione) => permessoFunzione.permessoId != null);
+      if (!isPermessoDaModificare) {
+        this.mapPermessi.delete(index);
+      }
       this.target.remove(index - 1);
     });
-    this.componentRef.instance.onChangeDatiPermesso.subscribe((permesso: PermessoSingolo) => {
-      this.mapPermessi.set(permesso.index, permesso.permessoCompleto);
+    this.componentRef.instance.onChangeDatiPermesso.subscribe((currentPermesso: PermessoSingolo) => {
+      if(this.mapPermessi.has(currentPermesso.index)) {
+        const permessoCompleto: PermessoCompleto = this.mapPermessi.get(currentPermesso.index);
+        if(permessoCompleto.enteId == null && permessoCompleto.listaFunzioni.length > 0) {
+          // da amministrativo a gestionale
+          if(currentPermesso.permessoCompleto.enteId != null) {
+            // elimina logicamente permesso amministrativo precedente
+            permessoCompleto.listaFunzioni[0].permessoCancellato = true;
+            this.mapPermessi.set(Utils.uuidv4(), permessoCompleto);
+          }
+        } else if (permessoCompleto.enteId != null && permessoCompleto.listaFunzioni.length > 0){
+          // da gestionale ad amministrativo
+          if(currentPermesso.permessoCompleto.enteId == null) {
+            // elimina logicamente permessi gestionali precedenti
+            const listaFunzioniAggiornata = permessoCompleto.listaFunzioni.map((permessoFunzione) => {
+              permessoFunzione.permessoCancellato = true;
+              return permessoFunzione;
+            });
+            permessoCompleto.listaFunzioni = listaFunzioniAggiornata;
+            this.mapPermessi.set(Utils.uuidv4(), permessoCompleto);
+          }
+        }
+      }
+      this.mapPermessi.set(currentPermesso.index, currentPermesso.permessoCompleto);
     });
+    if (datiPermesso) {
+      this.datiPermesso = datiPermesso;
+      this.componentRef.instance.datiPermesso = datiPermesso;
+    }
     this.componentRef.changeDetectorRef.detectChanges();
+    return indexPermesso;
+  }
+
+  letturaPermessi(codiceFiscale) {
+    this.permessoService.letturaPermessi(codiceFiscale, this.amministrativoService.idFunzione).subscribe((listaPermessi: PermessoCompleto[]) => {
+      listaPermessi.forEach((permesso: PermessoCompleto) => {
+        permesso.dataInizioValidita = permesso.dataInizioValidita ?
+          moment(permesso.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
+        permesso.dataFineValidita = permesso.dataFineValidita ?
+          moment(permesso.dataFineValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
+        const indexPermesso = this.aggiungiSezionePermesso(permesso);
+        this.mapPermessi.set(indexPermesso, permesso);
+      });
+    });
   }
 
   disabilitaBottone(): boolean {
@@ -111,8 +169,10 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
     const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
     const datePermesso = listaPermessi && listaPermessi.length > 0
-      ? listaPermessi.filter((permesso: PermessoCompleto) => Utils.isBefore(permesso.dataInizioValidita, dataSistema) ||
-        Utils.isBefore(permesso.dataFineValidita, dataSistema)) : [];
+      ? listaPermessi.filter((permesso: PermessoCompleto) =>
+        !permesso.listaFunzioni.some((permessoFunzione) => permessoFunzione.permessoId != null) &&
+        (Utils.isBefore(permesso.dataInizioValidita, dataSistema) ||
+        Utils.isBefore(permesso.dataFineValidita, dataSistema))) : [];
     const ret = Utils.isBefore(dataAttivazione, dataSistema) ||
       (this.datiUtente.scadenza ? Utils.isBefore(dataScadenza, dataSistema) : false) || datePermesso.length > 0;
     return ret;
@@ -143,14 +203,15 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
       moment(utente.scadenza, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     utente.attivazione = utente.attivazione ?
       moment(utente.attivazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-    this.utenteService.inserimentoAggiornamentoUtente(this.codiceFiscale, utente, this.amministrativoService.idFunzione)
+    const codiceFiscale = this.isModifica ? this.codiceFiscaleModifica : this.codiceFiscale
+    this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.amministrativoService.idFunzione)
       .pipe(map(datiUtente => {
         // se presenti inserimento permessi
         let listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
         if (listaPermessi.length > 0) {
           listaPermessi = listaPermessi.map(permesso => {
-            if (permesso.enteId === null) {
-              // creazione funzione per permesso amministrativo
+            if (permesso.enteId === null && permesso.listaFunzioni.length === 0) {
+              // creazione funzione per permesso amministrativo al momento dell'inserimento
               const funzionePermessoAmministrativo = new PermessoFunzione();
               funzionePermessoAmministrativo.permessoId = null;
               funzionePermessoAmministrativo.permessoCancellato = false;
@@ -164,18 +225,25 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
               moment(permesso.dataInizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
             return permesso;
           });
-          this.permessoService.inserimentoModificaPermessi(this.codiceFiscale, listaPermessi, this.amministrativoService.idFunzione)
+          this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessi, this.amministrativoService.idFunzione)
             .pipe(map(res => {
-              this.asyncSubject.next(this.codiceFiscale);
+              this.asyncSubject.next(codiceFiscale);
               this.asyncSubject.complete();
             }))
             .subscribe();
         } else {
-          this.asyncSubject.next(this.codiceFiscale);
+          this.asyncSubject.next(codiceFiscale);
           this.asyncSubject.complete();
         }
       })).subscribe();
-    this.asyncSubject.subscribe(codiceFiscale => this.router.navigate(['/modificaUtentePermessi', codiceFiscale]));
+    this.asyncSubject.subscribe(cf => {
+      this.codiceFiscaleModifica = cf;
+      this.router.routeReuseStrategy.shouldReuseRoute = function () {
+        return false;
+      }
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/modificaUtentePermessi', cf]);
+    });
   }
 
   onClickAnnulla() {
