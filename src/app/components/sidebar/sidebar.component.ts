@@ -44,7 +44,7 @@ export class SidebarComponent implements OnInit {
           this.menuService.userEventChange.emit();
           let menuTemp = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
           let idx = menuTemp.findIndex(o => o["mappaFunzioni"]);
-          if (menuTemp[idx]["mappaFunzioni"]) {
+          if (idx != -1 && menuTemp[idx]["mappaFunzioni"]) {
             this.amministrativoService.mappaFunzioni = JSON.parse(menuTemp[idx]["mappaFunzioni"]);
             menuTemp.splice([idx], 1);
           }
