@@ -30,7 +30,6 @@ export class SidebarComponent implements OnInit {
     this.waiting = true;
     this.menuService.infoUtenteEmitter
       .subscribe((info) => {
-        this.waiting = false;
         if (info) {
           localStorage.setItem('nome', info.nome);
           localStorage.setItem('cognome', info.cognome);
@@ -49,6 +48,7 @@ export class SidebarComponent implements OnInit {
             this.amministrativoService.mappaFunzioni = JSON.parse(this.menu[idx]["mappaFunzioni"]);
             delete this.menu[idx];
           }
+          this.waiting = false;
         }
       });
     this.versionApplicativo = environment.sentry.release;
