@@ -45,7 +45,7 @@ const routes: Routes = [
   {path: 'modificaUtentePermessi/:userid', component: AggiungiUtentePermessiComponent},
   {path: 'societa', component: GestisciSocietaComponent},
   {path: 'aggiungiSocieta', component: AggiungiSocietaComponent},
-  {path: 'modificaSocieta', component: ModificaSocietaComponent},
+  {path: 'modificaSocieta/:societaId', component: ModificaSocietaComponent},
   {path: 'dettaglioSocieta', component: DettaglioSocietaComponent}
 ];
 

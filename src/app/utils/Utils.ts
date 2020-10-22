@@ -1,6 +1,10 @@
 import * as moment from 'moment';
 import * as XLSX from 'xlsx';
 import * as FILESAVER from 'file-saver';
+import * as jsPDF from 'jspdf';
+import {tipoColonna} from '../enums/TipoColonna.enum';
+import {ImmaginePdf} from '../modules/main/model/tabella/ImmaginePdf';
+import {Tabella} from '../modules/main/model/tabella/Tabella';
 
 export class Utils {
 
@@ -13,6 +17,49 @@ export class Utils {
 
   static creaIcona = (path, color, tooltip, display) => {
     return {path, color, tooltip, display};
+  }
+
+  static esportaTabellaInFilePdf(tabella: Tabella, titoloFile: string, immagini: ImmaginePdf[]): void {
+    const headerColonne = tabella.cols.map(col => col.header);
+    const righePdf = [];
+    tabella.rows.forEach(riga => {
+      const rigaPdf = [];
+      Object.keys(riga).forEach((elemento, indice) => {
+        let elementoRigaPdf;
+        switch (tabella.cols[indice].type) {
+          case tipoColonna.ICONA:
+            elementoRigaPdf = riga[elemento]?.display === 'inline' ? '' : null;
+            break;
+          case tipoColonna.LINK:
+            elementoRigaPdf = riga[elemento]?.testo || null;
+            break;
+          case tipoColonna.TESTO:
+            elementoRigaPdf = riga[elemento]?.value || null;
+            break;
+          default:
+            elementoRigaPdf = null;
+            break;
+        }
+        rigaPdf.push(elementoRigaPdf);
+      });
+      righePdf.push(rigaPdf);
+    });
+
+    // @ts-ignore
+    const filePdf = new jsPDF.default('l', 'pt', 'a4');
+    filePdf.setProperties({title: titoloFile});
+    // @ts-ignore
+    filePdf.autoTable(headerColonne, righePdf, {didDrawCell: data => {
+      immagini.forEach(immagine => {
+        if (data.section === 'body' && data.column.index === immagine.indiceColonna && data.row.raw[immagine.indiceColonna] != null) {
+          const icona = new Image();
+          icona.src = immagine.srcIcona;
+          filePdf.addImage(icona, 'PNG', data.cell.x + immagine.posizioneX, data.cell.y + immagine.posizioneY, immagine.larghezza, immagine.altezza);
+        }
+      });
+    }});
+    const blob = filePdf.output('blob');
+    window.open(URL.createObjectURL(blob));
   }
 
   static creaFileExcel(rows: any, headers: string[], sheet: any, sheetNames: any, workbook: any, fileName: string): void {

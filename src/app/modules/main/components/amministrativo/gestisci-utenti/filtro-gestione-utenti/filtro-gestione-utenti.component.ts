@@ -72,8 +72,8 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
       if (this.filtroSocieta) {
         this.overlayService.caricamentoEvent.emit(true);
-        const isFiltoSocietaValido = this.listaSocieta.some(item => item.value === this.filtroSocieta);
-        if (isFiltoSocietaValido) {
+        const isFiltroSocietaValido = this.listaSocieta.some(item => item.value === this.filtroSocieta);
+        if (isFiltroSocietaValido) {
           this.filtroGestioneUtentiApplicato.societaId = this.filtroSocieta;
           const parametriRicercaUtente = new ParametriRicercaUtente();
           parametriRicercaUtente.societaId = this.filtroSocieta;
