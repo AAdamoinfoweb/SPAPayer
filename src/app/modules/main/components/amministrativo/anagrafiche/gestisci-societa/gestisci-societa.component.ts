@@ -13,6 +13,7 @@ import {SocietaService} from '../../../../../../services/societa.service';
 import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
+import {MenuService} from '../../../../../../services/menu.service';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -27,6 +28,8 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   readonly funzioneGestioneUtenti = '/gestioneUtenti';
 
   breadcrumbList = [];
+
+  isMenuCarico = false;
 
   listaSocieta: Array<Societa> = new Array<Societa>();
   societaDaModificare: number = null;
@@ -56,7 +59,8 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
   constructor(router: Router, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
-              private renderer: Renderer2, private societaService: SocietaService, private el: ElementRef
+              private renderer: Renderer2, private societaService: SocietaService, private el: ElementRef,
+              private menuService: MenuService
               ) {
     super(router, overlayService, route, http, amministrativoService);
   }
@@ -69,21 +73,35 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   ngOnInit(): void {
-    this.waitingEmitter.subscribe((value) => {
-      this.waiting = value;
-      this.inizializzaBreadcrumbList();
+    this.waitingEmitter.subscribe(statoCaricamento => {
+      this.overlayService.caricamentoEvent.emit(true);
+      if (this.amministrativoService.mappaFunzioni) {
+        this.isMenuCarico = Object.keys(this.amministrativoService.mappaFunzioni).length > 0;
+      }
 
-      this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
-        this.listaSocieta = listaSocieta;
-
-        // TODO subscribe societaservice
-
-        this.listaSocieta.forEach(societa => {
-          this.tableData.rows.push(this.creaRigaTabella(societa));
+      if (this.isMenuCarico) {
+        this.init(statoCaricamento);
+      } else {
+        this.menuService.menuCaricatoEvent.subscribe(() => {
+          this.init(statoCaricamento);
         });
-        this.tempTableData = Object.assign({}, this.tableData);
-      });
+      }
     });
+  }
+
+  init(statoCaricamento: boolean) {
+    this.inizializzaBreadcrumbList();
+
+    this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
+      this.listaSocieta = listaSocieta;
+
+      this.listaSocieta.forEach(societa => {
+        this.tableData.rows.push(this.creaRigaTabella(societa));
+      });
+      this.tempTableData = Object.assign({}, this.tableData);
+    });
+    this.overlayService.caricamentoEvent.emit(false);
+    this.waiting = statoCaricamento;
   }
 
   ngAfterViewInit(): void {
