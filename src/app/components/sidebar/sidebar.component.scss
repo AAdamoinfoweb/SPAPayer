@@ -1,31 +1,59 @@
-a.is-active{
- color: #78C2AD !important;
+a.active {
+  color: #003e54 !important;
+  list-style-type: none !important;
 }
 
+ul.none {
+  list-style-type: none;
+  border-bottom: 1px solid #ffffff;
+  border-top: 1px solid #ffffff;
+  background-color: #cef1ff;
+  color: #003e54
+}
+
+ul.none-parent {
+  list-style-type: none;
+  border-bottom: 1px solid #e7e6e4;
+  border-top: 1px solid #e7e6e4;
+  padding-left: 0px;
+}
+
+li:hover {
+  background-color: #cef1ff;
+  color: #003e54
+}
+
+li.active {
+  background-color: #f2f2f2;
+}
 
 .nav-100 {
- width: 100%;
+  width: 100%;
 }
 
-a.logout{
- cursor: pointer;
+li:not(:last-child) {
+  border-bottom: 1px solid #e7e6e4;
 }
 
-div.logo{
- a.logo-normal{
-     white-space: pre-wrap;
-     white-space: -moz-pre-wrap;
-     white-space: -pre-wrap;
-     white-space: -o-pre-wrap;
-     word-wrap: break-word;
- }
+a.logout {
+  cursor: pointer;
 }
 
-div.logo-rer{
- position: relative;
- z-index: 99;
- left: 28px;
- max-height: 23%;
+div.logo {
+  a.logo-normal {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+  }
+}
+
+div.logo-rer {
+  position: fixed;
+  z-index: 99;
+  left: 28px;
+  bottom: 8px;
 }
 
 //div.sidebar-no-overflow{
@@ -45,15 +73,25 @@ li > a {
   margin: 0 0 0 15px !important;
   display: unset !important;
   line-height: 40px !important;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 li > a > span {
-  font-size: 18px;
+  //font-size: 18px;
+  float: right;
+  font-size: 1.23em;
+  text-align: right;
+  width: 35px;
 }
 
 @media screen and (max-width: 992px) {
   li > a > span {
-    font-size: 16px
+    //font-size: 16px;
+    float: right;
+    font-size: 1.23em;
+    text-align: right;
+    width: 35px;
   }
 
   .sidebar-overflow {

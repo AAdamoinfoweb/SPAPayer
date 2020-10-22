@@ -211,6 +211,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       .subscribe((valoriCampiPrecompilati) => {
         this.isFaseVerificaPagamento = true;
         this.aggiungiCampoImporto();
+
         // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO (NB: al momento la chiamata crasha lato backend per servizio LV2BO)
         this.impostaValoriCampiOutput(valoriCampiPrecompilati);
         this.overlayService.caricamentoEvent.emit(false);

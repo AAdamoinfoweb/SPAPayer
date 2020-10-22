@@ -7,6 +7,8 @@ import {AmministrativoParentComponent} from "../modules/main/components/amminist
 export class AmministrativoService {
   idFunzione: string;
 
+  mappaFunzioni = {};
+
   constructor() {
   }
 

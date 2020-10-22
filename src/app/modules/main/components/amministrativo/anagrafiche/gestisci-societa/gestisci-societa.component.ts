@@ -10,6 +10,8 @@ import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
+import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
+import {Utils} from '../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -19,6 +21,7 @@ import {SocietaService} from '../../../../../../services/societa.service';
 export class GestisciSocietaComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
+  readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
 
   breadcrumbList = [];
 
@@ -32,16 +35,14 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     {type: ToolEnum.EXPORT_XLS}
   ];
 
-  // TODO imposta tabs
-  tabs = [
-  ];
-
-  nomeTabCorrente: string;
-
   // TODO imposta tableData
   tableData = {
     rows: [],
     cols: [
+      {field: 'nome', header: 'Nome', type: tipoColonna.TESTO},
+      {field: 'telefono', header: 'Telefono', type: tipoColonna.TESTO},
+      {field: 'email', header: 'Email', type: tipoColonna.TESTO},
+      {field: 'utentiAbilitati', header: 'Utenti abilitati', type: tipoColonna.LINK}
     ],
     dataKey: 'nome.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
@@ -74,9 +75,10 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
         // TODO subscribe societaservice
 
-        // this.listaSocieta.forEach(societa => {
-        //   this.tableData.rows.push(this.creaRigaTabella(societa));
-        // });
+        this.listaSocieta.forEach(societa => {
+          this.tableData.rows.push(this.creaRigaTabella(societa));
+        });
+        this.tempTableData = Object.assign({}, this.tableData);
       });
     });
   }
@@ -87,12 +89,21 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   creaRigaTabella(societa: Societa): object {
-    // TODO metodo creaRigaTabella
-    return null;
-  }
 
-  onChangeTab(value) {
-    // TODO metodo onChangeTab
+    // TODO fixare logica lettura idfunzione
+
+    // const linkGestioneUtenti = this.amministrativoService.funzioni.gestisciUtenti.link
+    //   + '?funzione=' + btoa(this.amministrativoService.funzioni.gestisciUtenti.idFunzione.toString())
+    //   + '&societaId=' + societa.id;
+    const linkGestioneUtenti = 'gestioneUtenti';
+
+    const riga = {
+      nome: {value: societa.nome},
+      telefono: {value: societa.telefono},
+      email: {value: societa.email},
+      utentiAbilitati: Utils.creaLink(null, linkGestioneUtenti, this.iconaGruppoUtenti)
+    };
+    return riga;
   }
 
   eseguiAzioni(azioneTool) {
@@ -112,7 +123,6 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     listaSocietaFiltrate.forEach(societa => {
       this.tableData.rows.push(this.creaRigaTabella(societa));
     });
-    this.onChangeTab(this.nomeTabCorrente);
   }
 
   getTotaliPerRecord(): string {

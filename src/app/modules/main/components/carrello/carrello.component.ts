@@ -169,6 +169,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
     observable.subscribe(resp => {
       this.overlayService.caricamentoEvent.emit(false);
       if (resp instanceof Array) {
+        //esito OK
         const banner: Banner = {
           titolo: 'Operazione non consentita!',
           testo: 'Uno o più bollettini sono già stati pagati o in corso di pagamento. Per maggiori informazioni contattare l’help desk',
