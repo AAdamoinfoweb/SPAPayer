@@ -133,7 +133,18 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
   esportaTabellaInFileExcel(): void {
     const table = JSON.parse(JSON.stringify(this.tempTableData));
-    // TODO metodo esportaTabellaInFileExcel
+    const headerColonne = table.cols.filter(col => col.field != 'utentiAbilitati').map(col => col.header);
+    const righe = table.rows.map(riga => {
+      delete riga.utentiAbilitati;
+      delete riga.id;
+      riga.nome = riga.nome.value;
+      riga.telefono = riga.telefono.value;
+      riga.email = riga.email.value;
+      return riga;
+    });
+
+    const workbook = {Sheets: {'Societa': null}, SheetNames: []};
+    Utils.creaFileExcel(righe, headerColonne, 'Societa', ['Societa'], workbook, 'Lista Societa');
   }
 
   onChangeListaSocieta(listaSocietaFiltrate: Societa[]): void {
