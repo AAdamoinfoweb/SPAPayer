@@ -113,17 +113,26 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     } else if (azioneTool === ToolEnum.UPDATE) {
       this.router.navigate(['/modificaSocieta', this.societaDaModificare]);
     } else if (azioneTool === ToolEnum.EXPORT_PDF) {
-      this.esportaTabellaInFilePdf(dataTable);
+      this.esportaTabellaInFilePdf();
     } else if (azioneTool === ToolEnum.EXPORT_XLS) {
-      this.esportaTabellaInFileExcel(dataTable);
+      this.esportaTabellaInFileExcel();
     }
   }
 
-  esportaTabellaInFilePdf(dataTable: any): void {
-    // TODO metodo esportaTabellaInFilePdf
+  esportaTabellaInFilePdf(): void {
+    const table = JSON.parse(JSON.stringify(this.tempTableData));
+
+    // Rimuovo la colonna utenti abilitati dalla stampa del pdf
+    table.cols = table.cols.filter (col => col.field != 'utentiAbilitati');
+    table.rows.forEach(riga => {
+      delete riga['utentiAbilitati'];
+    });
+
+    Utils.esportaTabellaInFilePdf(table, 'Lista Società', []);
   }
 
-  esportaTabellaInFileExcel(dataTable: any): void {
+  esportaTabellaInFileExcel(): void {
+    const table = JSON.parse(JSON.stringify(this.tempTableData));
     // TODO metodo esportaTabellaInFileExcel
   }
 
