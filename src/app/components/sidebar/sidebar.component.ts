@@ -4,6 +4,7 @@ import {MenuService} from '../../services/menu.service';
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from "../../services/amministrativo.service";
+import {OverlayService} from "../../services/overlay.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -19,7 +20,7 @@ export class SidebarComponent implements OnInit {
   isUtenteAnonimo: boolean;
   selectedElement: string = '';
 
-  constructor(
+  constructor(private overlayService: OverlayService,
     private amministrativoService: AmministrativoService,
     public menuService: MenuService,
     private http: HttpClient,
@@ -41,15 +42,18 @@ export class SidebarComponent implements OnInit {
           } else {
             this.isUtenteAnonimo = true;
           }
-          this.menuService.userEventChange.emit();
+
           let menuTemp = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
           let idx = menuTemp.findIndex(o => o["mappaFunzioni"]);
-          if (menuTemp[idx]["mappaFunzioni"]) {
+          if (idx != -1 && menuTemp[idx]["mappaFunzioni"]) {
             this.amministrativoService.mappaFunzioni = JSON.parse(menuTemp[idx]["mappaFunzioni"]);
             menuTemp.splice([idx], 1);
           }
           this.menu = menuTemp;
           this.waiting = false;
+          this.menuService.userEventChange.emit();
+          this.overlayService.caricamentoEvent.emit(false);
+          this.menuService.menuCaricatoEvent.emit();
         }
       });
     this.versionApplicativo = environment.sentry.release;

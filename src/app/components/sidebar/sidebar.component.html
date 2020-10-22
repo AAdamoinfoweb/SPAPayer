@@ -9,7 +9,6 @@
       {{ nomeUtente }}
     </a>
   </div>
-  {{selectedElement}}
   <div *ngIf="!waiting"
        [ngClass]="{'sidebar-wrapper': true, 'sidebar-overflow': isUtenteAnonimo, 'pb-0': !isUtenteAnonimo}">
     <ul class="link-list none-parent">
@@ -49,11 +48,12 @@
                   </ng-container>
                 </a>
               </li>
-              <ul [id]="'collSub-' + j" class="link-sublist collapse" *ngIf="sub.funzioni">
+              <ul [id]="'collSub-' + j" class="link-sublist collapse none" [ngClass]="{'show': true}"
+                  *ngIf="sub.funzioni">
                 <ng-container *ngFor="let subItem of sub.funzioni">
                   <li>
                     <a (click)="getRouterLink(subItem)" class="list-item medium active"
-                       data-toggle="collapse" aria-expanded="true"><span>{{subItem.nome}}</span></a>
+                       data-toggle="collapse" aria-expanded="true">{{subItem.nome}}</a>
                   </li>
                 </ng-container>
               </ul>
