@@ -26,7 +26,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   breadcrumbList = [];
 
   listaSocieta: Array<Societa> = new Array<Societa>();
-  filtroSocieta: string = null;
+  societaDaModificare: number = null;
 
   toolbarIcons = [
     {type: ToolEnum.INSERT},
@@ -98,6 +98,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     const linkGestioneUtenti = 'gestioneUtenti';
 
     const riga = {
+      id: {value: societa.id},
       nome: {value: societa.nome},
       telefono: {value: societa.telefono},
       email: {value: societa.email},
@@ -107,7 +108,16 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   eseguiAzioni(azioneTool) {
-    // TODO metodo eseguiAzioni
+    const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
+    if (azioneTool === ToolEnum.INSERT) {
+      this.router.navigateByUrl('/aggiungiSocieta');
+    } else if (azioneTool === ToolEnum.UPDATE) {
+      this.router.navigate(['/modificaSocieta', this.societaDaModificare]);
+    } else if (azioneTool === ToolEnum.EXPORT_PDF) {
+      this.esportaTabellaInFilePdf(dataTable);
+    } else if (azioneTool === ToolEnum.EXPORT_XLS) {
+      this.esportaTabellaInFileExcel(dataTable);
+    }
   }
 
   esportaTabellaInFilePdf(dataTable: any): void {
@@ -126,12 +136,17 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   getTotaliPerRecord(): string {
-    // TODO metodo getTotaliPerRecord
-    return null;
+    return 'Totale: ' + this.tableData.rows.length + ' società';
   }
 
-  selezionaRigaTabella(rowsChecked): void {
-    // TODO metodo selezionaRigaTabella
+  selezionaRigaTabella(righeSelezionate): void {
+    if (righeSelezionate.length === 1) {
+      this.societaDaModificare = righeSelezionate[0].id.value;
+      this.toolbarIcons[1].disabled = false;
+    } else {
+      this.societaDaModificare = null;
+      this.toolbarIcons[1].disabled = true;
+    }
   }
 
 }
