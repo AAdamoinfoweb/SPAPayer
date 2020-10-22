@@ -22,15 +22,14 @@ export class SidebarComponent implements OnInit {
   constructor(
     private amministrativoService: AmministrativoService,
     public menuService: MenuService,
-              private http: HttpClient,
-              private router: Router) {
+    private http: HttpClient,
+    private router: Router) {
   }
 
   ngOnInit(): void {
     this.waiting = true;
     this.menuService.infoUtenteEmitter
       .subscribe((info) => {
-        this.waiting = false;
         if (info) {
           localStorage.setItem('nome', info.nome);
           localStorage.setItem('cognome', info.cognome);
@@ -43,8 +42,14 @@ export class SidebarComponent implements OnInit {
             this.isUtenteAnonimo = true;
           }
           this.menuService.userEventChange.emit();
-          this.menu = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
-          this.amministrativoService.mappaFunzioni = this.menu["mappaFunzioni"];
+          let menuTemp = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
+          let idx = menuTemp.findIndex(o => o["mappaFunzioni"]);
+          if (menuTemp[idx]["mappaFunzioni"]) {
+            this.amministrativoService.mappaFunzioni = JSON.parse(menuTemp[idx]["mappaFunzioni"]);
+            menuTemp.splice([idx], 1);
+          }
+          this.menu = menuTemp;
+          this.waiting = false;
         }
       });
     this.versionApplicativo = environment.sentry.release;
@@ -66,7 +71,7 @@ export class SidebarComponent implements OnInit {
       if (item.nome === 'Accedi') {
         localStorage.setItem('loginDaAnonimo', 'true');
         //window.location.href = environment.bffBaseUrl + item.route;
-        window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
+        window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975I&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
       } else if (item.nome === 'Esci') {
         this.http.get(environment.bffBaseUrl + '/logout', {withCredentials: true}).subscribe((body: any) => {
           if (body.url) {
