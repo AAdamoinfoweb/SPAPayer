@@ -12,6 +12,7 @@ import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
 import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
+import {Tabella} from '../../../../model/tabella/Tabella';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -22,6 +23,8 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
+
+  readonly funzioneGestioneUtenti = '/gestioneUtenti';
 
   breadcrumbList = [];
 
@@ -89,13 +92,10 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   creaRigaTabella(societa: Societa): object {
-
-    // TODO fixare logica lettura idfunzione
-
-    // const linkGestioneUtenti = this.amministrativoService.funzioni.gestisciUtenti.link
-    //   + '?funzione=' + btoa(this.amministrativoService.funzioni.gestisciUtenti.idFunzione.toString())
-    //   + '&societaId=' + societa.id;
-    const linkGestioneUtenti = 'gestioneUtenti';
+    // TODO fixare logica lettura idfunzione (si rompe se il menu non è carico; emittare in sidebar o amministrativo-parent un waiting/spinner)
+    const linkGestioneUtenti = this.funzioneGestioneUtenti
+      + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneUtenti])
+      + '&societaId=' + societa.id;
 
     const riga = {
       id: {value: societa.id},
@@ -108,7 +108,6 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   eseguiAzioni(azioneTool) {
-    const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     if (azioneTool === ToolEnum.INSERT) {
       this.router.navigateByUrl('/aggiungiSocieta');
     } else if (azioneTool === ToolEnum.UPDATE) {
