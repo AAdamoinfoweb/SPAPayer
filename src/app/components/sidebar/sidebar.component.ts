@@ -3,6 +3,7 @@ import {environment} from '../../../environments/environment';
 import {MenuService} from '../../services/menu.service';
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
+import {AmministrativoService} from "../../services/amministrativo.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -18,7 +19,9 @@ export class SidebarComponent implements OnInit {
   isUtenteAnonimo: boolean;
   selectedElement: string = '';
 
-  constructor(public menuService: MenuService,
+  constructor(
+    private amministrativoService: AmministrativoService,
+    public menuService: MenuService,
               private http: HttpClient,
               private router: Router) {
   }
@@ -41,6 +44,7 @@ export class SidebarComponent implements OnInit {
           }
           this.menuService.userEventChange.emit();
           this.menu = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
+          this.amministrativoService.mappaFunzioni = this.menu["mappaFunzioni"];
         }
       });
     this.versionApplicativo = environment.sentry.release;
@@ -62,7 +66,7 @@ export class SidebarComponent implements OnInit {
       if (item.nome === 'Accedi') {
         localStorage.setItem('loginDaAnonimo', 'true');
         //window.location.href = environment.bffBaseUrl + item.route;
-        window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975I&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
+        window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
       } else if (item.nome === 'Esci') {
         this.http.get(environment.bffBaseUrl + '/logout', {withCredentials: true}).subscribe((body: any) => {
           if (body.url) {
