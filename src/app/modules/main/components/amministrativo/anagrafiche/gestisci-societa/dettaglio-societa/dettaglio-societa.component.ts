@@ -34,8 +34,8 @@ export class DettaglioSocietaComponent implements OnInit {
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
     this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Societa', null, null));
-    this.breadcrumbList.push(new Breadcrumb(4, this.getTestoFunzione() + ' Societa', null, null));
+    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Società', null, null));
+    this.breadcrumbList.push(new Breadcrumb(4, this.getTestoFunzione() + ' Società', null, null));
   }
 
   controllaTipoFunzione() {

@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {NgForm, NgModel} from '@angular/forms';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
+import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 
 @Component({
   selector: 'app-dati-societa',
@@ -18,6 +19,8 @@ export class DatiSocietaComponent implements OnInit {
   @Input()
   funzione: FunzioneGestioneEnum;
 
+  readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -25,5 +28,17 @@ export class DatiSocietaComponent implements OnInit {
 
   onChangeForm(form: NgForm) {
     // TODO onChangeForm
+  }
+
+  isCampoInvalido(campo: NgModel) {
+    return campo.control?.errors != null;
+  }
+
+  getMessaggioErrore(campo: NgModel): string {
+    if (campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
+    } else {
+      return 'Campo non valido';
+    }
   }
 }
