@@ -36,7 +36,7 @@ export class DatiPermessoComponent implements OnInit {
   @Input() codiceFiscale: string;
 
   isCalendarOpen = false;
-  readonly minDateDDMMYYYY = 'DD/MM/YYYY';
+  readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
   readonly tipoData = ECalendarValue.String;
 
   @Input() datiPermesso: PermessoCompleto;

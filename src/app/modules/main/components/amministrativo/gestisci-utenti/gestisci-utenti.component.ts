@@ -97,6 +97,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
         this.tempTableData = Object.assign({}, this.tableData);
       })).subscribe();
     });
+    this.tempTableData = Object.assign({}, this.tableData);
   }
 
   ngAfterViewInit(): void {

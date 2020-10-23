@@ -15,8 +15,9 @@
                             pattern="^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$" required
                             #codicefiscaleinput = "ngModel" [(ngModel)]="codiceFiscale" [disabled]="isModificaUtente"
                             [suggestions]="listaCodiciFiscali" (completeMethod)="loadSuggestions($event)"
-                            (onClear)="clearAutocompleteCodiceFiscale()" (ngModelChange)="controlloCodiceFiscale($event)"
-                            [minLength]="minCharsToRetrieveCF" maxlength="16" delay="0" autoHighlight="true">
+                            (onClear)="clearAutocompleteCodiceFiscale()"
+                            [minLength]="minCharsToRetrieveCF" maxlength="16" delay="0" autoHighlight="true"
+                            (focusout)="controlloCodiceFiscale($event)">
             </p-autoComplete>
           </div>
         </div>
