@@ -90,10 +90,12 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
 
       const parametriRicercaUtente = new ParametriRicercaUtente();
       this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
-        utenti.forEach(utente => {
-          this.listaUtente.push(utente);
-          this.tableData.rows.push(this.creaRigaTabella(utente));
-        });
+        if (utenti != null) {
+          utenti.forEach(utente => {
+            this.listaUtente.push(utente);
+            this.tableData.rows.push(this.creaRigaTabella(utente));
+          });
+        }
         this.tempTableData = Object.assign({}, this.tableData);
       })).subscribe();
     });
