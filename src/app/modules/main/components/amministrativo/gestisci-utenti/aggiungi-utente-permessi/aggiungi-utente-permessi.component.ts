@@ -160,7 +160,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   }
 
   disabilitaBottone(): boolean {
-    return this.codiceFiscale === null || !this.isFormDatiUtenteValido || this.controlloDate() || this.controlloDatiPermesso();
+    return (this.codiceFiscale == null || this.codiceFiscale === '') || !this.isFormDatiUtenteValido || this.controlloDate() || this.controlloDatiPermesso();
   }
 
   controlloDate(): boolean {

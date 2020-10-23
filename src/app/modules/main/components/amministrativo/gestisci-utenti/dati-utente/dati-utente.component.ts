@@ -75,12 +75,13 @@ export class DatiUtenteComponent implements OnInit {
 
     if (inputCf.length < this.minCharsToRetrieveCF) {
       this.listaCodiciFiscali = [];
-    } else if (inputCf.length === this.minCharsToRetrieveCF) {
+    } else if (inputCf.length >= this.minCharsToRetrieveCF) {
+      // disabilitazione bottone in attesa di caricamento utenti
+      this.utenteService.codiceFiscaleEvent.emit(null);
       this.utenteService.letturaCodiceFiscale(inputCf, this.amministrativoService.idFunzione).subscribe(data => {
         this.listaCodiciFiscali = data;
+        this.listaCodiciFiscali = this.listaCodiciFiscali.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
       });
-    } else {
-      this.listaCodiciFiscali = this.listaCodiciFiscali.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
     }
   }
 
@@ -164,11 +165,11 @@ export class DatiUtenteComponent implements OnInit {
   }
 
   controlloCodiceFiscale($event) {
-    this.codiceFiscaleExists = this.listaCodiciFiscali.includes($event);
+    this.codiceFiscaleExists = this.listaCodiciFiscali.includes($event.target.value);
     if (this.codiceFiscaleExists) {
       this.utenteService.codiceFiscaleEvent.emit(null);
     } else {
-      this.utenteService.codiceFiscaleEvent.emit($event);
+      this.utenteService.codiceFiscaleEvent.emit($event.target.value);
     }
   }
 
