@@ -3,7 +3,7 @@ import {Observable, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {Banner} from "../modules/main/model/Banner";
+import {Banner} from "../modules/main/model/banner/Banner";
 import {getBannerType, LivelloBanner} from "../enums/livelloBanner.enum";
 import {BannerService} from "./banner.service";
 import {BannerComponent} from "../components/banner/banner.component";

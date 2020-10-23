@@ -14,12 +14,12 @@ import {CarrelloComponent} from "./modules/main/components/carrello/carrello.com
 import {WaitingL1Component} from "./modules/main/components/waiting-l1/waiting-l1.component";
 import {GestisciUtentiComponent} from './modules/main/components/amministrativo/gestisci-utenti/gestisci-utenti.component';
 import {AggiungiUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
-import {ModificaUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
 import {DettaglioSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/dettaglio-societa/dettaglio-societa.component';
 import {GestisciEntiComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component";
 import {GestisciLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
 import {DettaglioLivelloTerritorialeComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dettaglio-livello-territoriale/dettaglio-livello-territoriale.component';
+import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -53,7 +53,8 @@ const routes: Routes = [
   {path: 'livelliTerritoriali', component: GestisciLivelliTerritorialiComponent},
   {path: 'aggiungiLivelloTerritoriale', component: DettaglioLivelloTerritorialeComponent},
   {path: 'modificaLivelloTerritoriale/:livelloterritorialeid', component: DettaglioLivelloTerritorialeComponent},
-  {path: 'dettaglioLivelloTerritoriale/:livelloterritorialeid', component: DettaglioLivelloTerritorialeComponent}
+  {path: 'dettaglioLivelloTerritoriale/:livelloterritorialeid', component: DettaglioLivelloTerritorialeComponent},
+  {path: 'gestisciBanner', component: GestisciBannerComponent}
 ];
 
 @NgModule({

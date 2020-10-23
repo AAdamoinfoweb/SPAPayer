@@ -3,7 +3,7 @@ import {Breadcrumb} from '../../dto/Breadcrumb';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
-import {Banner} from "../../model/Banner";
+import {Banner} from "../../model/banner/Banner";
 import {getBannerType, LivelloBanner} from "../../../../enums/livelloBanner.enum";
 import {BannerService} from "../../../../services/banner.service";
 import {Bollettino} from "../../model/bollettino/Bollettino";
