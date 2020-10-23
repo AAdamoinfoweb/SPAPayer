@@ -19,6 +19,7 @@ import {GestisciSocietaComponent} from './modules/main/components/amministrativo
 import {AggiungiSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/aggiungi-societa/aggiungi-societa.component';
 import {ModificaSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/modifica-societa/modifica-societa.component';
 import {DettaglioSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/dettaglio-societa/dettaglio-societa.component';
+import {GestisciEntiComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -44,6 +45,7 @@ const routes: Routes = [
   {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent},
   {path: 'modificaUtentePermessi/:userid', component: AggiungiUtentePermessiComponent},
   {path: 'societa', component: GestisciSocietaComponent},
+  {path: 'enti', component: GestisciEntiComponent},
   {path: 'aggiungiSocieta', component: DettaglioSocietaComponent},
   {path: 'modificaSocieta/:societaid', component: DettaglioSocietaComponent},
   {path: 'dettaglioSocieta/:societaid', component: DettaglioSocietaComponent}

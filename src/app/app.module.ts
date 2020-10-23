@@ -57,6 +57,7 @@ import {AmministrativoParentComponent} from "./modules/main/components/amministr
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
 import {FiltroGestioneSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/filtro-gestione-societa/filtro-gestione-societa.component';
 import {OrderByPipe} from "./pipe/orderby-pipe";
+import {GestisciEntiComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component";
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import {OrderByPipe} from "./pipe/orderby-pipe";
     AmministrativoParentComponent,
     GestisciSocietaComponent,
     FiltroGestioneSocietaComponent,
+    GestisciEntiComponent,
     OrderByPipe
   ],
     imports: [
