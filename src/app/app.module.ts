@@ -57,6 +57,8 @@ import {AmministrativoParentComponent} from "./modules/main/components/amministr
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
 import {FiltroGestioneSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/filtro-gestione-societa/filtro-gestione-societa.component';
 import {OrderByPipe} from "./pipe/orderby-pipe";
+import {GestisciLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
+import {FiltroGestioneLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/filtro-gestione-livelli-territoriali/filtro-gestione-livelli-territoriali.component';
 import {GestisciEntiComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component";
 
 @NgModule({
@@ -105,6 +107,8 @@ import {GestisciEntiComponent} from "./modules/main/components/amministrativo/an
     AmministrativoParentComponent,
     GestisciSocietaComponent,
     FiltroGestioneSocietaComponent,
+    GestisciLivelliTerritorialiComponent,
+    FiltroGestioneLivelliTerritorialiComponent,
     GestisciEntiComponent,
     OrderByPipe
   ],

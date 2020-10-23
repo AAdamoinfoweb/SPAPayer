@@ -61,7 +61,19 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData;
+  tempTableData = {
+    rows: [],
+    cols: [
+      {field: 'iconaUtente', header: '', type: tipoColonna.ICONA},
+      {field: 'id', header: 'User ID (Cod. Fisc.)', type: tipoColonna.TESTO},
+      {field: 'nome', header: 'Cognome e Nome', type: tipoColonna.TESTO},
+      {field: 'gruppoAbilitazioni', header: 'Gruppi Abilitazioni', type: tipoColonna.TESTO},
+      {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
+      {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
+    ],
+    dataKey: 'id.value',
+    tipoTabella: tipoTabella.CHECKBOX_SELECTION
+  };
   waiting = true;
 
   filtroSocieta = null;
@@ -99,7 +111,6 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
         this.tempTableData = Object.assign({}, this.tableData);
       })).subscribe();
     });
-    this.tempTableData = Object.assign({}, this.tableData);
   }
 
   ngAfterViewInit(): void {
@@ -229,4 +240,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
     }
   }
 
+  dettaglioUtente(row: any) {
+    this.router.navigate(['/dettaglioUtentePermessi', row.id.value]);
+  }
 }

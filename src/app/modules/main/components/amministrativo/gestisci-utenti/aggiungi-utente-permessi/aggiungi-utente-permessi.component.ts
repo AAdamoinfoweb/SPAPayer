@@ -33,7 +33,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
 
   breadcrumbList = [];
 
-  tooltipTitle: string = `In questa pagina puoi aggiungere un utente amministratore e abilitarlo a specifici servizi`;
+  tooltipTitle: string = `In questa pagina puoi aggiungere un utente e abilitarlo a specifici servizi`;
   titoloPagina: string = `Aggiungi Utente/Permessi`;
 
   codiceFiscale: string;
@@ -45,6 +45,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   mapPermessi: Map<number, PermessoCompleto> = new Map();
   isFormDatiUtenteValido = false;
   isModifica = false;
+  isDettaglio = false;
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
@@ -69,7 +70,14 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
     this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', '/gestioneUtenti/' + this.amministrativoService.idFunzione, null));
-    this.breadcrumbList.push(new Breadcrumb(3, this.isModifica ? 'Modifica Utente/Permessi' : 'Aggiungi Utente/Permessi', null, null));
+    if (this.isModifica) {
+      this.breadcrumbList.push(new Breadcrumb(3, 'Modifica Utente/Permessi', null, null));
+    } else if (this.isDettaglio) {
+      this.breadcrumbList.push(new Breadcrumb(3, 'Dettaglio Utente/Permessi', null, null));
+    } else {
+      this.breadcrumbList.push(new Breadcrumb(3, 'Aggiungi Utente/Permessi', null, null));
+    }
+
   }
 
   ngOnInit(): void {
@@ -77,10 +85,15 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     this.activatedRoute.params.subscribe((params) => {
       if (this.activatedRoute.snapshot.url[0].path === 'modificaUtentePermessi') {
         this.isModifica = true;
-        this.titoloPagina = `${this.isModifica ? 'Modifica' : 'Aggiungi'}  Utente/Permessi`;
-        this.tooltipTitle =
-          // tslint:disable-next-line:max-line-length
-          `In questa pagina puoi ${this.isModifica ? 'modificare' : 'aggiungere'} un utente amministratore e abilitarlo a specifici servizi`;
+        this.titoloPagina = `Modifica Utente/Permessi`;
+        this.tooltipTitle = `In questa pagina puoi modificare un utente e abilitarlo a specifici servizi`;
+        this.inizializzaBreadcrumbList();
+        this.codiceFiscaleModifica = this.activatedRoute.snapshot.paramMap.get('userid');
+        this.letturaPermessi(this.codiceFiscaleModifica);
+      } else if (this.activatedRoute.snapshot.url[0].path === 'dettaglioUtentePermessi') {
+        this.isDettaglio = true;
+        this.titoloPagina = `Dettaglio Utente/Permessi`;
+        this.tooltipTitle = `In questa pagina puoi visualizzare il dettaglio di un utente`;
         this.inizializzaBreadcrumbList();
         this.codiceFiscaleModifica = this.activatedRoute.snapshot.paramMap.get('userid');
         this.letturaPermessi(this.codiceFiscaleModifica);
@@ -114,18 +127,18 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
       this.target.remove(index - 1);
     });
     this.componentRef.instance.onChangeDatiPermesso.subscribe((currentPermesso: PermessoSingolo) => {
-      if(this.mapPermessi.has(currentPermesso.index)) {
+      if (this.mapPermessi.has(currentPermesso.index)) {
         const permessoCompleto: PermessoCompleto = this.mapPermessi.get(currentPermesso.index);
-        if(permessoCompleto.enteId == null && permessoCompleto.listaFunzioni.length > 0) {
+        if (permessoCompleto.enteId == null && permessoCompleto.listaFunzioni.length > 0) {
           // da amministrativo a gestionale
-          if(currentPermesso.permessoCompleto.enteId != null) {
+          if (currentPermesso.permessoCompleto.enteId != null) {
             // elimina logicamente permesso amministrativo precedente
             permessoCompleto.listaFunzioni[0].permessoCancellato = true;
             this.mapPermessi.set(Utils.uuidv4(), permessoCompleto);
           }
-        } else if (permessoCompleto.enteId != null && permessoCompleto.listaFunzioni.length > 0){
+        } else if (permessoCompleto.enteId != null && permessoCompleto.listaFunzioni.length > 0) {
           // da gestionale ad amministrativo
-          if(currentPermesso.permessoCompleto.enteId == null) {
+          if (currentPermesso.permessoCompleto.enteId == null) {
             // elimina logicamente permessi gestionali precedenti
             const listaFunzioniAggiornata = permessoCompleto.listaFunzioni.map((permessoFunzione) => {
               permessoFunzione.permessoCancellato = true;
@@ -141,6 +154,9 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     if (datiPermesso) {
       this.datiPermesso = datiPermesso;
       this.componentRef.instance.datiPermesso = datiPermesso;
+      if (this.isDettaglio) {
+        this.componentRef.instance.isDettaglio = this.isDettaglio;
+      }
     }
     this.componentRef.changeDetectorRef.detectChanges();
     return indexPermesso;
@@ -160,7 +176,11 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   }
 
   disabilitaBottone(): boolean {
-    return (this.codiceFiscale == null || this.codiceFiscale === '') || !this.isFormDatiUtenteValido || this.controlloDate() || this.controlloDatiPermesso();
+    let controlloCodiceFiscale = false;
+    if(!this.isModifica && !this.isDettaglio) {
+      controlloCodiceFiscale = this.codiceFiscale == null || this.codiceFiscale === '';
+    }
+    return controlloCodiceFiscale || !this.isFormDatiUtenteValido || this.controlloDate() || this.controlloDatiPermesso();
   }
 
   controlloDate(): boolean {
@@ -172,9 +192,10 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
       ? listaPermessi.filter((permesso: PermessoCompleto) =>
         !permesso.listaFunzioni.some((permessoFunzione) => permessoFunzione.permessoId != null) &&
         (Utils.isBefore(permesso.dataInizioValidita, dataSistema) ||
-        Utils.isBefore(permesso.dataFineValidita, dataSistema))) : [];
-    const ret = Utils.isBefore(dataAttivazione, dataSistema) ||
-      (this.datiUtente.scadenza ? Utils.isBefore(dataScadenza, dataSistema) : false) || datePermesso.length > 0;
+          Utils.isBefore(permesso.dataFineValidita, dataSistema))) : [];
+    const isDataAttivazioneBeforeDataSistema = this.isModifica ? false : Utils.isBefore(dataAttivazione, dataSistema);
+    const isDataScadenzaBeforeDataSistema = this.datiUtente.scadenza ? Utils.isBefore(dataScadenza, dataSistema) : false;
+    const ret = this.isDettaglio ? false : (isDataAttivazioneBeforeDataSistema || isDataScadenzaBeforeDataSistema || datePermesso.length > 0);
     return ret;
   }
 
