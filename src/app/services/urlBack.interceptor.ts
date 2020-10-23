@@ -27,7 +27,7 @@ export class UrlBackInterceptor {
         // set this.urlRitorno con header error response
         if (error.status === 400) {
           const banner: Banner = {
-            titolo: 'BAD REQUEST',
+            titolo: 'ATTENZIONE',
             testo: error.error.message,
             tipo: getBannerType(LivelloBanner.ERROR)
           };
