@@ -1,1 +1,68 @@
-<p>dati-livello-territoriale works!</p>
+<span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
+<div class="ml-3">
+  <form #livelloTerritorialeForm="ngForm" (input)="onChangeForm(livelloTerritorialeForm)">
+
+    <div class="row mt-4 mb-0">
+
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="nomeLivelloTerritoriale" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Nome</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input
+              id="nomeLivelloTerritoriale"
+              type="text"
+              name="nomeLivelloTerritoriale"
+              autocomplete="off"
+              #nomeLivelloTerritoriale = "ngModel"
+              [(ngModel)]="livelloTerritoriale.nome" (ngModelChange)="formattaInput($event, 'nome')"
+              [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+            />
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(nomeLivelloTerritoriale)">Inserisci nome livello territoriale</p>
+            <p *ngIf="isCampoInvalido(nomeLivelloTerritoriale)" class="text-invalid">{{getMessaggioErrore(nomeLivelloTerritoriale)}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4 mb-0">
+
+      <div class="col pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="descrizioneLivelloTerritoriale" class="title">Descrizione</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input
+              id="descrizioneLivelloTerritoriale"
+              type="text"
+              name="descrizioneLivelloTerritoriale"
+              autocomplete="off"
+              #descrizioneLivelloTerritoriale = "ngModel"
+              [(ngModel)]="livelloTerritoriale.descrizione" (ngModelChange)="formattaInput($event, 'descrizione')"
+              maxlength="255"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+            />
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(descrizioneLivelloTerritoriale)">Inserisci descrizione livello territoriale</p>
+            <p *ngIf="isCampoInvalido(descrizioneLivelloTerritoriale)" class="text-invalid">{{getMessaggioErrore(descrizioneLivelloTerritoriale)}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
