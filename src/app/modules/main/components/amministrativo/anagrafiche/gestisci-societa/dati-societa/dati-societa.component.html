@@ -19,11 +19,12 @@
               autocomplete="off"
               #nomeSocieta = "ngModel"
               [(ngModel)]="societa.nome"
-              required
+              [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             />
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <div class="col">
             <p *ngIf="!isCampoInvalido(nomeSocieta)">Inserisci nome società</p>
             <p *ngIf="isCampoInvalido(nomeSocieta)" class="text-invalid">{{getMessaggioErrore(nomeSocieta)}}</p>
@@ -46,10 +47,11 @@
               autocomplete="off"
               #telefonoSocieta = "ngModel"
               [(ngModel)]="societa.telefono"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             />
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <div class="col">
             <p *ngIf="!isCampoInvalido(telefonoSocieta)">Inserisci telefono società</p>
             <p *ngIf="isCampoInvalido(telefonoSocieta)" class="text-invalid">{{getMessaggioErrore(telefonoSocieta)}}</p>
@@ -72,10 +74,11 @@
               autocomplete="off"
               #emailSocieta = "ngModel"
               [(ngModel)]="societa.email"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             />
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <div class="col">
             <p *ngIf="!isCampoInvalido(emailSocieta)">Inserisci email società</p>
             <p *ngIf="isCampoInvalido(emailSocieta)" class="text-invalid">{{getMessaggioErrore(emailSocieta)}}</p>
@@ -103,10 +106,11 @@
               #descrizioneSocieta = "ngModel"
               [(ngModel)]="societa.descrizione"
               maxlength="255"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             />
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <div class="col">
             <p *ngIf="!isCampoInvalido(descrizioneSocieta)">Inserisci descrizione società</p>
             <p *ngIf="isCampoInvalido(descrizioneSocieta)" class="text-invalid">{{getMessaggioErrore(descrizioneSocieta)}}</p>

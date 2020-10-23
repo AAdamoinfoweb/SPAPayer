@@ -38,7 +38,7 @@ export class DettaglioSocietaComponent implements OnInit {
       this.titoloPagina = this.getTestoFunzione() + ' Società';
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di una società';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
-        this.societa.id = this.activatedRoute.snapshot.paramMap.get('societaid');
+        this.societa.id = parseInt(this.activatedRoute.snapshot.paramMap.get('societaid'));
         this.societaService.ricercaSocieta(this.societa.id, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
           this.societa = listaSocieta[0];
           this.overlayService.caricamentoEvent.emit(false);
