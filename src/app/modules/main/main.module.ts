@@ -62,7 +62,8 @@ import { FiltroGestioneEntiComponent } from './components/amministrativo/anagraf
   exports: [
     FooterComponent,
     ReplacePipe,
-    FiltriIMieiPagamentiComponent
+    FiltriIMieiPagamentiComponent,
+    FiltroGestioneEntiComponent
   ]
 })
 export class MainModule {
