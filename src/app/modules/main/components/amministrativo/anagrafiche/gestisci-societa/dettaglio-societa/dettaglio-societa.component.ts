@@ -19,6 +19,7 @@ export class DettaglioSocietaComponent implements OnInit {
   titoloPagina: string;
   tooltip: string;
   societa: Societa = new Societa();
+  isFormValido: boolean;
 
   breadcrumbList = [];
 
@@ -110,8 +111,12 @@ export class DettaglioSocietaComponent implements OnInit {
     }
   }
 
+  onChangeForm(isFormValido: boolean) {
+    this.isFormValido = isFormValido;
+  }
+
   disabilitaBottone() {
-    // TODO
+    return !this.isFormValido;
   }
 
 }

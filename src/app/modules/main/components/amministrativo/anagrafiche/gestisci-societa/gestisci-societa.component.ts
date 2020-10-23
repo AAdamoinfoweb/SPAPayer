@@ -137,10 +137,10 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.router.navigateByUrl('/aggiungiSocieta');
+        this.aggiungiSocieta();
         break;
       case ToolEnum.UPDATE:
-        this.router.navigate(['/modificaSocieta', this.listaIdSocietaSelezionate[0]]);
+        this.modificaSocietaSelezionata();
         break;
       case ToolEnum.DELETE:
         this.eliminaSocietaSelezionate();
@@ -152,6 +152,18 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
         this.esportaTabellaInFileExcel();
         break;
     }
+  }
+
+  mostraDettaglioSocieta(rigaTabella) {
+    this.router.navigate(['/dettaglioSocieta', rigaTabella.id.value]);
+  }
+
+  aggiungiSocieta() {
+    this.router.navigateByUrl('/aggiungiSocieta');
+  }
+
+  modificaSocietaSelezionata() {
+    this.router.navigate(['/modificaSocieta', this.listaIdSocietaSelezionate[0]]);
   }
 
   eliminaSocietaSelezionate() {

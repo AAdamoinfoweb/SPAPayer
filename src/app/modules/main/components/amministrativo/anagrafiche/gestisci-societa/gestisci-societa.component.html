@@ -46,7 +46,10 @@
                      [rows]="tempTableData.rows"
                      [tipoTabella]="tempTableData.tipoTabella"
                      [textLeft]="getTotaliPerRecord()"
-                     (onSelection)="selezionaRigaTabella($event)">
+                     (onSelection)="selezionaRigaTabella($event)"
+                     [selectedRows]="true"
+                     (onClickRow)="mostraDettaglioSocieta($event)"
+          >
           </app-table>
         </div>
       </div>

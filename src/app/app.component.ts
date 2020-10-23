@@ -53,8 +53,6 @@ export class AppComponent implements OnInit {
     });
 
     this.letturatipologicheSelect();
-
-    // this.mockModaleDettaglioPagamento();
   }
 
   // @HostListener('window:beforeunload')
@@ -77,16 +75,5 @@ export class AppComponent implements OnInit {
     this.toponomasticaService.recuperaComuni().pipe(map(res => {
       localStorage.setItem(TipologicaSelectEnum.COMUNI, JSON.stringify(res));
     })).subscribe();
-  }
-
-  mockModaleDettaglioPagamento(): void {
-    const mockDettaglioPagamento = new DatiPagamento();
-    mockDettaglioPagamento.dettaglioTransazioneId = null;
-    mockDettaglioPagamento.enteId = 4;
-    mockDettaglioPagamento.servizioId = 101;
-    mockDettaglioPagamento.importo = 123;
-    mockDettaglioPagamento.codiceAvviso = '001000000001066001';
-    mockDettaglioPagamento.esitoPagamento = EsitoEnum.NON_PRESENTE;
-    this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(mockDettaglioPagamento);
   }
 }
