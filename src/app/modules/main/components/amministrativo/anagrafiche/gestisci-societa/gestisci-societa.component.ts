@@ -69,6 +69,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   inizializzaBreadcrumbList(): void {
+    this.breadcrumbList = [];
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
     this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
@@ -76,40 +77,45 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   ngOnInit(): void {
-    this.waitingEmitter.subscribe(statoCaricamento => {
+    this.waitingEmitter.subscribe(() => {
       this.overlayService.caricamentoEvent.emit(true);
       if (this.amministrativoService.mappaFunzioni) {
         this.isMenuCarico = Object.keys(this.amministrativoService.mappaFunzioni).length > 0;
       }
 
       if (this.isMenuCarico) {
-        this.init(statoCaricamento);
+        this.init();
       } else {
         this.menuService.menuCaricatoEvent.subscribe(() => {
-          this.init(statoCaricamento);
+          this.init();
         });
       }
     });
   }
 
-  init(statoCaricamento: boolean) {
+  init() {
     this.inizializzaBreadcrumbList();
-
-    this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
-      this.listaSocieta = listaSocieta;
-
-      this.listaSocieta.forEach(societa => {
-        this.tableData.rows.push(this.creaRigaTabella(societa));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
-    });
-    this.overlayService.caricamentoEvent.emit(false);
-    this.waiting = statoCaricamento;
+    this.popolaListaSocieta();
   }
 
   ngAfterViewInit(): void {
     if (!this.waiting)
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+  }
+
+  popolaListaSocieta() {
+    this.listaSocieta = [];
+    this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
+      this.listaSocieta = listaSocieta;
+
+      this.tableData.rows = [];
+      this.listaSocieta.forEach(societa => {
+        this.tableData.rows.push(this.creaRigaTabella(societa));
+      });
+      this.tempTableData = Object.assign({}, this.tableData);
+      this.overlayService.caricamentoEvent.emit(false);
+      this.waiting = false;
+    });
   }
 
   creaRigaTabella(societa: Societa): object {
@@ -137,7 +143,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
         this.router.navigate(['/modificaSocieta', this.listaIdSocietaSelezionate[0]]);
         break;
       case ToolEnum.DELETE:
-        this.cancellaSocietaSelezionate();
+        this.eliminaSocietaSelezionate();
         break;
       case ToolEnum.EXPORT_PDF:
         this.esportaTabellaInFilePdf();
@@ -148,9 +154,10 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     }
   }
 
-  cancellaSocietaSelezionate() {
-    this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe((item) => {
-      console.log('risultato elimina: ', item);
+  eliminaSocietaSelezionate() {
+    this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
+      this.overlayService.caricamentoEvent.emit(true);
+      this.popolaListaSocieta();
     });
   }
 
