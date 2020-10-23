@@ -20,8 +20,6 @@ import {CarrelloComponent} from "./components/carrello/carrello.component";
 import {ListaPagamentiL1Component} from "./components/lista-pagamentiL1/lista-pagamenti-l1.component";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {WaitingL1Component} from "./components/waiting-l1/waiting-l1.component";
-import { AggiungiSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/aggiungi-societa/aggiungi-societa.component';
-import { ModificaSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/modifica-societa/modifica-societa.component';
 import { DettaglioSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/dettaglio-societa/dettaglio-societa.component';
 import { DatiSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/dati-societa/dati-societa.component';
 import { GestisciLivelliTerritorialiComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
@@ -43,8 +41,6 @@ import { FiltroGestioneLivelliTerritorialiComponent } from './components/amminis
     WaitingComponent,
     WaitingL1Component,
     FiltriIMieiPagamentiComponent,
-    AggiungiSocietaComponent,
-    ModificaSocietaComponent,
     DettaglioSocietaComponent,
     DatiSocietaComponent,
     GestisciLivelliTerritorialiComponent,
