@@ -23,9 +23,9 @@ import {MenuService} from '../../../../../../services/menu.service';
 export class GestisciLivelliTerritorialiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
-  readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
+  readonly iconaGruppoEnti = 'assets/img/users-solid.svg#users-group';
 
-  readonly funzioneGestioneUtenti = '/gestioneUtenti';
+  readonly funzioneGestioneEnti = '/enti';
 
   breadcrumbList = [];
 
@@ -49,9 +49,7 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
     rows: [],
     cols: [
       {field: 'nome', header: 'Nome', type: tipoColonna.TESTO},
-      {field: 'telefono', header: 'Telefono', type: tipoColonna.TESTO},
-      {field: 'email', header: 'Email', type: tipoColonna.TESTO},
-      {field: 'utentiAbilitati', header: 'Utenti abilitati', type: tipoColonna.LINK}
+      {field: 'entiAbilitati', header: 'Enti abilitati', type: tipoColonna.LINK}
     ],
     dataKey: 'nome.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
@@ -120,16 +118,14 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
 
   creaRigaTabella(livelloTerritoriale: LivelloTerritoriale): object {
     // TODO fixare logica lettura idfunzione (si rompe se il menu non è carico; emittare in sidebar o amministrativo-parent un waiting/spinner)
-    const linkGestioneUtenti = this.funzioneGestioneUtenti
-      + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneUtenti])
+    const linkGestioneEnti = this.funzioneGestioneEnti
+      + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneEnti])
       + '&livelloTerritorialeId=' + livelloTerritoriale.id;
 
     const riga = {
       id: {value: livelloTerritoriale.id},
       nome: {value: livelloTerritoriale.nome},
-      telefono: {value: livelloTerritoriale.telefono},
-      email: {value: livelloTerritoriale.email},
-      utentiAbilitati: Utils.creaLink(null, linkGestioneUtenti, this.iconaGruppoUtenti)
+      entiAbilitati: Utils.creaLink(null, linkGestioneEnti, this.iconaGruppoEnti)
     };
     return riga;
   }
@@ -176,10 +172,10 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
   esportaTabellaInFilePdf(): void {
     const table = JSON.parse(JSON.stringify(this.tempTableData));
 
-    // Rimuovo la colonna utenti abilitati dalla stampa del pdf
-    table.cols = table.cols.filter (col => col.field != 'utentiAbilitati');
+    // Rimuovo la colonna enti abilitati dalla stampa del pdf
+    table.cols = table.cols.filter (col => col.field != 'entiAbilitati');
     table.rows.forEach(riga => {
-      delete riga['utentiAbilitati'];
+      delete riga['entiAbilitati'];
     });
 
     Utils.esportaTabellaInFilePdf(table, 'Lista Livelli Territoriali', []);
@@ -187,13 +183,11 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
 
   esportaTabellaInFileExcel(): void {
     const table = JSON.parse(JSON.stringify(this.tempTableData));
-    const headerColonne = table.cols.filter(col => col.field != 'utentiAbilitati').map(col => col.header);
+    const headerColonne = table.cols.filter(col => col.field != 'entiAbilitati').map(col => col.header);
     const righe = table.rows.map(riga => {
-      delete riga.utentiAbilitati;
+      delete riga.entiAbilitati;
       delete riga.id;
       riga.nome = riga.nome.value;
-      riga.telefono = riga.telefono.value;
-      riga.email = riga.email.value;
       return riga;
     });
 
