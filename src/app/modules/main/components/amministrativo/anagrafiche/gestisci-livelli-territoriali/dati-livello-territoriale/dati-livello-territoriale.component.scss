@@ -1,0 +1,12 @@
+.text-invalid {
+  color: #FF0000;
+}
+
+.required:after {
+  content: ' *';
+  color: red;
+}
+
+.disabled {
+  pointer-events: none;
+}
