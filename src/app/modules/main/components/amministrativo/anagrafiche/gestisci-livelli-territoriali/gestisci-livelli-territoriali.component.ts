@@ -22,7 +22,7 @@ import {MenuService} from '../../../../../../services/menu.service';
 })
 export class GestisciLivelliTerritorialiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
 
-  readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
+  readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa dei livelli territoriali a cui sei abilitato e filtrarli';
   readonly iconaGruppoEnti = 'assets/img/users-solid.svg#users-group';
 
   readonly funzioneGestioneEnti = '/enti';
@@ -151,7 +151,8 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
   }
 
   mostraDettaglioLivelloTerritoriale(rigaTabella) {
-    this.router.navigate(['/dettaglioLivelloTerritoriale', rigaTabella.id.value]);
+    // this.router.navigate(['/dettaglioLivelloTerritoriale', rigaTabella.id.value]);
+    this.router.navigate(['/dettaglioLivelloTerritoriale', 2]);
   }
 
   aggiungiLivelloTerritoriale() {
@@ -203,7 +204,7 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
   }
 
   getTotaliPerRecord(): string {
-    return 'Totale: ' + this.tableData.rows.length + ' società';
+    return 'Totale: ' + this.tableData.rows.length + (this.tableData.rows.length === 1 ? ' livello territoriale' : ' livelli territoriali');
   }
 
   selezionaRigaTabella(righeSelezionate): void {
