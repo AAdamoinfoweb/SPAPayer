@@ -34,6 +34,12 @@ export class DatiSocietaComponent implements OnInit {
     this.isFormValido.emit(form.form.status === 'VALID');
   }
 
+  formattaInput(valore: string, campo: string) {
+    if (valore === '') {
+      this.societa[campo] = null;
+    }
+  }
+
   isCampoInvalido(campo: NgModel) {
     return campo.control?.errors != null;
   }

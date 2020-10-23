@@ -18,7 +18,7 @@
               name="nomeSocieta"
               autocomplete="off"
               #nomeSocieta = "ngModel"
-              [(ngModel)]="societa.nome"
+              [(ngModel)]="societa.nome" (ngModelChange)="formattaInput($event, 'nome')"
               [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             />
@@ -46,7 +46,7 @@
               name="telefonoSocieta"
               autocomplete="off"
               #telefonoSocieta = "ngModel"
-              [(ngModel)]="societa.telefono"
+              [(ngModel)]="societa.telefono" (ngModelChange)="formattaInput($event, 'telefono')"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
               [pattern]="telefonoRegex"
             />
@@ -74,7 +74,7 @@
               name="emailSocieta"
               autocomplete="off"
               #emailSocieta = "ngModel"
-              [(ngModel)]="societa.email"
+              [(ngModel)]="societa.email" (ngModelChange)="formattaInput($event, 'email')"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
               [pattern]="emailRegex"
             />
@@ -106,7 +106,7 @@
               name="descrizioneSocieta"
               autocomplete="off"
               #descrizioneSocieta = "ngModel"
-              [(ngModel)]="societa.descrizione"
+              [(ngModel)]="societa.descrizione" (ngModelChange)="formattaInput($event, 'descrizione')"
               maxlength="255"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             />
