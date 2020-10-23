@@ -74,4 +74,45 @@ export class SocietaService {
       }));
   }
 
+  aggiuntaSocieta(societa: Societa, idFunzione: string): Observable<any> {
+    const url = environment.bffBaseUrl + this.societaBaseUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.post(`${url}`, societa,
+      {
+        withCredentials: true,
+        headers: h
+      }).pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  modificaSocieta(societa: Societa, idFunzione: string): Observable<any> {
+    const url = environment.bffBaseUrl + this.societaBaseUrl + '/' + societa.id;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.put(`${url}`, societa,
+      {
+        withCredentials: true,
+        headers: h
+      }).pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
 }

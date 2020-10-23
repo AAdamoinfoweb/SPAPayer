@@ -94,7 +94,20 @@ export class DettaglioSocietaComponent implements OnInit {
   }
 
   onClickSalva() {
-    // TODO
+    this.overlayService.caricamentoEvent.emit(true);
+    switch (this.funzione) {
+      case FunzioneGestioneEnum.AGGIUNGI:
+        this.societaService.aggiuntaSocieta(this.societa, this.amministrativoService.idFunzione).subscribe((societa) => {
+          this.overlayService.caricamentoEvent.emit(false);
+          this.societa = new Societa();
+        });
+        break;
+      case FunzioneGestioneEnum.MODIFICA:
+        this.societaService.modificaSocieta(this.societa, this.amministrativoService.idFunzione).subscribe(() => {
+          this.overlayService.caricamentoEvent.emit(false);
+        });
+        break;
+    }
   }
 
   disabilitaBottone() {
