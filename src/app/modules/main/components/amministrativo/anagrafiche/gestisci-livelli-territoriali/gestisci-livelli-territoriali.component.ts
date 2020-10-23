@@ -164,6 +164,7 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
   }
 
   eliminaLivelliTerritorialiSelezionati() {
+    // TODO testare quando sarà fixata la query GET nel backend (al momento, dopo che inserisco un nuovo livello, non mi viene mostrato nella GET, e non posso provare ad eliminarlo)
     this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.amministrativoService.idFunzione).subscribe(() => {
       this.overlayService.caricamentoEvent.emit(true);
       this.popolaListaLivelliTerritoriali();
