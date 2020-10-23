@@ -3,6 +3,9 @@ import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.
 import {ActivatedRoute, Router} from '@angular/router';
 import {Breadcrumb} from '../../../../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
+import {OverlayService} from '../../../../../../../services/overlay.service';
+import {Societa} from '../../../../../model/Societa';
+import {SocietaService} from '../../../../../../../services/societa.service';
 
 @Component({
   selector: 'app-dettaglio-societa',
@@ -15,25 +18,39 @@ export class DettaglioSocietaComponent implements OnInit {
   funzione: FunzioneGestioneEnum;
   titoloPagina: string;
   tooltip: string;
+  societa: Societa = new Societa();
 
   breadcrumbList = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private amministrativoService: AmministrativoService
+    private amministrativoService: AmministrativoService,
+    private overlayService: OverlayService,
+    private societaService: SocietaService
   ) { }
 
   ngOnInit(): void {
+    this.overlayService.caricamentoEvent.emit(true);
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
       this.inizializzaBreadcrumbList();
       this.titoloPagina = this.getTestoFunzione() + ' Società';
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di una società';
+      if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
+        this.societa.id = this.activatedRoute.snapshot.paramMap.get('societaid');
+        this.societaService.ricercaSocieta(this.societa.id, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
+          this.societa = listaSocieta[0];
+          this.overlayService.caricamentoEvent.emit(false);
+        })
+      } else {
+        this.overlayService.caricamentoEvent.emit(false);
+      }
     });
   }
 
   inizializzaBreadcrumbList(): void {
+    this.breadcrumbList = [];
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
     this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));

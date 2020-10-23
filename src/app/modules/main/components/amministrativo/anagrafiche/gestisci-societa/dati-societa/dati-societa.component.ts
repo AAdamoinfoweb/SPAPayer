@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {NgForm, NgModel} from '@angular/forms';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
+import {Societa} from '../../../../../model/Societa';
 
 @Component({
   selector: 'app-dati-societa',
@@ -9,12 +10,8 @@ import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
   styleUrls: ['./dati-societa.component.scss']
 })
 export class DatiSocietaComponent implements OnInit {
-  societa = {
-    nome: null,
-    email: null,
-    telefono: null,
-    descrizione: null
-  }
+  @Input()
+  societa: Societa;
 
   @Input()
   funzione: FunzioneGestioneEnum;
