@@ -15,6 +15,7 @@ export class DatiSocietaComponent implements OnInit {
   societa: Societa;
 
   readonly emailRegex = Utils.EMAIL_REGEX;
+  readonly telefonoRegex = Utils.TELEFONO_REGEX;
 
   @Input()
   funzione: FunzioneGestioneEnum;

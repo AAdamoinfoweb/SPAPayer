@@ -48,6 +48,7 @@
               #telefonoSocieta = "ngModel"
               [(ngModel)]="societa.telefono"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+              [pattern]="telefonoRegex"
             />
           </div>
         </div>
