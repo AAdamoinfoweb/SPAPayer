@@ -12,6 +12,7 @@ export class Utils {
   static FORMAT_DATE_CALENDAR = 'DD/MM/YYYY';
 
   static readonly EMAIL_REGEX = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  static readonly TELEFONO_REGEX = '^(\\+[0-9]{2,2})?[0-9]{9,11}$';
 
   static creaLink = (testo, link, iconHref?) => {
     return iconHref ? {testo, link, iconHref} : {testo, link};
