@@ -24,6 +24,10 @@ import { AggiungiSocietaComponent } from './components/amministrativo/anagrafich
 import { ModificaSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/modifica-societa/modifica-societa.component';
 import { DettaglioSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/dettaglio-societa/dettaglio-societa.component';
 import { DatiSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/dati-societa/dati-societa.component';
+import { GestisciLivelliTerritorialiComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
+import { DatiLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dati-livello-territoriale/dati-livello-territoriale.component';
+import { DettaglioLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dettaglio-livello-territoriale/dettaglio-livello-territoriale.component';
+import { FiltroGestioneLivelliTerritorialiComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/filtro-gestione-livelli-territoriali/filtro-gestione-livelli-territoriali.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,11 @@ import { DatiSocietaComponent } from './components/amministrativo/anagrafiche/ge
     AggiungiSocietaComponent,
     ModificaSocietaComponent,
     DettaglioSocietaComponent,
-    DatiSocietaComponent
+    DatiSocietaComponent,
+    GestisciLivelliTerritorialiComponent,
+    DatiLivelloTerritorialeComponent,
+    DettaglioLivelloTerritorialeComponent,
+    FiltroGestioneLivelliTerritorialiComponent
   ],
   imports: [
     CommonModule,
