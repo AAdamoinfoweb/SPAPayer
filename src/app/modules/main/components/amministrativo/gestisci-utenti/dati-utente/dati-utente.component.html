@@ -84,7 +84,7 @@
         <div class="row">
           <div class="col">
             <input type="email" id="emailUtente" name="email" #emailInput="ngModel"
-                   pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                   [pattern]="emailRegex"
                    [(ngModel)]="datiUtente.email"
                    class="pt-0" autocomplete="off" aria-describedby="emailUtenteHelpDescription" [disabled]="isDettaglio">
           </div>
@@ -106,7 +106,7 @@
         <div class="row">
           <div class="col">
             <input type="text" id="telefonoUtente" name="telefono" #telefonoInput="ngModel"
-                   pattern="^(\\+\\d)*\\s*(\\(\\d{3}\\)\\s*)*\\d{3}(-{0,1}|\\s{0,1})\\d{2}(-{0,1}|\\s{0,1})\\d{2}$"
+                   [pattern]="telefonoRegex"
                    [(ngModel)]="datiUtente.telefono"
                    class="pt-0" autocomplete="off" aria-describedby="telefonoUtenteHelpDescription" [disabled]="isDettaglio">
           </div>

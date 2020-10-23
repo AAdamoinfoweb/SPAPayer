@@ -21,6 +21,9 @@ export class DatiUtenteComponent implements OnInit {
   listaCodiciFiscali: string[] = [];
   codiceFiscaleExists = false;
 
+  readonly emailRegex = Utils.EMAIL_REGEX;
+  readonly telefonoRegex = Utils.TELEFONO_REGEX;
+
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
   readonly tipoData = ECalendarValue.String;

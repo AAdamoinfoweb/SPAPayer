@@ -48,6 +48,7 @@
               #telefonoSocieta = "ngModel"
               [(ngModel)]="societa.telefono"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+              [pattern]="telefonoRegex"
             />
           </div>
         </div>
@@ -75,6 +76,7 @@
               #emailSocieta = "ngModel"
               [(ngModel)]="societa.email"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+              [pattern]="emailRegex"
             />
           </div>
         </div>

@@ -506,16 +506,18 @@ fieldset[disabled] .navbar .navbar-nav > a.btn.active {
   border-color: #77777B
 }
 
-.error-main h1{
+.error-main h1 {
   font-weight: bold;
   color: #004987;
   font-size: 100px;
   text-shadow: 2px 4px 5px #6E6E6E;
 }
-.error-main h6{
+
+.error-main h6 {
   color: #004987;
 }
-.error-main p{
+
+.error-main p {
   color: #9897A0;
   font-size: 14px;
 }
@@ -743,16 +745,17 @@ fieldset[disabled] .btn-primary.active {
   box-shadow: none
 }
 
-.btn.btn-secondary{
+.btn.btn-secondary {
   background-color: #fff !important;
   color: #004987 !important;
   box-shadow: none;
   border: 2px solid #004987 !important;
 }
+
 .btn.btn-secondary:hover,
 .btn-secondary.btn-link:focus,
 .btn-secondary.btn-link:active,
-.btn-secondary.btn-link:active:focus{
+.btn-secondary.btn-link:active:focus {
   background-color: #403d39 !important;
   color: #fff !important;
   box-shadow: none;
@@ -2644,7 +2647,8 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   margin-left: 2px;
   vertical-align: middle;
   border-top: 4px dashed;
-  border-top: 4px solid \9;
+  border-top: 4px solid \9
+;
   border-right: 4px solid transparent;
   border-left: 4px solid transparent
 }
@@ -5099,8 +5103,9 @@ img {
 .btn {
   background-color: #004987 !important;
 }
+
 .active-bold {
-font-weight: bold!important;
+  font-weight: bold !important;
 }
 
 .main-panel > .content {
@@ -5854,9 +5859,9 @@ font-weight: bold!important;
     display: inline-block !important;
   }
 
- /* .navbar {
-    padding: 0
-  }*/
+  /* .navbar {
+     padding: 0
+   }*/
 
   .navbar.navbar-absolute {
     padding-top: 0
@@ -6076,36 +6081,47 @@ font-weight: bold!important;
   .bar1,
   .bar2,
   .bar3 .toggled .bar1,
-  .toggled .bar2,
   .toggled .bar3 {
     outline: 1px solid transparent
   }
 
-  .bar1,
-  .toggled .bar1 {
-    top: 0;
-    -webkit-animation: topbar-back 500ms linear 0s;
-    -moz-animation: topbar-back 500ms linear 0s;
-    animation: topbar-back 500ms 0s;
-    -webkit-animation-fill-mode: forwards;
-    -moz-animation-fill-mode: forwards;
-    animation-fill-mode: forwards
+  .toggled .bar2 {
+    opacity: 0
   }
 
-  .bar2,
-  .toggled .bar2 {
+  .bar1 {
+    top: 0;
+  }
+
+  .toggled .bar1 {
+    top: 6px;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+
+  .black {
+    color: black !important;
+  }
+
+  .toggled .bar3 {
+    bottom: 6px;
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+
+  .bar2 {
     opacity: 1
   }
 
-  .bar3,
-  .toggled .bar3 {
+  .toggled .bar2 {
+    opacity: 0
+  }
+
+
+  .bar3 {
     bottom: 0;
-    -webkit-animation: bottombar-back 500ms linear 0s;
-    -moz-animation: bottombar-back 500ms linear 0s;
-    animation: bottombar-back 500ms 0s;
-    -webkit-animation-fill-mode: forwards;
-    -moz-animation-fill-mode: forwards;
-    animation-fill-mode: forwards
   }
 
   @keyframes topbar-x {
@@ -6413,7 +6429,7 @@ font-weight: bold!important;
   }
 }
 
-@media screen and (max-width:991px) {
+@media screen and (max-width: 991px) {
   .navbar {
     padding: 0
   }
@@ -6485,10 +6501,10 @@ font-weight: bold!important;
     border-radius: 1px;
     background: #66615b
   }
-  .navbar .navbar-toggler-bar+.navbar-toggler-bar {
+  .navbar .navbar-toggler-bar + .navbar-toggler-bar {
     margin-top: 7px
   }
-  .navbar .navbar-toggler-bar+.navbar-toggler-bar.navbar-kebab {
+  .navbar .navbar-toggler-bar + .navbar-toggler-bar.navbar-kebab {
     margin-top: 3px
   }
   .navbar .navbar-toggler-bar.bar2 {
@@ -6501,7 +6517,7 @@ font-weight: bold!important;
   .navbar .toggled .navbar-toggler-bar {
     width: 24px
   }
-  .navbar .toggled .navbar-toggler-bar+.navbar-toggler-bar {
+  .navbar .toggled .navbar-toggler-bar + .navbar-toggler-bar {
     margin-top: 5px
   }
   .wrapper {
@@ -6594,34 +6610,40 @@ font-weight: bold!important;
   .bar1,
   .bar2,
   .bar3 .toggled .bar1,
-  .toggled .bar2,
   .toggled .bar3 {
     outline: 1px solid transparent
   }
-  .bar1,
-  .toggled .bar1 {
+
+  .bar1 {
     top: 0;
-    -webkit-animation: topbar-back 500ms linear 0s;
-    -moz-animation: topbar-back 500ms linear 0s;
-    animation: topbar-back 500ms 0s;
-    -webkit-animation-fill-mode: forwards;
-    -moz-animation-fill-mode: forwards;
-    animation-fill-mode: forwards
   }
-  .bar2,
-  .toggled .bar2 {
+
+  .toggled .bar1 {
+    top: 6px;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+  .bar2 {
     opacity: 1
   }
-  .bar3,
-  .toggled .bar3 {
-    bottom: 0;
-    -webkit-animation: bottombar-back 500ms linear 0s;
-    -moz-animation: bottombar-back 500ms linear 0s;
-    animation: bottombar-back 500ms 0s;
-    -webkit-animation-fill-mode: forwards;
-    -moz-animation-fill-mode: forwards;
-    animation-fill-mode: forwards
+
+  .toggled .bar2 {
+    opacity: 0
   }
+
+  .toggled .bar3 {
+    bottom: 6px;
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+
+  .bar3 {
+    bottom: 0;
+  }
+
+
   @keyframes topbar-x {
     0% {
       top: 0;
@@ -6894,26 +6916,26 @@ font-weight: bold!important;
     width: 100%
   }
   .timeline:before {
-    left: 5%!important
+    left: 5% !important
   }
-  .timeline>li>.timeline-badge {
-    left: 5%!important
+  .timeline > li > .timeline-badge {
+    left: 5% !important
   }
-  .timeline>li>.timeline-panel {
-    float: right!important;
-    width: 82%!important
+  .timeline > li > .timeline-panel {
+    float: right !important;
+    width: 82% !important
   }
-  .timeline>li>.timeline-panel:before {
-    border-left-width: 0!important;
-    border-right-width: 15px!important;
-    left: -15px!important;
-    right: auto!important
+  .timeline > li > .timeline-panel:before {
+    border-left-width: 0 !important;
+    border-right-width: 15px !important;
+    left: -15px !important;
+    right: auto !important
   }
-  .timeline>li>.timeline-panel:after {
-    border-left-width: 0!important;
-    border-right-width: 14px!important;
-    left: -14px!important;
-    right: auto!important
+  .timeline > li > .timeline-panel:after {
+    border-left-width: 0 !important;
+    border-right-width: 14px !important;
+    left: -14px !important;
+    right: auto !important
   }
 }
 
