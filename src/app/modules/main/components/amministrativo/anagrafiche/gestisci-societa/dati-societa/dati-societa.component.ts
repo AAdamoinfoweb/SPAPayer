@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForm, NgModel} from '@angular/forms';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
@@ -16,6 +16,9 @@ export class DatiSocietaComponent implements OnInit {
   @Input()
   funzione: FunzioneGestioneEnum;
 
+  @Output()
+  isFormValido = new EventEmitter<boolean>();
+
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
 
   constructor() { }
@@ -24,7 +27,7 @@ export class DatiSocietaComponent implements OnInit {
   }
 
   onChangeForm(form: NgForm) {
-    // TODO onChangeForm
+    this.isFormValido.emit(form.form.status === 'VALID');
   }
 
   isCampoInvalido(campo: NgModel) {
