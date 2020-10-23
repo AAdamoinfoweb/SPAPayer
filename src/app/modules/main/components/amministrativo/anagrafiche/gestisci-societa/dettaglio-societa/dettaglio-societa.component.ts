@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Breadcrumb} from '../../../../../dto/Breadcrumb';
+import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 
 @Component({
   selector: 'app-dettaglio-societa',
@@ -18,7 +19,9 @@ export class DettaglioSocietaComponent implements OnInit {
   breadcrumbList = [];
 
   constructor(
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private amministrativoService: AmministrativoService
   ) { }
 
   ngOnInit(): void {
@@ -70,7 +73,7 @@ export class DettaglioSocietaComponent implements OnInit {
   }
 
   onClickAnnulla() {
-    // TODO
+    this.router.navigateByUrl('/societa?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 
   onClickSalva() {
