@@ -75,6 +75,7 @@
               #emailSocieta = "ngModel"
               [(ngModel)]="societa.email"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+              [pattern]="emailRegex"
             />
           </div>
         </div>

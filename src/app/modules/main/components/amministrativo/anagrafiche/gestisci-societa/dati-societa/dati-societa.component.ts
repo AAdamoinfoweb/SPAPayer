@@ -3,6 +3,7 @@ import {NgForm, NgModel} from '@angular/forms';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {Societa} from '../../../../../model/Societa';
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-dati-societa',
@@ -12,6 +13,8 @@ import {Societa} from '../../../../../model/Societa';
 export class DatiSocietaComponent implements OnInit {
   @Input()
   societa: Societa;
+
+  readonly emailRegex = Utils.EMAIL_REGEX;
 
   @Input()
   funzione: FunzioneGestioneEnum;
