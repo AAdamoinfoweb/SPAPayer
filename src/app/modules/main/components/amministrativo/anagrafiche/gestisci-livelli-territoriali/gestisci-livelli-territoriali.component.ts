@@ -8,19 +8,19 @@ import {OverlayService} from '../../../../../../services/overlay.service';
 import {AmministrativoParentComponent} from '../../amministrativo-parent.component';
 import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {Societa} from '../../../../model/Societa';
-import {SocietaService} from '../../../../../../services/societa.service';
+import {LivelloTerritoriale} from '../../../../model/LivelloTerritoriale';
+import {LivelloTerritorialeService} from '../../../../../../services/livelloTerritoriale.service';
 import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
 
 @Component({
-  selector: 'app-gestione-societa',
-  templateUrl: './gestisci-societa.component.html',
-  styleUrls: ['./gestisci-societa.component.scss']
+  selector: 'app-gestione-livelli-territoriali',
+  templateUrl: './gestisci-livelli-territoriali.component.html',
+  styleUrls: ['./gestisci-livelli-territoriali.component.scss']
 })
-export class GestisciSocietaComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciLivelliTerritorialiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
@@ -31,8 +31,8 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
   isMenuCarico = false;
 
-  listaSocieta: Array<Societa> = new Array<Societa>();
-  listaIdSocietaSelezionate: Array<number> = [];
+  listaLivelliTerritoriali: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
+  listaIdLivelliTerritorialiSelezionati: Array<number> = [];
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT},
@@ -62,7 +62,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
   constructor(router: Router, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
-              private renderer: Renderer2, private societaService: SocietaService, private el: ElementRef,
+              private renderer: Renderer2, private livelloTerritorialeService: LivelloTerritorialeService, private el: ElementRef,
               private menuService: MenuService
   ) {
     super(router, overlayService, route, http, amministrativoService);
@@ -73,7 +73,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
     this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Società', null, null));
+    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Livelli Territoriali', null, null));
   }
 
   ngOnInit(): void {
@@ -95,7 +95,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
   init() {
     this.inizializzaBreadcrumbList();
-    this.popolaListaSocieta();
+    this.popolaListaLivelliTerritoriali();
   }
 
   ngAfterViewInit(): void {
@@ -103,14 +103,14 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
-  popolaListaSocieta() {
-    this.listaSocieta = [];
-    this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
-      this.listaSocieta = listaSocieta;
+  popolaListaLivelliTerritoriali() {
+    this.listaLivelliTerritoriali = [];
+    this.livelloTerritorialeService.ricercaLivelliTerritoriali(null, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
+      this.listaLivelliTerritoriali = listaLivelliTerritoriali;
 
       this.tableData.rows = [];
-      this.listaSocieta.forEach(societa => {
-        this.tableData.rows.push(this.creaRigaTabella(societa));
+      this.listaLivelliTerritoriali.forEach(livelloTerritoriale => {
+        this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
       });
       this.tempTableData = Object.assign({}, this.tableData);
       this.overlayService.caricamentoEvent.emit(false);
@@ -118,17 +118,17 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     });
   }
 
-  creaRigaTabella(societa: Societa): object {
+  creaRigaTabella(livelloTerritoriale: LivelloTerritoriale): object {
     // TODO fixare logica lettura idfunzione (si rompe se il menu non è carico; emittare in sidebar o amministrativo-parent un waiting/spinner)
     const linkGestioneUtenti = this.funzioneGestioneUtenti
       + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneUtenti])
-      + '&societaId=' + societa.id;
+      + '&livelloTerritorialeId=' + livelloTerritoriale.id;
 
     const riga = {
-      id: {value: societa.id},
-      nome: {value: societa.nome},
-      telefono: {value: societa.telefono},
-      email: {value: societa.email},
+      id: {value: livelloTerritoriale.id},
+      nome: {value: livelloTerritoriale.nome},
+      telefono: {value: livelloTerritoriale.telefono},
+      email: {value: livelloTerritoriale.email},
       utentiAbilitati: Utils.creaLink(null, linkGestioneUtenti, this.iconaGruppoUtenti)
     };
     return riga;
@@ -137,13 +137,13 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiSocieta();
+        this.aggiungiLivelloTerritoriale();
         break;
       case ToolEnum.UPDATE:
-        this.modificaSocietaSelezionata();
+        this.modificaLivelloTerritorialeSelezionato();
         break;
       case ToolEnum.DELETE:
-        this.eliminaSocietaSelezionate();
+        this.eliminaLivelliTerritorialiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
         this.esportaTabellaInFilePdf();
@@ -154,22 +154,22 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     }
   }
 
-  mostraDettaglioSocieta(rigaTabella) {
-    this.router.navigate(['/dettaglioSocieta', rigaTabella.id.value]);
+  mostraDettaglioLivelloTerritoriale(rigaTabella) {
+    this.router.navigate(['/dettaglioLivelloTerritoriale', rigaTabella.id.value]);
   }
 
-  aggiungiSocieta() {
-    this.router.navigateByUrl('/aggiungiSocieta');
+  aggiungiLivelloTerritoriale() {
+    this.router.navigateByUrl('/aggiungiLivelloTerritoriale');
   }
 
-  modificaSocietaSelezionata() {
-    this.router.navigate(['/modificaSocieta', this.listaIdSocietaSelezionate[0]]);
+  modificaLivelloTerritorialeSelezionato() {
+    this.router.navigate(['/modificaLivelloTerritoriale', this.listaIdLivelliTerritorialiSelezionati[0]]);
   }
 
-  eliminaSocietaSelezionate() {
-    this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
+  eliminaLivelliTerritorialiSelezionati() {
+    this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.amministrativoService.idFunzione).subscribe(() => {
       this.overlayService.caricamentoEvent.emit(true);
-      this.popolaListaSocieta();
+      this.popolaListaLivelliTerritoriali();
     });
   }
 
@@ -182,7 +182,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
       delete riga['utentiAbilitati'];
     });
 
-    Utils.esportaTabellaInFilePdf(table, 'Lista Società', []);
+    Utils.esportaTabellaInFilePdf(table, 'Lista Livelli Territoriali', []);
   }
 
   esportaTabellaInFileExcel(): void {
@@ -197,14 +197,14 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
       return riga;
     });
 
-    const workbook = {Sheets: {'Societa': null}, SheetNames: []};
-    Utils.creaFileExcel(righe, headerColonne, 'Societa', ['Societa'], workbook, 'Lista Societa');
+    const workbook = {Sheets: {'LivelliTerritoriali': null}, SheetNames: []};
+    Utils.creaFileExcel(righe, headerColonne, 'LivelliTerritoriali', ['LivelliTerritoriali'], workbook, 'Lista Livelli Territoriali');
   }
 
-  onChangeListaSocieta(listaSocietaFiltrate: Societa[]): void {
+  onChangeListaLivelliTerritoriali(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {
     this.tableData.rows.length = 0;
-    listaSocietaFiltrate.forEach(societa => {
-      this.tableData.rows.push(this.creaRigaTabella(societa));
+    listaLivelliTerritorialiFiltrati.forEach(livelloTerritoriale => {
+      this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
     });
   }
 
@@ -213,9 +213,9 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   selezionaRigaTabella(righeSelezionate): void {
-    this.listaIdSocietaSelezionate = righeSelezionate.map(riga => riga.id.value);
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdSocietaSelezionate.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdSocietaSelezionate.length === 0;
+    this.listaIdLivelliTerritorialiSelezionati = righeSelezionate.map(riga => riga.id.value);
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdLivelliTerritorialiSelezionati.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdLivelliTerritorialiSelezionati.length === 0;
   }
 
 }
