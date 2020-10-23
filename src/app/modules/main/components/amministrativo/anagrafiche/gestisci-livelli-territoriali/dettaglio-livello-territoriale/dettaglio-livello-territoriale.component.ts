@@ -39,7 +39,7 @@ export class DettaglioLivelloTerritorialeComponent implements OnInit {
       this.titoloPagina = this.getTestoFunzione() + ' Livello Territoriale';
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di un livello territoriale';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
-        this.livelloTerritoriale.id = parseInt(this.activatedRoute.snapshot.paramMap.get('livelloTerritorialeid'));
+        this.livelloTerritoriale.id = parseInt(this.activatedRoute.snapshot.paramMap.get('livelloterritorialeid'));
         this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.livelloTerritoriale.id, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
           this.livelloTerritoriale = listaLivelliTerritoriali[0];
           this.overlayService.caricamentoEvent.emit(false);
