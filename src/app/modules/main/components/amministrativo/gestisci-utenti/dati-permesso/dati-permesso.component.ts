@@ -40,6 +40,7 @@ export class DatiPermessoComponent implements OnInit {
   readonly tipoData = ECalendarValue.String;
 
   @Input() datiPermesso: PermessoCompleto;
+  @Input() isDettaglio: boolean;
   isModificaPermessi = false;
   listaPermessoFunzione: PermessoFunzione[] = [];
   mapPermessoFunzione: Map<number, PermessoFunzione> = new Map();

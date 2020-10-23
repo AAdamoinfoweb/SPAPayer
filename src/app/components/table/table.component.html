@@ -40,10 +40,10 @@
         <div *ngIf="col.type == tipoColonnaEnum.LINK">
           {{row[col.field] != null  ? row[col.field].testo : null}}
           <a href="{{row[col.field].link}}" *ngIf="row[col.field] != null">
-            <svg class="bg-light icon icon-sm" fill="#004987" *ngIf="!row[col.field].iconHref">
+            <svg class="icon icon-sm" fill="#004987" *ngIf="!row[col.field].iconHref">
               <use xlink:href="assets/img/sprite.svg#it-external-link"></use>
             </svg>
-            <svg class="bg-light icon icon-sm" *ngIf="row[col.field].iconHref">
+            <svg class="icon icon-sm" *ngIf="row[col.field].iconHref">
               <use [attr.xlink:href]="row[col.field].iconHref"></use>
             </svg>
           </a>

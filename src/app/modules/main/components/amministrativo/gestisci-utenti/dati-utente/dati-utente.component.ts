@@ -30,6 +30,7 @@ export class DatiUtenteComponent implements OnInit {
   @Input() codiceFiscale: string;
   datiUtente: InserimentoModificaUtente;
   isModificaUtente = false;
+  @Input() isDettaglio: boolean;
 
   @Output()
   onChangeDatiUtente: EventEmitter<InserimentoModificaUtente> = new EventEmitter<InserimentoModificaUtente>();
