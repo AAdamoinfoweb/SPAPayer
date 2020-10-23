@@ -117,7 +117,7 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
   }
 
   creaRigaTabella(livelloTerritoriale: LivelloTerritoriale): object {
-    // TODO fixare logica lettura idfunzione (si rompe se il menu non è carico; emittare in sidebar o amministrativo-parent un waiting/spinner)
+    // TODO testare quando sarà pronto gestione enti
     const linkGestioneEnti = this.funzioneGestioneEnti
       + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneEnti])
       + '&livelloTerritorialeId=' + livelloTerritoriale.id;
