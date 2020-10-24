@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import {Utils} from '../../../../../utils/Utils';
 import {BannerService} from '../../../../../services/banner.service';
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-gestisci-banner',
@@ -28,6 +29,7 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
   breadcrumbList = [];
 
   listaBanner: Array<Banner> = new Array<Banner>();
+  listaBannerIdSelezionati: Array<number> = new Array<number>();
 
   toolbarIcons = [
     {type: ToolEnum.INSERT},
@@ -99,6 +101,7 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
     let row;
 
     row = {
+      id: {value: banner.id},
       iconaBanner: Utils.creaIcona('#it-check', '#008758', null, 'none'),
       titolo: {value: banner.titolo},
       testo: {value: banner.testo},
@@ -146,9 +149,10 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
   }
 
   esportaTabellaInFileExcel(dataTable: any): void {
-    const customHeaders = dataTable.cols.map(col => col.header);
+    const customHeaders = dataTable.cols.filter(col => col.field !== 'id').map(col => col.header);
     dataTable.rows = dataTable.rows.map(row => {
-      const newRow = row;
+      let newRow = row;
+      newRow = _.omit(newRow, 'id');
       newRow.iconaBanner = row.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
       newRow.titolo = row.titolo.value;
       newRow.testo = row.testo.value;
@@ -173,8 +177,9 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
   }
 
   selezionaRigaTabella(rowsChecked): void {
-    this.toolbarIcons[this.indiceIconaModifica].disabled = rowsChecked.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = rowsChecked.length === 0;
+    this.listaBannerIdSelezionati = rowsChecked.map(riga => riga.id.value);
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaBannerIdSelezionati.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaBannerIdSelezionati.length === 0;
   }
 
   mostraDettaglioBanner(row: any) {
