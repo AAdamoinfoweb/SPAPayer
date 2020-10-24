@@ -99,8 +99,14 @@ export class FiltroGestioneBannerComponent implements OnInit {
         if (key === 'inizio' || key === 'fine') {
           filtro[key] = moment(value, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
         } else {
+          if (key === 'attivo') {
+            this.filtroGestioneBannerApplicato.attivo = value;
+          }
           filtro[key] = value;
         }
+      } else if (key === 'attivo') {
+        this.filtroGestioneBannerApplicato.attivo = false;
+        filtro[key] = false;
       } else {
         filtro[key] = null;
       }
@@ -114,9 +120,9 @@ export class FiltroGestioneBannerComponent implements OnInit {
   disabilitaBottone(filtroGestioneBannerForm: NgForm, nomeBottone: string): boolean {
     const isAtLeastOneFieldValued = Object.keys(filtroGestioneBannerForm.value).some(key => filtroGestioneBannerForm.value[key]);
     if (nomeBottone === BottoneEnum.PULISCI) {
-      return !isAtLeastOneFieldValued;
+      return !isAtLeastOneFieldValued && this.filtroGestioneBannerApplicato.attivo == null;
     } else if (nomeBottone === BottoneEnum.CERCA) {
-      return !filtroGestioneBannerForm.valid || !isAtLeastOneFieldValued;
+      return !filtroGestioneBannerForm.valid;
     }
   }
 
