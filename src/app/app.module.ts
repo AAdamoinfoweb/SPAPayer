@@ -62,6 +62,7 @@ import {FiltroGestioneLivelliTerritorialiComponent} from './modules/main/compone
 import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
 import {FiltroGestioneBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/filtro-gestione-banner/filtro-gestione-banner.component';
 import {GestisciEntiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component';
+import {InputSwitchModule} from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -116,34 +117,35 @@ import {GestisciEntiComponent} from './modules/main/components/amministrativo/an
     GestisciEntiComponent,
     OrderByPipe
   ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        AppRoutingModule,
-        MainModule,
-        NgbModule,
-        FormsModule,
-        DesignAngularKitModule,
-        ReactiveFormsModule,
-        UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
-        DpDatePickerModule,
-        NgxDatatableModule,
-        AccordionModule,
-        TableModule,
-        ButtonModule,
-        BrowserAnimationsModule,
-        TabViewModule,
-        ToolbarModule,
-        UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
-        DpDatePickerModule,
-        NgxCurrencyModule,
-        CustomFormsModule,
-        ConfirmDialogModule,
-        BrowserAnimationsModule,
-        CustomFormsModule,
-        AutoCompleteModule,
-        TreeTableModule
-    ],
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    MainModule,
+    NgbModule,
+    FormsModule,
+    DesignAngularKitModule,
+    ReactiveFormsModule,
+    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    DpDatePickerModule,
+    NgxDatatableModule,
+    AccordionModule,
+    TableModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    TabViewModule,
+    ToolbarModule,
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
+    DpDatePickerModule,
+    NgxCurrencyModule,
+    CustomFormsModule,
+    ConfirmDialogModule,
+    BrowserAnimationsModule,
+    CustomFormsModule,
+    AutoCompleteModule,
+    TreeTableModule,
+    InputSwitchModule
+  ],
   providers: [
     ConfirmationService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},

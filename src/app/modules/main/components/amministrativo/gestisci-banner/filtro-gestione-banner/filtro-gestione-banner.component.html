@@ -8,10 +8,19 @@
 <form #filtroGestioneBannerForm="ngForm">
   <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltriBanner">
     <div class="collapse-body">
-      <!-- Switch Attivo -->
+      <!-- Switch Campo Attivo -->
       <div class="row mt-0 mb-0">
-        <div class="col">
-          <it-toggle [(ngModel)]="filtroGestioneBannerApplicato.attivo" name="attivo"></it-toggle>
+        <div class="col-12 text-right">
+          <div class="row">
+            <div class="col">
+              <label for="switchAttivoBanner" class="title">Attivo</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p-inputSwitch id="switchAttivoBanner" [(ngModel)]="filtroGestioneBannerApplicato.attivo" name="attivo"></p-inputSwitch>
+            </div>
+          </div>
         </div>
       </div>
 
