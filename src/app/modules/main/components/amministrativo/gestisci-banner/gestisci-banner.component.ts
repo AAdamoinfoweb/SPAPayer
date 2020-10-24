@@ -129,7 +129,7 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
         this.esportaTabellaInFilePdf(dataTable);
         break;
       case ToolEnum.EXPORT_XLS:
-        // TODO this.esportaTabellaInFileExcel(dataTable);
+        this.esportaTabellaInFileExcel(dataTable);
         break;
     }
   }
@@ -143,6 +143,22 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
     iconaBannerAttivo.larghezza = 9;
     iconaBannerAttivo.altezza = 17;
     Utils.esportaTabellaInFilePdf(dataTable, 'Lista Banner', [iconaBannerAttivo]);
+  }
+
+  esportaTabellaInFileExcel(dataTable: any): void {
+    const customHeaders = dataTable.cols.map(col => col.header);
+    dataTable.rows = dataTable.rows.map(row => {
+      const newRow = row;
+      newRow.iconaBanner = row.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
+      newRow.titolo = row.titolo.value;
+      newRow.testo = row.testo.value;
+      newRow.inizio = row.inizio.value;
+      newRow.fine = row.fine.value;
+      return newRow;
+    });
+
+    const workbook = {Sheets: {'Banner': null}, SheetNames: []};
+    Utils.creaFileExcel(dataTable.rows, customHeaders, 'Banner', ['Banner'], workbook, 'Lista Banner');
   }
 
   onChangeListaBanner(listaBannerFiltrati: Banner[]): void {
