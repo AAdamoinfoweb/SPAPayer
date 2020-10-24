@@ -14,6 +14,7 @@ import {Banner} from '../../../model/banner/Banner';
 import * as moment from 'moment';
 import {Utils} from '../../../../../utils/Utils';
 import {BannerService} from '../../../../../services/banner.service';
+import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 
 @Component({
   selector: 'app-gestisci-banner',
@@ -116,21 +117,32 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        // TODO this.aggiungiSocieta(dataTable);
+        // TODO this.aggiungiBanner(dataTable);
         break;
       case ToolEnum.UPDATE:
-        // TODO this.modificaSocietaSelezionata(dataTable);
+        // TODO this.modificaBannerSelezionato(dataTable);
         break;
       case ToolEnum.DELETE:
-        // TODO this.eliminaSocietaSelezionate(dataTable);
+        // TODO this.eliminaBannerSelezionati(dataTable);
         break;
       case ToolEnum.EXPORT_PDF:
-        // TODO this.esportaTabellaInFilePdf(dataTable);
+        this.esportaTabellaInFilePdf(dataTable);
         break;
       case ToolEnum.EXPORT_XLS:
         // TODO this.esportaTabellaInFileExcel(dataTable);
         break;
     }
+  }
+
+  esportaTabellaInFilePdf(dataTable: any): void {
+    const iconaBannerAttivo = new ImmaginePdf();
+    iconaBannerAttivo.indiceColonna = 0;
+    iconaBannerAttivo.srcIcona = 'assets/img/active-banner.png';
+    iconaBannerAttivo.posizioneX = 2;
+    iconaBannerAttivo.posizioneY = 2;
+    iconaBannerAttivo.larghezza = 9;
+    iconaBannerAttivo.altezza = 17;
+    Utils.esportaTabellaInFilePdf(dataTable, 'Lista Banner', [iconaBannerAttivo]);
   }
 
   onChangeListaBanner(listaBannerFiltrati: Banner[]): void {
