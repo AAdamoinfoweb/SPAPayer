@@ -163,6 +163,8 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
     this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.amministrativoService.idFunzione).pipe(map(() => {
       this.overlayService.caricamentoEvent.emit(true);
       this.popolaListaBanner();
+      this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+      this.toolbarIcons[this.indiceIconaElimina].disabled = true;
     })).subscribe();
   }
 
