@@ -20,6 +20,7 @@ export class FiltroGestioneBannerComponent implements OnInit {
 
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = '01/01/1990';
+  readonly currentDate = moment().format(Utils.FORMAT_DATE_CALENDAR);
   readonly tipoData = ECalendarValue.String;
 
   filtroGestioneBannerApplicato: ParametriRicercaBanner;
@@ -38,8 +39,8 @@ export class FiltroGestioneBannerComponent implements OnInit {
 
   setPlaceholder(campo: NgModel, tipo: string): string {
     if (this.isCampoInvalido(campo)) {
-      if (campo.errors?.required) {
-        return 'Il campo è obbligatorio';
+      if (campo.name === 'inizio' && campo.model && this.isDataInizioMaggioreDataFine()) {
+        return 'Inizio maggiore della fine';
       } else {
         return 'campo non valido';
       }
@@ -61,11 +62,15 @@ export class FiltroGestioneBannerComponent implements OnInit {
   }
 
   controlloDate(campo: NgModel): boolean {
+    return this.filtroGestioneBannerApplicato.inizio != null
+      ? (this.isDataInizioMaggioreDataFine() || campo?.errors != null)
+      : campo?.errors != null;
+  }
+
+  isDataInizioMaggioreDataFine(): boolean {
     const momentDataInizio = moment(this.filtroGestioneBannerApplicato.inizio, Utils.FORMAT_DATE_CALENDAR);
     const momentDataFine = moment(this.filtroGestioneBannerApplicato.fine, Utils.FORMAT_DATE_CALENDAR);
-    return this.filtroGestioneBannerApplicato.inizio != null
-      ? (moment(momentDataFine).isBefore(momentDataInizio) || campo?.errors != null)
-      : campo?.errors != null;
+    return moment(momentDataFine).isBefore(momentDataInizio);
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {

@@ -94,12 +94,13 @@
                   min: minDateDDMMYYYY,
                   max: setMaxDate(datePickerFine),
                   returnedValueType: tipoData
-              }"
+                }"
                 #inizioInput = "ngModel"
                 [(ngModel)]="filtroGestioneBannerApplicato.inizio"
                 name="inizio"
                 #datePickerInizio
                 (click)="isCalendarOpen = false"
+                [displayDate]="currentDate"
               ></dp-date-picker>
             </div>
           </div>
@@ -136,12 +137,13 @@
                   openOnFocus: false,
                   min: setMinDate(datePickerInizio),
                   returnedValueType: tipoData
-              }"
+                }"
                 #fineInput = "ngModel"
                 [(ngModel)]="filtroGestioneBannerApplicato.fine"
                 name="fine"
                 #datePickerFine
                 (click)="isCalendarOpen = false"
+                [displayDate]="currentDate"
               ></dp-date-picker>
             </div>
           </div>
