@@ -16,7 +16,8 @@ export class BannerService {
   private readonly gestioneBannerBasePath = '/gestioneBanner';
 
   private bannerUrl = '/banner';
-  private readonly ricercaBannerUrl = this.gestioneBannerBasePath + this.bannerUrl;
+  private readonly bannerAmministrativoBaseUrl = this.gestioneBannerBasePath + this.bannerUrl;
+  private readonly eliminaBannerUrl = this.gestioneBannerBasePath + '/eliminaBanner';
   timestamp: string;
   attivo: boolean;
 
@@ -63,13 +64,33 @@ export class BannerService {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
-    return this.http.get(environment.bffBaseUrl + this.ricercaBannerUrl, {
+    return this.http.get(environment.bffBaseUrl + this.bannerAmministrativoBaseUrl, {
       params: params,
       headers: h,
       withCredentials: true
     })
       .pipe(map((body: any) => {
         return body as Banner[];
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  eliminaBanner(listaBannerId: Array<number>, idFunzione: string): Observable<any> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.post(environment.bffBaseUrl + this.eliminaBannerUrl, listaBannerId, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+        return body;
       }),
       catchError((err, caught) => {
         if (err.status == 401 || err.status == 400) {

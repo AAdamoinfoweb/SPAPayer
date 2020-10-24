@@ -16,6 +16,7 @@ import {Utils} from '../../../../../utils/Utils';
 import {BannerService} from '../../../../../services/banner.service';
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import * as _ from 'lodash';
+import {MenuService} from '../../../../../services/menu.service';
 
 @Component({
   selector: 'app-gestisci-banner',
@@ -56,12 +57,35 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
   };
   tempTableData = this.tableData;
 
+  isMenuCarico = false;
   waiting = true;
 
   constructor(router: Router, overlayService: OverlayService, route: ActivatedRoute, http: HttpClient,
               amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
-              private bannerService: BannerService) {
+              private bannerService: BannerService, private menuService: MenuService) {
     super(router, overlayService, route, http, amministrativoService);
+  }
+
+  ngOnInit(): void {
+    this.waitingEmitter.subscribe(() => {
+      this.overlayService.caricamentoEvent.emit(true);
+      if (this.amministrativoService.mappaFunzioni) {
+        this.isMenuCarico = Object.keys(this.amministrativoService.mappaFunzioni).length > 0;
+      }
+
+      if (this.isMenuCarico) {
+        this.inizializzaPagina();
+      } else {
+        this.menuService.menuCaricatoEvent.subscribe(() => {
+          this.inizializzaPagina();
+        });
+      }
+    });
+  }
+
+  inizializzaPagina() {
+    this.inizializzaBreadcrumbList();
+    this.popolaListaBanner();
   }
 
   inizializzaBreadcrumbList(): void {
@@ -70,21 +94,19 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
     this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Banner', null, null));
   }
 
-  ngOnInit(): void {
-    this.waitingEmitter.subscribe((value) => {
-      this.waiting = value;
-      this.inizializzaBreadcrumbList();
+  popolaListaBanner(): void {
+    this.listaBanner = [];
+    const parametriRicercaBanner = new ParametriRicercaBanner();
 
-      const parametriRicercaBanner = new ParametriRicercaBanner();
-      this.bannerService.ricercaBanner(parametriRicercaBanner, this.amministrativoService.idFunzione).pipe(map(listaBanner => {
-        if (listaBanner != null) {
-          listaBanner.forEach(banner => {
-            this.listaBanner.push(banner);
-            this.tableData.rows.push(this.creaRigaTabella(banner));
-          });
-        }
-        this.tempTableData = Object.assign({}, this.tableData);
-      })).subscribe();
+    this.bannerService.ricercaBanner(parametriRicercaBanner, this.amministrativoService.idFunzione).subscribe(listaBanner => {
+      this.tableData.rows = [];
+      listaBanner.forEach(banner => {
+        this.listaBanner.push(banner);
+        this.tableData.rows.push(this.creaRigaTabella(banner));
+      });
+      this.tempTableData = Object.assign({}, this.tableData);
+      this.overlayService.caricamentoEvent.emit(false);
+      this.waiting = false;
     });
   }
 
@@ -126,7 +148,7 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
         // TODO this.modificaBannerSelezionato(dataTable);
         break;
       case ToolEnum.DELETE:
-        // TODO this.eliminaBannerSelezionati(dataTable);
+        this.eliminaBannerSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
         this.esportaTabellaInFilePdf(dataTable);
@@ -135,6 +157,13 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
         this.esportaTabellaInFileExcel(dataTable);
         break;
     }
+  }
+
+  eliminaBannerSelezionati(): void {
+    this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.amministrativoService.idFunzione).pipe(map(() => {
+      this.overlayService.caricamentoEvent.emit(true);
+      this.popolaListaBanner();
+    })).subscribe();
   }
 
   esportaTabellaInFilePdf(dataTable: any): void {
