@@ -88,7 +88,6 @@ export class DettaglioSocietaComponent implements OnInit {
   }
 
   onClickAnnulla() {
-    this.overlayService.caricamentoEvent.emit(true);
     this.router.navigateByUrl('/societa?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 

@@ -32,7 +32,6 @@ export class DettaglioLivelloTerritorialeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.overlayService.caricamentoEvent.emit(true);
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
       this.inizializzaBreadcrumbList();
@@ -42,10 +41,7 @@ export class DettaglioLivelloTerritorialeComponent implements OnInit {
         this.livelloTerritoriale.id = parseInt(this.activatedRoute.snapshot.paramMap.get('livelloterritorialeid'));
         this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.livelloTerritoriale.id, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
           this.livelloTerritoriale = listaLivelliTerritoriali[0];
-          this.overlayService.caricamentoEvent.emit(false);
-        })
-      } else {
-        this.overlayService.caricamentoEvent.emit(false);
+        });
       }
     });
   }
@@ -91,22 +87,18 @@ export class DettaglioLivelloTerritorialeComponent implements OnInit {
   }
 
   onClickAnnulla() {
-    this.overlayService.caricamentoEvent.emit(true);
     this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 
   onClickSalva() {
-    this.overlayService.caricamentoEvent.emit(true);
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
         this.livelloTerritorialeService.aggiuntaLivelloTerritoriale(this.livelloTerritoriale, this.amministrativoService.idFunzione).subscribe((livelloTerritoriale) => {
-          this.overlayService.caricamentoEvent.emit(false);
           this.livelloTerritoriale = new LivelloTerritoriale();
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
         this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.amministrativoService.idFunzione).subscribe(() => {
-          this.overlayService.caricamentoEvent.emit(false);
         });
         break;
     }
