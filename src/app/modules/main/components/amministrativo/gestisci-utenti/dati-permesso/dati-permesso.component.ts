@@ -22,6 +22,7 @@ import {FiltroServizio} from '../../../../model/FiltroServizio';
 import {ParametriRicercaUtente} from "../../../../model/utente/ParametriRicercaUtente";
 import {PermessoService} from "../../../../../../services/permesso.service";
 import {AsyncSubject, Observable} from "rxjs";
+import {OverlayService} from "../../../../../../services/overlay.service";
 
 @Component({
   selector: 'app-dati-permesso',
@@ -62,7 +63,7 @@ export class DatiPermessoComponent implements OnInit {
 
   constructor(private funzioneService: FunzioneService, private societaService: SocietaService,
               private amministrativoService: AmministrativoService, private nuovoPagamentoService: NuovoPagamentoService,
-              private permessoService: PermessoService) {
+              private permessoService: PermessoService, private overlayService: OverlayService) {
   }
 
 
@@ -75,6 +76,7 @@ export class DatiPermessoComponent implements OnInit {
       this.datiPermesso.enteId = undefined;
       this.datiPermesso.dataInizioValidita = moment().format(Utils.FORMAT_DATE_CALENDAR);
     } else {
+      // init spinner modifica e dettaglio per lettura permessi
       this.isModificaPermessi = true;
       this.letturaSocieta(this.datiPermesso.societaId).subscribe((value) => {
         const mapPermessoFunzioni: Map<number, PermessoFunzione> =

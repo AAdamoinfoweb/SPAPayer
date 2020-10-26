@@ -78,7 +78,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
   ngOnInit(): void {
     this.waitingEmitter.subscribe(() => {
-      this.overlayService.caricamentoEvent.emit(true);
+
       if (this.amministrativoService.mappaFunzioni) {
         this.isMenuCarico = Object.keys(this.amministrativoService.mappaFunzioni).length > 0;
       }
@@ -113,7 +113,6 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
         this.tableData.rows.push(this.creaRigaTabella(societa));
       });
       this.tempTableData = Object.assign({}, this.tableData);
-      this.overlayService.caricamentoEvent.emit(false);
       this.waiting = false;
     });
   }
@@ -167,7 +166,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
 
   eliminaSocietaSelezionate() {
     this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
-      this.overlayService.caricamentoEvent.emit(true);
+
       this.popolaListaSocieta();
     });
   }

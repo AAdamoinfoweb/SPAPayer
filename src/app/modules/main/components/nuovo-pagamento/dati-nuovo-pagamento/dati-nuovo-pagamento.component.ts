@@ -95,9 +95,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     if (this.datiPagamento.importo) {
       this.model[this.importoNomeCampo] = this.datiPagamento.importo;
-    } else {
-      console.log('Importo mancante');
-      this.overlayService.gestisciErrore();
     }
 
     // In modalità compilazione automatica, carico tutte le opzioni per le select dipendenti (in quanto i valori delle select da cui dipendono potrebbero arrivare successivamente)
@@ -115,13 +112,9 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
             if (campo) {
               this.model[this.getNomeCampoForm(campo)] = dettaglio.valore;
-            } else {
-              console.log('Campo dettaglio transazione mancante');
-              this.overlayService.gestisciErrore();
             }
           });
         }
-        this.overlayService.caricamentoEvent.emit(false);
       });
     } else {
       // Un pagamento può non avere il dettaglioTransazioneId (quindi non essere sul db) solo se è di un servizio LV3 esterno
@@ -144,11 +137,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
               }
             }
 
-            this.overlayService.caricamentoEvent.emit(false);
           });
-      } else {
-        console.log('Dettaglio transazione id mancante su servizio diverso da LV3');
-        this.overlayService.gestisciErrore();
       }
     }
   }
@@ -195,7 +184,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   clickProcedi(): void {
-    this.overlayService.caricamentoEvent.emit(true);
 
     // Mapping valori dei campi input da usare per la precompilazione
     const valoriPerPrecompilazione = {};
@@ -214,7 +202,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         // TODO (attendere implementazione backend) testare mapping campi output per servizio LV2BO (NB: al momento la chiamata crasha lato backend per servizio LV2BO)
         this.impostaValoriCampiOutput(valoriCampiPrecompilati);
-        this.overlayService.caricamentoEvent.emit(false);
       });
   }
 
@@ -345,8 +332,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         if (this.datiPagamento) {
           this.impostaDettaglioPagamento();
-        } else {
-          this.overlayService.caricamentoEvent.emit(false);
         }
       }));
     } else {
@@ -641,8 +626,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   aggiungiAlCarrello() {
-    this.overlayService.caricamentoEvent.emit(true);
-
     let observable: Observable<any>;
     if (this.menuService.isUtenteAnonimo) {
       const numeroDoc = this.getNumDocumento();
@@ -658,7 +641,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             return of('error');
           }
 
-          this.overlayService.caricamentoEvent.emit(false);
         }));
     } else {
       observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
@@ -686,13 +668,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
         }
 
-        this.overlayService.caricamentoEvent.emit(false);
       }
     });
   }
 
   pagaOra() {
-    this.overlayService.caricamentoEvent.emit(true);
     if (this.menuService.isUtenteAnonimo) {
       const numeroDoc = this.getNumDocumento();
       this.nuovoPagamentoService.verificaBollettino(numeroDoc)
@@ -708,7 +688,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             return of('error');
           }
 
-          this.overlayService.caricamentoEvent.emit(false);
         });
     } else {
       const observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
@@ -735,7 +714,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
           }
 
-          this.overlayService.caricamentoEvent.emit(false);
           this.router.navigateByUrl('/carrello');
         }
       });
@@ -743,8 +721,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   salvaPerDopo() {
-    this.overlayService.caricamentoEvent.emit(true);
-
     const observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
       .pipe(flatMap((result) => {
         if (result.length > 0) {
@@ -760,7 +736,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           }
         }
 
-        this.overlayService.caricamentoEvent.emit(false);
       }));
     observable.subscribe((result) => {
       if (result !== 'error') {

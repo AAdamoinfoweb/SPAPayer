@@ -46,7 +46,6 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {AggiungiUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
 import {DatiUtenteComponent} from './modules/main/components/amministrativo/gestisci-utenti/dati-utente/dati-utente.component';
 import {DatiPermessoComponent} from './modules/main/components/amministrativo/gestisci-utenti/dati-permesso/dati-permesso.component';
-import {ModificaUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
 import {DayInputDirective} from './utils/DayInputDirective';
 import {MonthInputDirective} from './utils/MonthInputDirective';
 import {OverlayComponent} from './components/overlay/overlay.component';
@@ -63,6 +62,8 @@ import {GestisciBannerComponent} from './modules/main/components/amministrativo/
 import {FiltroGestioneBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/filtro-gestione-banner/filtro-gestione-banner.component';
 import {GestisciEntiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import {SpinnerOverlayComponent} from './components/spinner-overlay/spinner-overlay.component';
+import {OverlayModule} from "@angular/cdk/overlay";
 
 @NgModule({
   declarations: [
@@ -89,7 +90,6 @@ import {InputSwitchModule} from 'primeng/inputswitch';
     IntegerNumberDirective,
     DatiUtenteComponent,
     DatiPermessoComponent,
-    ModificaUtentePermessiComponent,
     AppComponent,
     HomeComponent,
     SidebarComponent,
@@ -115,7 +115,8 @@ import {InputSwitchModule} from 'primeng/inputswitch';
     GestisciBannerComponent,
     FiltroGestioneBannerComponent,
     GestisciEntiComponent,
-    OrderByPipe
+    OrderByPipe,
+    SpinnerOverlayComponent
   ],
   imports: [
     HttpClientModule,
@@ -144,7 +145,8 @@ import {InputSwitchModule} from 'primeng/inputswitch';
     CustomFormsModule,
     AutoCompleteModule,
     TreeTableModule,
-    InputSwitchModule
+    InputSwitchModule,
+    OverlayModule
   ],
   providers: [
     ConfirmationService,

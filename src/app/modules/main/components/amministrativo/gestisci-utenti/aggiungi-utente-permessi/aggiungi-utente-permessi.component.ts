@@ -22,7 +22,11 @@ import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
 import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {PermessoService} from '../../../../../../services/permesso.service';
-import {PermessoFunzione} from "../../../../model/permesso/PermessoFunzione";
+import {PermessoFunzione} from '../../../../model/permesso/PermessoFunzione';
+import {OverlayService} from '../../../../../../services/overlay.service';
+import {BannerService} from '../../../../../../services/banner.service';
+import {Banner} from '../../../../model/banner/Banner';
+import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -33,8 +37,8 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
 
   breadcrumbList = [];
 
-  tooltipTitle: string = `In questa pagina puoi aggiungere un utente e abilitarlo a specifici servizi`;
-  titoloPagina: string = `Aggiungi Utente/Permessi`;
+  tooltipTitle = `In questa pagina puoi aggiungere un utente e abilitarlo a specifici servizi`;
+  titoloPagina = `Aggiungi Utente/Permessi`;
 
   codiceFiscale: string;
   codiceFiscaleModifica: string;
@@ -57,16 +61,19 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
               private activatedRoute: ActivatedRoute,
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, private amministrativoService: AmministrativoService,
-              private permessoService: PermessoService) {
+              private permessoService: PermessoService,
+              private overlayService: OverlayService,
+              private bannerService: BannerService) {
     // codice fiscale da utente service per inserimento
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
-
+    this.inizializzaBreadcrumbList();
   }
 
 
   inizializzaBreadcrumbList(): void {
+    this.breadcrumbList = [];
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
     this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', '/gestioneUtenti/' + this.amministrativoService.idFunzione, null));
@@ -81,6 +88,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+
     // get route per logica inserimento o modifica
     this.activatedRoute.params.subscribe((params) => {
       if (this.activatedRoute.snapshot.url[0].path === 'modificaUtentePermessi') {
@@ -177,7 +185,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
 
   disabilitaBottone(): boolean {
     let controlloCodiceFiscale = false;
-    if(!this.isModifica && !this.isDettaglio) {
+    if (!this.isModifica && !this.isDettaglio) {
       controlloCodiceFiscale = this.codiceFiscale == null || this.codiceFiscale === '';
     }
     return controlloCodiceFiscale || !this.isFormDatiUtenteValido || this.controlloDate() || this.controlloDatiPermesso();
@@ -224,47 +232,76 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
       moment(utente.scadenza, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     utente.attivazione = utente.attivazione ?
       moment(utente.attivazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-    const codiceFiscale = this.isModifica ? this.codiceFiscaleModifica : this.codiceFiscale
-    this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.amministrativoService.idFunzione)
-      .pipe(map(datiUtente => {
+    const codiceFiscale = this.isModifica ? this.codiceFiscaleModifica : this.codiceFiscale;
+    if (!this.isModifica && !this.isDettaglio) {
+      // controllo su codice fiscale
+      this.utenteService.letturaCodiceFiscale(this.codiceFiscale, this.amministrativoService.idFunzione).subscribe((data) => {
+        const codiciFiscaleUpperCase = data.map(value => value.toUpperCase());
+        const iscodiceFiscaleEsistente = codiciFiscaleUpperCase.includes(this.codiceFiscale.toUpperCase());
+        if (iscodiceFiscaleEsistente) {
+        const banner: Banner = {
+          titolo: 'ATTENZIONE',
+          testo: 'Utente già presente',
+          tipo: getBannerType(LivelloBanner.ERROR)
+        };
+        this.bannerService.bannerEvent.emit([banner]);
+      } else {
+          this.inserimentoAggiornamentoUtente(codiceFiscale, utente);
+        }
+      });
+    } else {
+      // nessun controllo codice fiscale
+      this.inserimentoAggiornamentoUtente(codiceFiscale, utente);
+    }
+    this.asyncSubject.subscribe(cf => {
+      this.codiceFiscaleModifica = cf;
+      this.router.routeReuseStrategy.shouldReuseRoute = function() {
+        return false;
+      };
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/modificaUtentePermessi', cf]);
+    });
+  }
+
+  private inserimentoAggiornamentoUtente(codiceFiscale: string, utente: InserimentoModificaUtente) {
+    this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.amministrativoService.idFunzione).subscribe((err) => {
+      if (err == null) {
         // se presenti inserimento permessi
-        let listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
+        const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
         if (listaPermessi.length > 0) {
-          listaPermessi = listaPermessi.map(permesso => {
-            if (permesso.enteId === null && permesso.listaFunzioni.length === 0) {
-              // creazione funzione per permesso amministrativo al momento dell'inserimento
-              const funzionePermessoAmministrativo = new PermessoFunzione();
-              funzionePermessoAmministrativo.permessoId = null;
-              funzionePermessoAmministrativo.permessoCancellato = false;
-              funzionePermessoAmministrativo.funzioneId = null;
-              const listaFunzioniAmministrative: PermessoFunzione[] = [funzionePermessoAmministrativo];
-              permesso.listaFunzioni = listaFunzioniAmministrative;
-            }
-            permesso.dataFineValidita = permesso.dataFineValidita ?
-              moment(permesso.dataFineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-            permesso.dataInizioValidita = permesso.dataInizioValidita ?
-              moment(permesso.dataInizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-            return permesso;
-          });
-          this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessi, this.amministrativoService.idFunzione)
-            .pipe(map(res => {
-              this.asyncSubject.next(codiceFiscale);
-              this.asyncSubject.complete();
-            }))
-            .subscribe();
+          this.inserimentoAggiornamentoPermessi(listaPermessi, codiceFiscale);
         } else {
           this.asyncSubject.next(codiceFiscale);
           this.asyncSubject.complete();
         }
-      })).subscribe();
-    this.asyncSubject.subscribe(cf => {
-      this.codiceFiscaleModifica = cf;
-      this.router.routeReuseStrategy.shouldReuseRoute = function () {
-        return false;
       }
-      this.router.onSameUrlNavigation = 'reload';
-      this.router.navigate(['/modificaUtentePermessi', cf]);
     });
+  }
+
+  private inserimentoAggiornamentoPermessi(listaPermessi: PermessoCompleto[], codiceFiscale: string) {
+    // creo permessi da inserire
+    const listaPermessiDaInserire = listaPermessi.map(permesso => {
+      if (permesso.enteId === null && permesso.listaFunzioni.length === 0) {
+        // creazione funzione per permesso amministrativo al momento dell'inserimento
+        const funzionePermessoAmministrativo = new PermessoFunzione();
+        funzionePermessoAmministrativo.permessoId = null;
+        funzionePermessoAmministrativo.permessoCancellato = false;
+        funzionePermessoAmministrativo.funzioneId = null;
+        const listaFunzioniAmministrative: PermessoFunzione[] = [funzionePermessoAmministrativo];
+        permesso.listaFunzioni = listaFunzioniAmministrative;
+      }
+      permesso.dataFineValidita = permesso.dataFineValidita ?
+        moment(permesso.dataFineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+      permesso.dataInizioValidita = permesso.dataInizioValidita ?
+        moment(permesso.dataInizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+      return permesso;
+    });
+    // chiamata be inserimento modifica permessi
+    this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessiDaInserire, this.amministrativoService.idFunzione)
+      .subscribe(() => {
+        this.asyncSubject.next(codiceFiscale);
+        this.asyncSubject.complete();
+      });
   }
 
   onClickAnnulla() {
