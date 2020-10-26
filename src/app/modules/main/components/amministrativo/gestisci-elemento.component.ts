@@ -27,7 +27,25 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     this.router.navigateByUrl(link);
   }
 
-  // TODO generalizzare modifica
+  // TODO astrarre popolaListaElementi
+
+  // TODO generalizzare o astrarre creaRigaTabella
+
+  // TODO generalizzare eseguiAzioni
+
+  // TODO generalizzare mostraDettaglioElemento
+
+  // TODO generalizzare o astrarre eliminaListaIdElementiSelezionati
+
+  // TODO generalizzare modificaElementoSelezionato
+
+  // TODO generalizzare esportaTabellaInFilePdf
+
+  // TODO generalizzare o astrarre selezionaElemento
+
+  // TODO generalizzare o astrarre onChangeListaElementi
+
+  // TODO generalizzare getTotaliRecord
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {
     const copiaTabella = JSON.parse(JSON.stringify(tabella));
