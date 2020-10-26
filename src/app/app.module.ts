@@ -46,7 +46,6 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {AggiungiUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
 import {DatiUtenteComponent} from './modules/main/components/amministrativo/gestisci-utenti/dati-utente/dati-utente.component';
 import {DatiPermessoComponent} from './modules/main/components/amministrativo/gestisci-utenti/dati-permesso/dati-permesso.component';
-import {ModificaUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
 import {DayInputDirective} from './utils/DayInputDirective';
 import {MonthInputDirective} from './utils/MonthInputDirective';
 import {OverlayComponent} from './components/overlay/overlay.component';
@@ -57,6 +56,8 @@ import {AmministrativoParentComponent} from "./modules/main/components/amministr
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
 import {FiltroGestioneSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/filtro-gestione-societa/filtro-gestione-societa.component';
 import {OrderByPipe} from "./pipe/orderby-pipe";
+import {SpinnerOverlayComponent} from './components/spinner-overlay/spinner-overlay.component';
+import {OverlayModule} from "@angular/cdk/overlay";
 
 @NgModule({
   declarations: [
@@ -83,7 +84,6 @@ import {OrderByPipe} from "./pipe/orderby-pipe";
     IntegerNumberDirective,
     DatiUtenteComponent,
     DatiPermessoComponent,
-    ModificaUtentePermessiComponent,
     AppComponent,
     HomeComponent,
     SidebarComponent,
@@ -104,36 +104,38 @@ import {OrderByPipe} from "./pipe/orderby-pipe";
     AmministrativoParentComponent,
     GestisciSocietaComponent,
     FiltroGestioneSocietaComponent,
-    OrderByPipe
+    OrderByPipe,
+    SpinnerOverlayComponent
   ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        AppRoutingModule,
-        MainModule,
-        NgbModule,
-        FormsModule,
-        DesignAngularKitModule,
-        ReactiveFormsModule,
-        UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
-        DpDatePickerModule,
-        NgxDatatableModule,
-        AccordionModule,
-        TableModule,
-        ButtonModule,
-        BrowserAnimationsModule,
-        TabViewModule,
-        ToolbarModule,
-        UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
-        DpDatePickerModule,
-        NgxCurrencyModule,
-        CustomFormsModule,
-        ConfirmDialogModule,
-        BrowserAnimationsModule,
-        CustomFormsModule,
-        AutoCompleteModule,
-        TreeTableModule
-    ],
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    MainModule,
+    NgbModule,
+    FormsModule,
+    DesignAngularKitModule,
+    ReactiveFormsModule,
+    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    DpDatePickerModule,
+    NgxDatatableModule,
+    AccordionModule,
+    TableModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    TabViewModule,
+    ToolbarModule,
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
+    DpDatePickerModule,
+    NgxCurrencyModule,
+    CustomFormsModule,
+    ConfirmDialogModule,
+    BrowserAnimationsModule,
+    CustomFormsModule,
+    AutoCompleteModule,
+    TreeTableModule,
+    OverlayModule
+  ],
   providers: [
     ConfirmationService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},

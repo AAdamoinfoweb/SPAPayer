@@ -34,8 +34,6 @@ export class BackendInterceptorService {
       }
     }),
     catchError(err => { // gestisco gli errori verso il backend
-      this.overlayService.caricamentoEvent.emit(false);
-
       if (err.status === 401 && accessjwt && !err.url.includes(environment.renewJwtUrl)) { // accesso negato
         const renew = this.renewToken();
         return renew.pipe(

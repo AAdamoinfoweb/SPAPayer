@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
         }
       }
       if (bollettini.length > 0) {
-        this.overlayService.caricamentoEvent.emit(true);
+
         let observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(bollettini)
           .pipe(flatMap((result) => {
             let dettaglio: DettagliTransazione = new DettagliTransazione();
@@ -61,7 +61,6 @@ export class HomeComponent implements OnInit {
         observable.subscribe(() => {
           nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
           this.clearLocalStorage();
-          this.overlayService.caricamentoEvent.emit(false);
           this.router.navigateByUrl("/nuovoPagamento");
         });
       }

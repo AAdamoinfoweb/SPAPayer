@@ -71,7 +71,6 @@ export class FiltroGestioneUtentiComponent implements OnInit {
       });
 
       if (this.filtroSocieta) {
-        this.overlayService.caricamentoEvent.emit(true);
         const isFiltroSocietaValido = this.listaSocieta.some(item => item.value === this.filtroSocieta);
         if (isFiltroSocietaValido) {
           this.filtroGestioneUtentiApplicato.societaId = this.filtroSocieta;
@@ -79,10 +78,8 @@ export class FiltroGestioneUtentiComponent implements OnInit {
           parametriRicercaUtente.societaId = this.filtroSocieta;
           this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).subscribe(utenti => {
             this.onChangeListaUtenti.emit(utenti);
-            this.overlayService.caricamentoEvent.emit(false);
           });
         } else {
-          this.overlayService.caricamentoEvent.emit(false);
           window.open('/nonautorizzato', '_self');
         }
       }
@@ -215,10 +212,9 @@ export class FiltroGestioneUtentiComponent implements OnInit {
         filtro[key] = null;
       }
     });
-
     this.utenteService.ricercaUtenti(filtro, this.amministrativoService.idFunzione).pipe(map(listaUtenti => {
         this.onChangeListaUtenti.emit(listaUtenti);
-    })).subscribe();
+    })).subscribe(value => {});
   }
 
   disabilitaBottone(filtroGestioneUtentiForm: NgForm, nomeBottone: string): boolean {

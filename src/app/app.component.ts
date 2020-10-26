@@ -37,17 +37,17 @@ export class AppComponent implements OnInit {
       this.logout();
     });
 
-    this.overlayService.caricamentoEvent.subscribe(isLoading => {
-      this.caricamento = isLoading;
-      this.cdr.detectChanges();
-    });
+    // this.overlayService.caricamentoEvent.subscribe(isLoading => {
+    //   this.caricamento = isLoading;
+    //   this.cdr.detectChanges();
+    // });
 
     this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(datiPagamento => {
       this.datiPagamento = datiPagamento;
       this.cdr.detectChanges();
     });
 
-    this.overlayService.caricamentoEvent.emit(true);
+
     this.menuService.getInfoUtente().subscribe((info) => {
       this.menuService.infoUtenteEmitter.emit(info);
     });

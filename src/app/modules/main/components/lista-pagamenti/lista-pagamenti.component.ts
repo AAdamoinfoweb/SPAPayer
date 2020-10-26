@@ -54,7 +54,7 @@ export class ListaPagamentiComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.overlayService.caricamentoEvent.emit(true);
+
     if (this.menuService.isUtenteAnonimo) {
       this.getCarrelloAnonimo();
     } else {
@@ -78,7 +78,6 @@ export class ListaPagamentiComponent implements OnInit {
       }
     }
     this.callChangeEvent();
-    this.overlayService.caricamentoEvent.emit(false);
   }
 
   private callChangeEvent() {
@@ -100,7 +99,6 @@ export class ListaPagamentiComponent implements OnInit {
         return this.listaPagamenti;
       }));
     observable.subscribe((ret) => {
-      this.overlayService.caricamentoEvent.emit(false);
       if (ret == null) {
         this.route.navigateByUrl("/nonautorizzato");
       }
