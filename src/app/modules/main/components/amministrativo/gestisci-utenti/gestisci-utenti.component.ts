@@ -17,13 +17,14 @@ import {AmministrativoParentComponent} from "../amministrativo-parent.component"
 import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from "../../../../../services/amministrativo.service";
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
+import {GestisciParentComponent} from "../gestisci-parent.component";
 
 @Component({
   selector: 'app-gestione-utenti',
   templateUrl: './gestisci-utenti.component.html',
   styleUrls: ['./gestisci-utenti.component.scss']
 })
-export class GestisciUtentiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciUtentiComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
@@ -81,7 +82,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
   constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient,
               private renderer: Renderer2, private el: ElementRef, amministrativoService: AmministrativoService) {
-    super(router, overlayService, route, http, amministrativoService);
+    super(router, route, http, amministrativoService);
     this.route.queryParams.subscribe(params => {
       if (params.societaId) {
         this.filtroSocieta = parseInt(params.societaId);
@@ -89,16 +90,10 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
     })
   }
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', null, null));
-  }
-
   ngOnInit(): void {
     this.waitingEmitter.subscribe((value) => {
       this.waiting = value;
-      this.inizializzaBreadcrumbList();
+      this.breadcrumbList = this.inizializzaBreadcrumbList([{label: 'Gestisci Utenti', link: null}]);
 
       const parametriRicercaUtente = new ParametriRicercaUtente();
       this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
