@@ -21,6 +21,8 @@ import {AsyncSubject} from 'rxjs';
 import {DatiPagamento} from '../../model/bollettino/DatiPagamento';
 import {OverlayService} from '../../../../services/overlay.service';
 import {ListaPagamentiFiltri} from "../../model/bollettino/imieipagamenti/ListaPagamentiFiltri";
+import {TipoModaleEnum} from '../../../../enums/tipoModale.enum';
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'app-i-miei-pagamenti',
@@ -81,7 +83,9 @@ export class IMieiPagamentiComponent implements OnInit {
 
   constructor(private iMieiPagamentiService: IMieiPagamentiService, private router: Router,
               private nuovoPagamentoService: NuovoPagamentoService, private bannerService: BannerService,
-              private overlayService: OverlayService) {
+              private overlayService: OverlayService,
+              private confirmationService: ConfirmationService
+              ) {
     // init breadcrumb
     this.inizializzaBreadcrumb();
   }
@@ -212,16 +216,22 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
   eliminaPagamenti() {
-    const possibilitaInserimentoCarrello = this.controlloValiditaPagamentiEliminaPagamenti();
-    if (possibilitaInserimentoCarrello) {
-      const dettagliTransazione: DettagliTransazione = new DettagliTransazione();
-      dettagliTransazione.listaDettaglioTransazioneId = this.pagamentiSelezionati.map(pagamento => pagamento.dettaglioTransazioneId);
-      this.iMieiPagamentiService.eliminaBollettino(dettagliTransazione).pipe(map(value => {
-        this.inizializzaListaPagamenti(this.filtri);
-      })).subscribe();
-    } else {
-      this.mostraBannerError(this.MESSAGGIO_ERRORE_AZIONE);
-    }
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          const possibilitaInserimentoCarrello = this.controlloValiditaPagamentiEliminaPagamenti();
+          if (possibilitaInserimentoCarrello) {
+            const dettagliTransazione: DettagliTransazione = new DettagliTransazione();
+            dettagliTransazione.listaDettaglioTransazioneId = this.pagamentiSelezionati.map(pagamento => pagamento.dettaglioTransazioneId);
+            this.iMieiPagamentiService.eliminaBollettino(dettagliTransazione).pipe(map(value => {
+              this.inizializzaListaPagamenti(this.filtri);
+            })).subscribe();
+          } else {
+            this.mostraBannerError(this.MESSAGGIO_ERRORE_AZIONE);
+          }
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
   }
 
   stampaAttestatiPagamento() {

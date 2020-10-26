@@ -10,6 +10,8 @@ import {OverlayService} from '../../../../services/overlay.service';
 import {ConfirmationService} from "primeng/api";
 import {Bollettino} from "../../model/bollettino/Bollettino";
 import {MenuService} from "../../../../services/menu.service";
+import {Utils} from '../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../enums/tipoModale.enum';
 
 const arrowup = 'assets/img/sprite.svg#it-arrow-up-triangle'
 const arrowdown = 'assets/img/sprite.svg#it-arrow-down-triangle'
@@ -120,23 +122,17 @@ export class ListaPagamentiComponent implements OnInit {
   }
 
   eliminaBollettino(pagamento: Pagamento) {
-    this.confirmationService.confirm({
-      header: 'Conferma cancellazione',
-      message: 'Procedere con la cancellazione del bollettino?',
-      acceptButtonStyleClass: 'okButton',
-      rejectButtonStyleClass: 'undoButton',
-      acceptLabel: 'Conferma',
-      rejectLabel: 'Annulla',
-      reject: () => {
-      },
-      accept: () => {
-        if (this.menuService.isUtenteAnonimo) {
-          this.eliminaBollettinoAnonimo(pagamento);
-        } else {
-          this.eliminaBollettinoAutenticato(pagamento);
-        }
-      }
-    });
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          if (this.menuService.isUtenteAnonimo) {
+            this.eliminaBollettinoAnonimo(pagamento);
+          } else {
+            this.eliminaBollettinoAutenticato(pagamento);
+          }
+        },
+        TipoModaleEnum.ELIMINA,
+      )
+    );
   }
 
   private eliminaBollettinoAutenticato(pagamento: Pagamento) {
@@ -148,23 +144,19 @@ export class ListaPagamentiComponent implements OnInit {
   }
 
   salvaPerDopo(pagamento: Pagamento) {
-    this.confirmationService.confirm({
-      header: 'Salva per dopo',
-      message: 'Procedere con il salvataggio per dopo del bollettino?',
-      acceptButtonStyleClass: 'okButton',
-      rejectButtonStyleClass: 'undoButton',
-      acceptLabel: 'Conferma',
-      rejectLabel: 'Annulla',
-      reject: () => {
-      },
-      accept: () => {
-        const dettaglio: DettagliTransazione = new DettagliTransazione();
-        dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
-        this.nuovoPagamentoService.salvaPerDopo(dettaglio).subscribe(() => {
-          this.ngOnInit();
-        });
-      }
-    });
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          const dettaglio: DettagliTransazione = new DettagliTransazione();
+          dettaglio.listaDettaglioTransazioneId.push(pagamento.id);
+          this.nuovoPagamentoService.salvaPerDopo(dettaglio).subscribe(() => {
+            this.ngOnInit();
+          });
+        },
+        TipoModaleEnum.CUSTOM,
+        'Salva per dopo',
+        'Procedere con il salvataggio per dopo del bollettino?'
+      )
+    );
   }
 
   private eliminaBollettinoAnonimo(pagamento: Pagamento) {

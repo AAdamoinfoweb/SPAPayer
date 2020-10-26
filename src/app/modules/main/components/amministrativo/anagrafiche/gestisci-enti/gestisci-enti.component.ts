@@ -11,6 +11,9 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {MenuService} from '../../../../../../services/menu.service';
 import {Societa} from '../../../../model/Societa';
 import {Breadcrumb} from '../../../../dto/Breadcrumb';
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {Utils} from '../../../../../../utils/Utils';
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -59,7 +62,8 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private el: ElementRef,
-              private menuService: MenuService
+              private menuService: MenuService,
+              private confirmationService: ConfirmationService
   ) {
     super(router, route, http, amministrativoService);
   }
@@ -158,6 +162,12 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
   }
 
   private eliminaEntiSelezionati() {
-
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          // TODO elimina enti
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
   }
 }
