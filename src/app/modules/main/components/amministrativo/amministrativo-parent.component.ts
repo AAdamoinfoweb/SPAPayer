@@ -17,11 +17,8 @@ export class AmministrativoParentComponent implements OnInit {
 
   private inserimentoLogAzioneUrl = '/inserimentoLogAzione';
 
-  constructor(
-    protected router: Router,
-    protected  overlayService: OverlayService,
-    protected  route: ActivatedRoute, private http: HttpClient,
-    protected amministrativoService: AmministrativoService) {
+  constructor(protected router: Router, protected  route: ActivatedRoute,
+              private http: HttpClient, protected amministrativoService: AmministrativoService) {
 
     this.waitingEmitter.emit(true);
     this.route.queryParams.subscribe(value => {

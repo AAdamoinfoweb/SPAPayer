@@ -60,10 +60,10 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
   isMenuCarico = false;
   waiting = true;
 
-  constructor(router: Router, overlayService: OverlayService, route: ActivatedRoute, http: HttpClient,
+  constructor(router: Router, route: ActivatedRoute, http: HttpClient,
               amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
               private bannerService: BannerService, private menuService: MenuService) {
-    super(router, overlayService, route, http, amministrativoService);
+    super(router, route, http, amministrativoService);
   }
 
   ngOnInit(): void {
