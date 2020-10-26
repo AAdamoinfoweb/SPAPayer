@@ -13,7 +13,7 @@ import {StatoPagamentoEnum} from '../../../../enums/statoPagamento.enum';
 import * as moment from 'moment';
 import {Router} from '@angular/router';
 import {NuovoPagamentoService} from '../../../../services/nuovo-pagamento.service';
-import {Banner} from '../../model/Banner';
+import {Banner} from '../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../enums/livelloBanner.enum';
 import {BannerService} from '../../../../services/banner.service';
 import {DettagliTransazione} from '../../model/bollettino/DettagliTransazione';

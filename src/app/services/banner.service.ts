@@ -1,18 +1,23 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {XsrfService} from './xsrf.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {map} from 'rxjs/operators';
-import {Banner} from '../modules/main/model/Banner';
-import {EventEmitter, Injectable} from "@angular/core";
+import {catchError, map} from 'rxjs/operators';
+import {Banner} from '../modules/main/model/banner/Banner';
+import {EventEmitter, Injectable} from '@angular/core';
 import * as moment from 'moment';
+import {ParametriRicercaBanner} from '../modules/main/model/banner/ParametriRicercaBanner';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BannerService {
 
+  private readonly gestioneBannerBasePath = '/gestioneBanner';
+
   private bannerUrl = '/banner';
+  private readonly bannerAmministrativoBaseUrl = this.gestioneBannerBasePath + this.bannerUrl;
+  private readonly eliminaBannerUrl = this.gestioneBannerBasePath + '/eliminaBanner';
   timestamp: string;
   attivo: boolean;
 
@@ -34,6 +39,65 @@ export class BannerService {
     })
       .pipe(map((body: any) => {
         return body;
+      }));
+  }
+
+  ricercaBanner(parametriRicercaBanner: ParametriRicercaBanner, idFunzione: string): Observable<Banner[]> {
+    let params = new HttpParams();
+    params = params.set('timestamp', this.timestamp);
+    if (parametriRicercaBanner.attivo != null) {
+      params = params.set('attivo', String(parametriRicercaBanner.attivo));
+    }
+    if (parametriRicercaBanner.titoloParziale != null) {
+      params = params.set('titoloParziale', parametriRicercaBanner.titoloParziale);
+    }
+    if (parametriRicercaBanner.testoParziale != null) {
+      params = params.set('testoParziale', parametriRicercaBanner.testoParziale);
+    }
+    if (parametriRicercaBanner.inizio != null) {
+      params = params.set('inizio', parametriRicercaBanner.inizio);
+    }
+    if (parametriRicercaBanner.fine != null) {
+      params = params.set('fine', parametriRicercaBanner.fine);
+    }
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.bannerAmministrativoBaseUrl, {
+      params: params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+        return body as Banner[];
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  eliminaBanner(listaBannerId: Array<number>, idFunzione: string): Observable<any> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.post(environment.bffBaseUrl + this.eliminaBannerUrl, listaBannerId, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status == 401 || err.status == 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
       }));
   }
 

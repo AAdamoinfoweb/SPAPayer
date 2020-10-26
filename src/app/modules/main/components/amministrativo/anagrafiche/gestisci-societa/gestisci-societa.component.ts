@@ -118,7 +118,6 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   creaRigaTabella(societa: Societa): object {
-    // TODO fixare logica lettura idfunzione (si rompe se il menu non è carico; emittare in sidebar o amministrativo-parent un waiting/spinner)
     const linkGestioneUtenti = this.funzioneGestioneUtenti
       + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneUtenti])
       + '&societaId=' + societa.id;

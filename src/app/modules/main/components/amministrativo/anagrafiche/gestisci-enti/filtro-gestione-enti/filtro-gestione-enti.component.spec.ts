@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AggiungiSocietaComponent } from './aggiungi-societa.component';
+import { FiltroGestioneEntiComponent } from './filtro-gestione-enti.component';
 
-describe('AggiungiSocietaComponent', () => {
-  let component: AggiungiSocietaComponent;
-  let fixture: ComponentFixture<AggiungiSocietaComponent>;
+describe('FiltroGestioneEntiComponent', () => {
+  let component: FiltroGestioneEntiComponent;
+  let fixture: ComponentFixture<FiltroGestioneEntiComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AggiungiSocietaComponent ]
+      declarations: [ FiltroGestioneEntiComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AggiungiSocietaComponent);
+    fixture = TestBed.createComponent(FiltroGestioneEntiComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

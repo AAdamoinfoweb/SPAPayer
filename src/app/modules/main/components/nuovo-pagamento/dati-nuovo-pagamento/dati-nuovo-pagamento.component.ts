@@ -16,7 +16,7 @@ import {CampoDettaglioTransazione} from '../../../model/bollettino/CampoDettagli
 import {Observable, of} from 'rxjs';
 import {DettagliTransazione} from '../../../model/bollettino/DettagliTransazione';
 import {DettaglioTransazioneEsito} from '../../../model/bollettino/DettaglioTransazioneEsito';
-import {Banner} from '../../../model/Banner';
+import {Banner} from '../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../enums/livelloBanner.enum';
 import {BannerService} from '../../../../../services/banner.service';
 

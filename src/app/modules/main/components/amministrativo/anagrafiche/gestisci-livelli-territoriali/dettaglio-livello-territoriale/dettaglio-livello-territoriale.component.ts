@@ -4,21 +4,21 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Breadcrumb} from '../../../../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
-import {Societa} from '../../../../../model/Societa';
-import {SocietaService} from '../../../../../../../services/societa.service';
+import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
+import {LivelloTerritorialeService} from '../../../../../../../services/livelloTerritoriale.service';
 
 @Component({
-  selector: 'app-dettaglio-societa',
-  templateUrl: './dettaglio-societa.component.html',
-  styleUrls: ['./dettaglio-societa.component.scss']
+  selector: 'app-dettaglio-livello-territoriale',
+  templateUrl: './dettaglio-livello-territoriale.component.html',
+  styleUrls: ['./dettaglio-livello-territoriale.component.scss']
 })
-export class DettaglioSocietaComponent implements OnInit {
+export class DettaglioLivelloTerritorialeComponent implements OnInit {
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
   titoloPagina: string;
   tooltip: string;
-  societa: Societa = new Societa();
+  livelloTerritoriale: LivelloTerritoriale = new LivelloTerritoriale();
   isFormValido: boolean;
 
   breadcrumbList = [];
@@ -28,21 +28,24 @@ export class DettaglioSocietaComponent implements OnInit {
     private router: Router,
     private amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
-    private societaService: SocietaService
+    private livelloTerritorialeService: LivelloTerritorialeService
   ) { }
 
   ngOnInit(): void {
+    this.overlayService.caricamentoEvent.emit(true);
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
       this.inizializzaBreadcrumbList();
-      this.titoloPagina = this.getTestoFunzione() + ' Società';
-      this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di una società';
+      this.titoloPagina = this.getTestoFunzione() + ' Livello Territoriale';
+      this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di un livello territoriale';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
-        this.societa.id = parseInt(this.activatedRoute.snapshot.paramMap.get('societaid'));
-        this.societaService.ricercaSocieta(this.societa.id, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
-          this.societa = listaSocieta[0];
+        this.livelloTerritoriale.id = parseInt(this.activatedRoute.snapshot.paramMap.get('livelloterritorialeid'));
+        this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.livelloTerritoriale.id, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
+          this.livelloTerritoriale = listaLivelliTerritoriali[0];
+          this.overlayService.caricamentoEvent.emit(false);
         })
       } else {
+        this.overlayService.caricamentoEvent.emit(false);
       }
     });
   }
@@ -52,20 +55,20 @@ export class DettaglioSocietaComponent implements OnInit {
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
     this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Società', null, null));
-    this.breadcrumbList.push(new Breadcrumb(4, this.getTestoFunzione() + ' Società', null, null));
+    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Livello Territoriale', null, null));
+    this.breadcrumbList.push(new Breadcrumb(4, this.getTestoFunzione() + ' Livello Territoriale', null, null));
   }
 
   controllaTipoFunzione() {
     const url = this.activatedRoute.snapshot.url[0].path;
     switch (url) {
-      case 'dettaglioSocieta':
+      case 'dettaglioLivelloTerritoriale':
         this.funzione = FunzioneGestioneEnum.DETTAGLIO;
         break;
-      case 'aggiungiSocieta':
+      case 'aggiungiLivelloTerritoriale':
         this.funzione = FunzioneGestioneEnum.AGGIUNGI;
         break;
-      case 'modificaSocieta':
+      case 'modificaLivelloTerritoriale':
         this.funzione = FunzioneGestioneEnum.MODIFICA;
         break;
     }
@@ -89,18 +92,21 @@ export class DettaglioSocietaComponent implements OnInit {
 
   onClickAnnulla() {
     this.overlayService.caricamentoEvent.emit(true);
-    this.router.navigateByUrl('/societa?funzione=' + btoa(this.amministrativoService.idFunzione));
+    this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 
   onClickSalva() {
+    this.overlayService.caricamentoEvent.emit(true);
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        this.societaService.aggiuntaSocieta(this.societa, this.amministrativoService.idFunzione).subscribe((societa) => {
-          this.societa = new Societa();
+        this.livelloTerritorialeService.aggiuntaLivelloTerritoriale(this.livelloTerritoriale, this.amministrativoService.idFunzione).subscribe((livelloTerritoriale) => {
+          this.overlayService.caricamentoEvent.emit(false);
+          this.livelloTerritoriale = new LivelloTerritoriale();
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.societaService.modificaSocieta(this.societa, this.amministrativoService.idFunzione).subscribe(() => {
+        this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.amministrativoService.idFunzione).subscribe(() => {
+          this.overlayService.caricamentoEvent.emit(false);
         });
         break;
     }

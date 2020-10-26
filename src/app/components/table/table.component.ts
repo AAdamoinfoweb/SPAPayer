@@ -44,10 +44,12 @@ export class TableComponent implements OnInit {
   ngOnInit() { }
 
   onRowSelect(event) {
+    this.selection = this.selection.filter(selection => this.rows.includes(selection));
     this.onSelection.emit(this.selection);
   }
 
   onRowUnselect(event) {
+    this.selection = this.selection.filter(selection => this.rows.includes(selection));
     this.onSelection.emit(this.selection);
   }
 

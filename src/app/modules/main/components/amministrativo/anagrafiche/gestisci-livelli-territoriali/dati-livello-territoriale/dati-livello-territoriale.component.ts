@@ -1,21 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
+import {Utils} from '../../../../../../../utils/Utils';
 import {NgForm, NgModel} from '@angular/forms';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
-import {Societa} from '../../../../../model/Societa';
-import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
-  selector: 'app-dati-societa',
-  templateUrl: './dati-societa.component.html',
-  styleUrls: ['./dati-societa.component.scss']
+  selector: 'app-dati-livello-territoriale',
+  templateUrl: './dati-livello-territoriale.component.html',
+  styleUrls: ['./dati-livello-territoriale.component.scss']
 })
-export class DatiSocietaComponent implements OnInit {
+export class DatiLivelloTerritorialeComponent implements OnInit {
   @Input()
-  societa: Societa;
-
-  readonly emailRegex = Utils.EMAIL_REGEX;
-  readonly telefonoRegex = Utils.TELEFONO_REGEX;
+  livelloTerritoriale: LivelloTerritoriale;
 
   @Input()
   funzione: FunzioneGestioneEnum;
@@ -36,7 +32,7 @@ export class DatiSocietaComponent implements OnInit {
 
   formattaInput(valore: string, campo: string) {
     if (valore === '') {
-      this.societa[campo] = null;
+      this.livelloTerritoriale[campo] = null;
     }
   }
 

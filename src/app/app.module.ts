@@ -56,6 +56,12 @@ import {AmministrativoParentComponent} from "./modules/main/components/amministr
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
 import {FiltroGestioneSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/filtro-gestione-societa/filtro-gestione-societa.component';
 import {OrderByPipe} from "./pipe/orderby-pipe";
+import {GestisciLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
+import {FiltroGestioneLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/filtro-gestione-livelli-territoriali/filtro-gestione-livelli-territoriali.component';
+import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
+import {FiltroGestioneBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/filtro-gestione-banner/filtro-gestione-banner.component';
+import {GestisciEntiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component';
+import {InputSwitchModule} from 'primeng/inputswitch';
 import {SpinnerOverlayComponent} from './components/spinner-overlay/spinner-overlay.component';
 import {OverlayModule} from "@angular/cdk/overlay";
 
@@ -104,7 +110,12 @@ import {OverlayModule} from "@angular/cdk/overlay";
     AmministrativoParentComponent,
     GestisciSocietaComponent,
     FiltroGestioneSocietaComponent,
-    OrderByPipe,
+    GestisciLivelliTerritorialiComponent,
+    FiltroGestioneLivelliTerritorialiComponent,
+    GestisciBannerComponent,
+    FiltroGestioneBannerComponent,
+    GestisciEntiComponent,
+    OrderByPipe
     SpinnerOverlayComponent
   ],
   imports: [
@@ -134,6 +145,7 @@ import {OverlayModule} from "@angular/cdk/overlay";
     CustomFormsModule,
     AutoCompleteModule,
     TreeTableModule,
+    InputSwitchModule
     OverlayModule
   ],
   providers: [
