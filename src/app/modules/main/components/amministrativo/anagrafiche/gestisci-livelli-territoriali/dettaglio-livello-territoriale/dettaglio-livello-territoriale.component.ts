@@ -91,13 +91,21 @@ export class DettaglioLivelloTerritorialeComponent implements OnInit {
   }
 
   onClickAnnulla() {
-    this.confirmationService.confirm(
-      Utils.getModale(() => {
-          this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
-        },
-        TipoModaleEnum.ANNULLA
-      )
-    );
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      this.tornaIndietro();
+    } else {
+      this.confirmationService.confirm(
+        Utils.getModale(() => {
+            this.tornaIndietro();
+          },
+          TipoModaleEnum.ANNULLA
+        )
+      );
+    }
+  }
+
+  tornaIndietro() {
+    this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 
   onClickSalva() {

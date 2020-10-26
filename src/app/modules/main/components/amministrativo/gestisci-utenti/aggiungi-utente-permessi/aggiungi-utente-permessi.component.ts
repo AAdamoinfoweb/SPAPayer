@@ -309,12 +309,20 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   }
 
   onClickAnnulla() {
-    this.confirmationService.confirm(
-      Utils.getModale(() => {
-          this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
-        },
-        TipoModaleEnum.ANNULLA
-      )
-    );
+    if (this.isDettaglio) {
+      this.tornaIndietro();
+    } else {
+      this.confirmationService.confirm(
+        Utils.getModale(() => {
+            this.tornaIndietro();
+          },
+          TipoModaleEnum.ANNULLA
+        )
+      );
+    }
+  }
+
+  tornaIndietro() {
+    this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 }
