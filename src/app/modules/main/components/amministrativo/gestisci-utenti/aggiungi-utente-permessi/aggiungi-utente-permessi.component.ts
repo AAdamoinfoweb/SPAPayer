@@ -9,7 +9,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {Breadcrumb} from '../../../../dto/Breadcrumb';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
 import {UtenteService} from '../../../../../../services/utente.service';
 import {ActivatedRoute, Params, Router, UrlSegment} from '@angular/router';
@@ -27,6 +27,7 @@ import {OverlayService} from '../../../../../../services/overlay.service';
 import {BannerService} from '../../../../../../services/banner.service';
 import {Banner} from '../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
+import {InserimentoModificaDettaglioParentComponent} from "../../inserimento-modifica-dettaglio-parent.component";
 import {ConfirmationService} from 'primeng/api';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 
@@ -35,7 +36,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
   templateUrl: './aggiungi-utente-permessi.component.html',
   styleUrls: ['../gestisci-utenti.component.scss', './aggiungi-utente-permessi.component.scss']
 })
-export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
+export class AggiungiUtentePermessiComponent extends InserimentoModificaDettaglioParentComponent implements OnInit, AfterViewInit {
 
   breadcrumbList = [];
 
@@ -65,30 +66,28 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
               private el: ElementRef, private amministrativoService: AmministrativoService,
               private permessoService: PermessoService,
               private overlayService: OverlayService,
-              private bannerService: BannerService,
-              private confirmationService: ConfirmationService
-  ) {
+              private confirmationService: ConfirmationService,
+              private bannerService: BannerService) {
+    super();
     // codice fiscale da utente service per inserimento
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
-    this.inizializzaBreadcrumbList();
+    this.inizializzaBreadcrumbs();
   }
 
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList = [];
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', '/gestioneUtenti/' + this.amministrativoService.idFunzione, null));
+  inizializzaBreadcrumbs(): void {
+    const breadcrumbs: SintesiBreadcrumb[] = [];
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', '/gestioneUtenti/' + this.amministrativoService.idFunzione));
     if (this.isModifica) {
-      this.breadcrumbList.push(new Breadcrumb(3, 'Modifica Utente/Permessi', null, null));
+      breadcrumbs.push(new SintesiBreadcrumb('Modifica Utente/Permessi', null));
     } else if (this.isDettaglio) {
-      this.breadcrumbList.push(new Breadcrumb(3, 'Dettaglio Utente/Permessi', null, null));
+      breadcrumbs.push(new SintesiBreadcrumb( 'Dettaglio Utente/Permessi', null));
     } else {
-      this.breadcrumbList.push(new Breadcrumb(3, 'Aggiungi Utente/Permessi', null, null));
+      breadcrumbs.push(new SintesiBreadcrumb( 'Aggiungi Utente/Permessi', null));
     }
-
+    this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
 
   ngOnInit(): void {
@@ -99,18 +98,18 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
         this.isModifica = true;
         this.titoloPagina = `Modifica Utente/Permessi`;
         this.tooltipTitle = `In questa pagina puoi modificare un utente e abilitarlo a specifici servizi`;
-        this.inizializzaBreadcrumbList();
+        this.inizializzaBreadcrumbs();
         this.codiceFiscaleModifica = this.activatedRoute.snapshot.paramMap.get('userid');
         this.letturaPermessi(this.codiceFiscaleModifica);
       } else if (this.activatedRoute.snapshot.url[0].path === 'dettaglioUtentePermessi') {
         this.isDettaglio = true;
         this.titoloPagina = `Dettaglio Utente/Permessi`;
         this.tooltipTitle = `In questa pagina puoi visualizzare il dettaglio di un utente`;
-        this.inizializzaBreadcrumbList();
+        this.inizializzaBreadcrumbs();
         this.codiceFiscaleModifica = this.activatedRoute.snapshot.paramMap.get('userid');
         this.letturaPermessi(this.codiceFiscaleModifica);
       } else {
-        this.inizializzaBreadcrumbList();
+        this.inizializzaBreadcrumbs();
       }
     });
   }

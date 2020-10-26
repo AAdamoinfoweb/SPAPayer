@@ -14,3 +14,14 @@ export class Breadcrumb {
     this.icon = icon;
   }
 }
+
+export class SintesiBreadcrumb {
+  label: string;
+  link: string;
+
+
+  constructor(label: string, link: string) {
+    this.label = label;
+    this.link = link;
+  }
+}
