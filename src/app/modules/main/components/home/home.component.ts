@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {environment} from '../../../../../environments/environment';
 import {Observable, of} from "rxjs";
-import {Banner} from "../../model/Banner";
+import {Banner} from "../../model/banner/Banner";
 import {BannerService} from "../../../../services/banner.service";
 import {PagamentoService} from "../../../../services/pagamento.service";
 import {Bollettino} from "../../model/bollettino/Bollettino";

@@ -10,7 +10,6 @@ import {NgxYoutubePlayerModule} from "ngx-youtube-player";
 import {FooterComponent} from "../../components/footer/footer.component";
 import {ListaPagamentiComponent} from './components/lista-pagamenti/lista-pagamenti.component';
 import {PrivacyComponent} from './components/privacy/privacy.component';
-import {LoginBarComponent} from "../../components/login-bar/login-bar.component";
 import {ReplacePipe} from "../../pipe/ReplacePipe";
 import {NgbDatepickerModule, NgbDropdownModule, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
 import {WaitingComponent} from './components/waiting/waiting.component';
@@ -24,6 +23,7 @@ import { DettaglioSocietaComponent } from './components/amministrativo/anagrafic
 import { DatiSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/dati-societa/dati-societa.component';
 import { DatiLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dati-livello-territoriale/dati-livello-territoriale.component';
 import { DettaglioLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dettaglio-livello-territoriale/dettaglio-livello-territoriale.component';
+import { FiltroGestioneEntiComponent } from './components/amministrativo/anagrafiche/gestisci-enti/filtro-gestione-enti/filtro-gestione-enti.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,9 @@ import { DettaglioLivelloTerritorialeComponent } from './components/amministrati
     DettaglioSocietaComponent,
     DatiSocietaComponent,
     DatiLivelloTerritorialeComponent,
-    DettaglioLivelloTerritorialeComponent
+    DettaglioLivelloTerritorialeComponent,
+    DatiSocietaComponent,
+    FiltroGestioneEntiComponent,
   ],
   imports: [
     CommonModule,
@@ -60,7 +62,8 @@ import { DettaglioLivelloTerritorialeComponent } from './components/amministrati
   exports: [
     FooterComponent,
     ReplacePipe,
-    FiltriIMieiPagamentiComponent
+    FiltriIMieiPagamentiComponent,
+    FiltroGestioneEntiComponent
   ]
 })
 export class MainModule {

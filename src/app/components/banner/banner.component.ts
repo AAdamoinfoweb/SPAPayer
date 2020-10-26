@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BannerService} from '../../services/banner.service';
-import {Banner} from '../../modules/main/model/Banner';
+import {Banner} from '../../modules/main/model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../enums/livelloBanner.enum';
 
 @Component({
