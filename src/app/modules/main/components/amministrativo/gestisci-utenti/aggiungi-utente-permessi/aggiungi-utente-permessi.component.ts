@@ -27,6 +27,8 @@ import {OverlayService} from '../../../../../../services/overlay.service';
 import {BannerService} from '../../../../../../services/banner.service';
 import {Banner} from '../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
+import {ConfirmationService} from 'primeng/api';
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -63,7 +65,9 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
               private el: ElementRef, private amministrativoService: AmministrativoService,
               private permessoService: PermessoService,
               private overlayService: OverlayService,
-              private bannerService: BannerService) {
+              private bannerService: BannerService,
+              private confirmationService: ConfirmationService
+  ) {
     // codice fiscale da utente service per inserimento
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
@@ -305,6 +309,12 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   }
 
   onClickAnnulla() {
-    this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
+        },
+        TipoModaleEnum.ANNULLA
+      )
+    );
   }
 }

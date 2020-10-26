@@ -6,6 +6,9 @@ import {AmministrativoService} from '../../../../../../../services/amministrativ
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
 import {LivelloTerritorialeService} from '../../../../../../../services/livelloTerritoriale.service';
+import {ConfirmationService} from 'primeng/api';
+import {Utils} from '../../../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-dettaglio-livello-territoriale',
@@ -28,7 +31,8 @@ export class DettaglioLivelloTerritorialeComponent implements OnInit {
     private router: Router,
     private amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
-    private livelloTerritorialeService: LivelloTerritorialeService
+    private livelloTerritorialeService: LivelloTerritorialeService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -87,7 +91,13 @@ export class DettaglioLivelloTerritorialeComponent implements OnInit {
   }
 
   onClickAnnulla() {
-    this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
+        },
+        TipoModaleEnum.ANNULLA
+      )
+    );
   }
 
   onClickSalva() {

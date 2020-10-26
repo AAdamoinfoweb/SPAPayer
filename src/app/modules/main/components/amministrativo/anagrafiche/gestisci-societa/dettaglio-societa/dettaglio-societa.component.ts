@@ -6,6 +6,10 @@ import {AmministrativoService} from '../../../../../../../services/amministrativ
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Societa} from '../../../../../model/Societa';
 import {SocietaService} from '../../../../../../../services/societa.service';
+import {DettagliTransazione} from '../../../../../model/bollettino/DettagliTransazione';
+import {ConfirmationService} from 'primeng/api';
+import {Utils} from '../../../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-dettaglio-societa',
@@ -28,7 +32,8 @@ export class DettaglioSocietaComponent implements OnInit {
     private router: Router,
     private amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
-    private societaService: SocietaService
+    private societaService: SocietaService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -88,7 +93,13 @@ export class DettaglioSocietaComponent implements OnInit {
   }
 
   onClickAnnulla() {
-    this.router.navigateByUrl('/societa?funzione=' + btoa(this.amministrativoService.idFunzione));
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.router.navigateByUrl('/societa?funzione=' + btoa(this.amministrativoService.idFunzione));
+        },
+        TipoModaleEnum.ANNULLA
+      )
+    );
   }
 
   onClickSalva() {
