@@ -169,6 +169,8 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
       Utils.getModale(() => {
           this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.amministrativoService.idFunzione).subscribe(() => {
             this.popolaListaLivelliTerritoriali();
+            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
         },
         TipoModaleEnum.ELIMINA
