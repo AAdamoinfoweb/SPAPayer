@@ -76,7 +76,6 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
 
   ngOnInit(): void {
     this.waitingEmitter.subscribe(() => {
-      this.overlayService.caricamentoEvent.emit(true);
       if (this.amministrativoService.mappaFunzioni) {
         this.isMenuCarico = Object.keys(this.amministrativoService.mappaFunzioni).length > 0;
       }
@@ -111,7 +110,6 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
         this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
       });
       this.tempTableData = Object.assign({}, this.tableData);
-      this.overlayService.caricamentoEvent.emit(false);
       this.waiting = false;
     });
   }
@@ -165,7 +163,6 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
 
   eliminaLivelliTerritorialiSelezionati() {
     this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.amministrativoService.idFunzione).subscribe(() => {
-      this.overlayService.caricamentoEvent.emit(true);
       this.popolaListaLivelliTerritoriali();
     });
   }

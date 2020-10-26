@@ -68,7 +68,6 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
 
   ngOnInit(): void {
     this.waitingEmitter.subscribe(() => {
-      this.overlayService.caricamentoEvent.emit(true);
       if (this.amministrativoService.mappaFunzioni) {
         this.isMenuCarico = Object.keys(this.amministrativoService.mappaFunzioni).length > 0;
       }
@@ -105,7 +104,6 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
         this.tableData.rows.push(this.creaRigaTabella(banner));
       });
       this.tempTableData = Object.assign({}, this.tableData);
-      this.overlayService.caricamentoEvent.emit(false);
       this.waiting = false;
     });
   }
@@ -161,7 +159,6 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
 
   eliminaBannerSelezionati(): void {
     this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.amministrativoService.idFunzione).pipe(map(() => {
-      this.overlayService.caricamentoEvent.emit(true);
       this.popolaListaBanner();
       this.toolbarIcons[this.indiceIconaModifica].disabled = true;
       this.toolbarIcons[this.indiceIconaElimina].disabled = true;

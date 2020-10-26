@@ -100,7 +100,7 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
   }
 
   popolaLista() {
- 
+
     this.waiting = false;
     /* this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
        this.listaSocieta = listaSocieta;
@@ -110,7 +110,6 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
          this.tableData.rows.push(this.creaRigaTabella(societa));
        });
        this.tempTableData = Object.assign({}, this.tableData);
-       this.overlayService.caricamentoEvent.emit(false);
        this.waiting = false;
      });*/
   }

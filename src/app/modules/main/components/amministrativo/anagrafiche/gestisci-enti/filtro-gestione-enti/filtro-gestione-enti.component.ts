@@ -57,7 +57,6 @@ export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
         });
 
         if (this.filtroSocieta) {
-          this.overlayService.caricamentoEvent.emit(true);
           const isFiltroSocietaValido = this.opzioniFiltroSocieta.some(item => item.value === this.filtroSocieta);
           if (isFiltroSocietaValido) {
             this.filtroApplicato.societaId = this.filtroSocieta;
@@ -65,10 +64,8 @@ export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
             parametriRicercaUtente.societaId = this.filtroSocieta;
             this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).subscribe(utenti => {
               // this.onChangeListaUtenti.emit(utenti);
-              this.overlayService.caricamentoEvent.emit(false);
             });
           } else {
-            this.overlayService.caricamentoEvent.emit(false);
             window.open('/nonautorizzato', '_self');
           }
         }
