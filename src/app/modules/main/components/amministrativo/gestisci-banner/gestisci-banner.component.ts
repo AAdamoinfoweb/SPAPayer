@@ -17,16 +17,17 @@ import {BannerService} from '../../../../../services/banner.service';
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import * as _ from 'lodash';
 import {MenuService} from '../../../../../services/menu.service';
-import {GestisciParentComponent} from "../gestisci-parent.component";
+import {GestisciElementoComponent} from "../gestisci-elemento.component";
 import {ConfirmationService} from 'primeng/api';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
+import {Colonna} from '../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestisci-banner',
   templateUrl: './gestisci-banner.component.html',
   styleUrls: ['./gestisci-banner.component.scss']
 })
-export class GestisciBannerComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
+export class GestisciBannerComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi visualizzare la lista completa dei banner presenti in Payer e filtrarli';
 
@@ -141,7 +142,7 @@ export class GestisciBannerComponent extends GestisciParentComponent implements 
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        // TODO this.aggiungiBanner(dataTable);
+        this.aggiungiElemento('/aggiungiBanner');
         break;
       case ToolEnum.UPDATE:
         // TODO this.modificaBannerSelezionato(dataTable);
@@ -153,7 +154,7 @@ export class GestisciBannerComponent extends GestisciParentComponent implements 
         this.esportaTabellaInFilePdf(dataTable);
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(dataTable);
+        this.esportaTabellaInFileExcel(dataTable, 'Banner');
         break;
     }
   }
@@ -183,21 +184,12 @@ export class GestisciBannerComponent extends GestisciParentComponent implements 
     Utils.esportaTabellaInFilePdf(dataTable, 'Lista Banner', [iconaBannerAttivo]);
   }
 
-  esportaTabellaInFileExcel(dataTable: any): void {
-    const customHeaders = dataTable.cols.filter(col => col.field !== 'id').map(col => col.header);
-    dataTable.rows = dataTable.rows.map(row => {
-      let newRow = row;
-      newRow = _.omit(newRow, 'id');
-      newRow.iconaBanner = row.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
-      newRow.titolo = row.titolo.value;
-      newRow.testo = row.testo.value;
-      newRow.inizio = row.inizio.value;
-      newRow.fine = row.fine.value;
-      return newRow;
-    });
+  getRigheFileExcel(righe: any[]) {
+    // TODO implementa get righe excel
+  }
 
-    const workbook = {Sheets: {'Banner': null}, SheetNames: []};
-    Utils.creaFileExcel(dataTable.rows, customHeaders, 'Banner', ['Banner'], workbook, 'Lista Banner');
+  getHeaderFileExcel(colonne: Colonna[]) {
+    // TODO implementa get header excel
   }
 
   onChangeListaBanner(listaBannerFiltrati: Banner[]): void {

@@ -14,16 +14,17 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
-import {GestisciParentComponent} from "../../gestisci-parent.component";
+import {GestisciElementoComponent} from "../../gestisci-elemento.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
+import {Colonna} from '../../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestione-societa',
   templateUrl: './gestisci-societa.component.html',
   styleUrls: ['./gestisci-societa.component.scss']
 })
-export class GestisciSocietaComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
+export class GestisciSocietaComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
@@ -134,7 +135,7 @@ export class GestisciSocietaComponent extends GestisciParentComponent implements
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiSocieta();
+        this.aggiungiElemento('/aggiungiSocieta');
         break;
       case ToolEnum.UPDATE:
         this.modificaSocietaSelezionata();
@@ -146,17 +147,13 @@ export class GestisciSocietaComponent extends GestisciParentComponent implements
         this.esportaTabellaInFilePdf();
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel();
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Societa');
         break;
     }
   }
 
   mostraDettaglioSocieta(rigaTabella) {
     this.router.navigate(['/dettaglioSocieta', rigaTabella.id.value]);
-  }
-
-  aggiungiSocieta() {
-    this.router.navigateByUrl('/aggiungiSocieta');
   }
 
   modificaSocietaSelezionata() {
@@ -189,10 +186,12 @@ export class GestisciSocietaComponent extends GestisciParentComponent implements
     Utils.esportaTabellaInFilePdf(table, 'Lista Società', []);
   }
 
-  esportaTabellaInFileExcel(): void {
-    const table = JSON.parse(JSON.stringify(this.tempTableData));
-    const headerColonne = table.cols.filter(col => col.field != 'utentiAbilitati').map(col => col.header);
-    const righe = table.rows.map(riga => {
+  getHeaderFileExcel(colonne: Colonna[]) {
+    return colonne.filter(col => col.field != 'utentiAbilitati').map(col => col.header);
+  }
+
+  getRigheFileExcel(righe: any[]) {
+    return righe.map(riga => {
       delete riga.utentiAbilitati;
       delete riga.id;
       riga.nome = riga.nome.value;
@@ -200,9 +199,6 @@ export class GestisciSocietaComponent extends GestisciParentComponent implements
       riga.email = riga.email.value;
       return riga;
     });
-
-    const workbook = {Sheets: {'Societa': null}, SheetNames: []};
-    Utils.creaFileExcel(righe, headerColonne, 'Societa', ['Societa'], workbook, 'Lista Societa');
   }
 
   onChangeListaSocieta(listaSocietaFiltrate: Societa[]): void {

@@ -14,16 +14,17 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
-import {GestisciParentComponent} from "../../gestisci-parent.component";
+import {GestisciElementoComponent} from "../../gestisci-elemento.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
+import {Colonna} from '../../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestione-livelli-territoriali',
   templateUrl: './gestisci-livelli-territoriali.component.html',
   styleUrls: ['./gestisci-livelli-territoriali.component.scss']
 })
-export class GestisciLivelliTerritorialiComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
+export class GestisciLivelliTerritorialiComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa dei livelli territoriali a cui sei abilitato e filtrarli';
   readonly iconaGruppoEnti = 'assets/img/users-solid.svg#users-group';
@@ -130,7 +131,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciParentComponen
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiLivelloTerritoriale();
+        this.aggiungiElemento('/aggiungiLivelloTerritoriale');
         break;
       case ToolEnum.UPDATE:
         this.modificaLivelloTerritorialeSelezionato();
@@ -142,7 +143,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciParentComponen
         this.esportaTabellaInFilePdf();
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel();
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Livelli Territoriali');
         break;
     }
   }
@@ -150,10 +151,6 @@ export class GestisciLivelliTerritorialiComponent extends GestisciParentComponen
   mostraDettaglioLivelloTerritoriale(rigaTabella) {
     // this.router.navigate(['/dettaglioLivelloTerritoriale', rigaTabella.id.value]);
     this.router.navigate(['/dettaglioLivelloTerritoriale', 2]);
-  }
-
-  aggiungiLivelloTerritoriale() {
-    this.router.navigateByUrl('/aggiungiLivelloTerritoriale');
   }
 
   modificaLivelloTerritorialeSelezionato() {
@@ -186,18 +183,12 @@ export class GestisciLivelliTerritorialiComponent extends GestisciParentComponen
     Utils.esportaTabellaInFilePdf(table, 'Lista Livelli Territoriali', []);
   }
 
-  esportaTabellaInFileExcel(): void {
-    const table = JSON.parse(JSON.stringify(this.tempTableData));
-    const headerColonne = table.cols.filter(col => col.field != 'entiAbilitati').map(col => col.header);
-    const righe = table.rows.map(riga => {
-      delete riga.entiAbilitati;
-      delete riga.id;
-      riga.nome = riga.nome.value;
-      return riga;
-    });
+  getRigheFileExcel(righe: any[]) {
+    // TODO implementa get righe excel
+  }
 
-    const workbook = {Sheets: {'LivelliTerritoriali': null}, SheetNames: []};
-    Utils.creaFileExcel(righe, headerColonne, 'LivelliTerritoriali', ['LivelliTerritoriali'], workbook, 'Lista Livelli Territoriali');
+  getHeaderFileExcel(colonne: Colonna[]) {
+    // TODO implementa get header excel
   }
 
   onChangeListaLivelliTerritoriali(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {

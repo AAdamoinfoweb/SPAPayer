@@ -11,17 +11,18 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {MenuService} from '../../../../../../services/menu.service';
 import {Societa} from '../../../../model/Societa';
 import {Breadcrumb} from '../../../../dto/Breadcrumb';
-import {GestisciParentComponent} from "../../gestisci-parent.component";
+import {GestisciElementoComponent} from "../../gestisci-elemento.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {ConfirmationService} from 'primeng/api';
+import {Colonna} from '../../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestisci-enti',
   templateUrl: './gestisci-enti.component.html',
   styleUrls: ['./gestisci-enti.component.scss']
 })
-export class GestisciEntiComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
+export class GestisciEntiComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli enti a cui sei abilitato e filtrarli';
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
@@ -117,7 +118,7 @@ export class GestisciEntiComponent extends GestisciParentComponent implements On
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiEnte();
+        this.aggiungiElemento('/aggiungiEnte');
         break;
       case ToolEnum.UPDATE:
         this.modificaEnteSelezionato();
@@ -129,7 +130,7 @@ export class GestisciEntiComponent extends GestisciParentComponent implements On
         this.esportaTabellaInFilePdf();
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel();
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Enti');
         break;
     }
   }
@@ -141,10 +142,6 @@ export class GestisciEntiComponent extends GestisciParentComponent implements On
     });
   }
 
-  private aggiungiEnte() {
-
-  }
-
   private modificaEnteSelezionato() {
 
   }
@@ -153,8 +150,12 @@ export class GestisciEntiComponent extends GestisciParentComponent implements On
 
   }
 
-  private esportaTabellaInFileExcel() {
+  getRigheFileExcel(righe: any[]) {
+    // TODO implementa get righe excel
+  }
 
+  getHeaderFileExcel(colonne: Colonna[]) {
+    // TODO implementa get header excel
   }
 
   private eliminaEntiSelezionati() {

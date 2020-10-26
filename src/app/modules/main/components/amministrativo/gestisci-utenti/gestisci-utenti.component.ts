@@ -17,14 +17,15 @@ import {AmministrativoParentComponent} from "../amministrativo-parent.component"
 import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from "../../../../../services/amministrativo.service";
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
-import {GestisciParentComponent} from "../gestisci-parent.component";
+import {GestisciElementoComponent} from "../gestisci-elemento.component";
+import {Colonna} from '../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestione-utenti',
   templateUrl: './gestisci-utenti.component.html',
   styleUrls: ['./gestisci-utenti.component.scss']
 })
-export class GestisciUtentiComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
+export class GestisciUtentiComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
@@ -171,13 +172,13 @@ export class GestisciUtentiComponent extends GestisciParentComponent implements 
   eseguiAzioni(azioneTool) {
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     if (azioneTool === ToolEnum.INSERT) {
-      this.router.navigateByUrl('/aggiungiUtentePermessi');
+      this.aggiungiElemento('/aggiungiUtentePermessi');
     } else if (azioneTool === ToolEnum.UPDATE) {
       this.router.navigate(['/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare]);
     } else if (azioneTool === ToolEnum.EXPORT_PDF) {
       this.esportaTabellaInFilePdf(dataTable);
     } else if (azioneTool === ToolEnum.EXPORT_XLS) {
-      this.esportaTabellaInFileExcel(dataTable);
+      this.esportaTabellaInFileExcel(dataTable, 'Utenti');
     }
   }
 
@@ -194,21 +195,12 @@ export class GestisciUtentiComponent extends GestisciParentComponent implements 
     ]);
   }
 
-  esportaTabellaInFileExcel(dataTable: any): void {
-    const customHeaders = dataTable.cols.map(col => col.header);
-    dataTable.rows = dataTable.rows.map(row => {
-      let newRow = row;
-      newRow.iconaUtente = row.iconaUtente.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
-      newRow.id = row.id.value;
-      newRow.nome = row.nome.value;
-      newRow.gruppoAbilitazioni = row.gruppoAbilitazioni.value;
-      newRow.scadenza = row.scadenza.value;
-      newRow.ultimoAccesso = row.ultimoAccesso?.testo;
-      return newRow;
-    });
+  getRigheFileExcel(righe: any[]) {
+    // TODO implementa get righe excel
+  }
 
-    const workbook = {Sheets: {'Utenti': null}, SheetNames: []};
-    Utils.creaFileExcel(dataTable.rows, customHeaders, 'Utenti', ['Utenti'], workbook, 'Lista Utenti');
+  getHeaderFileExcel(colonne: Colonna[]) {
+    // TODO implementa get header excel
   }
 
   onChangeListaUtenti(listaUtentiFiltrati: RicercaUtente[]): void {
