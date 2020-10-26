@@ -19,18 +19,40 @@
           </div>
           <div class="row">
             <div class="col">
-              <select [ngClass]="{'text-disabled': !opzioniFiltroSocieta.length}" id="selectSocieta" name="societaId"
+              <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
                       #societaInput = "ngModel"
-                      [(ngModel)]="filtroSocieta">
-                <option [ngValue]="null" selected>Tutti</option>
-                <option *ngFor="let item of opzioniFiltroSocieta" [ngValue]="item.value">{{item.label}}</option>
+                      [(ngModel)]="filtroApplicato.societaId">
+                <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
           </div>
           <div class="row">
             <div class="col">
               <p [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
-                {{setPlaceholder(societaInput)}}
+                {{setPlaceholder(societaInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectLivelloTerritoriale" class="title">Livello Territoriale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select [ngClass]="{'text-disabled': !listaLivelliTerritoriali.length}" id="selectLivelloTerritoriale" name="livelloTerritorialeId"
+                      #livelloTerritorialeInput = "ngModel"
+                      [(ngModel)]="filtroApplicato.livelloTerritorialeId" (ngModelChange)="selezionaLivelloTerritoriale()">
+                <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(livelloTerritorialeInput), 'text-invalid': isCampoInvalido(livelloTerritorialeInput), 'text-disabled': !listaLivelliTerritoriali.length}">
+                {{setPlaceholder(livelloTerritorialeInput, 'select')}}
               </p>
             </div>
           </div>

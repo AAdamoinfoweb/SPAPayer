@@ -67,7 +67,6 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
 
   ngOnInit(): void {
     this.waitingEmitter.subscribe(() => {
-      this.overlayService.caricamentoEvent.emit(true);
       if (this.amministrativoService.mappaFunzioni) {
         this.isMenuCarico = Object.keys(this.amministrativoService.mappaFunzioni).length > 0;
       }
