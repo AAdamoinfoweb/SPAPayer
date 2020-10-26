@@ -28,7 +28,6 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
 
   isMenuCarico = false;
 
-  listaSocieta: Array<Societa> = new Array<Societa>();
   listaIdSocietaSelezionate: Array<number> = [];
 
   readonly toolbarIcons = [
@@ -101,7 +100,7 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
   }
 
   popolaLista() {
-    this.listaSocieta = [];
+ 
     this.waiting = false;
     /* this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
        this.listaSocieta = listaSocieta;
