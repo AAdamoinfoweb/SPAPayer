@@ -17,6 +17,7 @@ import {MenuService} from '../../../../../../services/menu.service';
 import {GestisciElementoComponent} from "../../gestisci-elemento.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
+import {Colonna} from '../../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -146,7 +147,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
         this.esportaTabellaInFilePdf();
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel();
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Societa');
         break;
     }
   }
@@ -185,10 +186,12 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     Utils.esportaTabellaInFilePdf(table, 'Lista Società', []);
   }
 
-  esportaTabellaInFileExcel(): void {
-    const table = JSON.parse(JSON.stringify(this.tempTableData));
-    const headerColonne = table.cols.filter(col => col.field != 'utentiAbilitati').map(col => col.header);
-    const righe = table.rows.map(riga => {
+  getHeaderFileExcel(colonne: Colonna[]) {
+    return colonne.filter(col => col.field != 'utentiAbilitati').map(col => col.header);
+  }
+
+  getRigheFileExcel(righe: any[]) {
+    return righe.map(riga => {
       delete riga.utentiAbilitati;
       delete riga.id;
       riga.nome = riga.nome.value;
@@ -196,9 +199,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
       riga.email = riga.email.value;
       return riga;
     });
-
-    const workbook = {Sheets: {'Societa': null}, SheetNames: []};
-    Utils.creaFileExcel(righe, headerColonne, 'Societa', ['Societa'], workbook, 'Lista Societa');
   }
 
   onChangeListaSocieta(listaSocietaFiltrate: Societa[]): void {

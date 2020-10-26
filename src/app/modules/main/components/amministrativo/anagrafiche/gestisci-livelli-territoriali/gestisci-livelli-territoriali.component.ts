@@ -17,6 +17,7 @@ import {MenuService} from '../../../../../../services/menu.service';
 import {GestisciElementoComponent} from "../../gestisci-elemento.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
+import {Colonna} from '../../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestione-livelli-territoriali',
@@ -142,7 +143,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
         this.esportaTabellaInFilePdf();
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel();
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Livelli Territoriali');
         break;
     }
   }
@@ -182,18 +183,12 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     Utils.esportaTabellaInFilePdf(table, 'Lista Livelli Territoriali', []);
   }
 
-  esportaTabellaInFileExcel(): void {
-    const table = JSON.parse(JSON.stringify(this.tempTableData));
-    const headerColonne = table.cols.filter(col => col.field != 'entiAbilitati').map(col => col.header);
-    const righe = table.rows.map(riga => {
-      delete riga.entiAbilitati;
-      delete riga.id;
-      riga.nome = riga.nome.value;
-      return riga;
-    });
+  getRigheFileExcel(righe: any[]) {
+    // TODO implementa get righe excel
+  }
 
-    const workbook = {Sheets: {'LivelliTerritoriali': null}, SheetNames: []};
-    Utils.creaFileExcel(righe, headerColonne, 'LivelliTerritoriali', ['LivelliTerritoriali'], workbook, 'Lista Livelli Territoriali');
+  getHeaderFileExcel(colonne: Colonna[]) {
+    // TODO implementa get header excel
   }
 
   onChangeListaLivelliTerritoriali(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {

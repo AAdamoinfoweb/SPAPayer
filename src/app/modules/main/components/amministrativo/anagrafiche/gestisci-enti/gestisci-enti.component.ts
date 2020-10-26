@@ -15,6 +15,7 @@ import {GestisciElementoComponent} from "../../gestisci-elemento.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {ConfirmationService} from 'primeng/api';
+import {Colonna} from '../../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -129,7 +130,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
         this.esportaTabellaInFilePdf();
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel();
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Enti');
         break;
     }
   }
@@ -149,8 +150,12 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   }
 
-  private esportaTabellaInFileExcel() {
+  getRigheFileExcel(righe: any[]) {
+    // TODO implementa get righe excel
+  }
 
+  getHeaderFileExcel(colonne: Colonna[]) {
+    // TODO implementa get header excel
   }
 
   private eliminaEntiSelezionati() {

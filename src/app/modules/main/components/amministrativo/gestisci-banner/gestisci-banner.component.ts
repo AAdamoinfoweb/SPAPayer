@@ -20,6 +20,7 @@ import {MenuService} from '../../../../../services/menu.service';
 import {GestisciElementoComponent} from "../gestisci-elemento.component";
 import {ConfirmationService} from 'primeng/api';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
+import {Colonna} from '../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestisci-banner',
@@ -153,7 +154,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.esportaTabellaInFilePdf(dataTable);
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(dataTable);
+        this.esportaTabellaInFileExcel(dataTable, 'Banner');
         break;
     }
   }
@@ -183,21 +184,12 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     Utils.esportaTabellaInFilePdf(dataTable, 'Lista Banner', [iconaBannerAttivo]);
   }
 
-  esportaTabellaInFileExcel(dataTable: any): void {
-    const customHeaders = dataTable.cols.filter(col => col.field !== 'id').map(col => col.header);
-    dataTable.rows = dataTable.rows.map(row => {
-      let newRow = row;
-      newRow = _.omit(newRow, 'id');
-      newRow.iconaBanner = row.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
-      newRow.titolo = row.titolo.value;
-      newRow.testo = row.testo.value;
-      newRow.inizio = row.inizio.value;
-      newRow.fine = row.fine.value;
-      return newRow;
-    });
+  getRigheFileExcel(righe: any[]) {
+    // TODO implementa get righe excel
+  }
 
-    const workbook = {Sheets: {'Banner': null}, SheetNames: []};
-    Utils.creaFileExcel(dataTable.rows, customHeaders, 'Banner', ['Banner'], workbook, 'Lista Banner');
+  getHeaderFileExcel(colonne: Colonna[]) {
+    // TODO implementa get header excel
   }
 
   onChangeListaBanner(listaBannerFiltrati: Banner[]): void {

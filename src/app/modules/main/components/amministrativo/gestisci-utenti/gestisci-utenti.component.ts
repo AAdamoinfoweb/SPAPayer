@@ -18,6 +18,7 @@ import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from "../../../../../services/amministrativo.service";
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import {GestisciElementoComponent} from "../gestisci-elemento.component";
+import {Colonna} from '../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestione-utenti',
@@ -177,7 +178,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     } else if (azioneTool === ToolEnum.EXPORT_PDF) {
       this.esportaTabellaInFilePdf(dataTable);
     } else if (azioneTool === ToolEnum.EXPORT_XLS) {
-      this.esportaTabellaInFileExcel(dataTable);
+      this.esportaTabellaInFileExcel(dataTable, 'Utenti');
     }
   }
 
@@ -194,21 +195,12 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     ]);
   }
 
-  esportaTabellaInFileExcel(dataTable: any): void {
-    const customHeaders = dataTable.cols.map(col => col.header);
-    dataTable.rows = dataTable.rows.map(row => {
-      let newRow = row;
-      newRow.iconaUtente = row.iconaUtente.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
-      newRow.id = row.id.value;
-      newRow.nome = row.nome.value;
-      newRow.gruppoAbilitazioni = row.gruppoAbilitazioni.value;
-      newRow.scadenza = row.scadenza.value;
-      newRow.ultimoAccesso = row.ultimoAccesso?.testo;
-      return newRow;
-    });
+  getRigheFileExcel(righe: any[]) {
+    // TODO implementa get righe excel
+  }
 
-    const workbook = {Sheets: {'Utenti': null}, SheetNames: []};
-    Utils.creaFileExcel(dataTable.rows, customHeaders, 'Utenti', ['Utenti'], workbook, 'Lista Utenti');
+  getHeaderFileExcel(colonne: Colonna[]) {
+    // TODO implementa get header excel
   }
 
   onChangeListaUtenti(listaUtentiFiltrati: RicercaUtente[]): void {

@@ -4,6 +4,8 @@ import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Utils} from "../../../../utils/Utils";
 import {AmministrativoParentComponent} from './amministrativo-parent.component';
+import {Tabella} from '../../model/tabella/Tabella';
+import {Colonna} from '../../model/tabella/Colonna';
 
 
 export abstract class GestisciElementoComponent extends AmministrativoParentComponent {
@@ -25,4 +27,21 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     this.router.navigateByUrl(link);
   }
 
+  // TODO generalizzare modifica
+
+  esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {
+    const copiaTabella = JSON.parse(JSON.stringify(tabella));
+    const headerColonne = this.getHeaderFileExcel(copiaTabella.cols);
+    const righe = this.getRigheFileExcel(copiaTabella.rows);
+
+    const fogli = {};
+    fogli[nomeFile] = null;
+    const workbook = {Sheets: fogli, SheetNames: []};
+    Utils.creaFileExcel(righe, headerColonne, nomeFile, [nomeFile], workbook, 'Lista ' + nomeFile);
+  }
+
+  abstract getHeaderFileExcel(colonne: Colonna[]);
+  abstract getRigheFileExcel(righe: any[]);
+
+  abstract prova(): number;
 }
