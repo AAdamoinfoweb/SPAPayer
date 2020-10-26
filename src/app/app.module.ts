@@ -57,6 +57,12 @@ import {AmministrativoParentComponent} from "./modules/main/components/amministr
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
 import {FiltroGestioneSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/filtro-gestione-societa/filtro-gestione-societa.component';
 import {OrderByPipe} from "./pipe/orderby-pipe";
+import {GestisciLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
+import {FiltroGestioneLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/filtro-gestione-livelli-territoriali/filtro-gestione-livelli-territoriali.component';
+import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
+import {FiltroGestioneBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/filtro-gestione-banner/filtro-gestione-banner.component';
+import {GestisciEntiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component';
+import {InputSwitchModule} from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -104,36 +110,42 @@ import {OrderByPipe} from "./pipe/orderby-pipe";
     AmministrativoParentComponent,
     GestisciSocietaComponent,
     FiltroGestioneSocietaComponent,
+    GestisciLivelliTerritorialiComponent,
+    FiltroGestioneLivelliTerritorialiComponent,
+    GestisciBannerComponent,
+    FiltroGestioneBannerComponent,
+    GestisciEntiComponent,
     OrderByPipe
   ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        AppRoutingModule,
-        MainModule,
-        NgbModule,
-        FormsModule,
-        DesignAngularKitModule,
-        ReactiveFormsModule,
-        UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
-        DpDatePickerModule,
-        NgxDatatableModule,
-        AccordionModule,
-        TableModule,
-        ButtonModule,
-        BrowserAnimationsModule,
-        TabViewModule,
-        ToolbarModule,
-        UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
-        DpDatePickerModule,
-        NgxCurrencyModule,
-        CustomFormsModule,
-        ConfirmDialogModule,
-        BrowserAnimationsModule,
-        CustomFormsModule,
-        AutoCompleteModule,
-        TreeTableModule
-    ],
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    MainModule,
+    NgbModule,
+    FormsModule,
+    DesignAngularKitModule,
+    ReactiveFormsModule,
+    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    DpDatePickerModule,
+    NgxDatatableModule,
+    AccordionModule,
+    TableModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    TabViewModule,
+    ToolbarModule,
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
+    DpDatePickerModule,
+    NgxCurrencyModule,
+    CustomFormsModule,
+    ConfirmDialogModule,
+    BrowserAnimationsModule,
+    CustomFormsModule,
+    AutoCompleteModule,
+    TreeTableModule,
+    InputSwitchModule
+  ],
   providers: [
     ConfirmationService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},

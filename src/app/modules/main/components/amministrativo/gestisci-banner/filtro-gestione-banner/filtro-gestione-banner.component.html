@@ -1,0 +1,173 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="idCollapseFiltriBanner">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true" aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+<!-- Form filtri -->
+<form #filtroGestioneBannerForm="ngForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltriBanner">
+    <div class="collapse-body">
+      <!-- Switch Campo Attivo -->
+      <div class="row mt-0 mb-0">
+        <div class="col-12 text-right">
+          <div class="row">
+            <div class="col">
+              <label for="switchAttivoBanner" class="title">Attivo</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p-inputSwitch id="switchAttivoBanner" [(ngModel)]="filtroGestioneBannerApplicato.attivo" name="attivo"></p-inputSwitch>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Titolo, Testo, Inizio/Fine -->
+      <div class="row mt-4 mb-0">
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="titoloBanner" class="title">Titolo</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="titoloBanner" name="titoloParziale" #titoloParzialeInput="ngModel"
+                     [(ngModel)]="filtroGestioneBannerApplicato.titoloParziale" class="pt-0" autocomplete="off"
+                     aria-describedby="titoloBannerHelpDescription">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(titoloParzialeInput), 'text-invalid': isCampoInvalido(titoloParzialeInput)}">
+                {{setPlaceholder(titoloParzialeInput, 'string')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="testoBanner" class="title">Testo</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="testoBanner" name="testoParziale" #testoParzialeInput="ngModel"
+                     [(ngModel)]="filtroGestioneBannerApplicato.testoParziale" class="pt-0" autocomplete="off"
+                     aria-describedby="testoParzialeHelpDescription">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(testoParzialeInput), 'text-invalid': isCampoInvalido(testoParzialeInput)}">
+                {{setPlaceholder(testoParzialeInput, 'string')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="inizio" class="title">Inizio</label>
+            </div>
+          </div>
+          <div class="row">
+            <div [ngClass]="{'col calendar-wrapper': true}">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerInizio)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="inizio"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  max: setMaxDate(datePickerFine),
+                  returnedValueType: tipoData
+                }"
+                #inizioInput = "ngModel"
+                [(ngModel)]="filtroGestioneBannerApplicato.inizio"
+                name="inizio"
+                #datePickerInizio
+                (click)="isCalendarOpen = false"
+                [displayDate]="currentDate"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(inizioInput), 'text-invalid': isCampoInvalido(inizioInput)}">
+                {{setPlaceholder(inizioInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="fine" class="title">Fine</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerFine)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="fine"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: setMinDate(datePickerInizio),
+                  returnedValueType: tipoData
+                }"
+                #fineInput = "ngModel"
+                [(ngModel)]="filtroGestioneBannerApplicato.fine"
+                name="fine"
+                #datePickerFine
+                (click)="isCalendarOpen = false"
+                [displayDate]="currentDate"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(fineInput), 'text-invalid': isCampoInvalido(fineInput)}">
+                {{setPlaceholder(fineInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottoni Pulisci e Cerca -->
+      <div class="row">
+        <div class="col-6">
+          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroGestioneBannerForm, 'Pulisci')"
+                  (click)="pulisciFiltri(filtroGestioneBannerForm)">Pulisci</button>
+        </div>
+        <div class="col-6 text-right">
+          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroGestioneBannerForm, 'Cerca')"
+                  (click)="cercaBanner(filtroGestioneBannerForm)">Cerca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

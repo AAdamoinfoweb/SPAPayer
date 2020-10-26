@@ -1,4 +1,4 @@
-import {BannerType} from "../../../enums/livelloBanner.enum";
+import {BannerType} from '../../../../enums/livelloBanner.enum';
 
 export class Banner {
   id?: number;

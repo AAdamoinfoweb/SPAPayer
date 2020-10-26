@@ -1,1 +1,38 @@
-<p>dettaglio-societa works!</p>
+<div class="container-fluid">
+  <!-- breadcrumb -->
+  <it-breadcrumb [dark]="false" [separator]="'/'">
+    <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
+                        [link]="item.link">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
+
+  <!-- titolo -->
+  <h3 class="mb-2 page-title"><strong>{{titoloPagina}}</strong>
+    <span it-tooltip="{{tooltip}}">
+      <svg class="bg-light icon icon-lg icon-padded">
+        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+      </svg>
+    </span>
+  </h3>
+
+  <!-- dati -->
+  <app-dati-societa
+    [funzione]="funzione"
+    [societa]="societa"
+    (isFormValido)="onChangeForm($event)"
+  ></app-dati-societa>
+  <hr/>
+</div>
+
+<!-- Bottoni -->
+<div class="row">
+  <!-- Bottone sx -->
+  <div class="col-2">
+    <button id="buttonAnnulla" class="btn btn-secondary" (click)="onClickAnnulla()">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
+  </div>
+  <!-- Bottoni dx -->
+  <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+    <button id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="onClickSalva()">Salva</button>
+  </div>
+</div>

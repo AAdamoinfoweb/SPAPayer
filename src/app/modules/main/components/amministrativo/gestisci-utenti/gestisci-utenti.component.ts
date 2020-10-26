@@ -57,11 +57,23 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
       {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
       {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
     ],
-    dataKey: 'nome.value',
+    dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData;
+  tempTableData = {
+    rows: [],
+    cols: [
+      {field: 'iconaUtente', header: '', type: tipoColonna.ICONA},
+      {field: 'id', header: 'User ID (Cod. Fisc.)', type: tipoColonna.TESTO},
+      {field: 'nome', header: 'Cognome e Nome', type: tipoColonna.TESTO},
+      {field: 'gruppoAbilitazioni', header: 'Gruppi Abilitazioni', type: tipoColonna.TESTO},
+      {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
+      {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
+    ],
+    dataKey: 'id.value',
+    tipoTabella: tipoTabella.CHECKBOX_SELECTION
+  };
   waiting = true;
 
   filtroSocieta = null;
@@ -90,12 +102,14 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
 
       const parametriRicercaUtente = new ParametriRicercaUtente();
       this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
-        utenti.forEach(utente => {
-          this.listaUtente.push(utente);
-          this.tableData.rows.push(this.creaRigaTabella(utente));
-        });
+        if (utenti != null) {
+          utenti.forEach(utente => {
+            this.listaUtente.push(utente);
+            this.tableData.rows.push(this.creaRigaTabella(utente));
+          });
+        }
+        this.tempTableData = Object.assign({}, this.tableData);
       })).subscribe();
-      this.tempTableData = Object.assign({}, this.tableData);
     });
   }
 
@@ -226,4 +240,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
     }
   }
 
+  dettaglioUtente(row: any) {
+    this.router.navigate(['/dettaglioUtentePermessi', row.id.value]);
+  }
 }

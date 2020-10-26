@@ -8,8 +8,8 @@
   </it-breadcrumb>
 
   <!-- titolo -->
-  <h3 class="mb-2 page-title"><strong>Aggiungi Utente/Permessi</strong>
-    <span it-tooltip="{{tooltipAggiungiUtentePermessiTitle}}">
+  <h3 class="mb-2 page-title"><strong>{{titoloPagina}}</strong>
+    <span it-tooltip="{{tooltipTitle}}">
       <svg class="bg-light icon icon-lg icon-padded">
         <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
       </svg>
@@ -18,7 +18,8 @@
 
   <!-- sezione aggiungi dati-utente -->
   <app-dati-utente (onChangeDatiUtente)="onChangeDatiUtenti($event)"
-                   (onValidaFormDatiUtenti)="isFormDatiUtenteValido = $event"></app-dati-utente>
+                   (onValidaFormDatiUtenti)="isFormDatiUtenteValido = $event"
+                   [codiceFiscale]="codiceFiscaleModifica" [isDettaglio]="isDettaglio"></app-dati-utente>
 
   <hr>
 
@@ -29,12 +30,15 @@
 <div class="row">
   <!-- Bottone sx -->
   <div class="col-2">
-    <button id="buttonAnnulla" class="btn btn-secondary" (click)="onClickAnnulla()">Annulla</button>
+    <button id="buttonAnnulla" class="btn btn-secondary" (click)="onClickAnnulla()">{{isDettaglio ? 'Indietro' : 'Annulla'}}Annulla</button>
   </div>
   <!-- Bottoni dx -->
   <div class="col-10 text-right">
-    <button id="buttonAggiungiPermessi" class="btn btn-secondary" [disabled]="disabilitaBottone()"
+    <button *ngIf="!isDettaglio" id="buttonAggiungiPermessi" class="btn btn-secondary" [disabled]="disabilitaBottone()"
+
             (click)="aggiungiSezionePermesso()">Aggiungi permessi</button>
-    <button id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="inserimentoDatiUtentePermessi()">Salva</button>
+    <button *ngIf="!isDettaglio" id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="inserimentoDatiUtentePermessi()"
+            >
+      Salva</button>
   </div>
 </div>

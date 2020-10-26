@@ -21,6 +21,9 @@ export class DatiUtenteComponent implements OnInit {
   listaCodiciFiscali: string[] = [];
   codiceFiscaleExists = false;
 
+  readonly emailRegex = Utils.EMAIL_REGEX;
+  readonly telefonoRegex = Utils.TELEFONO_REGEX;
+
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
   readonly tipoData = ECalendarValue.String;
@@ -30,6 +33,7 @@ export class DatiUtenteComponent implements OnInit {
   @Input() codiceFiscale: string;
   datiUtente: InserimentoModificaUtente;
   isModificaUtente = false;
+  @Input() isDettaglio: boolean;
 
   @Output()
   onChangeDatiUtente: EventEmitter<InserimentoModificaUtente> = new EventEmitter<InserimentoModificaUtente>();
@@ -42,6 +46,8 @@ export class DatiUtenteComponent implements OnInit {
 
   ngOnInit(): void {
     this.datiUtente = new InserimentoModificaUtente();
+
+    this.onValidaFormDatiUtenti.emit(true);
 
     if (this.codiceFiscale) {
       const parametriRicerca = new ParametriRicercaUtente();
@@ -61,8 +67,10 @@ export class DatiUtenteComponent implements OnInit {
       this.datiUtente.cognome = utente?.cognome;
       this.datiUtente.email = utente?.email;
       this.datiUtente.telefono = utente?.telefono;
-      this.datiUtente.attivazione = utente?.dataInizioValidita;
-      this.datiUtente.scadenza = utente?.dataFineValidita;
+      this.datiUtente.attivazione = utente?.dataInizioValidita ?
+        moment(utente?.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
+      this.datiUtente.scadenza = utente?.dataFineValidita ?
+        moment(utente?.dataFineValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
     })).subscribe();
   }
 
@@ -71,12 +79,13 @@ export class DatiUtenteComponent implements OnInit {
 
     if (inputCf.length < this.minCharsToRetrieveCF) {
       this.listaCodiciFiscali = [];
-    } else if (inputCf.length === this.minCharsToRetrieveCF) {
+    } else if (inputCf.length >= this.minCharsToRetrieveCF) {
+      // disabilitazione bottone in attesa di caricamento utenti
+      this.utenteService.codiceFiscaleEvent.emit(null);
       this.utenteService.letturaCodiceFiscale(inputCf, this.amministrativoService.idFunzione).subscribe(data => {
         this.listaCodiciFiscali = data;
+        this.listaCodiciFiscali = this.listaCodiciFiscali.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
       });
-    } else {
-      this.listaCodiciFiscali = this.listaCodiciFiscali.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
     }
   }
 
@@ -120,7 +129,7 @@ export class DatiUtenteComponent implements OnInit {
     const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
     const ret = Utils.isBefore(dataDaControllare, dataSistema) ||
       campo?.errors != null;
-    return ret;
+    return !this.isModificaUtente ? ret : false;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -160,11 +169,11 @@ export class DatiUtenteComponent implements OnInit {
   }
 
   controlloCodiceFiscale($event) {
-    this.codiceFiscaleExists = this.listaCodiciFiscali.includes($event);
+    this.codiceFiscaleExists = this.listaCodiciFiscali.includes($event.target.value);
     if (this.codiceFiscaleExists) {
       this.utenteService.codiceFiscaleEvent.emit(null);
     } else {
-      this.utenteService.codiceFiscaleEvent.emit($event);
+      this.utenteService.codiceFiscaleEvent.emit($event.target.value);
     }
   }
 

@@ -141,7 +141,7 @@ export class NuovoPagamentoService {
           } else if (err.status == 500) {
             return of('');
           } else {
-            return caught;
+             return of(null);
           }
         }));
   }
@@ -155,7 +155,7 @@ export class NuovoPagamentoService {
         if (err.status == 401 || err.status == 400) {
           return of(null);
         } else {
-          return caught;
+           return of(null);
         }
       }));
   }
@@ -169,7 +169,7 @@ export class NuovoPagamentoService {
         if (err.status == 401 || err.status == 400) {
           return of(null);
         } else {
-          return caught;
+           return of(null);
         }
       }));
   }
@@ -183,7 +183,7 @@ export class NuovoPagamentoService {
         if (err.status == 401 || err.status == 400) {
           return of(null);
         } else {
-          return caught;
+           return of(null);
         }
       }));
   }
@@ -197,7 +197,7 @@ export class NuovoPagamentoService {
           } else if (err.status == 500) {
             return of('');
           } else {
-            return caught;
+             return of(null);
           }
         }));
   }
@@ -211,7 +211,7 @@ export class NuovoPagamentoService {
         if (err.status == 401 || err.status == 400) {
           return of(null);
         } else {
-          return caught;
+           return of(null);
         }
       }));
   }
@@ -229,7 +229,7 @@ export class NuovoPagamentoService {
           if (err.status == 401 || err.status == 400) {
             return of(null);
           } else
-            return caught;
+             return of(null);
         }));
     return observable;
   }
@@ -246,7 +246,7 @@ export class NuovoPagamentoService {
           if (err.status == 401) {
             return of("");
           } else
-            return caught;
+             return of(null);
         }));
   }
 
@@ -259,7 +259,7 @@ export class NuovoPagamentoService {
         if (err.status == 401 || err.status == 400) {
           return of(null);
         } else {
-          return caught;
+           return of(null);
         }
       }));
   }
@@ -274,7 +274,7 @@ export class NuovoPagamentoService {
         if (err.status == 401) {
           return of(null);
         } else
-          return caught;
+           return of(null);
       }));
   }
 }

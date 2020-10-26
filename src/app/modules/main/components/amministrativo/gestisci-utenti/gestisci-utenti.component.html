@@ -49,7 +49,9 @@
                      [rows]="tempTableData.rows"
                      [tipoTabella]="tempTableData.tipoTabella"
                      [textLeft]="getTotaliPerRecord()"
-                     (onSelection)="selezionaRigaTabella($event)">
+                     (onSelection)="selezionaRigaTabella($event)"
+                     [selectedRows]="true"
+                     (onClickRow)="dettaglioUtente($event)">
           </app-table>
         </div>
       </div>

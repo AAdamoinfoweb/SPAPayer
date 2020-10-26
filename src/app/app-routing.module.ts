@@ -14,11 +14,12 @@ import {CarrelloComponent} from "./modules/main/components/carrello/carrello.com
 import {WaitingL1Component} from "./modules/main/components/waiting-l1/waiting-l1.component";
 import {GestisciUtentiComponent} from './modules/main/components/amministrativo/gestisci-utenti/gestisci-utenti.component';
 import {AggiungiUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
-import {ModificaUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/modifica-utente-permessi/modifica-utente-permessi.component';
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
-import {AggiungiSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/aggiungi-societa/aggiungi-societa.component';
-import {ModificaSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/modifica-societa/modifica-societa.component';
 import {DettaglioSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/dettaglio-societa/dettaglio-societa.component';
+import {GestisciEntiComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component";
+import {GestisciLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
+import {DettaglioLivelloTerritorialeComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dettaglio-livello-territoriale/dettaglio-livello-territoriale.component';
+import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -43,10 +44,17 @@ const routes: Routes = [
   {path: 'gestioneUtenti', component: GestisciUtentiComponent},
   {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent},
   {path: 'modificaUtentePermessi/:userid', component: AggiungiUtentePermessiComponent},
+  {path: 'dettaglioUtentePermessi/:userid', component: AggiungiUtentePermessiComponent},
   {path: 'societa', component: GestisciSocietaComponent},
-  {path: 'aggiungiSocieta', component: AggiungiSocietaComponent},
-  {path: 'modificaSocieta/:societaId', component: ModificaSocietaComponent},
-  {path: 'dettaglioSocieta', component: DettaglioSocietaComponent}
+  {path: 'enti', component: GestisciEntiComponent},
+  {path: 'aggiungiSocieta', component: DettaglioSocietaComponent},
+  {path: 'modificaSocieta/:societaid', component: DettaglioSocietaComponent},
+  {path: 'dettaglioSocieta/:societaid', component: DettaglioSocietaComponent},
+  {path: 'livelliTerritoriali', component: GestisciLivelliTerritorialiComponent},
+  {path: 'aggiungiLivelloTerritoriale', component: DettaglioLivelloTerritorialeComponent},
+  {path: 'modificaLivelloTerritoriale/:livelloterritorialeid', component: DettaglioLivelloTerritorialeComponent},
+  {path: 'dettaglioLivelloTerritoriale/:livelloterritorialeid', component: DettaglioLivelloTerritorialeComponent},
+  {path: 'gestisciBanner', component: GestisciBannerComponent}
 ];
 
 @NgModule({
