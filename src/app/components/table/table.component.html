@@ -20,13 +20,13 @@
       <td *ngIf="tipoTabella == tipoTabellaEnum.CHECKBOX_SELECTION">
         <p-tableCheckbox [value]="row"></p-tableCheckbox>
       </td>
-      <td *ngFor="let col of columns" (click)="selectedRows ? clickOnRow(row) : null">
+      <td *ngFor="let col of columns" (click)="selectedRows ? onRowClick(row) : null">
         <span class="p-column-title">{{col.header}}</span>
         <!--  template ICONA  -->
         <div it-tooltip="{{row[col.field].tooltip}}"
               *ngIf="col.type == tipoColonnaEnum.ICONA"
              [ngStyle]="{fill: row[col.field] != null ? row[col.field].color : '#403d39', display: row[col.field].display}"
-              (click)="onIcon(row[dataKey])"
+              (click)="onIconClick(row[dataKey])"
         >
           <svg class="icon icon-sm">
             <use [attr.xlink:href]="sprite + row[col.field].path"></use>
@@ -39,7 +39,7 @@
         <!--  template LINK  -->
         <div *ngIf="col.type == tipoColonnaEnum.LINK">
           {{row[col.field] != null  ? row[col.field].testo : null}}
-          <a href="{{row[col.field].link}}" *ngIf="row[col.field] != null">
+          <a href="{{row[col.field].link}}" *ngIf="row[col.field] != null" (click)="onLinkClick()">
             <svg class="icon icon-sm" fill="#004987" *ngIf="!row[col.field].iconHref">
               <use xlink:href="assets/img/sprite.svg#it-external-link"></use>
             </svg>
