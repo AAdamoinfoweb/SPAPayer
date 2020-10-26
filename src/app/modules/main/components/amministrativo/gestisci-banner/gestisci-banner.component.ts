@@ -17,13 +17,14 @@ import {BannerService} from '../../../../../services/banner.service';
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import * as _ from 'lodash';
 import {MenuService} from '../../../../../services/menu.service';
+import {GestisciParentComponent} from "../gestisci-parent.component";
 
 @Component({
   selector: 'app-gestisci-banner',
   templateUrl: './gestisci-banner.component.html',
   styleUrls: ['./gestisci-banner.component.scss']
 })
-export class GestisciBannerComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciBannerComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi visualizzare la lista completa dei banner presenti in Payer e filtrarli';
 
@@ -83,14 +84,10 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
   }
 
   inizializzaPagina() {
-    this.inizializzaBreadcrumbList();
+    this.breadcrumbList = this.inizializzaBreadcrumbList([
+      {label: 'Gestisci Banner', link: null}
+    ]);
     this.popolaListaBanner();
-  }
-
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Banner', null, null));
   }
 
   popolaListaBanner(): void {

@@ -14,13 +14,14 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
+import {GestisciParentComponent} from "../../gestisci-parent.component";
 
 @Component({
   selector: 'app-gestione-societa',
   templateUrl: './gestisci-societa.component.html',
   styleUrls: ['./gestisci-societa.component.scss']
 })
-export class GestisciSocietaComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciSocietaComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
@@ -68,14 +69,6 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
     super(router, route, http, amministrativoService);
   }
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList = [];
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Società', null, null));
-  }
-
   ngOnInit(): void {
     this.waitingEmitter.subscribe(() => {
 
@@ -94,7 +87,10 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   init() {
-    this.inizializzaBreadcrumbList();
+    this.breadcrumbList = this.inizializzaBreadcrumbList([
+      {label: 'Gestisci Anagrafiche', link: null},
+      {label: 'Gestisci Società', link: null}
+    ]);
     this.popolaListaSocieta();
   }
 

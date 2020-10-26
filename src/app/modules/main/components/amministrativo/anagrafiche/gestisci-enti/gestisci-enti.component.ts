@@ -11,13 +11,14 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {MenuService} from '../../../../../../services/menu.service';
 import {Societa} from '../../../../model/Societa';
 import {Breadcrumb} from '../../../../dto/Breadcrumb';
+import {GestisciParentComponent} from "../../gestisci-parent.component";
 
 @Component({
   selector: 'app-gestisci-enti',
   templateUrl: './gestisci-enti.component.html',
   styleUrls: ['./gestisci-enti.component.scss']
 })
-export class GestisciEntiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciEntiComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli enti a cui sei abilitato e filtrarli';
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
@@ -81,7 +82,10 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
   }
 
   init() {
-    this.inizializzaBreadcrumbList();
+    this.breadcrumbList = this.inizializzaBreadcrumbList([
+      {label: 'Gestisci Anagrafiche', link: null},
+      {label: 'Gestisci Enti', link: null}
+      ]);
     this.popolaLista();
   }
 
@@ -89,14 +93,6 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
     if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
     }
-  }
-
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList = [];
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Enti', null, null));
   }
 
   popolaLista() {

@@ -5,6 +5,7 @@ import * as jsPDF from 'jspdf';
 import {tipoColonna} from '../enums/TipoColonna.enum';
 import {ImmaginePdf} from '../modules/main/model/tabella/ImmaginePdf';
 import {Tabella} from '../modules/main/model/tabella/Tabella';
+import {Breadcrumb, SintesiBreadcrumb} from "../modules/main/dto/Breadcrumb";
 
 export class Utils {
 
@@ -115,6 +116,17 @@ export class Utils {
     const momentDate = moment(date, Utils.FORMAT_DATE_CALENDAR)
     const momentOtherDate = moment(otherDate, Utils.FORMAT_DATE_CALENDAR);
     return moment(momentDate).isBefore(momentOtherDate);
+  }
+
+  static popolaListaBreadcrumb(breadcrumbs: SintesiBreadcrumb[]) {
+    const breadcrumbList = [];
+    breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
+    let counter = 1;
+    breadcrumbs.forEach(breadcrumb => {
+      breadcrumbList.push(new Breadcrumb(counter, breadcrumb.label, breadcrumb.link, null));
+      counter++;
+    });
+    return breadcrumbList;
   }
 
 }

@@ -1,18 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Breadcrumb} from '../../../../../dto/Breadcrumb';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Societa} from '../../../../../model/Societa';
 import {SocietaService} from '../../../../../../../services/societa.service';
+import {InserimentoModificaDettaglioParentComponent} from "../../../inserimento-modifica-dettaglio-parent.component";
 
 @Component({
   selector: 'app-dettaglio-societa',
   templateUrl: './dettaglio-societa.component.html',
   styleUrls: ['./dettaglio-societa.component.scss']
 })
-export class DettaglioSocietaComponent implements OnInit {
+export class DettaglioSocietaComponent extends InserimentoModificaDettaglioParentComponent implements OnInit {
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
@@ -29,12 +30,12 @@ export class DettaglioSocietaComponent implements OnInit {
     private amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
     private societaService: SocietaService
-  ) { }
+  ) { super();}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
-      this.inizializzaBreadcrumbList();
+      this.inizializzaBreadcrumb();
       this.titoloPagina = this.getTestoFunzione() + ' Società';
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di una società';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
@@ -47,14 +48,13 @@ export class DettaglioSocietaComponent implements OnInit {
     });
   }
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList = [];
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Società', null, null));
-    this.breadcrumbList.push(new Breadcrumb(4, this.getTestoFunzione() + ' Società', null, null));
-  }
+  inizializzaBreadcrumb(): void {
+    const breadcrumbs: SintesiBreadcrumb[] = []
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Società', '/societa/' + this.amministrativoService.idFunzione));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione() + ' Società', null));
+    this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
+    }
 
   controllaTipoFunzione() {
     const url = this.activatedRoute.snapshot.url[0].path;
