@@ -14,7 +14,7 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
-import {GestisciParentComponent} from "../../gestisci-parent.component";
+import {GestisciElementoComponent} from "../../gestisci-elemento.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 
@@ -23,7 +23,7 @@ import {ConfirmationService} from 'primeng/api';
   templateUrl: './gestisci-livelli-territoriali.component.html',
   styleUrls: ['./gestisci-livelli-territoriali.component.scss']
 })
-export class GestisciLivelliTerritorialiComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
+export class GestisciLivelliTerritorialiComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa dei livelli territoriali a cui sei abilitato e filtrarli';
   readonly iconaGruppoEnti = 'assets/img/users-solid.svg#users-group';

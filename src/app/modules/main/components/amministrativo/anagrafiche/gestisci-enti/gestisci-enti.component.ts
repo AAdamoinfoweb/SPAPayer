@@ -11,7 +11,7 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {MenuService} from '../../../../../../services/menu.service';
 import {Societa} from '../../../../model/Societa';
 import {Breadcrumb} from '../../../../dto/Breadcrumb';
-import {GestisciParentComponent} from "../../gestisci-parent.component";
+import {GestisciElementoComponent} from "../../gestisci-elemento.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {ConfirmationService} from 'primeng/api';
@@ -21,7 +21,7 @@ import {ConfirmationService} from 'primeng/api';
   templateUrl: './gestisci-enti.component.html',
   styleUrls: ['./gestisci-enti.component.scss']
 })
-export class GestisciEntiComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
+export class GestisciEntiComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli enti a cui sei abilitato e filtrarli';
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';

@@ -17,14 +17,14 @@ import {AmministrativoParentComponent} from "../amministrativo-parent.component"
 import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from "../../../../../services/amministrativo.service";
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
-import {GestisciParentComponent} from "../gestisci-parent.component";
+import {GestisciElementoComponent} from "../gestisci-elemento.component";
 
 @Component({
   selector: 'app-gestione-utenti',
   templateUrl: './gestisci-utenti.component.html',
   styleUrls: ['./gestisci-utenti.component.scss']
 })
-export class GestisciUtentiComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
+export class GestisciUtentiComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
