@@ -59,13 +59,13 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
   tempTableData;
   waiting = true;
 
-  constructor(router: Router, overlayService: OverlayService,
+  constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private el: ElementRef,
               private menuService: MenuService,
               private confirmationService: ConfirmationService
   ) {
-    super(router, overlayService, route, http, amministrativoService);
+    super(router, route, http, amministrativoService);
   }
 
   ngOnInit(): void {
