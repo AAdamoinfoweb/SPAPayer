@@ -117,7 +117,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiEnte();
+        this.aggiungiElemento('/aggiungiEnte');
         break;
       case ToolEnum.UPDATE:
         this.modificaEnteSelezionato();
@@ -139,10 +139,6 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     listaSocietaFiltrate.forEach(societa => {
 //      this.tableData.rows.push(this.creaRigaTabella(societa));
     });
-  }
-
-  private aggiungiEnte() {
-
   }
 
   private modificaEnteSelezionato() {

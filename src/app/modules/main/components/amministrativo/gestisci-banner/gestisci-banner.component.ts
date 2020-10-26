@@ -141,7 +141,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        // TODO this.aggiungiBanner(dataTable);
+        this.aggiungiElemento('/aggiungiBanner');
         break;
       case ToolEnum.UPDATE:
         // TODO this.modificaBannerSelezionato(dataTable);

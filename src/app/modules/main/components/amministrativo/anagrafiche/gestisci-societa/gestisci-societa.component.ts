@@ -134,7 +134,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiSocieta();
+        this.aggiungiElemento('/aggiungiSocieta');
         break;
       case ToolEnum.UPDATE:
         this.modificaSocietaSelezionata();
@@ -153,10 +153,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
 
   mostraDettaglioSocieta(rigaTabella) {
     this.router.navigate(['/dettaglioSocieta', rigaTabella.id.value]);
-  }
-
-  aggiungiSocieta() {
-    this.router.navigateByUrl('/aggiungiSocieta');
   }
 
   modificaSocietaSelezionata() {

@@ -21,4 +21,8 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     return Utils.popolaListaBreadcrumb(breadcrumbList);
   }
 
+  aggiungiElemento(link: string) {
+    this.router.navigateByUrl(link);
+  }
+
 }

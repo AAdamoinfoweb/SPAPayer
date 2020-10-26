@@ -171,7 +171,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   eseguiAzioni(azioneTool) {
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     if (azioneTool === ToolEnum.INSERT) {
-      this.router.navigateByUrl('/aggiungiUtentePermessi');
+      this.aggiungiElemento('/aggiungiUtentePermessi');
     } else if (azioneTool === ToolEnum.UPDATE) {
       this.router.navigate(['/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare]);
     } else if (azioneTool === ToolEnum.EXPORT_PDF) {

@@ -130,7 +130,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiLivelloTerritoriale();
+        this.aggiungiElemento('/aggiungiLivelloTerritoriale');
         break;
       case ToolEnum.UPDATE:
         this.modificaLivelloTerritorialeSelezionato();
@@ -150,10 +150,6 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   mostraDettaglioLivelloTerritoriale(rigaTabella) {
     // this.router.navigate(['/dettaglioLivelloTerritoriale', rigaTabella.id.value]);
     this.router.navigate(['/dettaglioLivelloTerritoriale', 2]);
-  }
-
-  aggiungiLivelloTerritoriale() {
-    this.router.navigateByUrl('/aggiungiLivelloTerritoriale');
   }
 
   modificaLivelloTerritorialeSelezionato() {
