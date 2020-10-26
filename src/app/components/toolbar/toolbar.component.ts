@@ -21,8 +21,10 @@ export class ToolbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onClickTool(event) {
-    this.onClick.emit(event);
+  onClickTool(event: ToolEnum, disabled: boolean) {
+    if (!disabled) {
+      this.onClick.emit(event);
+    }
   }
 
 }

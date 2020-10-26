@@ -172,6 +172,8 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
       Utils.getModale(() => {
           this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
             this.popolaListaSocieta();
+            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
         },
         TipoModaleEnum.ELIMINA

@@ -55,9 +55,11 @@ export class IMieiPagamentiComponent implements OnInit {
   toolbarIcons = [
     {type: ToolEnum.INSERT},
     {type: ToolEnum.INSERT_CARRELLO},
-    {type: ToolEnum.DELETE},
+    {type: ToolEnum.DELETE, disabled: true},
     {type: ToolEnum.EXPORT_PDF}
   ];
+
+  readonly indiceIconaElimina = 2;
 
   // table
   tableData = {
@@ -200,6 +202,8 @@ export class IMieiPagamentiComponent implements OnInit {
       tempPagamentiSelezionati.push(...pagamentoSelezionato);
     });
     this.pagamentiSelezionati = tempPagamentiSelezionati;
+
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.pagamentiSelezionati.length === 0;
   }
 
   inserimentoCarrello() {
@@ -224,6 +228,7 @@ export class IMieiPagamentiComponent implements OnInit {
             dettagliTransazione.listaDettaglioTransazioneId = this.pagamentiSelezionati.map(pagamento => pagamento.dettaglioTransazioneId);
             this.iMieiPagamentiService.eliminaBollettino(dettagliTransazione).pipe(map(value => {
               this.inizializzaListaPagamenti(this.filtri);
+              this.toolbarIcons[this.indiceIconaElimina].disabled = true;
             })).subscribe();
           } else {
             this.mostraBannerError(this.MESSAGGIO_ERRORE_AZIONE);
