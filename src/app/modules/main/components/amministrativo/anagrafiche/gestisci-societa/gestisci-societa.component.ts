@@ -14,6 +14,8 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -63,7 +65,8 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   constructor(router: Router, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private societaService: SocietaService, private el: ElementRef,
-              private menuService: MenuService
+              private menuService: MenuService,
+              private confirmationService: ConfirmationService
               ) {
     super(router, overlayService, route, http, amministrativoService);
   }
@@ -165,10 +168,15 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   eliminaSocietaSelezionate() {
-    this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
-
-      this.popolaListaSocieta();
-    });
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
+            this.popolaListaSocieta();
+          });
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
   }
 
   esportaTabellaInFilePdf(): void {
