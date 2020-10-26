@@ -50,7 +50,7 @@ export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
     this.societaService.filtroSocieta()
       .pipe(map(societa => {
         societa.forEach(s => {
-          this.listaSocieta.push({
+          this.opzioniFiltroSocieta.push({
             value: s.id,
             label: s.nome
           });
@@ -58,7 +58,7 @@ export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
 
         if (this.filtroSocieta) {
           this.overlayService.caricamentoEvent.emit(true);
-          const isFiltroSocietaValido = this.listaSocieta.some(item => item.value === this.filtroSocieta);
+          const isFiltroSocietaValido = this.opzioniFiltroSocieta.some(item => item.value === this.filtroSocieta);
           if (isFiltroSocietaValido) {
             this.filtroApplicato.societaId = this.filtroSocieta;
             const parametriRicercaUtente = new ParametriRicercaUtente();
