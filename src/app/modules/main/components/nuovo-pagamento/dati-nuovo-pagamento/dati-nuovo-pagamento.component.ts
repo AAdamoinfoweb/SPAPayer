@@ -274,6 +274,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       }
     });
 
+    localStorage.removeItem("parziale");
     this.nuovoPagamentoService.pulisciEvent.emit(true);
   }
 
