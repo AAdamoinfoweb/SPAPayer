@@ -14,6 +14,7 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
+import {GestisciParentComponent} from "../../gestisci-parent.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 
@@ -22,7 +23,7 @@ import {ConfirmationService} from 'primeng/api';
   templateUrl: './gestisci-livelli-territoriali.component.html',
   styleUrls: ['./gestisci-livelli-territoriali.component.scss']
 })
-export class GestisciLivelliTerritorialiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciLivelliTerritorialiComponent extends GestisciParentComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa dei livelli territoriali a cui sei abilitato e filtrarli';
   readonly iconaGruppoEnti = 'assets/img/users-solid.svg#users-group';
@@ -69,14 +70,6 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
     super(router, route, http, amministrativoService);
   }
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList = [];
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Livelli Territoriali', null, null));
-  }
-
   ngOnInit(): void {
     this.waitingEmitter.subscribe(() => {
       if (this.amministrativoService.mappaFunzioni) {
@@ -94,7 +87,10 @@ export class GestisciLivelliTerritorialiComponent extends AmministrativoParentCo
   }
 
   init() {
-    this.inizializzaBreadcrumbList();
+    this.breadcrumbList = this.inizializzaBreadcrumbList([
+      {label: 'Gestisci Anagrafiche', link: null},
+      {label: 'Gestisci Livelli Territoriali', link: null}
+    ]);
     this.popolaListaLivelliTerritoriali();
   }
 

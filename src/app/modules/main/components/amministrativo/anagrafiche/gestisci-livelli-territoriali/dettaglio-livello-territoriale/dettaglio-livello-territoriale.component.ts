@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Breadcrumb} from '../../../../../dto/Breadcrumb';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
 import {LivelloTerritorialeService} from '../../../../../../../services/livelloTerritoriale.service';
+import {InserimentoModificaDettaglioParentComponent} from "../../../inserimento-modifica-dettaglio-parent.component";
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
@@ -15,7 +16,7 @@ import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
   templateUrl: './dettaglio-livello-territoriale.component.html',
   styleUrls: ['./dettaglio-livello-territoriale.component.scss']
 })
-export class DettaglioLivelloTerritorialeComponent implements OnInit {
+export class DettaglioLivelloTerritorialeComponent extends InserimentoModificaDettaglioParentComponent implements OnInit {
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
@@ -33,12 +34,12 @@ export class DettaglioLivelloTerritorialeComponent implements OnInit {
     private overlayService: OverlayService,
     private livelloTerritorialeService: LivelloTerritorialeService,
     private confirmationService: ConfirmationService
-  ) { }
+  ) { super(); }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
-      this.inizializzaBreadcrumbList();
+      this.inizializzaBreadcrumbs();
       this.titoloPagina = this.getTestoFunzione() + ' Livello Territoriale';
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di un livello territoriale';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
@@ -50,13 +51,12 @@ export class DettaglioLivelloTerritorialeComponent implements OnInit {
     });
   }
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList = [];
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Livello Territoriale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(4, this.getTestoFunzione() + ' Livello Territoriale', null, null));
+  inizializzaBreadcrumbs() {
+    const breadcrumbs: SintesiBreadcrumb[] = [];
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Livello Territoriale', 'livelliTerritoriali/' + this.amministrativoService.idFunzione));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione() + ' Livello Territoriale', null));
+    this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
 
   controllaTipoFunzione() {

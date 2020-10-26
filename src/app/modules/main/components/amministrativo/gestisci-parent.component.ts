@@ -1,14 +1,10 @@
-import {Breadcrumb} from '../../dto/Breadcrumb';
+import {Breadcrumb, SintesiBreadcrumb} from '../../dto/Breadcrumb';
 import * as Parent from './amministrativo-parent.component';
 import {AmministrativoService} from '../../../../services/amministrativo.service';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Utils} from "../../../../utils/Utils";
 
-
-export interface BreadcrumbObj {
-  label: string;
-  link: string;
-}
 
 export abstract class GestisciParentComponent extends Parent.AmministrativoParentComponent {
 
@@ -18,16 +14,11 @@ export abstract class GestisciParentComponent extends Parent.AmministrativoParen
     super(router, route, http, amministrativoService);
   }
 
-  inizializzaBreadcrumbList(breadcrumbs: BreadcrumbObj[]): Breadcrumb[] {
-    const breadcrumbList = [];
-    breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    let counter = 2;
-    breadcrumbs.forEach(breadcrumb => {
-      breadcrumbList.push(new Breadcrumb(counter, breadcrumb.label, breadcrumb.link, null));
-      counter++;
-    });
-    return breadcrumbList;
+  inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
+    const breadcrumbList: SintesiBreadcrumb[] = [];
+    breadcrumbList.push(new SintesiBreadcrumb( 'Amministra Portale', null));
+    breadcrumbList.push(...breadcrumbs);
+    return Utils.popolaListaBreadcrumb(breadcrumbList);
   }
 
 }
