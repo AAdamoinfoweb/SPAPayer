@@ -22,11 +22,11 @@ import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
 import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {PermessoService} from '../../../../../../services/permesso.service';
-import {PermessoFunzione} from "../../../../model/permesso/PermessoFunzione";
-import {OverlayService} from "../../../../../../services/overlay.service";
-import {BannerService} from "../../../../../../services/banner.service";
-import {Banner} from "../../../../model/Banner";
-import {getBannerType, LivelloBanner} from "../../../../../../enums/livelloBanner.enum";
+import {PermessoFunzione} from '../../../../model/permesso/PermessoFunzione';
+import {OverlayService} from '../../../../../../services/overlay.service';
+import {BannerService} from '../../../../../../services/banner.service';
+import {Banner} from '../../../../model/banner/Banner';
+import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -37,8 +37,8 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
 
   breadcrumbList = [];
 
-  tooltipTitle: string = `In questa pagina puoi aggiungere un utente e abilitarlo a specifici servizi`;
-  titoloPagina: string = `Aggiungi Utente/Permessi`;
+  tooltipTitle = `In questa pagina puoi aggiungere un utente e abilitarlo a specifici servizi`;
+  titoloPagina = `Aggiungi Utente/Permessi`;
 
   codiceFiscale: string;
   codiceFiscaleModifica: string;
@@ -233,7 +233,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     utente.attivazione = utente.attivazione ?
       moment(utente.attivazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     const codiceFiscale = this.isModifica ? this.codiceFiscaleModifica : this.codiceFiscale;
-    if (!this.isModifica && !this.isDettaglio){
+    if (!this.isModifica && !this.isDettaglio) {
       // controllo su codice fiscale
       this.utenteService.letturaCodiceFiscale(this.codiceFiscale, this.amministrativoService.idFunzione).subscribe((data) => {
         const codiciFiscaleUpperCase = data.map(value => value.toUpperCase());
@@ -241,7 +241,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
         if (iscodiceFiscaleEsistente) {
         const banner: Banner = {
           titolo: 'ATTENZIONE',
-          testo: "Utente già presente",
+          testo: 'Utente già presente',
           tipo: getBannerType(LivelloBanner.ERROR)
         };
         this.bannerService.bannerEvent.emit([banner]);
@@ -255,9 +255,9 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     }
     this.asyncSubject.subscribe(cf => {
       this.codiceFiscaleModifica = cf;
-      this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      this.router.routeReuseStrategy.shouldReuseRoute = function() {
         return false;
-      }
+      };
       this.router.onSameUrlNavigation = 'reload';
       this.router.navigate(['/modificaUtentePermessi', cf]);
     });

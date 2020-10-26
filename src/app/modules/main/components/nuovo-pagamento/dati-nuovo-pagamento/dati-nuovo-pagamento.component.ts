@@ -95,9 +95,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     if (this.datiPagamento.importo) {
       this.model[this.importoNomeCampo] = this.datiPagamento.importo;
-    } else {
-      console.log('Importo mancante');
-      this.overlayService.gestisciErrore();
     }
 
     // In modalità compilazione automatica, carico tutte le opzioni per le select dipendenti (in quanto i valori delle select da cui dipendono potrebbero arrivare successivamente)
@@ -115,9 +112,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
             if (campo) {
               this.model[this.getNomeCampoForm(campo)] = dettaglio.valore;
-            } else {
-              console.log('Campo dettaglio transazione mancante');
-              this.overlayService.gestisciErrore();
             }
           });
         }
@@ -144,9 +138,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             }
 
           });
-      } else {
-        console.log('Dettaglio transazione id mancante su servizio diverso da LV3');
-        this.overlayService.gestisciErrore();
       }
     }
   }

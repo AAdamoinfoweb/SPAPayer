@@ -115,7 +115,7 @@ import {OverlayModule} from "@angular/cdk/overlay";
     GestisciBannerComponent,
     FiltroGestioneBannerComponent,
     GestisciEntiComponent,
-    OrderByPipe
+    OrderByPipe,
     SpinnerOverlayComponent
   ],
   imports: [
@@ -145,7 +145,7 @@ import {OverlayModule} from "@angular/cdk/overlay";
     CustomFormsModule,
     AutoCompleteModule,
     TreeTableModule,
-    InputSwitchModule
+    InputSwitchModule,
     OverlayModule
   ],
   providers: [
