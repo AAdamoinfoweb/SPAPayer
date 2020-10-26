@@ -7,6 +7,9 @@ import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Societa} from '../../../../../model/Societa';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {InserimentoModificaDettaglioParentComponent} from "../../../inserimento-modifica-dettaglio-parent.component";
+import {ConfirmationService} from 'primeng/api';
+import {Utils} from '../../../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-dettaglio-societa',
@@ -29,7 +32,8 @@ export class DettaglioSocietaComponent extends InserimentoModificaDettaglioParen
     private router: Router,
     private amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
-    private societaService: SocietaService
+    private societaService: SocietaService,
+    private confirmationService: ConfirmationService
   ) { super();}
 
   ngOnInit(): void {
@@ -88,6 +92,20 @@ export class DettaglioSocietaComponent extends InserimentoModificaDettaglioParen
   }
 
   onClickAnnulla() {
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      this.tornaIndietro();
+    } else {
+      this.confirmationService.confirm(
+        Utils.getModale(() => {
+            this.tornaIndietro();
+          },
+          TipoModaleEnum.ANNULLA
+        )
+      );
+    }
+  }
+
+  tornaIndietro() {
     this.router.navigateByUrl('/societa?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 

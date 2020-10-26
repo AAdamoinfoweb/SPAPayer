@@ -28,6 +28,8 @@ import {BannerService} from '../../../../../../services/banner.service';
 import {Banner} from '../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
 import {InserimentoModificaDettaglioParentComponent} from "../../inserimento-modifica-dettaglio-parent.component";
+import {ConfirmationService} from 'primeng/api';
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -64,6 +66,7 @@ export class AggiungiUtentePermessiComponent extends InserimentoModificaDettagli
               private el: ElementRef, private amministrativoService: AmministrativoService,
               private permessoService: PermessoService,
               private overlayService: OverlayService,
+              private confirmationService: ConfirmationService,
               private bannerService: BannerService) {
     super();
     // codice fiscale da utente service per inserimento
@@ -305,6 +308,20 @@ export class AggiungiUtentePermessiComponent extends InserimentoModificaDettagli
   }
 
   onClickAnnulla() {
+    if (this.isDettaglio) {
+      this.tornaIndietro();
+    } else {
+      this.confirmationService.confirm(
+        Utils.getModale(() => {
+            this.tornaIndietro();
+          },
+          TipoModaleEnum.ANNULLA
+        )
+      );
+    }
+  }
+
+  tornaIndietro() {
     this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 }

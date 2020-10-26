@@ -7,6 +7,9 @@ import {OverlayService} from '../../../../../../../services/overlay.service';
 import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
 import {LivelloTerritorialeService} from '../../../../../../../services/livelloTerritoriale.service';
 import {InserimentoModificaDettaglioParentComponent} from "../../../inserimento-modifica-dettaglio-parent.component";
+import {ConfirmationService} from 'primeng/api';
+import {Utils} from '../../../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-dettaglio-livello-territoriale',
@@ -29,7 +32,8 @@ export class DettaglioLivelloTerritorialeComponent extends InserimentoModificaDe
     private router: Router,
     private amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
-    private livelloTerritorialeService: LivelloTerritorialeService
+    private livelloTerritorialeService: LivelloTerritorialeService,
+    private confirmationService: ConfirmationService
   ) { super(); }
 
   ngOnInit(): void {
@@ -87,6 +91,20 @@ export class DettaglioLivelloTerritorialeComponent extends InserimentoModificaDe
   }
 
   onClickAnnulla() {
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      this.tornaIndietro();
+    } else {
+      this.confirmationService.confirm(
+        Utils.getModale(() => {
+            this.tornaIndietro();
+          },
+          TipoModaleEnum.ANNULLA
+        )
+      );
+    }
+  }
+
+  tornaIndietro() {
     this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 

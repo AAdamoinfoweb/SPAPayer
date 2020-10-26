@@ -15,6 +15,8 @@ import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
 import {GestisciParentComponent} from "../../gestisci-parent.component";
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -64,7 +66,8 @@ export class GestisciSocietaComponent extends GestisciParentComponent implements
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private societaService: SocietaService, private el: ElementRef,
-              private menuService: MenuService
+              private menuService: MenuService,
+              private confirmationService: ConfirmationService
               ) {
     super(router, route, http, amministrativoService);
   }
@@ -161,10 +164,17 @@ export class GestisciSocietaComponent extends GestisciParentComponent implements
   }
 
   eliminaSocietaSelezionate() {
-    this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
-
-      this.popolaListaSocieta();
-    });
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
+            this.popolaListaSocieta();
+            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+          });
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
   }
 
   esportaTabellaInFilePdf(): void {

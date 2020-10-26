@@ -15,6 +15,8 @@ import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
 import {GestisciParentComponent} from "../../gestisci-parent.component";
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'app-gestione-livelli-territoriali',
@@ -62,7 +64,8 @@ export class GestisciLivelliTerritorialiComponent extends GestisciParentComponen
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private livelloTerritorialeService: LivelloTerritorialeService, private el: ElementRef,
-              private menuService: MenuService
+              private menuService: MenuService,
+              private confirmationService: ConfirmationService
   ) {
     super(router, route, http, amministrativoService);
   }
@@ -158,9 +161,17 @@ export class GestisciLivelliTerritorialiComponent extends GestisciParentComponen
   }
 
   eliminaLivelliTerritorialiSelezionati() {
-    this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.amministrativoService.idFunzione).subscribe(() => {
-      this.popolaListaLivelliTerritoriali();
-    });
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.amministrativoService.idFunzione).subscribe(() => {
+            this.popolaListaLivelliTerritoriali();
+            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+          });
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
   }
 
   esportaTabellaInFilePdf(): void {

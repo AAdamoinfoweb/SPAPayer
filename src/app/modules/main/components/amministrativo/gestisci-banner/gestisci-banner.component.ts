@@ -18,6 +18,8 @@ import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import * as _ from 'lodash';
 import {MenuService} from '../../../../../services/menu.service';
 import {GestisciParentComponent} from "../gestisci-parent.component";
+import {ConfirmationService} from 'primeng/api';
+import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-gestisci-banner',
@@ -63,7 +65,9 @@ export class GestisciBannerComponent extends GestisciParentComponent implements 
 
   constructor(router: Router, route: ActivatedRoute, http: HttpClient,
               amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
-              private bannerService: BannerService, private menuService: MenuService) {
+              private bannerService: BannerService, private menuService: MenuService,
+              private confirmationService: ConfirmationService
+              ) {
     super(router, route, http, amministrativoService);
   }
 
@@ -155,11 +159,17 @@ export class GestisciBannerComponent extends GestisciParentComponent implements 
   }
 
   eliminaBannerSelezionati(): void {
-    this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.amministrativoService.idFunzione).pipe(map(() => {
-      this.popolaListaBanner();
-      this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-      this.toolbarIcons[this.indiceIconaElimina].disabled = true;
-    })).subscribe();
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.amministrativoService.idFunzione).pipe(map(() => {
+            this.popolaListaBanner();
+            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+          })).subscribe();
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
   }
 
   esportaTabellaInFilePdf(dataTable: any): void {
