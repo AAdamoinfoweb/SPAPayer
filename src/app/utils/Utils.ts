@@ -5,6 +5,7 @@ import * as jsPDF from 'jspdf';
 import {tipoColonna} from '../enums/TipoColonna.enum';
 import {ImmaginePdf} from '../modules/main/model/tabella/ImmaginePdf';
 import {Tabella} from '../modules/main/model/tabella/Tabella';
+import {TipoModaleEnum} from '../enums/tipoModale.enum';
 
 export class Utils {
 
@@ -20,6 +21,38 @@ export class Utils {
 
   static creaIcona = (path, color, tooltip, display) => {
     return {path, color, tooltip, display};
+  }
+
+  static getModale(confermaFn, tipoModale: TipoModaleEnum, titolo?, messaggio?) {
+    let header;
+    let message;
+    switch (tipoModale) {
+      case TipoModaleEnum.ANNULLA:
+        header = 'Richiesta conferma';
+        message = 'Attenzione, tutte le informazioni eventualmente inserite verranno cancellate. Sicuro di proseguire?';
+        break;
+      case TipoModaleEnum.ELIMINA:
+        header = 'Richiesta conferma';
+        message = 'Sei sicuro di voler procedere con la cancellazione?';
+        break;
+      case TipoModaleEnum.CUSTOM:
+        header = titolo;
+        message = messaggio;
+        break;
+    }
+    return {
+      header,
+      message,
+      acceptButtonStyleClass: 'okButton',
+      rejectButtonStyleClass: 'undoButton',
+      acceptLabel: 'Conferma',
+      rejectLabel: 'Annulla',
+      reject: () => {
+      },
+      accept: () => {
+        confermaFn();
+      }
+    };
   }
 
   static esportaTabellaInFilePdf(tabella: Tabella, titoloFile: string, immagini: ImmaginePdf[]): void {
