@@ -91,6 +91,7 @@ export class DettaglioLivelloTerritorialeComponent implements OnInit {
   }
 
   onClickAnnulla() {
+    this.overlayService.caricamentoEvent.emit(true);
     this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 
