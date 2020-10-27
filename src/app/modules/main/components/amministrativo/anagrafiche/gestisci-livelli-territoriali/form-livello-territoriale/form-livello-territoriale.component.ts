@@ -6,7 +6,7 @@ import {AmministrativoService} from '../../../../../../../services/amministrativ
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
 import {LivelloTerritorialeService} from '../../../../../../../services/livelloTerritoriale.service';
-import {InserimentoModificaDettaglioParentComponent} from "../../../inserimento-modifica-dettaglio-parent.component";
+import {FormElementoParentComponent} from "../../../form-elemento-parent.component";
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
@@ -16,7 +16,7 @@ import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
   templateUrl: './form-livello-territoriale.component.html',
   styleUrls: ['./form-livello-territoriale.component.scss']
 })
-export class FormLivelloTerritorialeComponent extends InserimentoModificaDettaglioParentComponent implements OnInit {
+export class FormLivelloTerritorialeComponent extends FormElementoParentComponent implements OnInit {
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
