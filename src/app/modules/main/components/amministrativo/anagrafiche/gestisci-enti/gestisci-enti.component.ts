@@ -121,7 +121,8 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
         this.aggiungiElemento('/aggiungiEnte');
         break;
       case ToolEnum.UPDATE:
-        this.modificaEnteSelezionato();
+        // TODO logica modifica dell'ente selezionato
+        // this.modificaElementoSelezionato('/modificaEnte', idEnte);
         break;
       case ToolEnum.DELETE:
         this.eliminaEntiSelezionati();
@@ -140,10 +141,6 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     listaSocietaFiltrate.forEach(societa => {
 //      this.tableData.rows.push(this.creaRigaTabella(societa));
     });
-  }
-
-  private modificaEnteSelezionato() {
-
   }
 
   private esportaTabellaInFilePdf() {

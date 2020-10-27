@@ -180,7 +180,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
         this.aggiungiElemento('/aggiungiUtentePermessi');
         break;
       case ToolEnum.UPDATE:
-        this.router.navigate(['/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare]);
+      this.modificaElementoSelezionato('/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare);
         break;
       case ToolEnum.EXPORT_PDF:
         this.esportaTabellaInFilePdf(dataTable);
@@ -237,6 +237,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   dettaglioUtente(row: any) {
-    this.router.navigate(['/dettaglioUtentePermessi', row.id.value]);
+    this.mostraDettaglioElemento('/dettaglioUtentePermessi', row.id.value);
   }
 }

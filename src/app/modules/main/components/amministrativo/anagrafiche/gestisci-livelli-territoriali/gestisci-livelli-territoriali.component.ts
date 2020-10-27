@@ -134,7 +134,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
         this.aggiungiElemento('/aggiungiLivelloTerritoriale');
         break;
       case ToolEnum.UPDATE:
-        this.modificaLivelloTerritorialeSelezionato();
+        this.modificaElementoSelezionato('/modificaLivelloTerritoriale', this.listaIdLivelliTerritorialiSelezionati[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaLivelliTerritorialiSelezionati();
@@ -149,12 +149,8 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   }
 
   mostraDettaglioLivelloTerritoriale(rigaTabella) {
-    // this.router.navigate(['/dettaglioLivelloTerritoriale', rigaTabella.id.value]);
-    this.router.navigate(['/dettaglioLivelloTerritoriale', 2]);
-  }
-
-  modificaLivelloTerritorialeSelezionato() {
-    this.router.navigate(['/modificaLivelloTerritoriale', this.listaIdLivelliTerritorialiSelezionati[0]]);
+    this.mostraDettaglioElemento('/dettaglioLivelloTerritoriale', rigaTabella.id.value);
+    // this.mostraDettaglioElemento('/dettaglioLivelloTerritoriale', 2);
   }
 
   eliminaLivelliTerritorialiSelezionati() {

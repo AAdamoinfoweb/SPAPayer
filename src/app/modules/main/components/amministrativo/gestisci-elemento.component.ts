@@ -34,11 +34,16 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   // TODO generalizzare o astrarre creaRigaTabella
   
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
-  // TODO generalizzare mostraDettaglioElemento
+
+  mostraDettaglioElemento(link: string, id: number) {
+    this.router.navigate([link, id]);
+  }
 
   // TODO generalizzare o astrarre eliminaListaIdElementiSelezionati
 
-  // TODO generalizzare modificaElementoSelezionato
+  modificaElementoSelezionato(link: string, id: number | string) {
+    this.router.navigate([link, id]);
+  }
 
   // TODO generalizzare esportaTabellaInFilePdf
 
