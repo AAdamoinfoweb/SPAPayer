@@ -82,6 +82,22 @@ select:focus {
   background-position-y: calc(50% + 5px);
 }
 
+textarea {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  background-color: transparent;
+  height: 5rem;
+}
+
+textarea:focus {
+  background-color: white;
+}
+
+textarea:disabled {
+  background-color: #E3E3E3;
+}
+
 .disabled {
   color: #77777B;
 }
