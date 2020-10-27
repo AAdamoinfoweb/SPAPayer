@@ -32,13 +32,8 @@ export class HomeComponent implements OnInit {
     public menuService: MenuService,
     private overlayService: OverlayService
   ) {
-    this.menuService.userEventChange
-      .subscribe(() => {
-        if (!this.menuService.isUtenteAnonimo) {
-          nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
-        }
-      });
     if (localStorage.getItem('loginDaAnonimo')) {
+      this.nuovoPagamentoService.prezzoEvent.emit(null);
       let bollettini: Bollettino[] = [];
       for (var key in localStorage) {
         if (key.startsWith("boll-")) {
@@ -68,6 +63,13 @@ export class HomeComponent implements OnInit {
         this.router.navigateByUrl("/nuovoPagamento");
       }
       localStorage.removeItem('loginDaAnonimo');
+    } else {
+      this.menuService.userEventChange
+        .subscribe(() => {
+          if (!this.menuService.isUtenteAnonimo) {
+            nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit(value.totale));
+          }
+        });
     }
 
     if (localStorage.getItem('access_jwt')) {

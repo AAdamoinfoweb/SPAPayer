@@ -149,6 +149,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
   private creaListaBollettini() {
     let bollettini: Bollettino[] = [];
+
     for (var key in localStorage) {
       if (key.startsWith("boll-")) {
         let bollettino: Bollettino = JSON.parse(localStorage.getItem(key));
