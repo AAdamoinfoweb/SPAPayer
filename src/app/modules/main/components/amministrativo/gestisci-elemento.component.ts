@@ -6,7 +6,7 @@ import {Utils} from '../../../../utils/Utils';
 import {AmministrativoParentComponent} from './amministrativo-parent.component';
 import {Tabella} from '../../model/tabella/Tabella';
 import {Colonna} from '../../model/tabella/Colonna';
-import {ToolEnum} from "../../../../enums/Tool.enum";
+import {ToolEnum} from '../../../../enums/Tool.enum';
 
 
 export abstract class GestisciElementoComponent extends AmministrativoParentComponent {
@@ -31,8 +31,8 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract popolaListaElementi(): void;
 
-  // TODO generalizzare o astrarre creaRigaTabella
-  
+  abstract creaRigaTabella(oggetto: any);
+
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
   mostraDettaglioElemento(link: string, id: number) {
@@ -55,7 +55,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {
     const copiaTabella = JSON.parse(JSON.stringify(tabella));
-    const headerColonne = this.getHeaderFileExcel(copiaTabella.cols);
+    const headerColonne = this.getColonneFileExcel(copiaTabella.cols).map(col => col.header);
     const righe = this.getRigheFileExcel(copiaTabella.rows);
 
     const fogli = {};
@@ -64,6 +64,6 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     Utils.creaFileExcel(righe, headerColonne, nomeFile, [nomeFile], workbook, 'Lista ' + nomeFile);
   }
 
-  abstract getHeaderFileExcel(colonne: Colonna[]);
+  abstract getColonneFileExcel(colonne: Colonna[]): Colonna[];
   abstract getRigheFileExcel(righe: any[]);
 }

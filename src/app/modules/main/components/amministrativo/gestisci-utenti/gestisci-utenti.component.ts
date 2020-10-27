@@ -205,11 +205,19 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   getRigheFileExcel(righe: any[]) {
-    // TODO implementa get righe excel
+    return righe.map(riga => {
+      riga.iconaUtente = riga.iconaUtente.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
+      riga.id = riga.id.value;
+      riga.nome = riga.nome.value;
+      riga.gruppoAbilitazioni = riga.gruppoAbilitazioni.value;
+      riga.scadenza = riga.scadenza.value;
+      riga.ultimoAccesso = riga.ultimoAccesso?.testo;
+      return riga;
+    });
   }
 
-  getHeaderFileExcel(colonne: Colonna[]) {
-    // TODO implementa get header excel
+  getColonneFileExcel(colonne: Colonna[]) {
+    return colonne;
   }
 
   onChangeListaUtenti(listaUtentiFiltrati: RicercaUtente[]): void {

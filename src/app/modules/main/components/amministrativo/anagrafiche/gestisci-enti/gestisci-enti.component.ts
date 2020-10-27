@@ -16,6 +16,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
+import {Ente} from "../../../../model/Ente";
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -115,6 +116,10 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
      });*/
   }
 
+  creaRigaTabella(ente: Ente) {
+    // TODO formattazione riga tabella
+  }
+
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
@@ -149,10 +154,12 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   getRigheFileExcel(righe: any[]) {
     // TODO implementa get righe excel
+    return null;
   }
 
-  getHeaderFileExcel(colonne: Colonna[]) {
+  getColonneFileExcel(colonne: Colonna[]) {
     // TODO implementa get header excel
+    return null;
   }
 
   private eliminaEntiSelezionati() {
