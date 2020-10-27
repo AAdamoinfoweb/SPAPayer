@@ -228,7 +228,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     return colonne;
   }
 
-  onChangeListaUtenti(listaUtentiFiltrati: RicercaUtente[]): void {
+  onChangeListaElementi(listaUtentiFiltrati: RicercaUtente[]): void {
     this.tableData.rows.length = 0;
     listaUtentiFiltrati.forEach(utente => {
       this.tableData.rows.push(this.creaRigaTabella(utente));

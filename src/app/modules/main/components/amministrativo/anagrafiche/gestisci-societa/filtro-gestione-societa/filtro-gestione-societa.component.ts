@@ -18,7 +18,7 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   opzioniFiltroSocieta: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
   @Output()
-  onChangeListaSocieta: EventEmitter<Societa[]> = new EventEmitter<Societa[]>();
+  onChangeListaElementi: EventEmitter<Societa[]> = new EventEmitter<Societa[]>();
 
   filtroSocieta: number = null;
 
@@ -61,12 +61,12 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.filtroSocieta = null;
-    this.onChangeListaSocieta.emit(this.listaSocieta);
+    this.onChangeListaElementi.emit(this.listaSocieta);
   }
 
   cercaElementi(): void {
     this.societaService.ricercaSocieta(this.filtroSocieta, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
-      this.onChangeListaSocieta.emit(listaSocieta);
+      this.onChangeListaElementi.emit(listaSocieta);
     });
   }
 

@@ -65,7 +65,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
             const parametriRicercaUtente = new ParametriRicercaUtente();
             parametriRicercaUtente.societaId = this.filtroSocieta;
             this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).subscribe(utenti => {
-              // this.onChangeListaUtenti.emit(utenti);
+              // this.onChangeListaElementi.emit(utenti);
             });
           } else {
             window.open('/nonautorizzato', '_self');

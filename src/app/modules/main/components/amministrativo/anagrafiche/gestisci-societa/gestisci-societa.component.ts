@@ -201,7 +201,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     });
   }
 
-  onChangeListaSocieta(listaSocietaFiltrate: Societa[]): void {
+  onChangeListaElementi(listaSocietaFiltrate: Societa[]): void {
     this.tableData.rows.length = 0;
     listaSocietaFiltrate.forEach(societa => {
       this.tableData.rows.push(this.creaRigaTabella(societa));

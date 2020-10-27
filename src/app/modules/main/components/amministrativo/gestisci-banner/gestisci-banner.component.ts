@@ -200,7 +200,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     return righe;
   }
 
-  onChangeListaBanner(listaBannerFiltrati: Banner[]): void {
+  onChangeListaElementi(listaBannerFiltrati: Banner[]): void {
     this.tableData.rows.length = 0;
     listaBannerFiltrati.forEach(banner => {
       this.tableData.rows.push(this.creaRigaTabella(banner));

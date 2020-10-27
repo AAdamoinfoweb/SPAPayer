@@ -46,8 +46,6 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     this.router.navigate([link, id]);
   }
 
-  // TODO generalizzare o astrarre onChangeListaElementi
-
   // TODO generalizzare getTotaliRecord
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {
@@ -80,4 +78,6 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract getImmaginiFilePdf(): ImmaginePdf[];
 
   abstract selezionaRigaTabella(righeSelezionate: any[]): void;
+
+  abstract onChangeListaElementi(listaElementi: any[]): void;
 }

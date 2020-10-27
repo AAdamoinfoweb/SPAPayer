@@ -196,7 +196,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     return colonne.filter(col => col.field != 'entiAbilitati');
   }
 
-  onChangeListaLivelliTerritoriali(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {
+  onChangeListaElementi(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {
     this.tableData.rows.length = 0;
     listaLivelliTerritorialiFiltrati.forEach(livelloTerritoriale => {
       this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
