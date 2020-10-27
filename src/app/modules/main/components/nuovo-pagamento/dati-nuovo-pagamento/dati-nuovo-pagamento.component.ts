@@ -298,7 +298,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.nuovoPagamentoService.prezzoEvent.emit(this.model[this.importoNomeCampo]);
+    this.nuovoPagamentoService.prezzoEvent.emit({value: this.model[this.importoNomeCampo], type: 'add'});
   }
 
   creaForm(): void {
