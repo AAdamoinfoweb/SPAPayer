@@ -43,7 +43,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <input
+            <textarea
               id="descrizioneLivelloTerritoriale"
               type="text"
               name="descrizioneLivelloTerritoriale"
@@ -52,7 +52,7 @@
               [(ngModel)]="livelloTerritoriale.descrizione" (ngModelChange)="formattaInput($event, 'descrizione')"
               maxlength="255"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-            />
+            ></textarea>
           </div>
         </div>
         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
