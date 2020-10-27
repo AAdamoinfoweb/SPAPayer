@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {LoginBarService} from '../../services/login-bar.service';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
@@ -12,7 +12,8 @@ import {HttpClient} from "@angular/common/http";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+
   private maxHeightOffset: number;
 
   isSticky: boolean = false;
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.prezzoCarrello = null;
     this.menuService.userEventChange
       .subscribe(() => {
         this.checkIfL1();
@@ -41,7 +43,10 @@ export class HeaderComponent implements OnInit {
       this.isPaginaNuovoPagamento = window.location.pathname === this.urlNuovoPagamento;
     });
     this.nuovoPagamentoService.prezzoEvent.subscribe((prezzo: number) => {
-      this.prezzoCarrello = this.prezzoCarrello == null ? prezzo : this.prezzoCarrello + prezzo;
+      if (prezzo)
+        this.prezzoCarrello = this.prezzoCarrello == null ? prezzo : this.prezzoCarrello + prezzo;
+      else
+        this.prezzoCarrello = prezzo;
     });
   }
 
@@ -68,7 +73,7 @@ export class HeaderComponent implements OnInit {
     if (this.menuService.isUtenteAnonimo) {
       window.location.href = environment.bffBaseUrl + '/loginLepida.htm';
     } else {
-      this.http.get(environment.bffBaseUrl + '/logout',{withCredentials: true}).subscribe((body: any) => {
+      this.http.get(environment.bffBaseUrl + '/logout', {withCredentials: true}).subscribe((body: any) => {
         if (body.url) {
           localStorage.clear();
           this.menuService.userEventChange.emit();
@@ -76,6 +81,10 @@ export class HeaderComponent implements OnInit {
         }
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.nuovoPagamentoService.prezzoEvent.unsubscribe();
   }
 
   goToCarrello() {
