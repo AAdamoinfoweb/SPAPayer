@@ -184,11 +184,16 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   }
 
   getRigheFileExcel(righe: any[]) {
-    // TODO implementa get righe excel
+    return righe.map(riga => {
+      delete riga.entiAbilitati;
+      delete riga.id;
+      riga.nome = riga.nome.value;
+      return riga;
+    });
   }
 
-  getHeaderFileExcel(colonne: Colonna[]) {
-    // TODO implementa get header excel
+  getColonneFileExcel(colonne: Colonna[]) {
+    return colonne.filter(col => col.field != 'entiAbilitati');
   }
 
   onChangeListaLivelliTerritoriali(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {

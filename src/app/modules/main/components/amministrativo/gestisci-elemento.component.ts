@@ -49,7 +49,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {
     const copiaTabella = JSON.parse(JSON.stringify(tabella));
-    const headerColonne = this.getHeaderFileExcel(copiaTabella.cols);
+    const headerColonne = this.getColonneFileExcel(copiaTabella.cols).map(col => col.header);
     const righe = this.getRigheFileExcel(copiaTabella.rows);
 
     const fogli = {};
@@ -58,6 +58,6 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     Utils.creaFileExcel(righe, headerColonne, nomeFile, [nomeFile], workbook, 'Lista ' + nomeFile);
   }
 
-  abstract getHeaderFileExcel(colonne: Colonna[]);
+  abstract getColonneFileExcel(colonne: Colonna[]): Colonna[];
   abstract getRigheFileExcel(righe: any[]);
 }

@@ -152,10 +152,12 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   getRigheFileExcel(righe: any[]) {
     // TODO implementa get righe excel
+    return null;
   }
 
-  getHeaderFileExcel(colonne: Colonna[]) {
+  getColonneFileExcel(colonne: Colonna[]) {
     // TODO implementa get header excel
+    return null;
   }
 
   private eliminaEntiSelezionati() {

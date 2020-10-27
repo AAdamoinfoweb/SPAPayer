@@ -186,8 +186,8 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     Utils.esportaTabellaInFilePdf(table, 'Lista Società', []);
   }
 
-  getHeaderFileExcel(colonne: Colonna[]) {
-    return colonne.filter(col => col.field != 'utentiAbilitati').map(col => col.header);
+  getColonneFileExcel(colonne: Colonna[]) {
+    return colonne.filter(col => col.field != 'utentiAbilitati');
   }
 
   getRigheFileExcel(righe: any[]) {

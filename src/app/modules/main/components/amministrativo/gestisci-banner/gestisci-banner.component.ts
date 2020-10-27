@@ -186,10 +186,12 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
 
   getRigheFileExcel(righe: any[]) {
     // TODO implementa get righe excel
+    return null;
   }
 
-  getHeaderFileExcel(colonne: Colonna[]) {
+  getColonneFileExcel(colonne: Colonna[]) {
     // TODO implementa get header excel
+    return null;
   }
 
   onChangeListaBanner(listaBannerFiltrati: Banner[]): void {
