@@ -187,4 +187,8 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   selezionaRigaTabella(righeSelezionate: any[]) {
     // TODO seleziona riga tabella
   }
+
+  getNumeroRecord(): string {
+    return 'Totale: ' + this.tableData.rows.length + ' enti';
+  }
 }
