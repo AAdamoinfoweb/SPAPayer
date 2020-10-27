@@ -21,17 +21,18 @@ import {GestisciLivelliTerritorialiComponent} from './modules/main/components/am
 import {FormLivelloTerritorialeComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/form-livello-territoriale/form-livello-territoriale.component';
 import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
 import {FormBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/form-banner/form-banner.component';
+import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
   {path: 'home', component: HomeComponent},
-  {
+  /*{
     path: 'riservata',
     loadChildren: () => import('src/app/modules/main/main.module').then(m => m.MainModule),
     canActivate: [
       AuthguardService
     ]
-  },
+  },*/
   {path: 'erroregenerico', component: GenericErrorComponent},
   {path: 'nonautorizzato', component: NonautorizzatoComponent},
   {path: 'carrelloL1', component: CarrelloL1Component, pathMatch: 'full'},
@@ -40,7 +41,9 @@ const routes: Routes = [
   {path: 'waitingL1', component: WaitingL1Component, pathMatch: 'full'},
   {path: 'waiting', component: WaitingComponent, pathMatch: 'full'},
   {path: 'privacy', component: PrivacyComponent},
-  {path: 'nuovoPagamento', component: NuovoPagamentoComponent},
+  {path: 'nuovoPagamento', component: NuovoPagamentoComponent, canActivate: [
+      AuthguardService
+    ]},
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
   {path: 'gestioneUtenti', component: GestisciUtentiComponent},
   {path: 'aggiungiUtentePermessi', component: FormUtentePermessiComponent},
@@ -58,7 +61,8 @@ const routes: Routes = [
   {path: 'gestisciBanner', component: GestisciBannerComponent},
   {path: 'aggiungiBanner', component: FormBannerComponent},
   {path: 'modificaBanner/:bannerid', component: FormBannerComponent},
-  {path: 'dettaglioBanner/:bannerid', component: FormBannerComponent}
+  {path: 'dettaglioBanner/:bannerid', component: FormBannerComponent},
+  {path: 'monitoraAccessi', component: MonitoraAccessiComponent}
 ];
 
 @NgModule({

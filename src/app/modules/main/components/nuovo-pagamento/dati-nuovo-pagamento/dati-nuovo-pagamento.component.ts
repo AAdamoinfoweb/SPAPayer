@@ -174,7 +174,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   checkUtenteLoggato(): void {
     this.tooltipBottoneSalvaPerDopo = this.menuService.isUtenteAnonimo
-      ? 'É necessario autenticarsi per poter premere questo bottone e salvare il bollettino appena compilato nella sezione \"I miei pagamenti\"'
+      ? 'Per attivare il bottone accedi o registrati"'
       : null;
   }
 
@@ -270,6 +270,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       }
     });
 
+    localStorage.removeItem("parziale");
     this.nuovoPagamentoService.pulisciEvent.emit(true);
   }
 
@@ -297,7 +298,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   aggiornaPrezzoCarrello(): void {
-    this.nuovoPagamentoService.prezzoEvent.emit(this.model[this.importoNomeCampo]);
+    this.nuovoPagamentoService.prezzoEvent.emit({value: this.model[this.importoNomeCampo], type: 'add'});
   }
 
   creaForm(): void {

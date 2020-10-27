@@ -4,6 +4,8 @@ import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
+import {NuovoPagamentoService} from "./nuovo-pagamento.service";
+import {MenuService} from "./menu.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +14,18 @@ export class AuthguardService implements CanActivate {
 
   private logoutUrl = '/logout';
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router,
+              private nuovoPagamentoService: NuovoPagamentoService,
+              private menuService: MenuService,
+              private http: HttpClient) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    if (localStorage.getItem('access_jwt')) {
-      return true;
+    let index = route.url.findIndex(value => value.path == 'nuovoPagamento');
+    if (index !== -1 && !this.menuService.isUtenteAnonimo && !localStorage.getItem("loginDaAnonimo")) {
+      this.nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit({value: value.totale}));
     }
-    this.router.navigate(['/']);
-    return false;
+    return true;
   }
 
   logout(): Observable<string> {
@@ -32,7 +37,7 @@ export class AuthguardService implements CanActivate {
         localStorage.removeItem('renew_jwt');
         return body.url;
       }), catchError((err, caught) => {
-          return of(null);
+        return of(null);
       }));
   }
 
