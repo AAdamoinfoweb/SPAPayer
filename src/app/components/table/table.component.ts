@@ -32,6 +32,8 @@ export class TableComponent implements OnInit {
 
   selection: any [];
 
+  wasLinkOrIconSelected: boolean = false;
+
   rowsPerPageOption: number[] = [5, 10, 20];
 
   pageSize = this.rowsPerPageOption[0];
@@ -57,7 +59,12 @@ export class TableComponent implements OnInit {
     this.pageSize = event;
   }
 
-  onIcon(dataKey) {
+  onLinkClick() {
+    this.wasLinkOrIconSelected = true;
+  }
+
+  onIconClick(dataKey) {
+    this.wasLinkOrIconSelected = true;
     this.onClickIcon.emit(dataKey);
   }
 
@@ -65,8 +72,12 @@ export class TableComponent implements OnInit {
     return this.rows.length;
   }
 
-  clickOnRow(row: any) {
-   this.onClickRow.emit(row);
+  onRowClick(row: any) {
+    // Ignores the row click event if a link or icon event is launched
+    if (!this.wasLinkOrIconSelected) {
+      this.onClickRow.emit(row);
+    }
+    this.wasLinkOrIconSelected = false;
   }
 
   customSort(event: SortEvent) {

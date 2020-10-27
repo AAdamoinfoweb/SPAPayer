@@ -14,13 +14,18 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
+import {GestisciElementoComponent} from "../../gestisci-elemento.component";
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {ConfirmationService} from 'primeng/api';
+import {Colonna} from '../../../../model/tabella/Colonna';
+import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 
 @Component({
   selector: 'app-gestione-societa',
   templateUrl: './gestisci-societa.component.html',
   styleUrls: ['./gestisci-societa.component.scss']
 })
-export class GestisciSocietaComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciSocietaComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
@@ -60,25 +65,18 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   tempTableData;
   waiting = true;
 
-  constructor(router: Router, overlayService: OverlayService,
+  constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private societaService: SocietaService, private el: ElementRef,
-              private menuService: MenuService
+              private menuService: MenuService,
+              private confirmationService: ConfirmationService
               ) {
-    super(router, overlayService, route, http, amministrativoService);
-  }
-
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList = [];
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Società', null, null));
+    super(router, route, http, amministrativoService);
   }
 
   ngOnInit(): void {
     this.waitingEmitter.subscribe(() => {
-      this.overlayService.caricamentoEvent.emit(true);
+
       if (this.amministrativoService.mappaFunzioni) {
         this.isMenuCarico = Object.keys(this.amministrativoService.mappaFunzioni).length > 0;
       }
@@ -94,8 +92,11 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   }
 
   init() {
-    this.inizializzaBreadcrumbList();
-    this.popolaListaSocieta();
+    this.breadcrumbList = this.inizializzaBreadcrumbList([
+      {label: 'Gestisci Anagrafiche', link: null},
+      {label: 'Gestisci Società', link: null}
+    ]);
+    this.popolaListaElementi();
   }
 
   ngAfterViewInit(): void {
@@ -103,7 +104,7 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
-  popolaListaSocieta() {
+  popolaListaElementi() {
     this.listaSocieta = [];
     this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
       this.listaSocieta = listaSocieta;
@@ -113,7 +114,6 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
         this.tableData.rows.push(this.creaRigaTabella(societa));
       });
       this.tempTableData = Object.assign({}, this.tableData);
-      this.overlayService.caricamentoEvent.emit(false);
       this.waiting = false;
     });
   }
@@ -136,58 +136,62 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiSocieta();
+        this.aggiungiElemento('/aggiungiSocieta');
         break;
       case ToolEnum.UPDATE:
-        this.modificaSocietaSelezionata();
+        this.modificaElementoSelezionato('/modificaSocieta', this.listaIdSocietaSelezionate[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaSocietaSelezionate();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf();
+        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Societa');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel();
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Societa');
         break;
     }
   }
 
   mostraDettaglioSocieta(rigaTabella) {
-    this.router.navigate(['/dettaglioSocieta', rigaTabella.id.value]);
-  }
-
-  aggiungiSocieta() {
-    this.router.navigateByUrl('/aggiungiSocieta');
-  }
-
-  modificaSocietaSelezionata() {
-    this.router.navigate(['/modificaSocieta', this.listaIdSocietaSelezionate[0]]);
+    this.mostraDettaglioElemento('/dettaglioSocieta', rigaTabella.id.value);
   }
 
   eliminaSocietaSelezionate() {
-    this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
-      this.overlayService.caricamentoEvent.emit(true);
-      this.popolaListaSocieta();
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
+            this.popolaListaElementi();
+            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+          });
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
+  }
+
+  getImmaginiFilePdf(): ImmaginePdf[] {
+    return [];
+  }
+
+  getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    return colonne.filter(col => col.field !== 'utentiAbilitati');
+  }
+
+  getRigheFilePdf(righe: any[]) {
+    return righe.map(riga => {
+      delete riga.utentiAbilitati;
+      return riga;
     });
   }
 
-  esportaTabellaInFilePdf(): void {
-    const table = JSON.parse(JSON.stringify(this.tempTableData));
-
-    // Rimuovo la colonna utenti abilitati dalla stampa del pdf
-    table.cols = table.cols.filter (col => col.field != 'utentiAbilitati');
-    table.rows.forEach(riga => {
-      delete riga['utentiAbilitati'];
-    });
-
-    Utils.esportaTabellaInFilePdf(table, 'Lista Società', []);
+  getColonneFileExcel(colonne: Colonna[]) {
+    return colonne.filter(col => col.field !== 'utentiAbilitati');
   }
 
-  esportaTabellaInFileExcel(): void {
-    const table = JSON.parse(JSON.stringify(this.tempTableData));
-    const headerColonne = table.cols.filter(col => col.field != 'utentiAbilitati').map(col => col.header);
-    const righe = table.rows.map(riga => {
+  getRigheFileExcel(righe: any[]) {
+    return righe.map(riga => {
       delete riga.utentiAbilitati;
       delete riga.id;
       riga.nome = riga.nome.value;
@@ -195,19 +199,16 @@ export class GestisciSocietaComponent extends AmministrativoParentComponent impl
       riga.email = riga.email.value;
       return riga;
     });
-
-    const workbook = {Sheets: {'Societa': null}, SheetNames: []};
-    Utils.creaFileExcel(righe, headerColonne, 'Societa', ['Societa'], workbook, 'Lista Societa');
   }
 
-  onChangeListaSocieta(listaSocietaFiltrate: Societa[]): void {
+  onChangeListaElementi(listaSocietaFiltrate: Societa[]): void {
     this.tableData.rows.length = 0;
     listaSocietaFiltrate.forEach(societa => {
       this.tableData.rows.push(this.creaRigaTabella(societa));
     });
   }
 
-  getTotaliPerRecord(): string {
+  getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length + ' società';
   }
 

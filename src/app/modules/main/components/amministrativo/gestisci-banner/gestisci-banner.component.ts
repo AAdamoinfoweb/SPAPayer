@@ -1,8 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {AmministrativoParentComponent} from '../amministrativo-parent.component';
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
-import {Breadcrumb} from '../../../dto/Breadcrumb';
-import {OverlayService} from '../../../../../services/overlay.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
@@ -15,15 +12,18 @@ import * as moment from 'moment';
 import {Utils} from '../../../../../utils/Utils';
 import {BannerService} from '../../../../../services/banner.service';
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
-import * as _ from 'lodash';
 import {MenuService} from '../../../../../services/menu.service';
+import {GestisciElementoComponent} from '../gestisci-elemento.component';
+import {ConfirmationService} from 'primeng/api';
+import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
+import {Colonna} from '../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestisci-banner',
   templateUrl: './gestisci-banner.component.html',
   styleUrls: ['./gestisci-banner.component.scss']
 })
-export class GestisciBannerComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciBannerComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi visualizzare la lista completa dei banner presenti in Payer e filtrarli';
 
@@ -60,15 +60,16 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
   isMenuCarico = false;
   waiting = true;
 
-  constructor(router: Router, overlayService: OverlayService, route: ActivatedRoute, http: HttpClient,
+  constructor(router: Router, route: ActivatedRoute, http: HttpClient,
               amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
-              private bannerService: BannerService, private menuService: MenuService) {
-    super(router, overlayService, route, http, amministrativoService);
+              private bannerService: BannerService, private menuService: MenuService,
+              private confirmationService: ConfirmationService
+              ) {
+    super(router, route, http, amministrativoService);
   }
 
   ngOnInit(): void {
     this.waitingEmitter.subscribe(() => {
-      this.overlayService.caricamentoEvent.emit(true);
       if (this.amministrativoService.mappaFunzioni) {
         this.isMenuCarico = Object.keys(this.amministrativoService.mappaFunzioni).length > 0;
       }
@@ -84,17 +85,13 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
   }
 
   inizializzaPagina() {
-    this.inizializzaBreadcrumbList();
-    this.popolaListaBanner();
+    this.breadcrumbList = this.inizializzaBreadcrumbList([
+      {label: 'Gestisci Banner', link: null}
+    ]);
+    this.popolaListaElementi();
   }
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Banner', null, null));
-  }
-
-  popolaListaBanner(): void {
+  popolaListaElementi(): void {
     this.listaBanner = [];
     const parametriRicercaBanner = new ParametriRicercaBanner();
 
@@ -105,7 +102,6 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
         this.tableData.rows.push(this.creaRigaTabella(banner));
       });
       this.tempTableData = Object.assign({}, this.tableData);
-      this.overlayService.caricamentoEvent.emit(false);
       this.waiting = false;
     });
   }
@@ -139,36 +135,48 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
   }
 
   eseguiAzioni(azioneTool) {
-    const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        // TODO this.aggiungiBanner(dataTable);
+        this.aggiungiElemento('/aggiungiBanner');
         break;
       case ToolEnum.UPDATE:
-        // TODO this.modificaBannerSelezionato(dataTable);
+        // TODO this.modificaElementoSelezionato('/modificaBanner', this.listaBannerIdSelezionati[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaBannerSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(dataTable);
+        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Banner');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(dataTable);
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Banner');
         break;
     }
   }
 
   eliminaBannerSelezionati(): void {
-    this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.amministrativoService.idFunzione).pipe(map(() => {
-      this.overlayService.caricamentoEvent.emit(true);
-      this.popolaListaBanner();
-      this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-      this.toolbarIcons[this.indiceIconaElimina].disabled = true;
-    })).subscribe();
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.amministrativoService.idFunzione).pipe(map(() => {
+            this.popolaListaElementi();
+            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+          })).subscribe();
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
   }
 
-  esportaTabellaInFilePdf(dataTable: any): void {
+  getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    return colonne;
+  }
+
+  getRigheFilePdf(righe: any[]) {
+    return righe;
+  }
+
+  getImmaginiFilePdf(): ImmaginePdf[] {
     const iconaBannerAttivo = new ImmaginePdf();
     iconaBannerAttivo.indiceColonna = 0;
     iconaBannerAttivo.srcIcona = 'assets/img/active-banner.png';
@@ -176,34 +184,34 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
     iconaBannerAttivo.posizioneY = 2;
     iconaBannerAttivo.larghezza = 9;
     iconaBannerAttivo.altezza = 17;
-    Utils.esportaTabellaInFilePdf(dataTable, 'Lista Banner', [iconaBannerAttivo]);
+    return [iconaBannerAttivo];
   }
 
-  esportaTabellaInFileExcel(dataTable: any): void {
-    const customHeaders = dataTable.cols.filter(col => col.field !== 'id').map(col => col.header);
-    dataTable.rows = dataTable.rows.map(row => {
-      let newRow = row;
-      newRow = _.omit(newRow, 'id');
-      newRow.iconaBanner = row.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
-      newRow.titolo = row.titolo.value;
-      newRow.testo = row.testo.value;
-      newRow.inizio = row.inizio.value;
-      newRow.fine = row.fine.value;
-      return newRow;
+  getColonneFileExcel(colonne: Colonna[]) {
+    return colonne.filter(col => col.field !== 'id');
+  }
+
+  getRigheFileExcel(righe: any[]) {
+    return righe.map(riga => {
+      const rigaFormattata = riga;
+      delete rigaFormattata.id;
+      rigaFormattata.iconaBanner = riga.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
+      rigaFormattata.titolo = riga.titolo.value;
+      rigaFormattata.testo = riga.testo.value;
+      rigaFormattata.inizio = riga.inizio.value;
+      rigaFormattata.fine = riga.fine.value;
+      return rigaFormattata;
     });
-
-    const workbook = {Sheets: {'Banner': null}, SheetNames: []};
-    Utils.creaFileExcel(dataTable.rows, customHeaders, 'Banner', ['Banner'], workbook, 'Lista Banner');
   }
 
-  onChangeListaBanner(listaBannerFiltrati: Banner[]): void {
+  onChangeListaElementi(listaBannerFiltrati: Banner[]): void {
     this.tableData.rows.length = 0;
     listaBannerFiltrati.forEach(banner => {
       this.tableData.rows.push(this.creaRigaTabella(banner));
     });
   }
 
-  getTotaliPerRecord(): string {
+  getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length;
   }
 
@@ -213,8 +221,8 @@ export class GestisciBannerComponent extends AmministrativoParentComponent imple
     this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaBannerIdSelezionati.length === 0;
   }
 
-  mostraDettaglioBanner(row: any) {
-    // TODO logica visualizzazione dettaglio banner
+  mostraDettaglioBanner(rigaCliccata: any) {
+    // TODO this.mostraDettaglioElemento('/dettaglioBanner', rigaCliccata.id.value);
   }
 
 }

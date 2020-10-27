@@ -4,39 +4,41 @@ import {NgForm, NgModel} from '@angular/forms';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
+import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
 
 @Component({
   selector: 'app-filtro-gestione-societa',
   templateUrl: './filtro-gestione-societa.component.html',
   styleUrls: ['../gestisci-societa.component.scss', './filtro-gestione-societa.component.scss']
 })
-export class FiltroGestioneSocietaComponent implements OnInit, OnChanges {
+export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiComponent implements OnInit, OnChanges {
 
   @Input()
-  listaSocieta: Array<Societa> = new Array<Societa>();
+  listaElementi: Array<Societa> = new Array<Societa>();
   opzioniFiltroSocieta: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
   @Output()
-  onChangeListaSocieta: EventEmitter<Societa[]> = new EventEmitter<Societa[]>();
+  onChangeListaElementi: EventEmitter<Societa[]> = new EventEmitter<Societa[]>();
 
   filtroSocieta: number = null;
 
   constructor(private societaService: SocietaService,
               private amministrativoService: AmministrativoService) {
+    super();
   }
 
   ngOnInit(): void {
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaSocieta) {
+    if (sc.listaElementi) {
       this.impostaOpzioniFiltroSocieta();
     }
   }
 
   impostaOpzioniFiltroSocieta(): void {
     this.opzioniFiltroSocieta = [];
-    this.listaSocieta.forEach(societa => {
+    this.listaElementi.forEach(societa => {
       this.opzioniFiltroSocieta.push({
         value: societa.id,
         label: societa.nome
@@ -59,12 +61,12 @@ export class FiltroGestioneSocietaComponent implements OnInit, OnChanges {
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.filtroSocieta = null;
-    this.onChangeListaSocieta.emit(this.listaSocieta);
+    this.onChangeListaElementi.emit(this.listaElementi);
   }
 
-  cercaSocieta(): void {
+  cercaElementi(): void {
     this.societaService.ricercaSocieta(this.filtroSocieta, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
-      this.onChangeListaSocieta.emit(listaSocieta);
+      this.onChangeListaElementi.emit(listaSocieta);
     });
   }
 

@@ -29,7 +29,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <p [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaElementi.length}">
                 {{setPlaceholder(societaInput)}}
               </p>
             </div>
@@ -45,7 +45,7 @@
         </div>
         <div class="col-6 btn-find">
           <button id="bottoneCerca" class="btn"
-                  (click)="cercaSocieta()">Cerca</button>
+                  (click)="cercaElementi()">Cerca</button>
         </div>
       </div>
     </div>

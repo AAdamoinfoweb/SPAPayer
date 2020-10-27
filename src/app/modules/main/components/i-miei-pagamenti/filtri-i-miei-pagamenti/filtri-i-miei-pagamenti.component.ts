@@ -64,7 +64,6 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   selezionaLivelloTerritoriale(): void {
     // pulisci select ente
     if (this.filtroRicercaPagamenti.livelloTerritorialeId != null) {
-      this.overlayService.caricamentoEvent.emit(true);
       this.filtroRicercaPagamenti.enteId = null;
       this.listaEnti = [];
 
@@ -80,14 +79,12 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           label: ente.nome
         });
       });
-      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 
   selezionaEnte(): void {
     // pulisci select servizio
     if (this.filtroRicercaPagamenti.enteId != null) {
-      this.overlayService.caricamentoEvent.emit(true);
       this.filtroRicercaPagamenti.servizioId = null;
       this.listaServizi = [];
 
@@ -103,7 +100,6 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           label: servizio.nome
         });
       });
-      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 
@@ -146,13 +142,11 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     this.listaEnti = [];
     this.listaServizi = [];
     this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
-    this.overlayService.caricamentoEvent.emit(true);
     this.ricercaPagamenti(this.filtroRicercaPagamenti);
   }
 
   cercaPagamenti(form: NgForm): void {
     // inizia spinner
-    this.overlayService.caricamentoEvent.emit(true);
 
     Object.keys(form.value).forEach(key => {
       const value = form.value[key];
@@ -175,7 +169,6 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
       listaPagamentiFiltri.listaPagamenti = listaPagamenti;
       listaPagamentiFiltri.filtri = filtri;
       this.onChangeListaPagamenti.emit(listaPagamentiFiltri);
-      this.overlayService.caricamentoEvent.emit(false);
     })).subscribe();
   }
 

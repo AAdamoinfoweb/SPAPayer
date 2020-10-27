@@ -8,7 +8,8 @@ import * as moment from 'moment';
 import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaUtente';
 import {map} from 'rxjs/operators';
 import {Utils} from '../../../../../../utils/Utils';
-import {AmministrativoService} from "../../../../../../services/amministrativo.service";
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {OverlayService} from '../../../../../../services/overlay.service';
 
 @Component({
   selector: 'app-dati-utente',
@@ -50,10 +51,10 @@ export class DatiUtenteComponent implements OnInit {
     this.onValidaFormDatiUtenti.emit(true);
 
     if (this.codiceFiscale) {
+      this.isModificaUtente = true;
       const parametriRicerca = new ParametriRicercaUtente();
       parametriRicerca.codiceFiscale = this.codiceFiscale;
       this.ricercaUtente(parametriRicerca);
-      this.isModificaUtente = true;
     } else {
       this.codiceFiscale = null;
       this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
@@ -169,12 +170,7 @@ export class DatiUtenteComponent implements OnInit {
   }
 
   controlloCodiceFiscale($event) {
-    this.codiceFiscaleExists = this.listaCodiciFiscali.includes($event.target.value);
-    if (this.codiceFiscaleExists) {
-      this.utenteService.codiceFiscaleEvent.emit(null);
-    } else {
-      this.utenteService.codiceFiscaleEvent.emit($event.target.value);
-    }
+      this.utenteService.codiceFiscaleEvent.emit($event);
   }
 
 }

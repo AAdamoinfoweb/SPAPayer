@@ -5,6 +5,9 @@ import * as jsPDF from 'jspdf';
 import {tipoColonna} from '../enums/TipoColonna.enum';
 import {ImmaginePdf} from '../modules/main/model/tabella/ImmaginePdf';
 import {Tabella} from '../modules/main/model/tabella/Tabella';
+import {TipoModaleEnum} from '../enums/tipoModale.enum';
+import {Breadcrumb, SintesiBreadcrumb} from "../modules/main/dto/Breadcrumb";
+import {Colonna} from '../modules/main/model/tabella/Colonna';
 
 export class Utils {
 
@@ -22,16 +25,48 @@ export class Utils {
     return {path, color, tooltip, display};
   }
 
-  static esportaTabellaInFilePdf(tabella: Tabella, titoloFile: string, immagini: ImmaginePdf[]): void {
-    const headerColonne = tabella.cols.map(col => col.header);
+  static getModale(confermaFn, tipoModale: TipoModaleEnum, titolo?, messaggio?) {
+    let header;
+    let message;
+    switch (tipoModale) {
+      case TipoModaleEnum.ANNULLA:
+        header = 'Richiesta conferma';
+        message = 'Attenzione, tutte le informazioni eventualmente inserite verranno cancellate. Sicuro di proseguire?';
+        break;
+      case TipoModaleEnum.ELIMINA:
+        header = 'Richiesta conferma';
+        message = 'Sei sicuro di voler procedere con la cancellazione?';
+        break;
+      case TipoModaleEnum.CUSTOM:
+        header = titolo;
+        message = messaggio;
+        break;
+    }
+    return {
+      header,
+      message,
+      acceptButtonStyleClass: 'okButton',
+      rejectButtonStyleClass: 'undoButton',
+      acceptLabel: 'Conferma',
+      rejectLabel: 'Annulla',
+      reject: () => {
+      },
+      accept: () => {
+        confermaFn();
+      }
+    };
+  }
+
+  static esportaTabellaInFilePdf(colonne: Colonna[], righe: any[], titoloFile: string, immagini: ImmaginePdf[]): void {
+    const headerColonne = colonne.map(col => col.header);
     const righePdf = [];
-    tabella.rows.forEach(riga => {
+    righe.forEach(riga => {
       const rigaPdf = [];
       Object.keys(riga).forEach(elemento => {
-        const indiceColonna = tabella.cols.indexOf(tabella.cols.find(col => col.field === elemento));
+        const indiceColonna = colonne.indexOf(colonne.find(col => col.field === elemento));
         if (indiceColonna > -1) {
           let elementoRigaPdf;
-          switch (tabella.cols[indiceColonna].type) {
+          switch (colonne[indiceColonna].type) {
             case tipoColonna.ICONA:
               elementoRigaPdf = riga[elemento]?.display === 'inline' ? '' : null;
               break;
@@ -115,6 +150,17 @@ export class Utils {
     const momentDate = moment(date, Utils.FORMAT_DATE_CALENDAR)
     const momentOtherDate = moment(otherDate, Utils.FORMAT_DATE_CALENDAR);
     return moment(momentDate).isBefore(momentOtherDate);
+  }
+
+  static popolaListaBreadcrumb(breadcrumbs: SintesiBreadcrumb[]) {
+    const breadcrumbList = [];
+    breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
+    let counter = 1;
+    breadcrumbs.forEach(breadcrumb => {
+      breadcrumbList.push(new Breadcrumb(counter, breadcrumb.label, breadcrumb.link, null));
+      counter++;
+    });
+    return breadcrumbList;
   }
 
 }

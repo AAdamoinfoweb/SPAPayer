@@ -4,39 +4,41 @@ import {NgForm, NgModel} from '@angular/forms';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {LivelloTerritorialeService} from '../../../../../../../services/livelloTerritoriale.service';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
+import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
 
 @Component({
   selector: 'app-filtro-gestione-livelli-territoriali',
   templateUrl: './filtro-gestione-livelli-territoriali.component.html',
   styleUrls: ['../gestisci-livelli-territoriali.component.scss', './filtro-gestione-livelli-territoriali.component.scss']
 })
-export class FiltroGestioneLivelliTerritorialiComponent implements OnInit, OnChanges {
+export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneElementiComponent implements OnInit, OnChanges {
 
   @Input()
-  listaLivelliTerritoriali: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
+  listaElementi: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
   opzioniFiltroLivelliTerritoriali: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
   @Output()
-  onChangeListaLivelliTerritoriali: EventEmitter<LivelloTerritoriale[]> = new EventEmitter<LivelloTerritoriale[]>();
+  onChangeListaElementi: EventEmitter<LivelloTerritoriale[]> = new EventEmitter<LivelloTerritoriale[]>();
 
   filtroLivelliTerritoriali: number = null;
 
   constructor(private livelloTerritorialeService: LivelloTerritorialeService,
               private amministrativoService: AmministrativoService) {
+    super()
   }
 
   ngOnInit(): void {
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaLivelliTerritoriali) {
+    if (sc.listaElementi) {
       this.impostaOpzioniFiltroLivelliTerritoriali();
     }
   }
 
   impostaOpzioniFiltroLivelliTerritoriali(): void {
     this.opzioniFiltroLivelliTerritoriali = [];
-    this.listaLivelliTerritoriali.forEach(livelloTerritoriale => {
+    this.listaElementi.forEach(livelloTerritoriale => {
       this.opzioniFiltroLivelliTerritoriali.push({
         value: livelloTerritoriale.id,
         label: livelloTerritoriale.nome
@@ -59,12 +61,12 @@ export class FiltroGestioneLivelliTerritorialiComponent implements OnInit, OnCha
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.filtroLivelliTerritoriali = null;
-    this.onChangeListaLivelliTerritoriali.emit(this.listaLivelliTerritoriali);
+    this.onChangeListaElementi.emit(this.listaElementi);
   }
 
-  cercaLivelliTerritoriali(): void {
+  cercaElementi(): void {
     this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.filtroLivelliTerritoriali, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
-      this.onChangeListaLivelliTerritoriali.emit(listaLivelliTerritoriali);
+      this.onChangeListaElementi.emit(listaLivelliTerritoriali);
     });
   }
 

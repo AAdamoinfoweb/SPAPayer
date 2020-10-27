@@ -18,8 +18,8 @@
 
   <!-- Sottosezione Filtri -->
   <app-filtro-gestione-livelli-territoriali
-    [listaLivelliTerritoriali]="listaLivelliTerritoriali"
-    (onChangeListaLivelliTerritoriali)="onChangeListaLivelliTerritoriali($event)">
+    [listaElementi]="listaLivelliTerritoriali"
+    (onChangeListaElementi)="onChangeListaElementi($event)">
   </app-filtro-gestione-livelli-territoriali>
 
   <!-- Sottosezione Lista -->
@@ -45,7 +45,7 @@
                      [cols]="tempTableData.cols"
                      [rows]="tempTableData.rows"
                      [tipoTabella]="tempTableData.tipoTabella"
-                     [textLeft]="getTotaliPerRecord()"
+                     [textLeft]="getNumeroRecord()"
                      (onSelection)="selezionaRigaTabella($event)"
                      [selectedRows]="true"
                      (onClickRow)="mostraDettaglioLivelloTerritoriale($event)"
@@ -57,4 +57,11 @@
   </div>
 </div>
 
+<!-- Modale -->
+<p-confirmDialog #cb icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
+    <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
+  </p-footer>
+</p-confirmDialog>
 
