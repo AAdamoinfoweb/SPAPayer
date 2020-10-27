@@ -7,6 +7,7 @@ import {AmministrativoParentComponent} from './amministrativo-parent.component';
 import {Tabella} from '../../model/tabella/Tabella';
 import {Colonna} from '../../model/tabella/Colonna';
 import {ToolEnum} from '../../../../enums/Tool.enum';
+import {ImmaginePdf} from '../../model/tabella/ImmaginePdf';
 
 
 export abstract class GestisciElementoComponent extends AmministrativoParentComponent {
@@ -45,12 +46,6 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     this.router.navigate([link, id]);
   }
 
-  // TODO generalizzare esportaTabellaInFilePdf
-
-  // TODO generalizzare o astrarre selezionaElemento
-
-  // TODO generalizzare o astrarre onChangeListaElementi
-
   // TODO generalizzare getTotaliRecord
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {
@@ -61,9 +56,28 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     const fogli = {};
     fogli[nomeFile] = null;
     const workbook = {Sheets: fogli, SheetNames: []};
-    Utils.creaFileExcel(righe, headerColonne, nomeFile, [nomeFile], workbook, 'Lista ' + nomeFile);
+    Utils.creaFileExcel(righe, headerColonne, nomeFile, [nomeFile], workbook, nomeFile);
   }
 
   abstract getColonneFileExcel(colonne: Colonna[]): Colonna[];
   abstract getRigheFileExcel(righe: any[]);
+
+  esportaTabellaInFilePdf(tabella: Tabella, nomeFile: string): void {
+    const copiaTabella = JSON.parse(JSON.stringify(tabella));
+    const colonne = this.getColonneFilePdf(copiaTabella.cols);
+    const righe = this.getRigheFilePdf(copiaTabella.rows);
+    let immagini = this.getImmaginiFilePdf();
+    if (!immagini) {
+      immagini = [];
+    }
+    Utils.esportaTabellaInFilePdf(colonne, righe, nomeFile, immagini);
+  }
+
+  abstract getColonneFilePdf(colonne: Colonna[]): Colonna[];
+  abstract getRigheFilePdf(righe: any[]);
+  abstract getImmaginiFilePdf(): ImmaginePdf[];
+
+  abstract selezionaRigaTabella(righeSelezionate: any[]): void;
+
+  abstract onChangeListaElementi(listaElementi: any[]): void;
 }

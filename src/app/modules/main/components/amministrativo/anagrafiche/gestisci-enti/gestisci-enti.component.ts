@@ -17,6 +17,7 @@ import {Utils} from '../../../../../../utils/Utils';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {Ente} from "../../../../model/Ente";
+import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -133,33 +134,44 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
         this.eliminaEntiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf();
+        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Enti');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Enti');
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Enti');
         break;
     }
   }
 
-  onChangeListaSocieta(listaSocietaFiltrate: Societa[]): void {
+  onChangeListaElementi(listaSocietaFiltrate: Societa[]): void {
     this.tableData.rows.length = 0;
     listaSocietaFiltrate.forEach(societa => {
 //      this.tableData.rows.push(this.creaRigaTabella(societa));
     });
   }
 
-  private esportaTabellaInFilePdf() {
+  getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    // TODO implementa get colonne pdf
+    return [];
+  }
 
+  getRigheFilePdf(righe: any[]) {
+    // TODO implementa get righe pdf
+    return [];
+  }
+
+  getImmaginiFilePdf(): ImmaginePdf[] {
+    // TODO implementa get immagini pdf
+    return [];
+  }
+
+  getColonneFileExcel(colonne: Colonna[]) {
+    // TODO implementa get colonne excel
+    return [];
   }
 
   getRigheFileExcel(righe: any[]) {
     // TODO implementa get righe excel
-    return null;
-  }
-
-  getColonneFileExcel(colonne: Colonna[]) {
-    // TODO implementa get header excel
-    return null;
+    return [];
   }
 
   private eliminaEntiSelezionati() {
@@ -170,5 +182,9 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
         TipoModaleEnum.ELIMINA
       )
     );
+  }
+
+  selezionaRigaTabella(righeSelezionate: any[]) {
+    // TODO seleziona riga tabella
   }
 }

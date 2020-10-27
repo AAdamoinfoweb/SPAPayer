@@ -18,6 +18,7 @@ import {GestisciElementoComponent} from "../../gestisci-elemento.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
+import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 
 @Component({
   selector: 'app-gestione-livelli-territoriali',
@@ -140,10 +141,10 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
         this.eliminaLivelliTerritorialiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf();
+        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Livelli Territoriali');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Livelli Territoriali');
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Livelli Territoriali');
         break;
     }
   }
@@ -167,16 +168,19 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     );
   }
 
-  esportaTabellaInFilePdf(): void {
-    const table = JSON.parse(JSON.stringify(this.tempTableData));
+  getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    return colonne.filter(col => col.field !== 'entiAbilitati');
+  }
 
-    // Rimuovo la colonna enti abilitati dalla stampa del pdf
-    table.cols = table.cols.filter (col => col.field != 'entiAbilitati');
-    table.rows.forEach(riga => {
-      delete riga['entiAbilitati'];
+  getRigheFilePdf(righe: any[]) {
+    return righe.map(riga => {
+      delete riga.entiAbilitati;
+      return riga;
     });
+  }
 
-    Utils.esportaTabellaInFilePdf(table, 'Lista Livelli Territoriali', []);
+  getImmaginiFilePdf(): ImmaginePdf[] {
+    return [];
   }
 
   getRigheFileExcel(righe: any[]) {
@@ -192,7 +196,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     return colonne.filter(col => col.field != 'entiAbilitati');
   }
 
-  onChangeListaLivelliTerritoriali(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {
+  onChangeListaElementi(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {
     this.tableData.rows.length = 0;
     listaLivelliTerritorialiFiltrati.forEach(livelloTerritoriale => {
       this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));

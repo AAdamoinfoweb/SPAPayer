@@ -7,6 +7,7 @@ import {ImmaginePdf} from '../modules/main/model/tabella/ImmaginePdf';
 import {Tabella} from '../modules/main/model/tabella/Tabella';
 import {TipoModaleEnum} from '../enums/tipoModale.enum';
 import {Breadcrumb, SintesiBreadcrumb} from "../modules/main/dto/Breadcrumb";
+import {Colonna} from '../modules/main/model/tabella/Colonna';
 
 export class Utils {
 
@@ -56,16 +57,16 @@ export class Utils {
     };
   }
 
-  static esportaTabellaInFilePdf(tabella: Tabella, titoloFile: string, immagini: ImmaginePdf[]): void {
-    const headerColonne = tabella.cols.map(col => col.header);
+  static esportaTabellaInFilePdf(colonne: Colonna[], righe: any[], titoloFile: string, immagini: ImmaginePdf[]): void {
+    const headerColonne = colonne.map(col => col.header);
     const righePdf = [];
-    tabella.rows.forEach(riga => {
+    righe.forEach(riga => {
       const rigaPdf = [];
       Object.keys(riga).forEach(elemento => {
-        const indiceColonna = tabella.cols.indexOf(tabella.cols.find(col => col.field === elemento));
+        const indiceColonna = colonne.indexOf(colonne.find(col => col.field === elemento));
         if (indiceColonna > -1) {
           let elementoRigaPdf;
-          switch (tabella.cols[indiceColonna].type) {
+          switch (colonne[indiceColonna].type) {
             case tipoColonna.ICONA:
               elementoRigaPdf = riga[elemento]?.display === 'inline' ? '' : null;
               break;
