@@ -183,4 +183,8 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
       )
     );
   }
+
+  selezionaRigaTabella(righeSelezionate: any[]) {
+    // TODO seleziona riga tabella
+  }
 }

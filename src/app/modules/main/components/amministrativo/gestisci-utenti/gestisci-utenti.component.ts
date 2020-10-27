@@ -41,6 +41,8 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     {type: ToolEnum.EXPORT_XLS}
   ];
 
+  indiceIconaModifica = 1;
+
   tabs = [
     {value: TipoUtenteEnum.TUTTI},
     {value: TipoUtenteEnum.ATTIVI},
@@ -243,10 +245,10 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   selezionaRigaTabella(rowsChecked): void {
     if (rowsChecked.length === 1) {
       this.codiceFiscaleUtenteDaModificare = rowsChecked[0].id.value;
-      this.toolbarIcons[1].disabled = false;
+      this.toolbarIcons[this.indiceIconaModifica].disabled = false;
     } else {
       this.codiceFiscaleUtenteDaModificare = null;
-      this.toolbarIcons[1].disabled = true;
+      this.toolbarIcons[this.indiceIconaModifica].disabled = true;
     }
   }
 
