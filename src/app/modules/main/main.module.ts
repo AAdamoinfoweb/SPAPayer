@@ -26,6 +26,7 @@ import { FormLivelloTerritorialeComponent } from './components/amministrativo/an
 import { FiltroGestioneEntiComponent } from './components/amministrativo/anagrafiche/gestisci-enti/filtro-gestione-enti/filtro-gestione-enti.component';
 import {DatiBannerComponent} from './components/amministrativo/gestisci-banner/dati-banner/dati-banner.component';
 import {FormBannerComponent} from './components/amministrativo/gestisci-banner/form-banner/form-banner.component';
+import {InputSwitchModule} from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {FormBannerComponent} from './components/amministrativo/gestisci-banner/f
     NgbDropdownModule,
     NgbDatepickerModule,
     ConfirmDialogModule,
-    DpDatePickerModule
+    DpDatePickerModule,
+    InputSwitchModule
   ],
   exports: [
     FooterComponent,

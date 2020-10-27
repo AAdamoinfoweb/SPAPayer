@@ -140,7 +140,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.aggiungiElemento('/aggiungiBanner');
         break;
       case ToolEnum.UPDATE:
-        // TODO this.modificaElementoSelezionato('/modificaBanner', this.listaBannerIdSelezionati[0]);
+        this.modificaElementoSelezionato('/modificaBanner', this.listaBannerIdSelezionati[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaBannerSelezionati();
@@ -222,7 +222,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   mostraDettaglioBanner(rigaCliccata: any) {
-    // TODO this.mostraDettaglioElemento('/dettaglioBanner', rigaCliccata.id.value);
+    this.mostraDettaglioElemento('/dettaglioBanner', rigaCliccata.id.value);
   }
 
 }

@@ -40,8 +40,6 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     this.router.navigate([link, id]);
   }
 
-  // TODO generalizzare o astrarre eliminaListaIdElementiSelezionati
-
   modificaElementoSelezionato(link: string, id: number | string) {
     this.router.navigate([link, id]);
   }

@@ -16,3 +16,23 @@
 .text-invalid {
   color: #FF0000;
 }
+
+:host ::ng-deep .p-inputswitch .p-inputswitch-slider {
+  background: #FF0000;
+}
+
+:host ::ng-deep .p-inputswitch:not(.p-disabled):hover .p-inputswitch-slider {
+  background: #FF0000;
+}
+
+:host ::ng-deep .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+  background: #008758;
+}
+
+:host ::ng-deep .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
+  background: #008758;
+}
+
+:host ::ng-deep .p-inputswitch.p-focus .p-inputswitch-slider {
+  box-shadow: none;
+}
