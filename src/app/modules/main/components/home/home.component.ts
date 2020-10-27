@@ -64,8 +64,9 @@ export class HomeComponent implements OnInit {
           this.router.navigateByUrl("/nuovoPagamento");
         });
       }
-      if (localStorage.getItem("parziale") != null)
+      if (localStorage.getItem("parziale") != null) {
         this.router.navigateByUrl("/nuovoPagamento");
+      }
       localStorage.removeItem('loginDaAnonimo');
     }
 

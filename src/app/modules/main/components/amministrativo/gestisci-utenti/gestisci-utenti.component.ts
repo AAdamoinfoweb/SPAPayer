@@ -116,8 +116,9 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   ngAfterViewInit(): void {
-    if (!this.waiting)
+    if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+    }
   }
 
   creaRigaTabella(utente: RicercaUtente): object {

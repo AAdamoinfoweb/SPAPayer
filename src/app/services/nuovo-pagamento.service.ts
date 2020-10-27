@@ -220,16 +220,18 @@ export class NuovoPagamentoService {
     let observable: Observable<any> = this.http.post(environment.bffBaseUrl + this.confermaPagamentoUrl + "?email=" + email,
       JSON.stringify(list), {withCredentials: true})
       .pipe(map((body: any) => {
-          if (body.url)
+          if (body.url) {
             return body.url;
-          else
+          } else {
             return body;
+          }
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
             return of(null);
-          } else
-             return of(null);
+          } else {
+            return of(null);
+          }
         }));
     return observable;
   }
@@ -245,8 +247,9 @@ export class NuovoPagamentoService {
         catchError((err, caught) => {
           if (err.status == 401) {
             return of("");
-          } else
-             return of(null);
+          } else {
+            return of(null);
+          }
         }));
   }
 
@@ -273,8 +276,9 @@ export class NuovoPagamentoService {
       }), catchError((err, caught) => {
         if (err.status == 401) {
           return of(null);
-        } else
-           return of(null);
+        } else {
+          return of(null);
+        }
       }));
   }
 }

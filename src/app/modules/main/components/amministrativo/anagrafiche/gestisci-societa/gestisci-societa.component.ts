@@ -100,8 +100,9 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   }
 
   ngAfterViewInit(): void {
-    if (!this.waiting)
+    if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+    }
   }
 
   popolaListaElementi() {
