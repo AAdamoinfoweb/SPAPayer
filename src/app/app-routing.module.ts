@@ -20,6 +20,7 @@ import {GestisciEntiComponent} from "./modules/main/components/amministrativo/an
 import {GestisciLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
 import {FormLivelloTerritorialeComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/form-livello-territoriale/form-livello-territoriale.component';
 import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
+import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -54,7 +55,8 @@ const routes: Routes = [
   {path: 'aggiungiLivelloTerritoriale', component: FormLivelloTerritorialeComponent},
   {path: 'modificaLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
   {path: 'dettaglioLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
-  {path: 'gestisciBanner', component: GestisciBannerComponent}
+  {path: 'gestisciBanner', component: GestisciBannerComponent},
+  {path: 'monitoraAccessi', component: MonitoraAccessiComponent}
 ];
 
 @NgModule({
