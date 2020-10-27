@@ -203,7 +203,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     });
   }
 
-  getTotaliPerRecord(): string {
+  getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length + (this.tableData.rows.length === 1 ? ' livello territoriale' : ' livelli territoriali');
   }
 

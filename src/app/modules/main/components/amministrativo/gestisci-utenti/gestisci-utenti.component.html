@@ -48,7 +48,7 @@
                      [cols]="tempTableData.cols"
                      [rows]="tempTableData.rows"
                      [tipoTabella]="tempTableData.tipoTabella"
-                     [textLeft]="getTotaliPerRecord()"
+                     [textLeft]="getNumeroRecord()"
                      (onSelection)="selezionaRigaTabella($event)"
                      [selectedRows]="true"
                      (onClickRow)="dettaglioUtente($event)">

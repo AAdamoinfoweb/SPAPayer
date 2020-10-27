@@ -207,7 +207,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     });
   }
 
-  getTotaliPerRecord(): string {
+  getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length;
   }
 
