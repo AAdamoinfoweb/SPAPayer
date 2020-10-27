@@ -60,6 +60,4 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract getHeaderFileExcel(colonne: Colonna[]);
   abstract getRigheFileExcel(righe: any[]);
-
-  abstract prova(): number;
 }
