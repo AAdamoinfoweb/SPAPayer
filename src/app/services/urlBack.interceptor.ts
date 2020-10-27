@@ -7,6 +7,7 @@ import {Banner} from "../modules/main/model/banner/Banner";
 import {getBannerType, LivelloBanner} from "../enums/livelloBanner.enum";
 import {BannerService} from "./banner.service";
 import {SpinnerOverlayService} from "./spinner-overlay.service";
+import {UrlEscluseService} from "./url-escluse.service";
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,16 @@ export class UrlBackInterceptor {
   urlRitorno: string
 
   constructor(private route: Router, private bannerService: BannerService,
+              private urlEscluseSpinnerService: UrlEscluseService,
               private inj: Injector) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const spinnerOverlayService = this.inj.get(SpinnerOverlayService);
-    const subscription = spinnerOverlayService.spinner$.subscribe();
+    let subscription;
+    if (this.urlEscluseSpinnerService.urls.indexOf(request.url) !== -1) {
+      subscription = spinnerOverlayService.spinner$.subscribe();
+    }
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {
         return event;
@@ -42,8 +47,10 @@ export class UrlBackInterceptor {
         }
         return throwError(error);
       }), finalize(() => {
-        console.log(request.url)
-        subscription.unsubscribe();
+        console.log(request.url);
+        if (this.urlEscluseSpinnerService.urls.indexOf(request.url) !== -1) {
+          subscription.unsubscribe();
+        }
       }));
   }
 
