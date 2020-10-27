@@ -208,7 +208,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     });
   }
 
-  getTotaliPerRecord(): string {
+  getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length + ' società';
   }
 

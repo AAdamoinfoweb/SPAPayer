@@ -236,7 +236,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     this.onChangeTab(this.nomeTabCorrente);
   }
 
-  getTotaliPerRecord(): string {
+  getNumeroRecord(): string {
     const numeroUtentiAttivi = this.tableData.rows.filter(row => row.iconaUtente.display === 'inline').length;
     const numeroUtentiDisabilitati = this.tableData.rows.filter(row => row.iconaUtente.display === 'none').length;
     return 'Totale: ' + this.tableData.rows.length + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;

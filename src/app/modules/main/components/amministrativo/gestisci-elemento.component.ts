@@ -46,8 +46,6 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     this.router.navigate([link, id]);
   }
 
-  // TODO generalizzare getTotaliRecord
-
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {
     const copiaTabella = JSON.parse(JSON.stringify(tabella));
     const headerColonne = this.getColonneFileExcel(copiaTabella.cols).map(col => col.header);
@@ -80,4 +78,6 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract selezionaRigaTabella(righeSelezionate: any[]): void;
 
   abstract onChangeListaElementi(listaElementi: any[]): void;
+
+  abstract getNumeroRecord(): string;
 }
