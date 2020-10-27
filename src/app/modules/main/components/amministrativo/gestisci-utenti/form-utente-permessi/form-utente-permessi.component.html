@@ -30,14 +30,14 @@
 <div class="row">
   <!-- Bottone sx -->
   <div class="col-2">
-    <button id="buttonAnnulla" class="btn btn-secondary" (click)="onClickAnnulla()">{{isDettaglio ? 'Indietro' : 'Annulla'}}</button>
+    <button id="buttonAnnulla" class="btn btn-secondary" (click)="onClickAnnullaButton()">{{isDettaglio ? 'Indietro' : 'Annulla'}}</button>
   </div>
   <!-- Bottoni dx -->
   <div class="col-10 text-right">
     <button *ngIf="!isDettaglio" id="buttonAggiungiPermessi" class="btn btn-secondary" [disabled]="disabilitaBottone()"
 
             (click)="aggiungiSezionePermesso()">Aggiungi permessi</button>
-    <button *ngIf="!isDettaglio" id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="inserimentoDatiUtentePermessi()"
+    <button *ngIf="!isDettaglio" id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="onClickSalva()"
             >
       Salva</button>
   </div>

@@ -1,8 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {AmministrativoParentComponent} from '../amministrativo-parent.component';
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
-import {Breadcrumb} from '../../../dto/Breadcrumb';
-import {OverlayService} from '../../../../../services/overlay.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
@@ -15,9 +12,8 @@ import * as moment from 'moment';
 import {Utils} from '../../../../../utils/Utils';
 import {BannerService} from '../../../../../services/banner.service';
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
-import * as _ from 'lodash';
 import {MenuService} from '../../../../../services/menu.service';
-import {GestisciElementoComponent} from "../gestisci-elemento.component";
+import {GestisciElementoComponent} from '../gestisci-elemento.component';
 import {ConfirmationService} from 'primeng/api';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
 import {Colonna} from '../../../model/tabella/Colonna';
@@ -139,7 +135,6 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   eseguiAzioni(azioneTool) {
-    const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     switch (azioneTool) {
       case ToolEnum.INSERT:
         this.aggiungiElemento('/aggiungiBanner');
@@ -151,10 +146,10 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.eliminaBannerSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(dataTable, 'Lista Banner');
+        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Banner');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(dataTable, 'Lista Banner');
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Banner');
         break;
     }
   }
@@ -190,14 +185,23 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     iconaBannerAttivo.larghezza = 9;
     iconaBannerAttivo.altezza = 17;
     return [iconaBannerAttivo];
-  };
+  }
 
   getColonneFileExcel(colonne: Colonna[]) {
-    return colonne;
+    return colonne.filter(col => col.field !== 'id');
   }
 
   getRigheFileExcel(righe: any[]) {
-    return righe;
+    return righe.map(riga => {
+      const rigaFormattata = riga;
+      delete rigaFormattata.id;
+      rigaFormattata.iconaBanner = riga.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
+      rigaFormattata.titolo = riga.titolo.value;
+      rigaFormattata.testo = riga.testo.value;
+      rigaFormattata.inizio = riga.inizio.value;
+      rigaFormattata.fine = riga.fine.value;
+      return rigaFormattata;
+    });
   }
 
   onChangeListaElementi(listaBannerFiltrati: Banner[]): void {
