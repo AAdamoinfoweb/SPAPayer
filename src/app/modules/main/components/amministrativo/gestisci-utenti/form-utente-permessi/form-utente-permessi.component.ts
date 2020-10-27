@@ -33,10 +33,10 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
-  templateUrl: './aggiungi-utente-permessi.component.html',
-  styleUrls: ['../gestisci-utenti.component.scss', './aggiungi-utente-permessi.component.scss']
+  templateUrl: './form-utente-permessi.component.html',
+  styleUrls: ['../gestisci-utenti.component.scss', './form-utente-permessi.component.scss']
 })
-export class AggiungiUtentePermessiComponent extends InserimentoModificaDettaglioParentComponent implements OnInit, AfterViewInit {
+export class FormUtentePermessiComponent extends InserimentoModificaDettaglioParentComponent implements OnInit, AfterViewInit {
 
   breadcrumbList = [];
 

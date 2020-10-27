@@ -4,25 +4,25 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
-import {Societa} from '../../../../../model/Societa';
-import {SocietaService} from '../../../../../../../services/societa.service';
+import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
+import {LivelloTerritorialeService} from '../../../../../../../services/livelloTerritoriale.service';
 import {InserimentoModificaDettaglioParentComponent} from "../../../inserimento-modifica-dettaglio-parent.component";
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
 
 @Component({
-  selector: 'app-dettaglio-societa',
-  templateUrl: './dettaglio-societa.component.html',
-  styleUrls: ['./dettaglio-societa.component.scss']
+  selector: 'app-dettaglio-livello-territoriale',
+  templateUrl: './form-livello-territoriale.component.html',
+  styleUrls: ['./form-livello-territoriale.component.scss']
 })
-export class DettaglioSocietaComponent extends InserimentoModificaDettaglioParentComponent implements OnInit {
+export class FormLivelloTerritorialeComponent extends InserimentoModificaDettaglioParentComponent implements OnInit {
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
   titoloPagina: string;
   tooltip: string;
-  societa: Societa = new Societa();
+  livelloTerritoriale: LivelloTerritoriale = new LivelloTerritoriale();
   isFormValido: boolean;
 
   breadcrumbList = [];
@@ -32,44 +32,43 @@ export class DettaglioSocietaComponent extends InserimentoModificaDettaglioParen
     private router: Router,
     private amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
-    private societaService: SocietaService,
+    private livelloTerritorialeService: LivelloTerritorialeService,
     private confirmationService: ConfirmationService
-  ) { super();}
+  ) { super(); }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
-      this.inizializzaBreadcrumb();
-      this.titoloPagina = this.getTestoFunzione() + ' Società';
-      this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di una società';
+      this.inizializzaBreadcrumbs();
+      this.titoloPagina = this.getTestoFunzione() + ' Livello Territoriale';
+      this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di un livello territoriale';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
-        this.societa.id = parseInt(this.activatedRoute.snapshot.paramMap.get('societaid'));
-        this.societaService.ricercaSocieta(this.societa.id, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
-          this.societa = listaSocieta[0];
-        })
-      } else {
+        this.livelloTerritoriale.id = parseInt(this.activatedRoute.snapshot.paramMap.get('livelloterritorialeid'));
+        this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.livelloTerritoriale.id, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
+          this.livelloTerritoriale = listaLivelliTerritoriali[0];
+        });
       }
     });
   }
 
-  inizializzaBreadcrumb(): void {
-    const breadcrumbs: SintesiBreadcrumb[] = []
+  inizializzaBreadcrumbs() {
+    const breadcrumbs: SintesiBreadcrumb[] = [];
     breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
-    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Società', '/societa/' + this.amministrativoService.idFunzione));
-    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione() + ' Società', null));
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Livello Territoriale', 'livelliTerritoriali/' + this.amministrativoService.idFunzione));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione() + ' Livello Territoriale', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
-    }
+  }
 
   controllaTipoFunzione() {
     const url = this.activatedRoute.snapshot.url[0].path;
     switch (url) {
-      case 'dettaglioSocieta':
+      case 'dettaglioLivelloTerritoriale':
         this.funzione = FunzioneGestioneEnum.DETTAGLIO;
         break;
-      case 'aggiungiSocieta':
+      case 'aggiungiLivelloTerritoriale':
         this.funzione = FunzioneGestioneEnum.AGGIUNGI;
         break;
-      case 'modificaSocieta':
+      case 'modificaLivelloTerritoriale':
         this.funzione = FunzioneGestioneEnum.MODIFICA;
         break;
     }
@@ -106,18 +105,18 @@ export class DettaglioSocietaComponent extends InserimentoModificaDettaglioParen
   }
 
   tornaIndietro() {
-    this.router.navigateByUrl('/societa?funzione=' + btoa(this.amministrativoService.idFunzione));
+    this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 
   onClickSalva() {
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        this.societaService.aggiuntaSocieta(this.societa, this.amministrativoService.idFunzione).subscribe((societa) => {
-          this.societa = new Societa();
+        this.livelloTerritorialeService.aggiuntaLivelloTerritoriale(this.livelloTerritoriale, this.amministrativoService.idFunzione).subscribe((livelloTerritoriale) => {
+          this.livelloTerritoriale = new LivelloTerritoriale();
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.societaService.modificaSocieta(this.societa, this.amministrativoService.idFunzione).subscribe(() => {
+        this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.amministrativoService.idFunzione).subscribe(() => {
         });
         break;
     }

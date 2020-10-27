@@ -13,12 +13,12 @@ import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagament
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
 import {WaitingL1Component} from "./modules/main/components/waiting-l1/waiting-l1.component";
 import {GestisciUtentiComponent} from './modules/main/components/amministrativo/gestisci-utenti/gestisci-utenti.component';
-import {AggiungiUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
+import {FormUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/form-utente-permessi/form-utente-permessi.component';
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
-import {DettaglioSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/dettaglio-societa/dettaglio-societa.component';
+import {FormSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/form-societa/form-societa.component';
 import {GestisciEntiComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component";
 import {GestisciLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
-import {DettaglioLivelloTerritorialeComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dettaglio-livello-territoriale/dettaglio-livello-territoriale.component';
+import {FormLivelloTerritorialeComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/form-livello-territoriale/form-livello-territoriale.component';
 import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
 
 const routes: Routes = [
@@ -42,18 +42,18 @@ const routes: Routes = [
   {path: 'nuovoPagamento', component: NuovoPagamentoComponent},
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
   {path: 'gestioneUtenti', component: GestisciUtentiComponent},
-  {path: 'aggiungiUtentePermessi', component: AggiungiUtentePermessiComponent},
-  {path: 'modificaUtentePermessi/:userid', component: AggiungiUtentePermessiComponent},
-  {path: 'dettaglioUtentePermessi/:userid', component: AggiungiUtentePermessiComponent},
+  {path: 'aggiungiUtentePermessi', component: FormUtentePermessiComponent},
+  {path: 'modificaUtentePermessi/:userid', component: FormUtentePermessiComponent},
+  {path: 'dettaglioUtentePermessi/:userid', component: FormUtentePermessiComponent},
   {path: 'societa', component: GestisciSocietaComponent},
   {path: 'enti', component: GestisciEntiComponent},
-  {path: 'aggiungiSocieta', component: DettaglioSocietaComponent},
-  {path: 'modificaSocieta/:societaid', component: DettaglioSocietaComponent},
-  {path: 'dettaglioSocieta/:societaid', component: DettaglioSocietaComponent},
+  {path: 'aggiungiSocieta', component: FormSocietaComponent},
+  {path: 'modificaSocieta/:societaid', component: FormSocietaComponent},
+  {path: 'dettaglioSocieta/:societaid', component: FormSocietaComponent},
   {path: 'livelliTerritoriali', component: GestisciLivelliTerritorialiComponent},
-  {path: 'aggiungiLivelloTerritoriale', component: DettaglioLivelloTerritorialeComponent},
-  {path: 'modificaLivelloTerritoriale/:livelloterritorialeid', component: DettaglioLivelloTerritorialeComponent},
-  {path: 'dettaglioLivelloTerritoriale/:livelloterritorialeid', component: DettaglioLivelloTerritorialeComponent},
+  {path: 'aggiungiLivelloTerritoriale', component: FormLivelloTerritorialeComponent},
+  {path: 'modificaLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
+  {path: 'dettaglioLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
   {path: 'gestisciBanner', component: GestisciBannerComponent}
 ];
 

@@ -43,7 +43,7 @@ import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
 import {IntegerNumberDirective} from './utils/IntegerNumberDirective';
 import {AutoCompleteModule} from 'primeng/autocomplete';
-import {AggiungiUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/aggiungi-utente-permessi/aggiungi-utente-permessi.component';
+import {FormUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/form-utente-permessi/form-utente-permessi.component';
 import {DatiUtenteComponent} from './modules/main/components/amministrativo/gestisci-utenti/dati-utente/dati-utente.component';
 import {DatiPermessoComponent} from './modules/main/components/amministrativo/gestisci-utenti/dati-permesso/dati-permesso.component';
 import {DayInputDirective} from './utils/DayInputDirective';
@@ -68,7 +68,7 @@ import {OverlayModule} from "@angular/cdk/overlay";
 @NgModule({
   declarations: [
     AppComponent,
-    AggiungiUtentePermessiComponent,
+    FormUtentePermessiComponent,
     HomeComponent,
     SidebarComponent,
     LoginBarComponent,

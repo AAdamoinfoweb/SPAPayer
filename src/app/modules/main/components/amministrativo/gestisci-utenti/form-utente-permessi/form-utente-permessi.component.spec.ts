@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AggiungiUtentePermessiComponent } from './aggiungi-utente-permessi.component';
+import { FormUtentePermessiComponent } from './form-utente-permessi.component';
 
 describe('AggiungiUtentePermessiComponent', () => {
-  let component: AggiungiUtentePermessiComponent;
-  let fixture: ComponentFixture<AggiungiUtentePermessiComponent>;
+  let component: FormUtentePermessiComponent;
+  let fixture: ComponentFixture<FormUtentePermessiComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AggiungiUtentePermessiComponent ]
+      declarations: [ FormUtentePermessiComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AggiungiUtentePermessiComponent);
+    fixture = TestBed.createComponent(FormUtentePermessiComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
