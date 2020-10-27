@@ -10,13 +10,14 @@ import {BottoneEnum} from '../../../../../../enums/bottone.enum';
 import {map} from 'rxjs/operators';
 import {BannerService} from '../../../../../../services/banner.service';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
+import {FiltroGestioneElementiComponent} from "../../filtro-gestione-elementi.component";
 
 @Component({
   selector: 'app-filtro-gestione-banner',
   templateUrl: './filtro-gestione-banner.component.html',
   styleUrls: ['../gestisci-banner.component.scss', './filtro-gestione-banner.component.scss']
 })
-export class FiltroGestioneBannerComponent implements OnInit {
+export class FiltroGestioneBannerComponent extends FiltroGestioneElementiComponent implements OnInit {
 
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = '01/01/1990';
@@ -31,7 +32,9 @@ export class FiltroGestioneBannerComponent implements OnInit {
   @Output()
   onChangeListaBanner: EventEmitter<Banner[]> = new EventEmitter<Banner[]>();
 
-  constructor(private bannerService: BannerService, private amministrativoService: AmministrativoService) { }
+  constructor(private bannerService: BannerService, private amministrativoService: AmministrativoService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.filtroGestioneBannerApplicato = new ParametriRicercaBanner();
@@ -95,11 +98,10 @@ export class FiltroGestioneBannerComponent implements OnInit {
     this.filtroGestioneBannerApplicato = new ParametriRicercaBanner();
   }
 
-  cercaBanner(filtroGestioneBannerForm: NgForm): void {
+  cercaElementi(): void {
     const filtro = {...this.filtroGestioneBannerApplicato};
 
-    Object.keys(filtroGestioneBannerForm.value).forEach(key => {
-      const value = filtroGestioneBannerForm.value[key];
+    for (const [key, value] of Object.entries(this.filtroGestioneBannerApplicato)) {
       if (value !== undefined && value) {
         if (key === 'inizio' || key === 'fine') {
           filtro[key] = moment(value, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
@@ -115,7 +117,7 @@ export class FiltroGestioneBannerComponent implements OnInit {
       } else {
         filtro[key] = null;
       }
-    });
+    }
 
     this.bannerService.ricercaBanner(filtro, this.amministrativoService.idFunzione).pipe(map(listaBanner => {
       this.onChangeListaBanner.emit(listaBanner);
