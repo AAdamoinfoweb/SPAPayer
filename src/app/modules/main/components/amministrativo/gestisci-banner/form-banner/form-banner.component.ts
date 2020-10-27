@@ -58,8 +58,8 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
 
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    this.breadcrumbList.push(new SintesiBreadcrumb('Gestisci Banner', this.ritornaAGestisciBanner()));
-    this.breadcrumbList.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Banner', null));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Banner', this.ritornaAGestisciBanner()));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Banner', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
 
@@ -96,6 +96,7 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
       : null;
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
+        datiBanner.attivo = true;
         this.bannerService.inserimentoBanner(datiBanner, this.amministrativoService.idFunzione).subscribe((banner) => {
           this.datiBanner = new Banner();
           this.isFormValido = false;
