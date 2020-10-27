@@ -151,10 +151,10 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.eliminaBannerSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(dataTable);
+        this.esportaTabellaInFilePdf(dataTable, 'Lista Banner');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(dataTable, 'Banner');
+        this.esportaTabellaInFileExcel(dataTable, 'Lista Banner');
         break;
     }
   }
@@ -173,7 +173,15 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     );
   }
 
-  esportaTabellaInFilePdf(dataTable: any): void {
+  getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    return colonne;
+  }
+
+  getRigheFilePdf(righe: any[]) {
+    return righe;
+  }
+
+  getImmaginiFilePdf(): ImmaginePdf[] {
     const iconaBannerAttivo = new ImmaginePdf();
     iconaBannerAttivo.indiceColonna = 0;
     iconaBannerAttivo.srcIcona = 'assets/img/active-banner.png';
@@ -181,17 +189,15 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     iconaBannerAttivo.posizioneY = 2;
     iconaBannerAttivo.larghezza = 9;
     iconaBannerAttivo.altezza = 17;
-    Utils.esportaTabellaInFilePdf(dataTable, 'Lista Banner', [iconaBannerAttivo]);
+    return [iconaBannerAttivo];
+  };
+
+  getColonneFileExcel(colonne: Colonna[]) {
+    return colonne;
   }
 
   getRigheFileExcel(righe: any[]) {
-    // TODO implementa get righe excel
-    return null;
-  }
-
-  getColonneFileExcel(colonne: Colonna[]) {
-    // TODO implementa get header excel
-    return null;
+    return righe;
   }
 
   onChangeListaBanner(listaBannerFiltrati: Banner[]): void {

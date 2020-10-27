@@ -18,6 +18,7 @@ import {GestisciElementoComponent} from "../../gestisci-elemento.component";
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
+import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -144,10 +145,10 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
         this.eliminaSocietaSelezionate();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf();
+        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Societa');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Societa');
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Societa');
         break;
     }
   }
@@ -170,20 +171,23 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     );
   }
 
-  esportaTabellaInFilePdf(): void {
-    const table = JSON.parse(JSON.stringify(this.tempTableData));
+  getImmaginiFilePdf(): ImmaginePdf[] {
+    return [];
+  }
 
-    // Rimuovo la colonna utenti abilitati dalla stampa del pdf
-    table.cols = table.cols.filter (col => col.field != 'utentiAbilitati');
-    table.rows.forEach(riga => {
-      delete riga['utentiAbilitati'];
+  getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    return colonne.filter(col => col.field !== 'utentiAbilitati');
+  }
+
+  getRigheFilePdf(righe: any[]) {
+    return righe.map(riga => {
+      delete riga.utentiAbilitati;
+      return riga;
     });
-
-    Utils.esportaTabellaInFilePdf(table, 'Lista Società', []);
   }
 
   getColonneFileExcel(colonne: Colonna[]) {
-    return colonne.filter(col => col.field != 'utentiAbilitati');
+    return colonne.filter(col => col.field !== 'utentiAbilitati');
   }
 
   getRigheFileExcel(righe: any[]) {

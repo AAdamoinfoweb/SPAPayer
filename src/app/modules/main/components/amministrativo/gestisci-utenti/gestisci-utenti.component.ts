@@ -183,15 +183,23 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
       this.modificaElementoSelezionato('/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare);
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(dataTable);
+        this.esportaTabellaInFilePdf(dataTable, 'Lista Utenti');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(dataTable, 'Utenti');
+        this.esportaTabellaInFileExcel(dataTable, 'Lista Utenti');
         break;
     }
   }
 
-  esportaTabellaInFilePdf(dataTable: any): void {
+  getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    return colonne;
+  }
+
+  getRigheFilePdf(righe: any[]) {
+    return righe;
+  }
+
+  getImmaginiFilePdf(): ImmaginePdf[] {
     const iconaUtenteAttivo = new ImmaginePdf();
     iconaUtenteAttivo.indiceColonna = 0;
     iconaUtenteAttivo.srcIcona = 'assets/img/active-user.png';
@@ -199,9 +207,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     iconaUtenteAttivo.posizioneY = 2;
     iconaUtenteAttivo.larghezza = 18;
     iconaUtenteAttivo.altezza = 17;
-    Utils.esportaTabellaInFilePdf(dataTable, 'Lista Utenti', [
-      iconaUtenteAttivo
-    ]);
+    return [iconaUtenteAttivo];
   }
 
   getRigheFileExcel(righe: any[]) {
