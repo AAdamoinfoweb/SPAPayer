@@ -101,23 +101,14 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
   cercaElementi(): void {
     const filtro = {...this.filtroGestioneBannerApplicato};
 
-    for (const [key, value] of Object.entries(this.filtroGestioneBannerApplicato)) {
-      if (value !== undefined && value) {
-        if (key === 'inizio' || key === 'fine') {
-          filtro[key] = moment(value, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
-        } else {
-          if (key === 'attivo') {
-            this.filtroGestioneBannerApplicato.attivo = value;
-          }
-          filtro[key] = value;
-        }
-      } else if (key === 'attivo') {
-        this.filtroGestioneBannerApplicato.attivo = false;
-        filtro[key] = false;
-      } else {
-        filtro[key] = null;
-      }
+    if ('attivo' in filtro) {
+      this.filtroGestioneBannerApplicato.attivo = filtro.attivo;
+    } else {
+      this.filtroGestioneBannerApplicato.attivo = false;
+      filtro.attivo = false;
     }
+    filtro.inizio = filtro.inizio ? moment(filtro.inizio, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    filtro.fine = filtro.fine ? moment(filtro.fine, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
 
     this.bannerService.ricercaBanner(filtro, this.amministrativoService.idFunzione).pipe(map(listaBanner => {
       this.onChangeListaElementi.emit(listaBanner);
