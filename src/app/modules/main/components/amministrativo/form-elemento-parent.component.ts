@@ -2,7 +2,7 @@ import {SintesiBreadcrumb} from "../../dto/Breadcrumb";
 import {Utils} from "../../../../utils/Utils";
 
 
-export abstract class InserimentoModificaDettaglioParentComponent {
+export abstract class FormElementoParentComponent {
 
   protected constructor() {
   }

@@ -27,7 +27,7 @@ import {OverlayService} from '../../../../../../services/overlay.service';
 import {BannerService} from '../../../../../../services/banner.service';
 import {Banner} from '../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
-import {InserimentoModificaDettaglioParentComponent} from "../../inserimento-modifica-dettaglio-parent.component";
+import {FormElementoParentComponent} from "../../form-elemento-parent.component";
 import {ConfirmationService} from 'primeng/api';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 
@@ -36,7 +36,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
   templateUrl: './form-utente-permessi.component.html',
   styleUrls: ['../gestisci-utenti.component.scss', './form-utente-permessi.component.scss']
 })
-export class FormUtentePermessiComponent extends InserimentoModificaDettaglioParentComponent implements OnInit, AfterViewInit {
+export class FormUtentePermessiComponent extends FormElementoParentComponent implements OnInit, AfterViewInit {
 
   breadcrumbList = [];
 

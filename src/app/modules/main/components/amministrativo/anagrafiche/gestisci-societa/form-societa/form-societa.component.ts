@@ -6,7 +6,7 @@ import {AmministrativoService} from '../../../../../../../services/amministrativ
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Societa} from '../../../../../model/Societa';
 import {SocietaService} from '../../../../../../../services/societa.service';
-import {InserimentoModificaDettaglioParentComponent} from "../../../inserimento-modifica-dettaglio-parent.component";
+import {FormElementoParentComponent} from "../../../form-elemento-parent.component";
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
@@ -16,7 +16,7 @@ import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
   templateUrl: './form-societa.component.html',
   styleUrls: ['./form-societa.component.scss']
 })
-export class FormSocietaComponent extends InserimentoModificaDettaglioParentComponent implements OnInit {
+export class FormSocietaComponent extends FormElementoParentComponent implements OnInit {
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
