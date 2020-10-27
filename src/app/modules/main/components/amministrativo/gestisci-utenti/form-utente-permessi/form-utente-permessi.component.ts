@@ -3,19 +3,18 @@ import {
   Component,
   ComponentFactoryResolver,
   ComponentRef,
-  ElementRef, Input,
+  ElementRef,
   OnInit,
   Renderer2,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
+import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
 import {UtenteService} from '../../../../../../services/utente.service';
-import {ActivatedRoute, Params, Router, UrlSegment} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {DatiPermessoComponent} from '../dati-permesso/dati-permesso.component';
 import {AsyncSubject} from 'rxjs';
-import {map} from 'rxjs/operators';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../utils/Utils';
 import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
@@ -29,7 +28,7 @@ import {Banner} from '../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
 import {FormElementoParentComponent} from "../../form-elemento-parent.component";
 import {ConfirmationService} from 'primeng/api';
-import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -53,6 +52,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   isFormDatiUtenteValido = false;
   isModifica = false;
   isDettaglio = false;
+  funzione: FunzioneGestioneEnum;
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
@@ -66,9 +66,9 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
               private el: ElementRef, private amministrativoService: AmministrativoService,
               private permessoService: PermessoService,
               private overlayService: OverlayService,
-              private confirmationService: ConfirmationService,
+              confirmationService: ConfirmationService,
               private bannerService: BannerService) {
-    super();
+    super(confirmationService);
     // codice fiscale da utente service per inserimento
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
@@ -80,13 +80,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   inizializzaBreadcrumbs(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
     breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', '/gestioneUtenti/' + this.amministrativoService.idFunzione));
-    if (this.isModifica) {
-      breadcrumbs.push(new SintesiBreadcrumb('Modifica Utente/Permessi', null));
-    } else if (this.isDettaglio) {
-      breadcrumbs.push(new SintesiBreadcrumb( 'Dettaglio Utente/Permessi', null));
-    } else {
-      breadcrumbs.push(new SintesiBreadcrumb( 'Aggiungi Utente/Permessi', null));
-    }
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Utente/Permessi', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
 
@@ -96,6 +90,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.activatedRoute.params.subscribe((params) => {
       if (this.activatedRoute.snapshot.url[0].path === 'modificaUtentePermessi') {
         this.isModifica = true;
+        this.funzione = FunzioneGestioneEnum.MODIFICA;
         this.titoloPagina = `Modifica Utente/Permessi`;
         this.tooltipTitle = `In questa pagina puoi modificare un utente e abilitarlo a specifici servizi`;
         this.inizializzaBreadcrumbs();
@@ -103,12 +98,14 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
         this.letturaPermessi(this.codiceFiscaleModifica);
       } else if (this.activatedRoute.snapshot.url[0].path === 'dettaglioUtentePermessi') {
         this.isDettaglio = true;
+        this.funzione = FunzioneGestioneEnum.DETTAGLIO;
         this.titoloPagina = `Dettaglio Utente/Permessi`;
         this.tooltipTitle = `In questa pagina puoi visualizzare il dettaglio di un utente`;
         this.inizializzaBreadcrumbs();
         this.codiceFiscaleModifica = this.activatedRoute.snapshot.paramMap.get('userid');
         this.letturaPermessi(this.codiceFiscaleModifica);
       } else {
+        this.funzione = FunzioneGestioneEnum.AGGIUNGI;
         this.inizializzaBreadcrumbs();
       }
     });
@@ -227,7 +224,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     return ret;
   }
 
-  inserimentoDatiUtentePermessi(): void {
+  onClickSalva(): void {
     // inserimento utente
     let utente = new InserimentoModificaUtente();
     utente = {...this.datiUtente};
@@ -307,18 +304,12 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       });
   }
 
-  onClickAnnulla() {
+  onClickAnnullaButton() {
+    let funzione = FunzioneGestioneEnum.AGGIUNGI;
     if (this.isDettaglio) {
-      this.tornaIndietro();
-    } else {
-      this.confirmationService.confirm(
-        Utils.getModale(() => {
-            this.tornaIndietro();
-          },
-          TipoModaleEnum.ANNULLA
-        )
-      );
+      funzione = FunzioneGestioneEnum.DETTAGLIO;
     }
+    this.onClickAnnulla(funzione);
   }
 
   tornaIndietro() {

@@ -33,15 +33,15 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
     private amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
     private livelloTerritorialeService: LivelloTerritorialeService,
-    private confirmationService: ConfirmationService
-  ) { super(); }
+    confirmationService: ConfirmationService
+  ) { super(confirmationService); }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
       this.inizializzaBreadcrumbs();
-      this.titoloPagina = this.getTestoFunzione() + ' Livello Territoriale';
-      this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di un livello territoriale';
+      this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Livello Territoriale';
+      this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di un livello territoriale';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
         this.livelloTerritoriale.id = parseInt(this.activatedRoute.snapshot.paramMap.get('livelloterritorialeid'));
         this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.livelloTerritoriale.id, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
@@ -55,7 +55,7 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
     const breadcrumbs: SintesiBreadcrumb[] = [];
     breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
     breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Livello Territoriale', 'livelliTerritoriali/' + this.amministrativoService.idFunzione));
-    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione() + ' Livello Territoriale', null));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Livello Territoriale', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
 
@@ -74,41 +74,11 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
     }
   }
 
-  getTestoFunzione(isTitolo: boolean = true) {
-    switch (this.funzione) {
-      case FunzioneGestioneEnum.DETTAGLIO:
-        return isTitolo ? 'Dettaglio' : 'visualizzare';
-        break;
-      case FunzioneGestioneEnum.AGGIUNGI:
-        return isTitolo ? 'Aggiungi' : 'aggiungere';
-        break;
-      case FunzioneGestioneEnum.MODIFICA:
-        return isTitolo ? 'Modifica' : 'modificare';
-        break;
-      default:
-        return '';
-    }
-  }
-
-  onClickAnnulla() {
-    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
-      this.tornaIndietro();
-    } else {
-      this.confirmationService.confirm(
-        Utils.getModale(() => {
-            this.tornaIndietro();
-          },
-          TipoModaleEnum.ANNULLA
-        )
-      );
-    }
-  }
-
   tornaIndietro() {
     this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 
-  onClickSalva() {
+  onClickSalva(): void {
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
         this.livelloTerritorialeService.aggiuntaLivelloTerritoriale(this.livelloTerritoriale, this.amministrativoService.idFunzione).subscribe((livelloTerritoriale) => {
