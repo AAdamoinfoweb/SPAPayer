@@ -12,13 +12,14 @@ import {FunzioneService} from '../../../../../../../services/funzione.service';
 import {UtenteService} from '../../../../../../../services/utente.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Societa} from '../../../../../model/Societa';
+import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
 
 @Component({
   selector: 'app-filtro-gestione-enti',
   templateUrl: './filtro-gestione-enti.component.html',
   styleUrls: ['./filtro-gestione-enti.component.scss']
 })
-export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
+export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent implements OnInit, OnChanges {
 
   opzioniFiltroSocieta: OpzioneSelect[] = [];
   opzioniFiltroLivelliTerritoriali: OpzioneSelect[] = [];
@@ -31,6 +32,7 @@ export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService, private utenteService: UtenteService, private overlayService: OverlayService,
               private amministrativoService: AmministrativoService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -132,7 +134,7 @@ export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
     }
   }
 
-  cercaSocieta() {
+  cercaElementi() {
 
   }
 }

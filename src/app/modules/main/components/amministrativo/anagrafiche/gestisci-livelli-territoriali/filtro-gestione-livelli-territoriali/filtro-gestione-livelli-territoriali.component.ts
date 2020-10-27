@@ -4,13 +4,14 @@ import {NgForm, NgModel} from '@angular/forms';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {LivelloTerritorialeService} from '../../../../../../../services/livelloTerritoriale.service';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
+import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
 
 @Component({
   selector: 'app-filtro-gestione-livelli-territoriali',
   templateUrl: './filtro-gestione-livelli-territoriali.component.html',
   styleUrls: ['../gestisci-livelli-territoriali.component.scss', './filtro-gestione-livelli-territoriali.component.scss']
 })
-export class FiltroGestioneLivelliTerritorialiComponent implements OnInit, OnChanges {
+export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneElementiComponent implements OnInit, OnChanges {
 
   @Input()
   listaLivelliTerritoriali: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
@@ -23,6 +24,7 @@ export class FiltroGestioneLivelliTerritorialiComponent implements OnInit, OnCha
 
   constructor(private livelloTerritorialeService: LivelloTerritorialeService,
               private amministrativoService: AmministrativoService) {
+    super()
   }
 
   ngOnInit(): void {
@@ -62,7 +64,7 @@ export class FiltroGestioneLivelliTerritorialiComponent implements OnInit, OnCha
     this.onChangeListaLivelliTerritoriali.emit(this.listaLivelliTerritoriali);
   }
 
-  cercaLivelliTerritoriali(): void {
+  cercaElementi(): void {
     this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.filtroLivelliTerritoriali, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
       this.onChangeListaLivelliTerritoriali.emit(listaLivelliTerritoriali);
     });

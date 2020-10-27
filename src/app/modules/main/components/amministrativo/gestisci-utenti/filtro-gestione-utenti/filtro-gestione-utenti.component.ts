@@ -14,13 +14,14 @@ import * as moment from 'moment';
 import {BottoneEnum} from '../../../../../../enums/bottone.enum';
 import {OverlayService} from '../../../../../../services/overlay.service';
 import {AmministrativoService} from "../../../../../../services/amministrativo.service";
+import {FiltroGestioneElementiComponent} from "../../filtro-gestione-elementi.component";
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
   templateUrl: './filtro-gestione-utenti.component.html',
   styleUrls: ['../gestisci-utenti.component.scss', './filtro-gestione-utenti.component.scss']
 })
-export class FiltroGestioneUtentiComponent implements OnInit {
+export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiComponent implements OnInit {
 
   listaSocieta: Array<OpzioneSelect> = [];
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
@@ -49,6 +50,7 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService, private utenteService: UtenteService, private overlayService: OverlayService,
               private amministrativoService: AmministrativoService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -197,11 +199,10 @@ export class FiltroGestioneUtentiComponent implements OnInit {
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
   }
 
-  cercaUtenti(filtroGestioneUtentiForm: NgForm): void {
+  cercaElementi(): void {
     const filtro = {...this.filtroGestioneUtentiApplicato};
 
-    Object.keys(filtroGestioneUtentiForm.value).forEach(key => {
-      const value = filtroGestioneUtentiForm.value[key];
+    for (const [key, value] of Object.entries(this.filtroGestioneUtentiApplicato)) {
       if (value !== undefined && value) {
         if (typeof value === 'object') {
           filtro[key] = moment(value).format('YYYY-MM-DD[T]HH:mm:ss');
@@ -211,7 +212,8 @@ export class FiltroGestioneUtentiComponent implements OnInit {
       } else {
         filtro[key] = null;
       }
-    });
+    }
+
     this.utenteService.ricercaUtenti(filtro, this.amministrativoService.idFunzione).pipe(map(listaUtenti => {
         this.onChangeListaUtenti.emit(listaUtenti);
     })).subscribe(value => {});

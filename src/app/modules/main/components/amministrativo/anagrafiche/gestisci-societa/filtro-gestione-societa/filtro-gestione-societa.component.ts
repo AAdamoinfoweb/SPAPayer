@@ -4,13 +4,14 @@ import {NgForm, NgModel} from '@angular/forms';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
+import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
 
 @Component({
   selector: 'app-filtro-gestione-societa',
   templateUrl: './filtro-gestione-societa.component.html',
   styleUrls: ['../gestisci-societa.component.scss', './filtro-gestione-societa.component.scss']
 })
-export class FiltroGestioneSocietaComponent implements OnInit, OnChanges {
+export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiComponent implements OnInit, OnChanges {
 
   @Input()
   listaSocieta: Array<Societa> = new Array<Societa>();
@@ -23,6 +24,7 @@ export class FiltroGestioneSocietaComponent implements OnInit, OnChanges {
 
   constructor(private societaService: SocietaService,
               private amministrativoService: AmministrativoService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -62,7 +64,7 @@ export class FiltroGestioneSocietaComponent implements OnInit, OnChanges {
     this.onChangeListaSocieta.emit(this.listaSocieta);
   }
 
-  cercaSocieta(): void {
+  cercaElementi(): void {
     this.societaService.ricercaSocieta(this.filtroSocieta, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
       this.onChangeListaSocieta.emit(listaSocieta);
     });
