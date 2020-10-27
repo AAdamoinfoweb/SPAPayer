@@ -16,6 +16,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
+import {Ente} from "../../../../model/Ente";
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -91,7 +92,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
       {label: 'Gestisci Anagrafiche', link: null},
       {label: 'Gestisci Enti', link: null}
       ]);
-    this.popolaLista();
+    this.popolaListaElementi();
   }
 
   ngAfterViewInit(): void {
@@ -100,7 +101,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     }
   }
 
-  popolaLista() {
+  popolaListaElementi() {
 
     this.waiting = false;
     /* this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
@@ -115,13 +116,18 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
      });*/
   }
 
+  creaRigaTabella(ente: Ente) {
+    // TODO formattazione riga tabella
+  }
+
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
         this.aggiungiElemento('/aggiungiEnte');
         break;
       case ToolEnum.UPDATE:
-        this.modificaEnteSelezionato();
+        // TODO logica modifica dell'ente selezionato
+        // this.modificaElementoSelezionato('/modificaEnte', idEnte);
         break;
       case ToolEnum.DELETE:
         this.eliminaEntiSelezionati();
@@ -140,10 +146,6 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     listaSocietaFiltrate.forEach(societa => {
 //      this.tableData.rows.push(this.creaRigaTabella(societa));
     });
-  }
-
-  private modificaEnteSelezionato() {
-
   }
 
   private esportaTabellaInFilePdf() {

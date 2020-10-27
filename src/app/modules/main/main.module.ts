@@ -24,6 +24,8 @@ import { DatiSocietaComponent } from './components/amministrativo/anagrafiche/ge
 import { DatiLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dati-livello-territoriale/dati-livello-territoriale.component';
 import { DettaglioLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dettaglio-livello-territoriale/dettaglio-livello-territoriale.component';
 import { FiltroGestioneEntiComponent } from './components/amministrativo/anagrafiche/gestisci-enti/filtro-gestione-enti/filtro-gestione-enti.component';
+import {DatiBannerComponent} from './components/amministrativo/gestisci-banner/dati-banner/dati-banner.component';
+import {DettaglioBannerComponent} from './components/amministrativo/gestisci-banner/dettaglio-banner/dettaglio-banner.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { FiltroGestioneEntiComponent } from './components/amministrativo/anagraf
     DettaglioLivelloTerritorialeComponent,
     DatiSocietaComponent,
     FiltroGestioneEntiComponent,
+    DatiBannerComponent,
+    DettaglioBannerComponent
   ],
   imports: [
     CommonModule,

@@ -92,7 +92,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
       {label: 'Gestisci Anagrafiche', link: null},
       {label: 'Gestisci Livelli Territoriali', link: null}
     ]);
-    this.popolaListaLivelliTerritoriali();
+    this.popolaListaElementi();
   }
 
   ngAfterViewInit(): void {
@@ -100,7 +100,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
-  popolaListaLivelliTerritoriali() {
+  popolaListaElementi() {
     this.listaLivelliTerritoriali = [];
     this.livelloTerritorialeService.ricercaLivelliTerritoriali(null, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
       this.listaLivelliTerritoriali = listaLivelliTerritoriali;
@@ -134,7 +134,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
         this.aggiungiElemento('/aggiungiLivelloTerritoriale');
         break;
       case ToolEnum.UPDATE:
-        this.modificaLivelloTerritorialeSelezionato();
+        this.modificaElementoSelezionato('/modificaLivelloTerritoriale', this.listaIdLivelliTerritorialiSelezionati[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaLivelliTerritorialiSelezionati();
@@ -149,19 +149,15 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   }
 
   mostraDettaglioLivelloTerritoriale(rigaTabella) {
-    // this.router.navigate(['/dettaglioLivelloTerritoriale', rigaTabella.id.value]);
-    this.router.navigate(['/dettaglioLivelloTerritoriale', 2]);
-  }
-
-  modificaLivelloTerritorialeSelezionato() {
-    this.router.navigate(['/modificaLivelloTerritoriale', this.listaIdLivelliTerritorialiSelezionati[0]]);
+    this.mostraDettaglioElemento('/dettaglioLivelloTerritoriale', rigaTabella.id.value);
+    // this.mostraDettaglioElemento('/dettaglioLivelloTerritoriale', 2);
   }
 
   eliminaLivelliTerritorialiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
           this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.amministrativoService.idFunzione).subscribe(() => {
-            this.popolaListaLivelliTerritoriali();
+            this.popolaListaElementi();
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });

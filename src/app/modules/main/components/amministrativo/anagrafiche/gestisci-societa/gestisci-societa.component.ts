@@ -95,7 +95,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
       {label: 'Gestisci Anagrafiche', link: null},
       {label: 'Gestisci Società', link: null}
     ]);
-    this.popolaListaSocieta();
+    this.popolaListaElementi();
   }
 
   ngAfterViewInit(): void {
@@ -103,7 +103,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
-  popolaListaSocieta() {
+  popolaListaElementi() {
     this.listaSocieta = [];
     this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
       this.listaSocieta = listaSocieta;
@@ -138,7 +138,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
         this.aggiungiElemento('/aggiungiSocieta');
         break;
       case ToolEnum.UPDATE:
-        this.modificaSocietaSelezionata();
+        this.modificaElementoSelezionato('/modificaSocieta', this.listaIdSocietaSelezionate[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaSocietaSelezionate();
@@ -153,18 +153,14 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   }
 
   mostraDettaglioSocieta(rigaTabella) {
-    this.router.navigate(['/dettaglioSocieta', rigaTabella.id.value]);
-  }
-
-  modificaSocietaSelezionata() {
-    this.router.navigate(['/modificaSocieta', this.listaIdSocietaSelezionate[0]]);
+    this.mostraDettaglioElemento('/dettaglioSocieta', rigaTabella.id.value);
   }
 
   eliminaSocietaSelezionate() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
           this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
-            this.popolaListaSocieta();
+            this.popolaListaElementi();
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
