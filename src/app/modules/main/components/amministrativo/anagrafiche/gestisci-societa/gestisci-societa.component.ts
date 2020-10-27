@@ -138,7 +138,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
         this.aggiungiElemento('/aggiungiSocieta');
         break;
       case ToolEnum.UPDATE:
-        this.modificaSocietaSelezionata();
+        this.modificaElementoSelezionato('/modificaSocieta', this.listaIdSocietaSelezionate[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaSocietaSelezionate();
@@ -154,10 +154,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
 
   mostraDettaglioSocieta(rigaTabella) {
     this.mostraDettaglioElemento('/dettaglioSocieta', rigaTabella.id.value);
-  }
-
-  modificaSocietaSelezionata() {
-    this.router.navigate(['/modificaSocieta', this.listaIdSocietaSelezionate[0]]);
   }
 
   eliminaSocietaSelezionate() {

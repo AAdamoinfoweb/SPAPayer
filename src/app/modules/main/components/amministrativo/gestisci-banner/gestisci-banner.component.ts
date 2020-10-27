@@ -145,7 +145,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.aggiungiElemento('/aggiungiBanner');
         break;
       case ToolEnum.UPDATE:
-        // TODO this.modificaBannerSelezionato(dataTable);
+        // TODO this.modificaElementoSelezionato('/modificaBanner', this.listaBannerIdSelezionati[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaBannerSelezionati();

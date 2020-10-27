@@ -174,7 +174,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     if (azioneTool === ToolEnum.INSERT) {
       this.aggiungiElemento('/aggiungiUtentePermessi');
     } else if (azioneTool === ToolEnum.UPDATE) {
-      this.router.navigate(['/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare]);
+      this.modificaElementoSelezionato('/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare);
     } else if (azioneTool === ToolEnum.EXPORT_PDF) {
       this.esportaTabellaInFilePdf(dataTable);
     } else if (azioneTool === ToolEnum.EXPORT_XLS) {
