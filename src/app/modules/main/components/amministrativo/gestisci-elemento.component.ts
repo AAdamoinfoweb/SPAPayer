@@ -6,7 +6,7 @@ import {Utils} from '../../../../utils/Utils';
 import {AmministrativoParentComponent} from './amministrativo-parent.component';
 import {Tabella} from '../../model/tabella/Tabella';
 import {Colonna} from '../../model/tabella/Colonna';
-import {ToolEnum} from "../../../../enums/Tool.enum";
+import {ToolEnum} from '../../../../enums/Tool.enum';
 
 
 export abstract class GestisciElementoComponent extends AmministrativoParentComponent {
@@ -31,8 +31,8 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract popolaListaElementi(): void;
 
-  // TODO generalizzare o astrarre creaRigaTabella
-  
+  abstract creaRigaTabella(oggetto: any);
+
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
   mostraDettaglioElemento(link: string, id: number) {

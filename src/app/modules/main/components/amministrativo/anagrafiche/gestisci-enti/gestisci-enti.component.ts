@@ -16,6 +16,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
+import {Ente} from "../../../../model/Ente";
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -113,6 +114,10 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
        this.tempTableData = Object.assign({}, this.tableData);
        this.waiting = false;
      });*/
+  }
+
+  creaRigaTabella(ente: Ente) {
+    // TODO formattazione riga tabella
   }
 
   eseguiAzioni(azioneTool) {
