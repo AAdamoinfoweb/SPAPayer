@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForm, NgModel} from '@angular/forms';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {Societa} from '../../../../../model/Societa';
 import {Utils} from '../../../../../../../utils/Utils';
 

@@ -29,10 +29,18 @@
 <div class="row">
   <!-- Bottone sx -->
   <div class="col-2">
-    <button id="buttonAnnulla" class="btn btn-secondary" (click)="onClickAnnulla()">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
+    <button id="buttonAnnulla" class="btn btn-secondary" (click)="onClickAnnulla(funzione)">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
   </div>
   <!-- Bottoni dx -->
   <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
     <button id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="onClickSalva()">Salva</button>
   </div>
 </div>
+
+<!-- Modale -->
+<p-confirmDialog #cb icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
+    <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
+  </p-footer>
+</p-confirmDialog>

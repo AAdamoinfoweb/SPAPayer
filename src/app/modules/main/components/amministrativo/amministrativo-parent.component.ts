@@ -17,12 +17,9 @@ export class AmministrativoParentComponent implements OnInit {
 
   private inserimentoLogAzioneUrl = '/inserimentoLogAzione';
 
-  constructor(
-    protected router: Router,
-    protected  overlayService: OverlayService,
-    protected  route: ActivatedRoute, private http: HttpClient,
-    protected amministrativoService: AmministrativoService) {
-    this.overlayService.caricamentoEvent.emit(true);
+  constructor(protected router: Router, protected  route: ActivatedRoute,
+              private http: HttpClient, protected amministrativoService: AmministrativoService) {
+
     this.waitingEmitter.emit(true);
     this.route.queryParams.subscribe(value => {
       this.amministrativoService.idFunzione = atob(value.funzione);
@@ -32,7 +29,6 @@ export class AmministrativoParentComponent implements OnInit {
         headers: h,
         withCredentials: true
       }).pipe(map(() => {
-        this.overlayService.caricamentoEvent.emit(false);
         this.waitingEmitter.emit(false);
         this.inserimentoLogAzione().subscribe();
         return of(null);

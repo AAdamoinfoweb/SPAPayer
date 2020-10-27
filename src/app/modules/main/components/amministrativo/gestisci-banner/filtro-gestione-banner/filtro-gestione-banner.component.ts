@@ -10,13 +10,14 @@ import {BottoneEnum} from '../../../../../../enums/bottone.enum';
 import {map} from 'rxjs/operators';
 import {BannerService} from '../../../../../../services/banner.service';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
+import {FiltroGestioneElementiComponent} from "../../filtro-gestione-elementi.component";
 
 @Component({
   selector: 'app-filtro-gestione-banner',
   templateUrl: './filtro-gestione-banner.component.html',
   styleUrls: ['../gestisci-banner.component.scss', './filtro-gestione-banner.component.scss']
 })
-export class FiltroGestioneBannerComponent implements OnInit {
+export class FiltroGestioneBannerComponent extends FiltroGestioneElementiComponent implements OnInit {
 
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = '01/01/1990';
@@ -26,12 +27,14 @@ export class FiltroGestioneBannerComponent implements OnInit {
   filtroGestioneBannerApplicato: ParametriRicercaBanner;
 
   @Input()
-  listaBanner: Array<Banner> = new Array<Banner>();
+  listaElementi: Array<Banner> = new Array<Banner>();
 
   @Output()
-  onChangeListaBanner: EventEmitter<Banner[]> = new EventEmitter<Banner[]>();
+  onChangeListaElementi: EventEmitter<Banner[]> = new EventEmitter<Banner[]>();
 
-  constructor(private bannerService: BannerService, private amministrativoService: AmministrativoService) { }
+  constructor(private bannerService: BannerService, private amministrativoService: AmministrativoService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.filtroGestioneBannerApplicato = new ParametriRicercaBanner();
@@ -91,34 +94,24 @@ export class FiltroGestioneBannerComponent implements OnInit {
 
   pulisciFiltri(filtroGestioneBannerForm: NgForm): void {
     filtroGestioneBannerForm.resetForm();
-    this.onChangeListaBanner.emit(this.listaBanner);
+    this.onChangeListaElementi.emit(this.listaElementi);
     this.filtroGestioneBannerApplicato = new ParametriRicercaBanner();
   }
 
-  cercaBanner(filtroGestioneBannerForm: NgForm): void {
+  cercaElementi(): void {
     const filtro = {...this.filtroGestioneBannerApplicato};
 
-    Object.keys(filtroGestioneBannerForm.value).forEach(key => {
-      const value = filtroGestioneBannerForm.value[key];
-      if (value !== undefined && value) {
-        if (key === 'inizio' || key === 'fine') {
-          filtro[key] = moment(value, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
-        } else {
-          if (key === 'attivo') {
-            this.filtroGestioneBannerApplicato.attivo = value;
-          }
-          filtro[key] = value;
-        }
-      } else if (key === 'attivo') {
-        this.filtroGestioneBannerApplicato.attivo = false;
-        filtro[key] = false;
-      } else {
-        filtro[key] = null;
-      }
-    });
+    if ('attivo' in filtro) {
+      this.filtroGestioneBannerApplicato.attivo = filtro.attivo;
+    } else {
+      this.filtroGestioneBannerApplicato.attivo = false;
+      filtro.attivo = false;
+    }
+    filtro.inizio = filtro.inizio ? moment(filtro.inizio, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    filtro.fine = filtro.fine ? moment(filtro.fine, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
 
     this.bannerService.ricercaBanner(filtro, this.amministrativoService.idFunzione).pipe(map(listaBanner => {
-      this.onChangeListaBanner.emit(listaBanner);
+      this.onChangeListaElementi.emit(listaBanner);
     })).subscribe();
   }
 

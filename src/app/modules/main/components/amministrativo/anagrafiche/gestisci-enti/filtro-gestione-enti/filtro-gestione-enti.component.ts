@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
@@ -12,25 +12,36 @@ import {FunzioneService} from '../../../../../../../services/funzione.service';
 import {UtenteService} from '../../../../../../../services/utente.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Societa} from '../../../../../model/Societa';
+import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
+import {LivelloTerritoriale} from "../../../../../model/LivelloTerritoriale";
 
 @Component({
   selector: 'app-filtro-gestione-enti',
   templateUrl: './filtro-gestione-enti.component.html',
   styleUrls: ['./filtro-gestione-enti.component.scss']
 })
-export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
+export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent implements OnInit, OnChanges {
 
   opzioniFiltroSocieta: OpzioneSelect[] = [];
   opzioniFiltroLivelliTerritoriali: OpzioneSelect[] = [];
+
+  @Input()
+    // todo cambiare any in model ente
+  listaElementi: Array<any> = new Array<any>();
 
   @Input()
   filtroSocieta = null;
 
   filtroApplicato: ParametriRicercaUtente;
 
+  @Output()
+  // todo cambiare any in model ente
+  onChangeListaElementi: EventEmitter<any[]> = new EventEmitter<any[]>();
+
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService, private utenteService: UtenteService, private overlayService: OverlayService,
               private amministrativoService: AmministrativoService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -41,7 +52,7 @@ export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaSocieta) {
+    if (sc.listaElementi) {
       this.impostaOpzioniFiltroSocieta();
     }
   }
@@ -57,18 +68,15 @@ export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
         });
 
         if (this.filtroSocieta) {
-          this.overlayService.caricamentoEvent.emit(true);
           const isFiltroSocietaValido = this.opzioniFiltroSocieta.some(item => item.value === this.filtroSocieta);
           if (isFiltroSocietaValido) {
             this.filtroApplicato.societaId = this.filtroSocieta;
             const parametriRicercaUtente = new ParametriRicercaUtente();
             parametriRicercaUtente.societaId = this.filtroSocieta;
             this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).subscribe(utenti => {
-              // this.onChangeListaUtenti.emit(utenti);
-              this.overlayService.caricamentoEvent.emit(false);
+              // this.onChangeListaElementi.emit(utenti);
             });
           } else {
-            this.overlayService.caricamentoEvent.emit(false);
             window.open('/nonautorizzato', '_self');
           }
         }
@@ -135,7 +143,7 @@ export class FiltroGestioneEntiComponent implements OnInit, OnChanges {
     }
   }
 
-  cercaSocieta() {
+  cercaElementi() {
 
   }
 }

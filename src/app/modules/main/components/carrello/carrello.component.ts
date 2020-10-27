@@ -110,12 +110,10 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.doSvuotaCarrello) {
       this.waiting = true;
-      this.overlayService.caricamentoEvent.emit(true);
       this.nuovoPagamentoService.svuotaCarrello()
         .subscribe(() => {
           this.waiting = false;
           this.initForm();
-          this.overlayService.caricamentoEvent.emit(false);
         });
     } else {
       this.initForm();
@@ -159,7 +157,6 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
   }
 
   confermaPagamento() {
-    this.overlayService.caricamentoEvent.emit(true);
     let observable;
     if (this.menuService.isUtenteAnonimo) {
       observable = this.nuovoPagamentoService.confermaPagamento(this.email, this.creaListaBollettini());
@@ -167,7 +164,6 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
       observable = this.nuovoPagamentoService.confermaPagamento(this.email);
     }
     observable.subscribe(resp => {
-      this.overlayService.caricamentoEvent.emit(false);
       if (resp instanceof Array) {
         //esito OK
         let numDocs = [];
@@ -186,7 +182,7 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
         if (resp)
           window.location.href = resp;
       }
-    }, () => this.overlayService.caricamentoEvent.emit(false));
+    }, () => {});
   }
 
   tornaAlServizio() {

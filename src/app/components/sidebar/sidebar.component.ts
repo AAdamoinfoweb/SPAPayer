@@ -52,7 +52,6 @@ export class SidebarComponent implements OnInit {
           this.menu = menuTemp;
           this.waiting = false;
           this.menuService.userEventChange.emit();
-          this.overlayService.caricamentoEvent.emit(false);
           this.menuService.menuCaricatoEvent.emit();
         }
       });

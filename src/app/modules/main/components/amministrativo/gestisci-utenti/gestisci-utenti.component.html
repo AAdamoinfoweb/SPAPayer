@@ -17,8 +17,8 @@
   </h3>
 
   <!-- Sottosezione Filtri -->
-  <app-filtro-gestione-utenti [listaUtente]="listaUtente"
-                              (onChangeListaUtenti)="onChangeListaUtenti($event)"
+  <app-filtro-gestione-utenti [listaElementi]="listaUtente"
+                              (onChangeListaElementi)="onChangeListaElementi($event)"
                               [filtroSocieta]="filtroSocieta"
   >
   </app-filtro-gestione-utenti>
@@ -48,7 +48,7 @@
                      [cols]="tempTableData.cols"
                      [rows]="tempTableData.rows"
                      [tipoTabella]="tempTableData.tipoTabella"
-                     [textLeft]="getTotaliPerRecord()"
+                     [textLeft]="getNumeroRecord()"
                      (onSelection)="selezionaRigaTabella($event)"
                      [selectedRows]="true"
                      (onClickRow)="dettaglioUtente($event)">

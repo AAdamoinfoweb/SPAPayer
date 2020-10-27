@@ -14,13 +14,14 @@ import * as moment from 'moment';
 import {BottoneEnum} from '../../../../../../enums/bottone.enum';
 import {OverlayService} from '../../../../../../services/overlay.service';
 import {AmministrativoService} from "../../../../../../services/amministrativo.service";
+import {FiltroGestioneElementiComponent} from "../../filtro-gestione-elementi.component";
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
   templateUrl: './filtro-gestione-utenti.component.html',
   styleUrls: ['../gestisci-utenti.component.scss', './filtro-gestione-utenti.component.scss']
 })
-export class FiltroGestioneUtentiComponent implements OnInit {
+export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiComponent implements OnInit {
 
   listaSocieta: Array<OpzioneSelect> = [];
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
@@ -38,17 +39,18 @@ export class FiltroGestioneUtentiComponent implements OnInit {
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
 
   @Input()
-  listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
+  listaElementi: Array<RicercaUtente> = new Array<RicercaUtente>();
 
   @Input()
   filtroSocieta = null;
 
   @Output()
-  onChangeListaUtenti: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
+  onChangeListaElementi: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService, private utenteService: UtenteService, private overlayService: OverlayService,
               private amministrativoService: AmministrativoService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -71,18 +73,15 @@ export class FiltroGestioneUtentiComponent implements OnInit {
       });
 
       if (this.filtroSocieta) {
-        this.overlayService.caricamentoEvent.emit(true);
         const isFiltroSocietaValido = this.listaSocieta.some(item => item.value === this.filtroSocieta);
         if (isFiltroSocietaValido) {
           this.filtroGestioneUtentiApplicato.societaId = this.filtroSocieta;
           const parametriRicercaUtente = new ParametriRicercaUtente();
           parametriRicercaUtente.societaId = this.filtroSocieta;
           this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).subscribe(utenti => {
-            this.onChangeListaUtenti.emit(utenti);
-            this.overlayService.caricamentoEvent.emit(false);
+            this.onChangeListaElementi.emit(utenti);
           });
         } else {
-          this.overlayService.caricamentoEvent.emit(false);
           window.open('/nonautorizzato', '_self');
         }
       }
@@ -196,15 +195,14 @@ export class FiltroGestioneUtentiComponent implements OnInit {
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
-    this.onChangeListaUtenti.emit(this.listaUtente);
+    this.onChangeListaElementi.emit(this.listaElementi);
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
   }
 
-  cercaUtenti(filtroGestioneUtentiForm: NgForm): void {
+  cercaElementi(): void {
     const filtro = {...this.filtroGestioneUtentiApplicato};
 
-    Object.keys(filtroGestioneUtentiForm.value).forEach(key => {
-      const value = filtroGestioneUtentiForm.value[key];
+    for (const [key, value] of Object.entries(this.filtroGestioneUtentiApplicato)) {
       if (value !== undefined && value) {
         if (typeof value === 'object') {
           filtro[key] = moment(value).format('YYYY-MM-DD[T]HH:mm:ss');
@@ -214,11 +212,11 @@ export class FiltroGestioneUtentiComponent implements OnInit {
       } else {
         filtro[key] = null;
       }
-    });
+    }
 
     this.utenteService.ricercaUtenti(filtro, this.amministrativoService.idFunzione).pipe(map(listaUtenti => {
-        this.onChangeListaUtenti.emit(listaUtenti);
-    })).subscribe();
+        this.onChangeListaElementi.emit(listaUtenti);
+    })).subscribe(value => {});
   }
 
   disabilitaBottone(filtroGestioneUtentiForm: NgForm, nomeBottone: string): boolean {

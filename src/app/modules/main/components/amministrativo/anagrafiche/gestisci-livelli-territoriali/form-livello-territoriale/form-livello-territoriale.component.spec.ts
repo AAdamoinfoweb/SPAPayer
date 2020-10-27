@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DettaglioLivelloTerritorialeComponent } from './dettaglio-livello-territoriale.component';
+import { FormLivelloTerritorialeComponent } from './form-livello-territoriale.component';
 
 describe('DettaglioLivelloTerritorialeComponent', () => {
-  let component: DettaglioLivelloTerritorialeComponent;
-  let fixture: ComponentFixture<DettaglioLivelloTerritorialeComponent>;
+  let component: FormLivelloTerritorialeComponent;
+  let fixture: ComponentFixture<FormLivelloTerritorialeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DettaglioLivelloTerritorialeComponent ]
+      declarations: [ FormLivelloTerritorialeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DettaglioLivelloTerritorialeComponent);
+    fixture = TestBed.createComponent(FormLivelloTerritorialeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

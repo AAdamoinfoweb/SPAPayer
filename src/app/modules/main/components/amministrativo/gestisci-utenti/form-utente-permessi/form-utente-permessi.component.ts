@@ -3,38 +3,44 @@ import {
   Component,
   ComponentFactoryResolver,
   ComponentRef,
-  ElementRef, Input,
+  ElementRef,
   OnInit,
   Renderer2,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {Breadcrumb} from '../../../../dto/Breadcrumb';
+import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
 import {UtenteService} from '../../../../../../services/utente.service';
-import {ActivatedRoute, Params, Router, UrlSegment} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {DatiPermessoComponent} from '../dati-permesso/dati-permesso.component';
 import {AsyncSubject} from 'rxjs';
-import {map} from 'rxjs/operators';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../utils/Utils';
 import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
 import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {PermessoService} from '../../../../../../services/permesso.service';
-import {PermessoFunzione} from "../../../../model/permesso/PermessoFunzione";
+import {PermessoFunzione} from '../../../../model/permesso/PermessoFunzione';
+import {OverlayService} from '../../../../../../services/overlay.service';
+import {BannerService} from '../../../../../../services/banner.service';
+import {Banner} from '../../../../model/banner/Banner';
+import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
+import {FormElementoParentComponent} from "../../form-elemento-parent.component";
+import {ConfirmationService} from 'primeng/api';
+import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
-  templateUrl: './aggiungi-utente-permessi.component.html',
-  styleUrls: ['../gestisci-utenti.component.scss', './aggiungi-utente-permessi.component.scss']
+  templateUrl: './form-utente-permessi.component.html',
+  styleUrls: ['../gestisci-utenti.component.scss', './form-utente-permessi.component.scss']
 })
-export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
+export class FormUtentePermessiComponent extends FormElementoParentComponent implements OnInit, AfterViewInit {
 
   breadcrumbList = [];
 
-  tooltipTitle: string = `In questa pagina puoi aggiungere un utente e abilitarlo a specifici servizi`;
-  titoloPagina: string = `Aggiungi Utente/Permessi`;
+  tooltipTitle = `In questa pagina puoi aggiungere un utente e abilitarlo a specifici servizi`;
+  titoloPagina = `Aggiungi Utente/Permessi`;
 
   codiceFiscale: string;
   codiceFiscaleModifica: string;
@@ -46,6 +52,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
   isFormDatiUtenteValido = false;
   isModifica = false;
   isDettaglio = false;
+  funzione: FunzioneGestioneEnum;
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
@@ -57,48 +64,49 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
               private activatedRoute: ActivatedRoute,
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, private amministrativoService: AmministrativoService,
-              private permessoService: PermessoService) {
+              private permessoService: PermessoService,
+              private overlayService: OverlayService,
+              confirmationService: ConfirmationService,
+              private bannerService: BannerService) {
+    super(confirmationService);
     // codice fiscale da utente service per inserimento
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
-
+    this.inizializzaBreadcrumbs();
   }
 
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', '/gestioneUtenti/' + this.amministrativoService.idFunzione, null));
-    if (this.isModifica) {
-      this.breadcrumbList.push(new Breadcrumb(3, 'Modifica Utente/Permessi', null, null));
-    } else if (this.isDettaglio) {
-      this.breadcrumbList.push(new Breadcrumb(3, 'Dettaglio Utente/Permessi', null, null));
-    } else {
-      this.breadcrumbList.push(new Breadcrumb(3, 'Aggiungi Utente/Permessi', null, null));
-    }
-
+  inizializzaBreadcrumbs(): void {
+    const breadcrumbs: SintesiBreadcrumb[] = [];
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', '/gestioneUtenti/' + this.amministrativoService.idFunzione));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Utente/Permessi', null));
+    this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
 
   ngOnInit(): void {
+
     // get route per logica inserimento o modifica
     this.activatedRoute.params.subscribe((params) => {
       if (this.activatedRoute.snapshot.url[0].path === 'modificaUtentePermessi') {
         this.isModifica = true;
+        this.funzione = FunzioneGestioneEnum.MODIFICA;
         this.titoloPagina = `Modifica Utente/Permessi`;
         this.tooltipTitle = `In questa pagina puoi modificare un utente e abilitarlo a specifici servizi`;
-        this.inizializzaBreadcrumbList();
+        this.inizializzaBreadcrumbs();
         this.codiceFiscaleModifica = this.activatedRoute.snapshot.paramMap.get('userid');
         this.letturaPermessi(this.codiceFiscaleModifica);
       } else if (this.activatedRoute.snapshot.url[0].path === 'dettaglioUtentePermessi') {
         this.isDettaglio = true;
+        this.funzione = FunzioneGestioneEnum.DETTAGLIO;
         this.titoloPagina = `Dettaglio Utente/Permessi`;
         this.tooltipTitle = `In questa pagina puoi visualizzare il dettaglio di un utente`;
-        this.inizializzaBreadcrumbList();
+        this.inizializzaBreadcrumbs();
         this.codiceFiscaleModifica = this.activatedRoute.snapshot.paramMap.get('userid');
         this.letturaPermessi(this.codiceFiscaleModifica);
       } else {
-        this.inizializzaBreadcrumbList();
+        this.funzione = FunzioneGestioneEnum.AGGIUNGI;
+        this.inizializzaBreadcrumbs();
       }
     });
   }
@@ -177,7 +185,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
 
   disabilitaBottone(): boolean {
     let controlloCodiceFiscale = false;
-    if(!this.isModifica && !this.isDettaglio) {
+    if (!this.isModifica && !this.isDettaglio) {
       controlloCodiceFiscale = this.codiceFiscale == null || this.codiceFiscale === '';
     }
     return controlloCodiceFiscale || !this.isFormDatiUtenteValido || this.controlloDate() || this.controlloDatiPermesso();
@@ -216,7 +224,7 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
     return ret;
   }
 
-  inserimentoDatiUtentePermessi(): void {
+  onClickSalva(): void {
     // inserimento utente
     let utente = new InserimentoModificaUtente();
     utente = {...this.datiUtente};
@@ -224,50 +232,87 @@ export class AggiungiUtentePermessiComponent implements OnInit, AfterViewInit {
       moment(utente.scadenza, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     utente.attivazione = utente.attivazione ?
       moment(utente.attivazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-    const codiceFiscale = this.isModifica ? this.codiceFiscaleModifica : this.codiceFiscale
-    this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.amministrativoService.idFunzione)
-      .pipe(map(datiUtente => {
-        // se presenti inserimento permessi
-        let listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
-        if (listaPermessi.length > 0) {
-          listaPermessi = listaPermessi.map(permesso => {
-            if (permesso.enteId === null && permesso.listaFunzioni.length === 0) {
-              // creazione funzione per permesso amministrativo al momento dell'inserimento
-              const funzionePermessoAmministrativo = new PermessoFunzione();
-              funzionePermessoAmministrativo.permessoId = null;
-              funzionePermessoAmministrativo.permessoCancellato = false;
-              funzionePermessoAmministrativo.funzioneId = null;
-              const listaFunzioniAmministrative: PermessoFunzione[] = [funzionePermessoAmministrativo];
-              permesso.listaFunzioni = listaFunzioniAmministrative;
-            }
-            permesso.dataFineValidita = permesso.dataFineValidita ?
-              moment(permesso.dataFineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-            permesso.dataInizioValidita = permesso.dataInizioValidita ?
-              moment(permesso.dataInizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-            return permesso;
-          });
-          this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessi, this.amministrativoService.idFunzione)
-            .pipe(map(res => {
-              this.asyncSubject.next(codiceFiscale);
-              this.asyncSubject.complete();
-            }))
-            .subscribe();
-        } else {
-          this.asyncSubject.next(codiceFiscale);
-          this.asyncSubject.complete();
+    const codiceFiscale = this.isModifica ? this.codiceFiscaleModifica : this.codiceFiscale;
+    if (!this.isModifica && !this.isDettaglio) {
+      // controllo su codice fiscale
+      this.utenteService.letturaCodiceFiscale(this.codiceFiscale, this.amministrativoService.idFunzione).subscribe((data) => {
+        const codiciFiscaleUpperCase = data.map(value => value.toUpperCase());
+        const iscodiceFiscaleEsistente = codiciFiscaleUpperCase.includes(this.codiceFiscale.toUpperCase());
+        if (iscodiceFiscaleEsistente) {
+        const banner: Banner = {
+          titolo: 'ATTENZIONE',
+          testo: 'Utente già presente',
+          tipo: getBannerType(LivelloBanner.ERROR)
+        };
+        this.bannerService.bannerEvent.emit([banner]);
+      } else {
+          this.inserimentoAggiornamentoUtente(codiceFiscale, utente);
         }
-      })).subscribe();
+      });
+    } else {
+      // nessun controllo codice fiscale
+      this.inserimentoAggiornamentoUtente(codiceFiscale, utente);
+    }
     this.asyncSubject.subscribe(cf => {
       this.codiceFiscaleModifica = cf;
-      this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      this.router.routeReuseStrategy.shouldReuseRoute = function() {
         return false;
-      }
+      };
       this.router.onSameUrlNavigation = 'reload';
       this.router.navigate(['/modificaUtentePermessi', cf]);
     });
   }
 
-  onClickAnnulla() {
+  private inserimentoAggiornamentoUtente(codiceFiscale: string, utente: InserimentoModificaUtente) {
+    this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.amministrativoService.idFunzione).subscribe((err) => {
+      if (err == null) {
+        // se presenti inserimento permessi
+        const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
+        if (listaPermessi.length > 0) {
+          this.inserimentoAggiornamentoPermessi(listaPermessi, codiceFiscale);
+        } else {
+          this.asyncSubject.next(codiceFiscale);
+          this.asyncSubject.complete();
+        }
+      }
+    });
+  }
+
+  private inserimentoAggiornamentoPermessi(listaPermessi: PermessoCompleto[], codiceFiscale: string) {
+    // creo permessi da inserire
+    const listaPermessiDaInserire = listaPermessi.map(permesso => {
+      if (permesso.enteId === null && permesso.listaFunzioni.length === 0) {
+        // creazione funzione per permesso amministrativo al momento dell'inserimento
+        const funzionePermessoAmministrativo = new PermessoFunzione();
+        funzionePermessoAmministrativo.permessoId = null;
+        funzionePermessoAmministrativo.permessoCancellato = false;
+        funzionePermessoAmministrativo.funzioneId = null;
+        const listaFunzioniAmministrative: PermessoFunzione[] = [funzionePermessoAmministrativo];
+        permesso.listaFunzioni = listaFunzioniAmministrative;
+      }
+      permesso.dataFineValidita = permesso.dataFineValidita ?
+        moment(permesso.dataFineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+      permesso.dataInizioValidita = permesso.dataInizioValidita ?
+        moment(permesso.dataInizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+      return permesso;
+    });
+    // chiamata be inserimento modifica permessi
+    this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessiDaInserire, this.amministrativoService.idFunzione)
+      .subscribe(() => {
+        this.asyncSubject.next(codiceFiscale);
+        this.asyncSubject.complete();
+      });
+  }
+
+  onClickAnnullaButton() {
+    let funzione = FunzioneGestioneEnum.AGGIUNGI;
+    if (this.isDettaglio) {
+      funzione = FunzioneGestioneEnum.DETTAGLIO;
+    }
+    this.onClickAnnulla(funzione);
+  }
+
+  tornaIndietro() {
     this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 }

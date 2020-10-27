@@ -11,13 +11,20 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {MenuService} from '../../../../../../services/menu.service';
 import {Societa} from '../../../../model/Societa';
 import {Breadcrumb} from '../../../../dto/Breadcrumb';
+import {GestisciElementoComponent} from "../../gestisci-elemento.component";
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {Utils} from '../../../../../../utils/Utils';
+import {ConfirmationService} from 'primeng/api';
+import {Colonna} from '../../../../model/tabella/Colonna';
+import {Ente} from "../../../../model/Ente";
+import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 
 @Component({
   selector: 'app-gestisci-enti',
   templateUrl: './gestisci-enti.component.html',
   styleUrls: ['./gestisci-enti.component.scss']
 })
-export class GestisciEntiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciEntiComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli enti a cui sei abilitato e filtrarli';
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
@@ -56,12 +63,13 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
   tempTableData;
   waiting = true;
 
-  constructor(router: Router, overlayService: OverlayService,
+  constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private el: ElementRef,
-              private menuService: MenuService
+              private menuService: MenuService,
+              private confirmationService: ConfirmationService
   ) {
-    super(router, overlayService, route, http, amministrativoService);
+    super(router, route, http, amministrativoService);
   }
 
   ngOnInit(): void {
@@ -81,8 +89,11 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
   }
 
   init() {
-    this.inizializzaBreadcrumbList();
-    this.popolaLista();
+    this.breadcrumbList = this.inizializzaBreadcrumbList([
+      {label: 'Gestisci Anagrafiche', link: null},
+      {label: 'Gestisci Enti', link: null}
+      ]);
+    this.popolaListaElementi();
   }
 
   ngAfterViewInit(): void {
@@ -91,16 +102,8 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
     }
   }
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList = [];
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Enti', null, null));
-  }
+  popolaListaElementi() {
 
-  popolaLista() {
- 
     this.waiting = false;
     /* this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
        this.listaSocieta = listaSocieta;
@@ -110,55 +113,82 @@ export class GestisciEntiComponent extends AmministrativoParentComponent impleme
          this.tableData.rows.push(this.creaRigaTabella(societa));
        });
        this.tempTableData = Object.assign({}, this.tableData);
-       this.overlayService.caricamentoEvent.emit(false);
        this.waiting = false;
      });*/
+  }
+
+  creaRigaTabella(ente: Ente) {
+    // TODO formattazione riga tabella
   }
 
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiEnte();
+        this.aggiungiElemento('/aggiungiEnte');
         break;
       case ToolEnum.UPDATE:
-        this.modificaEnteSelezionato();
+        // TODO logica modifica dell'ente selezionato
+        // this.modificaElementoSelezionato('/modificaEnte', idEnte);
         break;
       case ToolEnum.DELETE:
         this.eliminaEntiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf();
+        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Enti');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel();
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Enti');
         break;
     }
   }
 
-  onChangeListaSocieta(listaSocietaFiltrate: Societa[]): void {
+  onChangeListaElementi(listaSocietaFiltrate: Societa[]): void {
     this.tableData.rows.length = 0;
     listaSocietaFiltrate.forEach(societa => {
 //      this.tableData.rows.push(this.creaRigaTabella(societa));
     });
   }
 
-  private aggiungiEnte() {
-
+  getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    // TODO implementa get colonne pdf
+    return [];
   }
 
-  private modificaEnteSelezionato() {
-
+  getRigheFilePdf(righe: any[]) {
+    // TODO implementa get righe pdf
+    return [];
   }
 
-  private esportaTabellaInFilePdf() {
-
+  getImmaginiFilePdf(): ImmaginePdf[] {
+    // TODO implementa get immagini pdf
+    return [];
   }
 
-  private esportaTabellaInFileExcel() {
+  getColonneFileExcel(colonne: Colonna[]) {
+    // TODO implementa get colonne excel
+    return [];
+  }
 
+  getRigheFileExcel(righe: any[]) {
+    // TODO implementa get righe excel
+    return [];
   }
 
   private eliminaEntiSelezionati() {
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          // TODO elimina enti
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
+  }
 
+  selezionaRigaTabella(righeSelezionate: any[]) {
+    // TODO seleziona riga tabella
+  }
+
+  getNumeroRecord(): string {
+    return 'Totale: ' + this.tableData.rows.length + ' enti';
   }
 }

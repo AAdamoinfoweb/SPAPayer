@@ -1,18 +1,22 @@
 import {Component, OnInit} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Breadcrumb} from '../../../../../dto/Breadcrumb';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Societa} from '../../../../../model/Societa';
 import {SocietaService} from '../../../../../../../services/societa.service';
+import {FormElementoParentComponent} from "../../../form-elemento-parent.component";
+import {ConfirmationService} from 'primeng/api';
+import {Utils} from '../../../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-dettaglio-societa',
-  templateUrl: './dettaglio-societa.component.html',
-  styleUrls: ['./dettaglio-societa.component.scss']
+  templateUrl: './form-societa.component.html',
+  styleUrls: ['./form-societa.component.scss']
 })
-export class DettaglioSocietaComponent implements OnInit {
+export class FormSocietaComponent extends FormElementoParentComponent implements OnInit {
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
@@ -28,36 +32,33 @@ export class DettaglioSocietaComponent implements OnInit {
     private router: Router,
     private amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
-    private societaService: SocietaService
-  ) { }
+    private societaService: SocietaService,
+    confirmationService: ConfirmationService
+  ) { super(confirmationService);}
 
   ngOnInit(): void {
-    this.overlayService.caricamentoEvent.emit(true);
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
-      this.inizializzaBreadcrumbList();
-      this.titoloPagina = this.getTestoFunzione() + ' Società';
-      this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(false) + ' i dettagli di una società';
+      this.inizializzaBreadcrumb();
+      this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Società';
+      this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una società';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
         this.societa.id = parseInt(this.activatedRoute.snapshot.paramMap.get('societaid'));
         this.societaService.ricercaSocieta(this.societa.id, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
           this.societa = listaSocieta[0];
-          this.overlayService.caricamentoEvent.emit(false);
         })
       } else {
-        this.overlayService.caricamentoEvent.emit(false);
       }
     });
   }
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList = [];
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Anagrafiche', null, null));
-    this.breadcrumbList.push(new Breadcrumb(3, 'Gestisci Società', null, null));
-    this.breadcrumbList.push(new Breadcrumb(4, this.getTestoFunzione() + ' Società', null, null));
-  }
+  inizializzaBreadcrumb(): void {
+    const breadcrumbs: SintesiBreadcrumb[] = []
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Società', '/societa/' + this.amministrativoService.idFunzione));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Società', null));
+    this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
+    }
 
   controllaTipoFunzione() {
     const url = this.activatedRoute.snapshot.url[0].path;
@@ -74,39 +75,19 @@ export class DettaglioSocietaComponent implements OnInit {
     }
   }
 
-  getTestoFunzione(isTitolo: boolean = true) {
-    switch (this.funzione) {
-      case FunzioneGestioneEnum.DETTAGLIO:
-        return isTitolo ? 'Dettaglio' : 'visualizzare';
-        break;
-      case FunzioneGestioneEnum.AGGIUNGI:
-        return isTitolo ? 'Aggiungi' : 'aggiungere';
-        break;
-      case FunzioneGestioneEnum.MODIFICA:
-        return isTitolo ? 'Modifica' : 'modificare';
-        break;
-      default:
-        return '';
-    }
-  }
-
-  onClickAnnulla() {
-    this.overlayService.caricamentoEvent.emit(true);
+  tornaIndietro() {
     this.router.navigateByUrl('/societa?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 
-  onClickSalva() {
-    this.overlayService.caricamentoEvent.emit(true);
+  onClickSalva(): void {
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
         this.societaService.aggiuntaSocieta(this.societa, this.amministrativoService.idFunzione).subscribe((societa) => {
-          this.overlayService.caricamentoEvent.emit(false);
           this.societa = new Societa();
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
         this.societaService.modificaSocieta(this.societa, this.amministrativoService.idFunzione).subscribe(() => {
-          this.overlayService.caricamentoEvent.emit(false);
         });
         break;
     }

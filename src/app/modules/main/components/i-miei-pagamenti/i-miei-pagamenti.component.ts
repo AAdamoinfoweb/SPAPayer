@@ -21,6 +21,8 @@ import {AsyncSubject} from 'rxjs';
 import {DatiPagamento} from '../../model/bollettino/DatiPagamento';
 import {OverlayService} from '../../../../services/overlay.service';
 import {ListaPagamentiFiltri} from "../../model/bollettino/imieipagamenti/ListaPagamentiFiltri";
+import {TipoModaleEnum} from '../../../../enums/tipoModale.enum';
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'app-i-miei-pagamenti',
@@ -53,9 +55,11 @@ export class IMieiPagamentiComponent implements OnInit {
   toolbarIcons = [
     {type: ToolEnum.INSERT},
     {type: ToolEnum.INSERT_CARRELLO},
-    {type: ToolEnum.DELETE},
+    {type: ToolEnum.DELETE, disabled: true},
     {type: ToolEnum.EXPORT_PDF}
   ];
+
+  readonly indiceIconaElimina = 2;
 
   // table
   tableData = {
@@ -81,7 +85,9 @@ export class IMieiPagamentiComponent implements OnInit {
 
   constructor(private iMieiPagamentiService: IMieiPagamentiService, private router: Router,
               private nuovoPagamentoService: NuovoPagamentoService, private bannerService: BannerService,
-              private overlayService: OverlayService) {
+              private overlayService: OverlayService,
+              private confirmationService: ConfirmationService
+              ) {
     // init breadcrumb
     this.inizializzaBreadcrumb();
   }
@@ -97,8 +103,6 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
   private inizializzaListaPagamenti(filtri: ParametriRicercaPagamenti) {
-    // spinner
-    this.overlayService.caricamentoEvent.emit(true);
     this.iMieiPagamentiService.ricercaPagamenti(filtri).pipe(map(listaPagamenti => {
       this.riempiListaPagamenti({listaPagamenti, filtri});
     })).subscribe();
@@ -184,8 +188,6 @@ export class IMieiPagamentiComponent implements OnInit {
       });
       this.tableData.rows = pagamenti;
 
-      // termina spinner
-      this.overlayService.caricamentoEvent.emit(false);
       // oggetto contenente le rows recuperate dalla ricerca
       // this.tempTableData.rows = Object.assign({}, this.tableData.rows);
     }
@@ -200,6 +202,8 @@ export class IMieiPagamentiComponent implements OnInit {
       tempPagamentiSelezionati.push(...pagamentoSelezionato);
     });
     this.pagamentiSelezionati = tempPagamentiSelezionati;
+
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.pagamentiSelezionati.length === 0;
   }
 
   inserimentoCarrello() {
@@ -216,16 +220,23 @@ export class IMieiPagamentiComponent implements OnInit {
   }
 
   eliminaPagamenti() {
-    const possibilitaInserimentoCarrello = this.controlloValiditaPagamentiEliminaPagamenti();
-    if (possibilitaInserimentoCarrello) {
-      const dettagliTransazione: DettagliTransazione = new DettagliTransazione();
-      dettagliTransazione.listaDettaglioTransazioneId = this.pagamentiSelezionati.map(pagamento => pagamento.dettaglioTransazioneId);
-      this.iMieiPagamentiService.eliminaBollettino(dettagliTransazione).pipe(map(value => {
-        this.inizializzaListaPagamenti(this.filtri);
-      })).subscribe();
-    } else {
-      this.mostraBannerError(this.MESSAGGIO_ERRORE_AZIONE);
-    }
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          const possibilitaInserimentoCarrello = this.controlloValiditaPagamentiEliminaPagamenti();
+          if (possibilitaInserimentoCarrello) {
+            const dettagliTransazione: DettagliTransazione = new DettagliTransazione();
+            dettagliTransazione.listaDettaglioTransazioneId = this.pagamentiSelezionati.map(pagamento => pagamento.dettaglioTransazioneId);
+            this.iMieiPagamentiService.eliminaBollettino(dettagliTransazione).pipe(map(value => {
+              this.inizializzaListaPagamenti(this.filtri);
+              this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+            })).subscribe();
+          } else {
+            this.mostraBannerError(this.MESSAGGIO_ERRORE_AZIONE);
+          }
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
   }
 
   stampaAttestatiPagamento() {

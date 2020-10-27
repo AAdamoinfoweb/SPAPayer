@@ -46,7 +46,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroLivelloTerritoriale(): void {
-    this.overlayService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
       livelliTerritoriali.forEach(livello => {
         this.listaLivelliTerritoriali.push({
@@ -104,9 +103,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       }
     }
 
-    if (!this.datiPagamento) {
-      this.overlayService.caricamentoEvent.emit(false);
-    }
   }
 
   selezionaLivelloTerritoriale(): void {
@@ -120,7 +116,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale?): void {
-    this.overlayService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale, null, null).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
@@ -151,7 +146,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroServizi(idEnte?): void {
-    this.overlayService.caricamentoEvent.emit(true);
     this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
       servizi.forEach(servizio => {
         this.listaServizi.push({
@@ -174,7 +168,6 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   selezionaServizio(): void {
-    this.overlayService.caricamentoEvent.emit(true);
     this.servizioSelezionato.enteNome = this.enteSelezionato.nome;
     this.nuovoPagamentoService.compilazioneEvent.emit(this.servizioSelezionato);
   }

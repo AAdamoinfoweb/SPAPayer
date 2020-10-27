@@ -17,13 +17,15 @@ import {AmministrativoParentComponent} from "../amministrativo-parent.component"
 import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from "../../../../../services/amministrativo.service";
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
+import {GestisciElementoComponent} from "../gestisci-elemento.component";
+import {Colonna} from '../../../model/tabella/Colonna';
 
 @Component({
   selector: 'app-gestione-utenti',
   templateUrl: './gestisci-utenti.component.html',
   styleUrls: ['./gestisci-utenti.component.scss']
 })
-export class GestisciUtentiComponent extends AmministrativoParentComponent implements OnInit, AfterViewInit {
+export class GestisciUtentiComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
@@ -38,6 +40,8 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
     {type: ToolEnum.EXPORT_PDF},
     {type: ToolEnum.EXPORT_XLS}
   ];
+
+  indiceIconaModifica = 1;
 
   tabs = [
     {value: TipoUtenteEnum.TUTTI},
@@ -81,7 +85,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
   constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient,
               private renderer: Renderer2, private el: ElementRef, amministrativoService: AmministrativoService) {
-    super(router, overlayService, route, http, amministrativoService);
+    super(router, route, http, amministrativoService);
     this.route.queryParams.subscribe(params => {
       if (params.societaId) {
         this.filtroSocieta = parseInt(params.societaId);
@@ -89,28 +93,26 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
     })
   }
 
-  inizializzaBreadcrumbList(): void {
-    this.breadcrumbList.push(new Breadcrumb(0, 'Home', '/', null));
-    this.breadcrumbList.push(new Breadcrumb(1, 'Amministra Portale', null, null));
-    this.breadcrumbList.push(new Breadcrumb(2, 'Gestisci Utenti', null, null));
-  }
-
   ngOnInit(): void {
     this.waitingEmitter.subscribe((value) => {
       this.waiting = value;
-      this.inizializzaBreadcrumbList();
-
-      const parametriRicercaUtente = new ParametriRicercaUtente();
-      this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
-        if (utenti != null) {
-          utenti.forEach(utente => {
-            this.listaUtente.push(utente);
-            this.tableData.rows.push(this.creaRigaTabella(utente));
-          });
-        }
-        this.tempTableData = Object.assign({}, this.tableData);
-      })).subscribe();
+      this.breadcrumbList = this.inizializzaBreadcrumbList([{label: 'Gestisci Utenti', link: null}]);
+      this.popolaListaElementi();
     });
+  }
+
+  popolaListaElementi() {
+    this.listaUtente = [];
+    const parametriRicercaUtente = new ParametriRicercaUtente();
+    this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
+      if (utenti != null) {
+        utenti.forEach(utente => {
+          this.listaUtente.push(utente);
+          this.tableData.rows.push(this.creaRigaTabella(utente));
+        });
+      }
+      this.tempTableData = Object.assign({}, this.tableData);
+    })).subscribe();
   }
 
   ngAfterViewInit(): void {
@@ -175,18 +177,31 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
 
   eseguiAzioni(azioneTool) {
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
-    if (azioneTool === ToolEnum.INSERT) {
-      this.router.navigateByUrl('/aggiungiUtentePermessi');
-    } else if (azioneTool === ToolEnum.UPDATE) {
-      this.router.navigate(['/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare]);
-    } else if (azioneTool === ToolEnum.EXPORT_PDF) {
-      this.esportaTabellaInFilePdf(dataTable);
-    } else if (azioneTool === ToolEnum.EXPORT_XLS) {
-      this.esportaTabellaInFileExcel(dataTable);
+    switch (azioneTool) {
+      case ToolEnum.INSERT:
+        this.aggiungiElemento('/aggiungiUtentePermessi');
+        break;
+      case ToolEnum.UPDATE:
+      this.modificaElementoSelezionato('/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare);
+        break;
+      case ToolEnum.EXPORT_PDF:
+        this.esportaTabellaInFilePdf(dataTable, 'Lista Utenti');
+        break;
+      case ToolEnum.EXPORT_XLS:
+        this.esportaTabellaInFileExcel(dataTable, 'Lista Utenti');
+        break;
     }
   }
 
-  esportaTabellaInFilePdf(dataTable: any): void {
+  getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    return colonne;
+  }
+
+  getRigheFilePdf(righe: any[]) {
+    return righe;
+  }
+
+  getImmaginiFilePdf(): ImmaginePdf[] {
     const iconaUtenteAttivo = new ImmaginePdf();
     iconaUtenteAttivo.indiceColonna = 0;
     iconaUtenteAttivo.srcIcona = 'assets/img/active-user.png';
@@ -194,29 +209,26 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
     iconaUtenteAttivo.posizioneY = 2;
     iconaUtenteAttivo.larghezza = 18;
     iconaUtenteAttivo.altezza = 17;
-    Utils.esportaTabellaInFilePdf(dataTable, 'Lista Utenti', [
-      iconaUtenteAttivo
-    ]);
+    return [iconaUtenteAttivo];
   }
 
-  esportaTabellaInFileExcel(dataTable: any): void {
-    const customHeaders = dataTable.cols.map(col => col.header);
-    dataTable.rows = dataTable.rows.map(row => {
-      let newRow = row;
-      newRow.iconaUtente = row.iconaUtente.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
-      newRow.id = row.id.value;
-      newRow.nome = row.nome.value;
-      newRow.gruppoAbilitazioni = row.gruppoAbilitazioni.value;
-      newRow.scadenza = row.scadenza.value;
-      newRow.ultimoAccesso = row.ultimoAccesso?.testo;
-      return newRow;
+  getRigheFileExcel(righe: any[]) {
+    return righe.map(riga => {
+      riga.iconaUtente = riga.iconaUtente.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
+      riga.id = riga.id.value;
+      riga.nome = riga.nome.value;
+      riga.gruppoAbilitazioni = riga.gruppoAbilitazioni.value;
+      riga.scadenza = riga.scadenza.value;
+      riga.ultimoAccesso = riga.ultimoAccesso?.testo;
+      return riga;
     });
-
-    const workbook = {Sheets: {'Utenti': null}, SheetNames: []};
-    Utils.creaFileExcel(dataTable.rows, customHeaders, 'Utenti', ['Utenti'], workbook, 'Lista Utenti');
   }
 
-  onChangeListaUtenti(listaUtentiFiltrati: RicercaUtente[]): void {
+  getColonneFileExcel(colonne: Colonna[]) {
+    return colonne;
+  }
+
+  onChangeListaElementi(listaUtentiFiltrati: RicercaUtente[]): void {
     this.tableData.rows.length = 0;
     listaUtentiFiltrati.forEach(utente => {
       this.tableData.rows.push(this.creaRigaTabella(utente));
@@ -224,7 +236,7 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
     this.onChangeTab(this.nomeTabCorrente);
   }
 
-  getTotaliPerRecord(): string {
+  getNumeroRecord(): string {
     const numeroUtentiAttivi = this.tableData.rows.filter(row => row.iconaUtente.display === 'inline').length;
     const numeroUtentiDisabilitati = this.tableData.rows.filter(row => row.iconaUtente.display === 'none').length;
     return 'Totale: ' + this.tableData.rows.length + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
@@ -233,14 +245,14 @@ export class GestisciUtentiComponent extends AmministrativoParentComponent imple
   selezionaRigaTabella(rowsChecked): void {
     if (rowsChecked.length === 1) {
       this.codiceFiscaleUtenteDaModificare = rowsChecked[0].id.value;
-      this.toolbarIcons[1].disabled = false;
+      this.toolbarIcons[this.indiceIconaModifica].disabled = false;
     } else {
       this.codiceFiscaleUtenteDaModificare = null;
-      this.toolbarIcons[1].disabled = true;
+      this.toolbarIcons[this.indiceIconaModifica].disabled = true;
     }
   }
 
   dettaglioUtente(row: any) {
-    this.router.navigate(['/dettaglioUtentePermessi', row.id.value]);
+    this.mostraDettaglioElemento('/dettaglioUtentePermessi', row.id.value);
   }
 }

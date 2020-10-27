@@ -17,7 +17,7 @@
   </h3>
 
   <!-- Sottosezione Filtri -->
-  <app-filtro-gestione-banner [listaBanner]="listaBanner" (onChangeListaBanner)="onChangeListaBanner($event)"></app-filtro-gestione-banner>
+  <app-filtro-gestione-banner [listaElementi]="listaBanner" (onChangeListaElementi)="onChangeListaElementi($event)"></app-filtro-gestione-banner>
 
   <!-- Sottosezione Lista Banner -->
   <div class="collapse-header" id="idCollapseListaBanner">
@@ -41,7 +41,7 @@
                      [cols]="tempTableData.cols"
                      [rows]="tempTableData.rows"
                      [tipoTabella]="tempTableData.tipoTabella"
-                     [textLeft]="getTotaliPerRecord()"
+                     [textLeft]="getNumeroRecord()"
                      (onSelection)="selezionaRigaTabella($event)"
                      [selectedRows]="true"
                      (onClickRow)="mostraDettaglioBanner($event)">
@@ -51,3 +51,11 @@
     </div>
   </div>
 </div>
+
+<!-- Modale -->
+<p-confirmDialog #cb icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
+    <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
+  </p-footer>
+</p-confirmDialog>
