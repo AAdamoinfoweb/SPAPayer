@@ -153,7 +153,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   }
 
   mostraDettaglioSocieta(rigaTabella) {
-    this.router.navigate(['/dettaglioSocieta', rigaTabella.id.value]);
+    this.mostraDettaglioElemento('/dettaglioSocieta', rigaTabella.id.value);
   }
 
   modificaSocietaSelezionata() {

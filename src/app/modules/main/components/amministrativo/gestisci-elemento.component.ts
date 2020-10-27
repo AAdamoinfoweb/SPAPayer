@@ -2,7 +2,7 @@ import {Breadcrumb, SintesiBreadcrumb} from '../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../services/amministrativo.service';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Utils} from "../../../../utils/Utils";
+import {Utils} from '../../../../utils/Utils';
 import {AmministrativoParentComponent} from './amministrativo-parent.component';
 import {Tabella} from '../../model/tabella/Tabella';
 import {Colonna} from '../../model/tabella/Colonna';
@@ -33,7 +33,9 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   // TODO generalizzare eseguiAzioni
 
-  // TODO generalizzare mostraDettaglioElemento
+  mostraDettaglioElemento(link: string, id: number) {
+    this.router.navigate([link, id]);
+  }
 
   // TODO generalizzare o astrarre eliminaListaIdElementiSelezionati
 

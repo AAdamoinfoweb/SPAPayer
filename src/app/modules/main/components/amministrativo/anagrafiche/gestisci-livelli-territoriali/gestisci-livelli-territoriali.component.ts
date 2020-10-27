@@ -149,8 +149,8 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   }
 
   mostraDettaglioLivelloTerritoriale(rigaTabella) {
-    // this.router.navigate(['/dettaglioLivelloTerritoriale', rigaTabella.id.value]);
-    this.router.navigate(['/dettaglioLivelloTerritoriale', 2]);
+    this.mostraDettaglioElemento('/dettaglioLivelloTerritoriale', rigaTabella.id.value);
+    // this.mostraDettaglioElemento('/dettaglioLivelloTerritoriale', 2);
   }
 
   modificaLivelloTerritorialeSelezionato() {

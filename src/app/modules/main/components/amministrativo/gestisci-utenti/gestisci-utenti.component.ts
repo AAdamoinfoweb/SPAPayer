@@ -228,6 +228,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   dettaglioUtente(row: any) {
-    this.router.navigate(['/dettaglioUtentePermessi', row.id.value]);
+    this.mostraDettaglioElemento('/dettaglioUtentePermessi', row.id.value);
   }
 }
