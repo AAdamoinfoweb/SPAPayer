@@ -61,9 +61,8 @@ import {FiltroGestioneLivelliTerritorialiComponent} from './modules/main/compone
 import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
 import {FiltroGestioneBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/filtro-gestione-banner/filtro-gestione-banner.component';
 import {GestisciEntiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component';
-import {InputSwitchModule} from 'primeng/inputswitch';
 import {SpinnerOverlayComponent} from './components/spinner-overlay/spinner-overlay.component';
-import {OverlayModule} from "@angular/cdk/overlay";
+import {OverlayModule} from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -145,7 +144,6 @@ import {OverlayModule} from "@angular/cdk/overlay";
     CustomFormsModule,
     AutoCompleteModule,
     TreeTableModule,
-    InputSwitchModule,
     OverlayModule
   ],
   providers: [
