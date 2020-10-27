@@ -25,13 +25,13 @@ import {MonitoraAccessiComponent} from './modules/main/components/amministrativo
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
   {path: 'home', component: HomeComponent},
-  {
+  /*{
     path: 'riservata',
     loadChildren: () => import('src/app/modules/main/main.module').then(m => m.MainModule),
     canActivate: [
       AuthguardService
     ]
-  },
+  },*/
   {path: 'erroregenerico', component: GenericErrorComponent},
   {path: 'nonautorizzato', component: NonautorizzatoComponent},
   {path: 'carrelloL1', component: CarrelloL1Component, pathMatch: 'full'},
@@ -40,7 +40,9 @@ const routes: Routes = [
   {path: 'waitingL1', component: WaitingL1Component, pathMatch: 'full'},
   {path: 'waiting', component: WaitingComponent, pathMatch: 'full'},
   {path: 'privacy', component: PrivacyComponent},
-  {path: 'nuovoPagamento', component: NuovoPagamentoComponent},
+  {path: 'nuovoPagamento', component: NuovoPagamentoComponent, canActivate: [
+      AuthguardService
+    ]},
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
   {path: 'gestioneUtenti', component: GestisciUtentiComponent},
   {path: 'aggiungiUtentePermessi', component: FormUtentePermessiComponent},

@@ -47,7 +47,7 @@ export class ListaPagamentiComponent implements OnInit {
 
   @Output()
   urlBackEmitterChange: EventEmitter<string> = new EventEmitter<string>();
-  tooltipBottoneSalvaPerDopo: string = 'É necessario autenticarsi per poter premere questo bottone e salvare il bollettino appena compilato nella sezione \"I miei pagamenti\"';
+  tooltipBottoneSalvaPerDopo: string = 'Per attivare il bottone accedi o registrati';
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private route: Router,
               public menuService: MenuService,
