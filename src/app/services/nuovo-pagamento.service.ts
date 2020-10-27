@@ -37,7 +37,7 @@ export class NuovoPagamentoService {
   private verificaEsitoPagamentoUrl = '/verificaEsitoPagamento';
 
   compilazioneEvent: EventEmitter<FiltroServizio> = new EventEmitter<FiltroServizio>();
-  prezzoEvent: EventEmitter<number> = new EventEmitter<number>();
+  prezzoEvent: EventEmitter<any> = new EventEmitter<any>();
   pulisciEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private readonly http: HttpClient) {

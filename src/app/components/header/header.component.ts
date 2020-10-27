@@ -42,11 +42,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.events.pipe(filter(evento => evento instanceof NavigationEnd)).subscribe(event => {
       this.isPaginaNuovoPagamento = window.location.pathname === this.urlNuovoPagamento;
     });
-    this.nuovoPagamentoService.prezzoEvent.subscribe((prezzo: number) => {
-      if (prezzo)
-        this.prezzoCarrello = this.prezzoCarrello == null ? prezzo : this.prezzoCarrello + prezzo;
-      else
-        this.prezzoCarrello = prezzo;
+    this.nuovoPagamentoService.prezzoEvent.subscribe((obj: any) => {
+
+      if (!obj.type) {
+        this.prezzoCarrello = obj.value;
+      } else if (obj.type == 'add') {
+        this.prezzoCarrello = this.prezzoCarrello == null ? obj.value : this.prezzoCarrello + obj.value;
+      }
     });
   }
 
