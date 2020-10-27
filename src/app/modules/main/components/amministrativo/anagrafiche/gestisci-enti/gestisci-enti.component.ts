@@ -91,7 +91,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
       {label: 'Gestisci Anagrafiche', link: null},
       {label: 'Gestisci Enti', link: null}
       ]);
-    this.popolaLista();
+    this.popolaListaElementi();
   }
 
   ngAfterViewInit(): void {
@@ -100,7 +100,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     }
   }
 
-  popolaLista() {
+  popolaListaElementi() {
 
     this.waiting = false;
     /* this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {

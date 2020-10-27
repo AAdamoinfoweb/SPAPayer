@@ -92,7 +92,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
       {label: 'Gestisci Anagrafiche', link: null},
       {label: 'Gestisci Livelli Territoriali', link: null}
     ]);
-    this.popolaListaLivelliTerritoriali();
+    this.popolaListaElementi();
   }
 
   ngAfterViewInit(): void {
@@ -100,7 +100,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
-  popolaListaLivelliTerritoriali() {
+  popolaListaElementi() {
     this.listaLivelliTerritoriali = [];
     this.livelloTerritorialeService.ricercaLivelliTerritoriali(null, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
       this.listaLivelliTerritoriali = listaLivelliTerritoriali;
@@ -161,7 +161,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     this.confirmationService.confirm(
       Utils.getModale(() => {
           this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.amministrativoService.idFunzione).subscribe(() => {
-            this.popolaListaLivelliTerritoriali();
+            this.popolaListaElementi();
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });

@@ -92,10 +92,10 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Gestisci Banner', link: null}
     ]);
-    this.popolaListaBanner();
+    this.popolaListaElementi();
   }
 
-  popolaListaBanner(): void {
+  popolaListaElementi(): void {
     this.listaBanner = [];
     const parametriRicercaBanner = new ParametriRicercaBanner();
 
@@ -163,7 +163,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     this.confirmationService.confirm(
       Utils.getModale(() => {
           this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.amministrativoService.idFunzione).pipe(map(() => {
-            this.popolaListaBanner();
+            this.popolaListaElementi();
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           })).subscribe();

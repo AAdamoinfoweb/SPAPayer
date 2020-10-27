@@ -95,18 +95,22 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     this.waitingEmitter.subscribe((value) => {
       this.waiting = value;
       this.breadcrumbList = this.inizializzaBreadcrumbList([{label: 'Gestisci Utenti', link: null}]);
-
-      const parametriRicercaUtente = new ParametriRicercaUtente();
-      this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
-        if (utenti != null) {
-          utenti.forEach(utente => {
-            this.listaUtente.push(utente);
-            this.tableData.rows.push(this.creaRigaTabella(utente));
-          });
-        }
-        this.tempTableData = Object.assign({}, this.tableData);
-      })).subscribe();
+      this.popolaListaElementi();
     });
+  }
+
+  popolaListaElementi() {
+    this.listaUtente = [];
+    const parametriRicercaUtente = new ParametriRicercaUtente();
+    this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
+      if (utenti != null) {
+        utenti.forEach(utente => {
+          this.listaUtente.push(utente);
+          this.tableData.rows.push(this.creaRigaTabella(utente));
+        });
+      }
+      this.tempTableData = Object.assign({}, this.tableData);
+    })).subscribe();
   }
 
   ngAfterViewInit(): void {
@@ -171,14 +175,19 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   eseguiAzioni(azioneTool) {
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
-    if (azioneTool === ToolEnum.INSERT) {
-      this.aggiungiElemento('/aggiungiUtentePermessi');
-    } else if (azioneTool === ToolEnum.UPDATE) {
-      this.router.navigate(['/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare]);
-    } else if (azioneTool === ToolEnum.EXPORT_PDF) {
-      this.esportaTabellaInFilePdf(dataTable);
-    } else if (azioneTool === ToolEnum.EXPORT_XLS) {
-      this.esportaTabellaInFileExcel(dataTable, 'Utenti');
+    switch (azioneTool) {
+      case ToolEnum.INSERT:
+        this.aggiungiElemento('/aggiungiUtentePermessi');
+        break;
+      case ToolEnum.UPDATE:
+        this.router.navigate(['/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare]);
+        break;
+      case ToolEnum.EXPORT_PDF:
+        this.esportaTabellaInFilePdf(dataTable);
+        break;
+      case ToolEnum.EXPORT_XLS:
+        this.esportaTabellaInFileExcel(dataTable, 'Utenti');
+        break;
     }
   }
 

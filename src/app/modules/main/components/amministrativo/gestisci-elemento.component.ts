@@ -2,10 +2,11 @@ import {Breadcrumb, SintesiBreadcrumb} from '../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../services/amministrativo.service';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Utils} from "../../../../utils/Utils";
+import {Utils} from '../../../../utils/Utils';
 import {AmministrativoParentComponent} from './amministrativo-parent.component';
 import {Tabella} from '../../model/tabella/Tabella';
 import {Colonna} from '../../model/tabella/Colonna';
+import {ToolEnum} from "../../../../enums/Tool.enum";
 
 
 export abstract class GestisciElementoComponent extends AmministrativoParentComponent {
@@ -15,6 +16,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
                         amministrativoService: AmministrativoService) {
     super(router, route, http, amministrativoService);
   }
+
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
     const breadcrumbList: SintesiBreadcrumb[] = [];
@@ -27,12 +29,11 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     this.router.navigateByUrl(link);
   }
 
-  // TODO astrarre popolaListaElementi
+  abstract popolaListaElementi(): void;
 
   // TODO generalizzare o astrarre creaRigaTabella
-
-  // TODO generalizzare eseguiAzioni
-
+  
+  abstract eseguiAzioni(azioneTool: ToolEnum): void;
   // TODO generalizzare mostraDettaglioElemento
 
   // TODO generalizzare o astrarre eliminaListaIdElementiSelezionati

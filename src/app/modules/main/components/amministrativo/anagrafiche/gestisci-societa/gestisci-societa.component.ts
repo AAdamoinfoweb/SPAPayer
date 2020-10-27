@@ -95,7 +95,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
       {label: 'Gestisci Anagrafiche', link: null},
       {label: 'Gestisci Società', link: null}
     ]);
-    this.popolaListaSocieta();
+    this.popolaListaElementi();
   }
 
   ngAfterViewInit(): void {
@@ -103,7 +103,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
   }
 
-  popolaListaSocieta() {
+  popolaListaElementi() {
     this.listaSocieta = [];
     this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
       this.listaSocieta = listaSocieta;
@@ -164,7 +164,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     this.confirmationService.confirm(
       Utils.getModale(() => {
           this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
-            this.popolaListaSocieta();
+            this.popolaListaElementi();
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
