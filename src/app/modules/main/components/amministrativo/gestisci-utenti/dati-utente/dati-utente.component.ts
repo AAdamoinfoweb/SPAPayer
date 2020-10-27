@@ -8,8 +8,8 @@ import * as moment from 'moment';
 import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaUtente';
 import {map} from 'rxjs/operators';
 import {Utils} from '../../../../../../utils/Utils';
-import {AmministrativoService} from "../../../../../../services/amministrativo.service";
-import {OverlayService} from "../../../../../../services/overlay.service";
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {OverlayService} from '../../../../../../services/overlay.service';
 
 @Component({
   selector: 'app-dati-utente',
@@ -42,8 +42,7 @@ export class DatiUtenteComponent implements OnInit {
   @Output()
   onValidaFormDatiUtenti: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private utenteService: UtenteService, private amministrativoService: AmministrativoService,
-              private overlayService: OverlayService) {
+  constructor(private utenteService: UtenteService, private amministrativoService: AmministrativoService) {
   }
 
   ngOnInit(): void {

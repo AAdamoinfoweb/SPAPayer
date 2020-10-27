@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import * as moment from 'moment';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
-import {FormGroup, NgForm, NgModel} from '@angular/forms';
+import {NgForm, NgModel} from '@angular/forms';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {OpzioneSelect} from '../../../../model/OpzioneSelect';
 import {FunzioneService} from '../../../../../../services/funzione.service';
@@ -19,10 +19,7 @@ import {Societa} from '../../../../model/Societa';
 import {NuovoPagamentoService} from '../../../../../../services/nuovo-pagamento.service';
 import {Ente} from '../../../../model/Ente';
 import {FiltroServizio} from '../../../../model/FiltroServizio';
-import {ParametriRicercaUtente} from "../../../../model/utente/ParametriRicercaUtente";
-import {PermessoService} from "../../../../../../services/permesso.service";
-import {AsyncSubject, Observable} from "rxjs";
-import {OverlayService} from "../../../../../../services/overlay.service";
+import {AsyncSubject} from 'rxjs';
 
 @Component({
   selector: 'app-dati-permesso',
@@ -62,8 +59,7 @@ export class DatiPermessoComponent implements OnInit {
 
 
   constructor(private funzioneService: FunzioneService, private societaService: SocietaService,
-              private amministrativoService: AmministrativoService, private nuovoPagamentoService: NuovoPagamentoService,
-              private permessoService: PermessoService, private overlayService: OverlayService) {
+              private amministrativoService: AmministrativoService, private nuovoPagamentoService: NuovoPagamentoService) {
   }
 
 
@@ -171,7 +167,6 @@ export class DatiPermessoComponent implements OnInit {
 
   isSelectValida(valoreCampo: number | string, listaOpzioniSelect: Array<OpzioneSelect>): boolean {
     return valoreCampo !== undefined && valoreCampo !== listaOpzioniSelect[listaOpzioniSelect.length - 1]?.value;
-    ;
   }
 
 

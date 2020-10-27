@@ -1,6 +1,5 @@
-import {NgForm} from "@angular/forms";
-import {EventEmitter} from "@angular/core";
-import {RicercaUtente} from "../../model/utente/RicercaUtente";
+import {NgForm} from '@angular/forms';
+import {EventEmitter} from '@angular/core';
 
 
 export abstract class FiltroGestioneElementiComponent {

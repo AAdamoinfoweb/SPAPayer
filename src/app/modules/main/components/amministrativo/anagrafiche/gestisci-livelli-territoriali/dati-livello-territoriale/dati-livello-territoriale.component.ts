@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
-import {Utils} from '../../../../../../../utils/Utils';
 import {NgForm, NgModel} from '@angular/forms';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 
