@@ -14,11 +14,11 @@ import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi
 export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneElementiComponent implements OnInit, OnChanges {
 
   @Input()
-  listaLivelliTerritoriali: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
+  listaElementi: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
   opzioniFiltroLivelliTerritoriali: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
   @Output()
-  onChangeListaLivelliTerritoriali: EventEmitter<LivelloTerritoriale[]> = new EventEmitter<LivelloTerritoriale[]>();
+  onChangeListaElementi: EventEmitter<LivelloTerritoriale[]> = new EventEmitter<LivelloTerritoriale[]>();
 
   filtroLivelliTerritoriali: number = null;
 
@@ -31,14 +31,14 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaLivelliTerritoriali) {
+    if (sc.listaElementi) {
       this.impostaOpzioniFiltroLivelliTerritoriali();
     }
   }
 
   impostaOpzioniFiltroLivelliTerritoriali(): void {
     this.opzioniFiltroLivelliTerritoriali = [];
-    this.listaLivelliTerritoriali.forEach(livelloTerritoriale => {
+    this.listaElementi.forEach(livelloTerritoriale => {
       this.opzioniFiltroLivelliTerritoriali.push({
         value: livelloTerritoriale.id,
         label: livelloTerritoriale.nome
@@ -61,12 +61,12 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.filtroLivelliTerritoriali = null;
-    this.onChangeListaLivelliTerritoriali.emit(this.listaLivelliTerritoriali);
+    this.onChangeListaElementi.emit(this.listaElementi);
   }
 
   cercaElementi(): void {
     this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.filtroLivelliTerritoriali, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
-      this.onChangeListaLivelliTerritoriali.emit(listaLivelliTerritoriali);
+      this.onChangeListaElementi.emit(listaLivelliTerritoriali);
     });
   }
 

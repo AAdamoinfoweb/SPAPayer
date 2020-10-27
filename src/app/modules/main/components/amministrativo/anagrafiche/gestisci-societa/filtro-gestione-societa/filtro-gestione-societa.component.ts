@@ -14,11 +14,11 @@ import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi
 export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiComponent implements OnInit, OnChanges {
 
   @Input()
-  listaSocieta: Array<Societa> = new Array<Societa>();
+  listaElementi: Array<Societa> = new Array<Societa>();
   opzioniFiltroSocieta: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
   @Output()
-  onChangeListaSocieta: EventEmitter<Societa[]> = new EventEmitter<Societa[]>();
+  onChangeListaElementi: EventEmitter<Societa[]> = new EventEmitter<Societa[]>();
 
   filtroSocieta: number = null;
 
@@ -31,14 +31,14 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaSocieta) {
+    if (sc.listaElementi) {
       this.impostaOpzioniFiltroSocieta();
     }
   }
 
   impostaOpzioniFiltroSocieta(): void {
     this.opzioniFiltroSocieta = [];
-    this.listaSocieta.forEach(societa => {
+    this.listaElementi.forEach(societa => {
       this.opzioniFiltroSocieta.push({
         value: societa.id,
         label: societa.nome
@@ -61,12 +61,12 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.filtroSocieta = null;
-    this.onChangeListaSocieta.emit(this.listaSocieta);
+    this.onChangeListaElementi.emit(this.listaElementi);
   }
 
   cercaElementi(): void {
     this.societaService.ricercaSocieta(this.filtroSocieta, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
-      this.onChangeListaSocieta.emit(listaSocieta);
+      this.onChangeListaElementi.emit(listaSocieta);
     });
   }
 

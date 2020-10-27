@@ -39,13 +39,13 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
 
   @Input()
-  listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
+  listaElementi: Array<RicercaUtente> = new Array<RicercaUtente>();
 
   @Input()
   filtroSocieta = null;
 
   @Output()
-  onChangeListaUtenti: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
+  onChangeListaElementi: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService, private utenteService: UtenteService, private overlayService: OverlayService,
@@ -79,7 +79,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           const parametriRicercaUtente = new ParametriRicercaUtente();
           parametriRicercaUtente.societaId = this.filtroSocieta;
           this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).subscribe(utenti => {
-            this.onChangeListaUtenti.emit(utenti);
+            this.onChangeListaElementi.emit(utenti);
           });
         } else {
           window.open('/nonautorizzato', '_self');
@@ -195,7 +195,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
-    this.onChangeListaUtenti.emit(this.listaUtente);
+    this.onChangeListaElementi.emit(this.listaElementi);
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
   }
 
@@ -215,7 +215,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
     }
 
     this.utenteService.ricercaUtenti(filtro, this.amministrativoService.idFunzione).pipe(map(listaUtenti => {
-        this.onChangeListaUtenti.emit(listaUtenti);
+        this.onChangeListaElementi.emit(listaUtenti);
     })).subscribe(value => {});
   }
 

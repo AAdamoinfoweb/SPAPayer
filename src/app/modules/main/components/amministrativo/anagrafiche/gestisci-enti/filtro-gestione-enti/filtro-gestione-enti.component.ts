@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
@@ -13,6 +13,7 @@ import {UtenteService} from '../../../../../../../services/utente.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Societa} from '../../../../../model/Societa';
 import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
+import {LivelloTerritoriale} from "../../../../../model/LivelloTerritoriale";
 
 @Component({
   selector: 'app-filtro-gestione-enti',
@@ -25,9 +26,17 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   opzioniFiltroLivelliTerritoriali: OpzioneSelect[] = [];
 
   @Input()
+    // todo cambiare any in model ente
+  listaElementi: Array<any> = new Array<any>();
+
+  @Input()
   filtroSocieta = null;
 
   filtroApplicato: ParametriRicercaUtente;
+
+  @Output()
+  // todo cambiare any in model ente
+  onChangeListaElementi: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService, private utenteService: UtenteService, private overlayService: OverlayService,
@@ -43,7 +52,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaSocieta) {
+    if (sc.listaElementi) {
       this.impostaOpzioniFiltroSocieta();
     }
   }

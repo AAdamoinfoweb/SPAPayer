@@ -27,10 +27,10 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
   filtroGestioneBannerApplicato: ParametriRicercaBanner;
 
   @Input()
-  listaBanner: Array<Banner> = new Array<Banner>();
+  listaElementi: Array<Banner> = new Array<Banner>();
 
   @Output()
-  onChangeListaBanner: EventEmitter<Banner[]> = new EventEmitter<Banner[]>();
+  onChangeListaElementi: EventEmitter<Banner[]> = new EventEmitter<Banner[]>();
 
   constructor(private bannerService: BannerService, private amministrativoService: AmministrativoService) {
     super();
@@ -94,7 +94,7 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
 
   pulisciFiltri(filtroGestioneBannerForm: NgForm): void {
     filtroGestioneBannerForm.resetForm();
-    this.onChangeListaBanner.emit(this.listaBanner);
+    this.onChangeListaElementi.emit(this.listaElementi);
     this.filtroGestioneBannerApplicato = new ParametriRicercaBanner();
   }
 
@@ -120,7 +120,7 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
     }
 
     this.bannerService.ricercaBanner(filtro, this.amministrativoService.idFunzione).pipe(map(listaBanner => {
-      this.onChangeListaBanner.emit(listaBanner);
+      this.onChangeListaElementi.emit(listaBanner);
     })).subscribe();
   }
 
