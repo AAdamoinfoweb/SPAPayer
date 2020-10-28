@@ -25,7 +25,8 @@
 
   <!-- Sottosezione Lista Utenti -->
   <div class="collapse-header" id="idCollapseListaUtenti">
-    <button data-toggle="collapse" data-target="#contenutoSezioneListaUtenti" aria-expanded="true" aria-controls="contenutoSezioneListaUtenti">
+    <button data-toggle="collapse" data-target="#contenutoSezioneListaUtenti" aria-expanded="true"
+            aria-controls="contenutoSezioneListaUtenti">
       Lista Utenti
     </button>
   </div>
@@ -51,7 +52,8 @@
                      [textLeft]="getNumeroRecord()"
                      (onSelection)="selezionaRigaTabella($event)"
                      [selectedRows]="true"
-                     (onClickRow)="dettaglioUtente($event)">
+                     (onClickRow)="dettaglioUtente($event)"
+                     [selection]="selectionUtenti">
           </app-table>
         </div>
       </div>
