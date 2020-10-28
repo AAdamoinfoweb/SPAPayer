@@ -30,7 +30,7 @@
       <button id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="onClickSalva()">Salva</button>
     </div>
   </div>
-  <div class="row pt-1" *ngIf="funzione === FunzioneGestioneEnum.DETTAGLIO">
+  <div class="row pt-4" *ngIf="funzione === FunzioneGestioneEnum.DETTAGLIO">
     <button id="buttonIndietro" class="btn btn-secondary btn-indietro" (click)="onClickAnnulla(funzione)">Indietro</button>
   </div>
 </div>
