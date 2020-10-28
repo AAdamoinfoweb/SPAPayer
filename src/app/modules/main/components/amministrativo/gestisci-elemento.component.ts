@@ -18,6 +18,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     super(router, route, http, amministrativoService);
   }
 
+  abstract selectionElementi: any[];
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
     const breadcrumbList: SintesiBreadcrumb[] = [];

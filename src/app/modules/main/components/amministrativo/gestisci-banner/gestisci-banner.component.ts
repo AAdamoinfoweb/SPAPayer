@@ -33,6 +33,8 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   listaBanner: Array<Banner> = new Array<Banner>();
   listaBannerIdSelezionati: Array<number> = new Array<number>();
 
+  selectionElementi: any[];
+
   toolbarIcons = [
     {type: ToolEnum.INSERT},
     {type: ToolEnum.UPDATE, disabled: true},
@@ -153,6 +155,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Banner');
         break;
     }
+    this.selectionElementi = [];
   }
 
   eliminaBannerSelezionati(): void {
@@ -217,6 +220,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   selezionaRigaTabella(rowsChecked): void {
+    this.selectionElementi = rowsChecked;
     this.listaBannerIdSelezionati = rowsChecked.map(riga => riga.id.value);
     this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaBannerIdSelezionati.length !== 1;
     this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaBannerIdSelezionati.length === 0;

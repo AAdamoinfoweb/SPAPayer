@@ -36,6 +36,8 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
 
   isMenuCarico = false;
 
+  selectionElementi: any[];
+
   listaLivelliTerritoriali: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
   listaIdLivelliTerritorialiSelezionati: Array<number> = [];
 
@@ -148,6 +150,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
         this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Livelli Territoriali');
         break;
     }
+    this.selectionElementi = [];
   }
 
   mostraDettaglioLivelloTerritoriale(rigaTabella) {
@@ -209,6 +212,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   }
 
   selezionaRigaTabella(righeSelezionate): void {
+    this.selectionElementi = righeSelezionate;
     this.listaIdLivelliTerritorialiSelezionati = righeSelezionate.map(riga => riga.id.value);
     this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdLivelliTerritorialiSelezionati.length !== 1;
     this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdLivelliTerritorialiSelezionati.length === 0;

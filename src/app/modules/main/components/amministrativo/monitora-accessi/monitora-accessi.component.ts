@@ -28,6 +28,8 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli accessi alle funzionalità amministrative e filtrarli';
   listaAccessi = [];
 
+  selectionElementi: any[];
+
   readonly toolbarIcons = [
     {type: ToolEnum.EXPORT_PDF},
     {type: ToolEnum.EXPORT_XLS}
@@ -155,6 +157,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
 
   eseguiAzioni(azioneTool: ToolEnum): void {
     // TODO implementare metodo
+    // al termine dello switch o esecuzione azione this.selectionElementi = []
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
@@ -226,6 +229,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
+    this.selectionElementi = righeSelezionate;
     // TODO implementare metodo
   }
 
