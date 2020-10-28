@@ -154,7 +154,14 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
-    // TODO implementare metodo
+    switch (azioneTool) {
+      case ToolEnum.EXPORT_PDF:
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Accessi');
+        break;
+      case ToolEnum.EXPORT_XLS:
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Accessi');
+        break;
+    }
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
@@ -163,12 +170,14 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
-    // TODO implementare metodo
-    return [];
+    return colonne;
+  }
+
+  getRigheFilePdf(righe: any[]) {
+    return righe;
   }
 
   getImmaginiFilePdf(): ImmaginePdf[] {
-    // TODO implementare metodo
     return [];
   }
 
@@ -178,10 +187,6 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   getRigheFileExcel(righe: any[]) {
-    // TODO implementare metodo
-  }
-
-  getRigheFilePdf(righe: any[]) {
     // TODO implementare metodo
   }
 
