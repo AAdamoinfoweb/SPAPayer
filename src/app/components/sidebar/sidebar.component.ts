@@ -85,8 +85,9 @@ export class SidebarComponent implements OnInit {
         });
       } else {
         let param = '';
-        if (item['isAmministrativo'])
+        if (item['isAmministrativo']) {
           param = '?funzione=' + btoa(item.id);
+        }
         this.router.navigateByUrl(item.route + param);
       }
     } else {

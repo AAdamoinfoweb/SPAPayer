@@ -30,8 +30,9 @@ export class MenuService {
       }), catchError((err, caught) => {
         if (err.status == 401) {
           return of(null);
-        } else
+        } else {
           return of(null);
+        }
       }));
   }
 }

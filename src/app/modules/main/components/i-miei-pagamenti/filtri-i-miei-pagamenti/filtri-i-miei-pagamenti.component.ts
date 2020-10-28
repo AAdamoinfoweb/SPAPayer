@@ -160,8 +160,11 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   ricercaPagamenti(filtri: ParametriRicercaPagamenti) {
-    let filtriToBE: ParametriRicercaPagamenti;
-    filtriToBE = filtri;
+    let filtriToBE: ParametriRicercaPagamenti = new ParametriRicercaPagamenti();
+    filtriToBE.enteId = filtri.enteId;
+    filtriToBE.livelloTerritorialeId = filtri.livelloTerritorialeId;
+    filtriToBE.servizioId = filtri.servizioId;
+    filtriToBE.numeroDocumento = filtri.numeroDocumento;
     filtriToBE.dataPagamentoDa = filtri.dataPagamentoDa ? moment(filtri.dataPagamentoDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     filtriToBE.dataPagamentoA = filtri.dataPagamentoA ? moment(filtri.dataPagamentoA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     this.iMieiPagamentiService.ricercaPagamenti(filtriToBE).pipe(map(listaPagamenti => {

@@ -7,7 +7,9 @@ import { PipeTransform, Injectable, Pipe }     from '@angular/core';
 export class ReplacePipe implements PipeTransform {
   constructor(){}
   transform(item: any, replace, replacement): any {
-    if(item == null) return "";
+    if (item == null) {
+      return "";
+    }
     item = item.replace(replace, replacement);
     return item;
   }

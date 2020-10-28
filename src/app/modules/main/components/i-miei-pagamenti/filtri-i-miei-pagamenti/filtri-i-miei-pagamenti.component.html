@@ -55,6 +55,7 @@
                 [(ngModel)]="filtroRicercaPagamenti.enteId"
                 (ngModelChange)="selezionaEnte()"
                 disabled="{{listaEnti.length == 0}}">
+                <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -81,6 +82,7 @@
                 #servizioInput="ngModel"
                 [(ngModel)]="filtroRicercaPagamenti.servizioId"
                 disabled="{{listaServizi.length == 0}}">
+                <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>

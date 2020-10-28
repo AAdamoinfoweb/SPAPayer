@@ -18,6 +18,7 @@ import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {Ente} from "../../../../model/Ente";
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
+import {Tabella} from '../../../../model/tabella/Tabella';
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -48,7 +49,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   readonly indiceIconaModifica = 1;
   readonly indiceIconaElimina = 2;
 
-  tableData = {
+  tableData: Tabella = {
     rows: [],
     cols: [
       {field: 'nome', header: 'Nome', type: tipoColonna.TESTO},
@@ -60,7 +61,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData;
+  tempTableData: Tabella;
   waiting = true;
 
   constructor(router: Router,

@@ -50,7 +50,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   readonly indiceIconaModifica = 1;
   readonly indiceIconaElimina = 2;
 
-  tableData = {
+  tableData: Tabella = {
     rows: [],
     cols: [
       {field: 'nome', header: 'Nome', type: tipoColonna.TESTO},
@@ -62,7 +62,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData;
+  tempTableData: Tabella;
   waiting = true;
 
   constructor(router: Router,
@@ -100,8 +100,9 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   }
 
   ngAfterViewInit(): void {
-    if (!this.waiting)
+    if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+    }
   }
 
   popolaListaElementi() {

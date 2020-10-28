@@ -23,6 +23,7 @@ import {OverlayService} from '../../../../services/overlay.service';
 import {ListaPagamentiFiltri} from "../../model/bollettino/imieipagamenti/ListaPagamentiFiltri";
 import {TipoModaleEnum} from '../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
+import {SpinnerOverlayService} from "../../../../services/spinner-overlay.service";
 
 @Component({
   selector: 'app-i-miei-pagamenti',
@@ -81,13 +82,15 @@ export class IMieiPagamentiComponent implements OnInit {
   tempTableData;
   private listaPagamenti: DatiPagamento[] = [];
   private pagamentiSelezionati: DatiPagamento[];
+  selectionPagamenti: any[];
   private filtri: ParametriRicercaPagamenti;
   private nomeTabCorrente: string;
 
   constructor(private iMieiPagamentiService: IMieiPagamentiService, private router: Router,
               private nuovoPagamentoService: NuovoPagamentoService, private bannerService: BannerService,
               private overlayService: OverlayService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService,
+              private spinnerOverlayService: SpinnerOverlayService
               ) {
     // init breadcrumb
     this.inizializzaBreadcrumb();
@@ -111,6 +114,7 @@ export class IMieiPagamentiComponent implements OnInit {
 
 
   onChangeTab(value) {
+    const subscription  = this.spinnerOverlayService.spinner$.subscribe();
     let tempListaPagamenti;
     if (value === TipoPagamentoEnum.TUTTI) {
       tempListaPagamenti = this.listaPagamenti;
@@ -126,6 +130,7 @@ export class IMieiPagamentiComponent implements OnInit {
     }
     this.nomeTabCorrente = value
     this.riempiTabella(tempListaPagamenti);
+    setTimeout(() => subscription.unsubscribe(), 500);
   }
 
   eseguiAzioni(tool) {
@@ -142,6 +147,7 @@ export class IMieiPagamentiComponent implements OnInit {
       // esporta in excel
       this.stampaAttestatiPagamento();
     }
+    this.selectionPagamenti = [];
   }
 
   testoTabella(): string {
@@ -203,6 +209,7 @@ export class IMieiPagamentiComponent implements OnInit {
         .filter(pagamento => pagamento.numeroDocumento === value.numeroDocumento.value);
       tempPagamentiSelezionati.push(...pagamentoSelezionato);
     });
+    this.selectionPagamenti = rows;
     this.pagamentiSelezionati = tempPagamentiSelezionati;
 
     this.toolbarIcons[this.indiceIconaElimina].disabled = this.pagamentiSelezionati.length === 0;

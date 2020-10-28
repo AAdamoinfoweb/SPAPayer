@@ -10,7 +10,7 @@ import {BottoneEnum} from '../../../../../../enums/bottone.enum';
 import {map} from 'rxjs/operators';
 import {BannerService} from '../../../../../../services/banner.service';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
-import {FiltroGestioneElementiComponent} from "../../filtro-gestione-elementi.component";
+import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.component';
 
 @Component({
   selector: 'app-filtro-gestione-banner',

@@ -31,8 +31,9 @@ export class PagamentoService {
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
             return of(null);
-          } else
-             return of(null);
+          } else {
+            return of(null);
+          }
         }));
     return observable;
   }
@@ -48,8 +49,9 @@ export class PagamentoService {
         catchError((err, caught) => {
           if (err.status == 401) {
             return of("");
-          } else
-             return of(null);
+          } else {
+            return of(null);
+          }
         }));
   }
 
@@ -62,8 +64,9 @@ export class PagamentoService {
       }), catchError((err, caught) => {
         if (err.status == 401) {
           return of(null);
-        } else
-           return of(null);
+        } else {
+          return of(null);
+        }
       }));
   }
 
@@ -79,8 +82,9 @@ export class PagamentoService {
         catchError((err, caught) => {
           if (err.status == 401) {
             return of("");
-          } else
-             return of(null);
+          } else {
+            return of(null);
+          }
         }));
   }
 
@@ -108,8 +112,9 @@ export class PagamentoService {
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
             return of(null);
-          } else
-             return of(null);
+          } else {
+            return of(null);
+          }
         }));
     return observable;
   }

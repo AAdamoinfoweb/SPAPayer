@@ -64,8 +64,9 @@ export class PresaincaricopagamentoComponent implements OnInit {
   }
 
   private goToUrl(url: string) {
-    if (url)
+    if (url) {
       window.location.href = url;
+    }
   }
 
 }
