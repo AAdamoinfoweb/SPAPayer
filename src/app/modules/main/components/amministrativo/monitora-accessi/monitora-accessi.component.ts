@@ -156,17 +156,12 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   eseguiAzioni(azioneTool: ToolEnum): void {
     switch (azioneTool) {
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tableData, 'Lista Accessi');
+        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Accessi');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tableData, 'Lista Accessi');
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Accessi');
         break;
     }
-  }
-
-  getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    // TODO implementare metodo
-    return [];
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
@@ -185,8 +180,20 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     return 'Totale: ' + this.tableData.rows.length + ' accessi';
   }
 
+  getColonneFileExcel(colonne: Colonna[]): Colonna[] {
+    return colonne;
+  }
+
   getRigheFileExcel(righe: any[]) {
-    // TODO implementare metodo
+    return righe.map(riga => {
+      delete riga.id;
+      riga.nome = riga.nome.value;
+      riga.funzioniVisitate = riga.funzioniVisitate.value;
+      riga.inizioSessione = riga.inizioSessione.value;
+      riga.fineSessione = riga.fineSessione.value;
+      riga.durataSessione = riga.durataSessione.value;
+      return riga;
+    });
   }
 
   onChangeListaElementi(listaElementi: any[]): void {
