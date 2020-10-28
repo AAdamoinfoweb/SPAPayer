@@ -11,6 +11,9 @@ import {Tabella} from '../../../model/tabella/Tabella';
 import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
 import {AccessoService} from '../../../../../services/accesso.service';
+import {Accesso} from '../../../model/accesso/Accesso';
+import {GruppoEnum} from '../../../../../enums/gruppo.enum';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-monitora-accessi',
@@ -39,7 +42,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
       {field: 'fineSessione', header: 'Fine Sessione', type: tipoColonna.TESTO},
       {field: 'durataSessione', header: 'Durata', type: tipoColonna.TESTO}
     ],
-    dataKey: 'nome.value',
+    dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
@@ -78,15 +81,63 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     this.popolaListaElementi();
   }
 
-  creaRigaTabella(oggetto: any) {
-    return {
-      id: {value: null},
-      nome: {value: null},
-      funzioniVisitate: {value: null},
-      inizioSessione: {value: null},
-      fineSessione: {value: null},
-      durataSessione: {value: null}
+  creaRigaTabella(accesso: Accesso) {
+    let nome;
+    if (accesso.cognome && accesso.nome) {
+      nome = accesso.cognome + ' ' + accesso.nome;
+    } else if (accesso.cognome && !accesso.nome) {
+      nome = accesso.cognome;
+    } else if (accesso.nome) {
+      nome = accesso.nome;
+    } else {
+      nome = null;
     }
+
+    let funzioniVisitate;
+    if (accesso.listaFunzioni) {
+      const funzioniAmministrazioneVisitate = accesso.listaFunzioni.filter(funzione => funzione.gruppo === GruppoEnum.AMMINISTRAZIONE);
+      const funzioniGestioneVisitate = accesso.listaFunzioni.filter(funzione => funzione.gruppo === GruppoEnum.GESTIONE);
+      if (funzioniAmministrazioneVisitate.length > 0 && funzioniGestioneVisitate.length > 0) {
+        funzioniVisitate = 'Amministra/Gestisci';
+      } else if (funzioniAmministrazioneVisitate.length > 0 && funzioniGestioneVisitate.length === 0) {
+        funzioniVisitate = 'Amministra';
+      } else if (funzioniGestioneVisitate.length > 0) {
+        funzioniVisitate = 'Gestisci';
+      } else {
+        funzioniVisitate = null;
+      }
+    } else {
+      funzioniVisitate = null;
+    }
+
+    return {
+      id: {value: accesso.idAccesso},
+      nome: {value: nome},
+      funzioniVisitate: {value: funzioniVisitate},
+      inizioSessione: {value: this.getDataSessioneFormattata(accesso.inizioSessione)},
+      fineSessione: {value: this.getDataSessioneFormattata(accesso.fineSessione)},
+      durataSessione: {value: this.getDurataSessioneFormattata(accesso.durata)}
+    }
+  }
+
+  getDataSessioneFormattata(dataSessione: Date): string {
+    return dataSessione ? moment(dataSessione).format('DD/MM/YYYY HH:mm:ss') : null;
+  }
+
+  getDurataSessioneFormattata(durataMillisecSessione: number): string {
+    let durataFormattata = null;
+    if (durataMillisecSessione) {
+      let durataSecondiSessione = durataMillisecSessione / 1000;
+      const ore = durataSecondiSessione % 60 % 60;
+      durataSecondiSessione = durataSecondiSessione - (ore * 60 * 60);
+      const minuti = durataSecondiSessione % 60;
+      durataSecondiSessione = durataSecondiSessione - (minuti * 60);
+      const secondi = durataSecondiSessione;
+
+      durataFormattata = ore + ':' + minuti + ':' + secondi;
+    }
+
+    return durataFormattata;
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
