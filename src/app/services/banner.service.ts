@@ -81,6 +81,68 @@ export class BannerService {
       }));
   }
 
+  dettaglioBanner(id: number, idFunzione: string): Observable<Banner> {
+    const url = environment.bffBaseUrl + this.bannerAmministrativoBaseUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}/${id}`, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as Banner;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  inserimentoBanner(datiBanner: Banner, idFunzione: string): Observable<any> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.post(environment.bffBaseUrl + this.bannerAmministrativoBaseUrl, datiBanner, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  modificaBanner(datiBanner: Banner, idFunzione: string): Observable<any> {
+    const url = environment.bffBaseUrl + this.bannerAmministrativoBaseUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.put(`${url}/${datiBanner.id}`, datiBanner, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
   eliminaBanner(listaBannerId: Array<number>, idFunzione: string): Observable<any> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);

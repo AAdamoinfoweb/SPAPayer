@@ -33,8 +33,9 @@ export class ListaPagamentiService {
       }), catchError((err, caught) => {
         if (err.status == 401) {
           return of(null);
-        } else
-           return of(null);
+        } else {
+          return of(null);
+        }
       }));
   }
 
@@ -44,9 +45,11 @@ export class ListaPagamentiService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
-        if(body.url)
+        if (body.url) {
           return body.url;
-        else return null;
+        } else {
+          return null;
+        }
       }));
   }
 
@@ -78,8 +81,9 @@ export class ListaPagamentiService {
       }), catchError((err, caught) => {
         if (err.status == 401) {
           return of(null);
-        } else
-           return of(null);
+        } else {
+          return of(null);
+        }
       }));
   }
 }

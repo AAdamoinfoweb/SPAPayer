@@ -8,25 +8,9 @@
 <form #filtroGestioneBannerForm="ngForm">
   <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltriBanner">
     <div class="collapse-body">
-      <!-- Switch Campo Attivo -->
-      <div class="row mt-0 mb-0">
-        <div class="col-12 text-right">
-          <div class="row">
-            <div class="col">
-              <label for="switchAttivoBanner" class="title">Attivo</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p-inputSwitch id="switchAttivoBanner" [(ngModel)]="filtroGestioneBannerApplicato.attivo" name="attivo"></p-inputSwitch>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Titolo, Testo, Inizio/Fine -->
-      <div class="row mt-4 mb-0">
-        <div class="col-md-4 pb-2">
+      <!-- Titolo, Testo -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-5 pb-2">
           <div class="row">
             <div class="col">
               <label for="titoloBanner" class="title">Titolo</label>
@@ -37,8 +21,8 @@
               <input type="text" id="titoloBanner" name="titoloParziale" #titoloParzialeInput="ngModel"
                      [(ngModel)]="filtroGestioneBannerApplicato.titoloParziale" class="pt-0" autocomplete="off"
                      aria-describedby="titoloBannerHelpDescription">
+              </div>
             </div>
-          </div>
           <div class="row">
             <div class="col">
               <p [ngClass]="{'text-muted': !isCampoInvalido(titoloParzialeInput), 'text-invalid': isCampoInvalido(titoloParzialeInput)}">
@@ -47,7 +31,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4 pb-2">
+        <div class="col-md-6 pb-2">
           <div class="row">
             <div class="col">
               <label for="testoBanner" class="title">Testo</label>
@@ -55,11 +39,11 @@
           </div>
           <div class="row">
             <div class="col">
-              <input type="text" id="testoBanner" name="testoParziale" #testoParzialeInput="ngModel"
-                     [(ngModel)]="filtroGestioneBannerApplicato.testoParziale" class="pt-0" autocomplete="off"
-                     aria-describedby="testoParzialeHelpDescription">
+              <textarea type="text" id="testoBanner" name="testoParziale" #testoParzialeInput="ngModel"
+                        [(ngModel)]="filtroGestioneBannerApplicato.testoParziale" class="pt-0" autocomplete="off"
+                        aria-describedby="testoParzialeHelpDescription"></textarea>
+              </div>
             </div>
-          </div>
           <div class="row">
             <div class="col">
               <p [ngClass]="{'text-muted': !isCampoInvalido(testoParzialeInput), 'text-invalid': isCampoInvalido(testoParzialeInput)}">
@@ -68,7 +52,23 @@
             </div>
           </div>
         </div>
-        <div class="col-md-2 pb-2">
+      </div>
+
+      <!-- Swicth campo Attivo, Inizio, Fine -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="switchAttivoBanner" class="title">Attivo</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <it-toggle id="switchAttivoBanner" [(ngModel)]="filtroGestioneBannerApplicato.attivo" name="attivo"></it-toggle>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pb-2">
           <div class="row">
             <div class="col">
               <label for="inizio" class="title">Inizio</label>

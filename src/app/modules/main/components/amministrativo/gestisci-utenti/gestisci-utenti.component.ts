@@ -19,6 +19,7 @@ import {AmministrativoService} from "../../../../../services/amministrativo.serv
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import {GestisciElementoComponent} from "../gestisci-elemento.component";
 import {Colonna} from '../../../model/tabella/Colonna';
+import {Tabella} from '../../../model/tabella/Tabella';
 
 @Component({
   selector: 'app-gestione-utenti',
@@ -51,7 +52,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   nomeTabCorrente: string;
 
-  tableData = {
+  tableData: Tabella = {
     rows: [],
     cols: [
       {field: 'iconaUtente', header: '', type: tipoColonna.ICONA},
@@ -65,7 +66,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData = {
+  tempTableData: Tabella = {
     rows: [],
     cols: [
       {field: 'iconaUtente', header: '', type: tipoColonna.ICONA},
@@ -116,8 +117,9 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   ngAfterViewInit(): void {
-    if (!this.waiting)
+    if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+    }
   }
 
   creaRigaTabella(utente: RicercaUtente): object {

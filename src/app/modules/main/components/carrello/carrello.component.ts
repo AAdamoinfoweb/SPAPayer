@@ -56,8 +56,9 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
 
         if (menuService.isUtenteAnonimo) {
           for (var key in localStorage) {
-            if (key.startsWith("boll-"))
+            if (key.startsWith("boll-")) {
               localStorage.removeItem(key);
+            }
           }
         } else {
           this.doSvuotaCarrello = true;
@@ -126,10 +127,11 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')])
     });
-    if (this.isShow && localStorage.getItem("email") != 'null')
+    if (this.isShow && localStorage.getItem("email") != 'null') {
       this.email = localStorage.getItem("email");
-    else
+    } else {
       this.email = null;
+    }
   }
 
   navigaInPresaInCaricoPagamento() {
@@ -180,8 +182,9 @@ export class CarrelloComponent implements OnInit, AfterViewInit {
         };
         this.bannerService.bannerEvent.emit([banner]);
       } else {
-        if (resp)
+        if (resp) {
           window.location.href = resp;
+        }
       }
     }, () => {});
   }

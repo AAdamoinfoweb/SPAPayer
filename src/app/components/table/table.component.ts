@@ -27,9 +27,10 @@ export class TableComponent implements OnInit {
   @Output()
   onClickRow: EventEmitter<any> = new EventEmitter<any>();
 
+
   readonly tipoColonnaEnum = tipoColonna;
   readonly tipoTabellaEnum = tipoTabella;
-
+  @Input()
   selection: any [];
 
   wasLinkOrIconSelected: boolean = false;
@@ -86,17 +87,17 @@ export class TableComponent implements OnInit {
       let value2 = data2[event.field].value;
       let result = null;
 
-      if (value1 == null && value2 != null)
+      if (value1 == null && value2 != null) {
         result = -1;
-      else if (value1 != null && value2 == null)
+      } else if (value1 != null && value2 == null) {
         result = 1;
-      else if (value1 == null && value2 == null)
+      } else if (value1 == null && value2 == null) {
         result = 0;
-      else if (typeof value1 === 'string' && typeof value2 === 'string')
+      } else if (typeof value1 === 'string' && typeof value2 === 'string') {
         result = value1.localeCompare(value2);
-      else
+      } else {
         result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
-
+      }
       return (event.order * result);
     });
   }

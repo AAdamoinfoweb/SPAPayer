@@ -65,8 +65,9 @@ export class ListaPagamentiL1Component implements OnInit {
 
     let observable: Observable<Pagamento[]> = this.listaPagamentiService.verificaRid(this.rid)
       .pipe(flatMap((urlBack) => {
-        if (urlBack)
+        if (urlBack) {
           this.urlBackEmitterChange.emit(urlBack);
+        }
         return this.listaPagamentiService.getCarrello()
           .pipe(map((value: Carrello) => {
             this.listaPagamenti = value.dettaglio;
@@ -81,8 +82,9 @@ export class ListaPagamentiL1Component implements OnInit {
           }));
       }));
     observable.subscribe((ret) => {
-      if (ret == null)
+      if (ret == null) {
         this.route.navigateByUrl("/nonautorizzato");
+      }
     });
   }
 

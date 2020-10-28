@@ -17,6 +17,7 @@ import {GestisciElementoComponent} from '../gestisci-elemento.component';
 import {ConfirmationService} from 'primeng/api';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
 import {Colonna} from '../../../model/tabella/Colonna';
+import {Tabella} from '../../../model/tabella/Tabella';
 
 @Component({
   selector: 'app-gestisci-banner',
@@ -43,7 +44,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   readonly indiceIconaModifica = 1;
   readonly indiceIconaElimina = 2;
 
-  tableData = {
+  tableData: Tabella = {
     rows: [],
     cols: [
       {field: 'iconaBanner', header: '', type: tipoColonna.ICONA},
@@ -55,7 +56,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     dataKey: 'titolo.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
-  tempTableData = this.tableData;
+  tempTableData: Tabella = this.tableData;
 
   isMenuCarico = false;
   waiting = true;
@@ -140,7 +141,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.aggiungiElemento('/aggiungiBanner');
         break;
       case ToolEnum.UPDATE:
-        // TODO this.modificaElementoSelezionato('/modificaBanner', this.listaBannerIdSelezionati[0]);
+        this.modificaElementoSelezionato('/modificaBanner', this.listaBannerIdSelezionati[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaBannerSelezionati();
@@ -222,7 +223,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   mostraDettaglioBanner(rigaCliccata: any) {
-    // TODO this.mostraDettaglioElemento('/dettaglioBanner', rigaCliccata.id.value);
+    this.mostraDettaglioElemento('/dettaglioBanner', rigaCliccata.id.value);
   }
 
 }
