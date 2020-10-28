@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     public menuService: MenuService
   ) {
     if (localStorage.getItem('loginDaAnonimo')) {
-      this.nuovoPagamentoService.prezzoEvent.emit(null);
+      this.nuovoPagamentoService.prezzoEvent.emit({value: null});
       let bollettini: Bollettino[] = [];
       for (var key in localStorage) {
         if (key.startsWith("boll-")) {
