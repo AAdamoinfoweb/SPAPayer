@@ -189,10 +189,33 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     // TODO implementare metodo
   }
 
+  ordinaDescrescenteAccessi(listaAccessi: Accesso[]): Accesso[] {
+    return listaAccessi.sort((accesso1, accesso2) => {
+      if (accesso1.inizioSessione && accesso2.inizioSessione) {
+        if (moment(accesso1.inizioSessione) < moment(accesso2.inizioSessione)) {
+          return 1;
+        } else if (moment(accesso1.inizioSessione) > moment(accesso2.inizioSessione)) {
+          return -1;
+        } else {
+          return 0;
+        }
+      } else {
+        if (!accesso1.inizioSessione && accesso2.inizioSessione) {
+          return -1;
+        } else if (accesso1.inizioSessione) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
+  }
+
   popolaListaElementi(): void {
     this.listaAccessi = [];
     this.accessoService.recuperaAccessi(null, this.amministrativoService.idFunzione).subscribe(listaAccessi => {
-      this.listaAccessi = listaAccessi;
+      // Mostro per primi gli accessi più recenti
+      this.listaAccessi = this.ordinaDescrescenteAccessi(listaAccessi);
       this.tableData.rows = [];
       this.listaAccessi.forEach(accesso => {
         this.tableData.rows.push(this.creaRigaTabella(accesso));
