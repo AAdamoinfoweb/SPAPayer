@@ -64,6 +64,7 @@ import {GestisciEntiComponent} from './modules/main/components/amministrativo/an
 import {SpinnerOverlayComponent} from './components/spinner-overlay/spinner-overlay.component';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
+import {FiltroMonitoraggioAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/filtro-monitoraggio-accessi/filtro-monitoraggio-accessi.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +118,8 @@ import {MonitoraAccessiComponent} from './modules/main/components/amministrativo
     GestisciEntiComponent,
     OrderByPipe,
     SpinnerOverlayComponent,
-    MonitoraAccessiComponent
+    MonitoraAccessiComponent,
+    FiltroMonitoraggioAccessiComponent
   ],
   imports: [
     HttpClientModule,

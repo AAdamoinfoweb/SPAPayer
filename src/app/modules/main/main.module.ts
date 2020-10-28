@@ -26,8 +26,7 @@ import { FormLivelloTerritorialeComponent } from './components/amministrativo/an
 import { FiltroGestioneEntiComponent } from './components/amministrativo/anagrafiche/gestisci-enti/filtro-gestione-enti/filtro-gestione-enti.component';
 import {DatiBannerComponent} from './components/amministrativo/gestisci-banner/dati-banner/dati-banner.component';
 import {FormBannerComponent} from './components/amministrativo/gestisci-banner/form-banner/form-banner.component';
-import { FiltroMonitoraggioAccessiComponent } from './components/amministrativo/monitora-accessi/filtro-monitoraggio-accessi/filtro-monitoraggio-accessi.component';
-import { DettaglioAccessoComponent } from './components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
+import {DettaglioAccessoComponent} from './components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +50,6 @@ import { DettaglioAccessoComponent } from './components/amministrativo/monitora-
     FiltroGestioneEntiComponent,
     DatiBannerComponent,
     FormBannerComponent,
-    FiltroMonitoraggioAccessiComponent,
     DettaglioAccessoComponent
   ],
   imports: [
