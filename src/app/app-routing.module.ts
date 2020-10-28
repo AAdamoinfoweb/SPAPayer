@@ -62,7 +62,8 @@ const routes: Routes = [
   {path: 'aggiungiBanner', component: FormBannerComponent},
   {path: 'modificaBanner/:bannerid', component: FormBannerComponent},
   {path: 'dettaglioBanner/:bannerid', component: FormBannerComponent},
-  {path: 'monitoraAccessi', component: MonitoraAccessiComponent}
+  {path: 'monitoraAccessi', component: MonitoraAccessiComponent},
+  {path: 'dettaglioAccesso', component: MonitoraAccessiComponent}
 ];
 
 @NgModule({

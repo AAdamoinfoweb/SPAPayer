@@ -9,6 +9,9 @@ import {AmministrativoService} from '../../../../../services/amministrativo.serv
 import {SocietaService} from '../../../../../services/societa.service';
 import {MenuService} from '../../../../../services/menu.service';
 import {ConfirmationService} from 'primeng/api';
+import {Tabella} from '../../../model/tabella/Tabella';
+import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
+import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
 
 @Component({
   selector: 'app-monitora-accessi',
@@ -17,7 +20,31 @@ import {ConfirmationService} from 'primeng/api';
 })
 export class MonitoraAccessiComponent extends GestisciElementoComponent implements OnInit {
 
-  isMenuCarico: boolean = false;
+  isMenuCarico = false;
+  waiting = true;
+  breadcrumbList = [];
+  readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli accessi alle funzionalità amministrative e filtrarli';
+  listaAccessi = [];
+
+  readonly toolbarIcons = [
+    {type: ToolEnum.EXPORT_PDF},
+    {type: ToolEnum.EXPORT_XLS}
+  ];
+
+  tableData: Tabella = {
+    rows: [],
+    cols: [
+      {field: 'nome', header: 'Cognome e Nome', type: tipoColonna.TESTO},
+      {field: 'funzioniVisitate', header: 'Gruppo Funzioni Visitate', type: tipoColonna.TESTO},
+      {field: 'inizioSessione', header: 'Inizio Sessione', type: tipoColonna.TESTO},
+      {field: 'fineSessione', header: 'Fine Sessione', type: tipoColonna.TESTO},
+      {field: 'durataSessione', header: 'Durata', type: tipoColonna.TESTO}
+    ],
+    dataKey: 'nome.value',
+    tipoTabella: tipoTabella.CHECKBOX_SELECTION
+  };
+
+  tempTableData: Tabella;
 
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
@@ -46,7 +73,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   init(): void {
-    this.inizializzaBreadcrumbList([
+    this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Monitora Accessi', link: null}
     ]);
     this.popolaListaElementi();
@@ -93,11 +120,16 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   popolaListaElementi(): void {
-
+    // TODO implementare metodo
+    this.waiting = false;
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
     // TODO implementare metodo
+  }
+
+  mostraDettaglioAccesso(rigaTabella) {
+    this.mostraDettaglioElemento('/dettaglioAccesso', rigaTabella.id.value);
   }
 
 }

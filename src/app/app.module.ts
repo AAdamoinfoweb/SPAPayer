@@ -63,6 +63,7 @@ import {FiltroGestioneBannerComponent} from './modules/main/components/amministr
 import {GestisciEntiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component';
 import {SpinnerOverlayComponent} from './components/spinner-overlay/spinner-overlay.component';
 import {OverlayModule} from '@angular/cdk/overlay';
+import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +116,8 @@ import {OverlayModule} from '@angular/cdk/overlay';
     FiltroGestioneBannerComponent,
     GestisciEntiComponent,
     OrderByPipe,
-    SpinnerOverlayComponent
+    SpinnerOverlayComponent,
+    MonitoraAccessiComponent
   ],
   imports: [
     HttpClientModule,
