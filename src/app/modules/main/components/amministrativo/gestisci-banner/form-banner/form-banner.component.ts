@@ -98,8 +98,10 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
       case FunzioneGestioneEnum.AGGIUNGI:
         datiBanner.attivo = true;
         this.bannerService.inserimentoBanner(datiBanner, this.amministrativoService.idFunzione).subscribe((banner) => {
-          this.datiBanner = new Banner();
-          this.isFormValido = false;
+          if (banner != null) {
+            this.datiBanner = new Banner();
+            this.isFormValido = false;
+          }
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
