@@ -66,6 +66,7 @@ export class IMieiPagamentiComponent implements OnInit {
     rows: [],
     cols: [
       {field: 'icona', header: '', type: tipoColonna.ICONA},
+      {field: 'annoDocumento', header: 'Anno Documento', type: tipoColonna.TESTO},
       {field: 'numeroDocumento', header: 'N.ro Documento', type: tipoColonna.TESTO},
       {field: 'nomeServizio', header: 'Descrizione', type: tipoColonna.TESTO},
       {field: 'nomeEnte', header: 'Ente', type: tipoColonna.TESTO},
@@ -172,6 +173,7 @@ export class IMieiPagamentiComponent implements OnInit {
         const row = {
           icona: pagamento.statoPagamento == null && Utils.creaIcona('#it-pencil', '#EE7622',
             this.TOOLTIP_ICONA_MATITA, null),
+          annoDocumento: {value: pagamento.annoDocumento},
           numeroDocumento: {value: pagamento.numeroDocumento},
           nomeServizio: {value: pagamento.nomeServizio},
           nomeEnte: {value: pagamento.nomeEnte},
