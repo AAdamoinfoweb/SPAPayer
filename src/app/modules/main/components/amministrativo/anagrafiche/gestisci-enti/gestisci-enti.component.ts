@@ -38,6 +38,8 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   listaIdSocietaSelezionate: Array<number> = [];
 
+  selectionElementi: any[];
+
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT},
     {type: ToolEnum.UPDATE, disabled: true},

@@ -39,6 +39,8 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   listaSocieta: Array<Societa> = new Array<Societa>();
   listaIdSocietaSelezionate: Array<number> = [];
 
+  selectionElementi: any[];
+
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT},
     {type: ToolEnum.UPDATE, disabled: true},
@@ -152,6 +154,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
         this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Societa');
         break;
     }
+    this.selectionElementi = [];
   }
 
   mostraDettaglioSocieta(rigaTabella) {
@@ -214,6 +217,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   }
 
   selezionaRigaTabella(righeSelezionate): void {
+    this.selectionElementi = righeSelezionate;
     this.listaIdSocietaSelezionate = righeSelezionate.map(riga => riga.id.value);
     this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdSocietaSelezionate.length !== 1;
     this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdSocietaSelezionate.length === 0;

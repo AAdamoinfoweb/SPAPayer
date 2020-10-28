@@ -44,7 +44,8 @@
                      [textLeft]="getNumeroRecord()"
                      (onSelection)="selezionaRigaTabella($event)"
                      [selectedRows]="true"
-                     (onClickRow)="mostraDettaglioBanner($event)">
+                     (onClickRow)="mostraDettaglioBanner($event)"
+                     [selection]="selectionElementi">
           </app-table>
         </div>
       </div>
