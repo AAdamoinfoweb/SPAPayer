@@ -89,10 +89,10 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
   onClickSalva(): void {
     const datiBanner = {...this.datiBanner};
     datiBanner.inizio = this.datiBanner.inizio
-      ? moment(datiBanner.inizio, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME)
+      ? moment(datiBanner.inizio, Utils.FORMAT_DATE_CALENDAR).format('YYYY-MM-DD[T]HH:mm')
       : null;
     datiBanner.fine = this.datiBanner.fine
-      ? moment(datiBanner.fine, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME)
+      ? moment(datiBanner.fine, Utils.FORMAT_DATE_CALENDAR).format('YYYY-MM-DD[T]HH:mm')
       : null;
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
