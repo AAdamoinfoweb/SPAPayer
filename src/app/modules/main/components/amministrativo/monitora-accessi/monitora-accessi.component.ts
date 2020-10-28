@@ -46,7 +46,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData: Tabella;
+  tempTableData: Tabella = this.tableData;
 
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
@@ -127,17 +127,30 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   getDurataSessioneFormattata(durataMillisecSessione: number): string {
     let durataFormattata = null;
     if (durataMillisecSessione) {
-      let durataSecondiSessione = durataMillisecSessione / 1000;
-      const ore = durataSecondiSessione % 60 % 60;
+      let durataSecondiSessione = Math.floor(durataMillisecSessione / 1000);
+
+      // Controllo quante ore è durata la sessione
+      const ore = Math.floor(Math.floor(durataSecondiSessione / 60) / 60);
+
+      // Controllo nel tempo residuo (durata totale - durata in ore) quanti minuti ci sono
       durataSecondiSessione = durataSecondiSessione - (ore * 60 * 60);
-      const minuti = durataSecondiSessione % 60;
+      const minuti = Math.floor(durataSecondiSessione / 60);
+
+      // Controllo nel tempo residuo (durata totale - durata in ore - durata in minuti) quanti secondi ci sono
       durataSecondiSessione = durataSecondiSessione - (minuti * 60);
       const secondi = durataSecondiSessione;
 
-      durataFormattata = ore + ':' + minuti + ':' + secondi;
+      // Mostro la data come hh:mm:ss (aggiungendo gli zero se mancano)
+      durataFormattata = this.paddingZero(ore)
+        + ':' + this.paddingZero(minuti)
+        + ':' + this.paddingZero(secondi);
     }
 
     return durataFormattata;
+  }
+
+  paddingZero(numeroPositivo: number): string {
+    return numeroPositivo < 10 ? '0' + numeroPositivo : '' + numeroPositivo;
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
@@ -176,10 +189,33 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     // TODO implementare metodo
   }
 
+  ordinaDescrescenteAccessi(listaAccessi: Accesso[]): Accesso[] {
+    return listaAccessi.sort((accesso1, accesso2) => {
+      if (accesso1.inizioSessione && accesso2.inizioSessione) {
+        if (moment(accesso1.inizioSessione) < moment(accesso2.inizioSessione)) {
+          return 1;
+        } else if (moment(accesso1.inizioSessione) > moment(accesso2.inizioSessione)) {
+          return -1;
+        } else {
+          return 0;
+        }
+      } else {
+        if (!accesso1.inizioSessione && accesso2.inizioSessione) {
+          return -1;
+        } else if (accesso1.inizioSessione) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
+  }
+
   popolaListaElementi(): void {
     this.listaAccessi = [];
     this.accessoService.recuperaAccessi(null, this.amministrativoService.idFunzione).subscribe(listaAccessi => {
-      this.listaAccessi = listaAccessi;
+      // Mostro per primi gli accessi più recenti
+      this.listaAccessi = this.ordinaDescrescenteAccessi(listaAccessi);
       this.tableData.rows = [];
       this.listaAccessi.forEach(accesso => {
         this.tableData.rows.push(this.creaRigaTabella(accesso));
