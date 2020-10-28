@@ -50,7 +50,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   readonly indiceIconaModifica = 1;
   readonly indiceIconaElimina = 2;
 
-  tableData = {
+  tableData: Tabella = {
     rows: [],
     cols: [
       {field: 'nome', header: 'Nome', type: tipoColonna.TESTO},
@@ -60,7 +60,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData;
+  tempTableData: Tabella;
   waiting = true;
 
   constructor(router: Router,
