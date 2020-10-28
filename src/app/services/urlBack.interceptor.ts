@@ -24,7 +24,7 @@ export class UrlBackInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const spinnerOverlayService = this.inj.get(SpinnerOverlayService);
     let subscription;
-    if (this.urlEscluseSpinnerService.urls.indexOf(request.url) !== -1) {
+    if (this.urlEscluseSpinnerService.urls.indexOf(request.url) == -1) {
       subscription = spinnerOverlayService.spinner$.subscribe();
     }
     return next.handle(request).pipe(
@@ -48,7 +48,7 @@ export class UrlBackInterceptor {
         return throwError(error);
       }), finalize(() => {
         console.log(request.url);
-        if (this.urlEscluseSpinnerService.urls.indexOf(request.url) !== -1) {
+        if (this.urlEscluseSpinnerService.urls.indexOf(request.url) == -1) {
           subscription.unsubscribe();
         }
       }));
