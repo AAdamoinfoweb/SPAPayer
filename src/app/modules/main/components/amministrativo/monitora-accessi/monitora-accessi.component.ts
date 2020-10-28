@@ -6,12 +6,11 @@ import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
-import {SocietaService} from '../../../../../services/societa.service';
 import {MenuService} from '../../../../../services/menu.service';
-import {ConfirmationService} from 'primeng/api';
 import {Tabella} from '../../../model/tabella/Tabella';
 import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
+import {AccessoService} from '../../../../../services/accesso.service';
 
 @Component({
   selector: 'app-monitora-accessi',
@@ -50,7 +49,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private el: ElementRef,
               private menuService: MenuService,
-              private confirmationService: ConfirmationService
+              private accessoService: AccessoService
   ) {
     super(router, route, http, amministrativoService);
   }
@@ -80,7 +79,14 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   creaRigaTabella(oggetto: any) {
-    // TODO implementare metodo
+    return {
+      id: {value: null},
+      nome: {value: null},
+      funzioniVisitate: {value: null},
+      inizioSessione: {value: null},
+      fineSessione: {value: null},
+      durataSessione: {value: null}
+    }
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
@@ -120,7 +126,15 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   popolaListaElementi(): void {
-    // TODO implementare metodo
+    this.listaAccessi = [];
+    this.accessoService.recuperaAccessi(null, this.amministrativoService.idFunzione).subscribe(listaAccessi => {
+      this.listaAccessi = listaAccessi;
+      this.tableData.rows = [];
+      this.listaAccessi.forEach(accesso => {
+        this.tableData.rows.push(this.creaRigaTabella(accesso));
+      });
+      this.tempTableData = Object.assign({}, this.tableData);
+    });
     this.waiting = false;
   }
 
