@@ -3,7 +3,7 @@
   <form #datiBannerForm="ngForm" (input)="onChangeForm(datiBannerForm)">
     <!-- Titolo, Switch per campo attivo -->
     <div class="row mt-4 mb-0">
-      <div class="col-md-4 pb-2">
+      <div class="col-4 pb-2">
         <div class="row">
           <div class="col">
             <label for="titoloBanner" [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Titolo</label>
@@ -26,9 +26,9 @@
           </div>
         </div>
       </div>
-      <div class="col-md-8 text-right">
+      <div class="col-8 text-right">
         <div class="row">
-          <div class="col">
+          <div class="col mr-4">
             <label for="switchAttivoBanner" class="title">Attivo</label>
           </div>
         </div>
@@ -105,11 +105,13 @@
                 ></dp-date-picker>
               </div>
             </div>
-            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="row">
               <div class="col">
-                <p [ngClass]="{'text-muted': !isCampoInvalido(inizioInput), 'text-invalid': isCampoInvalido(inizioInput)}">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(inizioInput), 'text-invalid': isCampoInvalido(inizioInput)}">
                   {{setPlaceholder(inizioInput, 'date')}}
                 </p>
+                <p *ngIf="funzione === FunzioneGestioneEnum.DETTAGLIO" class="pb-3"></p>
               </div>
             </div>
           </div>
@@ -151,11 +153,13 @@
                 ></dp-date-picker>
               </div>
             </div>
-            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="row">
               <div class="col">
-                <p [ngClass]="{'text-muted': !isCampoInvalido(fineInput), 'text-invalid': isCampoInvalido(fineInput)}">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(fineInput), 'text-invalid': isCampoInvalido(fineInput)}">
                   {{setPlaceholder(fineInput, 'date')}}
                 </p>
+                <p *ngIf="funzione === FunzioneGestioneEnum.DETTAGLIO"></p>
               </div>
             </div>
           </div>
