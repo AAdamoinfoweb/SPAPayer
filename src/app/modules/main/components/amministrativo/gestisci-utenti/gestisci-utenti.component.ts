@@ -34,7 +34,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   codiceFiscaleUtenteDaModificare: string;
   listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
-  selectionUtenti: [];
+  selectionUtenti: any[];
 
   toolbarIcons = [
     {type: ToolEnum.INSERT},
