@@ -27,9 +27,10 @@ export class TableComponent implements OnInit {
   @Output()
   onClickRow: EventEmitter<any> = new EventEmitter<any>();
 
+
   readonly tipoColonnaEnum = tipoColonna;
   readonly tipoTabellaEnum = tipoTabella;
-
+  @Input()
   selection: any [];
 
   wasLinkOrIconSelected: boolean = false;
