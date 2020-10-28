@@ -46,7 +46,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData: Tabella;
+  tempTableData: Tabella = this.tableData;
 
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
