@@ -182,8 +182,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   getNumeroRecord(): string {
-    // TODO implementare metodo
-    return '';
+    return 'Totale: ' + this.tableData.rows.length + ' accessi';
   }
 
   getRigheFileExcel(righe: any[]) {
