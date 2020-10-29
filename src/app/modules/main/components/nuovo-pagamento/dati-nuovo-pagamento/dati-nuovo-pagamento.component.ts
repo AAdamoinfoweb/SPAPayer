@@ -616,6 +616,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.enteId = this.servizio.enteId;
     bollettino.ente = this.servizio.enteNome;
     bollettino.numero = this.getNumDocumento();
+    bollettino.anagraficaPagatore = this.model[this.getCampoDettaglioTransazione('anagrafica_pagatore')];
     bollettino.anno = this.model[this.getCampoDettaglioTransazione('anno_documento')];
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
     // rimuovere primi 3 caratteri
