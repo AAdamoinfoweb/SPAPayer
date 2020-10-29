@@ -22,7 +22,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   readonly TipoCampoEnum = TipoCampoEnum;
   readonly minCharsToRetrieveCF = 1;
   readonly minDateDDMMYYYY = '01/01/1900';
-  readonly tipoData = ECalendarValue.Moment;
+  readonly tipoData = ECalendarValue.String;
 
   @Input()
   listaElementi: Array<Accesso> = [];
