@@ -21,10 +21,10 @@ export class SidebarComponent implements OnInit {
   selectedElement: string = '';
 
   constructor(private overlayService: OverlayService,
-    private amministrativoService: AmministrativoService,
-    public menuService: MenuService,
-    private http: HttpClient,
-    private router: Router) {
+              private amministrativoService: AmministrativoService,
+              public menuService: MenuService,
+              private http: HttpClient,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -83,6 +83,8 @@ export class SidebarComponent implements OnInit {
             window.location.href = body.url;
           }
         });
+      } else if (item.nome === 'Contattaci') {
+        window.open(item.route, "_blank");
       } else {
         let param = '';
         if (item['isAmministrativo']) {
