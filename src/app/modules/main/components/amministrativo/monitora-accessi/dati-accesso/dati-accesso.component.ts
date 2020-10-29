@@ -26,9 +26,9 @@ export class DatiAccessoComponent implements OnInit, OnChanges {
 
   ngOnChanges(sc: SimpleChanges) {
     if (sc.accesso) {
-      this.codiceFiscale = null; // TODO capire da dove leggere codice fiscale
+      this.codiceFiscale = this.accesso.codiceFiscale;
       this.nominativo = (this.accesso.nome ? this.accesso.nome + ' ' : '') + (this.accesso.cognome || '');
-      this.indirizzoIP = null; // TODO capire da dove leggere indirizzo IP
+      this.indirizzoIP = this.accesso.indirizzoIP;
       this.inizioSessione = this.getDataSessioneFormattata(this.accesso.inizioSessione);
       this.fineSessione = this.getDataSessioneFormattata(this.accesso.fineSessione);
       this.durataSessione = Utils.getDurataSessioneFormattata(this.accesso.durata);
