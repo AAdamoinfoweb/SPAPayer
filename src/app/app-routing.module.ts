@@ -11,7 +11,7 @@ import {GenericErrorComponent} from "./modules/generic-error/generic-error.compo
 import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/nuovo-pagamento.component';
 import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
-import {WaitingL1Component} from "./modules/main/components/waiting-l1/waiting-l1.component";
+import {WaitingL1Component} from "./modules/main/components/waitingL1/waiting-l1.component";
 import {GestisciUtentiComponent} from './modules/main/components/amministrativo/gestisci-utenti/gestisci-utenti.component';
 import {FormUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/form-utente-permessi/form-utente-permessi.component';
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
