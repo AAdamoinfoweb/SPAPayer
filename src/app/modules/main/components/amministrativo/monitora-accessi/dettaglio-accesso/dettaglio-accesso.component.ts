@@ -35,9 +35,10 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
       {label: 'Monitora Accessi', link: '/monitoraAccessi/funzione?' + this.amministrativoService.idFunzione},
       {label: 'Dettaglio Accesso', link: null}
     ])
-    this.accessoService.recuperaAccessi(null, this.amministrativoService.idFunzione).subscribe(listaAccessi => {
-      const idSelezionato = parseInt(this.activatedRoute.snapshot.paramMap.get('accessoid'));
-      this.accesso = listaAccessi.find(accesso => accesso.idAccesso === idSelezionato) || new Accesso();
+
+    const idSelezionato = parseInt(this.activatedRoute.snapshot.paramMap.get('accessoid'));
+    this.accessoService.recuperaDettaglioAccesso(idSelezionato, this.amministrativoService.idFunzione).subscribe(accesso => {
+      this.accesso = accesso;
     });
   }
 
