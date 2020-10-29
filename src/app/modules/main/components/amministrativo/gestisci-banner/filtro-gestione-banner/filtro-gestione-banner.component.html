@@ -54,21 +54,9 @@
         </div>
       </div>
 
-      <!-- Swicth campo Attivo, Inizio, Fine -->
+      <!-- Inizio, Fine, Switch campo Attivo -->
       <div class="row mt-2 mb-0">
-        <div class="col-md-3 pb-2">
-          <div class="row">
-            <div class="col">
-              <label for="switchAttivoBanner" class="title">Attivo</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <it-toggle id="switchAttivoBanner" [(ngModel)]="filtroGestioneBannerApplicato.attivo" name="attivo"></it-toggle>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 pb-2">
+        <div class="col-md-4 pb-2">
           <div class="row">
             <div class="col">
               <label for="inizio" class="title">Inizio</label>
@@ -112,7 +100,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3 pb-2">
+        <div class="col-md-4 pb-2">
           <div class="row">
             <div class="col">
               <label for="fine" class="title">Fine</label>
@@ -152,6 +140,18 @@
               <p [ngClass]="{'text-muted': !isCampoInvalido(fineInput), 'text-invalid': isCampoInvalido(fineInput)}">
                 {{setPlaceholder(fineInput, 'date')}}
               </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="switchAttivoBanner" class="title">Attivo</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <it-toggle id="switchAttivoBanner" [(ngModel)]="filtroGestioneBannerApplicato.attivo" name="attivo"></it-toggle>
             </div>
           </div>
         </div>
