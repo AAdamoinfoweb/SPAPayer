@@ -30,8 +30,8 @@
           </div>
           <div class="row">
             <div class="col">
-              <p [ngClass]="{'text-muted': !isCampoInvalido(filtroFunzione), 'text-invalid': isCampoInvalido(filtroFunzione), 'text-disabled': !listaElementi.length}">
-                {{setPlaceholder(filtroFunzione, TipoCampoEnum.INPUT_TESTUALE)}}
+              <p [ngClass]="{'text-muted': !isCampoInvalido(filtroFunzione), 'text-invalid': isCampoInvalido(filtroFunzione), 'text-disabled': !listaFunzioniAbilitate.length}">
+                {{setPlaceholder(filtroFunzione, TipoCampoEnum.SELECT)}}
               </p>
             </div>
           </div>
@@ -55,8 +55,33 @@
           </div>
           <div class="row">
             <div class="col">
-              <p [ngClass]="{'text-muted': !isCampoInvalido(filtroIdUtente), 'text-invalid': isCampoInvalido(filtroIdUtente), 'text-disabled': !listaElementi.length}">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(filtroIdUtente), 'text-invalid': isCampoInvalido(filtroIdUtente)}">
                 {{setPlaceholder(filtroIdUtente, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="filtroIndirizzoIP" class="title">Indirizzo IP</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input id="filtroIndirizzoIP" class="pt-0" name="indirizzoIP"
+                     type="text"
+                     pattern="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"
+                     #filtroIndirizzoIP = "ngModel" [(ngModel)]="indirizzoIPSelezionato"
+                     maxlength="15"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(filtroIndirizzoIP), 'text-invalid': isCampoInvalido(filtroIndirizzoIP)}">
+                {{setPlaceholder(filtroIndirizzoIP, TipoCampoEnum.INPUT_TESTUALE)}}
               </p>
             </div>
           </div>
