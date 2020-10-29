@@ -124,7 +124,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   }
 
   pulisciFiltri(filtroForm: NgForm): void {
-    filtroForm.reset();
+    filtroForm.resetForm();
     this.funzioneSelezionata = null;
     this.idUtenteSelezionato = null;
     this.indirizzoIPSelezionato = null;
