@@ -11,7 +11,7 @@ import {GenericErrorComponent} from "./modules/generic-error/generic-error.compo
 import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/nuovo-pagamento.component';
 import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
-import {WaitingL1Component} from "./modules/main/components/waiting-l1/waiting-l1.component";
+import {WaitingL1Component} from "./modules/main/components/waitingL1/waiting-l1.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },

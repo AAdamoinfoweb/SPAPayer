@@ -18,7 +18,7 @@ import {DpDatePickerModule} from "ng2-date-picker";
 import {CarrelloComponent} from "./components/carrello/carrello.component";
 import {ListaPagamentiL1Component} from "./components/lista-pagamentiL1/lista-pagamenti-l1.component";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
-import {WaitingL1Component} from "./components/waiting-l1/waiting-l1.component";
+import {WaitingL1Component} from "./components/waitingL1/waiting-l1.component";
 
 @NgModule({
   declarations: [
