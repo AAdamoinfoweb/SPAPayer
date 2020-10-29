@@ -197,8 +197,12 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     });
   }
 
-  onChangeListaElementi(listaElementi: any[]): void {
-    // TODO implementare metodo
+  onChangeListaElementi(listaAccessiFiltrati: Accesso[]): void {
+    this.tableData.rows = [];
+    this.ordinaDescrescenteAccessi(listaAccessiFiltrati);
+    listaAccessiFiltrati.forEach(accesso => {
+      this.tableData.rows.push(this.creaRigaTabella(accesso));
+    });
   }
 
   ordinaDescrescenteAccessi(listaAccessi: Accesso[]): Accesso[] {

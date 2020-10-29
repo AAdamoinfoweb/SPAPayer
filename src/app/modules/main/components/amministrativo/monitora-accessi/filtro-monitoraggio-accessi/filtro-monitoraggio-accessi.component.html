@@ -1,1 +1,54 @@
-<p>filtro-monitoraggio-accessi works!</p>
+<!-- Sottotitolo -->
+<div class="collapse-header" id="idCollapseFiltri">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true" aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroForm="ngForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltri">
+    <div class="collapse-body">
+      <!-- Filtri -->
+      <div class="row mt-2 mb-0">
+
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="filtroFunzione" class="title">Funzione visitata</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select [ngClass]="{'text-disabled': !listaFunzioniAbilitate.length}" id="filtroFunzione" name="funzioneId"
+                      #filtroFunzione = "ngModel"
+                      [(ngModel)]="funzioneSelezionata">
+                <option [ngValue]="null" selected>Tutte</option>
+                <option *ngFor="let item of listaFunzioniAbilitate" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(filtroFunzione), 'text-invalid': isCampoInvalido(filtroFunzione), 'text-disabled': !listaElementi.length}">
+                {{setPlaceholder(filtroFunzione, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottoni Pulisci e Cerca -->
+      <div class="row">
+        <div class="col-6">
+          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroForm)"
+                  (click)="pulisciFiltri(filtroForm)">Pulisci</button>
+        </div>
+        <div class="col-6 btn-find">
+          <button id="bottoneCerca" class="btn"
+                  (click)="cercaElementi()">Cerca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
