@@ -96,7 +96,6 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
       : null;
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        datiBanner.attivo = true;
         this.bannerService.inserimentoBanner(datiBanner, this.amministrativoService.idFunzione).subscribe((banner) => {
           if (banner != null) {
             this.datiBanner = new Banner();
