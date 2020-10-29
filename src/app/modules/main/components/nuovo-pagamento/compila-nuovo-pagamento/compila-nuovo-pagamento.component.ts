@@ -26,6 +26,9 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   @Input()
   datiPagamento: DatiPagamento;
 
+  @Input()
+  filtroPagamento: boolean;
+
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private menuService: MenuService,
               private overlayService: OverlayService) {
@@ -146,25 +149,26 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroServizi(idEnte?): void {
-    this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
-      servizi.forEach(servizio => {
-        this.listaServizi.push({
-          value: servizio,
-          label: servizio.nome
+    this.nuovoPagamentoService.recuperaFiltroServizi(idEnte, this.filtroPagamento)
+      .pipe(map(servizi => {
+        servizi.forEach(servizio => {
+          this.listaServizi.push({
+            value: servizio,
+            label: servizio.nome
+          });
         });
-      });
 
-      if (this.datiPagamento) {
-        const servizio = this.listaServizi.find(item => item.value.id === this.datiPagamento.servizioId)?.value;
-        if (servizio) {
-          this.servizioSelezionato = servizio;
-          this.selezionaServizio();
-        } else {
-          console.log('Servizio mancante');
-          this.overlayService.gestisciErrore();
+        if (this.datiPagamento) {
+          const servizio = this.listaServizi.find(item => item.value.id === this.datiPagamento.servizioId)?.value;
+          if (servizio) {
+            this.servizioSelezionato = servizio;
+            this.selezionaServizio();
+          } else {
+            console.log('Servizio mancante');
+            this.overlayService.gestisciErrore();
+          }
         }
-      }
-    })).subscribe(() => this.restoreParziale('servizioId'));
+      })).subscribe(() => this.restoreParziale('servizioId'));
   }
 
   selezionaServizio(): void {

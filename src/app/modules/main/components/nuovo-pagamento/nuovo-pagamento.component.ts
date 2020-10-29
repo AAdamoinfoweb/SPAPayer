@@ -17,6 +17,10 @@ export class NuovoPagamentoComponent implements OnInit {
   @Input()
   datiPagamento: DatiPagamento;
 
+  @Input()
+  filtroPagamento = true;
+
+
   constructor(private nuovoPagamentoService: NuovoPagamentoService) {
     this.nuovoPagamentoService.compilazioneEvent.subscribe(servizioSelezionato => {
       this.servizioSelezionato = servizioSelezionato;
