@@ -8,6 +8,7 @@ import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {FunzioneService} from '../../../../../../services/funzione.service';
 import {AccessoService} from '../../../../../../services/accesso.service';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {UtenteService} from '../../../../../../services/utente.service';
 
 @Component({
   selector: 'app-filtro-monitoraggio-accessi',
@@ -17,17 +18,17 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiComponent implements OnInit {
 
   readonly TipoCampoEnum = TipoCampoEnum;
+  readonly minCharsToRetrieveCF = 1;
 
   @Input()
   listaElementi: Array<Accesso> = [];
 
   listaFunzioniAbilitate: Array<OpzioneSelect> = [];
-
-  // parametriRicercaAccesso: ParametriRicercaAccesso = new ParametriRicercaAccesso();
-
   funzioneSelezionata: number = null;
-  indirizzoIPSelezionato: string = null;
+
+  listaIdUtenti = [];
   idUtenteSelezionato: string = null;
+  indirizzoIPSelezionato: string = null;
   dataDaSelezionata: string = null;
   dataASelezionata: string = null;
 
@@ -37,7 +38,8 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   constructor(
     private amministrativoService: AmministrativoService,
     private accessoService: AccessoService,
-    private funzioneService: FunzioneService
+    private funzioneService: FunzioneService,
+    private utenteService: UtenteService
   ) {
     super();
   }
@@ -56,6 +58,20 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
         });
       });
     });
+  }
+
+  suggerimentiIdUtente(event): void {
+    const inputCf = event.query;
+
+    if (inputCf.length < this.minCharsToRetrieveCF) {
+      this.listaIdUtenti = [];
+    } else if (inputCf.length === this.minCharsToRetrieveCF) {
+      this.utenteService.letturaCodiceFiscale(inputCf, this.amministrativoService.idFunzione).subscribe(data => {
+        this.listaIdUtenti = data;
+      });
+    } else {
+      this.listaIdUtenti = this.listaIdUtenti.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
+    }
   }
 
   isCampoInvalido(campo: NgModel) {
@@ -77,10 +93,18 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     }
   }
 
-  cercaElementi(): void {
+  getParametriRicerca() {
     const parametriRicercaAccesso = new ParametriRicercaAccesso();
     parametriRicercaAccesso.funzioneId = this.funzioneSelezionata;
-    this.accessoService.recuperaAccessi(parametriRicercaAccesso, this.amministrativoService.idFunzione).subscribe(listaAccessi => {
+    parametriRicercaAccesso.codiceFiscale = this.idUtenteSelezionato || null;
+    parametriRicercaAccesso.indirizzoIP = this.indirizzoIPSelezionato || null;
+    parametriRicercaAccesso.inizioSessione = this.dataDaSelezionata ? new Date(this.dataDaSelezionata) : null;
+    parametriRicercaAccesso.fineSessione = this.dataASelezionata ? new Date(this.dataASelezionata) : null;
+    return parametriRicercaAccesso;
+  }
+
+  cercaElementi(): void {
+    this.accessoService.recuperaAccessi(this.getParametriRicerca(), this.amministrativoService.idFunzione).subscribe(listaAccessi => {
       this.onChangeListaElementi.emit(listaAccessi);
     });
   }

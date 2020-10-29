@@ -23,7 +23,7 @@
               <select [ngClass]="{'text-disabled': !listaFunzioniAbilitate.length}" id="filtroFunzione" name="funzioneId"
                       #filtroFunzione = "ngModel"
                       [(ngModel)]="funzioneSelezionata">
-                <option [ngValue]="null" selected>Tutte</option>
+                <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaFunzioniAbilitate" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -36,6 +36,32 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="filtroIdUtente" class="title">User ID (Codice fiscale)</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p-autoComplete id="filtroIdUtente" class="pt-0" name="codiceFiscale"
+                              pattern="^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$"
+                              #filtroIdUtente = "ngModel" [(ngModel)]="idUtenteSelezionato"
+                              [suggestions]="listaIdUtenti" (completeMethod)="suggerimentiIdUtente($event)" (onClear)="listaIdUtenti = []"
+                              [minLength]="minCharsToRetrieveCF" maxlength="16" delay="0" autoHighlight="true">
+              </p-autoComplete>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(filtroIdUtente), 'text-invalid': isCampoInvalido(filtroIdUtente), 'text-disabled': !listaElementi.length}">
+                {{setPlaceholder(filtroIdUtente, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- Bottoni Pulisci e Cerca -->
