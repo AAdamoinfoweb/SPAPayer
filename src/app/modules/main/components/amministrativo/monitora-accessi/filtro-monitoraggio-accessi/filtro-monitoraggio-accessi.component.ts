@@ -23,6 +23,8 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   readonly minCharsToRetrieveCF = 1;
   readonly minDateDDMMYYYY = '01/01/1900';
   readonly tipoData = ECalendarValue.String;
+  readonly formatoDataInput = 'DD/MM/YYYY';
+  readonly formatoDataBackend = 'YYYY-MM-DD';
 
   @Input()
   listaElementi: Array<Accesso> = [];
@@ -107,8 +109,8 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     parametriRicercaAccesso.funzioneId = this.funzioneSelezionata;
     parametriRicercaAccesso.codiceFiscale = this.idUtenteSelezionato || null;
     parametriRicercaAccesso.indirizzoIP = this.indirizzoIPSelezionato || null;
-    parametriRicercaAccesso.inizioSessione = this.dataDaSelezionata ? new Date(this.dataDaSelezionata) : null;
-    parametriRicercaAccesso.fineSessione = this.dataASelezionata ? new Date(this.dataASelezionata) : null;
+    parametriRicercaAccesso.inizioSessione = this.dataDaSelezionata ? moment(this.dataDaSelezionata, this.formatoDataInput).format(this.formatoDataBackend) : null;
+    parametriRicercaAccesso.fineSessione = this.dataASelezionata ? moment(this.dataASelezionata, this.formatoDataInput).format(this.formatoDataBackend) : null;
     return parametriRicercaAccesso;
   }
 
