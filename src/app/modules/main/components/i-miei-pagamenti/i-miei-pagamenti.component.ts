@@ -219,8 +219,6 @@ export class IMieiPagamentiComponent implements OnInit {
     const messaggioInserimentoCarrello = this.controlloValiditaPagamentiInserimentoCarrello();
     if (messaggioInserimentoCarrello == null) {
       this.iMieiPagamentiService.inserimentoPagamentiCarrello(this.pagamentiSelezionati).pipe(map(res => {
-        // refresh table
-        // todo prendere filtri se valorizzati
         this.inizializzaListaPagamenti(this.filtri);
       })).subscribe();
     } else {

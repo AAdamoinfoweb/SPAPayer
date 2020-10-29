@@ -20,6 +20,7 @@ import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import {GestisciElementoComponent} from "../gestisci-elemento.component";
 import {Colonna} from '../../../model/tabella/Colonna';
 import {Tabella} from '../../../model/tabella/Tabella';
+import {SpinnerOverlayService} from "../../../../../services/spinner-overlay.service";
 
 @Component({
   selector: 'app-gestione-utenti',
@@ -86,7 +87,8 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient,
-              private renderer: Renderer2, private el: ElementRef, amministrativoService: AmministrativoService) {
+              private renderer: Renderer2, private el: ElementRef, amministrativoService: AmministrativoService,
+              private spinnerOverlayService: SpinnerOverlayService) {
     super(router, route, http, amministrativoService);
     this.route.queryParams.subscribe(params => {
       if (params.societaId) {
@@ -139,8 +141,9 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
       }
     }
 
-    // TODO sostituire link mockato con redirect a monitoraAccessi
-    const ultimoAccesso = utente.ultimoAccesso ? Utils.creaLink(moment(utente.ultimoAccesso).format('DD/MM/YYYY'), 'www.dxc.com') : null;
+    const ultimoAccesso = utente.ultimoAccesso ?
+      Utils.creaLink(moment(utente.ultimoAccesso).format(Utils.FORMAT_DATE_CALENDAR), '/monitoraAccessi') :
+      Utils.creaLink(null, null);
 
     let row;
 
@@ -166,6 +169,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   onChangeTab(value) {
+    const subscription  = this.spinnerOverlayService.spinner$.subscribe();
     let tabRows = this.tableData.rows.map(row => row);
 
     if (value === TipoUtenteEnum.ATTIVI) {
@@ -176,6 +180,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
     this.tempTableData.rows = tabRows;
     this.nomeTabCorrente = value;
+    setTimeout(() => subscription.unsubscribe(), 500);
   }
 
   eseguiAzioni(azioneTool) {

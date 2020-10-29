@@ -13,12 +13,15 @@ export class Utils {
 
   static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00';
   static FORMAT_DATE_CALENDAR = 'DD/MM/YYYY';
+  static ACCEPTED_FORMAT_DATES = [
+    Utils.FORMAT_DATE_CALENDAR, Utils.FORMAT_LOCAL_DATE_TIME, moment.ISO_8601
+  ];
 
   static readonly EMAIL_REGEX = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   static readonly TELEFONO_REGEX = '^(\\+[0-9]{2,2})?[0-9]{9,11}$';
 
-  static creaLink = (testo, link, iconHref?) => {
-    return iconHref ? {testo, link, iconHref} : {testo, link};
+  static creaLink = (value, link, iconHref?) => {
+    return iconHref ? {value, link, iconHref} : {value, link, iconHref: null};
   }
 
   static creaIcona = (path, color, tooltip, display) => {

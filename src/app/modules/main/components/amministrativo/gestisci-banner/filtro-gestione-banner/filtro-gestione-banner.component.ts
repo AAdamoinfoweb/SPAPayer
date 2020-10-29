@@ -7,10 +7,10 @@ import {ParametriRicercaBanner} from '../../../../model/banner/ParametriRicercaB
 import {Banner} from '../../../../model/banner/Banner';
 import {NgForm, NgModel} from '@angular/forms';
 import {BottoneEnum} from '../../../../../../enums/bottone.enum';
-import {map} from 'rxjs/operators';
 import {BannerService} from '../../../../../../services/banner.service';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.component';
+import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
 
 @Component({
   selector: 'app-filtro-gestione-banner',
@@ -42,11 +42,7 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
 
   setPlaceholder(campo: NgModel, tipo: string): string {
     if (this.isCampoInvalido(campo)) {
-      if (campo.name === 'inizio' && campo.model && this.isDataInizioMaggioreDataFine()) {
-        return 'Inizio maggiore della fine';
-      } else {
         return 'campo non valido';
-      }
     } else {
       if (TipoCampoEnum.INPUT_TESTUALE === tipo) {
         return 'inserisci testo';
@@ -110,9 +106,18 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
     filtro.inizio = filtro.inizio ? moment(filtro.inizio, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     filtro.fine = filtro.fine ? moment(filtro.fine, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
 
-    this.bannerService.ricercaBanner(filtro, this.amministrativoService.idFunzione).pipe(map(listaBanner => {
-      this.onChangeListaElementi.emit(listaBanner);
-    })).subscribe();
+    this.bannerService.ricercaBanner(filtro, this.amministrativoService.idFunzione).subscribe(listaBanner => {
+      if (this.isDataInizioMaggioreDataFine()) {
+        const banner: Banner = {
+          titolo: 'ATTENZIONE',
+          testo: 'Inizio maggiore della fine',
+          tipo: getBannerType(LivelloBanner.ERROR)
+        };
+        this.bannerService.bannerEvent.emit([banner]);
+      } else {
+        this.onChangeListaElementi.emit(listaBanner);
+      }
+    });
   }
 
   disabilitaBottone(filtroGestioneBannerForm: NgForm, nomeBottone: string): boolean {

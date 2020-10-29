@@ -168,5 +168,15 @@ select:disabled {
 }
 
 .toggles label {
-  width: 23%;
+  width: 60px;
+}
+
+.toggles label input[type=checkbox][disabled] + .lever {
+  background-color: #E3E3E3;
+  cursor: not-allowed;
+}
+
+.toggles label input[type=checkbox][disabled] + .lever:after, .toggles label input[type=checkbox][disabled]:checked + .lever:after {
+  background-color: #E3E3E3;
+  cursor: not-allowed;
 }
