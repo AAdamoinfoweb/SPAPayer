@@ -45,6 +45,6 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
   }
 
   tornaIndietro(): void {
-    this.router.navigateByUrl('/monitoraggioAccessi?funzione=' + btoa(this.amministrativoService.idFunzione));
+    this.router.navigateByUrl('/monitoraAccessi?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 }
