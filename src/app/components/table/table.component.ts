@@ -45,11 +45,8 @@ export class TableComponent implements OnInit, OnChanges {
 
   @ViewChild("table", {static: false}) table: Table;
 
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
+  ngOnInit() { }
+  
   constructor() { }
 
   onRowSelect(event) {
