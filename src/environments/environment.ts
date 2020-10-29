@@ -12,7 +12,13 @@ export const environment = {
   renewJwtUrl: '/api/v1/renewToken',
   loginSpid: '/auth/loginLepida.htm',
   logoutSpid: '/',
-  bffBaseUrl: 'http://service.pp.192-168-43-56.nip.io/api'
+  bffBaseUrl: 'http://service.pp.192-168-43-56.nip.io/api',
+  menuLinks: [
+    {
+      nome: 'Contattaci',
+      url: 'https://www.lepida.net/assistenza/richiesta-assistenza-payer'
+    }
+    ]
 };
 
 /*

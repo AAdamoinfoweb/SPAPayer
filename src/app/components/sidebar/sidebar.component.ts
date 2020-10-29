@@ -77,8 +77,8 @@ export class SidebarComponent implements OnInit {
             window.location.href = body.url;
           }
         });
-      } else if (item.nome === 'Contattaci' || item.nome === 'Cos\'è PayER' || item.nome === 'Info Costi' || item.nome === 'Manuale d\'uso') {
-        window.open(item.route, "_blank");
+      } else if (environment.menuLinks.map(value => value.nome).includes(item.nome)) {
+        window.open(environment.menuLinks.find(value => value.nome === item.nome).url);
       } else {
         let param = '';
         if (item['isAmministrativo']) {
