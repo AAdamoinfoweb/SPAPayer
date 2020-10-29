@@ -156,36 +156,47 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
-    // TODO implementare metodo
-    // al termine dello switch o esecuzione azione this.selectionElementi = []
-  }
-
-  getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    // TODO implementare metodo
-    return [];
+    switch (azioneTool) {
+      case ToolEnum.EXPORT_PDF:
+        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Accessi');
+        break;
+      case ToolEnum.EXPORT_XLS:
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Accessi');
+        break;
+    }
+    this.selectionElementi = [];
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
-    // TODO implementare metodo
-    return [];
+    return colonne;
+  }
+
+  getRigheFilePdf(righe: any[]) {
+    return righe;
   }
 
   getImmaginiFilePdf(): ImmaginePdf[] {
-    // TODO implementare metodo
     return [];
   }
 
   getNumeroRecord(): string {
-    // TODO implementare metodo
-    return '';
+    return 'Totale: ' + this.tableData.rows.length + ' accessi';
+  }
+
+  getColonneFileExcel(colonne: Colonna[]): Colonna[] {
+    return colonne;
   }
 
   getRigheFileExcel(righe: any[]) {
-    // TODO implementare metodo
-  }
-
-  getRigheFilePdf(righe: any[]) {
-    // TODO implementare metodo
+    return righe.map(riga => {
+      delete riga.id;
+      riga.nome = riga.nome.value;
+      riga.funzioniVisitate = riga.funzioniVisitate.value;
+      riga.inizioSessione = riga.inizioSessione.value;
+      riga.fineSessione = riga.fineSessione.value;
+      riga.durataSessione = riga.durataSessione.value;
+      return riga;
+    });
   }
 
   onChangeListaElementi(listaElementi: any[]): void {

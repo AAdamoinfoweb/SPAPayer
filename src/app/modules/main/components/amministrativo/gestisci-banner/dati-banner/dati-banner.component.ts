@@ -33,8 +33,6 @@ export class DatiBannerComponent implements OnInit {
     if (this.isCampoInvalido(campo)) {
       if (campo.errors?.required) {
         return 'Il campo è obbligatorio';
-      } else if (campo.name === 'inizio' && campo.model && this.isDataInizioMaggioreDataFine()) {
-        return 'Data inizio validità è maggiore della data fine validità';
       } else {
         return 'campo non valido';
       }
