@@ -1,4 +1,4 @@
-<p-table [columns]="cols" [value]="rows" styleClass="p-datatable-responsive-demo"
+<p-table #table [columns]="cols" [value]="rows" styleClass="p-datatable-responsive-demo"
          dataKey="{{dataKey}}" [(selection)]="selection"
          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
          [paginator]="true" [rows]="pageSize" [showCurrentPageReport]="false"
