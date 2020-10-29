@@ -114,8 +114,16 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     this.onChangeListaElementi.emit(this.listaElementi);
   }
 
-  disabilitaBottone(filtroForm: NgForm): boolean {
-    return filtroForm.status === 'INVALID';
+  areFiltriPuliti(): boolean {
+    return !this.funzioneSelezionata && !this.idUtenteSelezionato && !this.indirizzoIPSelezionato && !this.dataDaSelezionata && !this.dataASelezionata;
+  }
+
+  disabilitaBottonePulisci(): boolean {
+    return this.areFiltriPuliti();
+  }
+
+  disabilitaBottoneCerca(filtroForm: NgForm): boolean {
+    return this.areFiltriPuliti() || filtroForm.status === 'INVALID';
   }
 
 }

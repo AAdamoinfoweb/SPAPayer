@@ -67,11 +67,11 @@
       <!-- Bottoni Pulisci e Cerca -->
       <div class="row">
         <div class="col-6">
-          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroForm)"
+          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottonePulisci()"
                   (click)="pulisciFiltri(filtroForm)">Pulisci</button>
         </div>
         <div class="col-6 btn-find">
-          <button id="bottoneCerca" class="btn"
+          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottoneCerca(filtroForm)"
                   (click)="cercaElementi()">Cerca</button>
         </div>
       </div>
