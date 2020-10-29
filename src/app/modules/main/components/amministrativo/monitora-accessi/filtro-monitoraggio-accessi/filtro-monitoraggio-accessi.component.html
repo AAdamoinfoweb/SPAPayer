@@ -123,6 +123,7 @@
                 [(ngModel)]="dataDaSelezionata"
                 name="inizioSessione"
                 #filtroDataDa
+                [maxDate]="getMaxDataDa()"
               ></dp-date-picker>
             </div>
           </div>

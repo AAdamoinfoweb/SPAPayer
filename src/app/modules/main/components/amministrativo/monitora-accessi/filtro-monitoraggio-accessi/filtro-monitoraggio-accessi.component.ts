@@ -86,7 +86,11 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
   setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum) {
     if (this.isCampoInvalido(campo)) {
-      return 'campo invalido';
+      if (campo.errors.maxDate) {
+        return 'data Da maggiore di data A';
+      } else {
+        return 'campo invalido';
+      }
     } else {
       switch (tipoCampo) {
         case TipoCampoEnum.SELECT:
@@ -99,9 +103,8 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     }
   }
 
-  setMaxDate(datePicker: DatePickerComponent): string {
-    return datePicker.inputElementValue
-      ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
+  getMaxDataDa() {
+    return this.dataASelezionata;
   }
 
   getParametriRicerca() {
