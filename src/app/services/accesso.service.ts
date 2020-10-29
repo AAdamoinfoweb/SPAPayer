@@ -23,7 +23,9 @@ export class AccessoService {
 
     if (parametriRicercaAccesso) {
       Object.keys(parametriRicercaAccesso).forEach(parametro => {
-        params.set(parametro, String(parametriRicercaAccesso[parametro]));
+        if (parametriRicercaAccesso[parametro]) {
+          params = params.set(parametro, String(parametriRicercaAccesso[parametro]));
+        }
       });
     }
 
