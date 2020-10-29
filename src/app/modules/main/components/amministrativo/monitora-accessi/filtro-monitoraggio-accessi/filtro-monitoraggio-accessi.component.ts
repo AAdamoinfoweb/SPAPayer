@@ -9,6 +9,8 @@ import {FunzioneService} from '../../../../../../services/funzione.service';
 import {AccessoService} from '../../../../../../services/accesso.service';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {UtenteService} from '../../../../../../services/utente.service';
+import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-filtro-monitoraggio-accessi',
@@ -19,6 +21,8 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
   readonly TipoCampoEnum = TipoCampoEnum;
   readonly minCharsToRetrieveCF = 1;
+  readonly minDateDDMMYYYY = '01/01/1900';
+  readonly tipoData = ECalendarValue.Moment;
 
   @Input()
   listaElementi: Array<Accesso> = [];
@@ -93,6 +97,11 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     }
   }
 
+  setMaxDate(datePicker: DatePickerComponent): string {
+    return datePicker.inputElementValue
+      ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
+  }
+
   getParametriRicerca() {
     const parametriRicercaAccesso = new ParametriRicercaAccesso();
     parametriRicercaAccesso.funzioneId = this.funzioneSelezionata;
@@ -112,6 +121,10 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.reset();
     this.onChangeListaElementi.emit(this.listaElementi);
+  }
+
+  openDatepicker(datePickerComponent: DatePickerComponent): void {
+    datePickerComponent.api.open();
   }
 
   areFiltriPuliti(): boolean {

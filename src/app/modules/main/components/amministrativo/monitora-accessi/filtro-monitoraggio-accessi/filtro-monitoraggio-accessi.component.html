@@ -89,16 +89,106 @@
 
       </div>
 
-      <!-- Bottoni Pulisci e Cerca -->
-      <div class="row">
-        <div class="col-6">
-          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottonePulisci()"
-                  (click)="pulisciFiltri(filtroForm)">Pulisci</button>
+      <div class="row mt-2 mb-0">
+
+        <div class="col-md-3 pb-0">
+          <div class="row">
+            <div class="col">
+              <label for="filtroIdUtente" class="title">Inizio sessione - Da</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(filtroDataDaCalendar)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="filtroDataDa"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+	              }"
+                #filtroDataDaCalendar
+                #filtroDataDa = "ngModel"
+                [(ngModel)]="dataDaSelezionata"
+                name="dataScadenzaDa"
+                #filtroDataDa
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(filtroDataDa), 'text-invalid': isCampoInvalido(filtroDataDa)}">
+                {{setPlaceholder(filtroDataDa, TipoCampoEnum.DATEDDMMYY)}}
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="col-6 btn-find">
-          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottoneCerca(filtroForm)"
-                  (click)="cercaElementi()">Cerca</button>
+      </div>
+
+      <div class="col-md-3 pb-0">
+        <div class="row">
+          <div class="col">
+            <label for="filtroIdUtente" class="title">Fine sessione - A</label>
+          </div>
         </div>
+
+        <div class="row">
+          <div class="col calendar-wrapper">
+            <svg class="bg-light icon img-calendar" (click)="openDatepicker(filtroDataACalendar)">
+              <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+            </svg>
+            <dp-date-picker
+              mode="day"
+              id="filtroDataA"
+              theme="dp-material"
+              dayInput
+              [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+	              }"
+              #filtroDataACalendar
+              #filtroDataA = "ngModel"
+              [(ngModel)]="dataDaSelezionata"
+              name="dataScadenzaDa"
+              #filtroDataA
+            ></dp-date-picker>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p [ngClass]="{'text-muted': !isCampoInvalido(filtroDataA), 'text-invalid': isCampoInvalido(filtroDataA)}">
+              {{setPlaceholder(filtroDataA, TipoCampoEnum.DATEDDMMYY)}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottoni Pulisci e Cerca -->
+    <div class="row">
+      <div class="col-6">
+        <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottonePulisci()"
+                (click)="pulisciFiltri(filtroForm)">Pulisci</button>
+      </div>
+      <div class="col-6 btn-find">
+        <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottoneCerca(filtroForm)"
+                (click)="cercaElementi()">Cerca</button>
       </div>
     </div>
   </div>
