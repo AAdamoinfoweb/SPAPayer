@@ -48,8 +48,6 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData: Tabella = this.tableData;
-
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private el: ElementRef,
@@ -158,10 +156,10 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   eseguiAzioni(azioneTool: ToolEnum): void {
     switch (azioneTool) {
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Accessi');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Accessi');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Accessi');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Accessi');
         break;
     }
     this.selectionElementi = [];
@@ -234,7 +232,6 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
       this.listaAccessi.forEach(accesso => {
         this.tableData.rows.push(this.creaRigaTabella(accesso));
       });
-      this.tempTableData = Object.assign({}, this.tableData);
     });
     this.waiting = false;
   }

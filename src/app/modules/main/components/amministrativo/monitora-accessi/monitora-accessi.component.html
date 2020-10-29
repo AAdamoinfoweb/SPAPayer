@@ -41,10 +41,10 @@
       <!-- table -->
       <div class="row">
         <div class="col">
-          <app-table [dataKey]="tempTableData.dataKey"
-                     [cols]="tempTableData.cols"
-                     [rows]="tempTableData.rows"
-                     [tipoTabella]="tempTableData.tipoTabella"
+          <app-table [dataKey]="tableData.dataKey"
+                     [cols]="tableData.cols"
+                     [rows]="tableData.rows"
+                     [tipoTabella]="tableData.tipoTabella"
                      [textLeft]="getNumeroRecord()"
                      (onSelection)="selezionaRigaTabella($event)"
                      [selectedRows]="true"
