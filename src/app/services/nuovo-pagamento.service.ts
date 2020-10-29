@@ -71,10 +71,10 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaFiltroServizi(idEnte?): Observable<FiltroServizio[]> {
+  recuperaFiltroServizi(idEnte?, filtroPagamento: boolean = false): Observable<FiltroServizio[]> {
     let params = new HttpParams();
     if (idEnte) {
-      params = params.set('enteId', idEnte);
+      params = params.set('enteId', idEnte).set('filtroPagamento', String(filtroPagamento));
     }
     return this.http.get(environment.bffBaseUrl + this.filtroServiziUrl, {
       params: params,
