@@ -84,7 +84,7 @@ export class SidebarComponent implements OnInit {
           }
         });
       } else if (item.nome === 'Contattaci') {
-        window.location.href = item.route;
+        window.open(item.route, "_blank");
       } else {
         let param = '';
         if (item['isAmministrativo']) {
