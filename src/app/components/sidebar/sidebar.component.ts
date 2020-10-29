@@ -49,6 +49,16 @@ export class SidebarComponent implements OnInit {
             this.amministrativoService.mappaFunzioni = JSON.parse(menuTemp[idx]["mappaFunzioni"]);
             menuTemp.splice([idx], 1);
           }
+          // orderBy posizione sotto menu dinamici
+          let posizione = 3;
+          menuTemp = menuTemp.map(sottoMenu => {
+            if (!(['Informazioni', 'Contattaci', 'Esci', 'Pagamenti'].includes(sottoMenu.nome))) {
+              sottoMenu.posizione = posizione;
+              posizione++;
+            }
+            return sottoMenu;
+          });
+
           this.menu = menuTemp;
           this.waiting = false;
           this.menuService.userEventChange.emit();
