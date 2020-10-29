@@ -3,7 +3,6 @@ import {environment} from '../../../environments/environment';
 import {MenuService} from '../../services/menu.service';
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
-import {AmministrativoService} from "../../services/amministrativo.service";
 import {OverlayService} from "../../services/overlay.service";
 
 @Component({
@@ -21,7 +20,6 @@ export class SidebarComponent implements OnInit {
   selectedElement: string = '';
 
   constructor(private overlayService: OverlayService,
-              private amministrativoService: AmministrativoService,
               public menuService: MenuService,
               private http: HttpClient,
               private router: Router) {
@@ -44,11 +42,7 @@ export class SidebarComponent implements OnInit {
           }
 
           let menuTemp = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
-          let idx = menuTemp.findIndex(o => o["mappaFunzioni"]);
-          if (idx != -1 && menuTemp[idx]["mappaFunzioni"]) {
-            this.amministrativoService.mappaFunzioni = JSON.parse(menuTemp[idx]["mappaFunzioni"]);
-            menuTemp.splice([idx], 1);
-          }
+
           this.menu = menuTemp;
           this.waiting = false;
           this.menuService.userEventChange.emit();

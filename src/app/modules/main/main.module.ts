@@ -19,14 +19,6 @@ import {CarrelloComponent} from "./components/carrello/carrello.component";
 import {ListaPagamentiL1Component} from "./components/lista-pagamentiL1/lista-pagamenti-l1.component";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {WaitingL1Component} from "./components/waiting-l1/waiting-l1.component";
-import { FormSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/form-societa/form-societa.component';
-import { DatiSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/dati-societa/dati-societa.component';
-import { DatiLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dati-livello-territoriale/dati-livello-territoriale.component';
-import { FormLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/form-livello-territoriale/form-livello-territoriale.component';
-import { FiltroGestioneEntiComponent } from './components/amministrativo/anagrafiche/gestisci-enti/filtro-gestione-enti/filtro-gestione-enti.component';
-import {DatiBannerComponent} from './components/amministrativo/gestisci-banner/dati-banner/dati-banner.component';
-import {FormBannerComponent} from './components/amministrativo/gestisci-banner/form-banner/form-banner.component';
-import {DettaglioAccessoComponent} from './components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
 
 @NgModule({
   declarations: [
@@ -42,15 +34,6 @@ import {DettaglioAccessoComponent} from './components/amministrativo/monitora-ac
     WaitingComponent,
     WaitingL1Component,
     FiltriIMieiPagamentiComponent,
-    FormSocietaComponent,
-    DatiSocietaComponent,
-    DatiLivelloTerritorialeComponent,
-    FormLivelloTerritorialeComponent,
-    DatiSocietaComponent,
-    FiltroGestioneEntiComponent,
-    DatiBannerComponent,
-    FormBannerComponent,
-    DettaglioAccessoComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +52,6 @@ import {DettaglioAccessoComponent} from './components/amministrativo/monitora-ac
     FooterComponent,
     ReplacePipe,
     FiltriIMieiPagamentiComponent,
-    FiltroGestioneEntiComponent
   ]
 })
 export class MainModule {
