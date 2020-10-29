@@ -125,6 +125,11 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.reset();
+    this.funzioneSelezionata = null;
+    this.idUtenteSelezionato = null;
+    this.indirizzoIPSelezionato = null;
+    this.dataDaSelezionata = null;
+    this.dataASelezionata = null;
     this.onChangeListaElementi.emit(this.listaElementi);
   }
 

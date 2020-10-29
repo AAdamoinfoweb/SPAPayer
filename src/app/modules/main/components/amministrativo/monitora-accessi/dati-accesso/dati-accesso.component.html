@@ -6,25 +6,17 @@
       <div class="col-md-4 pb-2">
         <div class="row">
           <div class="col">
-            <label for="" class="title">Nome</label>
+            <label for="codiceFiscale" class="title">Codice Fiscale</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
-
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="" class="title">Telefono</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-
+            <input
+              type="text"
+              disabled
+              id="codiceFiscale"
+              [(ngModel)]="codiceFiscale"
+            />
           </div>
         </div>
       </div>
@@ -32,12 +24,35 @@
       <div class="col-md-4 pb-2">
         <div class="row">
           <div class="col">
-            <label for="" class="title">Telefono</label>
+            <label for="nominativo" class="title">Nominativo</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
+            <input
+              type="text"
+              disabled
+              [(ngModel)]="nominativo"
+              id="nominativo"
+            />
+          </div>
+        </div>
+      </div>
 
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="indirizzoIP" class="title">Indirizzo IP</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input
+              id="indirizzoIP"
+              type="text"
+              disabled
+              [(ngModel)]="indirizzoIP"
+            />
           </div>
         </div>
       </div>
@@ -49,25 +64,17 @@
       <div class="col-md-4 pb-2">
         <div class="row">
           <div class="col">
-            <label for="" class="title">Telefono</label>
+            <label for="inizioSessione" class="title">Inizio Sessione</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
-
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="" class="title">Telefono</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-
+            <input
+              id="inizioSessione"
+              type="text"
+              disabled
+              [(ngModel)]="inizioSessione"
+            />
           </div>
         </div>
       </div>
@@ -75,12 +82,35 @@
       <div class="col-md-4 pb-2">
         <div class="row">
           <div class="col">
-            <label for="" class="title">Telefono</label>
+            <label for="fineSessione" class="title">Fine Sessione</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
+            <input
+              id="fineSessione"
+              type="text"
+              disabled
+              [(ngModel)]="fineSessione"
+            />
+          </div>
+        </div>
+      </div>
 
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="durataSessione" class="title">Durata Sessione</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input
+              id="durataSessione"
+              type="text"
+              disabled
+              [(ngModel)]="durataSessione"
+            />
           </div>
         </div>
       </div>
