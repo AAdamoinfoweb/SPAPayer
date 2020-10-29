@@ -139,8 +139,9 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
       }
     }
 
-    // TODO sostituire link mockato con redirect a monitoraAccessi
-    const ultimoAccesso = utente.ultimoAccesso ? Utils.creaLink(moment(utente.ultimoAccesso).format('DD/MM/YYYY'), 'www.dxc.com') : null;
+    const ultimoAccesso = utente.ultimoAccesso ?
+      Utils.creaLink(moment(utente.ultimoAccesso).format(Utils.FORMAT_DATE_CALENDAR), '/monitoraAccessi') :
+      Utils.creaLink(null, null);
 
     let row;
 
