@@ -174,7 +174,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   checkUtenteLoggato(): void {
     this.tooltipBottoneSalvaPerDopo = this.menuService.isUtenteAnonimo
-      ? 'Per attivare il bottone accedi o registrati"'
+      ? 'Per attivare il bottone accedi o registrati'
       : null;
   }
 
