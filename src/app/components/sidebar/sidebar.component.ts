@@ -83,7 +83,7 @@ export class SidebarComponent implements OnInit {
             window.location.href = body.url;
           }
         });
-      } else if (item.nome === 'Contattaci') {
+      } else if (item.nome === 'Contattaci' || item.nome === 'Cos\'è PayER' || item.nome === 'Info Costi' || item.nome === 'Manuale d\'uso') {
         window.open(item.route, "_blank");
       } else {
         let param = '';
