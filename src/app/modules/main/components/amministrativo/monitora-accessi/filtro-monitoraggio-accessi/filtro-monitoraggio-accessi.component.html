@@ -134,26 +134,25 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-3 pb-0">
-        <div class="row">
-          <div class="col">
-            <label for="filtroIdUtente" class="title">Fine sessione - A</label>
+        <div class="col-md-3 pb-0">
+          <div class="row">
+            <div class="col">
+              <label for="filtroIdUtente" class="title">Fine sessione - A</label>
+            </div>
           </div>
-        </div>
 
-        <div class="row">
-          <div class="col calendar-wrapper">
-            <svg class="bg-light icon img-calendar" (click)="openDatepicker(filtroDataACalendar)">
-              <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
-            </svg>
-            <dp-date-picker
-              mode="day"
-              id="filtroDataA"
-              theme="dp-material"
-              dayInput
-              [config]="{
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(filtroDataACalendar)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="filtroDataA"
+                theme="dp-material"
+                dayInput
+                [config]="{
                   locale: 'it',
                   format: 'DD/MM/YYYY',
                   firstDayOfWeek: 'mo',
@@ -163,19 +162,20 @@
                   min: minDateDDMMYYYY,
                   returnedValueType: tipoData
 	              }"
-              #filtroDataACalendar
-              #filtroDataA = "ngModel"
-              [(ngModel)]="dataDaSelezionata"
-              name="dataScadenzaDa"
-              #filtroDataA
-            ></dp-date-picker>
+                #filtroDataACalendar
+                #filtroDataA = "ngModel"
+                [(ngModel)]="dataDaSelezionata"
+                name="dataScadenzaDa"
+                #filtroDataA
+              ></dp-date-picker>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <p [ngClass]="{'text-muted': !isCampoInvalido(filtroDataA), 'text-invalid': isCampoInvalido(filtroDataA)}">
-              {{setPlaceholder(filtroDataA, TipoCampoEnum.DATEDDMMYY)}}
-            </p>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(filtroDataA), 'text-invalid': isCampoInvalido(filtroDataA)}">
+                {{setPlaceholder(filtroDataA, TipoCampoEnum.DATEDDMMYY)}}
+              </p>
+            </div>
           </div>
         </div>
       </div>
