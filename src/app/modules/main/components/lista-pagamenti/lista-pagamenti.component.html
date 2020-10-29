@@ -44,10 +44,13 @@
              style="margin-right: 0.4rem">
           <use xlink:href="assets/img/sprite.svg#it-delete"></use>
         </svg>
-        <svg *ngIf="!menuService.isUtenteAnonimo" fill="#004987" (click)="salvaPerDopo(pagamento)"
+        <span *ngIf="!menuService.isUtenteAnonimo" it-tooltip="{{tooltipBottoneSalvaPerDopoAutenticato}}"
+              placement="top">
+        <svg fill="#004987" (click)="salvaPerDopo(pagamento)"
              class="bg-light icon icon-sm">
           <use xlink:href="assets/img/sprite.svg#it-pin"></use>
         </svg>
+        </span>
         <span *ngIf="menuService.isUtenteAnonimo" it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top">
         <svg fill="#737574" class="bg-light icon icon-sm">
           <use xlink:href="assets/img/sprite.svg#it-pin"></use>
