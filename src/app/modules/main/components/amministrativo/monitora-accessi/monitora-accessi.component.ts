@@ -241,8 +241,6 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
-    this.selectionElementi = righeSelezionate;
-    // TODO implementare metodo
   }
 
   mostraDettaglioAccesso(rigaTabella) {

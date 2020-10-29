@@ -22,6 +22,7 @@ import {FormLivelloTerritorialeComponent} from './modules/main/components/ammini
 import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
 import {FormBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/form-banner/form-banner.component';
 import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
+import {DettaglioAccessoComponent} from './modules/main/components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -63,7 +64,7 @@ const routes: Routes = [
   {path: 'modificaBanner/:bannerid', component: FormBannerComponent},
   {path: 'dettaglioBanner/:bannerid', component: FormBannerComponent},
   {path: 'monitoraAccessi', component: MonitoraAccessiComponent},
-  {path: 'dettaglioAccesso', component: MonitoraAccessiComponent}
+  {path: 'dettaglioAccesso/:accessoid', component: DettaglioAccessoComponent}
 ];
 
 @NgModule({
