@@ -25,6 +25,9 @@ import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from '../../../../../services/menu.service';
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
 import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mappingCampoInputPrecompilazione.enum';
+import {Utils} from "../../../../../utils/Utils";
+import {TipoModaleEnum} from "../../../../../enums/tipoModale.enum";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -38,7 +41,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
               private bannerService: BannerService,
               private overlayService: OverlayService,
               public menuService: MenuService,
-              private cdr: ChangeDetectorRef) {
+              private confirmationService: ConfirmationService) {
   }
 
   readonly TipoCampoEnum = TipoCampoEnum;
@@ -257,21 +260,28 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   clickPulisci(): void {
-    this.form.reset();
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.form.reset();
 
-    this.listaCampiDinamici.forEach(campo => {
-      const nomeCampo = this.getNomeCampoForm(campo);
+          this.listaCampiDinamici.forEach(campo => {
+            const nomeCampo = this.getNomeCampoForm(campo);
 
-      this.model[nomeCampo] = null;
+            this.model[nomeCampo] = null;
 
-      if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {
-        this.form.controls[nomeCampo].disable();
-        campo.opzioni = [];
-      }
-    });
+            if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {
+              this.form.controls[nomeCampo].disable();
+              campo.opzioni = [];
+            }
+          });
 
-    localStorage.removeItem("parziale");
-    this.nuovoPagamentoService.pulisciEvent.emit(true);
+          localStorage.removeItem("parziale");
+          this.nuovoPagamentoService.pulisciEvent.emit(true);
+        },
+        TipoModaleEnum.ANNULLA,
+      )
+    );
+
   }
 
   getNumDocumento(): string {
@@ -678,7 +688,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         if (this.datiPagamento) {
           this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
         }
-
+      } else {
+        this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
       }
     });
   }
@@ -776,5 +787,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       localStorage.setItem('parziale', JSON.stringify(item));
     }
   }
+
+
 
 }
