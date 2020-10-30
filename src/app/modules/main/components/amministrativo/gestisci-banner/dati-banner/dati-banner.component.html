@@ -115,7 +115,6 @@
                   name="inizio"
                   #datePickerInizio
                   (click)="isCalendarOpen = false"
-                  [displayDate]="minDateDDMMYYYY"
                   [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
                   (onSelect)="onChangeForm(datiBannerForm)"
                 ></dp-date-picker>
@@ -164,7 +163,6 @@
                   name="fine"
                   #datePickerFine
                   (click)="isCalendarOpen = false"
-                  [displayDate]="minDateDDMMYYYY"
                   [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
                   (onSelect)="onChangeForm(datiBannerForm)"
                 ></dp-date-picker>

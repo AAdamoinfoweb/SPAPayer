@@ -21,7 +21,6 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
 
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = '01/01/1990';
-  readonly currentDate = moment().format(Utils.FORMAT_DATE_CALENDAR);
   readonly tipoData = ECalendarValue.String;
 
   filtroGestioneBannerApplicato: ParametriRicercaBanner;

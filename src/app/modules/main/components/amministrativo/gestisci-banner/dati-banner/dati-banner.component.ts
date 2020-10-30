@@ -22,7 +22,7 @@ export class DatiBannerComponent implements OnInit {
   public editor = ClassicEditor;
 
   isCalendarOpen = false;
-  readonly minDateDDMMYYYY = moment().format(Utils.FORMAT_DATE_CALENDAR);
+  readonly minDateDDMMYYYY = '01/01/1990';
   readonly tipoData = ECalendarValue.String;
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
