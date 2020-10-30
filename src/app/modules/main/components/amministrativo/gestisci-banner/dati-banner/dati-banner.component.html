@@ -43,22 +43,20 @@
 
     <!-- Testo, Inizio, Fine -->
     <div class="row mt-4 mb-0">
-      <div class="col-md-6 pb-2">
+      <!-- Testo banner con la possibilità di poterlo formattare a proprio piacere (Inserimento/Modifica Banner) -->
+      <div class="col-md-6 pb-2" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
         <div class="row">
           <div class="col">
-            <label for="testoBanner" [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Testo</label>
+            <label for="testoBanner" class="title required">Testo</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <textarea id="testoBanner" name="testo" #testoInput="ngModel"
-                      [(ngModel)]="datiBanner.testo"
-                      [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                      [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                      class="pt-0" autocomplete="off" aria-describedby="testoParzialeHelpDescription"></textarea>
+            <ckeditor id="testoBanner" [editor]="editor" [(ngModel)]="datiBanner.testo" name="testo"
+                      required #testoInput="ngModel"></ckeditor>
           </div>
         </div>
-        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+        <div class="row">
           <div class="col">
             <p [ngClass]="{'text-muted': !isCampoInvalido(testoInput), 'text-invalid': isCampoInvalido(testoInput)}">
               {{setPlaceholder(testoInput, 'string')}}
@@ -66,6 +64,22 @@
           </div>
         </div>
       </div>
+
+      <!-- Visualizzazione testo banner (Dettaglio Banner) -->
+      <div class="col-md-6 pb-2" *ngIf="funzione === FunzioneGestioneEnum.DETTAGLIO">
+        <div class="row">
+          <div class="col">
+            <label for="testoDettaglioBanner" class="title">Testo</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <textarea id="testoDettaglioBanner" name="testo" [(ngModel)]="datiBanner.testo" disabled
+                      class="pt-0" autocomplete="off" aria-describedby="testoParzialeHelpDescription"></textarea>
+          </div>
+        </div>
+      </div>
+
       <div class="col-md-6 pb-2">
         <div class="row ml-md-5">
           <div class="col">

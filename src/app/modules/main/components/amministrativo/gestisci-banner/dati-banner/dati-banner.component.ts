@@ -6,6 +6,7 @@ import {Utils} from '../../../../../../utils/Utils';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {Banner} from '../../../../model/banner/Banner';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-dati-banner',
@@ -17,6 +18,8 @@ export class DatiBannerComponent implements OnInit {
   @Input() datiBanner: Banner;
   @Input() funzione: FunzioneGestioneEnum;
   @Output() onValidaForm = new EventEmitter<boolean>();
+
+  public editor = ClassicEditor;
 
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = moment().format(Utils.FORMAT_DATE_CALENDAR);
