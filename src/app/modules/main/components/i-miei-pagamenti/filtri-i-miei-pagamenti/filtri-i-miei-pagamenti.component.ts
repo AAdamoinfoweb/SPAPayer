@@ -168,10 +168,13 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     filtriToBE.dataPagamentoDa = filtri.dataPagamentoDa ? moment(filtri.dataPagamentoDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     filtriToBE.dataPagamentoA = filtri.dataPagamentoA ? moment(filtri.dataPagamentoA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     this.iMieiPagamentiService.ricercaPagamenti(filtriToBE).pipe(map(listaPagamenti => {
-      const listaPagamentiFiltri: ListaPagamentiFiltri = new ListaPagamentiFiltri();
-      listaPagamentiFiltri.listaPagamenti = listaPagamenti;
-      listaPagamentiFiltri.filtri = filtri;
-      this.onChangeListaPagamenti.emit(listaPagamentiFiltri);
+      // Non invio la lista in caso di bad request
+      if (listaPagamenti) {
+        const listaPagamentiFiltri: ListaPagamentiFiltri = new ListaPagamentiFiltri();
+        listaPagamentiFiltri.listaPagamenti = listaPagamenti;
+        listaPagamentiFiltri.filtri = filtri;
+        this.onChangeListaPagamenti.emit(listaPagamentiFiltri);
+      }
     })).subscribe();
   }
 

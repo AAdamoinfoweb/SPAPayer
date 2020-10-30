@@ -215,7 +215,10 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
     }
 
     this.utenteService.ricercaUtenti(filtro, this.amministrativoService.idFunzione).pipe(map(listaUtenti => {
+      // Non invio la lista in caso di bad request
+      if (listaUtenti) {
         this.onChangeListaElementi.emit(listaUtenti);
+      }
     })).subscribe(value => {});
   }
 

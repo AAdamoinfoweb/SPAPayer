@@ -111,7 +111,10 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
   cercaElementi(): void {
     this.accessoService.recuperaAccessi(this.getParametriRicerca(), this.amministrativoService.idFunzione).subscribe(listaAccessi => {
-      this.onChangeListaElementi.emit(listaAccessi);
+      // Non invio la lista in caso di bad request
+      if (listaAccessi) {
+        this.onChangeListaElementi.emit(listaAccessi);
+      }
     });
   }
 
