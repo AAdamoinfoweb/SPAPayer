@@ -11,3 +11,7 @@
 textarea {
   height: 8.8rem;
 }
+
+:host ::ng-deep .ck-editor__editable_inline {
+  min-height: 124px;
+}
