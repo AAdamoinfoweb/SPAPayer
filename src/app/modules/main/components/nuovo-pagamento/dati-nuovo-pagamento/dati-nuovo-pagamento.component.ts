@@ -25,6 +25,9 @@ import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from '../../../../../services/menu.service';
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
 import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mappingCampoInputPrecompilazione.enum';
+import {Utils} from "../../../../../utils/Utils";
+import {TipoModaleEnum} from "../../../../../enums/tipoModale.enum";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -38,7 +41,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
               private bannerService: BannerService,
               private overlayService: OverlayService,
               public menuService: MenuService,
-              private cdr: ChangeDetectorRef) {
+              private confirmationService: ConfirmationService) {
   }
 
   readonly TipoCampoEnum = TipoCampoEnum;
@@ -174,7 +177,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   checkUtenteLoggato(): void {
     this.tooltipBottoneSalvaPerDopo = this.menuService.isUtenteAnonimo
-      ? 'Per attivare il bottone accedi o registrati"'
+      ? 'Per attivare il bottone accedi o registrati'
       : null;
   }
 
@@ -257,6 +260,17 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   clickPulisci(): void {
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.pulisci();
+        },
+        TipoModaleEnum.ANNULLA,
+      )
+    );
+
+  }
+
+  private pulisci() {
     this.form.reset();
 
     this.listaCampiDinamici.forEach(campo => {
@@ -616,6 +630,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.enteId = this.servizio.enteId;
     bollettino.ente = this.servizio.enteNome;
     bollettino.numero = this.getNumDocumento();
+    bollettino.anagraficaPagatore = this.model[this.getCampoDettaglioTransazione('anagrafica_pagatore')];
     bollettino.anno = this.model[this.getCampoDettaglioTransazione('anno_documento')];
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
     // rimuovere primi 3 caratteri
@@ -672,12 +687,13 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     observable.subscribe((result) => {
       if (result != 'error') {
         this.aggiornaPrezzoCarrello();
-        this.clickPulisci();
-
+        this.pulisci();
         if (this.datiPagamento) {
           this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
         }
 
+      } else {
+        this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
       }
     });
   }
@@ -775,5 +791,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       localStorage.setItem('parziale', JSON.stringify(item));
     }
   }
+
 
 }

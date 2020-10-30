@@ -26,8 +26,8 @@
                 name="livelloTerritorialeId"
                 #livelloTerritorialeInput="ngModel"
                 [(ngModel)]="filtroRicercaPagamenti.livelloTerritorialeId"
-                (ngModelChange)="selezionaLivelloTerritoriale()"
-                disabled="{{listaLivelliTerritoriali.length == 0}}">
+                >
+                <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -53,8 +53,7 @@
                 id="selectEnte" name="enteId"
                 #enteInput="ngModel"
                 [(ngModel)]="filtroRicercaPagamenti.enteId"
-                (ngModelChange)="selezionaEnte()"
-                disabled="{{listaEnti.length == 0}}">
+              >
                 <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
               </select>
@@ -81,7 +80,7 @@
                 id="selectServizio" name="servizioId"
                 #servizioInput="ngModel"
                 [(ngModel)]="filtroRicercaPagamenti.servizioId"
-                disabled="{{listaServizi.length == 0}}">
+                >
                 <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaServizi" [ngValue]="item.value">{{item.label}}</option>
               </select>
@@ -217,13 +216,13 @@
       <!-- Bottoni Pulisci e Cerca -->
       <div class="row">
         <div class="col-md-6">
-          <button id="bottonePulisci" class="btn btn-secondary"
+          <button type="button" id="bottonePulisci" class="btn btn-secondary"
                   [disabled]="disabilitaBottone(filtroPagamentiForm, 'Pulisci')"
                   (click)="pulisciFiltri(filtroPagamentiForm)">Pulisci
           </button>
         </div>
         <div class="col-md-6 text-md-right">
-          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroPagamentiForm, 'Cerca')"
+          <button id="bottoneCerca" class="btn"
                   (click)="cercaPagamenti(filtroPagamentiForm)">Cerca
           </button>
         </div>

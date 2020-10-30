@@ -1,16 +1,17 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {tipoColonna} from '../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../enums/TipoTabella.enum';
 // @ts-ignore
 import sprite from '../../../assets/img/sprite.svg';
 import {SortEvent} from "primeng/api";
+import {Table} from "primeng/table";
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, OnChanges {
 
   @Input() rows: any[];
   @Input() dataKey: any;
@@ -40,11 +41,13 @@ export class TableComponent implements OnInit {
   pageSize = this.rowsPerPageOption[0];
   sprite: string | SVGPathElement = sprite;
 
+  @ViewChild("table", {static: false}) table: Table;
 
+  constructor() {
+  }
 
-  constructor() { }
-
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   onRowSelect(event) {
     this.selection = this.selection.filter(selection => this.rows.includes(selection));
@@ -100,6 +103,11 @@ export class TableComponent implements OnInit {
       }
       return (event.order * result);
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.rows && !changes.rows.firstChange)
+      this.table.reset();
   }
 }
 

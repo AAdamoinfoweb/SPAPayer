@@ -2,13 +2,14 @@ import {ChangeDetectorRef, Component, HostListener, OnInit} from '@angular/core'
 import {MenuService} from "./services/menu.service";
 import {TipologicaSelectEnum} from './enums/tipologicaSelect.enum';
 import {ToponomasticaService} from './services/toponomastica.service';
-import {map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {UserIdleService} from "angular-user-idle";
 import {AuthguardService} from "./services/authguard.service";
 import {Router} from "@angular/router";
 import {OverlayService} from './services/overlay.service';
 import {DatiPagamento} from './modules/main/model/bollettino/DatiPagamento';
 import {EsitoEnum} from './enums/esito.enum';
+import {of} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -31,32 +32,26 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.idleService.startWatching();
-    this.idleService.onTimerStart().subscribe(count => console.log(count));
-    this.idleService.onTimeout().subscribe(() => {
-      this.logout();
-    });
 
-    // this.overlayService.caricamentoEvent.subscribe(isLoading => {
-    //   this.caricamento = isLoading;
-    //   this.cdr.detectChanges();
-    // });
+      this.idleService.startWatching();
+      this.idleService.onTimerStart().subscribe(count => console.log(count));
+      this.idleService.onTimeout().subscribe(() => {
+        this.logout();
+      });
 
-    this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(datiPagamento => {
-      this.datiPagamento = datiPagamento;
-      this.cdr.detectChanges();
-    });
+      this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(datiPagamento => {
+        this.datiPagamento = datiPagamento;
+        this.cdr.detectChanges();
+      });
 
+      this.menuService.getInfoUtente().subscribe((info) => {
+        this.menuService.infoUtenteEmitter.emit(info);
+      }, catchError((err, caught) => of(null)));
 
-    this.menuService.getInfoUtente().subscribe((info) => {
-      this.menuService.infoUtenteEmitter.emit(info);
-    });
-
-    this.letturatipologicheSelect();
+      this.letturatipologicheSelect();
   }
 
   // @HostListener('window:beforeunload')
-
   logout() {
     this.authGuardService.logout().subscribe((url) => {
       this.idleService.stopWatching();

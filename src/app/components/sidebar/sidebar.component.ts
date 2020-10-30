@@ -3,7 +3,6 @@ import {environment} from '../../../environments/environment';
 import {MenuService} from '../../services/menu.service';
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
-import {AmministrativoService} from "../../services/amministrativo.service";
 import {OverlayService} from "../../services/overlay.service";
 
 @Component({
@@ -21,10 +20,9 @@ export class SidebarComponent implements OnInit {
   selectedElement: string = '';
 
   constructor(private overlayService: OverlayService,
-    private amministrativoService: AmministrativoService,
-    public menuService: MenuService,
-    private http: HttpClient,
-    private router: Router) {
+              public menuService: MenuService,
+              private http: HttpClient,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -44,11 +42,7 @@ export class SidebarComponent implements OnInit {
           }
 
           let menuTemp = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
-          let idx = menuTemp.findIndex(o => o["mappaFunzioni"]);
-          if (idx != -1 && menuTemp[idx]["mappaFunzioni"]) {
-            this.amministrativoService.mappaFunzioni = JSON.parse(menuTemp[idx]["mappaFunzioni"]);
-            menuTemp.splice([idx], 1);
-          }
+
           this.menu = menuTemp;
           this.waiting = false;
           this.menuService.userEventChange.emit();
@@ -74,7 +68,8 @@ export class SidebarComponent implements OnInit {
       if (item.nome === 'Accedi') {
         localStorage.setItem('loginDaAnonimo', 'true');
         window.location.href = environment.bffBaseUrl + item.route;
-        //window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
+       // window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
+        //window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=FGLLRA86D69D548K&nome=Laura&cognome=Fogli&email=laura.fogli@dxc.com"
       } else if (item.nome === 'Esci') {
         this.http.get(environment.bffBaseUrl + '/logout', {withCredentials: true}).subscribe((body: any) => {
           if (body.url) {
@@ -83,6 +78,8 @@ export class SidebarComponent implements OnInit {
             window.location.href = body.url;
           }
         });
+      } else if (environment.menuLinks.map(value => value.nome).includes(item.nome)) {
+        window.open(environment.menuLinks.find(value => value.nome === item.nome).url);
       } else {
         let param = '';
         if (item['isAmministrativo']) {

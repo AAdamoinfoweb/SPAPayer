@@ -7,7 +7,7 @@
   </it-breadcrumb>
   <h3 class="mb-2 page-title"><strong>{{titolo}}</strong></h3>
 
-  <app-compila-nuovo-pagamento [datiPagamento]="datiPagamento"></app-compila-nuovo-pagamento>
+  <app-compila-nuovo-pagamento [filtroPagamento]="filtroPagamento" [datiPagamento]="datiPagamento"></app-compila-nuovo-pagamento>
 
   <div *ngIf="servizioSelezionato">
     <app-dati-nuovo-pagamento [servizio]="servizioSelezionato" [datiPagamento]="datiPagamento"></app-dati-nuovo-pagamento>
