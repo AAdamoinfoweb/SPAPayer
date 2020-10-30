@@ -13,6 +13,9 @@ import {ListaPagamentiFiltri} from '../../../model/bollettino/imieipagamenti/Lis
 import * as moment from 'moment';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {Utils} from "../../../../../utils/Utils";
+import {Banner} from "../../../model/banner/Banner";
+import {BannerService} from "../../../../../services/banner.service";
+import {getBannerType, LivelloBanner} from "../../../../../enums/livelloBanner.enum";
 
 
 @Component({
@@ -40,7 +43,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private funzioneService: FunzioneService, private iMieiPagamentiService: IMieiPagamentiService,
-              private overlayService: OverlayService) {
+              private overlayService: OverlayService, private bannerService: BannerService) {
   }
 
   ngOnInit(): void {
@@ -57,6 +60,9 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     this.filtroRicercaPagamenti.livelloTerritorialeId = null;
     this.filtroRicercaPagamenti.servizioId = null;
     this.filtroRicercaPagamenti.enteId = null;
+    this.filtroRicercaPagamenti.numeroDocumento = null;
+    this.filtroRicercaPagamenti.dataPagamentoDa = null;
+    this.filtroRicercaPagamenti.dataPagamentoA = null;
   }
 
   recuperaLivelloTerritoriale(): void {
@@ -125,16 +131,24 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
   cercaPagamenti(form: NgForm): void {
     // inizia spinner
-
-    Object.keys(form.value).forEach(key => {
-      const value = form.value[key];
-      if (value !== undefined) {
-        this.filtroRicercaPagamenti[key] = value;
-      } else {
-        this.filtroRicercaPagamenti[key] = null;
-      }
-    });
-    this.ricercaPagamenti(this.filtroRicercaPagamenti);
+    if(!form.valid){
+      const banner: Banner = {
+        titolo: 'ERRORE',
+        testo: 'Verificare parametri ricerca',
+        tipo: getBannerType(LivelloBanner.ERROR)
+      };
+      this.bannerService.bannerEvent.emit([banner]);
+    } else {
+      Object.keys(form.value).forEach(key => {
+        const value = form.value[key];
+        if (value !== undefined) {
+          this.filtroRicercaPagamenti[key] = value;
+        } else {
+          this.filtroRicercaPagamenti[key] = null;
+        }
+      });
+      this.ricercaPagamenti(this.filtroRicercaPagamenti);
+    }
   }
 
   ricercaPagamenti(filtri: ParametriRicercaPagamenti) {
