@@ -106,18 +106,18 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
     filtro.inizio = filtro.inizio ? moment(filtro.inizio, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     filtro.fine = filtro.fine ? moment(filtro.fine, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
 
-    this.bannerService.ricercaBanner(filtro, this.amministrativoService.idFunzione).subscribe(listaBanner => {
-      if (this.isDataInizioMaggioreDataFine()) {
-        const banner: Banner = {
-          titolo: 'ATTENZIONE',
-          testo: 'Inizio maggiore della fine',
-          tipo: getBannerType(LivelloBanner.ERROR)
-        };
-        this.bannerService.bannerEvent.emit([banner]);
-      } else {
+    if (this.isDataInizioMaggioreDataFine()) {
+      const banner: Banner = {
+        titolo: 'ATTENZIONE',
+        testo: 'Inizio maggiore della fine',
+        tipo: getBannerType(LivelloBanner.ERROR)
+      };
+      this.bannerService.bannerEvent.emit([banner]);
+    } else {
+      this.bannerService.ricercaBanner(filtro, this.amministrativoService.idFunzione).subscribe(listaBanner => {
         this.onChangeListaElementi.emit(listaBanner);
-      }
-    });
+      });
+    }
   }
 
   disabilitaBottone(filtroGestioneBannerForm: NgForm, nomeBottone: string): boolean {
