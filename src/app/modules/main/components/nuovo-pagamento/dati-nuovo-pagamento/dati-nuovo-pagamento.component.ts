@@ -262,26 +262,30 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   clickPulisci(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.form.reset();
-
-          this.listaCampiDinamici.forEach(campo => {
-            const nomeCampo = this.getNomeCampoForm(campo);
-
-            this.model[nomeCampo] = null;
-
-            if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {
-              this.form.controls[nomeCampo].disable();
-              campo.opzioni = [];
-            }
-          });
-
-          localStorage.removeItem("parziale");
-          this.nuovoPagamentoService.pulisciEvent.emit(true);
+          this.pulisci();
         },
         TipoModaleEnum.ANNULLA,
       )
     );
 
+  }
+
+  private pulisci() {
+    this.form.reset();
+
+    this.listaCampiDinamici.forEach(campo => {
+      const nomeCampo = this.getNomeCampoForm(campo);
+
+      this.model[nomeCampo] = null;
+
+      if (campo.tipoCampo === TipoCampoEnum.SELECT && campo.dipendeDa) {
+        this.form.controls[nomeCampo].disable();
+        campo.opzioni = [];
+      }
+    });
+
+    localStorage.removeItem("parziale");
+    this.nuovoPagamentoService.pulisciEvent.emit(true);
   }
 
   getNumDocumento(): string {
@@ -683,11 +687,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     observable.subscribe((result) => {
       if (result != 'error') {
         this.aggiornaPrezzoCarrello();
-        this.clickPulisci();
-
+        this.pulisci();
         if (this.datiPagamento) {
           this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
         }
+
       } else {
         this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
       }
@@ -787,7 +791,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       localStorage.setItem('parziale', JSON.stringify(item));
     }
   }
-
 
 
 }
