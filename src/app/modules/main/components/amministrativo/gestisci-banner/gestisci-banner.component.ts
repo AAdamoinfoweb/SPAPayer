@@ -55,7 +55,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
       {field: 'inizio', header: 'Inizio', type: tipoColonna.TESTO},
       {field: 'fine', header: 'Fine', type: tipoColonna.TESTO},
     ],
-    dataKey: 'titolo.value',
+    dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
   tempTableData: Tabella = this.tableData;
@@ -155,7 +155,6 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Banner');
         break;
     }
-    this.selectionElementi = [];
   }
 
   eliminaBannerSelezionati(): void {
@@ -166,6 +165,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           })).subscribe();
+          this.selectionElementi = [];
         },
         TipoModaleEnum.ELIMINA
       )
