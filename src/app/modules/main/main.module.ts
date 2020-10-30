@@ -27,6 +27,7 @@ import { FiltroGestioneEntiComponent } from './components/amministrativo/anagraf
 import {DatiBannerComponent} from './components/amministrativo/gestisci-banner/dati-banner/dati-banner.component';
 import {FormBannerComponent} from './components/amministrativo/gestisci-banner/form-banner/form-banner.component';
 import {DettaglioAccessoComponent} from './components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
+import { DatiAccessoComponent } from './components/amministrativo/monitora-accessi/dati-accesso/dati-accesso.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
@@ -51,7 +52,8 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
     FiltroGestioneEntiComponent,
     DatiBannerComponent,
     FormBannerComponent,
-    DettaglioAccessoComponent
+    DettaglioAccessoComponent,
+    DatiAccessoComponent
   ],
   imports: [
     CommonModule,

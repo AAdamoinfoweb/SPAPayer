@@ -184,7 +184,6 @@
                   openOnClick: isCalendarOpen,
                   openOnFocus: false,
                   min: minDateDDMMYYYY,
-                  max: setMaxDate(datePickerScadenzaA),
                   returnedValueType: tipoData
 	              }"
                 #scadenzaDaInput = "ngModel"
@@ -225,7 +224,7 @@
                   showGoToCurrent: false,
                   openOnClick: isCalendarOpen,
                   openOnFocus: false,
-                  min: setMinDate(datePickerScadenzaDa),
+                  min: minDateDDMMYYYY,
                   returnedValueType: tipoData
                 }"
                 #scadenzaAInput = "ngModel"
@@ -267,7 +266,6 @@
                   openOnClick: isCalendarOpen,
                   openOnFocus: false,
                   min: minDateDDMMYYYY,
-                  max: setMaxDate(datePickerUltimoAccessoA),
                   returnedValueType: tipoData
                 }"
                 #ultimoAccessoDaInput = "ngModel"
@@ -308,7 +306,7 @@
                   showGoToCurrent: false,
                   openOnClick: isCalendarOpen,
                   openOnFocus: false,
-                  min: setMinDate(datePickerUltimoAccessoDa),
+                  min: minDateDDMMYYYY,
                   returnedValueType: tipoData
                 }"
                 #ultimoAccessoAInput = "ngModel"

@@ -14,6 +14,7 @@ import {AccessoService} from '../../../../../services/accesso.service';
 import {Accesso} from '../../../model/accesso/Accesso';
 import {GruppoEnum} from '../../../../../enums/gruppo.enum';
 import * as moment from 'moment';
+import {Utils} from '../../../../../utils/Utils';
 
 @Component({
   selector: 'app-monitora-accessi',
@@ -116,41 +117,12 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
       funzioniVisitate: {value: funzioniVisitate},
       inizioSessione: {value: this.getDataSessioneFormattata(accesso.inizioSessione)},
       fineSessione: {value: this.getDataSessioneFormattata(accesso.fineSessione)},
-      durataSessione: {value: this.getDurataSessioneFormattata(accesso.durata)}
+      durataSessione: {value: Utils.getDurataSessioneFormattata(accesso.durata)}
     }
   }
 
   getDataSessioneFormattata(dataSessione: Date): string {
     return dataSessione ? moment(dataSessione).format('DD/MM/YYYY HH:mm:ss') : null;
-  }
-
-  getDurataSessioneFormattata(durataMillisecSessione: number): string {
-    let durataFormattata = null;
-    if (durataMillisecSessione) {
-      let durataSecondiSessione = Math.floor(durataMillisecSessione / 1000);
-
-      // Controllo quante ore è durata la sessione
-      const ore = Math.floor(Math.floor(durataSecondiSessione / 60) / 60);
-
-      // Controllo nel tempo residuo (durata totale - durata in ore) quanti minuti ci sono
-      durataSecondiSessione = durataSecondiSessione - (ore * 60 * 60);
-      const minuti = Math.floor(durataSecondiSessione / 60);
-
-      // Controllo nel tempo residuo (durata totale - durata in ore - durata in minuti) quanti secondi ci sono
-      durataSecondiSessione = durataSecondiSessione - (minuti * 60);
-      const secondi = durataSecondiSessione;
-
-      // Mostro la data come hh:mm:ss (aggiungendo gli zero se mancano)
-      durataFormattata = this.paddingZero(ore)
-        + ':' + this.paddingZero(minuti)
-        + ':' + this.paddingZero(secondi);
-    }
-
-    return durataFormattata;
-  }
-
-  paddingZero(numeroPositivo: number): string {
-    return numeroPositivo < 10 ? '0' + numeroPositivo : '' + numeroPositivo;
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
@@ -241,8 +213,6 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
-    this.selectionElementi = righeSelezionate;
-    // TODO implementare metodo
   }
 
   mostraDettaglioAccesso(rigaTabella) {

@@ -183,16 +183,6 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
     this.isCalendarOpen = !this.isCalendarOpen;
   }
 
-  setMinDate(datePicker: DatePickerComponent): string {
-    return datePicker.inputElementValue
-      ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').add(1, 'day').format('DD/MM/YYYY') : this.minDateDDMMYYYY;
-  }
-
-  setMaxDate(datePicker: DatePickerComponent): string {
-    return datePicker.inputElementValue
-      ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
-  }
-
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
     this.onChangeListaElementi.emit(this.listaElementi);
@@ -215,7 +205,10 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
     }
 
     this.utenteService.ricercaUtenti(filtro, this.amministrativoService.idFunzione).pipe(map(listaUtenti => {
+      // Non invio la lista in caso di bad request
+      if (listaUtenti) {
         this.onChangeListaElementi.emit(listaUtenti);
+      }
     })).subscribe(value => {});
   }
 

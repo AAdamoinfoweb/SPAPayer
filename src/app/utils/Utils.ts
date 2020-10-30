@@ -24,6 +24,35 @@ export class Utils {
     return iconHref ? {value, link, iconHref} : {value, link, iconHref: null};
   }
 
+  static getDurataSessioneFormattata(durataMillisecSessione: number): string {
+    let durataFormattata = null;
+    if (durataMillisecSessione) {
+      let durataSecondiSessione = Math.floor(durataMillisecSessione / 1000);
+
+      // Controllo quante ore è durata la sessione
+      const ore = Math.floor(Math.floor(durataSecondiSessione / 60) / 60);
+
+      // Controllo nel tempo residuo (durata totale - durata in ore) quanti minuti ci sono
+      durataSecondiSessione = durataSecondiSessione - (ore * 60 * 60);
+      const minuti = Math.floor(durataSecondiSessione / 60);
+
+      // Controllo nel tempo residuo (durata totale - durata in ore - durata in minuti) quanti secondi ci sono
+      durataSecondiSessione = durataSecondiSessione - (minuti * 60);
+      const secondi = durataSecondiSessione;
+
+      // Mostro la data come hh:mm:ss (aggiungendo gli zero se mancano)
+      durataFormattata = this.paddingZero(ore)
+        + ':' + this.paddingZero(minuti)
+        + ':' + this.paddingZero(secondi);
+    }
+
+    return durataFormattata;
+  }
+
+  static paddingZero(numeroPositivo: number): string {
+    return numeroPositivo < 10 ? '0' + numeroPositivo : '' + numeroPositivo;
+  }
+
   static creaIcona = (path, color, tooltip, display) => {
     return {path, color, tooltip, display};
   }

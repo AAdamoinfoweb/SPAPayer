@@ -86,11 +86,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
   setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum) {
     if (this.isCampoInvalido(campo)) {
-      if (campo.errors.maxDate) {
-        return 'data Da maggiore di data A';
-      } else {
-        return 'campo invalido';
-      }
+      return 'campo invalido';
     } else {
       switch (tipoCampo) {
         case TipoCampoEnum.SELECT:
@@ -101,10 +97,6 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
           return 'inserisci data';
       }
     }
-  }
-
-  getMaxDataDa() {
-    return this.dataASelezionata;
   }
 
   getParametriRicerca() {
@@ -119,12 +111,20 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
   cercaElementi(): void {
     this.accessoService.recuperaAccessi(this.getParametriRicerca(), this.amministrativoService.idFunzione).subscribe(listaAccessi => {
-      this.onChangeListaElementi.emit(listaAccessi);
+      // Non invio la lista in caso di bad request
+      if (listaAccessi) {
+        this.onChangeListaElementi.emit(listaAccessi);
+      }
     });
   }
 
   pulisciFiltri(filtroForm: NgForm): void {
-    filtroForm.reset();
+    filtroForm.resetForm();
+    this.funzioneSelezionata = null;
+    this.idUtenteSelezionato = null;
+    this.indirizzoIPSelezionato = null;
+    this.dataDaSelezionata = null;
+    this.dataASelezionata = null;
     this.onChangeListaElementi.emit(this.listaElementi);
   }
 
