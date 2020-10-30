@@ -86,11 +86,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
   setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum) {
     if (this.isCampoInvalido(campo)) {
-      if (campo.errors.maxDate) {
-        return 'data Da maggiore di data A';
-      } else {
-        return 'campo invalido';
-      }
+      return 'campo invalido';
     } else {
       switch (tipoCampo) {
         case TipoCampoEnum.SELECT:
@@ -101,10 +97,6 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
           return 'inserisci data';
       }
     }
-  }
-
-  getMaxDataDa() {
-    return this.dataASelezionata;
   }
 
   getParametriRicerca() {
