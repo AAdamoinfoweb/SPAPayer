@@ -13,6 +13,7 @@ export class MenuService {
   infoUtenteEmitter: EventEmitter<any> = new EventEmitter<any>();
   userEventChange: EventEmitter<any> = new EventEmitter<any>();
   menuCaricatoEvent: EventEmitter<any> = new EventEmitter<any>();
+  isL1Event: EventEmitter<any> = new EventEmitter<any>();
 
   get isUtenteAnonimo(): boolean {
     return localStorage.getItem('nome') === 'null' && localStorage.getItem('cognome') === 'null';

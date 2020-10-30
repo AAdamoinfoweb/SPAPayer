@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {PagamentoService} from "../../../../services/pagamento.service";
+import {MenuService} from "../../../../services/menu.service";
 
 @Component({
   selector: 'app-waiting-l1',
@@ -9,10 +10,14 @@ import {PagamentoService} from "../../../../services/pagamento.service";
 })
 export class WaitingL1Component implements OnInit {
 
-  constructor(private route: ActivatedRoute, private pagamentoService: PagamentoService) {
+  constructor(private route: ActivatedRoute,
+              private pagamentoService: PagamentoService,
+              private menuService: MenuService) {
   }
 
   ngOnInit(): void {
+    localStorage.clear();
+    this.menuService.isL1Event.emit(true);
     this.route.queryParams.subscribe((params) => {
       this.pagamentoService.verificaQuietanza(params.idSession, params.esito)
         .subscribe(url => {

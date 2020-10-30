@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isPaginaNuovoPagamento: boolean = window.location.pathname === this.urlNuovoPagamento;
   prezzoCarrello: number;
-  isL1: boolean = true;
+  isL1: boolean = false;
 
   constructor(private stickyService: LoginBarService, private router: Router,
               private http: HttpClient,
@@ -31,10 +31,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.menuService.isL1Event.subscribe((isL1) => this.isL1 = isL1);
     this.prezzoCarrello = null;
     this.menuService.userEventChange
       .subscribe(() => {
-        this.checkIfL1();
         this.testoAccedi = this.menuService.isUtenteAnonimo ? 'Accedi' : 'Esci';
       });
 
@@ -50,16 +50,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.prezzoCarrello = this.prezzoCarrello == null ? obj.value : this.prezzoCarrello + obj.value;
       }
     });
-  }
-
-  private checkIfL1() {
-    this.isL1 = true;
-    for (var key in localStorage) {
-      if (key == 'nome') {
-        this.isL1 = false;
-        break;
-      }
-    }
   }
 
   @HostListener('window:scroll', ['$event'])

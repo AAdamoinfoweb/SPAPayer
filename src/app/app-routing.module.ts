@@ -12,6 +12,7 @@ import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento
 import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
 import {WaitingL1Component} from "./modules/main/components/waitingL1/waiting-l1.component";
+import {PresaincaricopagamentoL1Component} from "./modules/main/components/presaincaricopagamentoL1/presaincaricopagamento-l1.component";
 
 ;
 
@@ -30,6 +31,7 @@ const routes: Routes = [
   {path: 'carrelloL1', component: CarrelloL1Component, pathMatch: 'full'},
   {path: 'carrello', component: CarrelloComponent, pathMatch: 'full'},
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
+  {path: 'presaincaricopagamentoL1', component: PresaincaricopagamentoL1Component},
   {path: 'waitingL1', component: WaitingL1Component, pathMatch: 'full'},
   {path: 'waiting', component: WaitingComponent, pathMatch: 'full'},
   {path: 'privacy', component: PrivacyComponent},
