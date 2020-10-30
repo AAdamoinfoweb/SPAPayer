@@ -52,8 +52,9 @@
         </div>
         <div class="row">
           <div class="col">
-            <ckeditor id="testoBanner" [editor]="editor" [(ngModel)]="datiBanner.testo" name="testo"
-                      required #testoInput="ngModel"></ckeditor>
+            <ckeditor id="testoBanner" [editor]="editor" [(ngModel)]="datiBanner.testo"
+                      name="testo" required #testoInput="ngModel"
+                      (ngModelChange)="onChangeForm(datiBannerForm)"></ckeditor>
           </div>
         </div>
         <div class="row">
