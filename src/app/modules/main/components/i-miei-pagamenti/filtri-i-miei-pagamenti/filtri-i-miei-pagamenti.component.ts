@@ -118,18 +118,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
-    if (campo?.name === 'dataScadenzaA') {
-     return this.controlloDate(campo);
-      } else {
-      return campo?.errors;
-    }
-  }
-
-  controlloDate(campo?: NgModel): boolean{
-    const momentDataDa = moment(this.filtroRicercaPagamenti.dataPagamentoDa, 'DD/MM/YYYY');
-    const momentDataA = moment(this.filtroRicercaPagamenti.dataPagamentoA, 'DD/MM/YYYY');
-    // tslint:disable-next-line:max-line-length
-    return this.filtroRicercaPagamenti.dataPagamentoDa != null ? (moment(momentDataA).isBefore(momentDataDa) || campo?.errors != null) : campo?.errors != null;
+    return campo?.errors;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -183,7 +172,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     if (nomeBottone === 'Pulisci') {
       return !isAtLeastOneFieldValued;
     } else {
-      return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued || this.controlloDate();
+      return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued;
     }
   }
 }

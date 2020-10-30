@@ -53,39 +53,12 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
   }
 
   isCampoInvalido(campo: NgModel) {
-    if (campo?.name === 'inizio' || campo?.name === 'fine') {
-      return this.controlloDate(campo);
-    } else {
-      return campo?.errors != null;
-    }
-  }
-
-  controlloDate(campo: NgModel): boolean {
-    return this.filtroGestioneBannerApplicato.inizio != null
-      ? (this.isDataInizioMaggioreDataFine() || campo?.errors != null)
-      : campo?.errors != null;
-  }
-
-  isDataInizioMaggioreDataFine(): boolean {
-    const momentDataInizio = moment(this.filtroGestioneBannerApplicato.inizio, Utils.FORMAT_DATE_CALENDAR);
-    const momentDataFine = moment(this.filtroGestioneBannerApplicato.fine, Utils.FORMAT_DATE_CALENDAR);
-    return moment(momentDataFine).isBefore(momentDataInizio);
+    return campo?.errors != null;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
     datePickerComponent.api.open();
     this.isCalendarOpen = !this.isCalendarOpen;
-  }
-
-  setMinDate(datePicker: DatePickerComponent): string {
-    return datePicker.inputElementValue
-      ? moment(datePicker.inputElementValue, Utils.FORMAT_DATE_CALENDAR).add(1, 'day').format(Utils.FORMAT_DATE_CALENDAR)
-      : this.minDateDDMMYYYY;
-  }
-
-  setMaxDate(datePicker: DatePickerComponent): string {
-    return datePicker.inputElementValue
-      ? moment(datePicker.inputElementValue, Utils.FORMAT_DATE_CALENDAR).subtract(1, 'day').format(Utils.FORMAT_DATE_CALENDAR) : null;
   }
 
   pulisciFiltri(filtroGestioneBannerForm: NgForm): void {
