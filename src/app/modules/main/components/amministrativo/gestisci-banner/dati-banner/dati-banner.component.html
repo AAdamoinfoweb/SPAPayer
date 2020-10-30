@@ -75,8 +75,9 @@
         </div>
         <div class="row">
           <div class="col">
-            <textarea id="testoDettaglioBanner" name="testo" [(ngModel)]="datiBanner.testo" disabled
-                      class="pt-0" autocomplete="off" aria-describedby="testoParzialeHelpDescription"></textarea>
+            <label id="testoDettaglioBanner" [innerHTML]="datiBanner.testo" class="text-break">
+              {{datiBanner.testo}}
+            </label>
           </div>
         </div>
       </div>
