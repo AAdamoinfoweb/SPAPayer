@@ -118,7 +118,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
-    if (campo?.name === 'dataScadenzaA') {
+    if (campo?.name === 'dataPagamentoA' || campo?.name === 'dataPagamentoDa') {
      return this.controlloDate(campo);
       } else {
       return campo?.errors;
