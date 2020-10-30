@@ -159,11 +159,13 @@
       <!-- Bottoni Pulisci e Cerca -->
       <div class="row">
         <div class="col-6">
-          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroGestioneBannerForm, 'Pulisci')"
+          <button type="button" id="bottonePulisci" class="btn btn-secondary"
+                  [disabled]="disabilitaBottone(filtroGestioneBannerForm, 'Pulisci')"
                   (click)="pulisciFiltri(filtroGestioneBannerForm)">Pulisci</button>
         </div>
         <div class="col-6 text-right">
-          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroGestioneBannerForm, 'Cerca')"
+          <button type="button" id="bottoneCerca" class="btn"
+                  [disabled]="disabilitaBottone(filtroGestioneBannerForm, 'Cerca')"
                   (click)="cercaElementi()">Cerca</button>
         </div>
       </div>
