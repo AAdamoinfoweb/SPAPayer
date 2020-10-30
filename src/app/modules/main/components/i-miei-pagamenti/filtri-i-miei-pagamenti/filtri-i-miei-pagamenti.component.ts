@@ -123,8 +123,6 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
-    this.listaEnti = [];
-    this.listaServizi = [];
     this.inizializzaFiltroRicercaPagamenti();
     this.ricercaPagamenti(this.filtroRicercaPagamenti);
   }
