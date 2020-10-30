@@ -44,10 +44,19 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
+    this.inizializzaFiltroRicercaPagamenti();
 
     // recupero dati select
     this.recuperaLivelloTerritoriale();
+    this.recuperaEnti();
+    this.recuperaFiltroServizi();
+  }
+
+  private inizializzaFiltroRicercaPagamenti() {
+    this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
+    this.filtroRicercaPagamenti.livelloTerritorialeId = null;
+    this.filtroRicercaPagamenti.servizioId = null;
+    this.filtroRicercaPagamenti.enteId = null;
   }
 
   recuperaLivelloTerritoriale(): void {
@@ -61,18 +70,8 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     })).subscribe();
   }
 
-  selezionaLivelloTerritoriale(): void {
-    // pulisci select ente
-    if (this.filtroRicercaPagamenti.livelloTerritorialeId != null) {
-      this.filtroRicercaPagamenti.enteId = null;
-      this.listaEnti = [];
-
-      this.recuperaEnti(this.filtroRicercaPagamenti?.livelloTerritorialeId);
-    }
-  }
-
-  recuperaEnti(livelloTerritorialeId): void {
-    this.nuovoPagamentoService.recuperaFiltroEnti(livelloTerritorialeId, null, null).pipe(map(enti => {
+  recuperaEnti(): void {
+    this.nuovoPagamentoService.recuperaFiltroEnti(null, null, null).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
           value: ente.id,
@@ -82,18 +81,8 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     })).subscribe();
   }
 
-  selezionaEnte(): void {
-    // pulisci select servizio
-    if (this.filtroRicercaPagamenti.enteId != null) {
-      this.filtroRicercaPagamenti.servizioId = null;
-      this.listaServizi = [];
-
-      this.recuperaFiltroServizi(this.filtroRicercaPagamenti?.enteId);
-    }
-  }
-
-  recuperaFiltroServizi(enteId): void {
-    this.nuovoPagamentoService.recuperaFiltroServizi(enteId).pipe(map(servizi => {
+  recuperaFiltroServizi(): void {
+    this.nuovoPagamentoService.recuperaFiltroServizi(null).pipe(map(servizi => {
       servizi.forEach(servizio => {
         this.listaServizi.push({
           value: servizio.id,
@@ -141,7 +130,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     filtroGestioneUtentiForm.resetForm();
     this.listaEnti = [];
     this.listaServizi = [];
-    this.filtroRicercaPagamenti = new ParametriRicercaPagamenti();
+    this.inizializzaFiltroRicercaPagamenti();
     this.ricercaPagamenti(this.filtroRicercaPagamenti);
   }
 
