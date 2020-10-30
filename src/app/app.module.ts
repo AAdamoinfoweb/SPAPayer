@@ -51,11 +51,11 @@ import {MonthInputDirective} from './utils/MonthInputDirective';
 import {OverlayComponent} from './components/overlay/overlay.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
-import {TreeTableModule} from "primeng/treetable";
-import {AmministrativoParentComponent} from "./modules/main/components/amministrativo/amministrativo-parent.component";
+import {TreeTableModule} from 'primeng/treetable';
+import {AmministrativoParentComponent} from './modules/main/components/amministrativo/amministrativo-parent.component';
 import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
 import {FiltroGestioneSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/filtro-gestione-societa/filtro-gestione-societa.component';
-import {OrderByPipe} from "./pipe/orderby-pipe";
+import {OrderByPipe} from './pipe/orderby-pipe';
 import {GestisciLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
 import {FiltroGestioneLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/filtro-gestione-livelli-territoriali/filtro-gestione-livelli-territoriali.component';
 import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
@@ -65,6 +65,7 @@ import {SpinnerOverlayComponent} from './components/spinner-overlay/spinner-over
 import {OverlayModule} from '@angular/cdk/overlay';
 import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
 import {FiltroMonitoraggioAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/filtro-monitoraggio-accessi/filtro-monitoraggio-accessi.component';
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -148,7 +149,8 @@ import {FiltroMonitoraggioAccessiComponent} from './modules/main/components/ammi
     CustomFormsModule,
     AutoCompleteModule,
     TreeTableModule,
-    OverlayModule
+    OverlayModule,
+    CKEditorModule
   ],
   providers: [
     ConfirmationService,

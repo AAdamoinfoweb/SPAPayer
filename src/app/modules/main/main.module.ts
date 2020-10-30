@@ -27,6 +27,7 @@ import { FiltroGestioneEntiComponent } from './components/amministrativo/anagraf
 import {DatiBannerComponent} from './components/amministrativo/gestisci-banner/dati-banner/dati-banner.component';
 import {FormBannerComponent} from './components/amministrativo/gestisci-banner/form-banner/form-banner.component';
 import {DettaglioAccessoComponent} from './components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {DettaglioAccessoComponent} from './components/amministrativo/monitora-ac
     NgbDropdownModule,
     NgbDatepickerModule,
     ConfirmDialogModule,
-    DpDatePickerModule
+    DpDatePickerModule,
+    CKEditorModule
   ],
   exports: [
     FooterComponent,
