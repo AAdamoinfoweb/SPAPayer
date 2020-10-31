@@ -49,23 +49,7 @@ export class DatiBannerComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
-    if (campo?.name === 'inizio' || campo?.name === 'fine') {
-      return this.controlloDate(campo);
-    } else {
-      return campo?.errors != null;
-    }
-  }
-
-  controlloDate(campo: NgModel): boolean {
-    return this.datiBanner.inizio != null
-      ? (this.isDataInizioMaggioreDataFine() || campo?.errors != null)
-      : campo?.errors != null;
-  }
-
-  isDataInizioMaggioreDataFine(): boolean {
-    const momentDataInizio = moment(this.datiBanner.inizio, Utils.FORMAT_DATE_CALENDAR);
-    const momentDataFine = moment(this.datiBanner.fine, Utils.FORMAT_DATE_CALENDAR);
-    return moment(momentDataFine).isBefore(momentDataInizio);
+    return campo?.errors != null;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
