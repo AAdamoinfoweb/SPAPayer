@@ -319,7 +319,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       });
     }
 
-    chiave = chiave.replace('/', '');
+    // Per i pagamenti lv1 aperti in modale, leggo la chiave (numero documento) dall'esterno, e non la formatto
+    if (!this.datiPagamento) {
+      chiave = chiave.replace('/', '');
+    }
 
     return chiave;
   }
@@ -416,6 +419,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     campoAnno.titolo = this.nomeCampoAnnoBollettinoLV1;
     campoAnno.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     campoAnno.posizione = 1;
+    campoAnno.chiave = false;
     campoAnno.campo_input = true;
     campiPagamentoLV1.push(campoAnno);
 
@@ -423,6 +427,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     causale.titolo = this.nomeCampoCausaleBollettinoLV1;
     causale.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     causale.posizione = 2;
+    campoAnno.chiave = false;
     causale.campo_input = true;
     campiPagamentoLV1.push(causale);
 
@@ -430,6 +435,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     documento.titolo = this.nomeCampoDocumentoBollettinoLV1;
     documento.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     documento.posizione = 3;
+    campoAnno.chiave = true;
     documento.campo_input = true;
     campiPagamentoLV1.push(documento);
 
