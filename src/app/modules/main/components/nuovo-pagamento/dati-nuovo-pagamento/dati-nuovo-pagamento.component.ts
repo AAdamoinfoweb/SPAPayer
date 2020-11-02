@@ -114,16 +114,21 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     if (this.datiPagamento.dettaglioTransazioneId) {
       this.nuovoPagamentoService.letturaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((bollettino) => {
-        if (bollettino.listaCampoDettaglioTransazione) {
-          bollettino.listaCampoDettaglioTransazione.forEach(dettaglio => {
-            const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
-            if (campo) {
-              this.model[this.getNomeCampoForm(campo)] = dettaglio.valore;
-            } else {
-              console.log('Campo dettaglio transazione mancante');
-              this.overlayService.gestisciErrore();
-            }
-          });
+        // I pagamenti lv1 (legati alla fase1) non hanno la logica dei campi dettaglio transazione, quindi leggo i valori dei campi dagli attributi di bollettino
+        if (this.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV1) {
+          // todo mapping campi lv1
+        } else {
+          if (bollettino.listaCampoDettaglioTransazione) {
+            bollettino.listaCampoDettaglioTransazione.forEach(dettaglio => {
+              const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
+              if (campo) {
+                this.model[this.getNomeCampoForm(campo)] = dettaglio.valore;
+              } else {
+                console.log('Campo dettaglio transazione mancante');
+                this.overlayService.gestisciErrore();
+              }
+            });
+          }
         }
       });
     } else {
@@ -371,20 +376,37 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     if (isCompilato) {
       this.impostaLivelloIntegrazione(servizio.livelloIntegrazioneId);
 
-      return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
-        this.creaForm();
-        this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
-        this.impostaCampi(campiNuovoPagamento.campiServizio);
-
-        this.restoreParziale();
-
+      // Nella modale occorre gestire anche i pagamenti lv1, che hanno dei campi statici
+      if (this.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV1) {
+        const campi = this.getCampiPagamentoLV1();
+        campi.forEach(campo => {
+          this.listaCampiDinamici.push(campo);
+        });
         if (this.datiPagamento) {
           this.impostaDettaglioPagamento();
         }
-      }));
+        return of(null);
+      } else {
+        return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
+          this.creaForm();
+          this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
+          this.impostaCampi(campiNuovoPagamento.campiServizio);
+
+          this.restoreParziale();
+
+          if (this.datiPagamento) {
+            this.impostaDettaglioPagamento();
+          }
+        }));
+      }
     } else {
       return of(null);
     }
+  }
+
+  getCampiPagamentoLV1(): CampoForm[] {
+    //todo getCampiPagamentoLV1
+    return [];
   }
 
   formattaInput(event: any, campo: CampoForm): void {
