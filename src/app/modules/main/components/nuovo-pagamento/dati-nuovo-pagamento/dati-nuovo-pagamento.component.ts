@@ -120,7 +120,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.nuovoPagamentoService.letturaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((bollettino) => {
         // I pagamenti lv1 (legati alla fase1) non hanno la logica dei campi dettaglio transazione, quindi leggo i valori dei campi dagli attributi di bollettino
         if (this.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV1) {
-          // todo mapping campi lv1
+          this.model[this.nomeCampoAnnoBollettinoLV1] = bollettino.anno;
+          this.model[this.nomeCampoCausaleBollettinoLV1] = bollettino.causale;
+          this.model[this.nomeCampoDocumentoBollettinoLV1] = bollettino.numero;
+          this.model[this.importoNomeCampo] = bollettino.importo;
         } else {
           if (bollettino.listaCampoDettaglioTransazione) {
             bollettino.listaCampoDettaglioTransazione.forEach(dettaglio => {
