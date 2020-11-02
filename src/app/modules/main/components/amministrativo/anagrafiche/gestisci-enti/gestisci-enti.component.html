@@ -18,6 +18,7 @@
 
   <!-- Sottosezione Filtri -->
   <app-filtro-gestione-enti
+    [listaElementi]="listaEnti"
     (onChangeListaElementi)="onChangeListaElementi($event)">
   </app-filtro-gestione-enti>
 
@@ -40,7 +41,16 @@
       <!-- table -->
       <div class="row">
         <div class="col">
-
+          <app-table [dataKey]="tableData.dataKey"
+                     [cols]="tableData.cols"
+                     [rows]="tableData.rows"
+                     [tipoTabella]="tableData.tipoTabella"
+                     (onSelection)="selezionaEnti($event)"
+                     [selectedRows]="true"
+                     (onClickRow)="dettaglioEnte($event)"
+                     [textLeft]="getNumeroRecord()"
+                     [selection]="selectionEnti">
+          </app-table>
         </div>
       </div>
     </div>
