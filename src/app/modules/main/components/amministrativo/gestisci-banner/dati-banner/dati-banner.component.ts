@@ -6,7 +6,7 @@ import {Utils} from '../../../../../../utils/Utils';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {Banner} from '../../../../model/banner/Banner';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import * as ClassicEditor from 'ckeditor5-build-classic-all-plugin';
 
 @Component({
   selector: 'app-dati-banner',
@@ -20,6 +20,56 @@ export class DatiBannerComponent implements OnInit {
   @Output() onValidaForm = new EventEmitter<boolean>();
 
   public editor = ClassicEditor;
+  public editorConfiguration = {
+    removePlugins: ['Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'MediaEmbed'],
+    toolbar: {
+      items: [
+        'heading',
+        '|',
+        'fontBackgroundColor',
+        'fontColor',
+        'fontFamily',
+        'fontSize',
+        '|',
+        'bold',
+        'italic',
+        'horizontalLine',
+        '|',
+        'link',
+        'bulletedList',
+        'numberedList',
+        '|',
+        'indent',
+        'outdent',
+        '|',
+        'blockQuote',
+        'insertTable',
+        'undo',
+        'redo'
+      ]
+    },
+    heading: {
+      options: [
+        { model: 'paragraph', title: 'Paragrafo', class: 'ck-heading_paragraph' },
+        { model: 'heading1', view: 'h1', title: 'Intestazione 1', class: 'ck-heading_heading1' },
+        { model: 'heading2', view: 'h2', title: 'Intestazione 2', class: 'ck-heading_heading2' },
+        { model: 'heading3', view: 'h3', title: 'Intestazione 3', class: 'ck-heading_heading3' }
+      ]
+    },
+    fontSize: {
+      options: [
+        9,
+        11,
+        13,
+        'default',
+        17,
+        19,
+        21
+      ],
+      supportAllValues: true
+    },
+    language: 'it'
+  };
 
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = '01/01/1990';

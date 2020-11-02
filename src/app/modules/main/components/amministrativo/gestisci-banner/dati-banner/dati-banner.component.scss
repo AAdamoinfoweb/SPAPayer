@@ -15,3 +15,7 @@ textarea {
 :host ::ng-deep .ck-editor__editable_inline {
   min-height: 124px;
 }
+
+:host ::ng-deep .ck .ck-toolbar__items * {
+  cursor: pointer;
+}
