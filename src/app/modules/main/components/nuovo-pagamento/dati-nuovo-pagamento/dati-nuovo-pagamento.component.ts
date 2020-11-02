@@ -379,9 +379,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       // Nella modale occorre gestire anche i pagamenti lv1, che hanno dei campi statici
       if (this.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV1) {
         const campi = this.getCampiPagamentoLV1();
-        campi.forEach(campo => {
-          this.listaCampiDinamici.push(campo);
-        });
+        this.impostaCampi(campi);
         if (this.datiPagamento) {
           this.impostaDettaglioPagamento();
         }
