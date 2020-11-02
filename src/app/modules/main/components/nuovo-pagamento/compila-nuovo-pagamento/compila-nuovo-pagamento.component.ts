@@ -49,7 +49,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroLivelloTerritoriale(): void {
-    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
+    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale(this.filtroPagamento).pipe(map(livelliTerritoriali => {
       livelliTerritoriali.forEach(livello => {
         this.listaLivelliTerritoriali.push({
           value: livello,
@@ -58,7 +58,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       });
 
       if (this.datiPagamento) {
-        this.nuovoPagamentoService.recuperaFiltroEnti().pipe(map(enti => {
+        this.nuovoPagamentoService.recuperaFiltroEnti(null, null, this.filtroPagamento).pipe(map(enti => {
           const ente = enti.find(ente => ente.id === this.datiPagamento.enteId);
           if (ente) {
             const livelloTerritoriale = this.listaLivelliTerritoriali.find(item => item.value.id === ente.livelloTerritorialeId)?.value;
@@ -119,7 +119,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale?): void {
-    this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale, null, null).pipe(map(enti => {
+    this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale, null, this.filtroPagamento).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
           value: ente,
