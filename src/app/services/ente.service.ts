@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {Societa} from '../modules/main/model/Societa';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaEnte} from '../modules/main/model/ente/ParametriRicercaEnte';
 import {SintesiEnte} from '../modules/main/model/ente/SintesiEnte';
-import {EnteCompleto} from "../modules/main/model/ente/EnteCompleto";
+import {EnteCompleto} from '../modules/main/model/ente/EnteCompleto';
 
 @Injectable({
   providedIn: 'root'
