@@ -2,23 +2,22 @@ import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {HttpClient} from '@angular/common/http';
-import {AmministrativoParentComponent} from '../../amministrativo-parent.component';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
 import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
-import {OverlayService} from '../../../../../../services/overlay.service';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {MenuService} from '../../../../../../services/menu.service';
-import {Societa} from '../../../../model/Societa';
-import {Breadcrumb} from '../../../../dto/Breadcrumb';
-import {GestisciElementoComponent} from "../../gestisci-elemento.component";
+import {GestisciElementoComponent} from '../../gestisci-elemento.component';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
-import {Ente} from "../../../../model/Ente";
+import {Ente} from '../../../../model/Ente';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {Tabella} from '../../../../model/tabella/Tabella';
+import {SintesiEnte} from "../../../../model/ente/SintesiEnte";
+import {EnteService} from "../../../../../../services/ente.service";
+import {ParametriRicercaEnte} from "../../../../model/ente/ParametriRicercaEnte";
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -36,41 +35,40 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   isMenuCarico = false;
 
-  listaIdSocietaSelezionate: Array<number> = [];
-
   selectionElementi: any[];
 
   readonly toolbarIcons = [
-    {type: ToolEnum.INSERT},
-    {type: ToolEnum.UPDATE, disabled: true},
-    {type: ToolEnum.DELETE, disabled: true},
-    {type: ToolEnum.EXPORT_PDF},
-    {type: ToolEnum.EXPORT_XLS}
+    {type: ToolEnum.INSERT, tooltip: 'Inserisci Ente'},
+    {type: ToolEnum.UPDATE, disabled: true, tooltip: 'Modifica Ente'},
+    {type: ToolEnum.DELETE, disabled: true, tooltip: 'Elimina Ente'},
+    {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
+    {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'}
   ];
-
-  readonly indiceIconaModifica = 1;
-  readonly indiceIconaElimina = 2;
 
   tableData: Tabella = {
     rows: [],
     cols: [
-      {field: 'nome', header: 'Nome', type: tipoColonna.TESTO},
-      {field: 'telefono', header: 'Telefono', type: tipoColonna.TESTO},
-      {field: 'email', header: 'Email', type: tipoColonna.TESTO},
-      {field: 'utentiAbilitati', header: 'Utenti abilitati', type: tipoColonna.LINK}
+      {field: 'societa', header: 'Società', type: tipoColonna.TESTO},
+      {field: 'ente', header: 'Ente', type: tipoColonna.TESTO},
+      {field: 'livelloTerritoriale', header: 'Livello Territoriale', type: tipoColonna.TESTO},
+      {field: 'comune', header: 'Comune', type: tipoColonna.TESTO},
+      {field: 'provincia', header: 'Provincia', type: tipoColonna.TESTO}
     ],
-    dataKey: 'nome.value',
+    dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
+  listaEnti: SintesiEnte[] = [];
+  selectionEnti: any[];
+  entiSelezionati: SintesiEnte[];
 
-  tempTableData: Tabella;
   waiting = true;
 
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private el: ElementRef,
               private menuService: MenuService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService,
+              private enteService: EnteService
   ) {
     super(router, route, http, amministrativoService);
   }
@@ -95,7 +93,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Gestisci Anagrafiche', link: null},
       {label: 'Gestisci Enti', link: null}
-      ]);
+    ]);
     this.popolaListaElementi();
   }
 
@@ -106,22 +104,27 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   }
 
   popolaListaElementi() {
-
     this.waiting = false;
-    /* this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
-       this.listaSocieta = listaSocieta;
+    this.enteService.ricercaEnti(new ParametriRicercaEnte(), this.amministrativoService.idFunzione).subscribe((listaEnti) => {
+      this.listaEnti = listaEnti;
 
-       this.tableData.rows = [];
-       this.listaSocieta.forEach(societa => {
-         this.tableData.rows.push(this.creaRigaTabella(societa));
-       });
-       this.tempTableData = Object.assign({}, this.tableData);
-       this.waiting = false;
-     });*/
+      this.tableData.rows = this.listaEnti.map(ente => {
+        return this.creaRigaTabella(ente);
+      });
+      this.waiting = false;
+    });
   }
 
-  creaRigaTabella(ente: Ente) {
-    // TODO formattazione riga tabella
+  creaRigaTabella(ente: SintesiEnte): object {
+    const riga = {
+      id: {value: ente.id},
+      societa: {value: ente.nomeSocieta},
+      ente: {value: ente.nomeEnte},
+      livelloTerritoriale: {value: ente.nomeLivelloTerritoriale},
+      comune: {value: ente.comune},
+      provincia: {value: ente.provincia}
+    };
+    return riga;
   }
 
   eseguiAzioni(azioneTool) {
@@ -137,18 +140,17 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
         this.eliminaEntiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Enti');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Enti');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Enti');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Enti');
         break;
     }
   }
 
-  onChangeListaElementi(listaSocietaFiltrate: Societa[]): void {
-    this.tableData.rows.length = 0;
-    listaSocietaFiltrate.forEach(societa => {
-//      this.tableData.rows.push(this.creaRigaTabella(societa));
+  onChangeListaElementi(listaEntiFiltrati: SintesiEnte[]): void {
+    this.tableData.rows = listaEntiFiltrati.map(ente => {
+      return this.creaRigaTabella(ente);
     });
   }
 
@@ -192,6 +194,27 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   }
 
   getNumeroRecord(): string {
-    return 'Totale: ' + this.tableData.rows.length + ' enti';
+    return 'Totale: ' + this.tableData.rows.length + ' Enti';
+  }
+
+  selezionaEnti(rows: any[]) {
+    // tslint:disable-next-line:prefer-const
+    let tempEntiSelezionati: SintesiEnte[] = [];
+    rows.forEach(value => {
+      const enteSelezionato: SintesiEnte[] = this.listaEnti
+        .filter(ente => ente.id === value.id.value);
+      tempEntiSelezionati.push(...enteSelezionato);
+    });
+    this.selectionEnti = rows;
+    this.entiSelezionati = tempEntiSelezionati;
+
+    const indexUpdate = this.toolbarIcons.map(el => el.type).indexOf(ToolEnum.UPDATE)
+    const indexDelete = this.toolbarIcons.map(el => el.type).indexOf(ToolEnum.DELETE)
+    this.toolbarIcons[indexUpdate].disabled = this.entiSelezionati.length !== 1;
+    this.toolbarIcons[indexDelete].disabled = this.entiSelezionati.length === 0;
+  }
+
+  dettaglioEnte(row) {
+    this.mostraDettaglioElemento('/dettaglioEnte', row.id.value);
   }
 }

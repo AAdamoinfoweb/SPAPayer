@@ -42,11 +42,11 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   listaIdLivelliTerritorialiSelezionati: Array<number> = [];
 
   readonly toolbarIcons = [
-    {type: ToolEnum.INSERT},
-    {type: ToolEnum.UPDATE, disabled: true},
-    {type: ToolEnum.DELETE, disabled: true},
-    {type: ToolEnum.EXPORT_PDF},
-    {type: ToolEnum.EXPORT_XLS}
+    {type: ToolEnum.INSERT, tooltip: 'Aggiungi Livello Territoriale'},
+    {type: ToolEnum.UPDATE, disabled: true, tooltip: 'Modifica Livello Territoriale'},
+    {type: ToolEnum.DELETE, disabled: true, tooltip: 'Elimina Livello Territoriale'},
+    {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
+    {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'}
   ];
 
   readonly indiceIconaModifica = 1;

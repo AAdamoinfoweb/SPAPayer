@@ -43,18 +43,16 @@ export class NuovoPagamentoService {
   constructor(private readonly http: HttpClient) {
   }
 
-  recuperaFiltroLivelloTerritoriale(filtroPagamento?: boolean): Observable<LivelloTerritoriale[]> {
+  recuperaFiltroLivelloTerritoriale(filtroPagamento: boolean = false): Observable<LivelloTerritoriale[]> {
     let params = new HttpParams();
-    if (filtroPagamento) {
-      params = params.set('filtroPagamento', String(filtroPagamento));
-    }
+    params = params.set('filtroPagamento', filtroPagamento ? 'true' : 'false'); // gestisce casi true, false, null, undefined
     return this.http.get(environment.bffBaseUrl + this.filtroLivelloTerritorialeUrl, {withCredentials: true, params})
       .pipe(map((body: any) => {
         return body;
       }));
   }
 
-  recuperaFiltroEnti(idLivelloTerritoriale?, societaId?: number, filtroPagamento?: boolean): Observable<Ente[]> {
+  recuperaFiltroEnti(idLivelloTerritoriale?, societaId?: number, filtroPagamento: boolean = false): Observable<Ente[]> {
     let params = new HttpParams();
     if (idLivelloTerritoriale) {
       params = params.set('livelloTerritorialeId', idLivelloTerritoriale);
@@ -62,9 +60,7 @@ export class NuovoPagamentoService {
     if (societaId) {
       params = params.set('societaId', String(societaId));
     }
-    if (filtroPagamento) {
-      params = params.set('filtroPagamento', String(filtroPagamento));
-    }
+    params = params.set('filtroPagamento', filtroPagamento ? 'true' : 'false'); // gestisce casi true, false, null, undefined
 
     return this.http.get(environment.bffBaseUrl + this.filtroEntiUrl, {
       params: params,
@@ -78,8 +74,9 @@ export class NuovoPagamentoService {
   recuperaFiltroServizi(idEnte?, filtroPagamento: boolean = false): Observable<FiltroServizio[]> {
     let params = new HttpParams();
     if (idEnte) {
-      params = params.set('enteId', idEnte).set('filtroPagamento', String(filtroPagamento));
+      params = params.set('enteId', idEnte);
     }
+    params = params.set('filtroPagamento', filtroPagamento ? 'true' : 'false'); // gestisce casi true, false, null, undefined
     return this.http.get(environment.bffBaseUrl + this.filtroServiziUrl, {
       params: params,
       withCredentials: true

@@ -249,7 +249,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
-    if (this.servizio?.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2
+    if (this.isBollettinoPrecompilato
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
@@ -336,7 +336,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.mostraCampoImporto = null;
     this.isFaseVerificaPagamento = false;
 
-    if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || this.datiPagamento) {
+    if (!this.isBollettinoPrecompilato || this.datiPagamento) {
       this.aggiungiCampoImporto();
     }
   }
@@ -382,6 +382,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     if (isCompilato) {
       this.impostaLivelloIntegrazione(servizio.livelloIntegrazioneId);
+      this.creaForm();
 
       // Nella modale occorre gestire anche i pagamenti lv1, che hanno dei campi statici
       if (this.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV1) {
@@ -393,7 +394,6 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         return of(null);
       } else {
         return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
-          this.creaForm();
           this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
           this.impostaCampi(campiNuovoPagamento.campiServizio);
 
