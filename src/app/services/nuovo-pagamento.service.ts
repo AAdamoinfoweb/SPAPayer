@@ -43,8 +43,12 @@ export class NuovoPagamentoService {
   constructor(private readonly http: HttpClient) {
   }
 
-  recuperaFiltroLivelloTerritoriale(): Observable<LivelloTerritoriale[]> {
-    return this.http.get(environment.bffBaseUrl + this.filtroLivelloTerritorialeUrl, {withCredentials: true})
+  recuperaFiltroLivelloTerritoriale(filtroPagamento?: boolean): Observable<LivelloTerritoriale[]> {
+    let params = new HttpParams();
+    if (filtroPagamento) {
+      params = params.set('filtroPagamento', String(filtroPagamento));
+    }
+    return this.http.get(environment.bffBaseUrl + this.filtroLivelloTerritorialeUrl, {withCredentials: true, params})
       .pipe(map((body: any) => {
         return body;
       }));
