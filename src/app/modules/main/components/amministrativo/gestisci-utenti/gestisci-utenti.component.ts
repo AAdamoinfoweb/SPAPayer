@@ -38,10 +38,10 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   selectionElementi: any[];
 
   toolbarIcons = [
-    {type: ToolEnum.INSERT},
-    {type: ToolEnum.UPDATE, disabled: true},
-    {type: ToolEnum.EXPORT_PDF},
-    {type: ToolEnum.EXPORT_XLS}
+    {type: ToolEnum.INSERT, tooltip: 'Aggiungi Utente/Permessi'},
+    {type: ToolEnum.UPDATE, disabled: true, tooltip: 'Modifica Utente/Permessi'},
+    {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
+    {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'}
   ];
 
   indiceIconaModifica = 1;

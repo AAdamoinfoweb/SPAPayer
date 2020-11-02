@@ -134,6 +134,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.inizializzaFiltroRicercaEnte();
+    this.cercaElementi();
   }
 
   cercaElementi() {
