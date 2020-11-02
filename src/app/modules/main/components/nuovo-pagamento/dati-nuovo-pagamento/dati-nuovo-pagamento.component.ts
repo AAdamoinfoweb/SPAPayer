@@ -51,6 +51,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   isBollettinoPrecompilato: boolean;
   isFaseVerificaPagamento: boolean;
 
+  readonly nomeCampoAnnoBollettinoLV1 = 'anno';
+  readonly nomeCampoCausaleBollettinoLV1 = 'causale';
+  readonly nomeCampoDocumentoBollettinoLV1 = 'documento';
+
   readonly tipoData = ECalendarValue.String;
 
   @Input()
@@ -403,8 +407,30 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   getCampiPagamentoLV1(): CampoForm[] {
-    //todo getCampiPagamentoLV1
-    return [];
+    const campiPagamentoLV1: CampoForm[] = [];
+
+    const campoAnno = new CampoForm();
+    campoAnno.titolo = this.nomeCampoAnnoBollettinoLV1;
+    campoAnno.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
+    campoAnno.posizione = 1;
+    campoAnno.campo_input = true;
+    campiPagamentoLV1.push(campoAnno);
+
+    const causale = new CampoForm();
+    causale.titolo = this.nomeCampoCausaleBollettinoLV1;
+    causale.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
+    causale.posizione = 2;
+    causale.campo_input = true;
+    campiPagamentoLV1.push(causale);
+
+    const documento = new CampoForm();
+    documento.titolo = this.nomeCampoDocumentoBollettinoLV1;
+    documento.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
+    documento.posizione = 3;
+    documento.campo_input = true;
+    campiPagamentoLV1.push(documento);
+
+    return campiPagamentoLV1;
   }
 
   formattaInput(event: any, campo: CampoForm): void {
@@ -582,8 +608,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     return campo.lunghezza;
   }
 
-  getIdCampo(campo: CampoForm): string {
-    return campo.id.toString();
+  getIdCampo(campo: CampoForm) {
+    return campo.id;
   }
 
   aggiornaSelectDipendenti(event: Event, campo: CampoForm): void {
