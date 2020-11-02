@@ -216,13 +216,13 @@
       <!-- Bottoni Pulisci e Cerca -->
       <div class="row">
         <div class="col-md-6">
-          <button id="bottonePulisci" class="btn btn-secondary"
+          <button type="button" id="bottonePulisci" class="btn btn-secondary"
                   [disabled]="disabilitaBottone(filtroPagamentiForm, 'Pulisci')"
                   (click)="pulisciFiltri(filtroPagamentiForm)">Pulisci
           </button>
         </div>
         <div class="col-md-6 text-md-right">
-          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroPagamentiForm, 'Cerca')"
+          <button id="bottoneCerca" class="btn"
                   (click)="cercaPagamenti(filtroPagamentiForm)">Cerca
           </button>
         </div>

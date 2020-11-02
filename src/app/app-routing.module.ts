@@ -23,6 +23,7 @@ import {GestisciBannerComponent} from './modules/main/components/amministrativo/
 import {FormBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/form-banner/form-banner.component';
 import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
 import {DettaglioAccessoComponent} from './modules/main/components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
+import {PresaincaricopagamentoL1Component} from "./modules/main/components/presaincaricopagamentoL1/presaincaricopagamento-l1.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -39,6 +40,7 @@ const routes: Routes = [
   {path: 'carrelloL1', component: CarrelloL1Component, pathMatch: 'full'},
   {path: 'carrello', component: CarrelloComponent, pathMatch: 'full'},
   {path: 'presaincaricopagamento', component: PresaincaricopagamentoComponent},
+  {path: 'presaincaricopagamentoL1', component: PresaincaricopagamentoL1Component},
   {path: 'waitingL1', component: WaitingL1Component, pathMatch: 'full'},
   {path: 'waiting', component: WaitingComponent, pathMatch: 'full'},
   {path: 'privacy', component: PrivacyComponent},

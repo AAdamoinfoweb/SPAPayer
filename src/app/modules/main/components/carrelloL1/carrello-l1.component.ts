@@ -7,6 +7,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../../../environments/environment";
 import {map} from "rxjs/operators";
 import {XsrfService} from "../../../../services/xsrf.service";
+import {NuovoPagamentoService} from "../../../../services/nuovo-pagamento.service";
+import {MenuService} from "../../../../services/menu.service";
 
 @Component({
   selector: 'app-carrello-l1',
@@ -35,7 +37,7 @@ export class CarrelloL1Component implements OnInit, AfterViewInit {
   urlBack: string;
 
   constructor(private router: Router, private renderer: Renderer2, private el: ElementRef, private route: ActivatedRoute,
-              private pagamentoService: PagamentoService, private xsrfService: XsrfService, private http: HttpClient ) {
+              private pagamentoService: PagamentoService, private xsrfService: XsrfService, private http: HttpClient, private menuService: MenuService) {
     this.breadcrumbList = [];
     this.breadcrumbList.push(new Breadcrumb(0, 'Home', null, null));
     this.breadcrumbList.push(new Breadcrumb(1, 'Pagamenti', null, null));
@@ -57,6 +59,7 @@ export class CarrelloL1Component implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     localStorage.clear();
+    this.menuService.isL1Event.emit(true);
     this.userEmail = new FormGroup({
       emailInput: new FormControl(this.email, [
         Validators.required,

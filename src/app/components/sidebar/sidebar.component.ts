@@ -84,7 +84,8 @@ export class SidebarComponent implements OnInit {
       if (item.nome === 'Accedi') {
         localStorage.setItem('loginDaAnonimo', 'true');
         window.location.href = environment.bffBaseUrl + item.route;
-        //window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
+       // window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=STNSNT85T11C975A&nome=sante&cognome=sta&email=sante.stanisci@dxc.com";
+        //window.location.href = "http://service.pp.192-168-43-56.nip.io/api/loginLepida.htm?CodiceFiscale=FGLLRA86D69D548K&nome=Laura&cognome=Fogli&email=laura.fogli@dxc.com"
       } else if (item.nome === 'Esci') {
         this.http.get(environment.bffBaseUrl + '/logout', {withCredentials: true}).subscribe((body: any) => {
           if (body.url) {
