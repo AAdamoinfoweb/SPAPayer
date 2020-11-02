@@ -45,11 +45,11 @@
                      [cols]="tableData.cols"
                      [rows]="tableData.rows"
                      [tipoTabella]="tableData.tipoTabella"
-                     (onSelection)="selezionaEnti($event)"
+                     (onSelection)="selezionaRigaTabella($event)"
                      [selectedRows]="true"
                      (onClickRow)="dettaglioEnte($event)"
                      [textLeft]="getNumeroRecord()"
-                     [selection]="selectionEnti">
+                     [selection]="selectionElementi">
           </app-table>
         </div>
       </div>

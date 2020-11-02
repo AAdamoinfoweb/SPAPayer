@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-
 import {HttpClient} from '@angular/common/http';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
 import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
@@ -15,9 +14,9 @@ import {Colonna} from '../../../../model/tabella/Colonna';
 import {Ente} from '../../../../model/Ente';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {Tabella} from '../../../../model/tabella/Tabella';
-import {SintesiEnte} from "../../../../model/ente/SintesiEnte";
-import {EnteService} from "../../../../../../services/ente.service";
-import {ParametriRicercaEnte} from "../../../../model/ente/ParametriRicercaEnte";
+import {SintesiEnte} from '../../../../model/ente/SintesiEnte';
+import {EnteService} from '../../../../../../services/ente.service';
+import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte';
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -49,16 +48,15 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     rows: [],
     cols: [
       {field: 'societa', header: 'Società', type: tipoColonna.TESTO},
-      {field: 'ente', header: 'Ente', type: tipoColonna.TESTO},
       {field: 'livelloTerritoriale', header: 'Livello Territoriale', type: tipoColonna.TESTO},
       {field: 'comune', header: 'Comune', type: tipoColonna.TESTO},
-      {field: 'provincia', header: 'Provincia', type: tipoColonna.TESTO}
+      {field: 'provincia', header: 'Provincia', type: tipoColonna.TESTO},
+      {field: 'ente', header: 'Ente', type: tipoColonna.TESTO}
     ],
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
   listaEnti: SintesiEnte[] = [];
-  selectionEnti: any[];
   entiSelezionati: SintesiEnte[];
 
   waiting = true;
@@ -131,10 +129,12 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     switch (azioneTool) {
       case ToolEnum.INSERT:
         this.aggiungiElemento('/aggiungiEnte');
+        this.selectionElementi = []
         break;
       case ToolEnum.UPDATE:
         // TODO logica modifica dell'ente selezionato
         // this.modificaElementoSelezionato('/modificaEnte', idEnte);
+        this.selectionElementi = []
         break;
       case ToolEnum.DELETE:
         this.eliminaEntiSelezionati();
@@ -149,55 +149,64 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   }
 
   onChangeListaElementi(listaEntiFiltrati: SintesiEnte[]): void {
-    this.tableData.rows = listaEntiFiltrati.map(ente => {
-      return this.creaRigaTabella(ente);
+    this.listaEnti = listaEntiFiltrati;
+    this.tableData.rows.length = 0;
+    listaEntiFiltrati.forEach(ente => {
+      this.tableData.rows.push(this.creaRigaTabella(ente));
     });
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
-    // TODO implementa get colonne pdf
-    return [];
+    return colonne;
   }
 
   getRigheFilePdf(righe: any[]) {
-    // TODO implementa get righe pdf
-    return [];
+    return righe;
   }
 
   getImmaginiFilePdf(): ImmaginePdf[] {
-    // TODO implementa get immagini pdf
     return [];
   }
 
   getColonneFileExcel(colonne: Colonna[]) {
-    // TODO implementa get colonne excel
-    return [];
+    return colonne;
   }
 
   getRigheFileExcel(righe: any[]) {
-    // TODO implementa get righe excel
-    return [];
+    return righe.map(riga => {
+      delete riga.id;
+      riga.societa = riga.societa.value;
+      riga.ente = riga.ente.value;
+      riga.livelloTerritoriale = riga.livelloTerritoriale.value;
+      riga.comune = riga.comune.value;
+      riga.provincia = riga.provincia.value;
+      return riga;
+    });
   }
 
   private eliminaEntiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          // TODO elimina enti
+        const listaEntiId = this.entiSelezionati.map(ente => ente.id);
+        this.enteService.eliminaEnti(listaEntiId, this.amministrativoService.idFunzione)
+            .subscribe(() => {
+              this.selectionElementi = [];
+              this.popolaListaElementi();
+              const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
+              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
+              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
+            });
         },
         TipoModaleEnum.ELIMINA
       )
     );
   }
 
-  selezionaRigaTabella(righeSelezionate: any[]) {
-    // TODO seleziona riga tabella
-  }
-
   getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length + ' Enti';
   }
 
-  selezionaEnti(rows: any[]) {
+  selezionaRigaTabella(rows: any[]) {
     // tslint:disable-next-line:prefer-const
     let tempEntiSelezionati: SintesiEnte[] = [];
     rows.forEach(value => {
@@ -205,13 +214,24 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
         .filter(ente => ente.id === value.id.value);
       tempEntiSelezionati.push(...enteSelezionato);
     });
-    this.selectionEnti = rows;
+    this.selectionElementi = rows;
     this.entiSelezionati = tempEntiSelezionati;
 
-    const indexUpdate = this.toolbarIcons.map(el => el.type).indexOf(ToolEnum.UPDATE)
-    const indexDelete = this.toolbarIcons.map(el => el.type).indexOf(ToolEnum.DELETE)
-    this.toolbarIcons[indexUpdate].disabled = this.entiSelezionati.length !== 1;
-    this.toolbarIcons[indexDelete].disabled = this.entiSelezionati.length === 0;
+    const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
+    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = this.entiSelezionati.length !== 1;
+    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = this.entiSelezionati.length === 0;
+  }
+
+  getMapToolbarIndex(toolbarIcons): Map<ToolEnum, number> {
+    const mappaIndexToolbar: Map<ToolEnum, number> =  new Map<ToolEnum, number>();
+    const toolbarType = toolbarIcons.map(el => el.type);
+
+    mappaIndexToolbar.set(ToolEnum.INSERT, toolbarType.indexOf(ToolEnum.INSERT));
+    mappaIndexToolbar.set(ToolEnum.UPDATE, toolbarType.indexOf(ToolEnum.UPDATE));
+    mappaIndexToolbar.set(ToolEnum.DELETE, toolbarType.indexOf(ToolEnum.DELETE));
+    mappaIndexToolbar.set(ToolEnum.EXPORT_PDF, toolbarType.indexOf(ToolEnum.EXPORT_PDF));
+    mappaIndexToolbar.set(ToolEnum.EXPORT_XLS, toolbarType.indexOf(ToolEnum.EXPORT_XLS));
+    return mappaIndexToolbar;
   }
 
   dettaglioEnte(row) {
