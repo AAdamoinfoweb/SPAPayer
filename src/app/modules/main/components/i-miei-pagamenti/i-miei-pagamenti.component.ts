@@ -260,7 +260,7 @@ export class IMieiPagamentiComponent implements OnInit {
           });
         })).subscribe();
     } else {
-      this.mostraBannerError(this.MESSAGGIO_ERRORE_AZIONE);
+      this.mostraBannerError(messaggioValiditaPagamentiStampaAttestatoPagamenti);
     }
   }
 
