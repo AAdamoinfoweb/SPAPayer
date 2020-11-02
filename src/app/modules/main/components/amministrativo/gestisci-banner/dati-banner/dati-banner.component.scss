@@ -19,3 +19,9 @@ textarea {
 :host ::ng-deep .ck .ck-toolbar__items * {
   cursor: pointer;
 }
+
+#testoDettaglioBanner {
+  height: 124px;
+  overflow: auto;
+  resize: vertical;
+}
