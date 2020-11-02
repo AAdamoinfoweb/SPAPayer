@@ -33,7 +33,7 @@
           </svg>
         </div>
         <!--  template TESTO  -->
-        <div *ngIf="col.type == tipoColonnaEnum.TESTO" [ngClass]="row[col.field].class" [innerHTML]="row[col.field].value">
+        <div *ngIf="col.type == tipoColonnaEnum.TESTO" [ngClass]="row[col.field].class" [innerHTML]="row[col.field].value | parseHtml">
           {{row[col.field].value}}
         </div>
         <!--  template LINK  -->

@@ -13,7 +13,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <p [innerHTML]="banner.testo"> {{banner.testo}} </p>
+          <p [innerHTML]="banner.testo | parseHtml"> {{banner.testo}} </p>
         </div>
       </div>
     </div>

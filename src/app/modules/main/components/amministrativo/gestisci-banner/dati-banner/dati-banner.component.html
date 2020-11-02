@@ -76,7 +76,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <label id="testoDettaglioBanner" [innerHTML]="datiBanner.testo" class="text-break">
+            <label id="testoDettaglioBanner" [innerHTML]="datiBanner.testo | parseHtml" class="text-break">
               {{datiBanner.testo}}
             </label>
           </div>

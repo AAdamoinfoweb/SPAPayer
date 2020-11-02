@@ -24,8 +24,6 @@ import { DatiSocietaComponent } from './components/amministrativo/anagrafiche/ge
 import { DatiLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dati-livello-territoriale/dati-livello-territoriale.component';
 import { FormLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/form-livello-territoriale/form-livello-territoriale.component';
 import { FiltroGestioneEntiComponent } from './components/amministrativo/anagrafiche/gestisci-enti/filtro-gestione-enti/filtro-gestione-enti.component';
-import {DatiBannerComponent} from './components/amministrativo/gestisci-banner/dati-banner/dati-banner.component';
-import {FormBannerComponent} from './components/amministrativo/gestisci-banner/form-banner/form-banner.component';
 import {DettaglioAccessoComponent} from './components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
 import { DatiAccessoComponent } from './components/amministrativo/monitora-accessi/dati-accesso/dati-accesso.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
@@ -50,8 +48,6 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
     FormLivelloTerritorialeComponent,
     DatiSocietaComponent,
     FiltroGestioneEntiComponent,
-    DatiBannerComponent,
-    FormBannerComponent,
     DettaglioAccessoComponent,
     DatiAccessoComponent
   ],

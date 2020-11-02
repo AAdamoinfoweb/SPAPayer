@@ -60,12 +60,15 @@ import {GestisciLivelliTerritorialiComponent} from './modules/main/components/am
 import {FiltroGestioneLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/filtro-gestione-livelli-territoriali/filtro-gestione-livelli-territoriali.component';
 import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
 import {FiltroGestioneBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/filtro-gestione-banner/filtro-gestione-banner.component';
+import {DatiBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/dati-banner/dati-banner.component';
+import {FormBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/form-banner/form-banner.component';
 import {GestisciEntiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component';
 import {SpinnerOverlayComponent} from './components/spinner-overlay/spinner-overlay.component';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
 import {FiltroMonitoraggioAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/filtro-monitoraggio-accessi/filtro-monitoraggio-accessi.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
+import {ParseHtmlPipe} from './pipe/parseHtml-pipe';
 
 @NgModule({
   declarations: [
@@ -116,11 +119,14 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
     FiltroGestioneLivelliTerritorialiComponent,
     GestisciBannerComponent,
     FiltroGestioneBannerComponent,
+    DatiBannerComponent,
+    FormBannerComponent,
     GestisciEntiComponent,
     OrderByPipe,
     SpinnerOverlayComponent,
     MonitoraAccessiComponent,
-    FiltroMonitoraggioAccessiComponent
+    FiltroMonitoraggioAccessiComponent,
+    ParseHtmlPipe
   ],
   imports: [
     HttpClientModule,
