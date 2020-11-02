@@ -290,18 +290,18 @@
   <div class="row" *ngIf="!datiPagamento">
     <!-- Bottone sx -->
     <div
-      *ngIf="isBollettinoPrecompilato || (!isBollettinoPrecompilato && !isFaseVerificaPagamento)"
+      *ngIf="!isBollettinoPrecompilato || (isBollettinoPrecompilato && !isFaseVerificaPagamento)"
       class="col-2">
       <button type="button" id="bottonePulisci" class="btn btn-secondary" (click)="clickPulisci()">Pulisci</button>
     </div>
-    <div *ngIf="!isBollettinoPrecompilato && isFaseVerificaPagamento"
+    <div *ngIf="isBollettinoPrecompilato && isFaseVerificaPagamento"
          class="col-2">
       <button type="button" id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">Indietro</button>
     </div>
 
     <!-- Bottoni dx -->
     <div
-      *ngIf="isBollettinoPrecompilato || (!isBollettinoPrecompilato && isFaseVerificaPagamento)"
+      *ngIf="!isBollettinoPrecompilato || (isBollettinoPrecompilato && isFaseVerificaPagamento)"
       class="col-10 text-right button-space">
         <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top">
           <button type="button" (click)="salvaPerDopo()" id="bottoneSalvaPerDopo" class="btn btn-secondary"
@@ -317,7 +317,7 @@
       </button>
     </div>
 
-    <div type="button" *ngIf="!isBollettinoPrecompilato && !isFaseVerificaPagamento"
+    <div type="button" *ngIf="isBollettinoPrecompilato && !isFaseVerificaPagamento"
          class="col-10 text-right">
       <button id="bottoneProcedi" class="btn" [disabled]="form.invalid" (click)="clickProcedi()">Procedi</button>
     </div>
