@@ -48,7 +48,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   readonly LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
   livelloIntegrazioneId: number = null;
 
-  isFaseVerificaPagamento = false;
+  isBollettinoPrecompilato: boolean;
+  isFaseVerificaPagamento: boolean;
 
   readonly tipoData = ECalendarValue.String;
 
@@ -340,12 +341,35 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     delete this.model[this.importoNomeCampo];
   }
 
+  impostaLivelloIntegrazione(livelloIntegrazione: LivelloIntegrazioneEnum): void {
+    this.livelloIntegrazioneId = livelloIntegrazione;
+
+    switch (livelloIntegrazione) {
+      case LivelloIntegrazioneEnum.LV1:
+        this.isBollettinoPrecompilato = false;
+        this.isFaseVerificaPagamento = null;
+        break;
+      case LivelloIntegrazioneEnum.LV2:
+        this.isBollettinoPrecompilato = false;
+        this.isFaseVerificaPagamento = null;
+        break;
+      case LivelloIntegrazioneEnum.LV2_BACK_OFFICE:
+        this.isBollettinoPrecompilato = true;
+        this.isFaseVerificaPagamento = false;
+        break;
+      case LivelloIntegrazioneEnum.LV3:
+        this.isBollettinoPrecompilato = true;
+        this.isFaseVerificaPagamento = false;
+        break;
+    }
+  }
+
   inizializzazioneForm(servizio: FiltroServizio): Observable<any> {
     this.servizio = servizio;
     const isCompilato = this.servizio != null;
 
     if (isCompilato) {
-      this.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
+      this.impostaLivelloIntegrazione(servizio.livelloIntegrazioneId);
 
       return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
         this.creaForm();
