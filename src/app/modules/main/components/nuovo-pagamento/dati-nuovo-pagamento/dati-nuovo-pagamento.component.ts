@@ -138,32 +138,29 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           }
         }
       });
-    } else {
-      // Un pagamento può non avere il dettaglioTransazioneId (quindi non essere sul db) solo se è di un servizio LV3 esterno
-      if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
-        const valoriPerPrecompilazione = {};
-        valoriPerPrecompilazione[MappingCampoInputPrecompilazioneEnum.codiceAvviso] = this.datiPagamento.codiceAvviso;
+    } else if (this.isBollettinoEsterno()) {
+      const valoriPerPrecompilazione = {};
+      valoriPerPrecompilazione[MappingCampoInputPrecompilazioneEnum.codiceAvviso] = this.datiPagamento.codiceAvviso;
 
-        this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
-          this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
-          .subscribe((valoriCampiPrecompilati) => {
-            this.impostaValoriCampiOutput(valoriCampiPrecompilati);
+      this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
+        this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
+        .subscribe((valoriCampiPrecompilati) => {
+          this.impostaValoriCampiOutput(valoriCampiPrecompilati);
 
-            // Per i pagamenti lv3 da servizio esterno, non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
-            const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
-            if (cfpiva) {
-              const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
-              // Valorizzo il campo codice fiscale (se presente)
-              if (campoCodicePagatore) {
-                this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
-              }
+          // Per i pagamenti lv3 da servizio esterno, non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
+          const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
+          if (cfpiva) {
+            const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
+            // Valorizzo il campo codice fiscale (se presente)
+            if (campoCodicePagatore) {
+              this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
             }
+          }
 
-          });
-      } else {
-        console.log('Dettaglio transazione id mancante su servizio diverso da LV3');
-        this.overlayService.gestisciErrore();
-      }
+        });
+    } else {
+      console.log('Dettaglio transazione id mancante su servizio diverso da LV3');
+      this.overlayService.gestisciErrore();
     }
   }
 
@@ -775,6 +772,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
       }
     });
+  }
+
+  isBollettinoEsterno(): boolean {
+    return this.datiPagamento && this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3 && !this.datiPagamento.dettaglioTransazioneId;
   }
 
   pagaOra() {
