@@ -40,13 +40,14 @@ export class TableComponent implements OnInit, OnChanges {
 
   rowsPerPageOption: number[] = [5, 10, 20];
 
+  first;
   pageSize = this.rowsPerPageOption[0];
   sprite: string | SVGPathElement = sprite;
 
   @ViewChild("table", {static: false}) table: Table;
 
   ngOnInit() { }
-  
+
   constructor() { }
 
   onRowSelect(event) {
@@ -61,6 +62,11 @@ export class TableComponent implements OnInit, OnChanges {
 
   onChangePageSize(event) {
     this.pageSize = event;
+    this.reset();
+  }
+
+  reset() {
+    this.first = 0;
   }
 
   onLinkClick() {
@@ -114,5 +120,6 @@ export class TableComponent implements OnInit, OnChanges {
     if (changes.rows && !changes.rows.firstChange)
       this.table.reset();
   }
+
 }
 
