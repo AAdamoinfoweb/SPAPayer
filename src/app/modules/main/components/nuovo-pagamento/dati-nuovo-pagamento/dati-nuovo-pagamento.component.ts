@@ -138,32 +138,29 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           }
         }
       });
-    } else {
-      // Un pagamento può non avere il dettaglioTransazioneId (quindi non essere sul db) solo se è di un servizio LV3 esterno
-      if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
-        const valoriPerPrecompilazione = {};
-        valoriPerPrecompilazione[MappingCampoInputPrecompilazioneEnum.codiceAvviso] = this.datiPagamento.codiceAvviso;
+    } else if (this.isBollettinoEsterno()) {
+      const valoriPerPrecompilazione = {};
+      valoriPerPrecompilazione[MappingCampoInputPrecompilazioneEnum.codiceAvviso] = this.datiPagamento.codiceAvviso;
 
-        this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
-          this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
-          .subscribe((valoriCampiPrecompilati) => {
-            this.impostaValoriCampiOutput(valoriCampiPrecompilati);
+      this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
+        this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
+        .subscribe((valoriCampiPrecompilati) => {
+          this.impostaValoriCampiOutput(valoriCampiPrecompilati);
 
-            // Per i pagamenti lv3 da servizio esterno, non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
-            const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
-            if (cfpiva) {
-              const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
-              // Valorizzo il campo codice fiscale (se presente)
-              if (campoCodicePagatore) {
-                this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
-              }
+          // Per i pagamenti lv3 da servizio esterno, non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
+          const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
+          if (cfpiva) {
+            const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
+            // Valorizzo il campo codice fiscale (se presente)
+            if (campoCodicePagatore) {
+              this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
             }
+          }
 
-          });
-      } else {
-        console.log('Dettaglio transazione id mancante su servizio diverso da LV3');
-        this.overlayService.gestisciErrore();
-      }
+        });
+    } else {
+      console.log('Dettaglio transazione id mancante su servizio diverso da LV3');
+      this.overlayService.gestisciErrore();
     }
   }
 
@@ -747,7 +744,34 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         }));
     } else {
-      observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
+      observable = this.getObservableAggiungiAlCarrello();
+    }
+    observable.subscribe((result) => {
+      if (result != 'error') {
+        this.aggiornaPrezzoCarrello();
+        this.pulisci();
+        if (this.datiPagamento) {
+          this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+        }
+
+      } else {
+        this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+      }
+    });
+  }
+
+  isBollettinoEsterno(): boolean {
+    return this.datiPagamento && this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3 && !this.datiPagamento.dettaglioTransazioneId;
+  }
+
+  isBollettinoDaInserire(): boolean {
+    // Il bollettino NON va inserito nel caso in cui si è nella modale di miei pagamenti e si sceglie un pagamento già presente sul db; altrimenti, va inserito
+    return (this.datiPagamento && this.isBollettinoEsterno()) || !this.datiPagamento;
+  }
+
+  getObservableAggiungiAlCarrello(): Observable<any> {
+    if (this.isBollettinoDaInserire()) {
+      return this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
         .pipe(flatMap((result) => {
           if (result.length > 0) {
             const value: DettaglioTransazioneEsito = result[0];
@@ -762,19 +786,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             }
           }
         }));
+    } else {
+      const dettagliTransazione = new DettagliTransazione();
+      dettagliTransazione.listaDettaglioTransazioneId = [];
+      dettagliTransazione.listaDettaglioTransazioneId.push(this.datiPagamento.dettaglioTransazioneId);
+      return  this.nuovoPagamentoService.inserimentoCarrello(dettagliTransazione);
     }
-    observable.subscribe((result) => {
-      if (result != 'error') {
-        this.aggiornaPrezzoCarrello();
-        this.pulisci();
-        if (this.datiPagamento) {
-          this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
-        }
-
-      } else {
-        this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
-      }
-    });
   }
 
   pagaOra() {
@@ -795,21 +812,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         });
     } else {
-      const observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
-        .pipe(flatMap((result) => {
-          if (result.length > 0) {
-            const value: DettaglioTransazioneEsito = result[0];
-            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-              const dettaglio: DettagliTransazione = new DettagliTransazione();
-              dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
-              return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
-            } else {
-              // show err
-              this.showMessage();
-              return of('error');
-            }
-          }
-        }));
+      const observable: Observable<any> = this.getObservableAggiungiAlCarrello();
       observable.subscribe((result) => {
         if (result !== 'error') {
           this.aggiornaPrezzoCarrello();
