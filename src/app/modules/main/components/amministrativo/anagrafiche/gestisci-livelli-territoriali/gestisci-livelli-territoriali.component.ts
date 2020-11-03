@@ -66,8 +66,8 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   tempTableData: Tabella;
   waiting = true;
 
-  constructor(router: Router,
-              route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
+  constructor(protected router: Router,
+              protected route: ActivatedRoute, protected http: HttpClient, protected amministrativoService: AmministrativoService,
               private renderer: Renderer2, private livelloTerritorialeService: LivelloTerritorialeService, private el: ElementRef,
               private menuService: MenuService,
               private confirmationService: ConfirmationService
