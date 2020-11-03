@@ -52,7 +52,7 @@ export class SidebarComponent implements OnInit {
           // orderBy posizione sotto menu dinamici
           let posizione = 3;
           menuTemp = menuTemp.map(sottoMenu => {
-            if (!(['Informazioni', 'Contattaci', 'Esci', 'Pagamenti'].includes(sottoMenu.nome))) {
+            if (!(['Informazioni', 'Contattaci', 'Esci', 'Accedi', 'Pagamenti'].includes(sottoMenu.nome))) {
               sottoMenu.posizione = posizione;
               posizione++;
             }
