@@ -33,12 +33,12 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     this.verificaAbilitazioneSottopath(link).subscribe(() => this.router.navigateByUrl(link));
   }
 
-  verificaAbilitazioneSottopath(link: string, id: number | string = null) {
+  verificaAbilitazioneSottopath(link: string) {
     const basePath = '/' + link.split('/')[0];
 
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', String(this.amministrativoService.mappaFunzioni[basePath]));
-    return this.http.get(environment.bffBaseUrl + '/verificaAbilitazione', {
+    return this.http.get(environment.bffBaseUrl + '/verificaAbilitazioneSottoPath', {
       headers: h,
       withCredentials: true
     });
@@ -51,11 +51,11 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
   mostraDettaglioElemento(link: string, id: number) {
-    this.verificaAbilitazioneSottopath(link, id).subscribe(() => this.router.navigate([link, id]));
+    this.verificaAbilitazioneSottopath(link).subscribe(() => this.router.navigate([link, id]));
   }
 
   modificaElementoSelezionato(link: string, id: number | string) {
-    this.verificaAbilitazioneSottopath(link, id).subscribe(() => this.router.navigate([link, id]));
+    this.verificaAbilitazioneSottopath(link).subscribe(() => this.router.navigate([link, id]));
   }
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {
