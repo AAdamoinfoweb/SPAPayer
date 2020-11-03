@@ -12,7 +12,7 @@ import {
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
 import {UtenteService} from '../../../../../../services/utente.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {DatiPermessoComponent} from '../dati-permesso/dati-permesso.component';
 import {AsyncSubject} from 'rxjs';
 import * as moment from 'moment';
@@ -78,7 +78,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.inizializzaBreadcrumbs();
   }
 
-
   inizializzaBreadcrumbs(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
     breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', '/gestioneUtenti?funzione=' + this.idFunzioneB64));
@@ -86,31 +85,30 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
 
-  ngOnInit(): void {
+  initFormPage(snapshot: ActivatedRouteSnapshot) {
+    if (snapshot.url[0].path === 'modificaUtentePermessi') {
+      this.isModifica = true;
+      this.funzione = FunzioneGestioneEnum.MODIFICA;
+      this.titoloPagina = `Modifica Utente/Permessi`;
+      this.tooltipTitle = `In questa pagina puoi modificare un utente e abilitarlo a specifici servizi`;
+      this.inizializzaBreadcrumbs();
+      this.codiceFiscaleModifica = snapshot.paramMap.get('userid');
+      this.letturaPermessi(this.codiceFiscaleModifica);
+    } else if (snapshot.url[0].path === 'dettaglioUtentePermessi') {
+      this.isDettaglio = true;
+      this.funzione = FunzioneGestioneEnum.DETTAGLIO;
+      this.titoloPagina = `Dettaglio Utente/Permessi`;
+      this.tooltipTitle = `In questa pagina puoi visualizzare il dettaglio di un utente`;
+      this.inizializzaBreadcrumbs();
+      this.codiceFiscaleModifica = snapshot.paramMap.get('userid');
+      this.letturaPermessi(this.codiceFiscaleModifica);
+    } else {
+      this.funzione = FunzioneGestioneEnum.AGGIUNGI;
+      this.inizializzaBreadcrumbs();
+    }
+  }
 
-    // get route per logica inserimento o modifica
-    this.activatedRoute.params.subscribe((params) => {
-      if (this.activatedRoute.snapshot.url[0].path === 'modificaUtentePermessi') {
-        this.isModifica = true;
-        this.funzione = FunzioneGestioneEnum.MODIFICA;
-        this.titoloPagina = `Modifica Utente/Permessi`;
-        this.tooltipTitle = `In questa pagina puoi modificare un utente e abilitarlo a specifici servizi`;
-        this.inizializzaBreadcrumbs();
-        this.codiceFiscaleModifica = this.activatedRoute.snapshot.paramMap.get('userid');
-        this.letturaPermessi(this.codiceFiscaleModifica);
-      } else if (this.activatedRoute.snapshot.url[0].path === 'dettaglioUtentePermessi') {
-        this.isDettaglio = true;
-        this.funzione = FunzioneGestioneEnum.DETTAGLIO;
-        this.titoloPagina = `Dettaglio Utente/Permessi`;
-        this.tooltipTitle = `In questa pagina puoi visualizzare il dettaglio di un utente`;
-        this.inizializzaBreadcrumbs();
-        this.codiceFiscaleModifica = this.activatedRoute.snapshot.paramMap.get('userid');
-        this.letturaPermessi(this.codiceFiscaleModifica);
-      } else {
-        this.funzione = FunzioneGestioneEnum.AGGIUNGI;
-        this.inizializzaBreadcrumbs();
-      }
-    });
+  ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
@@ -315,7 +313,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   }
 
   tornaIndietro() {
-
     this.router.navigateByUrl('/gestioneUtenti?funzione=' + this.idFunzioneB64);
   }
 }

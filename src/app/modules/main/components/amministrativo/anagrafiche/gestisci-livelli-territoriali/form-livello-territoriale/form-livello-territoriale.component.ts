@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
@@ -37,6 +37,10 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
     confirmationService: ConfirmationService,
     protected http: HttpClient
   ) { super(confirmationService, activatedRoute, amministrativoService, http); }
+
+  initFormPage(snapshot: ActivatedRouteSnapshot) {
+
+  }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {

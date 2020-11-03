@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FunzioneGestioneEnum} from 'src/app/enums/funzioneGestione.enum';
 import {Banner} from '../../../../model/banner/Banner';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {ConfirmationService} from 'primeng/api';
 import {BannerService} from '../../../../../../services/banner.service';
@@ -37,6 +37,10 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
               protected amministrativoService: AmministrativoService,
               confirmationService: ConfirmationService, private bannerService: BannerService) {
     super(confirmationService, activatedRoute, amministrativoService, http);
+  }
+
+  initFormPage(snapshot: ActivatedRouteSnapshot) {
+
   }
 
   ngOnInit(): void {

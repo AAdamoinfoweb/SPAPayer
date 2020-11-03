@@ -3,7 +3,7 @@ import {Utils} from "../../../../utils/Utils";
 import {TipoModaleEnum} from "../../../../enums/tipoModale.enum";
 import {FunzioneGestioneEnum} from "../../../../enums/funzioneGestione.enum";
 import {ConfirmationService} from "primeng/api";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, ActivatedRouteSnapshot} from "@angular/router";
 import {Observable, of} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../../../environments/environment";
@@ -20,13 +20,16 @@ export abstract class FormElementoParentComponent {
     activatedRoute.params.subscribe((params) => {
       let path = activatedRoute.snapshot.routeConfig.path;
       this.verificaAbilitazioneSottopath(path).subscribe(() => {
+        this.idFunzioneB64 = activatedRoute.snapshot.queryParams.funzione;
+        this.initFormPage(activatedRoute.snapshot);
       });
-      this.idFunzioneB64 = activatedRoute.snapshot.queryParams.funzione;
     });
   }
 
   idFunzioneB64;
   abstract funzione: FunzioneGestioneEnum;
+
+  abstract initFormPage(snapshot: ActivatedRouteSnapshot);
 
   verificaAbilitazioneSottopath(link: string): Observable<string> {
     const basePath = '/' + link.split('/')[0];

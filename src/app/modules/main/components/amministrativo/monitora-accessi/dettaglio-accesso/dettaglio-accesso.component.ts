@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormElementoParentComponent} from '../../form-elemento-parent.component';
 import {ConfirmationService} from 'primeng/api';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {Accesso} from '../../../../model/accesso/Accesso';
 import {AccessoService} from '../../../../../../services/accesso.service';
@@ -30,6 +30,10 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
               protected activatedRoute: ActivatedRoute
               ) {
     super(confirmationService, activatedRoute, amministrativoService, http);
+  }
+
+  initFormPage(snapshot: ActivatedRouteSnapshot) {
+
   }
 
   ngOnInit(): void {
