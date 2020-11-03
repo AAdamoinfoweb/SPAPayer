@@ -25,7 +25,7 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
   constructor(confirmationService: ConfirmationService,
               private router: Router,
               http: HttpClient,
-              private amministrativoService: AmministrativoService,
+              protected amministrativoService: AmministrativoService,
               private accessoService: AccessoService,
               protected activatedRoute: ActivatedRoute
               ) {
