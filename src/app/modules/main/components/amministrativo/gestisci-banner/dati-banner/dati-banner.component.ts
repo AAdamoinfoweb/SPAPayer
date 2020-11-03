@@ -30,6 +30,7 @@ export class DatiBannerComponent implements OnInit {
         'fontColor',
         'fontFamily',
         'fontSize',
+        'alignment',
         '|',
         'bold',
         'italic',
