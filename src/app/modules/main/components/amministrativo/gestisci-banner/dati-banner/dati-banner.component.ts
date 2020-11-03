@@ -30,6 +30,7 @@ export class DatiBannerComponent implements OnInit {
         'fontColor',
         'fontFamily',
         'fontSize',
+        'alignment',
         '|',
         'bold',
         'italic',
@@ -54,6 +55,22 @@ export class DatiBannerComponent implements OnInit {
         { model: 'heading1', view: 'h1', title: 'Intestazione 1', class: 'ck-heading_heading1' },
         { model: 'heading2', view: 'h2', title: 'Intestazione 2', class: 'ck-heading_heading2' },
         { model: 'heading3', view: 'h3', title: 'Intestazione 3', class: 'ck-heading_heading3' }
+      ]
+    },
+    fontFamily: {
+      options: [
+        'default',
+        'Titillium Web, serif',
+        'Roboto Mono, serif',
+        'Lora, serif',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Lucida Sans Unicode, Lucida Grande, sans-serif',
+        'Tahoma, Geneva, sans-serif',
+        'Times New Roman, Times, serif',
+        'Trebuchet MS, Helvetica, sans-serif',
+        'Verdana, Geneva, sans-serif'
       ]
     },
     fontSize: {
