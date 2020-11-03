@@ -21,7 +21,8 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     super(router, route, http, amministrativoService);
   }
 
-  abstract parentLink;
+  abstract urlPagina;
+  abstract basePathBackend;
   abstract selectionElementi: any[];
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
@@ -32,7 +33,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   }
 
   aggiungiElemento(linkFunzioneAggiungi: string) {
-    this.verificaAbilitazioneSottopath(this.parentLink + linkFunzioneAggiungi).subscribe((header: string) => this.router.navigateByUrl(this.parentLink + linkFunzioneAggiungi + header));
+    this.verificaAbilitazioneSottopath(this.basePathBackend + linkFunzioneAggiungi).subscribe((header: string) => this.router.navigateByUrl(this.basePathBackend + linkFunzioneAggiungi + header));
   }
 
   verificaAbilitazioneSottopath(link: string): Observable<string> {
@@ -53,11 +54,11 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
   mostraDettaglioElemento(linkFunzioneDettaglio: string, id: number) {
-    this.verificaAbilitazioneSottopath(this.parentLink + linkFunzioneDettaglio).subscribe((header: string) => this.router.navigate([this.parentLink + linkFunzioneDettaglio + header, id]));
+    this.verificaAbilitazioneSottopath(this.basePathBackend + linkFunzioneDettaglio).subscribe((header: string) => this.router.navigate([this.basePathBackend + linkFunzioneDettaglio + header, id]));
   }
 
   modificaElementoSelezionato(linkFunzioneModifica: string, id: number | string) {
-    this.verificaAbilitazioneSottopath(this.parentLink + linkFunzioneModifica).subscribe((header: string) => this.router.navigate([this.parentLink + linkFunzioneModifica + header, id]));
+    this.verificaAbilitazioneSottopath(this.basePathBackend + linkFunzioneModifica).subscribe((header: string) => this.router.navigate([this.basePathBackend + linkFunzioneModifica + header, id]));
   }
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {

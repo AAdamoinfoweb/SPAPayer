@@ -54,7 +54,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   isModifica = false;
   isDettaglio = false;
   funzione: FunzioneGestioneEnum;
-  urlFunzione = '/gestioneUtenti';
+  urlPaginaGestione = '/gestioneUtenti';
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
@@ -81,7 +81,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   inizializzaBreadcrumbs(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', this.urlFunzione + '?funzione=' + this.idFunzioneB64));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', this.urlPaginaGestione + '?funzione=' + this.idFunzioneB64));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Utente/Permessi', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
@@ -172,7 +172,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   }
 
   letturaPermessi(codiceFiscale) {
-    this.permessoService.letturaPermessi(codiceFiscale, this.amministrativoService.idFunzione).subscribe((listaPermessi: PermessoCompleto[]) => {
+    this.permessoService.letturaPermessi(codiceFiscale, this.idFunzioneB64).subscribe((listaPermessi: PermessoCompleto[]) => {
       listaPermessi.forEach((permesso: PermessoCompleto) => {
         permesso.dataInizioValidita = permesso.dataInizioValidita ?
           moment(permesso.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
@@ -236,7 +236,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     const codiceFiscale = this.isModifica ? this.codiceFiscaleModifica : this.codiceFiscale;
     if (!this.isModifica && !this.isDettaglio) {
       // controllo su codice fiscale
-      this.utenteService.letturaCodiceFiscale(this.codiceFiscale, this.amministrativoService.idFunzione).subscribe((data) => {
+      this.utenteService.letturaCodiceFiscale(this.codiceFiscale, this.idFunzioneB64).subscribe((data) => {
         const codiciFiscaleUpperCase = data.map(value => value.toUpperCase());
         const iscodiceFiscaleEsistente = codiciFiscaleUpperCase.includes(this.codiceFiscale.toUpperCase());
         if (iscodiceFiscaleEsistente) {
@@ -265,7 +265,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   }
 
   private inserimentoAggiornamentoUtente(codiceFiscale: string, utente: InserimentoModificaUtente) {
-    this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.amministrativoService.idFunzione).subscribe((err) => {
+    this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.idFunzioneB64).subscribe((err) => {
       if (err == null) {
         // se presenti inserimento permessi
         const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
@@ -298,7 +298,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       return permesso;
     });
     // chiamata be inserimento modifica permessi
-    this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessiDaInserire, this.amministrativoService.idFunzione)
+    this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessiDaInserire, this.idFunzioneB64)
       .subscribe(() => {
         this.asyncSubject.next(codiceFiscale);
         this.asyncSubject.complete();

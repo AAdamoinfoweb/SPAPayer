@@ -29,19 +29,19 @@ export abstract class FormElementoParentComponent {
 
   idFunzioneB64;
   abstract funzione: FunzioneGestioneEnum;
-  abstract urlFunzione;
+  abstract urlPaginaGestione;
 
   abstract initFormPage(snapshot: ActivatedRouteSnapshot);
 
   verificaAbilitazioneSottopath(link: string): Observable<string> {
-    const basePath = '/' + link.split('/')[0];
+    const basePathBackend = '/' + link.split('/')[0];
 
     let h: HttpHeaders = new HttpHeaders();
-    h = h.append('idFunzione', String(this.amministrativoService.mappaFunzioni[basePath]));
-    return this.http.get(environment.bffBaseUrl + basePath + '/verificaAbilitazioneSottoPath', {
+    h = h.append('idFunzione', String(this.amministrativoService.mappaFunzioni[this.urlPaginaGestione]));
+    return this.http.get(environment.bffBaseUrl + basePathBackend + '/verificaAbilitazioneSottoPath', {
       headers: h,
       withCredentials: true
-    }).pipe(flatMap(() => of('?funzione=' + btoa(String(this.amministrativoService.mappaFunzioni[basePath])))));
+    }).pipe(flatMap(() => of('?funzione=' + btoa(String(this.amministrativoService.mappaFunzioni[basePathBackend])))));
   }
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]) {
@@ -68,7 +68,7 @@ export abstract class FormElementoParentComponent {
   }
 
   tornaIndietro(): void {
-    this.router.navigateByUrl(this.urlFunzione + '?funzione=' + this.idFunzioneB64);
+    this.router.navigateByUrl(this.urlPaginaGestione + '?funzione=' + this.idFunzioneB64);
   };
 
   getTestoFunzione(funzione: FunzioneGestioneEnum, isTitolo: boolean = true): string {

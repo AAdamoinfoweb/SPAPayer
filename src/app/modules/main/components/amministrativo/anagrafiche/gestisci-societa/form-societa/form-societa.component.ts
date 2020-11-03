@@ -21,7 +21,7 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
-  urlFunzione = '/societa';
+  urlPaginaGestione = '/societa';
   titoloPagina: string;
   tooltip: string;
   societa: Societa = new Societa();
@@ -53,7 +53,7 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una società';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
         this.societa.id = parseInt(this.activatedRoute.snapshot.paramMap.get('societaid'));
-        this.societaService.ricercaSocieta(this.societa.id, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
+        this.societaService.ricercaSocieta(this.societa.id, this.idFunzioneB64).subscribe(listaSocieta => {
           this.societa = listaSocieta[0];
         })
       } else {
@@ -64,7 +64,7 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = []
     breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
-    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Società', this.urlFunzione + '?funzione=' + this.idFunzioneB64));
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Società', this.urlPaginaGestione + '?funzione=' + this.idFunzioneB64));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Società', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
     }
@@ -87,12 +87,12 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
   onClickSalva(): void {
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        this.societaService.aggiuntaSocieta(this.societa, this.amministrativoService.idFunzione).subscribe((societa) => {
+        this.societaService.aggiuntaSocieta(this.societa, this.idFunzioneB64).subscribe((societa) => {
           this.societa = new Societa();
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.societaService.modificaSocieta(this.societa, this.amministrativoService.idFunzione).subscribe(() => {
+        this.societaService.modificaSocieta(this.societa, this.idFunzioneB64).subscribe(() => {
         });
         break;
     }

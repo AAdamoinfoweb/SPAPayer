@@ -17,7 +17,7 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
 
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum = FunzioneGestioneEnum.DETTAGLIO;
-  urlFunzione = '/monitoraAccessi';
+  urlPaginaGestione = '/monitoraAccessi';
   accesso: Accesso = new Accesso();
   titoloPagina = 'Dettaglio Accesso';
   tooltip = 'In questa pagina puoi visualizzare i dettagli di un accesso';
@@ -44,7 +44,7 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
     ]);
 
     const idSelezionato = parseInt(this.activatedRoute.snapshot.paramMap.get('accessoid'));
-    this.accessoService.recuperaDettaglioAccesso(idSelezionato, this.amministrativoService.idFunzione).subscribe(accesso => {
+    this.accessoService.recuperaDettaglioAccesso(idSelezionato, this.idFunzioneB64).subscribe(accesso => {
       this.accesso = accesso;
     });
   }

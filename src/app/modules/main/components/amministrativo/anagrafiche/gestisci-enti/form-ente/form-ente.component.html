@@ -1,0 +1,53 @@
+<div class="container-fluid">
+  <!-- breadcrumb -->
+  <it-breadcrumb [dark]="false" [separator]="'/'">
+    <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
+                        [link]="item.link">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
+
+  <!-- titolo -->
+  <h3 class="mb-2 page-title"><strong>{{titoloPagina}}</strong>
+    <span it-tooltip="{{tooltipTitolo}}">
+      <svg class="bg-light icon icon-lg icon-padded">
+        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+      </svg>
+    </span>
+  </h3>
+
+  <!-- sezione aggiungi dati-ente -->
+  <app-dati-ente></app-dati-ente>
+
+  <hr>
+
+  <!-- sezione aggiungi dati-beneficiario -->
+  <div #datiBeneficiario></div>
+</div>
+<!-- Bottoni -->
+<div class="row">
+  <!-- Bottone sx -->
+  <div class="col-2">
+    <button id="buttonAnnulla" class="btn btn-secondary"
+            (click)="onClickAnnullaButton()">{{funzione ===FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
+  </div>
+  <!-- Bottoni dx -->
+  <div class="col-10 text-right">
+    <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiPermessi" class="btn btn-secondary"
+            [disabled]="disabilitaBottone()" (click)="aggiungiSezionePermesso()">
+      Aggiungi beneficiario
+    </button>
+    <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonSalva" class="btn"
+            [disabled]="disabilitaBottone()" (click)="onClickSalva()">
+      Salva
+    </button>
+  </div>
+</div>
+
+<!-- Modale -->
+<p-confirmDialog #cb icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
+    <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
+  </p-footer>
+</p-confirmDialog>

@@ -24,6 +24,7 @@ import {FormBannerComponent} from './modules/main/components/amministrativo/gest
 import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
 import {DettaglioAccessoComponent} from './modules/main/components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
 import {PresaincaricopagamentoL1Component} from "./modules/main/components/presaincaricopagamentoL1/presaincaricopagamento-l1.component";
+import {FormEnteComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -54,19 +55,22 @@ const routes: Routes = [
   {path: 'gestioneUtenti/dettaglioUtentePermessi/:userid', component: FormUtentePermessiComponent},
   {path: 'societa', component: GestisciSocietaComponent},
   {path: 'enti', component: GestisciEntiComponent},
-  {path: 'societa/aggiungiSocieta', component: FormSocietaComponent},
-  {path: 'societa/modificaSocieta/:societaid', component: FormSocietaComponent},
-  {path: 'societa/dettaglioSocieta/:societaid', component: FormSocietaComponent},
+  {path: 'gestioneAnagrafiche/aggiungiSocieta', component: FormSocietaComponent},
+  {path: 'gestioneAnagrafiche/modificaSocieta/:societaid', component: FormSocietaComponent},
+  {path: 'gestioneAnagrafiche/dettaglioSocieta/:societaid', component: FormSocietaComponent},
   {path: 'livelliTerritoriali', component: GestisciLivelliTerritorialiComponent},
-  {path: 'livelliTerritoriali/aggiungiLivelloTerritoriale', component: FormLivelloTerritorialeComponent},
-  {path: 'livelliTerritoriali/modificaLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
-  {path: 'livelliTerritoriali/dettaglioLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
+  {path: 'gestioneAnagrafiche/aggiungiLivelloTerritoriale', component: FormLivelloTerritorialeComponent},
+  {path: 'gestioneAnagrafiche/modificaLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
+  {path: 'gestioneAnagrafiche/dettaglioLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
   {path: 'gestisciBanner', component: GestisciBannerComponent},
   {path: 'gestioneBanner/aggiungiBanner', component: FormBannerComponent},
   {path: 'gestioneBanner/modificaBanner/:bannerid', component: FormBannerComponent},
   {path: 'gestioneBanner/dettaglioBanner/:bannerid', component: FormBannerComponent},
   {path: 'monitoraAccessi', component: MonitoraAccessiComponent},
-  {path: 'dettaglioAccesso/:accessoid', component: DettaglioAccessoComponent}
+  {path: 'monitoraggioAccessi/dettaglioAccesso/:accessoid', component: DettaglioAccessoComponent},
+  {path: 'gestioneAnagrafiche/aggiungiEnte', component: FormEnteComponent},
+  {path: 'gestioneAnagrafiche/modificaEnte/:enteId', component: FormEnteComponent},
+  {path: 'gestioneAnagrafiche/dettaglioEnte/:enteId', component: FormEnteComponent},
 ];
 
 @NgModule({
