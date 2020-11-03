@@ -9,7 +9,7 @@ import {FormElementoParentComponent} from '../../form-elemento-parent.component'
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Utils} from '../../../../../../utils/Utils';
 import * as moment from 'moment';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-dettaglio-banner',
