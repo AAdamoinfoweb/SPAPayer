@@ -26,7 +26,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   isMenuCarico = false;
   waiting = true;
 
-  parentLink = '';
+  parentLink = 'monitoraAccessi';
   breadcrumbList = [];
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli accessi alle funzionalità amministrative e filtrarli';
   listaAccessi = [];
@@ -218,7 +218,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   mostraDettaglioAccesso(rigaTabella) {
-    this.mostraDettaglioElemento('/dettaglioAccesso', rigaTabella.id.value);
+    this.mostraDettaglioElemento(this.parentLink + '/dettaglioAccesso', rigaTabella.id.value);
   }
 
 }
