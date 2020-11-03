@@ -31,7 +31,8 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
-  parentLink = 'gestioneUtenti';
+  basePathBackend = 'gestioneUtenti';
+  urlPagina = 'gestioneUtenti';
   breadcrumbList = [];
 
   codiceFiscaleUtenteDaModificare: string;
@@ -264,6 +265,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   dettaglioUtente(row: any) {
-    this.mostraDettaglioElemento(this.parentLink + '/dettaglioUtentePermessi', row.id.value);
+    this.mostraDettaglioElemento(this.basePathBackend + '/dettaglioUtentePermessi', row.id.value);
   }
 }

@@ -30,9 +30,11 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./form-ente.component.scss']
 })
 export class FormEnteComponent extends FormElementoParentComponent implements OnInit {
+
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
-  readonly parentLink = 'gestioneAnagrafiche';
+  urlPaginaGestione = 'enti';
+
   // header page
   breadcrumbList = [];
   tooltipTitolo: string;
@@ -52,13 +54,13 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   getListaPermessi = (mapPermessi: Map<number, PermessoCompleto>) => Array.from(mapPermessi, ([name, value]) => value);
 
 
-  constructor(private router: Router,
+  constructor(router: Router,
               activatedRoute: ActivatedRoute,
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, amministrativoService: AmministrativoService,
               private overlayService: OverlayService, http: HttpClient,
               confirmationService: ConfirmationService) {
-    super(confirmationService, activatedRoute, amministrativoService, http);
+    super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
   ngOnInit(): void {
@@ -68,6 +70,10 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       this.inizializzaBreadcrumbs();
       this.inizializzaTitolo();
     });
+  }
+
+  initFormPage(snapshot: import("@angular/router").ActivatedRouteSnapshot) {
+    throw new Error("Method not implemented.");
   }
 
   controllaTipoFunzione() {

@@ -29,8 +29,8 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
 
   readonly funzioneGestioneUtenti = '/gestioneUtenti';
-  parentLink = 'enti';
-
+  basePathBackend = 'gestioneAnagrafiche';
+  urlPagina = 'enti';
   breadcrumbList = [];
 
   isMenuCarico = false;

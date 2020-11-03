@@ -31,7 +31,8 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
 
   readonly funzioneGestioneUtenti = '/gestioneUtenti';
-  parentLink = 'societa';
+  basePathBackend = 'gestioneAnagrafiche';
+  urlPagina = 'societa';
 
   breadcrumbList = [];
 
