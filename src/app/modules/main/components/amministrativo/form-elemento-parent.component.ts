@@ -14,7 +14,7 @@ import {AmministrativoService} from "../../../../services/amministrativo.service
 export abstract class FormElementoParentComponent {
 
   protected constructor(private confirmationService: ConfirmationService,
-                        activatedRoute: ActivatedRoute,
+                        protected activatedRoute: ActivatedRoute,
                         protected amministrativoService: AmministrativoService,
                         protected http: HttpClient) {
     activatedRoute.params.subscribe((params) => {
