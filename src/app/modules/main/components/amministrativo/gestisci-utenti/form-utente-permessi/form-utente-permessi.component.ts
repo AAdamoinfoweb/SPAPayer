@@ -79,7 +79,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   inizializzaBreadcrumbs(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', '/gestioneUtenti/' + this.amministrativoService.idFunzione));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', '/gestioneUtenti?funzione=' + this.idFunzioneB64));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Utente/Permessi', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
@@ -88,7 +88,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
     // get route per logica inserimento o modifica
     this.activatedRoute.params.subscribe((params) => {
-      //this.activatedRoute.snapshot.queryParams.funzione
+      this.idFunzioneB64 = this.activatedRoute.snapshot.queryParams.funzione;
       if (this.activatedRoute.snapshot.url[0].path === 'modificaUtentePermessi') {
         this.isModifica = true;
         this.funzione = FunzioneGestioneEnum.MODIFICA;
@@ -315,6 +315,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   tornaIndietro() {
 
-    this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
+    this.router.navigateByUrl('/gestioneUtenti?funzione=' + this.idFunzioneB64);
   }
 }

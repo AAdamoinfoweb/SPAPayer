@@ -10,7 +10,7 @@ export abstract class FormElementoParentComponent {
   protected constructor(private confirmationService: ConfirmationService) {
   }
 
-  //abstract idFunzioneB64;
+  idFunzioneB64;
   abstract funzione: FunzioneGestioneEnum;
 
 
