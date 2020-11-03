@@ -12,6 +12,7 @@ import {Colonna} from '../modules/main/model/tabella/Colonna';
 export class Utils {
 
   static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00';
+  static FORMAT_LOCAL_DATE_TIME_TO = 'YYYY-MM-DD[T]23:59';
   static FORMAT_DATE_CALENDAR = 'DD/MM/YYYY';
 
   static readonly EMAIL_REGEX = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
