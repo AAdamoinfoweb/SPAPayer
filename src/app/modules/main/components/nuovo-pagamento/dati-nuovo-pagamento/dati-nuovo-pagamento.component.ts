@@ -744,7 +744,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         }));
     } else {
-      observable = this.getObservableInserimentoBollettino();
+      observable = this.getObservableAggiungiAlCarrello();
     }
     observable.subscribe((result) => {
       if (result != 'error') {
@@ -764,22 +764,34 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     return this.datiPagamento && this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3 && !this.datiPagamento.dettaglioTransazioneId;
   }
 
-  getObservableInserimentoBollettino(): Observable<any> {
-    return this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
-      .pipe(flatMap((result) => {
-        if (result.length > 0) {
-          const value: DettaglioTransazioneEsito = result[0];
-          if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-            const dettaglio: DettagliTransazione = new DettagliTransazione();
-            dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
-            return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
-          } else {
-            // show err
-            this.showMessage();
-            return of('error');
+  isBollettinoDaInserire(): boolean {
+    // Il bollettino NON va inserito nel caso in cui si è nella modale di miei pagamenti e si sceglie un pagamento già presente sul db; altrimenti, va inserito
+    return (this.datiPagamento && this.isBollettinoEsterno()) || !this.datiPagamento;
+  }
+
+  getObservableAggiungiAlCarrello(): Observable<any> {
+    if (this.isBollettinoDaInserire()) {
+      return this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
+        .pipe(flatMap((result) => {
+          if (result.length > 0) {
+            const value: DettaglioTransazioneEsito = result[0];
+            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+              const dettaglio: DettagliTransazione = new DettagliTransazione();
+              dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
+              return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
+            } else {
+              // show err
+              this.showMessage();
+              return of('error');
+            }
           }
-        }
-      }));
+        }));
+    } else {
+      const dettagliTransazione = new DettagliTransazione();
+      dettagliTransazione.listaDettaglioTransazioneId = [];
+      dettagliTransazione.listaDettaglioTransazioneId.push(this.datiPagamento.dettaglioTransazioneId);
+      return  this.nuovoPagamentoService.inserimentoCarrello(dettagliTransazione);
+    }
   }
 
   pagaOra() {
@@ -800,7 +812,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         });
     } else {
-      const observable: Observable<any> = this.getObservableInserimentoBollettino();
+      const observable: Observable<any> = this.getObservableAggiungiAlCarrello();
       observable.subscribe((result) => {
         if (result !== 'error') {
           this.aggiornaPrezzoCarrello();
