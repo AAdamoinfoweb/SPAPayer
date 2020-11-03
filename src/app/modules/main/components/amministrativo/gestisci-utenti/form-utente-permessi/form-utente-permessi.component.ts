@@ -63,7 +63,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   constructor(private utenteService: UtenteService, private router: Router,
               protected http: HttpClient,
-              private activatedRoute: ActivatedRoute,
+              protected activatedRoute: ActivatedRoute,
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, protected amministrativoService: AmministrativoService,
               private permessoService: PermessoService,
