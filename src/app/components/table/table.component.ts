@@ -40,7 +40,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   rowsPerPageOption: number[] = [5, 10, 20];
 
-  first;
+  first = 0;
   pageSize = this.rowsPerPageOption[0];
   sprite: string | SVGPathElement = sprite;
 
