@@ -54,6 +54,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   isModifica = false;
   isDettaglio = false;
   funzione: FunzioneGestioneEnum;
+  urlFunzione = '/gestioneUtenti';
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
@@ -80,7 +81,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   inizializzaBreadcrumbs(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', '/gestioneUtenti?funzione=' + this.idFunzioneB64));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', this.urlFunzione + '?funzione=' + this.idFunzioneB64));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Utente/Permessi', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
@@ -310,9 +311,5 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       funzione = FunzioneGestioneEnum.DETTAGLIO;
     }
     this.onClickAnnulla(funzione);
-  }
-
-  tornaIndietro() {
-    this.router.navigateByUrl('/gestioneUtenti?funzione=' + this.idFunzioneB64);
   }
 }

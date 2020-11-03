@@ -21,6 +21,7 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
+  urlFunzione = '/societa';
   titoloPagina: string;
   tooltip: string;
   societa: Societa = new Societa();
@@ -63,7 +64,7 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = []
     breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
-    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Società', '/societa/' + this.amministrativoService.idFunzione));
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Società', this.urlFunzione + '?funzione=' + this.idFunzioneB64));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Società', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
     }
@@ -81,10 +82,6 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
         this.funzione = FunzioneGestioneEnum.MODIFICA;
         break;
     }
-  }
-
-  tornaIndietro() {
-    this.router.navigateByUrl('/societa?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 
   onClickSalva(): void {

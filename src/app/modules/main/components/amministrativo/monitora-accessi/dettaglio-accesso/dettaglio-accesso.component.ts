@@ -6,7 +6,7 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {Accesso} from '../../../../model/accesso/Accesso';
 import {AccessoService} from '../../../../../../services/accesso.service';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-dettaglio-accesso',
@@ -17,6 +17,7 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
 
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum = FunzioneGestioneEnum.DETTAGLIO;
+  urlFunzione = '/monitoraAccessi';
   accesso: Accesso = new Accesso();
   titoloPagina = 'Dettaglio Accesso';
   tooltip = 'In questa pagina puoi visualizzare i dettagli di un accesso';
@@ -38,9 +39,9 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
 
   ngOnInit(): void {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
-      {label: 'Monitora Accessi', link: '/monitoraAccessi/funzione?' + this.amministrativoService.idFunzione},
+      {label: 'Monitora Accessi', link: '/monitoraAccessi?funzione' + this.idFunzioneB64},
       {label: 'Dettaglio Accesso', link: null}
-    ])
+    ]);
 
     const idSelezionato = parseInt(this.activatedRoute.snapshot.paramMap.get('accessoid'));
     this.accessoService.recuperaDettaglioAccesso(idSelezionato, this.amministrativoService.idFunzione).subscribe(accesso => {
@@ -49,9 +50,5 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
   }
 
   onClickSalva(): void {
-  }
-
-  tornaIndietro(): void {
-    this.router.navigateByUrl('/monitoraAccessi?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 }

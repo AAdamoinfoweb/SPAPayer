@@ -28,6 +28,7 @@ export abstract class FormElementoParentComponent {
 
   idFunzioneB64;
   abstract funzione: FunzioneGestioneEnum;
+  abstract urlFunzione;
 
   abstract initFormPage(snapshot: ActivatedRouteSnapshot);
 
@@ -65,7 +66,9 @@ export abstract class FormElementoParentComponent {
     }
   }
 
-  abstract tornaIndietro(): void;
+  tornaIndietro(): void {
+    this.router.navigateByUrl(this.urlFunzione + '?funzione=' + this.idFunzioneB64);
+  };
 
   getTestoFunzione(funzione: FunzioneGestioneEnum, isTitolo: boolean = true): string {
     switch (funzione) {

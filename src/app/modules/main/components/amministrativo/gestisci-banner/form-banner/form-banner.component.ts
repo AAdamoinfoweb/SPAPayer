@@ -21,8 +21,8 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
   breadcrumbList = [];
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
-  readonly routeFunzioneGestisciBanner = '/gestisciBanner';
   funzione: FunzioneGestioneEnum;
+  urlFunzione = '/gestisciBanner';
 
   titoloPagina: string;
   tooltip: string;
@@ -66,13 +66,9 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
 
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Banner', this.ritornaAGestisciBanner()));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Banner', this.urlFunzione + '?funzione=' + this.idFunzioneB64);
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Banner', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
-  }
-
-  ritornaAGestisciBanner(): string {
-    return this.routeFunzioneGestisciBanner + '?funzione=' + this.idFunzioneB64;
   }
 
   controllaTipoFunzione(): void {
@@ -88,10 +84,6 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
         this.funzione = FunzioneGestioneEnum.MODIFICA;
         break;
     }
-  }
-
-  tornaIndietro() {
-    this.router.navigateByUrl(this.ritornaAGestisciBanner());
   }
 
   onClickSalva(): void {

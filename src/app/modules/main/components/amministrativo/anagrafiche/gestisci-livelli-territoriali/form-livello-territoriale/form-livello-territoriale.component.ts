@@ -26,6 +26,8 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
   livelloTerritoriale: LivelloTerritoriale = new LivelloTerritoriale();
   isFormValido: boolean;
 
+  urlFunzione = '/livelliTerritoriali';
+
   breadcrumbList = [];
 
   constructor(
@@ -78,10 +80,6 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
         this.funzione = FunzioneGestioneEnum.MODIFICA;
         break;
     }
-  }
-
-  tornaIndietro() {
-    this.router.navigateByUrl('/livelliTerritoriali?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 
   onClickSalva(): void {
