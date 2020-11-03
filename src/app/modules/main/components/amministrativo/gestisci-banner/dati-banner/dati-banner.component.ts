@@ -56,6 +56,22 @@ export class DatiBannerComponent implements OnInit {
         { model: 'heading3', view: 'h3', title: 'Intestazione 3', class: 'ck-heading_heading3' }
       ]
     },
+    fontFamily: {
+      options: [
+        'default',
+        'Titillium Web, serif',
+        'Roboto Mono, serif',
+        'Lora, serif',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Lucida Sans Unicode, Lucida Grande, sans-serif',
+        'Tahoma, Geneva, sans-serif',
+        'Times New Roman, Times, serif',
+        'Trebuchet MS, Helvetica, sans-serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
     fontSize: {
       options: [
         9,
