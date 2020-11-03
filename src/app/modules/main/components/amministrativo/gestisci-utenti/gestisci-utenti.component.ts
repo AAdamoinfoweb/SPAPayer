@@ -188,10 +188,10 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiElemento(this.parentLink + '/aggiungiUtentePermessi');
+        this.aggiungiElemento('/aggiungiUtentePermessi');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato(this.parentLink + '/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare);
+        this.modificaElementoSelezionato('/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare);
         break;
       case ToolEnum.EXPORT_PDF:
         this.esportaTabellaInFilePdf(dataTable, 'Lista Utenti');

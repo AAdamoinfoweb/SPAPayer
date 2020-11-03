@@ -31,8 +31,8 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     return Utils.popolaListaBreadcrumb(breadcrumbList);
   }
 
-  aggiungiElemento(link: string) {
-    this.verificaAbilitazioneSottopath(link).subscribe((header: string) => this.router.navigateByUrl(link + header));
+  aggiungiElemento(linkFunzioneAggiungi: string) {
+    this.verificaAbilitazioneSottopath(this.parentLink + linkFunzioneAggiungi).subscribe((header: string) => this.router.navigateByUrl(this.parentLink + linkFunzioneAggiungi + header));
   }
 
   verificaAbilitazioneSottopath(link: string): Observable<string> {
@@ -52,12 +52,12 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
-  mostraDettaglioElemento(link: string, id: number) {
-    this.verificaAbilitazioneSottopath(link).subscribe((header: string) => this.router.navigate([link + header, id]));
+  mostraDettaglioElemento(linkFunzioneDettaglio: string, id: number) {
+    this.verificaAbilitazioneSottopath(this.parentLink + linkFunzioneDettaglio).subscribe((header: string) => this.router.navigate([this.parentLink + linkFunzioneDettaglio + header, id]));
   }
 
-  modificaElementoSelezionato(link: string, id: number | string) {
-    this.verificaAbilitazioneSottopath(link).subscribe((header: string) => this.router.navigate([link + header, id]));
+  modificaElementoSelezionato(linkFunzioneModifica: string, id: number | string) {
+    this.verificaAbilitazioneSottopath(this.parentLink + linkFunzioneModifica).subscribe((header: string) => this.router.navigate([this.parentLink + linkFunzioneModifica + header, id]));
   }
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {

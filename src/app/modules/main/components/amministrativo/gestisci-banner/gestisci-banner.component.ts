@@ -141,10 +141,10 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiElemento(this.parentLink + '/aggiungiBanner');
+        this.aggiungiElemento('/aggiungiBanner');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato(this.parentLink + '/modificaBanner', this.listaBannerIdSelezionati[0]);
+        this.modificaElementoSelezionato('/modificaBanner', this.listaBannerIdSelezionati[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaBannerSelezionati();
