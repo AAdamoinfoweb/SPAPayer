@@ -28,6 +28,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
 
   readonly tooltipTitolo = 'In questa pagina puoi visualizzare la lista completa dei banner presenti in Payer e filtrarli';
 
+  parentLink = '';
   breadcrumbList = [];
 
   listaBanner: Array<Banner> = new Array<Banner>();
@@ -67,7 +68,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
               amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
               private bannerService: BannerService, private menuService: MenuService,
               private confirmationService: ConfirmationService
-              ) {
+  ) {
     super(router, route, http, amministrativoService);
   }
 
