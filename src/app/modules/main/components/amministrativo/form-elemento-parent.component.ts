@@ -10,7 +10,9 @@ export abstract class FormElementoParentComponent {
   protected constructor(private confirmationService: ConfirmationService) {
   }
 
+  //abstract idFunzioneB64;
   abstract funzione: FunzioneGestioneEnum;
+
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]) {
     const breadcrumbList: SintesiBreadcrumb[] = [];
