@@ -313,6 +313,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   }
 
   tornaIndietro() {
+
     this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 }
