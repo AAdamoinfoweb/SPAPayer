@@ -24,6 +24,7 @@ import {FormBannerComponent} from './modules/main/components/amministrativo/gest
 import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
 import {DettaglioAccessoComponent} from './modules/main/components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
 import {PresaincaricopagamentoL1Component} from "./modules/main/components/presaincaricopagamentoL1/presaincaricopagamento-l1.component";
+import {FormEnteComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -66,7 +67,10 @@ const routes: Routes = [
   {path: 'gestioneBanner/modificaBanner/:bannerid', component: FormBannerComponent},
   {path: 'gestioneBanner/dettaglioBanner/:bannerid', component: FormBannerComponent},
   {path: 'monitoraAccessi', component: MonitoraAccessiComponent},
-  {path: 'dettaglioAccesso/:accessoid', component: DettaglioAccessoComponent}
+  {path: 'dettaglioAccesso/:accessoid', component: DettaglioAccessoComponent},
+  {path: 'gestioneAnagrafiche/aggiungiEnte', component: FormEnteComponent},
+  {path: 'gestioneAnagrafiche/modificaEnte/:enteId', component: FormEnteComponent},
+  {path: 'gestioneAnagrafiche/dettaglioEnte/:enteId', component: FormEnteComponent},
 ];
 
 @NgModule({
