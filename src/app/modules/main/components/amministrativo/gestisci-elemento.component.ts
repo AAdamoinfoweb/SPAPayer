@@ -9,6 +9,8 @@ import {Colonna} from '../../model/tabella/Colonna';
 import {ToolEnum} from '../../../../enums/Tool.enum';
 import {ImmaginePdf} from '../../model/tabella/ImmaginePdf';
 import {environment} from "../../../../../environments/environment";
+import {Observable, of} from "rxjs";
+import {flatMap, map} from "rxjs/operators"
 
 
 export abstract class GestisciElementoComponent extends AmministrativoParentComponent {
@@ -30,18 +32,18 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   }
 
   aggiungiElemento(link: string) {
-    this.verificaAbilitazioneSottopath(link).subscribe(() => this.router.navigateByUrl(link));
+    this.verificaAbilitazioneSottopath(link).subscribe((header: string) => this.router.navigateByUrl(link + header));
   }
 
-  verificaAbilitazioneSottopath(link: string) {
+  verificaAbilitazioneSottopath(link: string): Observable<string> {
     const basePath = '/' + link.split('/')[0];
 
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', String(this.amministrativoService.mappaFunzioni[basePath]));
-    return this.http.get(environment.bffBaseUrl + '/verificaAbilitazioneSottoPath', {
+    return this.http.get(environment.bffBaseUrl + basePath + '/verificaAbilitazioneSottoPath', {
       headers: h,
       withCredentials: true
-    });
+    }).pipe(flatMap(() => of('?funzione=' + btoa(String(this.amministrativoService.mappaFunzioni[basePath])))));
   }
 
   abstract popolaListaElementi(): void;
@@ -51,11 +53,11 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
   mostraDettaglioElemento(link: string, id: number) {
-    this.verificaAbilitazioneSottopath(link).subscribe(() => this.router.navigate([link, id]));
+    this.verificaAbilitazioneSottopath(link).subscribe((header: string) => this.router.navigate([link + header, id]));
   }
 
   modificaElementoSelezionato(link: string, id: number | string) {
-    this.verificaAbilitazioneSottopath(link).subscribe(() => this.router.navigate([link, id]));
+    this.verificaAbilitazioneSottopath(link).subscribe((header: string) => this.router.navigate([link + header, id]));
   }
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {

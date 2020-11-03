@@ -88,6 +88,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
     // get route per logica inserimento o modifica
     this.activatedRoute.params.subscribe((params) => {
+      //this.activatedRoute.snapshot.queryParams.funzione
       if (this.activatedRoute.snapshot.url[0].path === 'modificaUtentePermessi') {
         this.isModifica = true;
         this.funzione = FunzioneGestioneEnum.MODIFICA;
@@ -313,6 +314,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   }
 
   tornaIndietro() {
+
     this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
   }
 }
