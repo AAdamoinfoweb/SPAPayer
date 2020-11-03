@@ -31,6 +31,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   readonly iconaGruppoEnti = 'assets/img/users-solid.svg#users-group';
 
   readonly funzioneGestioneEnti = '/enti';
+  parentLink = 'gestioneAnagrafiche';
 
   breadcrumbList = [];
 

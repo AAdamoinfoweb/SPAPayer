@@ -25,6 +25,8 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
 
   isMenuCarico = false;
   waiting = true;
+
+  parentLink = '';
   breadcrumbList = [];
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli accessi alle funzionalità amministrative e filtrarli';
   listaAccessi = [];

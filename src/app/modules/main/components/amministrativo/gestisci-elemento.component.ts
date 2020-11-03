@@ -1,6 +1,6 @@
 import {Breadcrumb, SintesiBreadcrumb} from '../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../services/amministrativo.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Utils} from '../../../../utils/Utils';
 import {AmministrativoParentComponent} from './amministrativo-parent.component';
@@ -8,27 +8,40 @@ import {Tabella} from '../../model/tabella/Tabella';
 import {Colonna} from '../../model/tabella/Colonna';
 import {ToolEnum} from '../../../../enums/Tool.enum';
 import {ImmaginePdf} from '../../model/tabella/ImmaginePdf';
+import {environment} from "../../../../../environments/environment";
 
 
 export abstract class GestisciElementoComponent extends AmministrativoParentComponent {
 
   protected constructor(router: Router,
-                        route: ActivatedRoute, http: HttpClient,
+                        route: ActivatedRoute, protected http: HttpClient,
                         amministrativoService: AmministrativoService) {
     super(router, route, http, amministrativoService);
   }
 
+  abstract parentLink;
   abstract selectionElementi: any[];
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
     const breadcrumbList: SintesiBreadcrumb[] = [];
-    breadcrumbList.push(new SintesiBreadcrumb( 'Amministra Portale', null));
+    breadcrumbList.push(new SintesiBreadcrumb('Amministra Portale', null));
     breadcrumbList.push(...breadcrumbs);
     return Utils.popolaListaBreadcrumb(breadcrumbList);
   }
 
   aggiungiElemento(link: string) {
-    this.router.navigateByUrl(link);
+    this.verificaAbilitazioneSottopath(link).subscribe(() => this.router.navigateByUrl(link));
+  }
+
+  verificaAbilitazioneSottopath(link: string, id: number | string = null) {
+    const basePath = '/' + link.split('/')[0];
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', String(this.amministrativoService.mappaFunzioni[basePath]));
+    return this.http.get(environment.bffBaseUrl + '/verificaAbilitazione', {
+      headers: h,
+      withCredentials: true
+    });
   }
 
   abstract popolaListaElementi(): void;
@@ -38,11 +51,11 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
   mostraDettaglioElemento(link: string, id: number) {
-    this.router.navigate([link, id]);
+    this.verificaAbilitazioneSottopath(link, id).subscribe(() => this.router.navigate([link, id]));
   }
 
   modificaElementoSelezionato(link: string, id: number | string) {
-    this.router.navigate([link, id]);
+    this.verificaAbilitazioneSottopath(link, id).subscribe(() => this.router.navigate([link, id]));
   }
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {
@@ -57,6 +70,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   }
 
   abstract getColonneFileExcel(colonne: Colonna[]): Colonna[];
+
   abstract getRigheFileExcel(righe: any[]);
 
   esportaTabellaInFilePdf(tabella: Tabella, nomeFile: string): void {
@@ -71,7 +85,9 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   }
 
   abstract getColonneFilePdf(colonne: Colonna[]): Colonna[];
+
   abstract getRigheFilePdf(righe: any[]);
+
   abstract getImmaginiFilePdf(): ImmaginePdf[];
 
   abstract selezionaRigaTabella(righeSelezionate: any[]): void;

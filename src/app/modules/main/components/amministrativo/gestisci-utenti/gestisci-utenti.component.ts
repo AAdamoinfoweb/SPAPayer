@@ -31,6 +31,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
+  parentLink = 'gestioneUtenti';
   breadcrumbList = [];
 
   codiceFiscaleUtenteDaModificare: string;
@@ -169,7 +170,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   onChangeTab(value) {
-    const subscription  = this.spinnerOverlayService.spinner$.subscribe();
+    const subscription = this.spinnerOverlayService.spinner$.subscribe();
     let tabRows = this.tableData.rows.map(row => row);
 
     if (value === TipoUtenteEnum.ATTIVI) {
@@ -187,10 +188,10 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiElemento('/aggiungiUtentePermessi');
+        this.aggiungiElemento(this.parentLink + '/aggiungiUtentePermessi');
         break;
       case ToolEnum.UPDATE:
-      this.modificaElementoSelezionato('/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare);
+        this.modificaElementoSelezionato(this.parentLink + '/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare);
         break;
       case ToolEnum.EXPORT_PDF:
         this.esportaTabellaInFilePdf(dataTable, 'Lista Utenti');
@@ -263,6 +264,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   dettaglioUtente(row: any) {
-    this.mostraDettaglioElemento('/dettaglioUtentePermessi', row.id.value);
+    this.mostraDettaglioElemento(this.parentLink + '/dettaglioUtentePermessi', row.id.value);
   }
 }
