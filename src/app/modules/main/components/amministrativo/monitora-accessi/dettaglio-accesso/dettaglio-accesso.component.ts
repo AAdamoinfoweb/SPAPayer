@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {Accesso} from '../../../../model/accesso/Accesso';
 import {AccessoService} from '../../../../../../services/accesso.service';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-dettaglio-accesso',
@@ -23,11 +24,12 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
 
   constructor(confirmationService: ConfirmationService,
               private router: Router,
-              private amministrativoService: AmministrativoService,
+              http: HttpClient,
+              protected amministrativoService: AmministrativoService,
               private accessoService: AccessoService,
-              private activatedRoute: ActivatedRoute
+              protected activatedRoute: ActivatedRoute
               ) {
-    super(confirmationService);
+    super(confirmationService, activatedRoute, amministrativoService, http);
   }
 
   ngOnInit(): void {

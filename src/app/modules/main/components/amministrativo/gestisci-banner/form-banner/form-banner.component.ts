@@ -9,6 +9,7 @@ import {FormElementoParentComponent} from '../../form-elemento-parent.component'
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Utils} from '../../../../../../utils/Utils';
 import * as moment from 'moment';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-dettaglio-banner',
@@ -30,9 +31,12 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
 
   isFormValido: boolean;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private amministrativoService: AmministrativoService,
+  constructor(private router: Router,
+              protected activatedRoute: ActivatedRoute,
+              protected http: HttpClient,
+              protected amministrativoService: AmministrativoService,
               confirmationService: ConfirmationService, private bannerService: BannerService) {
-    super(confirmationService);
+    super(confirmationService, activatedRoute, amministrativoService, http);
   }
 
   ngOnInit(): void {

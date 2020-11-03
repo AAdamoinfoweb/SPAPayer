@@ -10,6 +10,7 @@ import {FormElementoParentComponent} from "../../../form-elemento-parent.compone
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-dettaglio-societa',
@@ -28,13 +29,16 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
   breadcrumbList = [];
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     private router: Router,
-    private amministrativoService: AmministrativoService,
+    protected http: HttpClient,
+    protected amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
     private societaService: SocietaService,
     confirmationService: ConfirmationService
-  ) { super(confirmationService);}
+  ) {
+    super(confirmationService, activatedRoute, amministrativoService, http);
+  }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {

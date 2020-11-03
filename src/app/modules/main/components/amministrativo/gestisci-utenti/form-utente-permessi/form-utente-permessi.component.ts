@@ -29,6 +29,7 @@ import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanne
 import {FormElementoParentComponent} from "../../form-elemento-parent.component";
 import {ConfirmationService} from 'primeng/api';
 import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -61,14 +62,15 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
 
   constructor(private utenteService: UtenteService, private router: Router,
-              private activatedRoute: ActivatedRoute,
+              protected http: HttpClient,
+              protected activatedRoute: ActivatedRoute,
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
-              private el: ElementRef, private amministrativoService: AmministrativoService,
+              private el: ElementRef, protected amministrativoService: AmministrativoService,
               private permessoService: PermessoService,
               private overlayService: OverlayService,
               confirmationService: ConfirmationService,
               private bannerService: BannerService) {
-    super(confirmationService);
+    super(confirmationService, activatedRoute, amministrativoService, http);
     // codice fiscale da utente service per inserimento
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
@@ -79,7 +81,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   inizializzaBreadcrumbs(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', '/gestioneUtenti/' + this.amministrativoService.idFunzione));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', '/gestioneUtenti?funzione=' + this.idFunzioneB64));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Utente/Permessi', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
@@ -88,7 +90,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
     // get route per logica inserimento o modifica
     this.activatedRoute.params.subscribe((params) => {
-      //this.activatedRoute.snapshot.queryParams.funzione
       if (this.activatedRoute.snapshot.url[0].path === 'modificaUtentePermessi') {
         this.isModifica = true;
         this.funzione = FunzioneGestioneEnum.MODIFICA;
@@ -240,13 +241,13 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
         const codiciFiscaleUpperCase = data.map(value => value.toUpperCase());
         const iscodiceFiscaleEsistente = codiciFiscaleUpperCase.includes(this.codiceFiscale.toUpperCase());
         if (iscodiceFiscaleEsistente) {
-        const banner: Banner = {
-          titolo: 'ATTENZIONE',
-          testo: 'Utente già presente',
-          tipo: getBannerType(LivelloBanner.ERROR)
-        };
-        this.bannerService.bannerEvent.emit([banner]);
-      } else {
+          const banner: Banner = {
+            titolo: 'ATTENZIONE',
+            testo: 'Utente già presente',
+            tipo: getBannerType(LivelloBanner.ERROR)
+          };
+          this.bannerService.bannerEvent.emit([banner]);
+        } else {
           this.inserimentoAggiornamentoUtente(codiceFiscale, utente);
         }
       });
@@ -256,7 +257,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     }
     this.asyncSubject.subscribe(cf => {
       this.codiceFiscaleModifica = cf;
-      this.router.routeReuseStrategy.shouldReuseRoute = function() {
+      this.router.routeReuseStrategy.shouldReuseRoute = function () {
         return false;
       };
       this.router.onSameUrlNavigation = 'reload';
@@ -315,6 +316,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   tornaIndietro() {
 
-    this.router.navigateByUrl('/gestioneUtenti?funzione=' + btoa(this.amministrativoService.idFunzione));
+    this.router.navigateByUrl('/gestioneUtenti?funzione=' + this.idFunzioneB64);
   }
 }

@@ -10,6 +10,7 @@ import {FormElementoParentComponent} from "../../../form-elemento-parent.compone
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-dettaglio-livello-territoriale',
@@ -28,13 +29,14 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
   breadcrumbList = [];
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     private router: Router,
-    private amministrativoService: AmministrativoService,
+    protected amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
     private livelloTerritorialeService: LivelloTerritorialeService,
-    confirmationService: ConfirmationService
-  ) { super(confirmationService); }
+    confirmationService: ConfirmationService,
+    protected http: HttpClient
+  ) { super(confirmationService, activatedRoute, amministrativoService, http); }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {

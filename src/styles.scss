@@ -168,15 +168,32 @@ select:disabled {
 }
 
 .toggles label {
+  cursor: default;
   width: 60px;
 }
 
-.toggles label input[type=checkbox][disabled] + .lever {
-  background-color: #E3E3E3;
-  cursor: not-allowed;
+.toggles label input[type=checkbox] + .lever,
+.toggles label input[type=checkbox] + .lever:hover,
+.toggles label input[type=checkbox] + .lever:after {
+  cursor: pointer;
+  background-color: #d9364f;
 }
 
-.toggles label input[type=checkbox][disabled] + .lever:after, .toggles label input[type=checkbox][disabled]:checked + .lever:after {
-  background-color: #E3E3E3;
-  cursor: not-allowed;
+.toggles label input[type=checkbox]:checked + .lever,
+.toggles label input[type=checkbox]:checked + .lever:hover,
+.toggles label input[type=checkbox]:checked + .lever:after {
+  cursor: pointer;
+  background-color: #008758;
+}
+
+.toggles label input[type=checkbox][disabled] + .lever,
+.toggles label input[type=checkbox][disabled] + .lever:after {
+  background-color: hsl(0,75%,60%);
+  pointer-events: none;
+}
+
+.toggles label input[type=checkbox][disabled]:checked + .lever,
+.toggles label input[type=checkbox][disabled]:checked + .lever:after {
+  background-color: hsl(150,75%,60%);
+  pointer-events: none;
 }
