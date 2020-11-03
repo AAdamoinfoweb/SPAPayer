@@ -72,7 +72,7 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
   }
 
   controllaTipoFunzione(): void {
-    const url = this.activatedRoute.snapshot.url[0].path;
+    const url = this.activatedRoute.snapshot.url[1].path;
     switch (url) {
       case 'dettaglioBanner':
         this.funzione = FunzioneGestioneEnum.DETTAGLIO;

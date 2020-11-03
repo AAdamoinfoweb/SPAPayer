@@ -70,7 +70,7 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
   }
 
   controllaTipoFunzione() {
-    const url = this.activatedRoute.snapshot.url[0].path;
+    const url = this.activatedRoute.snapshot.url[1].path;
     switch (url) {
       case 'dettaglioLivelloTerritoriale':
         this.funzione = FunzioneGestioneEnum.DETTAGLIO;
