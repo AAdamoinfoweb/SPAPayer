@@ -744,21 +744,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         }));
     } else {
-      observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
-        .pipe(flatMap((result) => {
-          if (result.length > 0) {
-            const value: DettaglioTransazioneEsito = result[0];
-            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-              const dettaglio: DettagliTransazione = new DettagliTransazione();
-              dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
-              return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
-            } else {
-              // show err
-              this.showMessage();
-              return of('error');
-            }
-          }
-        }));
+      observable = this.getObservableInserimentoBollettino();
     }
     observable.subscribe((result) => {
       if (result != 'error') {
@@ -776,6 +762,24 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   isBollettinoEsterno(): boolean {
     return this.datiPagamento && this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3 && !this.datiPagamento.dettaglioTransazioneId;
+  }
+
+  getObservableInserimentoBollettino(): Observable<any> {
+    return this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
+      .pipe(flatMap((result) => {
+        if (result.length > 0) {
+          const value: DettaglioTransazioneEsito = result[0];
+          if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
+            const dettaglio: DettagliTransazione = new DettagliTransazione();
+            dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
+            return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
+          } else {
+            // show err
+            this.showMessage();
+            return of('error');
+          }
+        }
+      }));
   }
 
   pagaOra() {
@@ -796,21 +800,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         });
     } else {
-      const observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
-        .pipe(flatMap((result) => {
-          if (result.length > 0) {
-            const value: DettaglioTransazioneEsito = result[0];
-            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-              const dettaglio: DettagliTransazione = new DettagliTransazione();
-              dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
-              return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
-            } else {
-              // show err
-              this.showMessage();
-              return of('error');
-            }
-          }
-        }));
+      const observable: Observable<any> = this.getObservableInserimentoBollettino();
       observable.subscribe((result) => {
         if (result !== 'error') {
           this.aggiornaPrezzoCarrello();
