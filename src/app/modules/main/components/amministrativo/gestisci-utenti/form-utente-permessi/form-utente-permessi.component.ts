@@ -62,7 +62,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   getListaPermessi = (mapPermessi: Map<number, PermessoCompleto>) => Array.from(mapPermessi, ([name, value]) => value);
 
 
-  constructor(private utenteService: UtenteService, private router: Router,
+  constructor(private utenteService: UtenteService, protected router: Router,
               protected http: HttpClient,
               protected activatedRoute: ActivatedRoute,
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
@@ -71,7 +71,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
               private overlayService: OverlayService,
               confirmationService: ConfirmationService,
               private bannerService: BannerService) {
-    super(confirmationService, activatedRoute, amministrativoService, http);
+    super(confirmationService, activatedRoute, amministrativoService, http, router);
     // codice fiscale da utente service per inserimento
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;

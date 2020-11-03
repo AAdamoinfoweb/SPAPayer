@@ -32,13 +32,15 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
 
   constructor(
     protected activatedRoute: ActivatedRoute,
-    private router: Router,
+    protected router: Router,
     protected amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
     private livelloTerritorialeService: LivelloTerritorialeService,
     confirmationService: ConfirmationService,
     protected http: HttpClient
-  ) { super(confirmationService, activatedRoute, amministrativoService, http); }
+  ) {
+    super(confirmationService, activatedRoute, amministrativoService, http, router);
+  }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
 

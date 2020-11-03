@@ -31,14 +31,14 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
 
   constructor(
     protected activatedRoute: ActivatedRoute,
-    private router: Router,
+    protected router: Router,
     protected http: HttpClient,
     protected amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
     private societaService: SocietaService,
     confirmationService: ConfirmationService
   ) {
-    super(confirmationService, activatedRoute, amministrativoService, http);
+    super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {

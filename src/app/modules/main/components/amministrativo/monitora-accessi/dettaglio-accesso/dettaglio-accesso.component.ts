@@ -24,13 +24,13 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
   breadcrumbList = [];
 
   constructor(confirmationService: ConfirmationService,
-              private router: Router,
+              protected router: Router,
               http: HttpClient,
               protected amministrativoService: AmministrativoService,
               private accessoService: AccessoService,
               protected activatedRoute: ActivatedRoute
               ) {
-    super(confirmationService, activatedRoute, amministrativoService, http);
+    super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {

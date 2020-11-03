@@ -3,7 +3,7 @@ import {Utils} from "../../../../utils/Utils";
 import {TipoModaleEnum} from "../../../../enums/tipoModale.enum";
 import {FunzioneGestioneEnum} from "../../../../enums/funzioneGestione.enum";
 import {ConfirmationService} from "primeng/api";
-import {ActivatedRoute, ActivatedRouteSnapshot} from "@angular/router";
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {Observable, of} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../../../environments/environment";
@@ -16,7 +16,8 @@ export abstract class FormElementoParentComponent {
   protected constructor(private confirmationService: ConfirmationService,
                         protected activatedRoute: ActivatedRoute,
                         protected amministrativoService: AmministrativoService,
-                        protected http: HttpClient) {
+                        protected http: HttpClient,
+                        protected router: Router) {
     activatedRoute.params.subscribe((params) => {
       let path = activatedRoute.snapshot.routeConfig.path;
       this.verificaAbilitazioneSottopath(path).subscribe(() => {

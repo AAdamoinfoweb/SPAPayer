@@ -31,12 +31,12 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
 
   isFormValido: boolean;
 
-  constructor(private router: Router,
+  constructor(protected router: Router,
               protected activatedRoute: ActivatedRoute,
               protected http: HttpClient,
               protected amministrativoService: AmministrativoService,
               confirmationService: ConfirmationService, private bannerService: BannerService) {
-    super(confirmationService, activatedRoute, amministrativoService, http);
+    super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
@@ -66,7 +66,7 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
 
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Banner', this.urlFunzione + '?funzione=' + this.idFunzioneB64);
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Banner', this.urlFunzione + '?funzione=' + this.idFunzioneB64));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Banner', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
