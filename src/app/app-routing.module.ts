@@ -62,9 +62,9 @@ const routes: Routes = [
   {path: 'modificaLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
   {path: 'dettaglioLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
   {path: 'gestisciBanner', component: GestisciBannerComponent},
-  {path: 'aggiungiBanner', component: FormBannerComponent},
-  {path: 'modificaBanner/:bannerid', component: FormBannerComponent},
-  {path: 'dettaglioBanner/:bannerid', component: FormBannerComponent},
+  {path: 'gestioneBanner/aggiungiBanner', component: FormBannerComponent},
+  {path: 'gestioneBanner/modificaBanner/:bannerid', component: FormBannerComponent},
+  {path: 'gestioneBanner/dettaglioBanner/:bannerid', component: FormBannerComponent},
   {path: 'monitoraAccessi', component: MonitoraAccessiComponent},
   {path: 'dettaglioAccesso/:accessoid', component: DettaglioAccessoComponent}
 ];

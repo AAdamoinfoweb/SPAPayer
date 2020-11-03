@@ -28,7 +28,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
 
   readonly tooltipTitolo = 'In questa pagina puoi visualizzare la lista completa dei banner presenti in Payer e filtrarli';
 
-  parentLink = 'gestisciBanner';
+  parentLink = 'gestioneBanner';
   breadcrumbList = [];
 
   listaBanner: Array<Banner> = new Array<Banner>();
@@ -141,10 +141,10 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        this.aggiungiElemento('/aggiungiBanner');
+        this.aggiungiElemento(this.parentLink + '/aggiungiBanner');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato('/modificaBanner', this.listaBannerIdSelezionati[0]);
+        this.modificaElementoSelezionato(this.parentLink + '/modificaBanner', this.listaBannerIdSelezionati[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaBannerSelezionati();
@@ -228,7 +228,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   mostraDettaglioBanner(rigaCliccata: any) {
-    this.mostraDettaglioElemento('/dettaglioBanner', rigaCliccata.id.value);
+    this.mostraDettaglioElemento(this.parentLink + '/dettaglioBanner', rigaCliccata.id.value);
   }
 
 }

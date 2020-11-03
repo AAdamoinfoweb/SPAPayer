@@ -68,7 +68,7 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
   }
 
   ritornaAGestisciBanner(): string {
-    return this.routeFunzioneGestisciBanner + '?funzione=' + btoa(this.amministrativoService.idFunzione);
+    return this.routeFunzioneGestisciBanner + '?funzione=' + this.idFunzioneB64;
   }
 
   controllaTipoFunzione(): void {
