@@ -5,6 +5,7 @@ export class Bollettino {
   servizio: string;
   enteId: number;
   anagraficaPagatore: string;
+  dataScadenza: string;
   ente: string;
   cfpiva: string;
   importo: number;

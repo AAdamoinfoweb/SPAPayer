@@ -28,6 +28,7 @@ import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mapping
 import {Utils} from "../../../../../utils/Utils";
 import {TipoModaleEnum} from "../../../../../enums/tipoModale.enum";
 import {ConfirmationService} from "primeng/api";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -713,6 +714,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv')] != null ?
       this.model[this.getCampoDettaglioTransazione('iuv')].toString().substring(3) : null;
     bollettino.cfpiva = this.model[this.getCampoDettaglioTransazione('codice_fiscale_pagatore')];
+    bollettino.dataScadenza = moment(this.model[this.getCampoDettaglioTransazione('data_scadenza')], Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
     bollettino.importo = this.model[this.importoNomeCampo];
 
     bollettino.listaCampoDettaglioTransazione = [];
