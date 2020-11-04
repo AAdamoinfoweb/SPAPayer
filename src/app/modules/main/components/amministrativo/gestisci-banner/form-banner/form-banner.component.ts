@@ -40,10 +40,6 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
-
-  }
-
-  ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
       this.inizializzaBreadcrumb();
@@ -62,6 +58,9 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
       }
       window.scrollTo(0, 0);
     });
+  }
+
+  ngOnInit(): void {
   }
 
   inizializzaBreadcrumb(): void {

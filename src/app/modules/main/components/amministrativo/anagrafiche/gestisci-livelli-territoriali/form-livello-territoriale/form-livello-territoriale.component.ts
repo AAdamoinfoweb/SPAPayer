@@ -43,10 +43,6 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
-
-  }
-
-  ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
       this.inizializzaBreadcrumbs();
@@ -59,6 +55,9 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
         });
       }
     });
+  }
+
+  ngOnInit(): void {
   }
 
   inizializzaBreadcrumbs() {
