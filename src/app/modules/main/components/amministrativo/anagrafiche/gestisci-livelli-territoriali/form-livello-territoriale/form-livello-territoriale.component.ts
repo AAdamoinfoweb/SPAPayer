@@ -26,7 +26,7 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
   livelloTerritoriale: LivelloTerritoriale = new LivelloTerritoriale();
   isFormValido: boolean;
 
-  urlPaginaGestione = '/livelliTerritoriali';
+  urlPaginaGestione = '/gestisciLivelliTerritoriali';
 
   breadcrumbList = [];
 

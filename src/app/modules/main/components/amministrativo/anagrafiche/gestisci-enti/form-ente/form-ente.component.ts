@@ -33,7 +33,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
 
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
-  urlPaginaGestione = 'enti';
+  urlPaginaGestione = 'gestisciEnti';
 
   // header page
   breadcrumbList = [];

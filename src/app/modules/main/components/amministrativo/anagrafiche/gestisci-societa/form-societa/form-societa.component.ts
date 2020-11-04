@@ -21,7 +21,7 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
-  urlPaginaGestione = '/societa';
+  urlPaginaGestione = '/gestisciSocieta';
   titoloPagina: string;
   tooltip: string;
   societa: Societa = new Societa();

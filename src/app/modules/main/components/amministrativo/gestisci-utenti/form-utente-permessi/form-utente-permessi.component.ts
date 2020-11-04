@@ -54,7 +54,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   isModifica = false;
   isDettaglio = false;
   funzione: FunzioneGestioneEnum;
-  urlPaginaGestione = '/gestioneUtenti';
+  urlPaginaGestione = '/gestisciUtenti';
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
