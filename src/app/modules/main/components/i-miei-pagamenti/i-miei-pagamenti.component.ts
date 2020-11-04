@@ -24,6 +24,7 @@ import {ListaPagamentiFiltri} from "../../model/bollettino/imieipagamenti/ListaP
 import {TipoModaleEnum} from '../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 import {SpinnerOverlayService} from "../../../../services/spinner-overlay.service";
+import {LivelloIntegrazioneEnum} from "../../../../enums/livelloIntegrazione.enum";
 
 @Component({
   selector: 'app-i-miei-pagamenti',
@@ -177,7 +178,7 @@ export class IMieiPagamentiComponent implements OnInit {
     if (listaPagamenti != null) {
       const pagamenti = listaPagamenti.map(pagamento => {
         const row = {
-          icona: pagamento.statoPagamento == null && Utils.creaIcona('#it-pencil', '#EE7622',
+          icona: pagamento.livelloIntegrazione === LivelloIntegrazioneEnum.LV2 && Utils.creaIcona('#it-pencil', '#EE7622',
             this.TOOLTIP_ICONA_MATITA, null),
           annoDocumento: {value: pagamento.annoDocumento},
           numeroDocumento: {value: pagamento.numeroDocumento},

@@ -14,4 +14,6 @@ export class DatiPagamento {
   codiceAvviso: string;
   causale: string;
   flagCarrello: boolean;
+  anagraficaPagatore: string;
+  livelloIntegrazione: number;
 }
