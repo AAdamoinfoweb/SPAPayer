@@ -42,10 +42,6 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
-
-  }
-
-  ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
       this.inizializzaBreadcrumb();
@@ -55,10 +51,12 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
         this.societa.id = parseInt(this.activatedRoute.snapshot.paramMap.get('societaid'));
         this.societaService.ricercaSocieta(this.societa.id, this.idFunzioneB64).subscribe(listaSocieta => {
           this.societa = listaSocieta[0];
-        })
-      } else {
+        });
       }
     });
+  }
+
+  ngOnInit(): void {
   }
 
   inizializzaBreadcrumb(): void {
