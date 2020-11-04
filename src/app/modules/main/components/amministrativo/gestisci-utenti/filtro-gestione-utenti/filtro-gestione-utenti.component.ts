@@ -15,6 +15,7 @@ import {BottoneEnum} from '../../../../../../enums/bottone.enum';
 import {OverlayService} from '../../../../../../services/overlay.service';
 import {AmministrativoService} from "../../../../../../services/amministrativo.service";
 import {FiltroGestioneElementiComponent} from "../../filtro-gestione-elementi.component";
+import {Utils} from '../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -194,8 +195,10 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
 
     for (const [key, value] of Object.entries(this.filtroGestioneUtentiApplicato)) {
       if (value !== undefined && value) {
-        if (typeof value === 'object') {
-          filtro[key] = moment(value).format('YYYY-MM-DD[T]HH:mm:ss');
+        if (['dataScadenzaDa', 'ultimoAccessoDa'].includes(key)) {
+          filtro[key] = moment(value).format(Utils.FORMAT_LOCAL_DATE_TIME);
+        } else if (['dataScadenzaA', 'ultimoAccessoA'].includes(key)) {
+          filtro[key] = moment(value).format(Utils.FORMAT_LOCAL_DATE_TIME_TO);
         } else {
           filtro[key] = value;
         }

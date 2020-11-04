@@ -11,6 +11,7 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {UtenteService} from '../../../../../../services/utente.service';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
+import {Utils} from '../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-monitoraggio-accessi',
@@ -23,8 +24,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   readonly minCharsToRetrieveCF = 1;
   readonly minDateDDMMYYYY = '01/01/1900';
   readonly tipoData = ECalendarValue.String;
-  readonly formatoDataInput = 'DD/MM/YYYY';
-  readonly formatoDataBackend = 'YYYY-MM-DD';
+  readonly formatoData = Utils.FORMAT_DATE_CALENDAR;
 
   @Input()
   listaElementi: Array<Accesso> = [];
@@ -104,8 +104,8 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     parametriRicercaAccesso.funzioneId = this.funzioneSelezionata;
     parametriRicercaAccesso.codiceFiscale = this.idUtenteSelezionato || null;
     parametriRicercaAccesso.indirizzoIP = this.indirizzoIPSelezionato || null;
-    parametriRicercaAccesso.inizioSessione = this.dataDaSelezionata ? moment(this.dataDaSelezionata, this.formatoDataInput).format(this.formatoDataBackend) : null;
-    parametriRicercaAccesso.fineSessione = this.dataASelezionata ? moment(this.dataASelezionata, this.formatoDataInput).format(this.formatoDataBackend) : null;
+    parametriRicercaAccesso.inizioSessione = this.dataDaSelezionata ? moment(this.dataDaSelezionata, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    parametriRicercaAccesso.fineSessione = this.dataASelezionata ? moment(this.dataASelezionata, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
     return parametriRicercaAccesso;
   }
 

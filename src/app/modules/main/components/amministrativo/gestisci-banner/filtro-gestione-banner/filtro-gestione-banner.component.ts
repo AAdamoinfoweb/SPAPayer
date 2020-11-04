@@ -76,7 +76,7 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
       filtro.attivo = false;
     }
     filtro.inizio = filtro.inizio ? moment(filtro.inizio, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-    filtro.fine = filtro.fine ? moment(filtro.fine, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    filtro.fine = filtro.fine ? moment(filtro.fine, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
 
     this.bannerService.ricercaBanner(filtro, this.amministrativoService.idFunzione).subscribe(listaBanner => {
       // Non invio la lista in caso di bad request
