@@ -28,6 +28,7 @@ import {MappingCampoInputPrecompilazioneEnum} from '../../../../../enums/mapping
 import {Utils} from "../../../../../utils/Utils";
 import {TipoModaleEnum} from "../../../../../enums/tipoModale.enum";
 import {ConfirmationService} from "primeng/api";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -48,7 +49,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   readonly LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
   livelloIntegrazioneId: number = null;
 
-  isFaseVerificaPagamento = false;
+  isBollettinoPrecompilato: boolean;
+  isFaseVerificaPagamento: boolean;
+
+  readonly nomeCampoAnnoBollettinoLV1 = 'anno';
+  readonly nomeCampoCausaleBollettinoLV1 = 'causale';
+  readonly nomeCampoDocumentoBollettinoLV1 = 'documento';
 
   readonly tipoData = ECalendarValue.String;
 
@@ -113,44 +119,49 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     if (this.datiPagamento.dettaglioTransazioneId) {
       this.nuovoPagamentoService.letturaBollettino(this.datiPagamento.dettaglioTransazioneId).subscribe((bollettino) => {
-        if (bollettino.listaCampoDettaglioTransazione) {
-          bollettino.listaCampoDettaglioTransazione.forEach(dettaglio => {
-            const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
-            if (campo) {
-              this.model[this.getNomeCampoForm(campo)] = dettaglio.valore;
-            } else {
-              console.log('Campo dettaglio transazione mancante');
-              this.overlayService.gestisciErrore();
-            }
-          });
+        // I pagamenti lv1 (legati alla fase1) non hanno la logica dei campi dettaglio transazione, quindi leggo i valori dei campi dagli attributi di bollettino
+        if (this.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV1) {
+          this.model[this.nomeCampoAnnoBollettinoLV1] = bollettino.anno;
+          this.model[this.nomeCampoCausaleBollettinoLV1] = bollettino.causale;
+          this.model[this.nomeCampoDocumentoBollettinoLV1] = bollettino.numero;
+          this.model[this.importoNomeCampo] = bollettino.importo;
+        } else {
+          if (bollettino.listaCampoDettaglioTransazione) {
+            bollettino.listaCampoDettaglioTransazione.forEach(dettaglio => {
+              const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
+              if (campo) {
+                this.model[this.getNomeCampoForm(campo)] = dettaglio.valore;
+              } else {
+                console.log('Campo dettaglio transazione mancante');
+                this.overlayService.gestisciErrore();
+              }
+            });
+          }
         }
       });
-    } else {
-      // Un pagamento può non avere il dettaglioTransazioneId (quindi non essere sul db) solo se è di un servizio LV3 esterno
-      if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3) {
-        const valoriPerPrecompilazione = {};
-        valoriPerPrecompilazione[MappingCampoInputPrecompilazioneEnum.codiceAvviso] = this.datiPagamento.codiceAvviso;
+    } else if (this.isBollettinoEsterno()) {
+      const valoriPerPrecompilazione = {};
+      valoriPerPrecompilazione[MappingCampoInputPrecompilazioneEnum.codiceAvviso] = this.datiPagamento.codiceAvviso;
 
-        this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
-          this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
-          .subscribe((valoriCampiPrecompilati) => {
-            this.impostaValoriCampiOutput(valoriCampiPrecompilati);
+      this.nuovoPagamentoService.recuperaValoriCampiPrecompilati(this.servizio.id, this.servizio.enteId, this.servizio.tipologiaServizioId,
+        this.servizio.livelloIntegrazioneId, valoriPerPrecompilazione)
+        .subscribe((valoriCampiPrecompilati) => {
+          this.impostaValoriCampiOutput(valoriCampiPrecompilati);
 
-            // Per i pagamenti lv3 da servizio esterno, non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
-            const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
-            if (cfpiva) {
-              const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
-              // Valorizzo il campo codice fiscale (se presente)
-              if (campoCodicePagatore) {
-                this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
-              }
+          // Per i pagamenti lv3 da servizio esterno, non abbiamo il cfpiva, dobbiamo recuperarlo dalla response
+          const cfpiva = this.recuperaCodicePagatoreDaPagamentoLv3Esterno(valoriCampiPrecompilati);
+          if (cfpiva) {
+            const campoCodicePagatore = this.listaCampiDinamici.find(campo => campo.jsonPath === MappingCampoInputPrecompilazioneEnum.cfpiva);
+            // Valorizzo il campo codice fiscale (se presente)
+            if (campoCodicePagatore) {
+              this.model[this.getNomeCampoForm(campoCodicePagatore)] = cfpiva;
             }
+          }
 
-          });
-      } else {
-        console.log('Dettaglio transazione id mancante su servizio diverso da LV3');
-        this.overlayService.gestisciErrore();
-      }
+        });
+    } else {
+      console.log('Dettaglio transazione id mancante su servizio diverso da LV3');
+      this.overlayService.gestisciErrore();
     }
   }
 
@@ -236,7 +247,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
-    if (this.servizio?.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2
+    if (this.isBollettinoPrecompilato
       && !campo.campo_input
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
@@ -306,7 +317,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       });
     }
 
-    chiave = chiave.replace('/', '');
+    // Per i pagamenti lv1 aperti in modale, leggo la chiave (numero documento) dall'esterno, e non la formatto
+    if (!this.datiPagamento) {
+      chiave = chiave.replace('/', '');
+    }
 
     return chiave;
   }
@@ -323,7 +337,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.mostraCampoImporto = null;
     this.isFaseVerificaPagamento = false;
 
-    if (this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || this.datiPagamento) {
+    if (!this.isBollettinoPrecompilato || this.datiPagamento) {
       this.aggiungiCampoImporto();
     }
   }
@@ -340,27 +354,90 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     delete this.model[this.importoNomeCampo];
   }
 
+  impostaLivelloIntegrazione(livelloIntegrazione: LivelloIntegrazioneEnum): void {
+    this.livelloIntegrazioneId = livelloIntegrazione;
+
+    switch (livelloIntegrazione) {
+      case LivelloIntegrazioneEnum.LV1:
+        this.isBollettinoPrecompilato = false;
+        this.isFaseVerificaPagamento = null;
+        break;
+      case LivelloIntegrazioneEnum.LV2:
+        this.isBollettinoPrecompilato = false;
+        this.isFaseVerificaPagamento = null;
+        break;
+      case LivelloIntegrazioneEnum.LV2_BACK_OFFICE:
+        this.isBollettinoPrecompilato = true;
+        this.isFaseVerificaPagamento = false;
+        break;
+      case LivelloIntegrazioneEnum.LV3:
+        this.isBollettinoPrecompilato = true;
+        this.isFaseVerificaPagamento = false;
+        break;
+    }
+  }
+
   inizializzazioneForm(servizio: FiltroServizio): Observable<any> {
     this.servizio = servizio;
     const isCompilato = this.servizio != null;
 
     if (isCompilato) {
-      this.livelloIntegrazioneId = this.servizio.livelloIntegrazioneId;
+      this.impostaLivelloIntegrazione(servizio.livelloIntegrazioneId);
+      this.creaForm();
 
-      return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
-        this.creaForm();
-        this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
-        this.impostaCampi(campiNuovoPagamento.campiServizio);
-
-        this.restoreParziale();
-
+      // Nella modale occorre gestire anche i pagamenti lv1, che hanno dei campi statici
+      if (this.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV1) {
+        const campi = this.getCampiPagamentoLV1();
+        this.impostaCampi(campi);
         if (this.datiPagamento) {
           this.impostaDettaglioPagamento();
         }
-      }));
+        return of(null);
+      } else {
+        return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
+          this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
+          this.impostaCampi(campiNuovoPagamento.campiServizio);
+
+          this.restoreParziale();
+
+          if (this.datiPagamento) {
+            this.impostaDettaglioPagamento();
+          }
+        }));
+      }
     } else {
       return of(null);
     }
+  }
+
+  getCampiPagamentoLV1(): CampoForm[] {
+    const campiPagamentoLV1: CampoForm[] = [];
+
+    const campoAnno = new CampoForm();
+    campoAnno.titolo = this.nomeCampoAnnoBollettinoLV1;
+    campoAnno.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
+    campoAnno.posizione = 1;
+    campoAnno.chiave = false;
+    campoAnno.campo_input = true;
+    campiPagamentoLV1.push(campoAnno);
+
+    const causale = new CampoForm();
+    causale.titolo = this.nomeCampoCausaleBollettinoLV1;
+    causale.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
+    causale.posizione = 2;
+    campoAnno.chiave = false;
+    causale.campo_input = true;
+    campiPagamentoLV1.push(causale);
+
+    const documento = new CampoForm();
+    documento.titolo = this.nomeCampoDocumentoBollettinoLV1;
+    documento.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
+    documento.posizione = 3;
+    campoAnno.chiave = true;
+    documento.campo_input = true;
+    campiPagamentoLV1.push(documento);
+
+    return campiPagamentoLV1;
   }
 
   formattaInput(event: any, campo: CampoForm): void {
@@ -538,8 +615,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     return campo.lunghezza;
   }
 
-  getIdCampo(campo: CampoForm): string {
-    return campo.id.toString();
+  getIdCampo(campo: CampoForm) {
+    return campo.id;
   }
 
   aggiornaSelectDipendenti(event: Event, campo: CampoForm): void {
@@ -637,6 +714,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv')] != null ?
       this.model[this.getCampoDettaglioTransazione('iuv')].toString().substring(3) : null;
     bollettino.cfpiva = this.model[this.getCampoDettaglioTransazione('codice_fiscale_pagatore')];
+    bollettino.dataScadenza = moment(this.model[this.getCampoDettaglioTransazione('data_scadenza')], Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
     bollettino.importo = this.model[this.importoNomeCampo];
 
     bollettino.listaCampoDettaglioTransazione = [];
@@ -668,7 +746,34 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         }));
     } else {
-      observable = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
+      observable = this.getObservableAggiungiAlCarrello();
+    }
+    observable.subscribe((result) => {
+      if (result != 'error') {
+        this.aggiornaPrezzoCarrello();
+        this.pulisci();
+        if (this.datiPagamento) {
+          this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+        }
+
+      } else {
+        this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+      }
+    });
+  }
+
+  isBollettinoEsterno(): boolean {
+    return this.datiPagamento && this.servizio.livelloIntegrazioneId === LivelloIntegrazioneEnum.LV3 && !this.datiPagamento.dettaglioTransazioneId;
+  }
+
+  isBollettinoDaInserire(): boolean {
+    // Il bollettino NON va inserito nel caso in cui si è nella modale di miei pagamenti e si sceglie un pagamento già presente sul db; altrimenti, va inserito
+    return (this.datiPagamento && this.isBollettinoEsterno()) || !this.datiPagamento;
+  }
+
+  getObservableAggiungiAlCarrello(): Observable<any> {
+    if (this.isBollettinoDaInserire()) {
+      return this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
         .pipe(flatMap((result) => {
           if (result.length > 0) {
             const value: DettaglioTransazioneEsito = result[0];
@@ -683,19 +788,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
             }
           }
         }));
+    } else {
+      const dettagliTransazione = new DettagliTransazione();
+      dettagliTransazione.listaDettaglioTransazioneId = [];
+      dettagliTransazione.listaDettaglioTransazioneId.push(this.datiPagamento.dettaglioTransazioneId);
+      return  this.nuovoPagamentoService.inserimentoCarrello(dettagliTransazione);
     }
-    observable.subscribe((result) => {
-      if (result != 'error') {
-        this.aggiornaPrezzoCarrello();
-        this.pulisci();
-        if (this.datiPagamento) {
-          this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
-        }
-
-      } else {
-        this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
-      }
-    });
   }
 
   pagaOra() {
@@ -716,21 +814,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         });
     } else {
-      const observable: Observable<any> = this.nuovoPagamentoService.inserimentoBollettino(this.creaListaBollettini())
-        .pipe(flatMap((result) => {
-          if (result.length > 0) {
-            const value: DettaglioTransazioneEsito = result[0];
-            if (value.esito !== EsitoEnum.OK && value.esito !== EsitoEnum.PENDING) {
-              const dettaglio: DettagliTransazione = new DettagliTransazione();
-              dettaglio.listaDettaglioTransazioneId.push(value.dettaglioTransazioneId);
-              return this.nuovoPagamentoService.inserimentoCarrello(dettaglio);
-            } else {
-              // show err
-              this.showMessage();
-              return of('error');
-            }
-          }
-        }));
+      const observable: Observable<any> = this.getObservableAggiungiAlCarrello();
       observable.subscribe((result) => {
         if (result !== 'error') {
           this.aggiornaPrezzoCarrello();

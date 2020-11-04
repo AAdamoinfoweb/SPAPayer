@@ -1,0 +1,343 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="idCollapseFiltriUtenti">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true" aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroGestioneUtentiForm="ngForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltriUtenti">
+    <div class="collapse-body">
+      <!-- Livello Territoriale, Società, Ente -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectSocieta" class="title">Società</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
+                      #societaInput = "ngModel"
+                      [(ngModel)]="filtroGestioneUtentiApplicato.societaId">
+                <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
+                {{setPlaceholder(societaInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectLivelloTerritoriale" class="title">Livello Territoriale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select [ngClass]="{'text-disabled': !listaLivelliTerritoriali.length}" id="selectLivelloTerritoriale" name="livelloTerritorialeId"
+                      #livelloTerritorialeInput = "ngModel"
+                      [(ngModel)]="filtroGestioneUtentiApplicato.livelloTerritorialeId" (ngModelChange)="selezionaLivelloTerritoriale()">
+                <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(livelloTerritorialeInput), 'text-invalid': isCampoInvalido(livelloTerritorialeInput), 'text-disabled': !listaLivelliTerritoriali.length}">
+                {{setPlaceholder(livelloTerritorialeInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col">
+              <label for="selectEnte" class="title">Ente</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select [ngClass]="{'input-disabled': !listaEnti.length}"
+                      id="selectEnte" name="enteId"
+                      #enteInput = "ngModel"
+                      [(ngModel)]="filtroGestioneUtentiApplicato.enteId" (ngModelChange)="selezionaEnte()">
+                <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput), 'text-disabled': !listaEnti.length}">
+                {{setPlaceholder(enteInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Servizio, Funzione abilitata, User ID (cod. fiscale) -->
+      <div class="row mt-1 mb-0">
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectServizio" class="title">Servizio</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select [ngClass]="{'input-disabled': !listaServizi.length}"
+                      id="selectServizio" name="servizioId"
+                      #servizioInput = "ngModel"
+                      [(ngModel)]="filtroGestioneUtentiApplicato.servizioId">
+                <option *ngFor="let item of listaServizi" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(servizioInput), 'text-invalid': isCampoInvalido(servizioInput), 'text-disabled': !listaServizi.length}">
+                {{setPlaceholder(servizioInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectFunzioneAbilitata" class="title">Funzione abilitata</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select [ngClass]="{'text-disabled': !listaFunzioniAbilitate.length}" id="selectFunzioneAbilitata" name="funzioneId"
+                      #funzioneAbilitataInput = "ngModel"
+                      [(ngModel)]="filtroGestioneUtentiApplicato.funzioneId">
+                <option *ngFor="let item of listaFunzioniAbilitate" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(funzioneAbilitataInput), 'text-invalid': isCampoInvalido(funzioneAbilitataInput), 'text-disabled': !listaFunzioniAbilitate.length}">
+                {{setPlaceholder(funzioneAbilitataInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col">
+              <label for="inputUserId" class="title">User ID (cod. fiscale)</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p-autoComplete id="inputUserId" class="pt-0" name="codiceFiscale" aria-describedby="inputUserIdHelpDescription"
+                              pattern="^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$"
+                              #codicefiscaleinput = "ngModel" [(ngModel)]="filtroGestioneUtentiApplicato.codiceFiscale"
+                              [suggestions]="listaCodiciFiscali" (completeMethod)="loadSuggestions($event)" (onClear)="listaCodiciFiscali = []"
+                              [minLength]="minCharsToRetrieveCF" maxlength="16" delay="0" autoHighlight="true">
+              </p-autoComplete>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(codicefiscaleinput), 'text-invalid': isCampoInvalido(codicefiscaleinput)}">
+                {{setPlaceholder(codicefiscaleinput, 'string')}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scadenza abilitazione Da - a, Ultimo accesso da - a -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="scadenzaDataDa" class="title">Scadenza abilit. - Da</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaDa)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="scadenzaDataDa"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+	              }"
+                #scadenzaDaInput = "ngModel"
+                [(ngModel)]="filtroGestioneUtentiApplicato.dataScadenzaDa"
+                name="dataScadenzaDa"
+                #datePickerScadenzaDa
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(scadenzaDaInput), 'text-invalid': isCampoInvalido(scadenzaDaInput)}">
+                {{setPlaceholder(scadenzaDaInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="scadenzaDataA" class="title">Scadenza abilit. - A</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaA)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="scadenzaDataA"
+                theme="dp-material"
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #scadenzaAInput = "ngModel"
+                [(ngModel)]="filtroGestioneUtentiApplicato.dataScadenzaA"
+                name="dataScadenzaA"
+                #datePickerScadenzaA
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(scadenzaAInput), 'text-invalid': isCampoInvalido(scadenzaAInput)}">
+                {{setPlaceholder(scadenzaAInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="ultimoAccessoDataDa" class="title">Ultimo accesso - Da</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerUltimoAccessoDa)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="ultimoAccessoDataDa"
+                theme="dp-material"
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #ultimoAccessoDaInput = "ngModel"
+                [(ngModel)]="filtroGestioneUtentiApplicato.ultimoAccessoDa"
+                name="ultimoAccessoDa"
+                #datePickerUltimoAccessoDa
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(ultimoAccessoDaInput), 'text-invalid': isCampoInvalido(ultimoAccessoDaInput)}">
+                {{setPlaceholder(ultimoAccessoDaInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="ultimoAccessoDataA" class="title">Ultimo accesso - A</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerUltimoAccessoA)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="ultimoAccessoDataA"
+                theme="dp-material"
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #ultimoAccessoAInput = "ngModel"
+                [(ngModel)]="filtroGestioneUtentiApplicato.ultimoAccessoA"
+                name="ultimoAccessoA"
+                #datePickerUltimoAccessoA
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(ultimoAccessoAInput), 'text-invalid': isCampoInvalido(ultimoAccessoAInput)}">
+                {{setPlaceholder(ultimoAccessoAInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottoni Pulisci e Cerca -->
+      <div class="row">
+        <div class="col-6">
+          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroGestioneUtentiForm, 'Pulisci')"
+                  (click)="pulisciFiltri(filtroGestioneUtentiForm)">Pulisci</button>
+        </div>
+        <div class="col-6 btn-find">
+          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroGestioneUtentiForm, 'Cerca')"
+                  (click)="cercaElementi()">Cerca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

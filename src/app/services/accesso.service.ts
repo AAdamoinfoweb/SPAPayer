@@ -23,7 +23,9 @@ export class AccessoService {
 
     if (parametriRicercaAccesso) {
       Object.keys(parametriRicercaAccesso).forEach(parametro => {
-        params.set(parametro, String(parametriRicercaAccesso[parametro]));
+        if (parametriRicercaAccesso[parametro]) {
+          params = params.set(parametro, String(parametriRicercaAccesso[parametro]));
+        }
       });
     }
 
@@ -40,6 +42,26 @@ export class AccessoService {
         } else {
           return of(null);
         }
-      }));;
+      }));
+  }
+
+  recuperaDettaglioAccesso(idAccesso: number, idFunzione: string): Observable<Accesso> {
+    const url = environment.bffBaseUrl + this.baseUrl + this.letturaAccessiUrl + '/' + idAccesso;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}`, {
+      withCredentials: true,
+      headers: h
+    }).pipe(map((body: Accesso) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
   }
 }

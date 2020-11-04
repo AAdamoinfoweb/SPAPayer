@@ -113,18 +113,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
-    if (campo?.name === 'dataScadenzaA') {
-     return this.controlloDate(campo);
-      } else {
-      return campo?.errors;
-    }
-  }
-
-  controlloDate(campo?: NgModel): boolean{
-    const momentDataDa = moment(this.filtroRicercaPagamenti.dataPagamentoDa, 'DD/MM/YYYY');
-    const momentDataA = moment(this.filtroRicercaPagamenti.dataPagamentoA, 'DD/MM/YYYY');
-    // tslint:disable-next-line:max-line-length
-    return this.filtroRicercaPagamenti.dataPagamentoDa != null ? (moment(momentDataA).isBefore(momentDataDa) || campo?.errors != null) : campo?.errors != null;
+    return campo?.errors;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -167,12 +156,15 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     filtriToBE.servizioId = filtri.servizioId;
     filtriToBE.numeroDocumento = filtri.numeroDocumento;
     filtriToBE.dataPagamentoDa = filtri.dataPagamentoDa ? moment(filtri.dataPagamentoDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-    filtriToBE.dataPagamentoA = filtri.dataPagamentoA ? moment(filtri.dataPagamentoA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    filtriToBE.dataPagamentoA = filtri.dataPagamentoA ? moment(filtri.dataPagamentoA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
     this.iMieiPagamentiService.ricercaPagamenti(filtriToBE).pipe(map(listaPagamenti => {
-      const listaPagamentiFiltri: ListaPagamentiFiltri = new ListaPagamentiFiltri();
-      listaPagamentiFiltri.listaPagamenti = listaPagamenti;
-      listaPagamentiFiltri.filtri = filtri;
-      this.onChangeListaPagamenti.emit(listaPagamentiFiltri);
+      // Non invio la lista in caso di bad request
+      if (listaPagamenti) {
+        const listaPagamentiFiltri: ListaPagamentiFiltri = new ListaPagamentiFiltri();
+        listaPagamentiFiltri.listaPagamenti = listaPagamenti;
+        listaPagamentiFiltri.filtri = filtri;
+        this.onChangeListaPagamenti.emit(listaPagamentiFiltri);
+      }
     })).subscribe();
   }
 
@@ -181,7 +173,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
     if (nomeBottone === 'Pulisci') {
       return !isAtLeastOneFieldValued;
     } else {
-      return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued || this.controlloDate();
+      return !filtroGestioneUtentiForm.valid || !isAtLeastOneFieldValued;
     }
   }
 }

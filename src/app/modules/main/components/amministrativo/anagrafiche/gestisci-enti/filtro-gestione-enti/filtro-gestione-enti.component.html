@@ -1,0 +1,163 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="heading1">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true"
+          aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroForm="ngForm" (ngSubmit)="filtroForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="heading1">
+    <div class="collapse-body">
+      <!-- inizio Società, Livello Territoriale, Comune, Provincia -->
+      <div class="row mt-2 mb-0">
+        <!--       inizio select società -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectSocieta" class="title">Società</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectSocieta"
+                name="societaId"
+                #societaInput="ngModel"
+                [(ngModel)]="filtroRicercaEnte.societaId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroSocieta" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput),
+                 'text-disabled': !opzioniFiltroSocieta.length}">
+                {{setPlaceholder(societaInput)}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--        fine select società -->
+        <!--       inizio select livelli territoriali -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectLivelliTerritoriale" class="title">Livello Territoriale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectLivelliTerritoriale"
+                name="livelloTerritorialeId"
+                #livelloTerritorialeInput="ngModel"
+                [(ngModel)]="filtroRicercaEnte.livelloTerritorialeId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroLivelliTerritoriale"
+                        [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(livelloTerritorialeInput),
+                 'text-invalid': isCampoInvalido(livelloTerritorialeInput),
+                 'text-disabled': !opzioniFiltroLivelliTerritoriale.length}">
+                {{setPlaceholder(livelloTerritorialeInput)}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--        fine select territoriali -->
+        <!--       inizio select comuni -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectComune" class="title">Comune</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectComune"
+                name="comune"
+                #comuneInput="ngModel"
+                [(ngModel)]="filtroRicercaEnte.comune"
+                (ngModelChange)="selezionaComune()"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroComune" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(comuneInput),
+                 'text-invalid': isCampoInvalido(comuneInput),
+                 'text-disabled': !opzioniFiltroComune.length}">
+                {{setPlaceholder(comuneInput)}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--        fine select comuni -->
+        <!--       inizio select province -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectProvincia" class="title">Provincia</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectProvincia"
+                name="provincia"
+                #provinciaInput="ngModel"
+                [(ngModel)]="filtroRicercaEnte.provincia"
+                (ngModelChange)="selezionaProvincia()"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroProvincia" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(provinciaInput),
+                 'text-invalid': isCampoInvalido(provinciaInput),
+                 'text-disabled': !opzioniFiltroProvincia.length}">
+                {{setPlaceholder(provinciaInput)}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--        fine select province -->
+      </div>
+      <!-- fine Società, Livello Territoriale, Comune, Provincia -->
+      <!-- inizio Pulisci e Cerca -->
+      <div class="row align-content-around">
+        <div class="col-6">
+          <button id="bottonePulisci" class="btn btn-secondary"
+                  (click)="pulisciFiltri(filtroForm)">Pulisci
+          </button>
+        </div>
+        <div class="col-6 text-right">
+          <button id="bottoneCerca" class="btn"
+                  (click)="cercaElementi()">Cerca
+          </button>
+        </div>
+      </div>
+      <!-- fine Pulisci e Cerca -->
+    </div>
+  </div>
+</form>

@@ -1,0 +1,21 @@
+.text-muted {
+  color: #77777B;
+}
+
+.text-invalid {
+  color: #FF0000;
+}
+
+.required:after {
+  content: ' *';
+  color: red;
+}
+
+:host ::ng-deep .p-autocomplete.p-component {
+  width: 100%;
+}
+
+.disabled {
+  pointer-events: none;
+  background-color: #e3e3e3;
+}

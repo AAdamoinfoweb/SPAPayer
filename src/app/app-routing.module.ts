@@ -12,9 +12,19 @@ import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento
 import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
 import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
 import {WaitingL1Component} from "./modules/main/components/waitingL1/waiting-l1.component";
+import {GestisciUtentiComponent} from './modules/main/components/amministrativo/gestisci-utenti/gestisci-utenti.component';
+import {FormUtentePermessiComponent} from './modules/main/components/amministrativo/gestisci-utenti/form-utente-permessi/form-utente-permessi.component';
+import {GestisciSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/gestisci-societa.component';
+import {FormSocietaComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-societa/form-societa/form-societa.component';
+import {GestisciEntiComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/gestisci-enti.component";
+import {GestisciLivelliTerritorialiComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/gestisci-livelli-territoriali.component';
+import {FormLivelloTerritorialeComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-livelli-territoriali/form-livello-territoriale/form-livello-territoriale.component';
+import {GestisciBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/gestisci-banner.component';
+import {FormBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/form-banner/form-banner.component';
+import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
+import {DettaglioAccessoComponent} from './modules/main/components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
 import {PresaincaricopagamentoL1Component} from "./modules/main/components/presaincaricopagamentoL1/presaincaricopagamento-l1.component";
-
-;
+import {FormEnteComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -39,6 +49,28 @@ const routes: Routes = [
       AuthguardService
     ]},
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
+  {path: 'gestioneUtenti', component: GestisciUtentiComponent},
+  {path: 'gestioneUtenti/aggiungiUtentePermessi', component: FormUtentePermessiComponent},
+  {path: 'gestioneUtenti/modificaUtentePermessi/:userid', component: FormUtentePermessiComponent},
+  {path: 'gestioneUtenti/dettaglioUtentePermessi/:userid', component: FormUtentePermessiComponent},
+  {path: 'societa', component: GestisciSocietaComponent},
+  {path: 'enti', component: GestisciEntiComponent},
+  {path: 'gestioneAnagrafiche/aggiungiSocieta', component: FormSocietaComponent},
+  {path: 'gestioneAnagrafiche/modificaSocieta/:societaid', component: FormSocietaComponent},
+  {path: 'gestioneAnagrafiche/dettaglioSocieta/:societaid', component: FormSocietaComponent},
+  {path: 'livelliTerritoriali', component: GestisciLivelliTerritorialiComponent},
+  {path: 'gestioneAnagrafiche/aggiungiLivelloTerritoriale', component: FormLivelloTerritorialeComponent},
+  {path: 'gestioneAnagrafiche/modificaLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
+  {path: 'gestioneAnagrafiche/dettaglioLivelloTerritoriale/:livelloterritorialeid', component: FormLivelloTerritorialeComponent},
+  {path: 'gestisciBanner', component: GestisciBannerComponent},
+  {path: 'gestioneBanner/aggiungiBanner', component: FormBannerComponent},
+  {path: 'gestioneBanner/modificaBanner/:bannerid', component: FormBannerComponent},
+  {path: 'gestioneBanner/dettaglioBanner/:bannerid', component: FormBannerComponent},
+  {path: 'monitoraAccessi', component: MonitoraAccessiComponent},
+  {path: 'monitoraggioAccessi/dettaglioAccesso/:accessoid', component: DettaglioAccessoComponent},
+  {path: 'gestioneAnagrafiche/aggiungiEnte', component: FormEnteComponent},
+  {path: 'gestioneAnagrafiche/modificaEnte/:enteId', component: FormEnteComponent},
+  {path: 'gestioneAnagrafiche/dettaglioEnte/:enteId', component: FormEnteComponent},
 ];
 
 @NgModule({

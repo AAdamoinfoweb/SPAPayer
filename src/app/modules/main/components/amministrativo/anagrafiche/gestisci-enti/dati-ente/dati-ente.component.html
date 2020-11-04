@@ -1,0 +1,56 @@
+<span>Tutti i campi contrassegnati con * sono obbligatori</span>
+<div class="ml-3">
+  <form #datiEnteForm="ngForm" (input)="onChangeForm(datiEnteForm)">
+    <!--    inizio Nome Ente, Codice Fiscale o P.IVA -->
+    <div class="row mt-4 mb-0">
+      <!--      inizio Nome Ente -->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="nomeEnte" class="title "[ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+              Nome</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="email" id="nomeEnte" name="nomeEnte" #nomeEnte="ngModel"
+                   [(ngModel)]="datiEnte.nomeEnte" [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   class="pt-0" autocomplete="off" aria-describedby="nomeHelpDescription"
+                   [disabled]="funzione !== FunzioneGestioneEnum.AGGIUNGI">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(nomeEnte)">Inserisci nome ente</p>
+            <p *ngIf="isCampoInvalido(nomeEnte)" class="text-invalid">{{getMessaggioErrore(nomeEnte)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--      fine Nome Ente-->
+      <!--      inizio Codice Fiscale o P.IVA-->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="codiceFiscale" class="title">Codice Fiscale o Partita Iva</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="codiceFiscale" name="codiceFiscale" #codiceFiscale="ngModel"
+                   aria-describedby="codiceFiscaleHelpDescription"
+                   [(ngModel)]="datiEnte.cfPiva"
+                   class="pt-0" autocomplete="off" [disabled]="funzione !== FunzioneGestioneEnum.AGGIUNGI">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(codiceFiscale)">Inserisci nome ente</p>
+            <p *ngIf="isCampoInvalido(codiceFiscale)" class="text-invalid">{{getMessaggioErrore(codiceFiscale)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--      fine Codice Fiscale o P.IVA-->
+    </div>
+    <!--    fine Nome Ente, Codice Fiscale o P.IVA -->
+  </form>
+</div>

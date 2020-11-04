@@ -1,0 +1,189 @@
+<span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
+<div class="ml-3">
+  <form #datiBannerForm="ngForm" (input)="onChangeForm(datiBannerForm)">
+    <!-- Titolo, Switch per campo attivo -->
+    <div class="row mt-4 mb-0">
+      <div class="col-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="titoloBanner" [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Titolo</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="titoloBanner" name="titolo" #titoloInput="ngModel"
+                   [(ngModel)]="datiBanner.titolo"
+                   [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   class="pt-0" autocomplete="off" aria-describedby="titoloBannerHelpDescription">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p [ngClass]="{'text-muted': !isCampoInvalido(titoloInput), 'text-invalid': isCampoInvalido(titoloInput)}">
+              {{setPlaceholder(titoloInput, 'string')}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-8 text-right">
+        <div class="row">
+          <div class="col mr-4">
+            <label for="switchAttivoBanner" class="title">Attivo</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <it-toggle id="switchAttivoBanner" [(ngModel)]="datiBanner.attivo" name="attivo"
+                           [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"></it-toggle>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testo, Inizio, Fine -->
+    <div class="row mt-4 mb-0">
+      <!-- Testo banner con la possibilità di poterlo formattare a proprio piacere (Inserimento/Modifica Banner) -->
+      <div class="col-md-6 pb-2" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+        <div class="row">
+          <div class="col">
+            <label for="testoBanner" class="title required">Testo</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <ckeditor id="testoBanner" [config]="editorConfiguration" [editor]="editor"
+                      [(ngModel)]="datiBanner.testo" name="testo"
+                      required #testoInput="ngModel"
+                      (ngModelChange)="onChangeForm(datiBannerForm)"></ckeditor>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p [ngClass]="{'text-muted': !isCampoInvalido(testoInput), 'text-invalid': isCampoInvalido(testoInput)}">
+              {{setPlaceholder(testoInput, 'string')}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visualizzazione testo banner (Dettaglio Banner) -->
+      <div class="col-md-6 pb-2" *ngIf="funzione === FunzioneGestioneEnum.DETTAGLIO">
+        <div class="row">
+          <div class="col">
+            <label for="testoDettaglioBanner" class="title">Testo</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label id="testoDettaglioBanner" [innerHTML]="datiBanner.testo | parseHtml" class="text-break">
+              {{datiBanner.testo}}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 pb-2">
+        <div class="row ml-md-5">
+          <div class="col">
+            <div class="row">
+              <div class="col">
+                <label for="inizio" class="title">Inizio pubblicazione</label>
+              </div>
+            </div>
+            <div class="row">
+              <div [ngClass]="{'col calendar-wrapper': true}">
+                <svg [ngClass]="{'bg-light icon img-calendar': true, 'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
+                     (click)="openDatepicker(datePickerInizio)">
+                  <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+                </svg>
+                <dp-date-picker
+                  mode="day"
+                  id="inizio"
+                  theme="dp-material"
+                  dayInput
+                  [config]="{
+                    locale: 'it',
+                    format: 'DD/MM/YYYY',
+                    firstDayOfWeek: 'mo',
+                    showGoToCurrent: false,
+                    openOnClick: isCalendarOpen,
+                    openOnFocus: false,
+                    min: minDateDDMMYYYY,
+                    max: setMaxDate(datePickerFine),
+                    returnedValueType: tipoData
+			            }"
+                  #inizioInput = "ngModel"
+                  [(ngModel)]="datiBanner.inizio"
+                  name="inizio"
+                  #datePickerInizio
+                  (click)="isCalendarOpen = false"
+                  [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
+                  (onSelect)="onChangeForm(datiBannerForm)"
+                ></dp-date-picker>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(inizioInput), 'text-invalid': isCampoInvalido(inizioInput)}">
+                  {{setPlaceholder(inizioInput, 'date')}}
+                </p>
+                <p *ngIf="funzione === FunzioneGestioneEnum.DETTAGLIO" class="pb-3"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row ml-md-5">
+          <div class="col">
+            <div class="row">
+              <div class="col">
+                <label for="fine" class="title">Fine pubblicazione</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col calendar-wrapper">
+                <svg [ngClass]="{'bg-light icon img-calendar': true, 'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
+                     (click)="openDatepicker(datePickerFine)">
+                  <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+                </svg>
+                <dp-date-picker
+                  mode="day"
+                  id="fine"
+                  theme="dp-material"
+                  dayInput
+                  [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: setMinDate(datePickerInizio),
+                  returnedValueType: tipoData
+			          }"
+                  #fineInput = "ngModel"
+                  [(ngModel)]="datiBanner.fine"
+                  name="fine"
+                  #datePickerFine
+                  (click)="isCalendarOpen = false"
+                  [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
+                  (onSelect)="onChangeForm(datiBannerForm)"
+                ></dp-date-picker>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(fineInput), 'text-invalid': isCampoInvalido(fineInput)}">
+                  {{setPlaceholder(fineInput, 'date')}}
+                </p>
+                <p *ngIf="funzione === FunzioneGestioneEnum.DETTAGLIO"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

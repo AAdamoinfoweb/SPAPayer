@@ -290,34 +290,34 @@
   <div class="row" *ngIf="!datiPagamento">
     <!-- Bottone sx -->
     <div
-      *ngIf="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && !isFaseVerificaPagamento)"
+      *ngIf="!isBollettinoPrecompilato || (isBollettinoPrecompilato && !isFaseVerificaPagamento)"
       class="col-2">
       <button type="button" id="bottonePulisci" class="btn btn-secondary" (click)="clickPulisci()">Pulisci</button>
     </div>
-    <div *ngIf="livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento"
+    <div *ngIf="isBollettinoPrecompilato && isFaseVerificaPagamento"
          class="col-2">
       <button type="button" id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">Indietro</button>
     </div>
 
     <!-- Bottoni dx -->
     <div
-      *ngIf="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 || (livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && isFaseVerificaPagamento)"
+      *ngIf="!isBollettinoPrecompilato || (isBollettinoPrecompilato && isFaseVerificaPagamento)"
       class="col-10 text-right button-space">
         <span it-tooltip="{{tooltipBottoneSalvaPerDopo}}" placement="top">
           <button type="button" (click)="salvaPerDopo()" id="bottoneSalvaPerDopo" class="btn btn-secondary"
-                  [disabled]="menuService.isUtenteAnonimo || (livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid)">Salva per dopo</button>
+                  [disabled]="menuService.isUtenteAnonimo || (isBollettinoPrecompilato && form.invalid)">Salva per dopo</button>
         </span>
       <button type="button" id="bottoneAggiungiAlCarrello" class="btn btn-secondary"
-              [disabled]="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid"
+              [disabled]="isBollettinoPrecompilato && form.invalid"
               (click)="aggiungiAlCarrello()">Aggiungi al carrello
       </button>
       <button type="button" id="bottonePagaOra" class="btn"
-              [disabled]="livelloIntegrazioneId === LivelloIntegrazioneEnum.LV2 && form.invalid" (click)="pagaOra()">
+              [disabled]="isBollettinoPrecompilato && form.invalid" (click)="pagaOra()">
         Paga ora
       </button>
     </div>
 
-    <div type="button" *ngIf="livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV2 && !isFaseVerificaPagamento"
+    <div type="button" *ngIf="isBollettinoPrecompilato && !isFaseVerificaPagamento"
          class="col-10 text-right">
       <button id="bottoneProcedi" class="btn" [disabled]="form.invalid" (click)="clickProcedi()">Procedi</button>
     </div>

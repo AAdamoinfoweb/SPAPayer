@@ -54,10 +54,10 @@ export class IMieiPagamentiComponent implements OnInit {
 
   // toolbar
   toolbarIcons = [
-    {type: ToolEnum.INSERT},
-    {type: ToolEnum.INSERT_CARRELLO},
-    {type: ToolEnum.DELETE, disabled: true},
-    {type: ToolEnum.EXPORT_PDF}
+    {type: ToolEnum.INSERT, tooltip: "Aggiungi Nuovo Pagamento"},
+    {type: ToolEnum.INSERT_CARRELLO, tooltip: "Aggiungi al carrello"},
+    {type: ToolEnum.DELETE, disabled: true, tooltip: "Elimina pagamento"},
+    {type: ToolEnum.EXPORT_PDF, tooltip: "Stampa/download pdf"}
   ];
 
   readonly indiceIconaElimina = 2;
@@ -260,7 +260,7 @@ export class IMieiPagamentiComponent implements OnInit {
           });
         })).subscribe();
     } else {
-      this.mostraBannerError(this.MESSAGGIO_ERRORE_AZIONE);
+      this.mostraBannerError(messaggioValiditaPagamentiStampaAttestatoPagamenti);
     }
   }
 

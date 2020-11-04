@@ -1,10 +1,12 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {tipoColonna} from '../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../enums/TipoTabella.enum';
+import * as moment from 'moment';
 // @ts-ignore
 import sprite from '../../../assets/img/sprite.svg';
 import {SortEvent} from "primeng/api";
 import {Table} from "primeng/table";
+import {Utils} from "../../utils/Utils";
 
 @Component({
   selector: 'app-table',
@@ -38,16 +40,15 @@ export class TableComponent implements OnInit, OnChanges {
 
   rowsPerPageOption: number[] = [5, 10, 20];
 
+  first = 0;
   pageSize = this.rowsPerPageOption[0];
   sprite: string | SVGPathElement = sprite;
 
   @ViewChild("table", {static: false}) table: Table;
 
-  constructor() {
-  }
+  ngOnInit() { }
 
-  ngOnInit() {
-  }
+  constructor() { }
 
   onRowSelect(event) {
     this.selection = this.selection.filter(selection => this.rows.includes(selection));
@@ -61,6 +62,11 @@ export class TableComponent implements OnInit, OnChanges {
 
   onChangePageSize(event) {
     this.pageSize = event;
+    this.reset();
+  }
+
+  reset() {
+    this.first = 0;
   }
 
   onLinkClick() {
@@ -96,6 +102,11 @@ export class TableComponent implements OnInit, OnChanges {
         result = 1;
       } else if (value1 == null && value2 == null) {
         result = 0;
+      } else if (moment(value1, Utils.ACCEPTED_FORMAT_DATES, true).isValid() &&
+        moment(value2, Utils.ACCEPTED_FORMAT_DATES, true).isValid()) {
+        const value1Date = moment(value1, Utils.ACCEPTED_FORMAT_DATES);
+        const value2Date = moment(value2, Utils.ACCEPTED_FORMAT_DATES);
+        result = value1Date.isBefore(value2Date) ? -1 : value1Date.isAfter(value2Date) ? 1 : 0;
       } else if (typeof value1 === 'string' && typeof value2 === 'string') {
         result = value1.localeCompare(value2);
       } else {
@@ -109,5 +120,6 @@ export class TableComponent implements OnInit, OnChanges {
     if (changes.rows && !changes.rows.firstChange)
       this.table.reset();
   }
+
 }
 

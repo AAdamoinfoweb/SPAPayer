@@ -12,13 +12,46 @@ import {Colonna} from '../modules/main/model/tabella/Colonna';
 export class Utils {
 
   static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00';
+  static FORMAT_LOCAL_DATE_TIME_TO = 'YYYY-MM-DD[T]23:59';
   static FORMAT_DATE_CALENDAR = 'DD/MM/YYYY';
+  static ACCEPTED_FORMAT_DATES = [
+    Utils.FORMAT_DATE_CALENDAR, Utils.FORMAT_LOCAL_DATE_TIME, moment.ISO_8601
+  ];
 
   static readonly EMAIL_REGEX = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   static readonly TELEFONO_REGEX = '^(\\+[0-9]{2,2})?[0-9]{9,11}$';
 
-  static creaLink = (testo, link, iconHref?) => {
-    return iconHref ? {testo, link, iconHref} : {testo, link};
+  static creaLink = (value, link, iconHref?) => {
+    return iconHref ? {value, link, iconHref} : {value, link, iconHref: null};
+  }
+
+  static getDurataSessioneFormattata(durataMillisecSessione: number): string {
+    let durataFormattata = null;
+    if (durataMillisecSessione) {
+      let durataSecondiSessione = Math.floor(durataMillisecSessione / 1000);
+
+      // Controllo quante ore è durata la sessione
+      const ore = Math.floor(Math.floor(durataSecondiSessione / 60) / 60);
+
+      // Controllo nel tempo residuo (durata totale - durata in ore) quanti minuti ci sono
+      durataSecondiSessione = durataSecondiSessione - (ore * 60 * 60);
+      const minuti = Math.floor(durataSecondiSessione / 60);
+
+      // Controllo nel tempo residuo (durata totale - durata in ore - durata in minuti) quanti secondi ci sono
+      durataSecondiSessione = durataSecondiSessione - (minuti * 60);
+      const secondi = durataSecondiSessione;
+
+      // Mostro la data come hh:mm:ss (aggiungendo gli zero se mancano)
+      durataFormattata = this.paddingZero(ore)
+        + ':' + this.paddingZero(minuti)
+        + ':' + this.paddingZero(secondi);
+    }
+
+    return durataFormattata;
+  }
+
+  static paddingZero(numeroPositivo: number): string {
+    return numeroPositivo < 10 ? '0' + numeroPositivo : '' + numeroPositivo;
   }
 
   static creaIcona = (path, color, tooltip, display) => {

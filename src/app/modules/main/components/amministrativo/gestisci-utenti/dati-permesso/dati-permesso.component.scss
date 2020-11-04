@@ -1,0 +1,31 @@
+.input-disabled {
+  pointer-events: none;
+  opacity: 0.7;
+  background-color: #E3E3E3;
+}
+
+.text-disabled {
+  opacity: 0.7;
+}
+
+.text-muted {
+  color: #77777B;
+}
+
+.text-invalid {
+  color: #FF0000;
+}
+
+.required:after {
+  content: ' *';
+  color: red;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.disabled {
+  pointer-events: none;
+  background-color: #e3e3e3;
+}

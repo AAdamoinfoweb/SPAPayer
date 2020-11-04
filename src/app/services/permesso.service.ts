@@ -48,6 +48,8 @@ export class PermessoService {
     const url = environment.bffBaseUrl + this.permessiBaseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
+    const idSocieta: number[] = listaPermessi.map(value => value.societaId);
+    h = h.append('idSocieta', idSocieta.toString());
 
     return this.http.put(`${url}/${codiceFiscale}`, listaPermessi,
       {

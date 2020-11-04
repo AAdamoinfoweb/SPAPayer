@@ -1,7 +1,7 @@
 <p-table #table [columns]="cols" [value]="rows" styleClass="p-datatable-responsive-demo"
          dataKey="{{dataKey}}" [(selection)]="selection"
          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
-         [paginator]="true" [rows]="pageSize" [showCurrentPageReport]="false"
+         [paginator]="true" [rows]="pageSize" [showCurrentPageReport]="false" [(first)]="first"
          (onHeaderCheckboxToggle)="onRowSelect($event)" (sortFunction)="customSort($event)" [customSort]="true">
   <ng-template pTemplate="header" let-columns>
     <tr>
@@ -33,13 +33,13 @@
           </svg>
         </div>
         <!--  template TESTO  -->
-        <div *ngIf="col.type == tipoColonnaEnum.TESTO"  [ngClass]="row[col.field].class">
+        <div *ngIf="col.type == tipoColonnaEnum.TESTO" [ngClass]="row[col.field].class" [innerHTML]="row[col.field].value | parseHtml">
           {{row[col.field].value}}
         </div>
         <!--  template LINK  -->
         <div *ngIf="col.type == tipoColonnaEnum.LINK">
-          {{row[col.field] != null  ? row[col.field].testo : null}}
-          <a href="{{row[col.field].link}}" *ngIf="row[col.field] != null" (click)="onLinkClick()">
+          {{row[col.field] != null  ? row[col.field].value : null}}
+          <a href="{{row[col.field].link}}" *ngIf="row[col.field].link != null" (click)="onLinkClick()">
             <svg class="icon icon-sm" fill="#004987" *ngIf="!row[col.field].iconHref">
               <use xlink:href="assets/img/sprite.svg#it-external-link"></use>
             </svg>
