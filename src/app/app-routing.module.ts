@@ -25,6 +25,7 @@ import {MonitoraAccessiComponent} from './modules/main/components/amministrativo
 import {DettaglioAccessoComponent} from './modules/main/components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
 import {PresaincaricopagamentoL1Component} from "./modules/main/components/presaincaricopagamentoL1/presaincaricopagamento-l1.component";
 import {FormEnteComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component";
+import {RaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/raggruppamento-tipologie.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -71,6 +72,7 @@ const routes: Routes = [
   {path: 'gestioneAnagrafiche/aggiungiEnte', component: FormEnteComponent},
   {path: 'gestioneAnagrafiche/modificaEnte/:enteId', component: FormEnteComponent},
   {path: 'gestioneAnagrafiche/dettaglioEnte/:enteId', component: FormEnteComponent},
+  {path: 'raggruppamentoTipologie', component: RaggruppamentoTipologieComponent}
 ];
 
 @NgModule({
