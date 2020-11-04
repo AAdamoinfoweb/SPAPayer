@@ -11,8 +11,8 @@ import {Colonna} from '../modules/main/model/tabella/Colonna';
 
 export class Utils {
 
-  static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00';
-  static FORMAT_LOCAL_DATE_TIME_TO = 'YYYY-MM-DD[T]23:59';
+  static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00:00';
+  static FORMAT_LOCAL_DATE_TIME_TO = 'YYYY-MM-DD[T]23:59:59';
   static FORMAT_DATE_CALENDAR = 'DD/MM/YYYY';
   static ACCEPTED_FORMAT_DATES = [
     Utils.FORMAT_DATE_CALENDAR, Utils.FORMAT_LOCAL_DATE_TIME, moment.ISO_8601
