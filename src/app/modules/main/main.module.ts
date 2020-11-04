@@ -19,16 +19,7 @@ import {CarrelloComponent} from "./components/carrello/carrello.component";
 import {ListaPagamentiL1Component} from "./components/lista-pagamentiL1/lista-pagamenti-l1.component";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {WaitingL1Component} from "./components/waitingL1/waiting-l1.component";
-import { FormSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/form-societa/form-societa.component';
-import { DatiSocietaComponent } from './components/amministrativo/anagrafiche/gestisci-societa/dati-societa/dati-societa.component';
-import { DatiLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/dati-livello-territoriale/dati-livello-territoriale.component';
-import { FormLivelloTerritorialeComponent } from './components/amministrativo/anagrafiche/gestisci-livelli-territoriali/form-livello-territoriale/form-livello-territoriale.component';
-import { FiltroGestioneEntiComponent } from './components/amministrativo/anagrafiche/gestisci-enti/filtro-gestione-enti/filtro-gestione-enti.component';
-import {DettaglioAccessoComponent} from './components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
-import { DatiAccessoComponent } from './components/amministrativo/monitora-accessi/dati-accesso/dati-accesso.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
-import { DatiEnteComponent } from './components/amministrativo/anagrafiche/gestisci-enti/dati-ente/dati-ente.component';
-import { FormEnteComponent } from './components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component';
 
 @NgModule({
   declarations: [
@@ -44,16 +35,6 @@ import { FormEnteComponent } from './components/amministrativo/anagrafiche/gesti
     WaitingComponent,
     WaitingL1Component,
     FiltriIMieiPagamentiComponent,
-    FormSocietaComponent,
-    DatiSocietaComponent,
-    DatiLivelloTerritorialeComponent,
-    FormLivelloTerritorialeComponent,
-    DatiSocietaComponent,
-    FiltroGestioneEntiComponent,
-    DettaglioAccessoComponent,
-    DatiAccessoComponent,
-    DatiEnteComponent,
-    FormEnteComponent
   ],
   imports: [
     CommonModule,
@@ -73,7 +54,6 @@ import { FormEnteComponent } from './components/amministrativo/anagrafiche/gesti
     FooterComponent,
     ReplacePipe,
     FiltriIMieiPagamentiComponent,
-    FiltroGestioneEntiComponent
   ]
 })
 export class MainModule {
