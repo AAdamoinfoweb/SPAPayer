@@ -128,10 +128,10 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
         this.eliminaRaggruppamentiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Raggruppamenti Tipologie Servizi');
+        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Raggruppamenti Tipologie');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Raggruppamenti Tipologie Servizi');
+        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Raggruppamenti Tipologie');
         break;
     }
   }
