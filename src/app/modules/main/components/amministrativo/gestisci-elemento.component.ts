@@ -16,12 +16,16 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
                         route: ActivatedRoute, protected http: HttpClient,
                         amministrativoService: AmministrativoService) {
     super(router, route, http, amministrativoService);
-    this.amministrativoService.asyncAmministrativoSubject.subscribe(() => {
-      route.url.subscribe((url) => {
-        const basePath = '/' + url[0].path;
-        this.basePath = basePath;
-        this.idFunzione = String(this.amministrativoService.mappaFunzioni[basePath]);
-      });
+    this.amministrativoService.asyncAmministrativoSubject.subscribe((isAmministrativo) => {
+      if (isAmministrativo) {
+        route.url.subscribe((url) => {
+          const basePath = '/' + url[0].path;
+          this.basePath = basePath;
+          this.idFunzione = String(this.amministrativoService.mappaFunzioni[basePath]);
+        });
+      } else {
+        this.router.navigateByUrl('/nonautorizzato');
+      }
     });
   }
 

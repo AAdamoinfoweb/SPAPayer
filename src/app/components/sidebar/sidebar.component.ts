@@ -41,6 +41,8 @@ export class SidebarComponent implements OnInit {
             localStorage.setItem('email', info.email);
           } else {
             this.isUtenteAnonimo = true;
+            this.amministrativoService.asyncAmministrativoSubject.next(false);
+            this.amministrativoService.asyncAmministrativoSubject.complete();
           }
 
           let menuTemp = JSON.parse(decodeURIComponent(atob(info.menu)).replace(/\+/g, ' '));
