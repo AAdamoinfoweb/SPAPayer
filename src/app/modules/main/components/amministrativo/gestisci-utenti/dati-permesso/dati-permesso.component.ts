@@ -39,6 +39,8 @@ export class DatiPermessoComponent implements OnInit {
 
   @Input() datiPermesso: PermessoCompleto;
   @Input() isDettaglio: boolean;
+  @Input() idFunzione;
+
   isModificaPermessi = false;
   listaPermessoFunzione: PermessoFunzione[] = [];
   mapPermessoFunzione: Map<number, PermessoFunzione> = new Map();
@@ -100,7 +102,7 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   letturaSocieta(societaId: number) {
-    return this.societaService.ricercaSocieta(societaId, this.amministrativoService.idFunzione).pipe(map((listaSocieta: Societa[]) => {
+    return this.societaService.ricercaSocieta(societaId, this.idFunzione).pipe(map((listaSocieta: Societa[]) => {
       listaSocieta.forEach(societa => {
         const societaElement = {value: societa.id, label: societa.nome};
         this.listaSocieta.push(societaElement);

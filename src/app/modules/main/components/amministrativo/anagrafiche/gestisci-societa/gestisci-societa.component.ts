@@ -31,8 +31,8 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
 
   readonly funzioneGestioneUtenti = '/gestioneUtenti';
-  basePathBackend = 'gestioneAnagrafiche';
-  urlPagina = 'societa';
+
+  idFunzione;
 
   breadcrumbList = [];
 
@@ -111,7 +111,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
 
   popolaListaElementi() {
     this.listaSocieta = [];
-    this.societaService.ricercaSocieta(null, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
+    this.societaService.ricercaSocieta(null, this.idFunzione).subscribe(listaSocieta => {
       this.listaSocieta = listaSocieta;
 
       this.tableData.rows = [];
@@ -166,7 +166,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   eliminaSocietaSelezionate() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.amministrativoService.idFunzione).subscribe(() => {
+          this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;

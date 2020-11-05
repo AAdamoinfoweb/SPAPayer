@@ -13,11 +13,11 @@ import {ParametriRicercaBanner} from '../modules/main/model/banner/ParametriRice
 })
 export class BannerService {
 
-  private readonly gestioneBannerBasePath = '/gestioneBanner';
+  private readonly gestioneBannerBasePath = '/gestisciBanner';
 
   private bannerUrl = '/banner';
   private readonly bannerAmministrativoBaseUrl = this.gestioneBannerBasePath + this.bannerUrl;
-  private readonly eliminaBannerUrl = this.gestioneBannerBasePath + '/eliminaBanner';
+  private readonly eliminaBannerUrl = this.bannerAmministrativoBaseUrl + '/eliminaBanner';
   timestamp: string;
   attivo: boolean;
 

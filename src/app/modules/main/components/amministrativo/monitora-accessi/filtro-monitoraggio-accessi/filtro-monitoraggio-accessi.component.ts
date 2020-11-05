@@ -12,6 +12,7 @@ import {UtenteService} from '../../../../../../services/utente.service';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../utils/Utils';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-filtro-monitoraggio-accessi',
@@ -38,16 +39,19 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   dataDaSelezionata: string = null;
   dataASelezionata: string = null;
 
+  idFunzione;
+
   @Output()
   onChangeListaElementi: EventEmitter<any[]> = new EventEmitter<Accesso[]>();
 
   constructor(
-    private amministrativoService: AmministrativoService,
+    protected amministrativoService: AmministrativoService,
     private accessoService: AccessoService,
     private funzioneService: FunzioneService,
-    private utenteService: UtenteService
+    private utenteService: UtenteService,
+    protected route: ActivatedRoute
   ) {
-    super();
+    super(route, amministrativoService);
   }
 
   ngOnInit(): void {
@@ -72,7 +76,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     if (inputCf.length < this.minCharsToRetrieveCF) {
       this.listaIdUtenti = [];
     } else if (inputCf.length === this.minCharsToRetrieveCF) {
-      this.utenteService.letturaCodiceFiscale(inputCf, this.amministrativoService.idFunzione).subscribe(data => {
+      this.utenteService.letturaCodiceFiscale(inputCf, this.idFunzione).subscribe(data => {
         this.listaIdUtenti = data;
       });
     } else {
@@ -110,7 +114,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   }
 
   cercaElementi(): void {
-    this.accessoService.recuperaAccessi(this.getParametriRicerca(), this.amministrativoService.idFunzione).subscribe(listaAccessi => {
+    this.accessoService.recuperaAccessi(this.getParametriRicerca(), this.idFunzione).subscribe(listaAccessi => {
       // Non invio la lista in caso di bad request
       if (listaAccessi) {
         this.onChangeListaElementi.emit(listaAccessi);

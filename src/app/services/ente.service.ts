@@ -12,11 +12,11 @@ import {EnteCompleto} from '../modules/main/model/ente/EnteCompleto';
 })
 export class EnteService {
 
-  private readonly gestioneAnagraficheBasePath = '/gestioneAnagrafiche';
+  private readonly gestisciEntiBasePath = '/gestisciEnti';
 
-  private readonly entiBaseUrl = this.gestioneAnagraficheBasePath + '/enti';
+  private readonly entiBaseUrl = this.gestisciEntiBasePath + '/enti';
 
-  private readonly eliminaEntiUrl = this.gestioneAnagraficheBasePath + '/eliminaEnti';
+  private readonly eliminaEntiUrl = this.entiBaseUrl + '/eliminaEnti';
 
   constructor(private http: HttpClient) {
   }

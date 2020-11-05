@@ -54,7 +54,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   isModifica = false;
   isDettaglio = false;
   funzione: FunzioneGestioneEnum;
-  urlPaginaGestione = '/gestisciUtenti';
+  idFunzione;
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
@@ -81,13 +81,13 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   inizializzaBreadcrumbs(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', this.urlPaginaGestione + '?funzione=' + this.idFunzioneB64));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Utente/Permessi', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
-    if (snapshot.url[0].path === 'modificaUtentePermessi') {
+    if (snapshot.url[1].path === 'modificaUtentePermessi') {
       this.isModifica = true;
       this.funzione = FunzioneGestioneEnum.MODIFICA;
       this.titoloPagina = `Modifica Utente/Permessi`;
@@ -95,7 +95,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       this.inizializzaBreadcrumbs();
       this.codiceFiscaleModifica = snapshot.paramMap.get('userid');
       this.letturaPermessi(this.codiceFiscaleModifica);
-    } else if (snapshot.url[0].path === 'dettaglioUtentePermessi') {
+    } else if (snapshot.url[1].path === 'dettaglioUtentePermessi') {
       this.isDettaglio = true;
       this.funzione = FunzioneGestioneEnum.DETTAGLIO;
       this.titoloPagina = `Dettaglio Utente/Permessi`;
@@ -107,6 +107,8 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       this.funzione = FunzioneGestioneEnum.AGGIUNGI;
       this.inizializzaBreadcrumbs();
     }
+    this.utenteService.utentePermessiAsyncSubject.next(true);
+    this.utenteService.utentePermessiAsyncSubject.complete();
   }
 
   ngOnInit(): void {
@@ -167,12 +169,13 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
         this.componentRef.instance.isDettaglio = this.isDettaglio;
       }
     }
+    this.componentRef.instance.idFunzione = this.idFunzione;
     this.componentRef.changeDetectorRef.detectChanges();
     return indexPermesso;
   }
 
   letturaPermessi(codiceFiscale) {
-    this.permessoService.letturaPermessi(codiceFiscale, this.idFunzioneB64).subscribe((listaPermessi: PermessoCompleto[]) => {
+    this.permessoService.letturaPermessi(codiceFiscale, this.idFunzione).subscribe((listaPermessi: PermessoCompleto[]) => {
       listaPermessi.forEach((permesso: PermessoCompleto) => {
         permesso.dataInizioValidita = permesso.dataInizioValidita ?
           moment(permesso.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
@@ -236,7 +239,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     const codiceFiscale = this.isModifica ? this.codiceFiscaleModifica : this.codiceFiscale;
     if (!this.isModifica && !this.isDettaglio) {
       // controllo su codice fiscale
-      this.utenteService.letturaCodiceFiscale(this.codiceFiscale, this.idFunzioneB64).subscribe((data) => {
+      this.utenteService.letturaCodiceFiscale(this.codiceFiscale, this.idFunzione).subscribe((data) => {
         const codiciFiscaleUpperCase = data.map(value => value.toUpperCase());
         const iscodiceFiscaleEsistente = codiciFiscaleUpperCase.includes(this.codiceFiscale.toUpperCase());
         if (iscodiceFiscaleEsistente) {
@@ -260,12 +263,12 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
         return false;
       };
       this.router.onSameUrlNavigation = 'reload';
-      this.router.navigate(['/modificaUtentePermessi', cf]);
+      this.router.navigateByUrl(this.basePath + '/modificaUtentePermessi' + '/' + cf);
     });
   }
 
   private inserimentoAggiornamentoUtente(codiceFiscale: string, utente: InserimentoModificaUtente) {
-    this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.idFunzioneB64).subscribe((err) => {
+    this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.idFunzione).subscribe((err) => {
       if (err == null) {
         // se presenti inserimento permessi
         const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
@@ -298,7 +301,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       return permesso;
     });
     // chiamata be inserimento modifica permessi
-    this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessiDaInserire, this.idFunzioneB64)
+    this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessiDaInserire, this.idFunzione)
       .subscribe(() => {
         this.asyncSubject.next(codiceFiscale);
         this.asyncSubject.complete();

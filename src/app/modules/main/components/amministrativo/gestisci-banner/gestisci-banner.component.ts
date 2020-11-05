@@ -25,11 +25,10 @@ import {Tabella} from '../../../model/tabella/Tabella';
   styleUrls: ['./gestisci-banner.component.scss']
 })
 export class GestisciBannerComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
-
   readonly tooltipTitolo = 'In questa pagina puoi visualizzare la lista completa dei banner presenti in Payer e filtrarli';
 
-  basePathBackend = 'gestioneBanner';
-  urlPagina = 'gestisciBanner';
+  idFunzione;
+
   breadcrumbList = [];
 
   listaBanner: Array<Banner> = new Array<Banner>();
@@ -100,7 +99,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     this.listaBanner = [];
     const parametriRicercaBanner = new ParametriRicercaBanner();
 
-    this.bannerService.ricercaBanner(parametriRicercaBanner, this.amministrativoService.idFunzione).subscribe(listaBanner => {
+    this.bannerService.ricercaBanner(parametriRicercaBanner, this.idFunzione).subscribe(listaBanner => {
       this.tableData.rows = [];
       listaBanner.forEach(banner => {
         this.listaBanner.push(banner);
@@ -162,7 +161,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   eliminaBannerSelezionati(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.amministrativoService.idFunzione).pipe(map(() => {
+          this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.idFunzione).pipe(map(() => {
             this.popolaListaElementi();
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
@@ -229,7 +228,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   mostraDettaglioBanner(rigaCliccata: any) {
-    this.mostraDettaglioElemento(this.basePathBackend + '/dettaglioBanner', rigaCliccata.id.value);
+    this.mostraDettaglioElemento('/dettaglioBanner', rigaCliccata.id.value);
   }
 
 }

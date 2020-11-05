@@ -35,6 +35,7 @@ export class DatiUtenteComponent implements OnInit {
   datiUtente: InserimentoModificaUtente;
   isModificaUtente = false;
   @Input() isDettaglio: boolean;
+  @Input() idFunzione;
 
   @Output()
   onChangeDatiUtente: EventEmitter<InserimentoModificaUtente> = new EventEmitter<InserimentoModificaUtente>();
@@ -47,22 +48,24 @@ export class DatiUtenteComponent implements OnInit {
 
   ngOnInit(): void {
     this.datiUtente = new InserimentoModificaUtente();
-
     this.onValidaFormDatiUtenti.emit(true);
 
-    if (this.codiceFiscale) {
-      this.isModificaUtente = true;
-      const parametriRicerca = new ParametriRicercaUtente();
-      parametriRicerca.codiceFiscale = this.codiceFiscale;
-      this.ricercaUtente(parametriRicerca);
-    } else {
-      this.codiceFiscale = null;
-      this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    }
+    this.utenteService.utentePermessiAsyncSubject.subscribe(() => {
+
+      if (this.codiceFiscale) {
+        this.isModificaUtente = true;
+        const parametriRicerca = new ParametriRicercaUtente();
+        parametriRicerca.codiceFiscale = this.codiceFiscale;
+        this.ricercaUtente(parametriRicerca);
+      } else {
+        this.codiceFiscale = null;
+        this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
+      }
+    });
   }
 
   ricercaUtente(parametriRicerca: ParametriRicercaUtente): void {
-    this.utenteService.ricercaUtenti(parametriRicerca, this.amministrativoService.idFunzione).pipe(map(utenti => {
+    this.utenteService.ricercaUtenti(parametriRicerca, this.idFunzione).pipe(map(utenti => {
       const utente = utenti[0];
       this.datiUtente.nome = utente?.nome;
       this.datiUtente.cognome = utente?.cognome;
@@ -83,7 +86,7 @@ export class DatiUtenteComponent implements OnInit {
     } else if (inputCf.length >= this.minCharsToRetrieveCF) {
       // disabilitazione bottone in attesa di caricamento utenti
       this.utenteService.codiceFiscaleEvent.emit(null);
-      this.utenteService.letturaCodiceFiscale(inputCf, this.amministrativoService.idFunzione).subscribe(data => {
+      this.utenteService.letturaCodiceFiscale(inputCf, this.idFunzione).subscribe(data => {
         this.listaCodiciFiscali = data;
         this.listaCodiciFiscali = this.listaCodiciFiscali.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
       });
