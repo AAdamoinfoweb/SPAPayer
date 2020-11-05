@@ -29,6 +29,8 @@ import { DatiAccessoComponent } from './components/amministrativo/monitora-acces
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import { DatiEnteComponent } from './components/amministrativo/anagrafiche/gestisci-enti/dati-ente/dati-ente.component';
 import { FormEnteComponent } from './components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component';
+import {DatiRaggruppamentoTipologieComponent} from './components/amministrativo/anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
+import {FormRaggruppamentoTipologieComponent} from './components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { FormEnteComponent } from './components/amministrativo/anagrafiche/gesti
     DettaglioAccessoComponent,
     DatiAccessoComponent,
     DatiEnteComponent,
-    FormEnteComponent
+    FormEnteComponent,
+    DatiRaggruppamentoTipologieComponent,
+    FormRaggruppamentoTipologieComponent
   ],
   imports: [
     CommonModule,
