@@ -113,7 +113,7 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   creaRigaTabella(raggruppamentoTipologiaServizio: RaggruppamentoTipologiaServizio): object {
     return {
       id: {value: raggruppamentoTipologiaServizio.id},
-      nome: {value: raggruppamentoTipologiaServizio.codice},
+      nome: {value: raggruppamentoTipologiaServizio.nome},
       descrizione: {value: raggruppamentoTipologiaServizio.descrizione}
     };
   }
