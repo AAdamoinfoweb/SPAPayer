@@ -5,6 +5,7 @@ import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-filtro-gestione-societa',
@@ -22,9 +23,11 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
 
   filtroSocieta: number = null;
 
+  idFunzione;
+
   constructor(private societaService: SocietaService,
-              private amministrativoService: AmministrativoService) {
-    super();
+              protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
+    super(route, amministrativoService);
   }
 
   ngOnInit(): void {
@@ -65,7 +68,7 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   }
 
   cercaElementi(): void {
-    this.societaService.ricercaSocieta(this.filtroSocieta, this.amministrativoService.idFunzione).subscribe(listaSocieta => {
+    this.societaService.ricercaSocieta(this.filtroSocieta, this.idFunzione).subscribe(listaSocieta => {
       this.onChangeListaElementi.emit(listaSocieta);
     });
   }

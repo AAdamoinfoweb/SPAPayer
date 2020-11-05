@@ -12,7 +12,7 @@ import {FormElementoParentComponent} from '../../../form-elemento-parent.compone
 import {InserimentoModificaUtente} from '../../../../../model/utente/InserimentoModificaUtente';
 import {PermessoCompleto} from '../../../../../model/permesso/PermessoCompleto';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {ConfirmationService} from 'primeng/api';
@@ -22,7 +22,7 @@ import {PermessoSingolo} from '../../../../../model/permesso/PermessoSingolo';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
 import {Beneficiario} from '../../../../../model/ente/Beneficiario';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-form-ente',
@@ -31,9 +31,10 @@ import {HttpClient} from "@angular/common/http";
 })
 export class FormEnteComponent extends FormElementoParentComponent implements OnInit {
 
+
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
-  urlPaginaGestione = 'enti';
+  idFunzione;
 
   // header page
   breadcrumbList = [];
@@ -63,7 +64,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
-  ngOnInit(): void {
+  initFormPage(snapshot: ActivatedRouteSnapshot) {
     // get route per logica inserimento o modifica
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
@@ -72,8 +73,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     });
   }
 
-  initFormPage(snapshot: import("@angular/router").ActivatedRouteSnapshot) {
-    throw new Error("Method not implemented.");
+  ngOnInit(): void {
   }
 
   controllaTipoFunzione() {
@@ -94,7 +94,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   inizializzaBreadcrumbs(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
     breadcrumbs.push(new SintesiBreadcrumb('Gestisci Anagrafiche', null));
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Enti', '/enti/' + this.idFunzioneB64));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Enti', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Ente', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
@@ -167,6 +167,6 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   tornaIndietro() {
-    this.router.navigateByUrl('/gestioneAnagrafica/gestioneEnti?funzione=' + this.idFunzioneB64);
+    this.router.navigateByUrl('/gestioneAnagrafica/gestioneEnti?funzione=' + this.idFunzione);
   }
 }

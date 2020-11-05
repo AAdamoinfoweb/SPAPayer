@@ -13,7 +13,7 @@ import {PermessoCompleto} from "../modules/main/model/permesso/PermessoCompleto"
 })
 export class PermessoService {
 
-  private readonly permessiBaseUrl = '/gestioneUtenti/permessi';
+  private readonly permessiBaseUrl = '/gestisciUtenti/permessi';
   private readonly inserimentoModificaPermessiUrl = '';
 
   constructor(private http: HttpClient) {

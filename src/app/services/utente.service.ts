@@ -12,11 +12,11 @@ import {InserimentoModificaUtente} from '../modules/main/model/utente/Inseriment
 })
 export class UtenteService {
 
-  private readonly utentiBaseUrl = '/gestioneUtenti/utenti';
+  private readonly utentiBaseUrl = '/gestisciUtenti/utenti';
   private readonly letturaCodiceFiscaleUtenteUrl = '/codiceFiscale';
 
   codiceFiscaleEvent: EventEmitter<string> = new EventEmitter<string>();
-  utentePermessiAsyncSubject: AsyncSubject<boolean[]> = new AsyncSubject<boolean[]>();
+  utentePermessiAsyncSubject: AsyncSubject<any> = new AsyncSubject<any>();
 
   constructor(private http: HttpClient) {
   }

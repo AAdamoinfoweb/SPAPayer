@@ -10,13 +10,13 @@ import {catchError, map} from 'rxjs/operators';
 })
 export class SocietaService {
 
-  private readonly gestioneAnagraficheBasePath = '/gestioneAnagrafiche';
+  private readonly gestioneAnagraficheBasePath = '/gestisciSocieta';
 
   private readonly filtroSocietaUrl = '/filtroSocieta';
 
   private readonly societaBaseUrl = this.gestioneAnagraficheBasePath + '/societa';
 
-  private readonly eliminaSocietaUrl = this.gestioneAnagraficheBasePath + '/eliminaSocieta';
+  private readonly eliminaSocietaUrl = this.societaBaseUrl + '/eliminaSocieta';
 
   constructor(private http: HttpClient) { }
 

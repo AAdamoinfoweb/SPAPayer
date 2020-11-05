@@ -17,7 +17,8 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
 
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum = FunzioneGestioneEnum.DETTAGLIO;
-  urlPaginaGestione = '/monitoraAccessi';
+  idFunzione;
+
   accesso: Accesso = new Accesso();
   titoloPagina = 'Dettaglio Accesso';
   tooltip = 'In questa pagina puoi visualizzare i dettagli di un accesso';
@@ -39,12 +40,12 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
 
   ngOnInit(): void {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
-      {label: 'Monitora Accessi', link: '/monitoraAccessi?funzione' + this.idFunzioneB64},
+      {label: 'Monitora Accessi', link: this.basePath},
       {label: 'Dettaglio Accesso', link: null}
     ]);
 
     const idSelezionato = parseInt(this.activatedRoute.snapshot.paramMap.get('accessoid'));
-    this.accessoService.recuperaDettaglioAccesso(idSelezionato, this.idFunzioneB64).subscribe(accesso => {
+    this.accessoService.recuperaDettaglioAccesso(idSelezionato, this.idFunzione).subscribe(accesso => {
       this.accesso = accesso;
     });
   }

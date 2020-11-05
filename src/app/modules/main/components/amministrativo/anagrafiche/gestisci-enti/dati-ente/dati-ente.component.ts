@@ -14,6 +14,7 @@ import {InserimentoModificaUtente} from "../../../../../model/utente/Inserimento
 export class DatiEnteComponent implements OnInit {
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
+  displayModal: boolean;
   @Input()
   funzione: FunzioneGestioneEnum;
   @Output()
@@ -62,4 +63,13 @@ export class DatiEnteComponent implements OnInit {
     }
   }
 
+  formattaInput(valore: string, campo: string) {
+    if (valore === '') {
+      this.datiEnte[campo] = null;
+    }
+  }
+
+  showModalDialog() {
+    this.displayModal = true;
+  }
 }

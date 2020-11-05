@@ -21,7 +21,8 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
-  urlPaginaGestione = '/societa';
+  idFunzione;
+
   titoloPagina: string;
   tooltip: string;
   societa: Societa = new Societa();
@@ -42,10 +43,6 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
-
-  }
-
-  ngOnInit(): void {
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
       this.inizializzaBreadcrumb();
@@ -53,18 +50,20 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una società';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
         this.societa.id = parseInt(this.activatedRoute.snapshot.paramMap.get('societaid'));
-        this.societaService.ricercaSocieta(this.societa.id, this.idFunzioneB64).subscribe(listaSocieta => {
+        this.societaService.ricercaSocieta(this.societa.id, this.idFunzione).subscribe(listaSocieta => {
           this.societa = listaSocieta[0];
-        })
-      } else {
+        });
       }
     });
+  }
+
+  ngOnInit(): void {
   }
 
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = []
     breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
-    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Società', this.urlPaginaGestione + '?funzione=' + this.idFunzioneB64));
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Società', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Società', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
     }
@@ -87,12 +86,12 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
   onClickSalva(): void {
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        this.societaService.aggiuntaSocieta(this.societa, this.idFunzioneB64).subscribe((societa) => {
+        this.societaService.aggiuntaSocieta(this.societa, this.idFunzione).subscribe((societa) => {
           this.societa = new Societa();
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.societaService.modificaSocieta(this.societa, this.idFunzioneB64).subscribe(() => {
+        this.societaService.modificaSocieta(this.societa, this.idFunzione).subscribe(() => {
         });
         break;
     }

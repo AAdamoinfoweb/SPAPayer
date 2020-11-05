@@ -4,10 +4,9 @@ import {TipoModaleEnum} from "../../../../enums/tipoModale.enum";
 import {FunzioneGestioneEnum} from "../../../../enums/funzioneGestione.enum";
 import {ConfirmationService} from "primeng/api";
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../../../environments/environment";
-import {flatMap} from "rxjs/operators";
 import {AmministrativoService} from "../../../../services/amministrativo.service";
 
 
@@ -18,30 +17,32 @@ export abstract class FormElementoParentComponent {
                         protected amministrativoService: AmministrativoService,
                         protected http: HttpClient,
                         protected router: Router) {
-    activatedRoute.params.subscribe((params) => {
-      let path = activatedRoute.snapshot.routeConfig.path;
-      this.verificaAbilitazioneSottopath(path).subscribe(() => {
-        this.idFunzioneB64 = activatedRoute.snapshot.queryParams.funzione;
-        this.initFormPage(activatedRoute.snapshot);
+    this.amministrativoService.asyncAmministrativoSubject.subscribe(() => {
+      activatedRoute.url.subscribe((url) => {
+        const basePath = '/' + url[0].path;
+        this.basePath = basePath;
+        this.idFunzione = String(this.amministrativoService.mappaFunzioni[basePath]);
+        this.verificaAbilitazioneSottopath().subscribe(() => {
+          this.initFormPage(activatedRoute.snapshot);
+        });
       });
     });
   }
 
-  idFunzioneB64;
+  abstract idFunzione;
+  basePath;
+
   abstract funzione: FunzioneGestioneEnum;
-  abstract urlPaginaGestione;
 
   abstract initFormPage(snapshot: ActivatedRouteSnapshot);
 
-  verificaAbilitazioneSottopath(link: string): Observable<string> {
-    const basePathBackend = '/' + link.split('/')[0];
-
+  verificaAbilitazioneSottopath(): Observable<any> {
     let h: HttpHeaders = new HttpHeaders();
-    h = h.append('idFunzione', String(this.amministrativoService.mappaFunzioni[this.urlPaginaGestione]));
-    return this.http.get(environment.bffBaseUrl + basePathBackend + '/verificaAbilitazioneSottoPath', {
+    h = h.append('idFunzione', this.idFunzione);
+    return this.http.get(environment.bffBaseUrl + this.basePath + '/verificaAbilitazioneSottoPath', {
       headers: h,
       withCredentials: true
-    }).pipe(flatMap(() => of('?funzione=' + btoa(String(this.amministrativoService.mappaFunzioni[basePathBackend])))));
+    });
   }
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]) {
@@ -68,7 +69,7 @@ export abstract class FormElementoParentComponent {
   }
 
   tornaIndietro(): void {
-    this.router.navigateByUrl(this.urlPaginaGestione + '?funzione=' + this.idFunzioneB64);
+    this.router.navigateByUrl(this.basePath);
   };
 
   getTestoFunzione(funzione: FunzioneGestioneEnum, isTitolo: boolean = true): string {

@@ -1,6 +1,6 @@
 import {Breadcrumb, SintesiBreadcrumb} from '../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../services/amministrativo.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Utils} from '../../../../utils/Utils';
 import {AmministrativoParentComponent} from './amministrativo-parent.component';
@@ -8,9 +8,6 @@ import {Tabella} from '../../model/tabella/Tabella';
 import {Colonna} from '../../model/tabella/Colonna';
 import {ToolEnum} from '../../../../enums/Tool.enum';
 import {ImmaginePdf} from '../../model/tabella/ImmaginePdf';
-import {environment} from "../../../../../environments/environment";
-import {Observable, of} from "rxjs";
-import {flatMap, map} from "rxjs/operators"
 
 
 export abstract class GestisciElementoComponent extends AmministrativoParentComponent {
@@ -19,10 +16,18 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
                         route: ActivatedRoute, protected http: HttpClient,
                         amministrativoService: AmministrativoService) {
     super(router, route, http, amministrativoService);
+    this.amministrativoService.asyncAmministrativoSubject.subscribe(() => {
+      route.url.subscribe((url) => {
+        const basePath = '/' + url[0].path;
+        this.basePath = basePath;
+        this.idFunzione = String(this.amministrativoService.mappaFunzioni[basePath]);
+      });
+    });
   }
 
-  abstract urlPagina;
-  abstract basePathBackend;
+  abstract idFunzione;
+  basePath;
+
   abstract selectionElementi: any[];
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
@@ -33,18 +38,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   }
 
   aggiungiElemento(linkFunzioneAggiungi: string) {
-    this.verificaAbilitazioneSottopath(this.basePathBackend + linkFunzioneAggiungi).subscribe((header: string) => this.router.navigateByUrl(this.basePathBackend + linkFunzioneAggiungi + header));
-  }
-
-  verificaAbilitazioneSottopath(link: string): Observable<string> {
-    const basePath = '/' + link.split('/')[0];
-
-    let h: HttpHeaders = new HttpHeaders();
-    h = h.append('idFunzione', String(this.amministrativoService.mappaFunzioni[basePath]));
-    return this.http.get(environment.bffBaseUrl + basePath + '/verificaAbilitazioneSottoPath', {
-      headers: h,
-      withCredentials: true
-    }).pipe(flatMap(() => of('?funzione=' + btoa(String(this.amministrativoService.mappaFunzioni[basePath])))));
+   this.router.navigateByUrl(this.basePath + linkFunzioneAggiungi);
   }
 
   abstract popolaListaElementi(): void;
@@ -54,11 +48,11 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
   mostraDettaglioElemento(linkFunzioneDettaglio: string, id: number) {
-    this.verificaAbilitazioneSottopath(this.basePathBackend + linkFunzioneDettaglio).subscribe((header: string) => this.router.navigate([this.basePathBackend + linkFunzioneDettaglio + header, id]));
+    this.router.navigateByUrl(this.basePath + linkFunzioneDettaglio + '/' + id);
   }
 
   modificaElementoSelezionato(linkFunzioneModifica: string, id: number | string) {
-    this.verificaAbilitazioneSottopath(this.basePathBackend + linkFunzioneModifica).subscribe((header: string) => this.router.navigate([this.basePathBackend + linkFunzioneModifica + header, id]));
+    this.router.navigateByUrl(this.basePath + linkFunzioneModifica + '/' + id);
   }
 
   esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {

@@ -29,8 +29,9 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
 
   readonly funzioneGestioneUtenti = '/gestioneUtenti';
-  basePathBackend = 'gestioneAnagrafiche';
-  urlPagina = 'enti';
+
+  idFunzione;
+
   breadcrumbList = [];
 
   isMenuCarico = false;
@@ -104,7 +105,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   popolaListaElementi() {
     this.waiting = false;
-    this.enteService.ricercaEnti(new ParametriRicercaEnte(), this.amministrativoService.idFunzione).subscribe((listaEnti) => {
+    this.enteService.ricercaEnti(new ParametriRicercaEnte(), this.idFunzione).subscribe((listaEnti) => {
       this.listaEnti = listaEnti;
 
       this.tableData.rows = this.listaEnti.map(ente => {
@@ -189,7 +190,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     this.confirmationService.confirm(
       Utils.getModale(() => {
         const listaEntiId = this.entiSelezionati.map(ente => ente.id);
-        this.enteService.eliminaEnti(listaEntiId, this.amministrativoService.idFunzione)
+        this.enteService.eliminaEnti(listaEntiId, this.idFunzione)
             .subscribe(() => {
               this.selectionElementi = [];
               this.popolaListaElementi();

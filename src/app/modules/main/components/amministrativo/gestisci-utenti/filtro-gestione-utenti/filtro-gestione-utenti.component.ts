@@ -15,6 +15,8 @@ import {BottoneEnum} from '../../../../../../enums/bottone.enum';
 import {OverlayService} from '../../../../../../services/overlay.service';
 import {AmministrativoService} from "../../../../../../services/amministrativo.service";
 import {FiltroGestioneElementiComponent} from "../../filtro-gestione-elementi.component";
+import {Utils} from '../../../../../../utils/Utils';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -22,7 +24,6 @@ import {FiltroGestioneElementiComponent} from "../../filtro-gestione-elementi.co
   styleUrls: ['../gestisci-utenti.component.scss', './filtro-gestione-utenti.component.scss']
 })
 export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiComponent implements OnInit {
-
   listaSocieta: Array<OpzioneSelect> = [];
   listaLivelliTerritoriali: Array<OpzioneSelect> = [];
   listaEnti: Array<OpzioneSelect> = [];
@@ -47,10 +48,12 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
   @Output()
   onChangeListaElementi: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
 
+  idFunzione;
+
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService, private utenteService: UtenteService, private overlayService: OverlayService,
-              private amministrativoService: AmministrativoService) {
-    super();
+              protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
+    super(route, amministrativoService);
   }
 
   ngOnInit(): void {
@@ -78,7 +81,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           this.filtroGestioneUtentiApplicato.societaId = this.filtroSocieta;
           const parametriRicercaUtente = new ParametriRicercaUtente();
           parametriRicercaUtente.societaId = this.filtroSocieta;
-          this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).subscribe(utenti => {
+          this.utenteService.ricercaUtenti(parametriRicercaUtente, this.idFunzione).subscribe(utenti => {
             this.onChangeListaElementi.emit(utenti);
           });
         } else {
@@ -166,7 +169,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
     if (inputCf.length < this.minCharsToRetrieveCF) {
         this.listaCodiciFiscali = [];
     } else if (inputCf.length === this.minCharsToRetrieveCF) {
-      this.utenteService.letturaCodiceFiscale(inputCf, this.amministrativoService.idFunzione).subscribe(data => {
+      this.utenteService.letturaCodiceFiscale(inputCf, this.idFunzione).subscribe(data => {
         this.listaCodiciFiscali = data;
       });
     } else {
@@ -194,8 +197,10 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
 
     for (const [key, value] of Object.entries(this.filtroGestioneUtentiApplicato)) {
       if (value !== undefined && value) {
-        if (typeof value === 'object') {
-          filtro[key] = moment(value).format('YYYY-MM-DD[T]HH:mm:ss');
+        if (['dataScadenzaDa', 'ultimoAccessoDa'].includes(key)) {
+          filtro[key] = moment(value).format(Utils.FORMAT_LOCAL_DATE_TIME);
+        } else if (['dataScadenzaA', 'ultimoAccessoA'].includes(key)) {
+          filtro[key] = moment(value).format(Utils.FORMAT_LOCAL_DATE_TIME_TO);
         } else {
           filtro[key] = value;
         }
@@ -204,7 +209,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
       }
     }
 
-    this.utenteService.ricercaUtenti(filtro, this.amministrativoService.idFunzione).pipe(map(listaUtenti => {
+    this.utenteService.ricercaUtenti(filtro, this.idFunzione).pipe(map(listaUtenti => {
       // Non invio la lista in caso di bad request
       if (listaUtenti) {
         this.onChangeListaElementi.emit(listaUtenti);

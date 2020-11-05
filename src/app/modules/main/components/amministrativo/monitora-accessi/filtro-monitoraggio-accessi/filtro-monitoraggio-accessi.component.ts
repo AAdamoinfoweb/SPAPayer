@@ -11,6 +11,8 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {UtenteService} from '../../../../../../services/utente.service';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
+import {Utils} from '../../../../../../utils/Utils';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-filtro-monitoraggio-accessi',
@@ -23,8 +25,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   readonly minCharsToRetrieveCF = 1;
   readonly minDateDDMMYYYY = '01/01/1900';
   readonly tipoData = ECalendarValue.String;
-  readonly formatoDataInput = 'DD/MM/YYYY';
-  readonly formatoDataBackend = 'YYYY-MM-DD';
+  readonly formatoData = Utils.FORMAT_DATE_CALENDAR;
 
   @Input()
   listaElementi: Array<Accesso> = [];
@@ -38,16 +39,19 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   dataDaSelezionata: string = null;
   dataASelezionata: string = null;
 
+  idFunzione;
+
   @Output()
   onChangeListaElementi: EventEmitter<any[]> = new EventEmitter<Accesso[]>();
 
   constructor(
-    private amministrativoService: AmministrativoService,
+    protected amministrativoService: AmministrativoService,
     private accessoService: AccessoService,
     private funzioneService: FunzioneService,
-    private utenteService: UtenteService
+    private utenteService: UtenteService,
+    protected route: ActivatedRoute
   ) {
-    super();
+    super(route, amministrativoService);
   }
 
   ngOnInit(): void {
@@ -72,7 +76,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     if (inputCf.length < this.minCharsToRetrieveCF) {
       this.listaIdUtenti = [];
     } else if (inputCf.length === this.minCharsToRetrieveCF) {
-      this.utenteService.letturaCodiceFiscale(inputCf, this.amministrativoService.idFunzione).subscribe(data => {
+      this.utenteService.letturaCodiceFiscale(inputCf, this.idFunzione).subscribe(data => {
         this.listaIdUtenti = data;
       });
     } else {
@@ -104,13 +108,13 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     parametriRicercaAccesso.funzioneId = this.funzioneSelezionata;
     parametriRicercaAccesso.codiceFiscale = this.idUtenteSelezionato || null;
     parametriRicercaAccesso.indirizzoIP = this.indirizzoIPSelezionato || null;
-    parametriRicercaAccesso.inizioSessione = this.dataDaSelezionata ? moment(this.dataDaSelezionata, this.formatoDataInput).format(this.formatoDataBackend) : null;
-    parametriRicercaAccesso.fineSessione = this.dataASelezionata ? moment(this.dataASelezionata, this.formatoDataInput).format(this.formatoDataBackend) : null;
+    parametriRicercaAccesso.inizioSessione = this.dataDaSelezionata ? moment(this.dataDaSelezionata, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    parametriRicercaAccesso.fineSessione = this.dataASelezionata ? moment(this.dataASelezionata, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
     return parametriRicercaAccesso;
   }
 
   cercaElementi(): void {
-    this.accessoService.recuperaAccessi(this.getParametriRicerca(), this.amministrativoService.idFunzione).subscribe(listaAccessi => {
+    this.accessoService.recuperaAccessi(this.getParametriRicerca(), this.idFunzione).subscribe(listaAccessi => {
       // Non invio la lista in caso di bad request
       if (listaAccessi) {
         this.onChangeListaElementi.emit(listaAccessi);

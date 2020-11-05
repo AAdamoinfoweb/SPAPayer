@@ -11,6 +11,7 @@ import {BannerService} from '../../../../../../services/banner.service';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.component';
 import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-filtro-gestione-banner',
@@ -31,8 +32,10 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
   @Output()
   onChangeListaElementi: EventEmitter<Banner[]> = new EventEmitter<Banner[]>();
 
-  constructor(private bannerService: BannerService, private amministrativoService: AmministrativoService) {
-    super();
+  idFunzione;
+
+  constructor(private bannerService: BannerService, protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
+    super(route, amministrativoService);
   }
 
   ngOnInit(): void {
@@ -76,9 +79,9 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
       filtro.attivo = false;
     }
     filtro.inizio = filtro.inizio ? moment(filtro.inizio, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-    filtro.fine = filtro.fine ? moment(filtro.fine, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    filtro.fine = filtro.fine ? moment(filtro.fine, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
 
-    this.bannerService.ricercaBanner(filtro, this.amministrativoService.idFunzione).subscribe(listaBanner => {
+    this.bannerService.ricercaBanner(filtro, this.idFunzione).subscribe(listaBanner => {
       // Non invio la lista in caso di bad request
       if (listaBanner) {
         this.onChangeListaElementi.emit(listaBanner);

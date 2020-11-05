@@ -7,13 +7,13 @@
       <div class="col-md-6 pb-2">
         <div class="row">
           <div class="col">
-            <label for="nomeEnte" class="title "[ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+            <label for="nomeEnte" class="title " [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
               Nome</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <input type="email" id="nomeEnte" name="nomeEnte" #nomeEnte="ngModel"
+            <input type="text" id="nomeEnte" name="nomeEnte" #nomeEnte="ngModel"
                    [(ngModel)]="datiEnte.nomeEnte" [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                    class="pt-0" autocomplete="off" aria-describedby="nomeHelpDescription"
                    [disabled]="funzione !== FunzioneGestioneEnum.AGGIUNGI">
@@ -31,14 +31,15 @@
       <div class="col-md-6 pb-2">
         <div class="row">
           <div class="col">
-            <label for="codiceFiscale" class="title">Codice Fiscale o Partita Iva</label>
+            <label for="codiceFiscale" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+              Codice Fiscale o Partita Iva</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
             <input type="text" id="codiceFiscale" name="codiceFiscale" #codiceFiscale="ngModel"
                    aria-describedby="codiceFiscaleHelpDescription"
-                   [(ngModel)]="datiEnte.cfPiva"
+                   [(ngModel)]="datiEnte.cfPiva" [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                    class="pt-0" autocomplete="off" [disabled]="funzione !== FunzioneGestioneEnum.AGGIUNGI">
           </div>
         </div>
@@ -52,5 +53,86 @@
       <!--      fine Codice Fiscale o P.IVA-->
     </div>
     <!--    fine Nome Ente, Codice Fiscale o P.IVA -->
+    <!--    inizio Descrizione, Logo -->
+    <div class="row mt-4 mb-0">
+      <!--    inizio Descrizione -->
+      <div class="col-md-10 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="descrizione" class="title ">
+              Descrizione</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+             <textarea
+               id="descrizione"
+               type="text"
+               name="descrizione"
+               autocomplete="off"
+               #descrizione="ngModel"
+               [(ngModel)]="datiEnte.descrizione" (ngModelChange)="formattaInput($event, 'descrizione')"
+               maxlength="255"
+               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+             ></textarea>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(descrizione)">Inserisci descrizione ente</p>
+            <p *ngIf="isCampoInvalido(descrizione)" class="text-invalid">{{getMessaggioErrore(nomeEnte)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--      fine Descrizione -->
+      <!--      inizio Logo -->
+      <div class="col-md-2 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="pathLogo" class="title ">
+              Logo</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <!--            img logo-->
+            <img [src]="datiEnte.pathLogo" id="img" (click)="showModalDialog()" id="pathLogo">
+            <!--            modale inserimento path logo -->
+<!--            <p-dialog header="Header" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}"-->
+<!--                      [baseZIndex]="10000"-->
+<!--                      [draggable]="false" [resizable]="false">-->
+<!--              <input type="text" id="pathLogo" name="pathLogo" #nomeEnte="ngModel"-->
+<!--                     [(ngModel)]="datiEnte.pathLogo"-->
+<!--                     class="pt-0" autocomplete="off" aria-describedby="pathLogoHelpDescription">-->
+<!--              <ng-template pTemplate="footer">-->
+<!--                <div class="row align-content-around">-->
+<!--                  <div class="col-6">-->
+<!--                    <button id="bottoneAnnulla" class="btn btn-secondary"-->
+<!--                            (click)="displayModal=false">Annulla-->
+<!--                    </button>-->
+<!--                  </div>-->
+<!--                  <div class="col-6 text-right">-->
+<!--                    <button id="bottoneOK" class="btn"-->
+<!--                            (click)="displayModal=false">Ok-->
+<!--                    </button>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </ng-template>-->
+<!--            </p-dialog>-->
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(nomeEnte)">Inserisci url logo</p>
+            <p *ngIf="isCampoInvalido(nomeEnte)" class="text-invalid">{{getMessaggioErrore(nomeEnte)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--      fine Logo -->
+    </div>
+    <!--    fine Decrizione, Logo -->
+<!--    inizio Dati referente -->
+
+<!--    fine Dati referente -->
   </form>
 </div>

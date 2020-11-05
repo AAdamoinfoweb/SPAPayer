@@ -26,8 +26,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   isMenuCarico = false;
   waiting = true;
 
-  basePathBackend = 'monitoraggioAccessi';
-  urlPagina = 'monitoraAccessi';
+  idFunzione;
 
   breadcrumbList = [];
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli accessi alle funzionalità amministrative e filtrarli';
@@ -205,7 +204,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
 
   popolaListaElementi(): void {
     this.listaAccessi = [];
-    this.accessoService.recuperaAccessi(null, this.amministrativoService.idFunzione).subscribe(listaAccessi => {
+    this.accessoService.recuperaAccessi(null, this.idFunzione).subscribe(listaAccessi => {
       // Mostro per primi gli accessi più recenti
       this.listaAccessi = this.ordinaDescrescenteAccessi(listaAccessi);
       this.tableData.rows = [];
@@ -220,7 +219,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   mostraDettaglioAccesso(rigaTabella) {
-    this.mostraDettaglioElemento(this.basePathBackend + '/dettaglioAccesso', rigaTabella.id.value);
+    this.mostraDettaglioElemento('/dettaglioAccesso', rigaTabella.id.value);
   }
 
 }
