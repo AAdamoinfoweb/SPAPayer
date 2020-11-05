@@ -214,10 +214,11 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   onChangeListaElementi(listaBannerFiltrati: Banner[]): void {
-    this.tableData.rows.length = 0;
+    this.tableData.rows = [];
     listaBannerFiltrati.forEach(banner => {
       this.tableData.rows.push(this.creaRigaTabella(banner));
     });
+    this.tempTableData = this.tableData;
   }
 
   getNumeroRecord(): string {

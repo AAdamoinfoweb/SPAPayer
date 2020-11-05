@@ -152,7 +152,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   onChangeListaElementi(listaEntiFiltrati: SintesiEnte[]): void {
     this.listaEnti = listaEntiFiltrati;
-    this.tableData.rows.length = 0;
+    this.tableData.rows = [];
     listaEntiFiltrati.forEach(ente => {
       this.tableData.rows.push(this.creaRigaTabella(ente));
     });
