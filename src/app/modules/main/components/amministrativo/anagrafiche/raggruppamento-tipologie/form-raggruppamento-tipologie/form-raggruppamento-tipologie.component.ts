@@ -7,6 +7,7 @@ import {HttpClient} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {ConfirmationService} from 'primeng/api';
 import {SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
+import {RaggruppamentoTipologiaServizioService} from '../../../../../../../services/RaggruppamentoTipologiaServizio.service';
 
 @Component({
   selector: 'app-form-raggruppamento-tipologie',
@@ -32,7 +33,8 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
               protected activatedRoute: ActivatedRoute,
               protected http: HttpClient,
               protected amministrativoService: AmministrativoService,
-              confirmationService: ConfirmationService) {
+              confirmationService: ConfirmationService,
+              private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
@@ -43,8 +45,12 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
       this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Raggruppamento Tipologie';
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli dei raggruppamenti relativi alle tipologie di servizio';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
-        // TODO logica per recupero informazioni
-
+        this.raggruppamentoTipologiaServizio.id = Number(this.activatedRoute.snapshot.paramMap.get('raggruppamentoTipologiaServizioId'));
+        this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(this.raggruppamentoTipologiaServizio.id, this.idFunzione).subscribe(listaRaggruppamentoTipologiaServizio => {
+          if (listaRaggruppamentoTipologiaServizio != null) {
+            this.raggruppamentoTipologiaServizio = listaRaggruppamentoTipologiaServizio[0];
+          }
+        });
         window.scrollTo(0, 0);
       }
       window.scrollTo(0, 0);
@@ -65,13 +71,13 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
   controllaTipoFunzione() {
     const url = this.activatedRoute.snapshot.url[1].path;
     switch (url) {
-      case 'dettaglioRaggruppamentoTipologie':
+      case 'dettaglioRaggruppamento':
         this.funzione = FunzioneGestioneEnum.DETTAGLIO;
         break;
-      case 'aggiungiRaggruppamentoTipologie':
+      case 'aggiungiRaggruppamento':
         this.funzione = FunzioneGestioneEnum.AGGIUNGI;
         break;
-      case 'modificaRaggruppamentoTipologie':
+      case 'modificaRaggruppamento':
         this.funzione = FunzioneGestioneEnum.MODIFICA;
         break;
     }
@@ -80,10 +86,17 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
   onClickSalva(): void {
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        // TODO richiamare operation inserimentoRaggruppamentoTipologiaServizio
+        this.raggruppamentoTipologiaServizioService.inserimentoRaggruppamentoTipologiaServizio(this.raggruppamentoTipologiaServizio, this.idFunzione).subscribe((raggruppamento) => {
+          if (raggruppamento != null) {
+            this.raggruppamentoTipologiaServizio = new RaggruppamentoTipologiaServizio();
+            this.isFormValido = false;
+          }
+        });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        // TODO richiamare operation modificaRaggruppamentoTipologiaServizio
+        this.raggruppamentoTipologiaServizioService.modificaRaggruppamentoTipologiaServizio(this.raggruppamentoTipologiaServizio, this.idFunzione).subscribe(() => {
+          this.isFormValido = false;
+        });
         break;
     }
   }

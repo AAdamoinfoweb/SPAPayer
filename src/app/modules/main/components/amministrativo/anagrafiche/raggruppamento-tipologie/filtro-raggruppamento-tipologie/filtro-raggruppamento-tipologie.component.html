@@ -40,11 +40,12 @@
       <!-- Bottoni -->
       <div class="row">
         <div class="col-6">
-          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroRaggruppamentoTipologieForm)"
+          <button type="button" id="bottonePulisci" class="btn btn-secondary"
+                  [disabled]="disabilitaBottone(filtroRaggruppamentoTipologieForm)"
                   (click)="pulisciFiltri(filtroRaggruppamentoTipologieForm)">Pulisci</button>
         </div>
         <div class="col-6 btn-find">
-          <button id="bottoneCerca" class="btn"
+          <button type="button" id="bottoneCerca" class="btn"
                   (click)="cercaElementi()">Cerca</button>
         </div>
       </div>

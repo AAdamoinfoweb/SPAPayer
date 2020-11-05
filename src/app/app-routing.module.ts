@@ -74,7 +74,9 @@ const routes: Routes = [
   {path: 'gestisciEnti/modificaEnte/:enteId', component: FormEnteComponent},
   {path: 'gestisciEnti/dettaglioEnte/:enteId', component: FormEnteComponent},
   {path: 'raggruppamentoTipologie', component: RaggruppamentoTipologieComponent},
-  {path: 'raggruppamentoTipologie/aggiungiRaggruppamento', component: FormRaggruppamentoTipologieComponent}
+  {path: 'raggruppamentoTipologie/aggiungiRaggruppamento', component: FormRaggruppamentoTipologieComponent},
+  {path: 'raggruppamentoTipologie/modificaRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
+  {path: 'raggruppamentoTipologie/dettaglioRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent}
 ];
 
 @NgModule({

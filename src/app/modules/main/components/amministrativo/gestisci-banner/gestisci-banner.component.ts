@@ -178,7 +178,11 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   getRigheFilePdf(righe: any[]) {
-    return righe;
+   righe.forEach(riga => {
+     riga.testo.value = riga.testo.value.replace(/<[^>]+>/g, '').replace('&nbsp;', ' ');
+   });
+
+   return righe;
   }
 
   getImmaginiFilePdf(): ImmaginePdf[] {

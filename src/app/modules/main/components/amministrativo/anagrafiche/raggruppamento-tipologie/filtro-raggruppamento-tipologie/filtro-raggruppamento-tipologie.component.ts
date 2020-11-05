@@ -5,6 +5,7 @@ import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {NgForm, NgModel} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
+import {RaggruppamentoTipologiaServizioService} from '../../../../../../../services/RaggruppamentoTipologiaServizio.service';
 
 @Component({
   selector: 'app-filtro-raggruppamento-tipologie',
@@ -23,7 +24,8 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
 
   idFunzione;
 
-  constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
+  constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute,
+              private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService) {
     super(route, amministrativoService);
   }
 
@@ -42,7 +44,7 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
     this.listaElementi.forEach(raggruppamentoTipologiaServizio => {
       this.opzioniFiltroRaggruppamentiTipologie.push({
         value: raggruppamentoTipologiaServizio.id,
-        label: raggruppamentoTipologiaServizio.nome
+        label: raggruppamentoTipologiaServizio.codice
       });
     });
   }
@@ -66,7 +68,9 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
   }
 
   cercaElementi(): void {
-    // TODO richiamare operation ricercaRaggruppamentoTipologiaServizio
+    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(this.filtroRaggruppamentiTipologieServizi, this.idFunzione).subscribe(listaRaggruppamentoTipologiaServizio => {
+      this.onChangeListaElementi.emit(listaRaggruppamentoTipologiaServizio);
+    });
   }
 
   disabilitaBottone(filtroForm: NgForm): boolean {
