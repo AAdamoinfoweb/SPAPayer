@@ -31,8 +31,8 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   readonly iconaGruppoEnti = 'assets/img/users-solid.svg#users-group';
 
   readonly funzioneGestioneEnti = '/enti';
-  basePathBackend = 'gestioneAnagrafiche';
-  urlPagina = 'livelliTerritoriali';
+
+  idFunzione;
 
   breadcrumbList = [];
 
@@ -108,7 +108,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
 
   popolaListaElementi() {
     this.listaLivelliTerritoriali = [];
-    this.livelloTerritorialeService.ricercaLivelliTerritoriali(null, this.amministrativoService.idFunzione).subscribe(listaLivelliTerritoriali => {
+    this.livelloTerritorialeService.ricercaLivelliTerritoriali(null, this.idFunzione).subscribe(listaLivelliTerritoriali => {
       this.listaLivelliTerritoriali = listaLivelliTerritoriali;
 
       this.tableData.rows = [];
@@ -163,7 +163,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   eliminaLivelliTerritorialiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.amministrativoService.idFunzione).subscribe(() => {
+          this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;

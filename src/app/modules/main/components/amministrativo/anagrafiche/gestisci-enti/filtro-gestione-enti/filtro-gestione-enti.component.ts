@@ -3,12 +3,8 @@ import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {NgForm, NgModel} from '@angular/forms';
-import {ParametriRicercaUtente} from '../../../../../model/utente/ParametriRicercaUtente';
 import {BottoneEnum} from '../../../../../../../enums/bottone.enum';
 import {NuovoPagamentoService} from '../../../../../../../services/nuovo-pagamento.service';
-import {FunzioneService} from '../../../../../../../services/funzione.service';
-import {UtenteService} from '../../../../../../../services/utente.service';
-import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Societa} from '../../../../../model/Societa';
 import {FiltroGestioneElementiComponent} from '../../../filtro-gestione-elementi.component';
 import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
@@ -16,6 +12,7 @@ import {ParametriRicercaEnte} from '../../../../../model/ente/ParametriRicercaEn
 import {Comune} from '../../../../../model/Comune';
 import {Provincia} from '../../../../../model/Provincia';
 import {EnteService} from '../../../../../../../services/ente.service';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-filtro-gestione-enti',
@@ -31,6 +28,8 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   opzioniFiltroComune: OpzioneSelect[] = [];
   opzioniFiltroProvincia: OpzioneSelect[] = [];
 
+  idFunzione;
+
   @Input()
   listaElementi: Array<any> = new Array<any>();
 
@@ -38,8 +37,8 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   onChangeListaElementi: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
-              private enteService: EnteService, private amministrativoService: AmministrativoService) {
-    super();
+              private enteService: EnteService, protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
+    super(route, amministrativoService);
   }
 
   ngOnInit(): void {
@@ -138,7 +137,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   }
 
   cercaElementi() {
-    this.enteService.ricercaEnti(this.filtroRicercaEnte, this.amministrativoService.idFunzione)
+    this.enteService.ricercaEnti(this.filtroRicercaEnte, this.idFunzione)
       .subscribe((listaEnti) => {
         this.onChangeListaElementi.emit(listaEnti);
       });

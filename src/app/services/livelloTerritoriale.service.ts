@@ -10,11 +10,11 @@ import {catchError, map} from 'rxjs/operators';
 })
 export class LivelloTerritorialeService {
 
-  private readonly gestioneAnagraficheBasePath = '/gestioneAnagrafiche';
+  private readonly gestioneAnagraficheBasePath = '/gestisciLivelliTerritoriali';
 
   private readonly livelloTerritorialeBaseUrl = this.gestioneAnagraficheBasePath + '/livelloTerritoriale';
 
-  private readonly eliminaLivelliTerritorialiurl = this.gestioneAnagraficheBasePath + '/eliminaLivelloTerritoriale';
+  private readonly eliminaLivelliTerritorialiurl = this.livelloTerritorialeBaseUrl + '/eliminaLivelloTerritoriale';
 
   constructor(private http: HttpClient) { }
 

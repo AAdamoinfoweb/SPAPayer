@@ -10,7 +10,7 @@ import {catchError, map} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AccessoService {
-  private readonly baseUrl = '/monitoraggioAccessi';
+  private readonly baseUrl = '/monitoraAccessi';
   private readonly letturaAccessiUrl = '/accessi';
 
   constructor(private http: HttpClient) { }

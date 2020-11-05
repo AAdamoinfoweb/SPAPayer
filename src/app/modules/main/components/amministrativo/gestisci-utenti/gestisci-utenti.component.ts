@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnChanges, OnInit, Renderer2, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
 import {TipoUtenteEnum} from '../../../../../enums/TipoUtente.enum';
@@ -7,13 +7,10 @@ import {UtenteService} from '../../../../../services/utente.service';
 import {RicercaUtente} from '../../../model/utente/RicercaUtente';
 import {map} from 'rxjs/operators';
 import * as moment from 'moment';
-import * as jsPDF from 'jspdf';
-import {Breadcrumb} from '../../../dto/Breadcrumb';
 import {ParametriRicercaUtente} from '../../../model/utente/ParametriRicercaUtente';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToolEnum} from '../../../../../enums/Tool.enum';
 import {OverlayService} from '../../../../../services/overlay.service';
-import {AmministrativoParentComponent} from "../amministrativo-parent.component";
 import {HttpClient} from "@angular/common/http";
 import {AmministrativoService} from "../../../../../services/amministrativo.service";
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
@@ -31,8 +28,8 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
-  basePathBackend = 'gestioneUtenti';
-  urlPagina = 'gestioneUtenti';
+  idFunzione;
+
   breadcrumbList = [];
 
   codiceFiscaleUtenteDaModificare: string;
@@ -110,7 +107,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   popolaListaElementi() {
     this.listaUtente = [];
     const parametriRicercaUtente = new ParametriRicercaUtente();
-    this.utenteService.ricercaUtenti(parametriRicercaUtente, this.amministrativoService.idFunzione).pipe(map(utenti => {
+    this.utenteService.ricercaUtenti(parametriRicercaUtente, this.idFunzione).pipe(map(utenti => {
       if (utenti != null) {
         utenti.forEach(utente => {
           this.listaUtente.push(utente);
@@ -265,6 +262,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   dettaglioUtente(row: any) {
-    this.mostraDettaglioElemento(this.basePathBackend + '/dettaglioUtentePermessi', row.id.value);
+    this.mostraDettaglioElemento('/dettaglioUtentePermessi', row.id.value);
   }
 }

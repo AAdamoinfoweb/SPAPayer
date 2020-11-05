@@ -21,6 +21,8 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
+  idFunzione;
+
   titoloPagina: string;
   tooltip: string;
   livelloTerritoriale: LivelloTerritoriale = new LivelloTerritoriale();
@@ -50,7 +52,7 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di un livello territoriale';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
         this.livelloTerritoriale.id = parseInt(this.activatedRoute.snapshot.paramMap.get('livelloterritorialeid'));
-        this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.livelloTerritoriale.id, this.idFunzioneB64).subscribe(listaLivelliTerritoriali => {
+        this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.livelloTerritoriale.id, this.idFunzione).subscribe(listaLivelliTerritoriali => {
           this.livelloTerritoriale = listaLivelliTerritoriali[0];
         });
       }
@@ -63,7 +65,7 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
   inizializzaBreadcrumbs() {
     const breadcrumbs: SintesiBreadcrumb[] = [];
     breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
-    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Livello Territoriale', 'livelliTerritoriali/' + this.idFunzioneB64));
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Livello Territoriale', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Livello Territoriale', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
@@ -86,12 +88,12 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
   onClickSalva(): void {
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        this.livelloTerritorialeService.aggiuntaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzioneB64).subscribe((livelloTerritoriale) => {
+        this.livelloTerritorialeService.aggiuntaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe((livelloTerritoriale) => {
           this.livelloTerritoriale = new LivelloTerritoriale();
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzioneB64).subscribe(() => {
+        this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe(() => {
         });
         break;
     }

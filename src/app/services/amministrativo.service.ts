@@ -1,13 +1,13 @@
 import {Injectable} from "@angular/core";
-import {AmministrativoParentComponent} from "../modules/main/components/amministrativo/amministrativo-parent.component";
+import {AsyncSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AmministrativoService {
-  idFunzione: string;
-
   mappaFunzioni = {};
+
+  asyncAmministrativoSubject: AsyncSubject<any> = new AsyncSubject<any>();
 
   constructor() {
   }

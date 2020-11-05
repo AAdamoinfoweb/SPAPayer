@@ -22,7 +22,7 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
-  urlPaginaGestione = '/gestisciBanner';
+  idFunzione;
 
   titoloPagina: string;
   tooltip: string;
@@ -47,7 +47,7 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di un banner';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
         this.datiBanner.id = Number(this.activatedRoute.snapshot.paramMap.get('bannerid'));
-        this.bannerService.dettaglioBanner(this.datiBanner.id, this.idFunzioneB64).subscribe(banner => {
+        this.bannerService.dettaglioBanner(this.datiBanner.id, this.idFunzione).subscribe(banner => {
           if (banner != null) {
             this.datiBanner = banner;
             this.datiBanner.inizio = this.datiBanner?.inizio ? moment(this.datiBanner.inizio).format(Utils.FORMAT_DATE_CALENDAR) : null;
@@ -65,7 +65,7 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
 
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Banner', this.urlPaginaGestione + '?funzione=' + this.idFunzioneB64));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Banner', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Banner', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
@@ -95,7 +95,7 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
       : null;
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        this.bannerService.inserimentoBanner(datiBanner, this.idFunzioneB64).subscribe((banner) => {
+        this.bannerService.inserimentoBanner(datiBanner, this.idFunzione).subscribe((banner) => {
           if (banner != null) {
             this.datiBanner = new Banner();
             this.isFormValido = false;
@@ -103,7 +103,7 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.bannerService.modificaBanner(datiBanner, this.idFunzioneB64).subscribe(() => {
+        this.bannerService.modificaBanner(datiBanner, this.idFunzione).subscribe(() => {
           this.isFormValido = false;
         });
         break;

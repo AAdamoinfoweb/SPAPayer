@@ -47,6 +47,8 @@ export class SidebarComponent implements OnInit {
           let idx = menuTemp.findIndex(o => o["mappaFunzioni"]);
           if (idx != -1 && menuTemp[idx]["mappaFunzioni"]) {
             this.amministrativoService.mappaFunzioni = JSON.parse(menuTemp[idx]["mappaFunzioni"]);
+            this.amministrativoService.asyncAmministrativoSubject.next(true);
+            this.amministrativoService.asyncAmministrativoSubject.complete();
             menuTemp.splice([idx], 1);
           }
           // orderBy posizione sotto menu dinamici
@@ -97,11 +99,7 @@ export class SidebarComponent implements OnInit {
       } else if (environment.menuLinks.map(value => value.nome).includes(item.nome)) {
         window.open(environment.menuLinks.find(value => value.nome === item.nome).url);
       } else {
-        let param = '';
-        if (item['isAmministrativo']) {
-          param = '?funzione=' + btoa(item.id);
-        }
-        this.router.navigateByUrl(item.route + param);
+        this.router.navigateByUrl(item.route);
       }
     } else {
       if (item['isExpanded']) {
