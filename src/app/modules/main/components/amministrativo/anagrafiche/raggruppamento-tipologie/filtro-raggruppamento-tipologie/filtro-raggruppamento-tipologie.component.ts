@@ -4,6 +4,7 @@ import {RaggruppamentoTipologiaServizio} from '../../../../../model/Raggruppamen
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {NgForm, NgModel} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-filtro-raggruppamento-tipologie',
@@ -20,8 +21,10 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
 
   filtroRaggruppamentiTipologieServizi: number = null;
 
-  constructor(private amministrativoService: AmministrativoService) {
-    super();
+  idFunzione;
+
+  constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
+    super(route, amministrativoService);
   }
 
   ngOnInit(): void {

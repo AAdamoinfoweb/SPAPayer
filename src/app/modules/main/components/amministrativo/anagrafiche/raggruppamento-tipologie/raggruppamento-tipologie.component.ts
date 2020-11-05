@@ -22,8 +22,7 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
 
   readonly tooltipTitolo = 'In questa pagina puoi visualizzare la lista dei raggruppamenti relativi alle tipologie di servizio e filtrarli';
 
-  basePathBackend = 'raggruppamentoTipologie';
-  urlPagina = 'raggruppamentoTipologie';
+  idFunzione;
   breadcrumbList = [];
 
   listaRaggruppamentiTipologiaServizio: Array<RaggruppamentoTipologiaServizio> = new Array<RaggruppamentoTipologiaServizio>();
@@ -107,12 +106,10 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        // TODO logica aggiungi elemento
-        // this.aggiungiElemento('/aggiungiRaggruppamentoTipologiaServizio');
+        this.aggiungiElemento('/aggiungiRaggruppamento');
         break;
       case ToolEnum.UPDATE:
-        // TODO logica modifica elemento
-        // this.modificaElementoSelezionato('/modificaRaggruppamentoTipologiaServizio', this.listaRaggruppamentiIdSelezionati[0]);
+        this.modificaElementoSelezionato('/modificaRaggruppamento', this.listaRaggruppamentiIdSelezionati[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaRaggruppamentiSelezionati();
@@ -175,7 +172,7 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   }
 
   mostraDettaglioRaggruppamentoTipologiaServizio(rigaCliccata: any) {
-    this.mostraDettaglioElemento(this.basePathBackend + '/dettaglioRaggruppamentoTipologiaServizio', rigaCliccata.id.value);
+    this.mostraDettaglioElemento('/dettaglioRaggruppamento', rigaCliccata.id.value);
   }
 
 }

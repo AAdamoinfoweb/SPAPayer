@@ -26,6 +26,7 @@ import {DettaglioAccessoComponent} from './modules/main/components/amministrativ
 import {PresaincaricopagamentoL1Component} from "./modules/main/components/presaincaricopagamentoL1/presaincaricopagamento-l1.component";
 import {FormEnteComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component";
 import {RaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/raggruppamento-tipologie.component';
+import {FormRaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -72,7 +73,8 @@ const routes: Routes = [
   {path: 'gestisciEnti/aggiungiEnte', component: FormEnteComponent},
   {path: 'gestisciEnti/modificaEnte/:enteId', component: FormEnteComponent},
   {path: 'gestisciEnti/dettaglioEnte/:enteId', component: FormEnteComponent},
-  {path: 'raggruppamentoTipologie', component: RaggruppamentoTipologieComponent}
+  {path: 'raggruppamentoTipologie', component: RaggruppamentoTipologieComponent},
+  {path: 'raggruppamentoTipologie/aggiungiRaggruppamento', component: FormRaggruppamentoTipologieComponent}
 ];
 
 @NgModule({

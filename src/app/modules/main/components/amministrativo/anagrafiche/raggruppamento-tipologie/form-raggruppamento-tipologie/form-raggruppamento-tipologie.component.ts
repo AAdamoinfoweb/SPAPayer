@@ -19,7 +19,7 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
-  urlPaginaGestione = '/raggruppamentoTipologie';
+  idFunzione;
 
   titoloPagina: string;
   tooltip: string;
@@ -57,7 +57,7 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
   inizializzaBreadcrumb() {
     const breadcrumbs: SintesiBreadcrumb[] = [];
     breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
-    breadcrumbs.push(new SintesiBreadcrumb( 'Raggruppamento Tipologie', 'raggruppamentoTipologie/' + this.idFunzioneB64));
+    breadcrumbs.push(new SintesiBreadcrumb( 'Raggruppamento Tipologie', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Raggruppamento Tipologie', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
