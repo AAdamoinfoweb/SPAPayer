@@ -10,6 +10,7 @@ import {map} from 'rxjs/operators';
 import {Utils} from '../../../../../../utils/Utils';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {OverlayService} from '../../../../../../services/overlay.service';
+import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
 
 @Component({
   selector: 'app-dati-utente',
@@ -17,6 +18,8 @@ import {OverlayService} from '../../../../../../services/overlay.service';
   styleUrls: ['./dati-utente.component.scss']
 })
 export class DatiUtenteComponent implements OnInit {
+  // enums consts
+  FunzioneGestioneEnum = FunzioneGestioneEnum;
 
   readonly minCharsToRetrieveCF = 1;
   listaCodiciFiscali: string[] = [];
@@ -33,8 +36,7 @@ export class DatiUtenteComponent implements OnInit {
 
   @Input() codiceFiscale: string;
   datiUtente: InserimentoModificaUtente;
-  isModificaUtente = false;
-  @Input() isDettaglio: boolean;
+  @Input() funzione: FunzioneGestioneEnum;
   @Input() idFunzione;
 
   @Output()
@@ -50,19 +52,14 @@ export class DatiUtenteComponent implements OnInit {
     this.datiUtente = new InserimentoModificaUtente();
     this.onValidaFormDatiUtenti.emit(true);
 
-    this.utenteService.utentePermessiAsyncSubject.subscribe((value) => {
-      if (value) {
-        if (this.codiceFiscale) {
-          this.isModificaUtente = true;
-          const parametriRicerca = new ParametriRicercaUtente();
-          parametriRicerca.codiceFiscale = this.codiceFiscale;
-          this.ricercaUtente(parametriRicerca);
-        } else {
-          this.codiceFiscale = null;
-          this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
-        }
-      }
-    });
+    if (this.codiceFiscale) {
+      const parametriRicerca = new ParametriRicercaUtente();
+      parametriRicerca.codiceFiscale = this.codiceFiscale;
+      this.ricercaUtente(parametriRicerca);
+    } else {
+      this.codiceFiscale = null;
+      this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    }
   }
 
   ricercaUtente(parametriRicerca: ParametriRicercaUtente): void {
@@ -134,7 +131,7 @@ export class DatiUtenteComponent implements OnInit {
     const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
     const ret = Utils.isBefore(dataDaControllare, dataSistema) ||
       campo?.errors != null;
-    return !this.isModificaUtente ? ret : false;
+    return this.funzione === FunzioneGestioneEnum.AGGIUNGI ? ret : false;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {

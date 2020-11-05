@@ -37,6 +37,8 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['../gestisci-utenti.component.scss', './form-utente-permessi.component.scss']
 })
 export class FormUtentePermessiComponent extends FormElementoParentComponent implements OnInit, AfterViewInit {
+  // enums consts
+  FunzioneGestioneEnum = FunzioneGestioneEnum;
 
   breadcrumbList = [];
 
@@ -51,7 +53,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   asyncSubject: AsyncSubject<string> = new AsyncSubject<string>();
   mapPermessi: Map<number, PermessoCompleto> = new Map();
   isFormDatiUtenteValido = false;
-  isModifica = false;
   isDettaglio = false;
   funzione: FunzioneGestioneEnum;
   idFunzione;
@@ -87,28 +88,33 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
-    if (snapshot.url[1].path === 'modificaUtentePermessi') {
-      this.isModifica = true;
-      this.funzione = FunzioneGestioneEnum.MODIFICA;
-      this.titoloPagina = `Modifica Utente/Permessi`;
-      this.tooltipTitle = `In questa pagina puoi modificare un utente e abilitarlo a specifici servizi`;
-      this.inizializzaBreadcrumbs();
+    this.controllaTipoFunzione(snapshot);
+    this.inizializzaTitoloPagina();
+    this.inizializzaBreadcrumbs();
+    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
       this.codiceFiscaleModifica = snapshot.paramMap.get('userid');
       this.letturaPermessi(this.codiceFiscaleModifica);
-    } else if (snapshot.url[1].path === 'dettaglioUtentePermessi') {
-      this.isDettaglio = true;
-      this.funzione = FunzioneGestioneEnum.DETTAGLIO;
-      this.titoloPagina = `Dettaglio Utente/Permessi`;
-      this.tooltipTitle = `In questa pagina puoi visualizzare il dettaglio di un utente`;
-      this.inizializzaBreadcrumbs();
-      this.codiceFiscaleModifica = snapshot.paramMap.get('userid');
-      this.letturaPermessi(this.codiceFiscaleModifica);
-    } else {
-      this.funzione = FunzioneGestioneEnum.AGGIUNGI;
-      this.inizializzaBreadcrumbs();
     }
-    this.utenteService.utentePermessiAsyncSubject.next(true);
-    this.utenteService.utentePermessiAsyncSubject.complete();
+  }
+
+  controllaTipoFunzione(snapshot: ActivatedRouteSnapshot) {
+    const url = snapshot.url[1].path;
+    switch (url) {
+      case 'dettaglioUtentePermessi':
+        this.funzione = FunzioneGestioneEnum.DETTAGLIO;
+        break;
+      case 'aggiungiUtentePermessi':
+        this.funzione = FunzioneGestioneEnum.AGGIUNGI;
+        break;
+      case 'modificaUtentePermessi':
+        this.funzione = FunzioneGestioneEnum.MODIFICA;
+        break;
+    }
+  }
+
+  inizializzaTitoloPagina() {
+    this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Utenti/Permessi';
+    this.tooltipTitle = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di un utente e i suoi permessi';
   }
 
   ngOnInit(): void {
@@ -165,10 +171,8 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     if (datiPermesso) {
       this.datiPermesso = datiPermesso;
       this.componentRef.instance.datiPermesso = datiPermesso;
-      if (this.isDettaglio) {
-        this.componentRef.instance.isDettaglio = this.isDettaglio;
-      }
     }
+    this.componentRef.instance.funzione = this.funzione;
     this.componentRef.instance.idFunzione = this.idFunzione;
     this.componentRef.changeDetectorRef.detectChanges();
     return indexPermesso;
@@ -189,7 +193,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   disabilitaBottone(): boolean {
     let controlloCodiceFiscale = false;
-    if (!this.isModifica && !this.isDettaglio) {
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       controlloCodiceFiscale = this.codiceFiscale == null || this.codiceFiscale === '';
     }
     return controlloCodiceFiscale || !this.isFormDatiUtenteValido || this.controlloDate() || this.controlloDatiPermesso();
@@ -205,9 +209,9 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
         !permesso.listaFunzioni.some((permessoFunzione) => permessoFunzione.permessoId != null) &&
         (Utils.isBefore(permesso.dataInizioValidita, dataSistema) ||
           Utils.isBefore(permesso.dataFineValidita, dataSistema))) : [];
-    const isDataAttivazioneBeforeDataSistema = this.isModifica ? false : Utils.isBefore(dataAttivazione, dataSistema);
+    const isDataAttivazioneBeforeDataSistema = this.funzione === FunzioneGestioneEnum.MODIFICA ? false : Utils.isBefore(dataAttivazione, dataSistema);
     const isDataScadenzaBeforeDataSistema = this.datiUtente.scadenza ? Utils.isBefore(dataScadenza, dataSistema) : false;
-    const ret = this.isDettaglio ? false : (isDataAttivazioneBeforeDataSistema || isDataScadenzaBeforeDataSistema || datePermesso.length > 0);
+    const ret = this.funzione === FunzioneGestioneEnum.DETTAGLIO ? false : (isDataAttivazioneBeforeDataSistema || isDataScadenzaBeforeDataSistema || datePermesso.length > 0);
     return ret;
   }
 
@@ -236,8 +240,8 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       moment(utente.scadenza, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     utente.attivazione = utente.attivazione ?
       moment(utente.attivazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-    const codiceFiscale = this.isModifica ? this.codiceFiscaleModifica : this.codiceFiscale;
-    if (!this.isModifica && !this.isDettaglio) {
+    const codiceFiscale = this.funzione === FunzioneGestioneEnum.MODIFICA ? this.codiceFiscaleModifica : this.codiceFiscale;
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       // controllo su codice fiscale
       this.utenteService.letturaCodiceFiscale(this.codiceFiscale, this.idFunzione).subscribe((data) => {
         const codiciFiscaleUpperCase = data.map(value => value.toUpperCase());
@@ -309,10 +313,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   }
 
   onClickAnnullaButton() {
-    let funzione = FunzioneGestioneEnum.AGGIUNGI;
-    if (this.isDettaglio) {
-      funzione = FunzioneGestioneEnum.DETTAGLIO;
-    }
-    this.onClickAnnulla(funzione);
+    this.onClickAnnulla(this.funzione);
   }
 }

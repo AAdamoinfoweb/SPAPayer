@@ -19,8 +19,8 @@
   <!-- sezione aggiungi dati-utente -->
   <app-dati-utente (onChangeDatiUtente)="onChangeDatiUtenti($event)"
                    (onValidaFormDatiUtenti)="isFormDatiUtenteValido = $event"
-                   [codiceFiscale]="codiceFiscaleModifica" [isDettaglio]="isDettaglio"
-                   [idFunzione]="idFunzione"></app-dati-utente>
+                   [codiceFiscale]="codiceFiscaleModifica"
+                   [idFunzione]="idFunzione" [funzione]="funzione"></app-dati-utente>
 
   <hr>
 
@@ -32,15 +32,15 @@
   <!-- Bottone sx -->
   <div class="col-2">
     <button id="buttonAnnulla" class="btn btn-secondary"
-            (click)="onClickAnnullaButton()">{{isDettaglio ? 'Indietro' : 'Annulla'}}</button>
+            (click)="onClickAnnullaButton()">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
   </div>
   <!-- Bottoni dx -->
   <div class="col-10 text-right">
-    <button *ngIf="!isDettaglio" id="buttonAggiungiPermessi" class="btn btn-secondary" [disabled]="disabilitaBottone()"
+    <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiPermessi" class="btn btn-secondary" [disabled]="disabilitaBottone()"
 
             (click)="aggiungiSezionePermesso()">Aggiungi permessi
     </button>
-    <button *ngIf="!isDettaglio" id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="onClickSalva()"
+    <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="onClickSalva()"
     >
       Salva
     </button>

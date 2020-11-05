@@ -20,6 +20,7 @@ import {NuovoPagamentoService} from '../../../../../../services/nuovo-pagamento.
 import {Ente} from '../../../../model/Ente';
 import {FiltroServizio} from '../../../../model/FiltroServizio';
 import {AsyncSubject} from 'rxjs';
+import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
 
 @Component({
   selector: 'app-dati-permesso',
@@ -29,6 +30,8 @@ import {AsyncSubject} from 'rxjs';
 
 
 export class DatiPermessoComponent implements OnInit {
+  // enums consts
+  FunzioneGestioneEnum = FunzioneGestioneEnum;
 
   @Input() indexSezionePermesso: number;
   @Input() codiceFiscale: string;
@@ -38,10 +41,9 @@ export class DatiPermessoComponent implements OnInit {
   readonly tipoData = ECalendarValue.String;
 
   @Input() datiPermesso: PermessoCompleto;
-  @Input() isDettaglio: boolean;
   @Input() idFunzione;
+  @Input() funzione: FunzioneGestioneEnum;
 
-  isModificaPermessi = false;
   listaPermessoFunzione: PermessoFunzione[] = [];
   mapPermessoFunzione: Map<number, PermessoFunzione> = new Map();
 
@@ -75,7 +77,6 @@ export class DatiPermessoComponent implements OnInit {
       this.datiPermesso.dataInizioValidita = moment().format(Utils.FORMAT_DATE_CALENDAR);
     } else {
       // init spinner modifica e dettaglio per lettura permessi
-      this.isModificaPermessi = true;
       this.letturaSocieta(this.datiPermesso.societaId).subscribe((value) => {
         const mapPermessoFunzioni: Map<number, PermessoFunzione> =
           new Map(this.datiPermesso.listaFunzioni.map(permessoFunzione => [permessoFunzione.funzioneId, permessoFunzione]));
@@ -204,7 +205,7 @@ export class DatiPermessoComponent implements OnInit {
     const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
     const ret = Utils.isBefore(dataDaControllare, dataSistema) ||
       campo?.errors != null;
-    return !this.isModificaPermessi ? ret : false;
+    return this.funzione === FunzioneGestioneEnum.AGGIUNGI ? ret : false;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -223,7 +224,7 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   onClickDeleteIcon(event) {
-    if (!this.isModificaPermessi) {
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       this.onDeletePermesso.emit(this.indexSezionePermesso);
     } else {
       let mapPermessoFunzione: Map<number, PermessoFunzione> = new Map<number, PermessoFunzione>();
@@ -254,7 +255,7 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   onChangeCheckBox($event: CheckboxChange, funzione: Funzione) {
-    if (!this.isModificaPermessi) {
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       if (this.mapPermessoFunzione.has(funzione.id) && $event.checked === false) {
         this.mapPermessoFunzione.delete(funzione.id);
       } else if ($event.checked === true) {

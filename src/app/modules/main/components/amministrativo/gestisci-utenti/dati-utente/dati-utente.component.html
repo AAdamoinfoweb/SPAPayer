@@ -5,20 +5,20 @@
       <div class="col-md-4 pb-2">
         <div class="row">
           <div class="col">
-            <label for="codiceFiscaleId" [ngClass]="{'title': true, 'required': !isModificaUtente && !isDettaglio}">Codice fiscale</label>
+            <label for="codiceFiscaleId" [ngClass]="{'title': true, 'required': funzione === FunzioneGestioneEnum.AGGIUNGI}">Codice fiscale</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
             <input type="email" id="codiceFiscaleId" name="codiceFiscale" #codicefiscaleinput="ngModel"
                    pattern="^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$"
-                   [(ngModel)]="codiceFiscale" [required]="!isModificaUtente  && !isDettaglio" (ngModelChange)="controlloCodiceFiscale($event)"
-                   class="pt-0" autocomplete="off" aria-describedby="codiceFiscaleIdHelpDescription" [disabled]="isModificaUtente || isDettaglio">
+                   [(ngModel)]="codiceFiscale" [required]="funzione === FunzioneGestioneEnum.AGGIUNGI" (ngModelChange)="controlloCodiceFiscale($event)"
+                   class="pt-0" autocomplete="off" aria-describedby="codiceFiscaleIdHelpDescription" [disabled]="funzione !== FunzioneGestioneEnum.AGGIUNGI">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p *ngIf="(!isModificaUtente && !isDettaglio) && (!codiceFiscaleExists || codiceFiscale.length < 16)" [ngClass]="{'text-muted': !isCampoInvalido(codicefiscaleinput), 'text-invalid': isCampoInvalido(codicefiscaleinput)}">
+            <p *ngIf="(funzione === FunzioneGestioneEnum.AGGIUNGI) && (!codiceFiscaleExists || codiceFiscale.length < 16)" [ngClass]="{'text-muted': !isCampoInvalido(codicefiscaleinput), 'text-invalid': isCampoInvalido(codicefiscaleinput)}">
               {{setPlaceholder(codicefiscaleinput, 'string')}}
             </p>
           </div>
@@ -34,12 +34,12 @@
           <div class="col">
             <input type="text" id="nomeUtente" name="nome" #nomeInput="ngModel" aria-describedby="nomeUtenteHelpDescription"
                    [(ngModel)]="datiUtente.nome"
-                   class="pt-0" autocomplete="off" [disabled]="isDettaglio">
+                   class="pt-0" autocomplete="off" [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p *ngIf="!isDettaglio" [ngClass]="{'text-muted': !isCampoInvalido(nomeInput), 'text-invalid': isCampoInvalido(nomeInput)}">
+            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" [ngClass]="{'text-muted': !isCampoInvalido(nomeInput), 'text-invalid': isCampoInvalido(nomeInput)}">
               {{setPlaceholder(nomeInput, 'string')}}
             </p>
           </div>
@@ -55,12 +55,12 @@
           <div class="col">
             <input type="text" id="cognomeUtente" name="cognome" #cognomeInput="ngModel" aria-describedby="cognomeUtenteHelpDescription"
                    [(ngModel)]="datiUtente.cognome"
-                   class="pt-0" autocomplete="off" [disabled]="isDettaglio">
+                   class="pt-0" autocomplete="off" [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p *ngIf="!isDettaglio" [ngClass]="{'text-muted': !isCampoInvalido(cognomeInput), 'text-invalid': isCampoInvalido(cognomeInput)}">
+            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" [ngClass]="{'text-muted': !isCampoInvalido(cognomeInput), 'text-invalid': isCampoInvalido(cognomeInput)}">
               {{setPlaceholder(cognomeInput, 'string')}}
             </p>
           </div>
@@ -80,12 +80,12 @@
             <input type="email" id="emailUtente" name="email" #emailInput="ngModel"
                    [pattern]="emailRegex"
                    [(ngModel)]="datiUtente.email"
-                   class="pt-0" autocomplete="off" aria-describedby="emailUtenteHelpDescription" [disabled]="isDettaglio">
+                   class="pt-0" autocomplete="off" aria-describedby="emailUtenteHelpDescription" [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p *ngIf="!isDettaglio" [ngClass]="{'text-muted': !isCampoInvalido(emailInput), 'text-invalid': isCampoInvalido(emailInput)}">
+            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" [ngClass]="{'text-muted': !isCampoInvalido(emailInput), 'text-invalid': isCampoInvalido(emailInput)}">
               {{setPlaceholder(emailInput, 'email')}}
             </p>
           </div>
@@ -102,12 +102,12 @@
             <input type="text" id="telefonoUtente" name="telefono" #telefonoInput="ngModel"
                    pattern="^(\\+[0-9]{2,2})?[0-9]{9-11}$"
                    [(ngModel)]="datiUtente.telefono"
-                   class="pt-0" autocomplete="off" aria-describedby="telefonoUtenteHelpDescription" [disabled]="isDettaglio">
+                   class="pt-0" autocomplete="off" aria-describedby="telefonoUtenteHelpDescription" [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p *ngIf="!isDettaglio" [ngClass]="{'text-muted': !isCampoInvalido(telefonoInput), 'text-invalid': isCampoInvalido(telefonoInput)}">
+            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" [ngClass]="{'text-muted': !isCampoInvalido(telefonoInput), 'text-invalid': isCampoInvalido(telefonoInput)}">
               {{setPlaceholder(telefonoInput, 'string')}}
             </p>
           </div>
@@ -122,7 +122,7 @@
         <div class="row">
           <div [ngClass]="{'col calendar-wrapper': true}">
             <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerAttivazione)"
-                 [ngClass]="{'disabled': isModificaUtente || isDettaglio}">
+                 [ngClass]="{'disabled': funzione !== FunzioneGestioneEnum.AGGIUNGI}">
               <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
             </svg>
             <dp-date-picker
@@ -145,13 +145,13 @@
               name="attivazione"
               #datePickerAttivazione
               (click)="isCalendarOpen = false"
-              [ngClass]="{'disabled': isModificaUtente || isDettaglio}"
+              [ngClass]="{'disabled': funzione !== FunzioneGestioneEnum.AGGIUNGI}"
             ></dp-date-picker>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p *ngIf="!isModificaUtente || !isDettaglio" [ngClass]="{'text-muted': !isCampoInvalido(attivazioneInput), 'text-invalid': isCampoInvalido(attivazioneInput)}">
+            <p *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI" [ngClass]="{'text-muted': !isCampoInvalido(attivazioneInput), 'text-invalid': isCampoInvalido(attivazioneInput)}">
               {{setPlaceholder(attivazioneInput, 'date')}}
             </p>
           </div>
@@ -166,7 +166,7 @@
         <div class="row">
           <div class="col calendar-wrapper">
             <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenza)"
-                 [ngClass]="{'disabled': isDettaglio}">
+                 [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}">
               <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
             </svg>
             <dp-date-picker
@@ -188,13 +188,13 @@
               name="scadenza"
               #datePickerScadenza
               (click)="isCalendarOpen = false"
-              [ngClass]="{'disabled': isDettaglio}"
+              [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
             ></dp-date-picker>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p *ngIf="!isDettaglio" [ngClass]="{'text-muted': !isCampoInvalido(scadenzaInput), 'text-invalid': isCampoInvalido(scadenzaInput)}">
+            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" [ngClass]="{'text-muted': !isCampoInvalido(scadenzaInput), 'text-invalid': isCampoInvalido(scadenzaInput)}">
               {{setPlaceholder(scadenzaInput, 'date')}}
             </p>
           </div>
