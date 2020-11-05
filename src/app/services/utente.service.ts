@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {AsyncSubject, Observable, of} from 'rxjs';
+import {AsyncSubject, BehaviorSubject, Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
@@ -16,7 +16,7 @@ export class UtenteService {
   private readonly letturaCodiceFiscaleUtenteUrl = '/codiceFiscale';
 
   codiceFiscaleEvent: EventEmitter<string> = new EventEmitter<string>();
-  utentePermessiAsyncSubject: AsyncSubject<any> = new AsyncSubject<any>();
+  utentePermessiAsyncSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   constructor(private http: HttpClient) {
   }
