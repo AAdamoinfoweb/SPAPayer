@@ -44,7 +44,7 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
     this.listaElementi.forEach(raggruppamentoTipologiaServizio => {
       this.opzioniFiltroRaggruppamentiTipologie.push({
         value: raggruppamentoTipologiaServizio.id,
-        label: raggruppamentoTipologiaServizio.codice
+        label: raggruppamentoTipologiaServizio.nome
       });
     });
   }
