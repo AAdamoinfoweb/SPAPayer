@@ -31,6 +31,7 @@ import { DatiEnteComponent } from './components/amministrativo/anagrafiche/gesti
 import { FormEnteComponent } from './components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component';
 import {DatiRaggruppamentoTipologieComponent} from './components/amministrativo/anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
+import { GestisciCampoTipologiaServizioComponent } from './components/amministrativo/gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import {FormRaggruppamentoTipologieComponent} from './components/amministrativo/
     DatiEnteComponent,
     FormEnteComponent,
     DatiRaggruppamentoTipologieComponent,
-    FormRaggruppamentoTipologieComponent
+    FormRaggruppamentoTipologieComponent,
+    GestisciCampoTipologiaServizioComponent
   ],
   imports: [
     CommonModule,
