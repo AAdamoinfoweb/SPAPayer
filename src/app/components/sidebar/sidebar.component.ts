@@ -41,6 +41,7 @@ export class SidebarComponent implements OnInit {
             localStorage.setItem('email', info.email);
           } else {
             this.isUtenteAnonimo = true;
+            // next = false per utente anonimo
             this.amministrativoService.asyncAmministrativoSubject.next(false);
             this.amministrativoService.asyncAmministrativoSubject.complete();
           }
@@ -49,9 +50,14 @@ export class SidebarComponent implements OnInit {
           let idx = menuTemp.findIndex(o => o["mappaFunzioni"]);
           if (idx != -1 && menuTemp[idx]["mappaFunzioni"]) {
             this.amministrativoService.mappaFunzioni = JSON.parse(menuTemp[idx]["mappaFunzioni"]);
+            // next = true per utente amministrativo
             this.amministrativoService.asyncAmministrativoSubject.next(true);
             this.amministrativoService.asyncAmministrativoSubject.complete();
             menuTemp.splice([idx], 1);
+          } else {
+            // next = false per utente autenticato senza permessi amministrativi
+            this.amministrativoService.asyncAmministrativoSubject.next(false);
+            this.amministrativoService.asyncAmministrativoSubject.complete();
           }
           // orderBy posizione sotto menu dinamici
           let posizione = 3;
