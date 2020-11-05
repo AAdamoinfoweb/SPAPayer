@@ -84,11 +84,9 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
   }
 
   onClickSalva(): void {
-    const raggruppamentoTipologiaServizio = {...this.raggruppamentoTipologiaServizio};
-    delete raggruppamentoTipologiaServizio.id;
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        this.raggruppamentoTipologiaServizioService.inserimentoRaggruppamentoTipologiaServizio(raggruppamentoTipologiaServizio, this.idFunzione).subscribe((raggruppamento) => {
+        this.raggruppamentoTipologiaServizioService.inserimentoRaggruppamentoTipologiaServizio(this.raggruppamentoTipologiaServizio, this.idFunzione).subscribe((raggruppamento) => {
           if (raggruppamento != null) {
             this.raggruppamentoTipologiaServizio = new RaggruppamentoTipologiaServizio();
             this.isFormValido = false;
@@ -96,7 +94,7 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.raggruppamentoTipologiaServizioService.modificaRaggruppamentoTipologiaServizio(raggruppamentoTipologiaServizio, this.idFunzione).subscribe(() => {
+        this.raggruppamentoTipologiaServizioService.modificaRaggruppamentoTipologiaServizio(this.raggruppamentoTipologiaServizio, this.idFunzione).subscribe(() => {
           this.isFormValido = false;
         });
         break;
