@@ -13,6 +13,8 @@ import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {RaggruppamentoTipologiaServizio} from '../../../../model/RaggruppamentoTipologiaServizio';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
+import {Utils} from '../../../../../../utils/Utils';
+import {TipoModaleEnum} from "../../../../../../enums/tipoModale.enum";
 
 @Component({
   selector: 'app-raggruppamento-tipologie',
@@ -136,8 +138,19 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     }
   }
 
-  eliminaRaggruppamentiSelezionati() {
-    // TODO richiamare operation eliminaRaggruppamentoTipologiaServizio
+  eliminaRaggruppamentiSelezionati(): void {
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.raggruppamentoTipologiaServizioService.eliminaRaggruppamentoTipologiaServizio(this.listaRaggruppamentiIdSelezionati, this.idFunzione).subscribe(() => {
+            this.popolaListaElementi();
+            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+          });
+          this.selectionElementi = [];
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {

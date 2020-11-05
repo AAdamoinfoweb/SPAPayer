@@ -12,6 +12,7 @@ export class RaggruppamentoTipologiaServizioService {
 
   private readonly raggruppamentoTipologieBasePath = '/raggruppamentoTipologie';
   private readonly baseUrl = this.raggruppamentoTipologieBasePath + '/raggruppamentoTipologiaServizio';
+  private readonly eliminaRaggruppamentoUrl = this.baseUrl + '/eliminaRaggruppamentoTipologiaServizio';
 
   constructor(private http: HttpClient) { }
 
@@ -67,6 +68,26 @@ export class RaggruppamentoTipologiaServizioService {
     h = h.append('idFunzione', idFunzione);
 
     return this.http.put(`${url}/${raggruppamentoTipologiaServizio.id}`, raggruppamentoTipologiaServizio, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  eliminaRaggruppamentoTipologiaServizio(listaRaggruppamentoTipologiaServizioId: Array<number>, idFunzione: string): Observable<any> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.post(environment.bffBaseUrl + this.eliminaRaggruppamentoUrl, listaRaggruppamentoTipologiaServizioId, {
       headers: h,
       withCredentials: true
     })
