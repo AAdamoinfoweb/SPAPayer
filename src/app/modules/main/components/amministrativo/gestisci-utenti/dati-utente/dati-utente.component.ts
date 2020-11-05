@@ -50,16 +50,17 @@ export class DatiUtenteComponent implements OnInit {
     this.datiUtente = new InserimentoModificaUtente();
     this.onValidaFormDatiUtenti.emit(true);
 
-    this.utenteService.utentePermessiAsyncSubject.subscribe(() => {
-
-      if (this.codiceFiscale) {
-        this.isModificaUtente = true;
-        const parametriRicerca = new ParametriRicercaUtente();
-        parametriRicerca.codiceFiscale = this.codiceFiscale;
-        this.ricercaUtente(parametriRicerca);
-      } else {
-        this.codiceFiscale = null;
-        this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    this.utenteService.utentePermessiAsyncSubject.subscribe((value) => {
+      if (value) {
+        if (this.codiceFiscale) {
+          this.isModificaUtente = true;
+          const parametriRicerca = new ParametriRicercaUtente();
+          parametriRicerca.codiceFiscale = this.codiceFiscale;
+          this.ricercaUtente(parametriRicerca);
+        } else {
+          this.codiceFiscale = null;
+          this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
+        }
       }
     });
   }
@@ -173,7 +174,7 @@ export class DatiUtenteComponent implements OnInit {
   }
 
   controlloCodiceFiscale($event) {
-      this.utenteService.codiceFiscaleEvent.emit($event);
+    this.utenteService.codiceFiscaleEvent.emit($event);
   }
 
 }

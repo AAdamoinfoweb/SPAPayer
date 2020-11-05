@@ -69,6 +69,8 @@ import {MonitoraAccessiComponent} from './modules/main/components/amministrativo
 import {FiltroMonitoraggioAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/filtro-monitoraggio-accessi/filtro-monitoraggio-accessi.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {ParseHtmlPipe} from './pipe/parseHtml-pipe';
+import {RaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/raggruppamento-tipologie.component';
+import {FiltroRaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/filtro-raggruppamento-tipologie/filtro-raggruppamento-tipologie.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +128,9 @@ import {ParseHtmlPipe} from './pipe/parseHtml-pipe';
     SpinnerOverlayComponent,
     MonitoraAccessiComponent,
     FiltroMonitoraggioAccessiComponent,
-    ParseHtmlPipe
+    ParseHtmlPipe,
+    RaggruppamentoTipologieComponent,
+    FiltroRaggruppamentoTipologieComponent
   ],
   imports: [
     HttpClientModule,

@@ -1,0 +1,57 @@
+<span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
+<div class="ml-3">
+  <form #datiRaggruppamentoTipologieForm="ngForm" (input)="onChangeForm(datiRaggruppamentoTipologieForm)">
+    <!-- Nome -->
+    <div class="row mt-4 mb-0">
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="nomeRaggruppamentoTipologiaServizio"
+                   [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Nome</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input id="nomeRaggruppamentoTipologiaServizio" type="text" name="nome"
+              autocomplete="off" #nomeRaggruppamentoInput="ngModel"
+              [(ngModel)]="raggruppamentoTipologiaServizio.nome"
+              [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+            />
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(nomeRaggruppamentoInput)">Inserisci testo</p>
+            <p *ngIf="isCampoInvalido(nomeRaggruppamentoInput)" class="text-invalid">{{getMessaggioErrore(nomeRaggruppamentoInput)}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Descrizione -->
+    <div class="col-12 pb-2">
+      <div class="col pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="descrizioneRaggruppamentoTipologiaServizio" class="title">Descrizione</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <textarea id="descrizioneRaggruppamentoTipologiaServizio" name="descrizione"
+              autocomplete="off" #descrizioneRaggruppamentoInput="ngModel" maxlength="255"
+              [(ngModel)]="raggruppamentoTipologiaServizio.descrizione"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"></textarea>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(descrizioneRaggruppamentoInput)">Inserisci testo</p>
+            <p *ngIf="isCampoInvalido(descrizioneRaggruppamentoInput)" class="text-invalid">{{getMessaggioErrore(descrizioneRaggruppamentoInput)}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
