@@ -93,9 +93,10 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     this.listaRaggruppamentiTipologiaServizio = [];
 
     this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(null, this.idFunzione).subscribe(listaRaggruppamentoTipologiaServizio => {
+      this.listaRaggruppamentiTipologiaServizio = listaRaggruppamentoTipologiaServizio;
+
       this.tableData.rows = [];
-      listaRaggruppamentoTipologiaServizio.forEach(raggruppamentoTipologiaServizio => {
-        this.listaRaggruppamentiTipologiaServizio.push(raggruppamentoTipologiaServizio);
+      this.listaRaggruppamentiTipologiaServizio.forEach(raggruppamentoTipologiaServizio => {
         this.tableData.rows.push(this.creaRigaTabella(raggruppamentoTipologiaServizio));
       });
       this.tempTableData = Object.assign({}, this.tableData);
