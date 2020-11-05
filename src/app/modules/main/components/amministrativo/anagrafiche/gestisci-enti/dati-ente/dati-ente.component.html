@@ -1,4 +1,3 @@
-<span>Tutti i campi contrassegnati con * sono obbligatori</span>
 <div class="ml-3">
   <form #datiEnteForm="ngForm" (input)="onChangeForm(datiEnteForm)">
     <!--    inizio Nome Ente, Codice Fiscale o P.IVA -->
@@ -16,7 +15,7 @@
             <input type="text" id="nomeEnte" name="nomeEnte" #nomeEnte="ngModel"
                    [(ngModel)]="datiEnte.nomeEnte" [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                    class="pt-0" autocomplete="off" aria-describedby="nomeHelpDescription"
-                   [disabled]="funzione !== FunzioneGestioneEnum.AGGIUNGI">
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
           </div>
         </div>
         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
@@ -31,7 +30,8 @@
       <div class="col-md-6 pb-2">
         <div class="row">
           <div class="col">
-            <label for="codiceFiscale" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+            <label for="codiceFiscale" class="title"
+                   [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
               Codice Fiscale o Partita Iva</label>
           </div>
         </div>
@@ -39,13 +39,14 @@
           <div class="col">
             <input type="text" id="codiceFiscale" name="codiceFiscale" #codiceFiscale="ngModel"
                    aria-describedby="codiceFiscaleHelpDescription"
+                   [pattern]="codiceFiscalPIvaRegex"
                    [(ngModel)]="datiEnte.cfPiva" [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                   class="pt-0" autocomplete="off" [disabled]="funzione !== FunzioneGestioneEnum.AGGIUNGI">
+                   class="pt-0" autocomplete="off" [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
           </div>
         </div>
         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <div class="col">
-            <p *ngIf="!isCampoInvalido(codiceFiscale)">Inserisci nome ente</p>
+            <p *ngIf="!isCampoInvalido(codiceFiscale)">Inserisci codice fiscale o p.iva ente</p>
             <p *ngIf="isCampoInvalido(codiceFiscale)" class="text-invalid">{{getMessaggioErrore(codiceFiscale)}}</p>
           </div>
         </div>
@@ -95,44 +96,255 @@
         </div>
         <div class="row">
           <div class="col">
-            <!--            img logo-->
-            <img [src]="datiEnte.pathLogo" id="img" (click)="showModalDialog()" id="pathLogo">
-            <!--            modale inserimento path logo -->
-<!--            <p-dialog header="Header" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}"-->
-<!--                      [baseZIndex]="10000"-->
-<!--                      [draggable]="false" [resizable]="false">-->
-<!--              <input type="text" id="pathLogo" name="pathLogo" #nomeEnte="ngModel"-->
-<!--                     [(ngModel)]="datiEnte.pathLogo"-->
-<!--                     class="pt-0" autocomplete="off" aria-describedby="pathLogoHelpDescription">-->
-<!--              <ng-template pTemplate="footer">-->
-<!--                <div class="row align-content-around">-->
-<!--                  <div class="col-6">-->
-<!--                    <button id="bottoneAnnulla" class="btn btn-secondary"-->
-<!--                            (click)="displayModal=false">Annulla-->
-<!--                    </button>-->
-<!--                  </div>-->
-<!--                  <div class="col-6 text-right">-->
-<!--                    <button id="bottoneOK" class="btn"-->
-<!--                            (click)="displayModal=false">Ok-->
-<!--                    </button>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </ng-template>-->
-<!--            </p-dialog>-->
+            <input type="text" id="pathLogo" name="pathLogo" #pathLogo="ngModel"
+                   [(ngModel)]="datiEnte.pathLogo"
+                   class="pt-0" autocomplete="off" aria-describedby="nomeHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
           </div>
         </div>
         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <div class="col">
-            <p *ngIf="!isCampoInvalido(nomeEnte)">Inserisci url logo</p>
-            <p *ngIf="isCampoInvalido(nomeEnte)" class="text-invalid">{{getMessaggioErrore(nomeEnte)}}</p>
+            <p *ngIf="!isCampoInvalido(pathLogo)">Inserisci url logo</p>
+            <p *ngIf="isCampoInvalido(pathLogo)" class="text-invalid">{{getMessaggioErrore(pathLogo)}}</p>
           </div>
         </div>
       </div>
       <!--      fine Logo -->
     </div>
     <!--    fine Decrizione, Logo -->
-<!--    inizio Dati referente -->
-
-<!--    fine Dati referente -->
+    <!--    inizio Dati referente -->
+      <!--      sotto-titolo -->
+    <div class="row mt-4 mb-0">
+      <h3 class="page-subtitle pl-1"><strong>Dati referente</strong></h3>
+    </div>
+<!--      inizio Nome, Cognome -->
+    <div class="row mt-4 mb-0">
+<!--      inizio Nome -->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="nomeReferente" class="title ">
+              Nome</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="nomeReferente" name="nomeReferente" #nomeReferente="ngModel"
+                   [(ngModel)]="datiEnte.nomeReferente"
+                   class="pt-0" autocomplete="off" aria-describedby="nomeReferenteHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(nomeReferente)">Inserisci nome referente</p>
+            <p *ngIf="isCampoInvalido(nomeReferente)" class="text-invalid">{{getMessaggioErrore(nomeReferente)}}</p>
+          </div>
+        </div>
+      </div>
+<!--      fine Nome -->
+<!--      inizio Cognome -->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="cognomeReferente" class="title " >
+              Cognome</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="cognomeReferente" name="cognomeReferente" #cognomeReferente="ngModel"
+                   [(ngModel)]="datiEnte.cognomeReferente"
+                   class="pt-0" autocomplete="off" aria-describedby="cognomeReferenteHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(cognomeReferente)">Inserisci cognome referente</p>
+            <p *ngIf="isCampoInvalido(cognomeReferente)" class="text-invalid">{{getMessaggioErrore(cognomeReferente)}}</p>
+          </div>
+        </div>
+      </div>
+<!--      fine Cognome -->
+    </div>
+<!--      fine Nome, Cognome -->
+    <!--      inizio Email, Telefono -->
+    <div class="row mt-4 mb-0">
+      <!--      inizio Email -->
+      <div class="col-md-8 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="emailReferente" class="title ">
+              Email</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="emailReferente" name="emailReferente" #emailReferente="ngModel"
+                   [(ngModel)]="datiEnte.emailReferente"
+                   class="pt-0" autocomplete="off" aria-describedby="emailReferenteHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(emailReferente)">Inserisci email referente</p>
+            <p *ngIf="isCampoInvalido(emailReferente)" class="text-invalid">{{getMessaggioErrore(emailReferente)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--      fine Email -->
+      <!--      inizio Telefono -->
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="telefonoReferente" class="title ">
+              Telefono</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="telefonoReferente" name="telefonoReferente" #telefonoReferente="ngModel"
+                   [pattern]="telefonoRegex"
+                   [(ngModel)]="datiEnte.telefonoReferente"
+                   class="pt-0" autocomplete="off" aria-describedby="telefonoReferenteHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(telefonoReferente)">Inserisci telefono referente</p>
+            <p *ngIf="isCampoInvalido(telefonoReferente)" class="text-invalid">{{getMessaggioErrore(telefonoReferente)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--      fine Telefono -->
+    </div>
+    <!--      fine Email, Telefono -->
+    <!-- inizio Società, Livello Territoriale, Comune, Provincia -->
+    <div class="row mt-2 mb-0">
+      <!--       inizio select società -->
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="selectSocieta" class="title"  [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+              Società</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <select
+              id="selectSocieta"
+              name="societaId"
+              #societaInput="ngModel"
+              [(ngModel)]="datiEnte.societaId"
+              [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+            >
+              <option [ngValue]="null" selected>Seleziona</option>
+              <option *ngFor="let item of opzioniFiltroSocieta" [ngValue]="item.value">{{item.label}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(societaInput)">Seleziona società</p>
+            <p *ngIf="isCampoInvalido(societaInput)" class="text-invalid">{{getMessaggioErrore(societaInput)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--        fine select società -->
+      <!--       inizio select livelli territoriali -->
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="selectLivelliTerritoriale" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+              Livello Territoriale</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <select
+              id="selectLivelliTerritoriale"
+              name="livelloTerritorialeId"
+              #livelloTerritorialeInput="ngModel"
+              [(ngModel)]="datiEnte.livelloTerritorialeId"
+              [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+            >
+              <option [ngValue]="null" selected>Seleziona</option>
+              <option *ngFor="let item of opzioniFiltroLivelliTerritoriale"
+                      [ngValue]="item.value">{{item.label}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(livelloTerritorialeInput)">Seleziona livello territoriale</p>
+            <p *ngIf="isCampoInvalido(livelloTerritorialeInput)" class="text-invalid">{{getMessaggioErrore(livelloTerritorialeInput)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--        fine select territoriali -->
+      <!--       inizio select comuni -->
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="selectComune" class="title">Comune</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <select
+              id="selectComune"
+              name="comune"
+              #comuneInput="ngModel"
+              [(ngModel)]="datiEnte.comune"
+              (ngModelChange)="selezionaComune()"
+            >
+              <option [ngValue]="null" selected>Seleziona</option>
+              <option *ngFor="let item of opzioniFiltroComune" [ngValue]="item.value">{{item.label}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(comuneInput)">Seleziona comune</p>
+            <p *ngIf="isCampoInvalido(comuneInput)" class="text-invalid">{{getMessaggioErrore(comuneInput)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--        fine select comuni -->
+      <!--       inizio select province -->
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="selectProvincia" class="title">Provincia</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <select
+              id="selectProvincia"
+              name="provincia"
+              #provinciaInput="ngModel"
+              [(ngModel)]="datiEnte.provincia"
+              (ngModelChange)="selezionaProvincia()"
+            >
+              <option [ngValue]="null" selected>Seleziona</option>
+              <option *ngFor="let item of opzioniFiltroProvincia" [ngValue]="item.value">{{item.label}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(provinciaInput)">Seleziona provincia</p>
+            <p *ngIf="isCampoInvalido(provinciaInput)" class="text-invalid">{{getMessaggioErrore(provinciaInput)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--        fine select province -->
+    </div>
+    <!-- fine Società, Livello Territoriale, Comune, Provincia -->
+    <!--    fine Dati referente -->
   </form>
 </div>

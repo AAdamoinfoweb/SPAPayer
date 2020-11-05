@@ -15,9 +15,9 @@
       </svg>
     </span>
   </h3>
-
+  <span *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
   <!-- sezione aggiungi dati-ente -->
-  <app-dati-ente [funzione]="funzione"></app-dati-ente>
+  <app-dati-ente [datiEnte]="datiEnte" [funzione]="funzione" (isFormValid)="isFormDatiEnteValido = $event"></app-dati-ente>
 
   <hr>
 

@@ -30,12 +30,9 @@ import {HttpClient} from '@angular/common/http';
   styleUrls: ['./form-ente.component.scss']
 })
 export class FormEnteComponent extends FormElementoParentComponent implements OnInit {
-
-
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   idFunzione;
-
   // header page
   breadcrumbList = [];
   tooltipTitolo: string;
@@ -66,18 +63,22 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
     // get route per logica inserimento o modifica
-    this.activatedRoute.params.subscribe(() => {
-      this.controllaTipoFunzione();
+      this.controllaTipoFunzione(snapshot);
       this.inizializzaBreadcrumbs();
       this.inizializzaTitolo();
-    });
+      this.inizializzaDatiEnte();
+      if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI){
+        // inizializzazione form modifico o dettaglio
+      } else {
+       // inizializzazione form inserimento
+      }
   }
 
   ngOnInit(): void {
   }
 
-  controllaTipoFunzione() {
-    const url = this.activatedRoute.snapshot.url[1].path;
+  controllaTipoFunzione(snapshot) {
+    const url = snapshot.url[1].path;
     switch (url) {
       case 'dettaglioEnte':
         this.funzione = FunzioneGestioneEnum.DETTAGLIO;
@@ -102,6 +103,13 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   private inizializzaTitolo() {
     this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Ente';
     this.tooltipTitolo = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di un ente';
+  }
+
+  inizializzaDatiEnte() {
+    this.datiEnte.societaId = null;
+    this.datiEnte.livelloTerritorialeId = null;
+    this.datiEnte.comune = null;
+    this.datiEnte.provincia = null;
   }
 
   onChangeDatiEnte(datiEnte: EnteCompleto): void {
@@ -169,4 +177,5 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   tornaIndietro() {
     this.router.navigateByUrl('/gestioneAnagrafica/gestioneEnti?funzione=' + this.idFunzione);
   }
+
 }
