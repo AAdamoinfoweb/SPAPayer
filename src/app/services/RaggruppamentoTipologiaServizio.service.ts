@@ -41,4 +41,45 @@ export class RaggruppamentoTipologiaServizioService {
         }));
   }
 
+  inserimentoRaggruppamentoTipologiaServizio(raggruppamentoTipologiaServizio: RaggruppamentoTipologiaServizio, idFunzione: string): Observable<any> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.post(environment.bffBaseUrl + this.baseUrl, raggruppamentoTipologiaServizio, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  modificaRaggruppamentoTipologiaServizio(raggruppamentoTipologiaServizio: RaggruppamentoTipologiaServizio, idFunzione: string): Observable<any> {
+    const url = environment.bffBaseUrl + this.baseUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.put(`${url}/${raggruppamentoTipologiaServizio.id}`, raggruppamentoTipologiaServizio, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
 }
