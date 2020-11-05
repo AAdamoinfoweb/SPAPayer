@@ -12,6 +12,7 @@ import {GestisciElementoComponent} from '../../gestisci-elemento.component';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {RaggruppamentoTipologiaServizio} from '../../../../model/RaggruppamentoTipologiaServizio';
+import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
 
 @Component({
   selector: 'app-raggruppamento-tipologie',
@@ -57,7 +58,8 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2,
               private el: ElementRef, private menuService: MenuService,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -85,10 +87,18 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     this.popolaListaElementi();
   }
 
-  popolaListaElementi() {
+  popolaListaElementi(): void {
     this.listaRaggruppamentiTipologiaServizio = [];
 
-    // TODO richiamare operation ricercaRaggruppamentoTipologiaServizio
+    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(null, this.idFunzione).subscribe(listaRaggruppamentoTipologiaServizio => {
+      this.tableData.rows = [];
+      listaRaggruppamentoTipologiaServizio.forEach(raggruppamentoTipologiaServizio => {
+        this.listaRaggruppamentiTipologiaServizio.push(raggruppamentoTipologiaServizio);
+        this.tableData.rows.push(this.creaRigaTabella(raggruppamentoTipologiaServizio));
+      });
+      this.tempTableData = Object.assign({}, this.tableData);
+      this.waiting = false;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -99,8 +109,11 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   }
 
   creaRigaTabella(raggruppamentoTipologiaServizio: RaggruppamentoTipologiaServizio): object {
-    // TODO creare e restituire oggetto riga
-    return null;
+    return {
+      id: {value: raggruppamentoTipologiaServizio.id},
+      nome: {value: raggruppamentoTipologiaServizio.codice},
+      descrizione: {value: raggruppamentoTipologiaServizio.descrizione}
+    };
   }
 
   eseguiAzioni(azioneTool) {
