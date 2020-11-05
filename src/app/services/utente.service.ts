@@ -16,7 +16,7 @@ export class UtenteService {
   private readonly letturaCodiceFiscaleUtenteUrl = '/codiceFiscale';
 
   codiceFiscaleEvent: EventEmitter<string> = new EventEmitter<string>();
-  utentePermessiAsyncSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  utentePermessiAsyncSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(private http: HttpClient) {
   }

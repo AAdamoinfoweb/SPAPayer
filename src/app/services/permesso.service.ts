@@ -14,7 +14,6 @@ import {PermessoCompleto} from "../modules/main/model/permesso/PermessoCompleto"
 export class PermessoService {
 
   private readonly permessiBaseUrl = '/gestisciUtenti/permessi';
-  private readonly inserimentoModificaPermessiUrl = '';
 
   constructor(private http: HttpClient) {
   }
@@ -48,7 +47,10 @@ export class PermessoService {
     const url = environment.bffBaseUrl + this.permessiBaseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
-    const idSocieta: number[] = listaPermessi.map(value => value.societaId);
+    let idSocieta: number[] = listaPermessi.map(value => value.societaId);
+    idSocieta = idSocieta.filter((value, index, self) => {
+      return self.indexOf(value) === index;
+    });
     h = h.append('idSocieta', idSocieta.toString());
 
     return this.http.put(`${url}/${codiceFiscale}`, listaPermessi,

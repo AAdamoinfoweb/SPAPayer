@@ -60,7 +60,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
       {field: 'nome', header: 'Nome', type: tipoColonna.TESTO},
       {field: 'entiAbilitati', header: 'Enti abilitati', type: tipoColonna.LINK}
     ],
-    dataKey: 'nome.value',
+    dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 

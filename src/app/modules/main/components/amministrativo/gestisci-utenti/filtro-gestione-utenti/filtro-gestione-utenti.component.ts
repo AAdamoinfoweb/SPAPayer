@@ -58,12 +58,20 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
 
   ngOnInit(): void {
     this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
-
+    this.inizializzaFiltroGestioneUtenti()
     this.recuperaFiltroSocieta();
     this.recuperaFiltroLivelloTerritoriale();
     this.recuperaFiltroEnti(null);
     this.recuperaFiltroServizi(null);
     this.letturaFunzioni();
+  }
+
+  inizializzaFiltroGestioneUtenti() {
+    this.filtroGestioneUtentiApplicato.societaId = null;
+    this.filtroGestioneUtentiApplicato.servizioId = null;
+    this.filtroGestioneUtentiApplicato.enteId = null;
+    this.filtroGestioneUtentiApplicato.livelloTerritorialeId = null;
+    this.filtroGestioneUtentiApplicato.funzioneId = null;
   }
 
   recuperaFiltroSocieta(): void {

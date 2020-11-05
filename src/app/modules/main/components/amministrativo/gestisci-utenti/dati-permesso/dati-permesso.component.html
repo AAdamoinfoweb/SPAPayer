@@ -73,6 +73,7 @@
                     #servizioInput="ngModel" [(ngModel)]="datiPermesso.servizioId"
                     (ngModelChange)="onChangeModel(servizioInput)" [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
               <option [ngValue]="null" [selected]="true" *ngIf="datiPermesso.enteId != null">Seleziona</option>
+              <option [ngValue]="null" [selected]="true" *ngIf="datiPermesso.enteId == null">Tutto</option>
               <option *ngFor="let item of listaServizi" [ngValue]="item.value">{{item.label}}</option>
             </select>
           </div>

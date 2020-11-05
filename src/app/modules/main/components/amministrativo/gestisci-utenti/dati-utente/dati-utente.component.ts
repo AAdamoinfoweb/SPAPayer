@@ -9,7 +9,6 @@ import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaU
 import {map} from 'rxjs/operators';
 import {Utils} from '../../../../../../utils/Utils';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {OverlayService} from '../../../../../../services/overlay.service';
 import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
 
 @Component({
@@ -20,13 +19,9 @@ import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enu
 export class DatiUtenteComponent implements OnInit {
   // enums consts
   FunzioneGestioneEnum = FunzioneGestioneEnum;
-
-  readonly minCharsToRetrieveCF = 1;
-  listaCodiciFiscali: string[] = [];
-  codiceFiscaleExists = false;
-
   readonly emailRegex = Utils.EMAIL_REGEX;
   readonly telefonoRegex = Utils.TELEFONO_REGEX;
+  readonly codiceFiscaleRegex = Utils.CODICE_FISCALE_REGEX;
 
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
@@ -35,67 +30,21 @@ export class DatiUtenteComponent implements OnInit {
   @ViewChild('datiUtenteForm') form: NgForm;
 
   @Input() codiceFiscale: string;
-  datiUtente: InserimentoModificaUtente;
   @Input() funzione: FunzioneGestioneEnum;
   @Input() idFunzione;
 
+  @Input() datiUtente: InserimentoModificaUtente;
+
   @Output()
   onChangeDatiUtente: EventEmitter<InserimentoModificaUtente> = new EventEmitter<InserimentoModificaUtente>();
-
   @Output()
   onValidaFormDatiUtenti: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private utenteService: UtenteService, private amministrativoService: AmministrativoService) {
+  constructor(private utenteService: UtenteService) {
   }
 
   ngOnInit(): void {
-    this.datiUtente = new InserimentoModificaUtente();
     this.onValidaFormDatiUtenti.emit(true);
-
-    if (this.codiceFiscale) {
-      const parametriRicerca = new ParametriRicercaUtente();
-      parametriRicerca.codiceFiscale = this.codiceFiscale;
-      this.ricercaUtente(parametriRicerca);
-    } else {
-      this.codiceFiscale = null;
-      this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    }
-  }
-
-  ricercaUtente(parametriRicerca: ParametriRicercaUtente): void {
-    this.utenteService.ricercaUtenti(parametriRicerca, this.idFunzione).pipe(map(utenti => {
-      const utente = utenti[0];
-      this.datiUtente.nome = utente?.nome;
-      this.datiUtente.cognome = utente?.cognome;
-      this.datiUtente.email = utente?.email;
-      this.datiUtente.telefono = utente?.telefono;
-      this.datiUtente.attivazione = utente?.dataInizioValidita ?
-        moment(utente?.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
-      this.datiUtente.scadenza = utente?.dataFineValidita ?
-        moment(utente?.dataFineValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
-    })).subscribe();
-  }
-
-  loadSuggestions(event): void {
-    const inputCf = event.query;
-
-    if (inputCf.length < this.minCharsToRetrieveCF) {
-      this.listaCodiciFiscali = [];
-    } else if (inputCf.length >= this.minCharsToRetrieveCF) {
-      // disabilitazione bottone in attesa di caricamento utenti
-      this.utenteService.codiceFiscaleEvent.emit(null);
-      this.utenteService.letturaCodiceFiscale(inputCf, this.idFunzione).subscribe(data => {
-        this.listaCodiciFiscali = data;
-        this.listaCodiciFiscali = this.listaCodiciFiscali.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
-      });
-    }
-  }
-
-  clearAutocompleteCodiceFiscale(): void {
-    this.listaCodiciFiscali = [];
-    const model = {...this.datiUtente};
-    this.utenteService.codiceFiscaleEvent.emit(null);
-    this.onChangeDatiUtente.emit(model);
   }
 
   setPlaceholder(campo: NgModel, tipo: string): string {

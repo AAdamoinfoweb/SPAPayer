@@ -22,6 +22,7 @@
               <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
                       #societaInput = "ngModel"
                       [(ngModel)]="filtroGestioneUtentiApplicato.societaId">
+                <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -45,6 +46,7 @@
               <select [ngClass]="{'text-disabled': !listaLivelliTerritoriali.length}" id="selectLivelloTerritoriale" name="livelloTerritorialeId"
                       #livelloTerritorialeInput = "ngModel"
                       [(ngModel)]="filtroGestioneUtentiApplicato.livelloTerritorialeId" (ngModelChange)="selezionaLivelloTerritoriale()">
+                <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaLivelliTerritoriali" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -69,6 +71,7 @@
                       id="selectEnte" name="enteId"
                       #enteInput = "ngModel"
                       [(ngModel)]="filtroGestioneUtentiApplicato.enteId" (ngModelChange)="selezionaEnte()">
+                <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -97,6 +100,7 @@
                       id="selectServizio" name="servizioId"
                       #servizioInput = "ngModel"
                       [(ngModel)]="filtroGestioneUtentiApplicato.servizioId">
+                <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaServizi" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -120,6 +124,7 @@
               <select [ngClass]="{'text-disabled': !listaFunzioniAbilitate.length}" id="selectFunzioneAbilitata" name="funzioneId"
                       #funzioneAbilitataInput = "ngModel"
                       [(ngModel)]="filtroGestioneUtentiApplicato.funzioneId">
+                <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of listaFunzioniAbilitate" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>

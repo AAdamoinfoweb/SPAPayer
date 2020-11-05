@@ -20,6 +20,7 @@ export class Utils {
 
   static readonly EMAIL_REGEX = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   static readonly TELEFONO_REGEX = '^(\\+[0-9]{2,2})?[0-9]{9,11}$';
+  static readonly CODICE_FISCALE_REGEX = '^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
 
   static creaLink = (value, link, iconHref?) => {
     return iconHref ? {value, link, iconHref} : {value, link, iconHref: null};

@@ -30,30 +30,31 @@ import {FormElementoParentComponent} from "../../form-elemento-parent.component"
 import {ConfirmationService} from 'primeng/api';
 import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
 import {HttpClient} from "@angular/common/http";
+import {ParametriRicercaUtente} from "../../../../model/utente/ParametriRicercaUtente";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
   templateUrl: './form-utente-permessi.component.html',
   styleUrls: ['../gestisci-utenti.component.scss', './form-utente-permessi.component.scss']
 })
-export class FormUtentePermessiComponent extends FormElementoParentComponent implements OnInit, AfterViewInit {
+export class FormUtentePermessiComponent extends FormElementoParentComponent implements OnInit {
   // enums consts
   FunzioneGestioneEnum = FunzioneGestioneEnum;
 
   breadcrumbList = [];
 
-  tooltipTitle = `In questa pagina puoi aggiungere un utente e abilitarlo a specifici servizi`;
-  titoloPagina = `Aggiungi Utente/Permessi`;
+  tooltipTitle;
+  titoloPagina;
 
   codiceFiscale: string;
-  codiceFiscaleModifica: string;
+  codiceFiscaleRecuperato: string;
 
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
   datiPermesso: PermessoCompleto;
   asyncSubject: AsyncSubject<string> = new AsyncSubject<string>();
   mapPermessi: Map<number, PermessoCompleto> = new Map();
   isFormDatiUtenteValido = false;
-  isDettaglio = false;
   funzione: FunzioneGestioneEnum;
   idFunzione;
 
@@ -73,18 +74,10 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
               confirmationService: ConfirmationService,
               private bannerService: BannerService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
-    // codice fiscale da utente service per inserimento
+    // codice fiscale del form da utente service
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
-    this.inizializzaBreadcrumbs();
-  }
-
-  inizializzaBreadcrumbs(): void {
-    const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', this.basePath));
-    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Utente/Permessi', null));
-    this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
@@ -92,8 +85,19 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.inizializzaTitoloPagina();
     this.inizializzaBreadcrumbs();
     if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
-      this.codiceFiscaleModifica = snapshot.paramMap.get('userid');
-      this.letturaPermessi(this.codiceFiscaleModifica);
+      this.codiceFiscaleRecuperato = snapshot.paramMap.get('userid');
+      if (this.codiceFiscaleRecuperato) {
+        // inizializza form modifica o dettaglio
+        this.datiUtente = new InserimentoModificaUtente();
+        const parametriRicerca = new ParametriRicercaUtente();
+        parametriRicerca.codiceFiscale = this.codiceFiscaleRecuperato;
+        this.ricercaUtente(parametriRicerca);
+        this.letturaPermessi(this.codiceFiscaleRecuperato);
+      }
+    } else {
+      // inizializza form inserimento
+      this.codiceFiscale = null;
+      this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
     }
   }
 
@@ -117,11 +121,28 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.tooltipTitle = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di un utente e i suoi permessi';
   }
 
+  inizializzaBreadcrumbs(): void {
+    const breadcrumbs: SintesiBreadcrumb[] = [];
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', this.basePath));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Utente/Permessi', null));
+    this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
+  }
+
   ngOnInit(): void {
   }
 
-  ngAfterViewInit(): void {
-    this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+  ricercaUtente(parametriRicerca: ParametriRicercaUtente): void {
+    this.utenteService.ricercaUtenti(parametriRicerca, this.idFunzione).pipe(map(utenti => {
+      const utente = utenti[0];
+      this.datiUtente.nome = utente?.nome;
+      this.datiUtente.cognome = utente?.cognome;
+      this.datiUtente.email = utente?.email;
+      this.datiUtente.telefono = utente?.telefono;
+      this.datiUtente.attivazione = utente?.dataInizioValidita ?
+        moment(utente?.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
+      this.datiUtente.scadenza = utente?.dataFineValidita ?
+        moment(utente?.dataFineValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
+    })).subscribe();
   }
 
   onChangeDatiUtenti(datiUtente: InserimentoModificaUtente): void {
@@ -134,7 +155,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     const indexPermesso = this.target.length;
     this.componentRef.instance.indexSezionePermesso = indexPermesso;
     this.componentRef.instance.onDeletePermesso.subscribe(index => {
-      // todo controllare cancellazione permesso su icona cestino e valorizzare permessoId
       const permessoCompleto = this.mapPermessi.get(index);
       const isPermessoDaModificare: boolean = permessoCompleto.listaFunzioni
         .some((permessoFunzione) => permessoFunzione.permessoId != null);
@@ -240,7 +260,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       moment(utente.scadenza, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     utente.attivazione = utente.attivazione ?
       moment(utente.attivazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-    const codiceFiscale = this.funzione === FunzioneGestioneEnum.MODIFICA ? this.codiceFiscaleModifica : this.codiceFiscale;
+    const codiceFiscale = this.funzione === FunzioneGestioneEnum.MODIFICA ? this.codiceFiscaleRecuperato : this.codiceFiscale;
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       // controllo su codice fiscale
       this.utenteService.letturaCodiceFiscale(this.codiceFiscale, this.idFunzione).subscribe((data) => {
@@ -262,13 +282,15 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       this.inserimentoAggiornamentoUtente(codiceFiscale, utente);
     }
     this.asyncSubject.subscribe(cf => {
-      this.codiceFiscaleModifica = cf;
-      this.router.routeReuseStrategy.shouldReuseRoute = function () {
-        return false;
-      };
-      this.router.onSameUrlNavigation = 'reload';
-      this.router.navigateByUrl(this.basePath + '/modificaUtentePermessi' + '/' + cf);
+      this.codiceFiscaleRecuperato = cf;
+      this.configuraRouterAndNavigate(cf);
     });
+  }
+
+  private configuraRouterAndNavigate(cf: string) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigateByUrl(this.basePath + '/modificaUtentePermessi/' + cf);
   }
 
   private inserimentoAggiornamentoUtente(codiceFiscale: string, utente: InserimentoModificaUtente) {
