@@ -271,6 +271,7 @@
   <!--Bottoni-->
   <div class="row" *ngIf="datiPagamento">
     <!-- Bottone sx -->
+
     <div class="col-lg-2 col-md-2 col-xl-2 col-xs-12">
       <button type="button" id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">Indietro</button>
     </div>
@@ -308,11 +309,11 @@
                   [disabled]="menuService.isUtenteAnonimo || (isBollettinoPrecompilato && form.invalid)">Salva per dopo</button>
         </span>
       <button type="button" id="bottoneAggiungiAlCarrello" class="btn btn-secondary"
-              [disabled]="isBollettinoPrecompilato && form.invalid"
+              [disabled]="form.invalid"
               (click)="aggiungiAlCarrello()">Aggiungi al carrello
       </button>
       <button type="button" id="bottonePagaOra" class="btn"
-              [disabled]="isBollettinoPrecompilato && form.invalid" (click)="pagaOra()">
+              [disabled]="form.invalid" (click)="pagaOra()">
         Paga ora
       </button>
     </div>
