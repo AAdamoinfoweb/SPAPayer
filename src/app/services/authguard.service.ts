@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {NuovoPagamentoService} from "./nuovo-pagamento.service";
 import {MenuService} from "./menu.service";
+import {Bollettino} from "../modules/main/model/bollettino/Bollettino";
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,15 @@ export class AuthguardService implements CanActivate {
     let index = route.url.findIndex(value => value.path == 'nuovoPagamento');
     if (index !== -1 && !this.menuService.isUtenteAnonimo && !localStorage.getItem("loginDaAnonimo")) {
       this.nuovoPagamentoService.getCarrello().subscribe((value) => this.nuovoPagamentoService.prezzoEvent.emit({value: value.totale}));
+    } else if (index !== -1 && this.menuService.isUtenteAnonimo) {
+      let totale = 0;
+      for (var key in localStorage) {
+        if (key.startsWith("boll-")) {
+          let bollettino: Bollettino = JSON.parse(localStorage.getItem(key));
+          totale += bollettino.importo;
+        }
+      }
+      this.nuovoPagamentoService.prezzoEvent.emit({value: totale});
     }
     return true;
   }
