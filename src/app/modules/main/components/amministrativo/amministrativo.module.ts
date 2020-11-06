@@ -3,7 +3,6 @@ import {FormUtentePermessiComponent} from './gestisci-utenti/form-utente-permess
 import {GestisciUtentiComponent} from './gestisci-utenti/gestisci-utenti.component';
 import {TabViewComponent} from '../../../../components/tab-view/tab-view.component';
 import {ToolbarComponent} from '../../../../components/toolbar/toolbar.component';
-import {PaginatorComponent} from '../../../../components/table/paginator/paginator.component';
 import {FiltroGestioneUtentiComponent} from './gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
 
 import {DatiUtenteComponent} from './gestisci-utenti/dati-utente/dati-utente.component';
@@ -62,13 +61,13 @@ import {FormEnteComponent} from './anagrafiche/gestisci-enti/form-ente/form-ente
 import {DatiRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component';
+import {PaginatorComponent} from "../../../../components/table/paginator/paginator.component";
 
 @NgModule({
   declarations: [
     FormUtentePermessiComponent,
     GestisciUtentiComponent,
-    TabViewComponent,
-    ToolbarComponent,
+
     FiltroGestioneUtentiComponent,
     DatiUtenteComponent,
     DatiPermessoComponent,
@@ -128,7 +127,6 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
     CKEditorModule,
     PipeModule,
     CommonComponentModule
-
   ],
   providers: [
     ConfirmationService,
@@ -136,10 +134,6 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
     {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
     {provide: ErrorHandler, useClass: ErrorHandlerGenerico},
     {provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true}
-  ],
-  exports: [
-    TabViewComponent,
-    ToolbarComponent
   ],
   schemas: [NO_ERRORS_SCHEMA]
 })

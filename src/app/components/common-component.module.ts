@@ -35,6 +35,8 @@ import {TableComponent} from "./table/table.component";
 import {PipeModule} from "../pipe/pipe.module";
 import {PaginatorComponent} from "./table/paginator/paginator.component";
 import {CommonModule} from "@angular/common";
+import {TabViewComponent} from "./tab-view/tab-view.component";
+import {ToolbarComponent} from "./toolbar/toolbar.component";
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import {CommonModule} from "@angular/common";
     OverlayComponent,
     SpinnerOverlayComponent,
     PaginatorComponent,
+    TabViewComponent,
+    ToolbarComponent,
   ],
   imports: [
     HttpClientModule,
@@ -86,7 +90,9 @@ import {CommonModule} from "@angular/common";
   exports: [
     FooterDirective,
     OverlayComponent,
-    TableComponent
+    TableComponent,
+    ToolbarComponent,
+    TabViewComponent
   ],
 })
 export class CommonComponentModule {
