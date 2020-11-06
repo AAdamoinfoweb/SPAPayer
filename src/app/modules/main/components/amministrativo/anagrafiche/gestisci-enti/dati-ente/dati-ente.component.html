@@ -1,5 +1,5 @@
 <div class="ml-3">
-  <form #datiEnteForm="ngForm" (input)="onChangeForm(datiEnteForm)">
+  <form #datiEnteForm="ngForm" (change)="onChangeForm(datiEnteForm)">
     <!--    inizio Nome Ente, Codice Fiscale o P.IVA -->
     <div class="row mt-4 mb-0">
       <!--      inizio Nome Ente -->
@@ -240,6 +240,7 @@
               #societaInput="ngModel"
               [(ngModel)]="datiEnte.societaId"
               [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             >
               <option [ngValue]="null" selected>Seleziona</option>
               <option *ngFor="let item of opzioniFiltroSocieta" [ngValue]="item.value">{{item.label}}</option>
@@ -270,6 +271,7 @@
               #livelloTerritorialeInput="ngModel"
               [(ngModel)]="datiEnte.livelloTerritorialeId"
               [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             >
               <option [ngValue]="null" selected>Seleziona</option>
               <option *ngFor="let item of opzioniFiltroLivelliTerritoriale"
@@ -300,6 +302,7 @@
               #comuneInput="ngModel"
               [(ngModel)]="datiEnte.comune"
               (ngModelChange)="selezionaComune()"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             >
               <option [ngValue]="null" selected>Seleziona</option>
               <option *ngFor="let item of opzioniFiltroComune" [ngValue]="item.value">{{item.label}}</option>
@@ -329,6 +332,7 @@
               #provinciaInput="ngModel"
               [(ngModel)]="datiEnte.provincia"
               (ngModelChange)="selezionaProvincia()"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             >
               <option [ngValue]="null" selected>Seleziona</option>
               <option *ngFor="let item of opzioniFiltroProvincia" [ngValue]="item.value">{{item.label}}</option>

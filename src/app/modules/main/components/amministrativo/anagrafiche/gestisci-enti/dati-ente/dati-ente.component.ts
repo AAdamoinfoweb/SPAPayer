@@ -1,18 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForm, NgModel} from '@angular/forms';
-import * as moment from 'moment';
-import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
-import {FunzioneGestioneEnum} from "../../../../../../../enums/funzioneGestione.enum";
-import {InserimentoModificaUtente} from "../../../../../model/utente/InserimentoModificaUtente";
-import {Utils} from "../../../../../../../utils/Utils";
-import {Societa} from "../../../../../model/Societa";
-import {LivelloTerritoriale} from "../../../../../model/LivelloTerritoriale";
-import {Comune} from "../../../../../model/Comune";
-import {Provincia} from "../../../../../model/Provincia";
-import {OpzioneSelect} from "../../../../../model/OpzioneSelect";
-import {SocietaService} from "../../../../../../../services/societa.service";
-import {NuovoPagamentoService} from "../../../../../../../services/nuovo-pagamento.service";
+import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
+import {Utils} from '../../../../../../../utils/Utils';
+import {Societa} from '../../../../../model/Societa';
+import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
+import {Comune} from '../../../../../model/Comune';
+import {Provincia} from '../../../../../model/Provincia';
+import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
+import {SocietaService} from '../../../../../../../services/societa.service';
+import {NuovoPagamentoService} from '../../../../../../../services/nuovo-pagamento.service';
 
 @Component({
   selector: 'app-dati-ente',
@@ -24,7 +21,6 @@ export class DatiEnteComponent implements OnInit {
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   telefonoRegex = Utils.TELEFONO_REGEX;
   codiceFiscalPIvaRegex = Utils.CODICE_FISCALE_O_PARTITA_IVA_REGEX;
-
 
   @Input()
   datiEnte: EnteCompleto;
@@ -77,14 +73,6 @@ export class DatiEnteComponent implements OnInit {
   formattaInput(valore: string, campo: string) {
     if (valore === '') {
       this.datiEnte[campo] = null;
-    }
-  }
-
-  setPlaceholder(campo: NgModel): string {
-    if (this.isCampoInvalido(campo)) {
-      return 'campo non valido';
-    } else {
-      return 'seleziona un elemento dalla lista';
     }
   }
 
