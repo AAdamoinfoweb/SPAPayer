@@ -84,7 +84,9 @@ import {CommonModule} from "@angular/common";
     {provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true}
   ],
   exports: [
-    FooterDirective
+    FooterDirective,
+    OverlayComponent,
+    TableComponent
   ],
 })
 export class CommonComponentModule {

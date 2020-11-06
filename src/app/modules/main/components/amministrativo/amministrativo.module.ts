@@ -137,6 +137,10 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
     {provide: ErrorHandler, useClass: ErrorHandlerGenerico},
     {provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true}
   ],
+  exports: [
+    TabViewComponent,
+    ToolbarComponent
+  ],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class AmministrativoModule {
