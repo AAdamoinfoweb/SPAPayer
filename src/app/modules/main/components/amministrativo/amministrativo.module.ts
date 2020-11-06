@@ -1,4 +1,4 @@
-import {ErrorHandler, NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
+import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormUtentePermessiComponent} from './gestisci-utenti/form-utente-permessi/form-utente-permessi.component';
 import {GestisciUtentiComponent} from './gestisci-utenti/gestisci-utenti.component';
 import {FiltroGestioneUtentiComponent} from './gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
@@ -19,7 +19,7 @@ import {MonitoraAccessiComponent} from './monitora-accessi/monitora-accessi.comp
 import {FiltroMonitoraggioAccessiComponent} from './monitora-accessi/filtro-monitoraggio-accessi/filtro-monitoraggio-accessi.component';
 import {RaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/raggruppamento-tipologie.component';
 import {FiltroRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/filtro-raggruppamento-tipologie/filtro-raggruppamento-tipologie.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from '../../../../app-routing.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -41,10 +41,6 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {TreeTableModule} from 'primeng/treetable';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {ConfirmationService} from 'primeng/api';
-import {JwtInterceptorService} from '../../../../services/jwt-interceptor.service';
-import {BackendInterceptorService} from '../../../../services/backend-interceptor';
-import {ErrorHandlerGenerico} from '../../../../services/errorHandlerGenerico';
-import {UrlBackInterceptor} from '../../../../services/urlBack.interceptor';
 import {PipeModule} from '../../../../pipe/pipe.module';
 import {CommonComponentModule} from '../../../../components/common-component.module';
 import {FormSocietaComponent} from './anagrafiche/gestisci-societa/form-societa/form-societa.component';
@@ -126,11 +122,7 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
     CommonComponentModule
   ],
   providers: [
-    ConfirmationService,
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
-    {provide: ErrorHandler, useClass: ErrorHandlerGenerico},
-    {provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true}
+    ConfirmationService
   ],
   schemas: [NO_ERRORS_SCHEMA]
 })
