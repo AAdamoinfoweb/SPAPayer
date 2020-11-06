@@ -203,10 +203,11 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   }
 
   onChangeListaElementi(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {
-    this.tableData.rows.length = 0;
+    this.tableData.rows = [];
     listaLivelliTerritorialiFiltrati.forEach(livelloTerritoriale => {
       this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
     });
+    this.tempTableData = this.tableData;
   }
 
   getNumeroRecord(): string {

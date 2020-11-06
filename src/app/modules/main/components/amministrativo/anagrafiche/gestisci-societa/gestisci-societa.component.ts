@@ -208,10 +208,11 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   }
 
   onChangeListaElementi(listaSocietaFiltrate: Societa[]): void {
-    this.tableData.rows.length = 0;
+    this.tableData.rows = [];
     listaSocietaFiltrate.forEach(societa => {
       this.tableData.rows.push(this.creaRigaTabella(societa));
     });
+    this.tempTableData = this.tableData;
   }
 
   getNumeroRecord(): string {

@@ -14,7 +14,7 @@ import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {RaggruppamentoTipologiaServizio} from '../../../../model/RaggruppamentoTipologiaServizio';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {Utils} from '../../../../../../utils/Utils';
-import {TipoModaleEnum} from "../../../../../../enums/tipoModale.enum";
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-raggruppamento-tipologie',
@@ -181,10 +181,11 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   }
 
   onChangeListaElementi(listaRaggruppamentiFiltrati: RaggruppamentoTipologiaServizio[]): void {
-    this.tableData.rows.length = 0;
+    this.tableData.rows = [];
     listaRaggruppamentiFiltrati.forEach(raggrupamentoTipologiaServizio => {
       this.tableData.rows.push(this.creaRigaTabella(raggrupamentoTipologiaServizio));
     });
+    this.tempTableData = this.tableData;
   }
 
   getNumeroRecord(): string {
