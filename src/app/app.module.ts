@@ -45,9 +45,6 @@ import {AmministrativoModule} from "./modules/main/components/amministrativo/amm
 
 @NgModule({
   declarations: [
-    NuovoPagamentoComponent,
-    IMieiPagamentiComponent,
-
     AppComponent,
     HomeComponent,
     SidebarComponent,
@@ -99,7 +96,7 @@ import {AmministrativoModule} from "./modules/main/components/amministrativo/amm
     {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
     {provide: ErrorHandler, useClass: ErrorHandlerGenerico},
     {provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true}
-  ]
+  ], bootstrap: [AppComponent]
 })
 export class AppModule {
 }
