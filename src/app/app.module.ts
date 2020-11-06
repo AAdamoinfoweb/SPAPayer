@@ -31,10 +31,7 @@ import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TabViewModule} from 'primeng/tabview';
-import {TabViewComponent} from './components/tab-view/tab-view.component';
-import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {ToolbarModule} from 'primeng/toolbar';
-import {PaginatorComponent} from './components/table/paginator/paginator.component';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {CustomFormsModule} from 'ngx-custom-validators';
 import {AutoCompleteModule} from 'primeng/autocomplete';
@@ -42,16 +39,14 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import {TreeTableModule} from 'primeng/treetable';
 import {PipeModule} from "./pipe/pipe.module";
+import {OverlayDatiPagamentoComponent} from "./components/overlay-dati-pagamento/overlay-dati-pagamento.component";
+import {CommonComponentModule} from "./components/common-component.module";
+import {AmministrativoModule} from "./modules/main/components/amministrativo/amministrativo.module";
 
 @NgModule({
   declarations: [
     NuovoPagamentoComponent,
     IMieiPagamentiComponent,
-    CompilaNuovoPagamentoComponent,
-    DatiNuovoPagamentoComponent,
-    TabViewComponent,
-    ToolbarComponent,
-    PaginatorComponent,
 
     AppComponent,
     HomeComponent,
@@ -65,6 +60,7 @@ import {PipeModule} from "./pipe/pipe.module";
     IMieiPagamentiComponent,
     CompilaNuovoPagamentoComponent,
     DatiNuovoPagamentoComponent,
+    OverlayDatiPagamentoComponent
   ],
   imports: [
     HttpClientModule,
@@ -73,9 +69,10 @@ import {PipeModule} from "./pipe/pipe.module";
     MainModule,
     NgbModule,
     FormsModule,
-    DesignAngularKitModule,
+
     ReactiveFormsModule,
     UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    DesignAngularKitModule,
     DpDatePickerModule,
     NgxDatatableModule,
     AccordionModule,
@@ -92,7 +89,9 @@ import {PipeModule} from "./pipe/pipe.module";
     CustomFormsModule,
     AutoCompleteModule,
     TreeTableModule,
-    PipeModule
+    PipeModule,
+    CommonComponentModule,
+    AmministrativoModule
   ],
   providers: [
     ConfirmationService,
