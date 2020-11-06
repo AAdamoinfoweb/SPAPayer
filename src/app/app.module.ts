@@ -169,9 +169,10 @@ import {FiltroRaggruppamentoTipologieComponent} from './modules/main/components/
     {provide: ErrorHandler, useClass: ErrorHandlerGenerico},
     {provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true}
   ],
-  exports: [
-    FooterDirective
-  ],
+    exports: [
+        FooterDirective,
+        OrderByPipe
+    ],
 
   bootstrap: [AppComponent]
 })

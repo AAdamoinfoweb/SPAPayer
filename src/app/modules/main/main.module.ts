@@ -32,6 +32,8 @@ import { FormEnteComponent } from './components/amministrativo/anagrafiche/gesti
 import {DatiRaggruppamentoTipologieComponent} from './components/amministrativo/anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import { GestisciCampoTipologiaServizioComponent } from './components/amministrativo/gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {AppModule} from "../../app.module";
 
 @NgModule({
   declarations: [
@@ -73,7 +75,9 @@ import { GestisciCampoTipologiaServizioComponent } from './components/amministra
     NgbDatepickerModule,
     ConfirmDialogModule,
     DpDatePickerModule,
-    CKEditorModule
+    CKEditorModule,
+    DragDropModule,
+    AppModule
   ],
   exports: [
     FooterComponent,
