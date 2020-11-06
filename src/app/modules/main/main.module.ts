@@ -76,8 +76,7 @@ import {AppModule} from "../../app.module";
     ConfirmDialogModule,
     DpDatePickerModule,
     CKEditorModule,
-    DragDropModule,
-    AppModule
+    DragDropModule
   ],
   exports: [
     FooterComponent,

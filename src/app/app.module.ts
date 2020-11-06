@@ -170,8 +170,7 @@ import {FiltroRaggruppamentoTipologieComponent} from './modules/main/components/
     {provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true}
   ],
     exports: [
-        FooterDirective,
-        OrderByPipe
+        FooterDirective
     ],
 
   bootstrap: [AppComponent]
