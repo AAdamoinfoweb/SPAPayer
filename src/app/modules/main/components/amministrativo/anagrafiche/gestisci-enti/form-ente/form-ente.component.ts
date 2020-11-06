@@ -23,6 +23,8 @@ import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
 import {HttpClient} from '@angular/common/http';
 import {DatiBeneficiarioComponent} from '../dati-beneficiario/dati-beneficiario.component';
 import {BeneficiarioSingolo} from '../../../../../model/ente/BeneficiarioSingolo';
+import * as moment from "moment";
+import {Utils} from "../../../../../../../utils/Utils";
 
 @Component({
   selector: 'app-form-ente',
@@ -154,7 +156,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   disabilitaBottone(): boolean {
-    return !this.isFormDatiEnteValido || this.controllaDatiBeneficiario() || this.controlloDate();
+    return !this.isFormDatiEnteValido || this.controllaDatiBeneficiario();
   }
 
   controllaDatiBeneficiario(): boolean {
@@ -164,14 +166,32 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       if (beneficiario.descrizione == null || beneficiario.codiceEnte == null) {
         ret = true;
       }
+      if (beneficiario.listaContiCorrenti != null && beneficiario.listaContiCorrenti.length > 0){
+        beneficiario.listaContiCorrenti.forEach(contoCorrente => {
+          if (contoCorrente.iban == null || contoCorrente.inizioValidita == null) {
+            ret = true;
+          } else if (contoCorrente.fineValidita != null) {
+            ret = this.controlloDate(contoCorrente);
+          }
+        });
+      }
     });
     return ret;
   }
 
-  controlloDate(): boolean {
-    // todo controllo date se presenti
-    return false;
+  controlloDate(contoCorrente: ContoCorrente): boolean {
+    const dataAttivazione = contoCorrente.inizioValidita;
+    const dataScadenza = contoCorrente.fineValidita;
+    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    const isDataScadenzaBeforeDataAttivazione = Utils.isBefore(dataScadenza, dataAttivazione);
+    const ret = this.funzione === FunzioneGestioneEnum.DETTAGLIO ? false : isDataScadenzaBeforeDataAttivazione;
+    return ret;
   }
+
+  // controlloDate(): boolean {
+  //   // todo controllo date se presenti
+  //   return false;
+  // }
 
   onClickSalva(): void {
     // todo inserimento ente e redirect

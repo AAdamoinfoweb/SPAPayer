@@ -37,6 +37,7 @@ import { FormEnteComponent } from './components/amministrativo/anagrafiche/gesti
 import {DatiRaggruppamentoTipologieComponent} from './components/amministrativo/anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import { DatiBeneficiarioComponent } from './components/amministrativo/anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component';
+import { DatiContoCorrenteComponent } from './components/amministrativo/anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { DatiBeneficiarioComponent } from './components/amministrativo/anagrafic
     FormEnteComponent,
     DatiRaggruppamentoTipologieComponent,
     FormRaggruppamentoTipologieComponent,
-    DatiBeneficiarioComponent
+    DatiBeneficiarioComponent,
+    DatiContoCorrenteComponent
   ],
     imports: [
         CommonModule,
