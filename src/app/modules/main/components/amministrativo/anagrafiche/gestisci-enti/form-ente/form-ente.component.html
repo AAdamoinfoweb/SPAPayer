@@ -16,25 +16,24 @@
     </span>
   </h3>
   <span *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
-  <!-- sezione aggiungi dati-ente -->
+  <!-- inizio Dati Ente -->
   <app-dati-ente [datiEnte]="datiEnte" [funzione]="funzione" (isFormValid)="isFormDatiEnteValido = $event"></app-dati-ente>
-
-  <hr>
-
-  <!-- sezione aggiungi dati-beneficiario -->
+  <!-- fine Dati Ente -->
+  <!-- inizio Dati Beneficiario -->
   <div #datiBeneficiario></div>
+  <!--  fine Dati Beneficiario -->
 </div>
 <!-- Bottoni -->
 <div class="row">
   <!-- Bottone sx -->
   <div class="col-2">
     <button id="buttonAnnulla" class="btn btn-secondary"
-            (click)="onClickAnnullaButton()">{{funzione ===FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
+            (click)="onClickAnnullaButton()">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
   </div>
   <!-- Bottoni dx -->
   <div class="col-10 text-right">
-    <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiPermessi" class="btn btn-secondary"
-            [disabled]="disabilitaBottone()" (click)="aggiungiSezionePermesso()">
+    <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiBeneficiario" class="btn btn-secondary"
+            [disabled]="disabilitaBottone()" (click)="aggiungiBeneficiario()">
       Aggiungi beneficiario
     </button>
     <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonSalva" class="btn"

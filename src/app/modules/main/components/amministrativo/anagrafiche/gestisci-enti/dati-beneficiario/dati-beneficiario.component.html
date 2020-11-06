@@ -1,0 +1,146 @@
+<div class="ml-3">
+  <!--  inizio Header -->
+  <div class="collapse-header" id="idCollapseDatiBeneficiario">
+    <button data-toggle="collapse" [id]="'buttonCollapse' + indexDatiBeneficiario" aria-expanded="true"
+            aria-controls="contenutoSezioneDatiBeneficiario">
+      <div class="row">
+        <div class="col">
+          Dati Beneficiario
+        </div>
+        <!--    inizio Elimina Dati Beneficario -->
+        <div class="col text-right">
+           <span ngbTooltip="{{testoTooltipIconaElimina}}" placement="bottom"
+                 [ngStyle]="{fill: '#403d39'}"
+           >
+            <svg *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" fill='#004987' class="bg-light icon cursor-pointer"
+                 (click)="onClickDeleteIcon($event)">
+            <use xlink:href="assets/img/sprite.svg#it-delete"></use>
+            </svg>
+           </span>
+        </div>
+        <!--    fine Elimina Dati Beneficiario  -->
+      </div>
+    </button>
+  </div>
+  <!--  fine Header -->
+  <div [id]="'collapse'+indexDatiBeneficiario" class="collapse show" role="tabpanel"
+       aria-labelledby="idCollapseDatiBeneficiario">
+    <form #datiBeneficiarioForm="ngForm">
+      <!--    inizio Descrizione, Codice Ente, Tipo Ufficio, Codice Ufficio -->
+      <div class="row mt-4 mb-0">
+        <!--    inizio Descrizione -->
+        <div class="col-md-6 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="descrizione" class="title"
+                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+                Descrizione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+             <textarea
+               id="descrizione"
+               type="text"
+               name="descrizione"
+               autocomplete="off"
+               #descrizione="ngModel"
+               [(ngModel)]="datiBeneficiario.descrizione"
+               (ngModelChange)="onChangeModel(datiBeneficiarioForm, descrizione)"
+               maxlength="255"
+               [ngStyle]="{height: '45px'}"
+               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+               [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+             ></textarea>
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(descrizione)">Inserisci descrizione beneficiario</p>
+              <p *ngIf="isCampoInvalido(descrizione)" class="text-invalid">{{getMessaggioErrore(descrizione)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--      fine Descrizione -->
+        <!--      inizio Codice Ente -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="codiceEnte" class="title"
+                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+                Codice Ente</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="codiceEnte" name="codiceEnte" #codiceEnte="ngModel"
+                     [(ngModel)]="datiBeneficiario.codiceEnte"
+                     class="pt-0" autocomplete="off" aria-describedby="codiceEnteHelpDescription"
+                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                     [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                     (ngModelChange)="onChangeModel(datiBeneficiarioForm, codiceEnte)">
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(codiceEnte)">Inserisci codice ente</p>
+              <p *ngIf="isCampoInvalido(codiceEnte)" class="text-invalid">{{getMessaggioErrore(codiceEnte)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--      fine Codice Ente -->
+        <!--      inizio Tipo Ufficio -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="tipoUfficio" class="title ">
+                Tipo Ufficio</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="tipoUfficio" name="tipoUfficio" #tipoUfficio="ngModel"
+                     [(ngModel)]="datiBeneficiario.tipoUfficio"
+                     class="pt-0" autocomplete="off" aria-describedby="tipoUfficioHelpDescription"
+                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                     (ngModelChange)="onChangeModel(datiBeneficiarioForm, tipoUfficio)">
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(tipoUfficio)">Inserisci tipo ufficio</p>
+              <p *ngIf="isCampoInvalido(tipoUfficio)" class="text-invalid">{{getMessaggioErrore(tipoUfficio)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--      fine Tipo Ufficio -->
+        <!--      inizio Codice Ufficio -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="codiceUfficio" class="title ">
+                Codice Ufficio</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="codiceUfficio" name="codiceUfficio" #codiceUfficio="ngModel"
+                     [(ngModel)]="datiBeneficiario.codiceUfficio"
+                     class="pt-0" autocomplete="off" aria-describedby="codiceUfficioHelpDescription"
+                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                     (ngModelChange)="onChangeModel(datiBeneficiarioForm, codiceUfficio)">
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(codiceUfficio)">Inserisci codice ufficio</p>
+              <p *ngIf="isCampoInvalido(codiceUfficio)" class="text-invalid">{{getMessaggioErrore(codiceUfficio)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--      fine Codice Ufficio -->
+      </div>
+      <!--    fine Decrizione, Codice Ente, Tipo Ufficio, Codice Ufficio -->
+    </form>
+  </div>
+</div>

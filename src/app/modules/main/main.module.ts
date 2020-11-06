@@ -11,7 +11,12 @@ import {FooterComponent} from "../../components/footer/footer.component";
 import {ListaPagamentiComponent} from './components/lista-pagamenti/lista-pagamenti.component';
 import {PrivacyComponent} from './components/privacy/privacy.component';
 import {ReplacePipe} from "../../pipe/ReplacePipe";
-import {NgbDatepickerModule, NgbDropdownModule, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
+import {
+    NgbDatepickerModule,
+    NgbDropdownModule,
+    NgbPaginationModule,
+    NgbTooltipModule
+} from "@ng-bootstrap/ng-bootstrap";
 import {WaitingComponent} from './components/waiting/waiting.component';
 import {FiltriIMieiPagamentiComponent} from './components/i-miei-pagamenti/filtri-i-miei-pagamenti/filtri-i-miei-pagamenti.component';
 import {DpDatePickerModule} from "ng2-date-picker";
@@ -31,6 +36,7 @@ import { DatiEnteComponent } from './components/amministrativo/anagrafiche/gesti
 import { FormEnteComponent } from './components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component';
 import {DatiRaggruppamentoTipologieComponent} from './components/amministrativo/anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
+import { DatiBeneficiarioComponent } from './components/amministrativo/anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component';
 
 @NgModule({
   declarations: [
@@ -57,22 +63,24 @@ import {FormRaggruppamentoTipologieComponent} from './components/amministrativo/
     DatiEnteComponent,
     FormEnteComponent,
     DatiRaggruppamentoTipologieComponent,
-    FormRaggruppamentoTipologieComponent
+    FormRaggruppamentoTipologieComponent,
+    DatiBeneficiarioComponent
   ],
-  imports: [
-    CommonModule,
-    MainRoutingModule,
-    DesignAngularKitModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgxYoutubePlayerModule,
-    NgbPaginationModule,
-    NgbDropdownModule,
-    NgbDatepickerModule,
-    ConfirmDialogModule,
-    DpDatePickerModule,
-    CKEditorModule
-  ],
+    imports: [
+        CommonModule,
+        MainRoutingModule,
+        DesignAngularKitModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgxYoutubePlayerModule,
+        NgbPaginationModule,
+        NgbDropdownModule,
+        NgbDatepickerModule,
+        ConfirmDialogModule,
+        DpDatePickerModule,
+        CKEditorModule,
+        NgbTooltipModule
+    ],
   exports: [
     FooterComponent,
     ReplacePipe,
