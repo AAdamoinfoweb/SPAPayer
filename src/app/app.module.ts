@@ -68,7 +68,7 @@ import {AmministrativoModule} from "./modules/main/components/amministrativo/amm
     FormsModule,
 
     ReactiveFormsModule,
-    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     DesignAngularKitModule,
     DpDatePickerModule,
     NgxDatatableModule,

@@ -1,8 +1,6 @@
 import {ErrorHandler, NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormUtentePermessiComponent} from './gestisci-utenti/form-utente-permessi/form-utente-permessi.component';
 import {GestisciUtentiComponent} from './gestisci-utenti/gestisci-utenti.component';
-import {TabViewComponent} from '../../../../components/tab-view/tab-view.component';
-import {ToolbarComponent} from '../../../../components/toolbar/toolbar.component';
 import {FiltroGestioneUtentiComponent} from './gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
 
 import {DatiUtenteComponent} from './gestisci-utenti/dati-utente/dati-utente.component';
@@ -61,7 +59,6 @@ import {FormEnteComponent} from './anagrafiche/gestisci-enti/form-ente/form-ente
 import {DatiRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component';
-import {PaginatorComponent} from "../../../../components/table/paginator/paginator.component";
 
 @NgModule({
   declarations: [
@@ -107,7 +104,7 @@ import {PaginatorComponent} from "../../../../components/table/paginator/paginat
     FormsModule,
     DesignAngularKitModule,
     ReactiveFormsModule,
-    UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     DpDatePickerModule,
     NgxDatatableModule,
     AccordionModule,
