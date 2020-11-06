@@ -6,7 +6,7 @@ import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [OrderByPipe, ParseHtmlPipe, ReplacePipe],
-  imports:[CommonModule],
+  imports: [CommonModule],
   exports: [OrderByPipe, ParseHtmlPipe, ReplacePipe]
 })
 export class PipeModule {
