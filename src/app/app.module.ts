@@ -47,11 +47,8 @@ import {PipeModule} from "./pipe/pipe.module";
   declarations: [
     NuovoPagamentoComponent,
     IMieiPagamentiComponent,
-    CompilaNuovoPagamentoComponent,
-    DatiNuovoPagamentoComponent,
     TabViewComponent,
     ToolbarComponent,
-    PaginatorComponent,
 
     AppComponent,
     HomeComponent,
@@ -73,9 +70,10 @@ import {PipeModule} from "./pipe/pipe.module";
     MainModule,
     NgbModule,
     FormsModule,
-    DesignAngularKitModule,
+
     ReactiveFormsModule,
     UserIdleModule.forRoot({idle: 10, timeout: 3, ping: 120}),
+    DesignAngularKitModule,
     DpDatePickerModule,
     NgxDatatableModule,
     AccordionModule,

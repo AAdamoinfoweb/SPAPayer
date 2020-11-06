@@ -1,4 +1,4 @@
-import {ErrorHandler, NgModule} from '@angular/core';
+import {ErrorHandler, NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormUtentePermessiComponent} from './gestisci-utenti/form-utente-permessi/form-utente-permessi.component';
 import {GestisciUtentiComponent} from './gestisci-utenti/gestisci-utenti.component';
 import {TabViewComponent} from '../../../../components/tab-view/tab-view.component';
@@ -69,7 +69,6 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
     GestisciUtentiComponent,
     TabViewComponent,
     ToolbarComponent,
-    PaginatorComponent,
     FiltroGestioneUtentiComponent,
     DatiUtenteComponent,
     DatiPermessoComponent,
@@ -129,6 +128,7 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
     CKEditorModule,
     PipeModule,
     CommonComponentModule
+
   ],
   providers: [
     ConfirmationService,
@@ -136,7 +136,8 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
     {provide: HTTP_INTERCEPTORS, useClass: BackendInterceptorService, multi: true},
     {provide: ErrorHandler, useClass: ErrorHandlerGenerico},
     {provide: HTTP_INTERCEPTORS, useClass: UrlBackInterceptor, multi: true}
-  ]
+  ],
+  schemas: [NO_ERRORS_SCHEMA]
 })
 export class AmministrativoModule {
 }

@@ -36,8 +36,6 @@ import {PipeModule} from "../../pipe/pipe.module";
     WaitingComponent,
     WaitingL1Component,
     FiltriIMieiPagamentiComponent,
-
-
   ],
   imports: [
     CommonModule,

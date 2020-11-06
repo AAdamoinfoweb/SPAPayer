@@ -32,6 +32,9 @@ import {BackendInterceptorService} from "../services/backend-interceptor";
 import {ErrorHandlerGenerico} from "../services/errorHandlerGenerico";
 import {UrlBackInterceptor} from "../services/urlBack.interceptor";
 import {TableComponent} from "./table/table.component";
+import {PipeModule} from "../pipe/pipe.module";
+import {PaginatorComponent} from "./table/paginator/paginator.component";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -42,9 +45,11 @@ import {TableComponent} from "./table/table.component";
     MonthInputDirective,
     OverlayComponent,
     SpinnerOverlayComponent,
+    PaginatorComponent,
   ],
   imports: [
     HttpClientModule,
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     NgbModule,
@@ -69,6 +74,7 @@ import {TableComponent} from "./table/table.component";
     AutoCompleteModule,
     TreeTableModule,
     OverlayModule,
+    PipeModule
   ],
   providers: [
     ConfirmationService,
