@@ -65,7 +65,6 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData: Tabella;
   waiting = true;
 
   constructor(protected router: Router,
@@ -116,7 +115,6 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
         this.listaElementi.forEach(livelloTerritoriale => {
           this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
         });
-        this.tempTableData = Object.assign({}, this.tableData);
       }
       this.waiting = false;
     });
@@ -148,10 +146,10 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
         this.eliminaLivelliTerritorialiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Livelli Territoriali');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Livelli Territoriali');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Livelli Territoriali');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Livelli Territoriali');
         break;
     }
     this.selectionElementi = [];

@@ -68,7 +68,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData: Tabella;
   waiting = true;
 
   constructor(router: Router,
@@ -120,7 +119,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
         this.listaElementi.forEach(societa => {
           this.tableData.rows.push(this.creaRigaTabella(societa));
         });
-        this.tempTableData = Object.assign({}, this.tableData);
       }
       this.waiting = false;
     });
@@ -153,10 +151,10 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
         this.eliminaSocietaSelezionate();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Societa');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Societa');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Societa');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Societa');
         break;
     }
     this.selectionElementi = [];

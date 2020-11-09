@@ -60,7 +60,6 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
-  tempTableData: Tabella = this.tableData;
 
   isMenuCarico = false;
   waiting = true;
@@ -105,7 +104,6 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.listaElementi.forEach(banner => {
           this.tableData.rows.push(this.creaRigaTabella(banner));
         });
-        this.tempTableData = Object.assign({}, this.tableData);
       }
       this.waiting = false;
     });
@@ -151,10 +149,10 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.eliminaBannerSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Banner');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Banner');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Banner');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Banner');
         break;
     }
   }

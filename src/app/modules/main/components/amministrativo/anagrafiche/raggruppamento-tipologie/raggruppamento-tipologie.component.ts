@@ -53,7 +53,6 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
-  tempTableData: Tabella = this.tableData;
 
   isMenuCarico = false;
   waiting = true;
@@ -99,7 +98,6 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
         this.listaElementi.forEach(raggruppamentoTipologiaServizio => {
           this.tableData.rows.push(this.creaRigaTabella(raggruppamentoTipologiaServizio));
         });
-        this.tempTableData = Object.assign({}, this.tableData);
       }
       this.waiting = false;
     });
@@ -132,10 +130,10 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
         this.eliminaRaggruppamentiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Raggruppamenti Tipologie');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Raggruppamenti Tipologie');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Raggruppamenti Tipologie');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Raggruppamenti Tipologie');
         break;
     }
   }
