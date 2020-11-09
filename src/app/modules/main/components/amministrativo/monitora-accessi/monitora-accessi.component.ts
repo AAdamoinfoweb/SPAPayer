@@ -132,7 +132,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
 
   callbackPopolaLista(): void {
     this.ordinaDescrescenteAccessi(this.listaElementi);
-    this.riempiTabella(this.listaElementi);
+    this.impostaTabella(this.listaElementi);
   }
 
   getDataSessioneFormattata(dataSessione: Date): string {

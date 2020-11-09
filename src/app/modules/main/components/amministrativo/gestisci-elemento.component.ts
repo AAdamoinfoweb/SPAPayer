@@ -62,7 +62,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     this.getObservableFunzioneRicerca().subscribe(listaElementi => {
       if (listaElementi != null) {
         this.listaElementi = listaElementi;
-        this.riempiTabella(this.listaElementi);
+        this.impostaTabella(this.listaElementi);
         this.callbackPopolaLista();
       }
       this.waiting = false;
@@ -76,7 +76,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     this.popolaListaElementi();
   }
 
-  riempiTabella(listaElementi: any[]): void {
+  impostaTabella(listaElementi: any[]): void {
     this.tableData.rows = [];
     if (listaElementi) {
       listaElementi.forEach(elemento => {

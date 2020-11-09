@@ -165,7 +165,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
         break;
     }
 
-    this.riempiTabella(tabRows);
+    this.impostaTabella(tabRows);
     setTimeout(() => subscription.unsubscribe(), 500);
   }
 
