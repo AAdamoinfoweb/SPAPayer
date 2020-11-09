@@ -111,12 +111,10 @@ export class SidebarComponent implements OnInit {
       }
     } else {
       if (item['isExpanded']) {
-        this.selectedElement = null;
-      } else {
         this.selectedElement = item['nome'];
-        allItem.forEach(value => value['isExpanded'] = false);
+      } else {
+        this.selectedElement = null;
       }
-      item['isExpanded'] = !item['isExpanded'];
     }
   }
 }
