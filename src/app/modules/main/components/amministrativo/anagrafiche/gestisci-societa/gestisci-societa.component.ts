@@ -38,7 +38,9 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
 
   isMenuCarico = false;
 
-  listaSocieta: Array<Societa> = new Array<Societa>();
+  listaElementi: Array<Societa> = new Array<Societa>();
+  filtriRicerca: number = null;
+
   listaIdSocietaSelezionate: Array<number> = [];
 
   selectionElementi: any[];
@@ -109,16 +111,17 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     }
   }
 
-  popolaListaElementi() {
-    this.listaSocieta = [];
-    this.societaService.ricercaSocieta(null, this.idFunzione).subscribe(listaSocieta => {
-      this.listaSocieta = listaSocieta;
-
-      this.tableData.rows = [];
-      this.listaSocieta.forEach(societa => {
-        this.tableData.rows.push(this.creaRigaTabella(societa));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
+  popolaListaElementi(): void {
+    this.listaElementi = [];
+    this.tableData.rows = [];
+    this.societaService.ricercaSocieta(this.filtriRicerca, this.idFunzione).subscribe(listaSocieta => {
+      if (listaSocieta != null) {
+        this.listaElementi = listaSocieta;
+        this.listaElementi.forEach(societa => {
+          this.tableData.rows.push(this.creaRigaTabella(societa));
+        });
+        this.tempTableData = Object.assign({}, this.tableData);
+      }
       this.waiting = false;
     });
   }
@@ -207,12 +210,9 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     });
   }
 
-  onChangeListaElementi(listaSocietaFiltrate: Societa[]): void {
-    this.tableData.rows = [];
-    listaSocietaFiltrate.forEach(societa => {
-      this.tableData.rows.push(this.creaRigaTabella(societa));
-    });
-    this.tempTableData = this.tableData;
+  onChangeFiltri(filtroSocieta: number): void {
+    this.filtriRicerca = filtroSocieta;
+    this.popolaListaElementi();
   }
 
   getNumeroRecord(): string {
@@ -225,5 +225,4 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdSocietaSelezionate.length !== 1;
     this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdSocietaSelezionate.length === 0;
   }
-
 }

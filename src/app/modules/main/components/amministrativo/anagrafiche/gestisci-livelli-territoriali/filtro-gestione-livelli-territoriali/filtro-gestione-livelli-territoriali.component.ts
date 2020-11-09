@@ -21,7 +21,7 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
   opzioniFiltroLivelliTerritoriali: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
   @Output()
-  onChangeListaElementi: EventEmitter<LivelloTerritoriale[]> = new EventEmitter<LivelloTerritoriale[]>();
+  onChangeFiltri: EventEmitter<number> = new EventEmitter<number>();
 
   filtroLivelliTerritoriali: number = null;
 
@@ -64,13 +64,11 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.filtroLivelliTerritoriali = null;
-    this.onChangeListaElementi.emit(this.listaElementi);
+    this.onChangeFiltri.emit(null);
   }
 
   cercaElementi(): void {
-    this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.filtroLivelliTerritoriali, this.idFunzione).subscribe(listaLivelliTerritoriali => {
-      this.onChangeListaElementi.emit(listaLivelliTerritoriali);
-    });
+    this.onChangeFiltri.emit(this.filtroLivelliTerritoriali);
   }
 
   disabilitaBottone(filtroForm: NgForm): boolean {

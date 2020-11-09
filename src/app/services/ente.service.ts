@@ -28,17 +28,19 @@ export class EnteService {
     h = h.append('idFunzione', idFunzione);
     // set params
     let params = new HttpParams();
-    if (parametriRicercaEnte.societaId != null) {
-      params = params.set('societaId', String(parametriRicercaEnte.societaId));
-    }
-    if (parametriRicercaEnte.livelloTerritorialeId != null) {
-      params = params.set('livelloTerritorialeId', String(parametriRicercaEnte.livelloTerritorialeId));
-    }
-    if (parametriRicercaEnte.comune != null) {
-      params = params.set('codiceComune', parametriRicercaEnte.comune);
-    }
-    if (parametriRicercaEnte.provincia != null) {
-      params = params.set('codiceProvincia', parametriRicercaEnte.provincia);
+    if (parametriRicercaEnte) {
+      if (parametriRicercaEnte.societaId != null) {
+        params = params.set('societaId', String(parametriRicercaEnte.societaId));
+      }
+      if (parametriRicercaEnte.livelloTerritorialeId != null) {
+        params = params.set('livelloTerritorialeId', String(parametriRicercaEnte.livelloTerritorialeId));
+      }
+      if (parametriRicercaEnte.comune != null) {
+        params = params.set('codiceComune', parametriRicercaEnte.comune);
+      }
+      if (parametriRicercaEnte.provincia != null) {
+        params = params.set('codiceProvincia', parametriRicercaEnte.provincia);
+      }
     }
 
     return this.http.get(`${url}`,

@@ -58,7 +58,8 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
-  listaEnti: SintesiEnte[] = [];
+  listaElementi: SintesiEnte[] = [];
+  filtriRicerca: ParametriRicercaEnte = null;
   entiSelezionati: SintesiEnte[];
 
   waiting = true;
@@ -103,14 +104,16 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     }
   }
 
-  popolaListaElementi() {
-    this.waiting = false;
-    this.enteService.ricercaEnti(new ParametriRicercaEnte(), this.idFunzione).subscribe((listaEnti) => {
-      this.listaEnti = listaEnti;
-
-      this.tableData.rows = this.listaEnti.map(ente => {
-        return this.creaRigaTabella(ente);
-      });
+  popolaListaElementi(): void {
+    this.listaElementi = [];
+    this.tableData.rows = [];
+    this.enteService.ricercaEnti(this.filtriRicerca, this.idFunzione).subscribe((listaElementi) => {
+      if (listaElementi != null) {
+        this.listaElementi = listaElementi;
+        this.tableData.rows = this.listaElementi.map(ente => {
+          return this.creaRigaTabella(ente);
+        });
+      }
       this.waiting = false;
     });
   }
@@ -150,12 +153,9 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     }
   }
 
-  onChangeListaElementi(listaEntiFiltrati: SintesiEnte[]): void {
-    this.listaEnti = listaEntiFiltrati;
-    this.tableData.rows = [];
-    listaEntiFiltrati.forEach(ente => {
-      this.tableData.rows.push(this.creaRigaTabella(ente));
-    });
+  onChangeFiltri(filtri: ParametriRicercaEnte): void {
+    this.filtriRicerca = filtri;
+    this.popolaListaElementi();
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
@@ -189,8 +189,8 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   private eliminaEntiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-        const listaEntiId = this.entiSelezionati.map(ente => ente.id);
-        this.enteService.eliminaEnti(listaEntiId, this.idFunzione)
+        const listaElementiId = this.entiSelezionati.map(ente => ente.id);
+        this.enteService.eliminaEnti(listaElementiId, this.idFunzione)
             .subscribe(() => {
               this.selectionElementi = [];
               this.popolaListaElementi();
@@ -212,7 +212,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     // tslint:disable-next-line:prefer-const
     let tempEntiSelezionati: SintesiEnte[] = [];
     rows.forEach(value => {
-      const enteSelezionato: SintesiEnte[] = this.listaEnti
+      const enteSelezionato: SintesiEnte[] = this.listaElementi
         .filter(ente => ente.id === value.id.value);
       tempEntiSelezionati.push(...enteSelezionato);
     });

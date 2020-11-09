@@ -30,11 +30,8 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
 
   idFunzione;
 
-  @Input()
-  listaElementi: Array<any> = new Array<any>();
-
   @Output()
-  onChangeListaElementi: EventEmitter<any[]> = new EventEmitter<any[]>();
+  onChangeFiltri: EventEmitter<ParametriRicercaEnte> = new EventEmitter<ParametriRicercaEnte>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private enteService: EnteService, protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
@@ -133,14 +130,11 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.inizializzaFiltroRicercaEnte();
-    this.cercaElementi();
+    this.onChangeFiltri.emit(null);
   }
 
   cercaElementi() {
-    this.enteService.ricercaEnti(this.filtroRicercaEnte, this.idFunzione)
-      .subscribe((listaEnti) => {
-        this.onChangeListaElementi.emit(listaEnti);
-      });
+    this.onChangeFiltri.emit(this.filtroRicercaEnte);
   }
 
   disabilitaBottone(filtroForm: NgForm, nomeBottone: string): boolean {

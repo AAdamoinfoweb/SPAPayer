@@ -31,7 +31,8 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
 
   breadcrumbList = [];
 
-  listaBanner: Array<Banner> = new Array<Banner>();
+  listaElementi: Array<Banner> = new Array<Banner>();
+  filtriRicerca: ParametriRicercaBanner = null;
   listaBannerIdSelezionati: Array<number> = new Array<number>();
 
   selectionElementi: any[];
@@ -96,16 +97,17 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   popolaListaElementi(): void {
-    this.listaBanner = [];
-    const parametriRicercaBanner = new ParametriRicercaBanner();
-
-    this.bannerService.ricercaBanner(parametriRicercaBanner, this.idFunzione).subscribe(listaBanner => {
-      this.tableData.rows = [];
-      listaBanner.forEach(banner => {
-        this.listaBanner.push(banner);
-        this.tableData.rows.push(this.creaRigaTabella(banner));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
+    this.listaElementi = [];
+    this.tableData.rows = [];
+    this.bannerService.ricercaBanner(this.filtriRicerca, this.idFunzione).subscribe(listaBanner => {
+      if (listaBanner != null) {
+        this.listaElementi = listaBanner;
+        this.listaElementi.forEach(banner => {
+          this.listaElementi.push(banner);
+          this.tableData.rows.push(this.creaRigaTabella(banner));
+        });
+        this.tempTableData = Object.assign({}, this.tableData);
+      }
       this.waiting = false;
     });
   }
@@ -213,12 +215,9 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     });
   }
 
-  onChangeListaElementi(listaBannerFiltrati: Banner[]): void {
-    this.tableData.rows = [];
-    listaBannerFiltrati.forEach(banner => {
-      this.tableData.rows.push(this.creaRigaTabella(banner));
-    });
-    this.tempTableData = this.tableData;
+  onChangeFiltri(filtri: ParametriRicercaBanner): void {
+    this.filtriRicerca = filtri;
+    this.popolaListaElementi();
   }
 
   getNumeroRecord(): string {

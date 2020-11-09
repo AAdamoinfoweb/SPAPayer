@@ -45,20 +45,23 @@ export class BannerService {
   ricercaBanner(parametriRicercaBanner: ParametriRicercaBanner, idFunzione: string): Observable<Banner[]> {
     let params = new HttpParams();
     params = params.set('timestamp', this.timestamp);
-    if (parametriRicercaBanner.attivo != null) {
-      params = params.set('attivo', String(parametriRicercaBanner.attivo));
-    }
-    if (parametriRicercaBanner.titoloParziale != null) {
-      params = params.set('titoloParziale', parametriRicercaBanner.titoloParziale);
-    }
-    if (parametriRicercaBanner.testoParziale != null) {
-      params = params.set('testoParziale', parametriRicercaBanner.testoParziale);
-    }
-    if (parametriRicercaBanner.inizio != null) {
-      params = params.set('inizio', parametriRicercaBanner.inizio);
-    }
-    if (parametriRicercaBanner.fine != null) {
-      params = params.set('fine', parametriRicercaBanner.fine);
+
+    if (parametriRicercaBanner) {
+      if (parametriRicercaBanner.attivo != null) {
+        params = params.set('attivo', String(parametriRicercaBanner.attivo));
+      }
+      if (parametriRicercaBanner.titoloParziale != null) {
+        params = params.set('titoloParziale', parametriRicercaBanner.titoloParziale);
+      }
+      if (parametriRicercaBanner.testoParziale != null) {
+        params = params.set('testoParziale', parametriRicercaBanner.testoParziale);
+      }
+      if (parametriRicercaBanner.inizio != null) {
+        params = params.set('inizio', parametriRicercaBanner.inizio);
+      }
+      if (parametriRicercaBanner.fine != null) {
+        params = params.set('fine', parametriRicercaBanner.fine);
+      }
     }
 
     let h: HttpHeaders = new HttpHeaders();

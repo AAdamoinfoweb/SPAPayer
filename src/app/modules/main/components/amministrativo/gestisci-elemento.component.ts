@@ -32,6 +32,9 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract idFunzione;
   basePath;
 
+  abstract listaElementi: any[];
+  abstract filtriRicerca: any;
+
   abstract selectionElementi: any[];
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
@@ -93,7 +96,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract selezionaRigaTabella(righeSelezionate: any[]): void;
 
-  abstract onChangeListaElementi(listaElementi: any[]): void;
+  abstract onChangeFiltri(filtri: any): void;
 
   abstract getNumeroRecord(): string;
 }

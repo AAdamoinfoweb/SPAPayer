@@ -23,35 +23,37 @@ export class UtenteService {
 
   ricercaUtenti(parametriRicercaUtente: ParametriRicercaUtente, idFunzione: string): Observable<RicercaUtente[]> {
     let params = new HttpParams();
-    if (parametriRicercaUtente.livelloTerritorialeId != null) {
-      params = params.set('livelloTerritorialeId', String(parametriRicercaUtente.livelloTerritorialeId));
-    }
-    if (parametriRicercaUtente.societaId != null) {
-      params = params.set('societaId', String(parametriRicercaUtente.societaId));
-    }
-    if (parametriRicercaUtente.enteId != null) {
-      params = params.set('enteId', String(parametriRicercaUtente.enteId));
-    }
-    if (parametriRicercaUtente.servizioId != null) {
-      params = params.set('servizioId', String(parametriRicercaUtente.servizioId));
-    }
-    if (parametriRicercaUtente.funzioneId != null) {
-      params = params.set('funzioneId', String(parametriRicercaUtente.funzioneId));
-    }
-    if (parametriRicercaUtente.codiceFiscale != null) {
-      params = params.set('codiceFiscale', parametriRicercaUtente.codiceFiscale);
-    }
-    if (parametriRicercaUtente.dataScadenzaDa != null) {
-      params = params.set('dataScadenzaDa', String(parametriRicercaUtente.dataScadenzaDa));
-    }
-    if (parametriRicercaUtente.dataScadenzaA != null) {
-      params = params.set('dataScadenzaA', String(parametriRicercaUtente.dataScadenzaA));
-    }
-    if (parametriRicercaUtente.ultimoAccessoDa != null) {
-      params = params.set('ultimoAccessoDa', String(parametriRicercaUtente.ultimoAccessoDa));
-    }
-    if (parametriRicercaUtente.ultimoAccessoA != null) {
-      params = params.set('ultimoAccessoA', String(parametriRicercaUtente.ultimoAccessoA));
+    if (parametriRicercaUtente) {
+      if (parametriRicercaUtente.livelloTerritorialeId != null) {
+        params = params.set('livelloTerritorialeId', String(parametriRicercaUtente.livelloTerritorialeId));
+      }
+      if (parametriRicercaUtente.societaId != null) {
+        params = params.set('societaId', String(parametriRicercaUtente.societaId));
+      }
+      if (parametriRicercaUtente.enteId != null) {
+        params = params.set('enteId', String(parametriRicercaUtente.enteId));
+      }
+      if (parametriRicercaUtente.servizioId != null) {
+        params = params.set('servizioId', String(parametriRicercaUtente.servizioId));
+      }
+      if (parametriRicercaUtente.funzioneId != null) {
+        params = params.set('funzioneId', String(parametriRicercaUtente.funzioneId));
+      }
+      if (parametriRicercaUtente.codiceFiscale != null) {
+        params = params.set('codiceFiscale', parametriRicercaUtente.codiceFiscale);
+      }
+      if (parametriRicercaUtente.dataScadenzaDa != null) {
+        params = params.set('dataScadenzaDa', String(parametriRicercaUtente.dataScadenzaDa));
+      }
+      if (parametriRicercaUtente.dataScadenzaA != null) {
+        params = params.set('dataScadenzaA', String(parametriRicercaUtente.dataScadenzaA));
+      }
+      if (parametriRicercaUtente.ultimoAccessoDa != null) {
+        params = params.set('ultimoAccessoDa', String(parametriRicercaUtente.ultimoAccessoDa));
+      }
+      if (parametriRicercaUtente.ultimoAccessoA != null) {
+        params = params.set('ultimoAccessoA', String(parametriRicercaUtente.ultimoAccessoA));
+      }
     }
 
     let h: HttpHeaders = new HttpHeaders();

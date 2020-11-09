@@ -40,7 +40,8 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
 
   selectionElementi: any[];
 
-  listaLivelliTerritoriali: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
+  listaElementi: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
+  filtriRicerca: number = null;
   listaIdLivelliTerritorialiSelezionati: Array<number> = [];
 
   readonly toolbarIcons = [
@@ -106,16 +107,17 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     }
   }
 
-  popolaListaElementi() {
-    this.listaLivelliTerritoriali = [];
-    this.livelloTerritorialeService.ricercaLivelliTerritoriali(null, this.idFunzione).subscribe(listaLivelliTerritoriali => {
-      this.listaLivelliTerritoriali = listaLivelliTerritoriali;
-
-      this.tableData.rows = [];
-      this.listaLivelliTerritoriali.forEach(livelloTerritoriale => {
-        this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
+  popolaListaElementi(): void {
+    this.listaElementi = [];
+    this.tableData.rows = [];
+    this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.filtriRicerca, this.idFunzione).subscribe(listaElementi => {
+      if (listaElementi != null) {
+        this.listaElementi = listaElementi;
+        this.listaElementi.forEach(livelloTerritoriale => {
+          this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
+        });
+        this.tempTableData = Object.assign({}, this.tableData);
+      }
       this.waiting = false;
     });
   }
@@ -202,12 +204,9 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     return colonne.filter(col => col.field != 'entiAbilitati');
   }
 
-  onChangeListaElementi(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {
-    this.tableData.rows = [];
-    listaLivelliTerritorialiFiltrati.forEach(livelloTerritoriale => {
-      this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
-    });
-    this.tempTableData = this.tableData;
+  onChangeFiltri(filtro: number): void {
+    this.filtriRicerca = filtro;
+    this.popolaListaElementi();
   }
 
   getNumeroRecord(): string {

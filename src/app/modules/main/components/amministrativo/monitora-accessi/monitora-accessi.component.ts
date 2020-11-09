@@ -15,6 +15,7 @@ import {Accesso} from '../../../model/accesso/Accesso';
 import {GruppoEnum} from '../../../../../enums/gruppo.enum';
 import * as moment from 'moment';
 import {Utils} from '../../../../../utils/Utils';
+import {ParametriRicercaAccesso} from '../../../model/accesso/ParametriRicercaAccesso';
 
 @Component({
   selector: 'app-monitora-accessi',
@@ -30,7 +31,8 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
 
   breadcrumbList = [];
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli accessi alle funzionalità amministrative e filtrarli';
-  listaAccessi = [];
+  listaElementi = [];
+  filtriRicerca: ParametriRicercaAccesso = null;
 
   selectionElementi: any[];
 
@@ -172,12 +174,9 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     });
   }
 
-  onChangeListaElementi(listaAccessiFiltrati: Accesso[]): void {
-    this.tableData.rows = [];
-    this.ordinaDescrescenteAccessi(listaAccessiFiltrati);
-    listaAccessiFiltrati.forEach(accesso => {
-      this.tableData.rows.push(this.creaRigaTabella(accesso));
-    });
+  onChangeFiltri(filtri: ParametriRicercaAccesso): void {
+    this.filtriRicerca = filtri;
+    this.popolaListaElementi();
   }
 
   ordinaDescrescenteAccessi(listaAccessi: Accesso[]): Accesso[] {
@@ -203,14 +202,16 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   popolaListaElementi(): void {
-    this.listaAccessi = [];
-    this.accessoService.recuperaAccessi(null, this.idFunzione).subscribe(listaAccessi => {
-      // Mostro per primi gli accessi più recenti
-      this.listaAccessi = this.ordinaDescrescenteAccessi(listaAccessi);
-      this.tableData.rows = [];
-      this.listaAccessi.forEach(accesso => {
-        this.tableData.rows.push(this.creaRigaTabella(accesso));
-      });
+    this.listaElementi = [];
+    this.tableData.rows = [];
+    this.accessoService.recuperaAccessi(this.filtriRicerca, this.idFunzione).subscribe(listaAccessi => {
+      if (listaAccessi != null) {
+        this.listaElementi = listaAccessi;
+        // Mostro per primi gli accessi più recenti
+        this.ordinaDescrescenteAccessi(this.listaElementi).forEach(accesso => {
+          this.tableData.rows.push(this.creaRigaTabella(accesso));
+        });
+      }
     });
     this.waiting = false;
   }

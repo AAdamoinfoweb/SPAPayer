@@ -33,7 +33,8 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   breadcrumbList = [];
 
   codiceFiscaleUtenteDaModificare: string;
-  listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
+  listaElementi: Array<RicercaUtente> = new Array<RicercaUtente>();
+  filtriRicerca: ParametriRicercaUtente = null;
   selectionElementi: any[];
 
   toolbarIcons = [
@@ -104,17 +105,20 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     });
   }
 
-  popolaListaElementi() {
-    this.listaUtente = [];
-    const parametriRicercaUtente = new ParametriRicercaUtente();
-    this.utenteService.ricercaUtenti(parametriRicercaUtente, this.idFunzione).pipe(map(utenti => {
+  popolaListaElementi(): void {
+    this.listaElementi = [];
+    this.tableData.rows = [];
+    this.utenteService.ricercaUtenti(this.filtriRicerca, this.idFunzione).pipe(map(utenti => {
       if (utenti != null) {
-        utenti.forEach(utente => {
-          this.listaUtente.push(utente);
+        this.listaElementi = utenti;
+        this.listaElementi.forEach(utente => {
+          this.listaElementi.push(utente);
           this.tableData.rows.push(this.creaRigaTabella(utente));
         });
+        this.tempTableData = Object.assign({}, this.tableData);
+        this.onChangeTab(this.nomeTabCorrente);
       }
-      this.tempTableData = Object.assign({}, this.tableData);
+      this.waiting = false;
     })).subscribe();
   }
 
@@ -236,12 +240,9 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     return colonne;
   }
 
-  onChangeListaElementi(listaUtentiFiltrati: RicercaUtente[]): void {
-    this.tableData.rows.length = 0;
-    listaUtentiFiltrati.forEach(utente => {
-      this.tableData.rows.push(this.creaRigaTabella(utente));
-    });
-    this.onChangeTab(this.nomeTabCorrente);
+  onChangeFiltri(filtri: ParametriRicercaUtente): void {
+    this.filtriRicerca = filtri;
+    this.popolaListaElementi();
   }
 
   getNumeroRecord(): string {

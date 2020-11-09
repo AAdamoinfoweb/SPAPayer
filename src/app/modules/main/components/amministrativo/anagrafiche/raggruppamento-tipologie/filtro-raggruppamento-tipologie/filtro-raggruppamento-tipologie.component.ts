@@ -18,14 +18,13 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
   opzioniFiltroRaggruppamentiTipologie: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
   @Output()
-  onChangeListaElementi: EventEmitter<RaggruppamentoTipologiaServizio[]> = new EventEmitter<RaggruppamentoTipologiaServizio[]>();
+  onChangeFiltri: EventEmitter<number> = new EventEmitter<number>();
 
   filtroRaggruppamentiTipologieServizi: number = null;
 
   idFunzione;
 
-  constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute,
-              private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService) {
+  constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
     super(route, amministrativoService);
   }
 
@@ -64,13 +63,11 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
   pulisciFiltri(filtroRaggruppamentoTipologieForm: NgForm): void {
     filtroRaggruppamentoTipologieForm.resetForm();
     this.filtroRaggruppamentiTipologieServizi = null;
-    this.onChangeListaElementi.emit(this.listaElementi);
+    this.onChangeFiltri.emit(null);
   }
 
   cercaElementi(): void {
-    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(this.filtroRaggruppamentiTipologieServizi, this.idFunzione).subscribe(listaRaggruppamentoTipologiaServizio => {
-      this.onChangeListaElementi.emit(listaRaggruppamentoTipologiaServizio);
-    });
+    this.onChangeFiltri.emit(this.filtroRaggruppamentiTipologieServizi);
   }
 
   disabilitaBottone(filtroForm: NgForm): boolean {

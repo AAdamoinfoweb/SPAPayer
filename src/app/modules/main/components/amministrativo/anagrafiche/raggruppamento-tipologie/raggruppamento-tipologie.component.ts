@@ -28,7 +28,8 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   idFunzione;
   breadcrumbList = [];
 
-  listaRaggruppamentiTipologiaServizio: Array<RaggruppamentoTipologiaServizio> = new Array<RaggruppamentoTipologiaServizio>();
+  listaElementi: Array<RaggruppamentoTipologiaServizio> = new Array<RaggruppamentoTipologiaServizio>();
+  filtriRicerca: number = null;
   listaRaggruppamentiIdSelezionati: Array<number> = new Array<number>();
 
   selectionElementi: any[];
@@ -90,16 +91,16 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   }
 
   popolaListaElementi(): void {
-    this.listaRaggruppamentiTipologiaServizio = [];
-
-    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(null, this.idFunzione).subscribe(listaRaggruppamentoTipologiaServizio => {
-      this.listaRaggruppamentiTipologiaServizio = listaRaggruppamentoTipologiaServizio;
-
-      this.tableData.rows = [];
-      this.listaRaggruppamentiTipologiaServizio.forEach(raggruppamentoTipologiaServizio => {
-        this.tableData.rows.push(this.creaRigaTabella(raggruppamentoTipologiaServizio));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
+    this.listaElementi = [];
+    this.tableData.rows = [];
+    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(this.filtriRicerca, this.idFunzione).subscribe(listaRaggruppamentoTipologiaServizio => {
+      if (listaRaggruppamentoTipologiaServizio != null) {
+        this.listaElementi = listaRaggruppamentoTipologiaServizio;
+        this.listaElementi.forEach(raggruppamentoTipologiaServizio => {
+          this.tableData.rows.push(this.creaRigaTabella(raggruppamentoTipologiaServizio));
+        });
+        this.tempTableData = Object.assign({}, this.tableData);
+      }
       this.waiting = false;
     });
   }
@@ -180,12 +181,9 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     });
   }
 
-  onChangeListaElementi(listaRaggruppamentiFiltrati: RaggruppamentoTipologiaServizio[]): void {
-    this.tableData.rows = [];
-    listaRaggruppamentiFiltrati.forEach(raggrupamentoTipologiaServizio => {
-      this.tableData.rows.push(this.creaRigaTabella(raggrupamentoTipologiaServizio));
-    });
-    this.tempTableData = this.tableData;
+  onChangeFiltri(filtroId: number): void {
+    this.filtriRicerca = filtroId;
+    this.popolaListaElementi();
   }
 
   getNumeroRecord(): string {
