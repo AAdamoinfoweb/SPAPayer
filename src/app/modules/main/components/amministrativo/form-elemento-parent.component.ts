@@ -33,7 +33,7 @@ export abstract class FormElementoParentComponent {
     });
   }
 
-  abstract idFunzione;
+  idFunzione;
   basePath;
 
   abstract funzione: FunzioneGestioneEnum;

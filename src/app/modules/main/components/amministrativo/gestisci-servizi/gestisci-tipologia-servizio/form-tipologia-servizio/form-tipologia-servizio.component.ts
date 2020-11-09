@@ -38,7 +38,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   waiting = true;
 
   funzione: FunzioneGestioneEnum;
-  idFunzione;
 
   readonly lunghezzaMaxCol1: number = 5;
   readonly lunghezzaMaxCol2: number = 10;

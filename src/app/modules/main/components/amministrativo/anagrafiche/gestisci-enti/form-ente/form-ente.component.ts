@@ -34,7 +34,6 @@ import {Utils} from "../../../../../../../utils/Utils";
 export class FormEnteComponent extends FormElementoParentComponent implements OnInit {
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
-  idFunzione;
   // header page
   breadcrumbList = [];
   tooltipTitolo: string;

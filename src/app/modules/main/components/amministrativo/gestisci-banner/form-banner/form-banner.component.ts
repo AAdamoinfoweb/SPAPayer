@@ -22,7 +22,6 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
-  idFunzione;
 
   titoloPagina: string;
   tooltip: string;
