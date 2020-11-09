@@ -10,6 +10,7 @@ import {Provincia} from '../../../../../model/Provincia';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {NuovoPagamentoService} from '../../../../../../../services/nuovo-pagamento.service';
+import {LivelloTerritorialeService} from "../../../../../../../services/livelloTerritoriale.service";
 
 @Component({
   selector: 'app-dati-ente',
@@ -20,8 +21,11 @@ export class DatiEnteComponent implements OnInit {
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   telefonoRegex = Utils.TELEFONO_REGEX;
+  emailRegex = Utils.EMAIL_REGEX;
   codiceFiscalPIvaRegex = Utils.CODICE_FISCALE_O_PARTITA_IVA_REGEX;
 
+  @Input()
+  idFunzione;
   @Input()
   datiEnte: EnteCompleto;
   @Input()
@@ -69,7 +73,7 @@ export class DatiEnteComponent implements OnInit {
   }
 
   letturaSocieta(): void {
-    this.societaService.filtroSocieta()
+    this.societaService.ricercaSocieta(null, this.idFunzione)
       .subscribe(societa => {
         this.popolaOpzioniFiltroSocieta(societa);
       });
@@ -85,7 +89,7 @@ export class DatiEnteComponent implements OnInit {
   }
 
   letturaLivelloTerritoriale(): void {
-    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale()
+    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale(false)
       .subscribe(livelliTerritoriali => {
         this.popolaOpzioniFiltroLivelloTerritoriale(livelliTerritoriali);
       });

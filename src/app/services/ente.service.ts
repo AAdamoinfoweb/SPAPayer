@@ -6,6 +6,7 @@ import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaEnte} from '../modules/main/model/ente/ParametriRicercaEnte';
 import {SintesiEnte} from '../modules/main/model/ente/SintesiEnte';
 import {EnteCompleto} from '../modules/main/model/ente/EnteCompleto';
+import {ContoCorrente} from "../modules/main/model/ente/ContoCorrente";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,8 @@ export class EnteService {
   private readonly entiBaseUrl = this.gestisciEntiBasePath + '/enti';
 
   private readonly eliminaEntiUrl = this.entiBaseUrl + '/eliminaEnti';
+
+  private readonly contiCorrentiUrl = '/contiCorrenti';
 
   constructor(private http: HttpClient) {
   }
@@ -105,6 +108,57 @@ export class EnteService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  dettaglioEnte(idEnte: number, idFunzione: string): Observable<EnteCompleto> {
+    const url = environment.bffBaseUrl + this.entiBaseUrl + '/' + idEnte;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}`,
+      {
+        withCredentials: true,
+        headers: h
+      }).pipe(map((body: EnteCompleto) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  recuperaContiCorrenti(idEnte: number, idFunzione: string): Observable<ContoCorrente[]> {
+    const url = environment.bffBaseUrl + this.gestisciEntiBasePath + this.contiCorrentiUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    if(idFunzione != null){
+      h = h.append('idFunzione', idFunzione);
+    }
+
+
+    let params: HttpParams = new HttpParams();
+    if (idEnte != null) {
+      params = params.set('idEnte', String(idEnte));
+    }
+
+    return this.http.get(`${url}`,
+      {
+        withCredentials: true,
+        headers: h,
+        params: params
+      }).pipe(map((body: ContoCorrente[]) => {
         return body;
       }),
       catchError((err, caught) => {

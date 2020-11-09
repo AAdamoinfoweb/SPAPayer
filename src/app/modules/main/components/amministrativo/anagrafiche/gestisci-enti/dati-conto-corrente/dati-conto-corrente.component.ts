@@ -5,6 +5,11 @@ import {NgForm, NgModel} from '@angular/forms';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
+import {Tabella} from '../../../../../model/tabella/Tabella';
+import {tipoColonna} from '../../../../../../../enums/TipoColonna.enum';
+import {tipoTabella} from '../../../../../../../enums/TipoTabella.enum';
+import {Utils} from '../../../../../../../utils/Utils';
+import {EnteService} from '../../../../../../../services/ente.service';
 
 @Component({
   selector: 'app-dati-conto-corrente',
@@ -17,6 +22,17 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   testoTooltipIconaElimina = 'Elimina dati conto corrente';
 
+  @Input() indexDatiContoCorrente: number;
+  @Input() datiContoCorrente: ContoCorrente;
+  @Input() funzione: FunzioneGestioneEnum;
+  @Input() listaContiCorrente: ContoCorrente[];
+  @Output()
+  onChangeDatiContoCorrente: EventEmitter<ContoCorrenteSingolo> = new EventEmitter<ContoCorrenteSingolo>();
+  @Output()
+  onDeleteDatiContoCorrente: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   // calendar
   isCalendarOpen = false;
   // todo verificare data attivazione minima
@@ -26,15 +42,23 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   // modal
   display = false;
 
-  @Input() indexDatiContoCorrente: number;
-  @Input() datiContoCorrente: ContoCorrente;
-  @Input() funzione: FunzioneGestioneEnum;
-  @Output()
-  onChangeDatiContoCorrente: EventEmitter<ContoCorrenteSingolo> = new EventEmitter<ContoCorrenteSingolo>();
-  @Output()
-  onDeleteDatiContoCorrente: EventEmitter<any> = new EventEmitter<any>();
+  // table
+  tableData: Tabella = {
+    rows: [],
+    cols: [
+      {field: 'iban', header: 'Iban', type: tipoColonna.TESTO},
+      {field: 'intestazione', header: 'Intestazione', type: tipoColonna.TESTO},
+      {field: 'ibanCCPostale', header: 'Iban cc postale', type: tipoColonna.TESTO},
+      {field: 'intestazioneCCPostale', header: 'Intestazione cc postale', type: tipoColonna.TESTO},
+      {field: 'attivazione', header: 'Attivazione', type: tipoColonna.TESTO},
+      {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO}
+    ],
+    dataKey: 'id.value',
+    tipoTabella: tipoTabella.TEMPLATING
+  };
 
-  constructor() { }
+  constructor(private enteService: EnteService) {
+  }
 
   ngOnInit(): void {
   }
@@ -43,6 +67,34 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     // bind button collapse to new section beneficiario
     const collapseButton = document.getElementById('buttonCCCollapse' + this.indexDatiContoCorrente.toString());
     collapseButton.dataset.target = '#collapseCC' + this.indexDatiContoCorrente;
+    if (this.listaContiCorrente != null) {
+      this.impostaTabellaContiCorrente();
+    }
+  }
+
+  private impostaTabellaContiCorrente() {
+    const rows = [];
+    this.listaContiCorrente.forEach((contoCorrente) => {
+      const row = {
+        id: {value: contoCorrente.id},
+        iban: {value: contoCorrente.iban},
+        intestazione: {value: contoCorrente.intestazione},
+        ibanCCPostale: {value: contoCorrente.ibanCCPostale},
+        intestazioneCCPostale: {value: contoCorrente.intestazioneCCPostale},
+        attivazione: {
+          value: contoCorrente.inizioValidita != null ?
+            moment(contoCorrente.inizioValidita, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
+              .format(Utils.FORMAT_DATE_CALENDAR) : null
+        },
+        scadenza: {
+          value: contoCorrente.fineValidita != null ?
+            moment(contoCorrente.fineValidita, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
+              .format(Utils.FORMAT_DATE_CALENDAR) : null
+        },
+      };
+      rows.push(row);
+    });
+    this.tableData.rows = rows;
   }
 
   onClickDeleteIcon(event) {
@@ -65,14 +117,32 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     if (campo.value == '') {
       this.datiContoCorrente[campo.name] = null;
     }
-    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo());
+    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo(form));
   }
 
-  setContoCorrenteSingolo(): ContoCorrenteSingolo {
+  setContoCorrenteSingolo(form: NgForm): ContoCorrenteSingolo {
     const contoCorrenteSingolo: ContoCorrenteSingolo = new ContoCorrenteSingolo();
     contoCorrenteSingolo.index = this.indexDatiContoCorrente;
     contoCorrenteSingolo.contoCorrente = this.datiContoCorrente;
+    contoCorrenteSingolo.isFormValid = this.controlloForm(form, this.datiContoCorrente);
     return contoCorrenteSingolo;
+  }
+
+  controlloForm(form: NgForm, contoCorrente: ContoCorrente): boolean {
+    let ret = false;
+    if (contoCorrente.fineValidita != null) {
+      ret = this.controlloDate(contoCorrente);
+    }
+    return form.valid && !ret;
+  }
+
+  controlloDate(contoCorrente: ContoCorrente): boolean {
+    const dataAttivazione = contoCorrente.inizioValidita;
+    const dataScadenza = contoCorrente.fineValidita;
+    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    const isDataScadenzaBeforeDataAttivazione = Utils.isBefore(dataScadenza, dataAttivazione);
+    const ret = this.funzione === FunzioneGestioneEnum.DETTAGLIO ? false : isDataScadenzaBeforeDataAttivazione;
+    return ret;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -91,6 +161,18 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   showDialog() {
-    this.display = true;
+    this.display = !this.display;
+  }
+
+  onClickRow(row: any) {
+    const contoCorrente: ContoCorrente = new ContoCorrente();
+    contoCorrente.id = row.id.value;
+    contoCorrente.iban = row.iban.value;
+    contoCorrente.intestazione = row.intestazione.value;
+    contoCorrente.ibanCCPostale = row.ibanCCPostale.value;
+    contoCorrente.intestazioneCCPostale = row.intestazioneCCPostale.value;
+    contoCorrente.inizioValidita = row.attivazione.value;
+    contoCorrente.fineValidita = row.scadenza.value;
+    this.datiContoCorrente = contoCorrente;
   }
 }

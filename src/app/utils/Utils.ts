@@ -13,6 +13,7 @@ import {OpzioneSelect} from '../modules/main/model/OpzioneSelect';
 export class Utils {
 
   static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00:00';
+  static FORMAT_LOCAL_DATE_TIME_ISO = 'YYYY-MM-DD[T]hh:mm:ss';
   static FORMAT_LOCAL_DATE_TIME_TO = 'YYYY-MM-DD[T]23:59:59';
   static FORMAT_DATE_CALENDAR = 'DD/MM/YYYY';
   static ACCEPTED_FORMAT_DATES = [

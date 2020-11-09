@@ -190,6 +190,7 @@
           <div class="col">
             <input type="text" id="emailReferente" name="emailReferente" #emailReferente="ngModel"
                    [(ngModel)]="datiEnte.emailReferente"
+                   [pattern]="emailRegex"
                    (ngModelChange)="onChangeModel(datiEnteForm, emailReferente)"
                    class="pt-0" autocomplete="off" aria-describedby="emailReferenteHelpDescription"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">

@@ -57,6 +57,7 @@ import {FormRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento
 import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component';
 import {DatiBeneficiarioComponent} from "./anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component";
 import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
+import {DialogModule} from "primeng/dialog";
 
 
 @NgModule({
@@ -124,7 +125,8 @@ import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto
     TreeTableModule,
     CKEditorModule,
     PipeModule,
-    CommonComponentModule
+    CommonComponentModule,
+    DialogModule
   ],
   providers: [
     ConfirmationService
