@@ -37,7 +37,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   isMenuCarico = false;
 
-   selectionElementi: any[];
+   righeSelezionate: any[];
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Inserisci Ente'},
@@ -173,7 +173,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
       Utils.getModale(() => {
         this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione)
             .subscribe(() => {
-              this.selectionElementi = [];
+              this.righeSelezionate = [];
               this.popolaListaElementi();
               const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
               this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
@@ -190,11 +190,11 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   }
 
   selezionaRigaTabella(rows: any[]) {
-    this.selectionElementi = rows;
+    this.righeSelezionate = rows;
 
     const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
-    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = this.selectionElementi.length !== 1;
-    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = this.selectionElementi.length === 0;
+    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = this.righeSelezionate.length === 0;
   }
 
   getMapToolbarIndex(toolbarIcons): Map<ToolEnum, number> {

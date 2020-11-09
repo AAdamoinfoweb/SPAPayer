@@ -34,7 +34,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   listaElementi = [];
   filtriRicerca: ParametriRicercaAccesso = null;
 
-   selectionElementi: any[];
+   righeSelezionate: any[];
 
   readonly toolbarIcons = [
     {type: ToolEnum.EXPORT_PDF},
@@ -205,7 +205,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
-    this.selectionElementi = righeSelezionate;
+    this.righeSelezionate = righeSelezionate;
   }
 
   mostraDettaglioAccesso(rigaTabella) {

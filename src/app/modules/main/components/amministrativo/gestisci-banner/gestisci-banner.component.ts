@@ -35,7 +35,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   listaElementi: Array<Banner> = new Array<Banner>();
   filtriRicerca: ParametriRicercaBanner = null;
 
-   selectionElementi: any[];
+   righeSelezionate: any[];
 
   toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Banner'},
@@ -156,7 +156,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           })).subscribe();
-          this.selectionElementi = [];
+          this.righeSelezionate = [];
         },
         TipoModaleEnum.ELIMINA
       )
@@ -208,9 +208,9 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   selezionaRigaTabella(rowsChecked): void {
-    this.selectionElementi = rowsChecked;
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.selectionElementi.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.selectionElementi.length === 0;
+    this.righeSelezionate = rowsChecked;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.righeSelezionate.length === 0;
   }
 
   mostraDettaglioBanner(rigaCliccata: any) {

@@ -36,7 +36,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   codiceFiscaleUtenteDaModificare: string;
   listaElementi: Array<RicercaUtente> = new Array<RicercaUtente>();
   filtriRicerca: ParametriRicercaUtente = null;
-   selectionElementi: any[];
+   righeSelezionate: any[];
 
   toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Utente/Permessi'},
@@ -228,9 +228,9 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   selezionaRigaTabella(rowsChecked): void {
-    this.selectionElementi = rowsChecked;
-    if (this.selectionElementi.length === 1) {
-      this.codiceFiscaleUtenteDaModificare = this.selectionElementi[0].id.value;
+    this.righeSelezionate = rowsChecked;
+    if (this.righeSelezionate.length === 1) {
+      this.codiceFiscaleUtenteDaModificare = this.righeSelezionate[0].id.value;
       this.toolbarIcons[this.indiceIconaModifica].disabled = false;
     } else {
       this.codiceFiscaleUtenteDaModificare = null;

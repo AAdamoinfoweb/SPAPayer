@@ -39,7 +39,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
 
   isMenuCarico = false;
 
-   selectionElementi: any[];
+   righeSelezionate: any[];
 
   listaElementi: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
   filtriRicerca: number = null;
@@ -196,9 +196,9 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   }
 
   selezionaRigaTabella(righeSelezionate): void {
-    this.selectionElementi = righeSelezionate;
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.selectionElementi.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.selectionElementi.length === 0;
+    this.righeSelezionate = righeSelezionate;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.righeSelezionate.length === 0;
   }
 
 }

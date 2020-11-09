@@ -32,7 +32,7 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   listaElementi: Array<RaggruppamentoTipologiaServizio> = new Array<RaggruppamentoTipologiaServizio>();
   filtriRicerca: number = null;
 
-   selectionElementi: any[];
+   righeSelezionate: any[];
 
   toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi raggruppamento'},
@@ -137,7 +137,7 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
-          this.selectionElementi = [];
+          this.righeSelezionate = [];
         },
         TipoModaleEnum.ELIMINA
       )
@@ -175,9 +175,9 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   }
 
   selezionaRigaTabella(rowsChecked): void {
-    this.selectionElementi = rowsChecked;
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.selectionElementi.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.selectionElementi.length === 0;
+    this.righeSelezionate = rowsChecked;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.righeSelezionate.length === 0;
   }
 
   mostraDettaglioRaggruppamentoTipologiaServizio(rigaCliccata: any) {

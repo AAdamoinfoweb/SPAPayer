@@ -42,7 +42,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   listaElementi: Array<Societa> = new Array<Societa>();
   filtriRicerca: number = null;
 
-   selectionElementi: any[];
+   righeSelezionate: any[];
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Società'},
@@ -201,8 +201,8 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   }
 
   selezionaRigaTabella(righeSelezionate): void {
-    this.selectionElementi = righeSelezionate;
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.selectionElementi.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.selectionElementi.length === 0;
+    this.righeSelezionate = righeSelezionate;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.righeSelezionate.length === 0;
   }
 }
