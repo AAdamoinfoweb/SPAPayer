@@ -39,14 +39,14 @@
                   <ng-container *ngIf="!sub.route">
                      <span>
                        <svg class="icon icon-sm icon-primary right" aria-hidden="true">
-                         <use [attr.xlink:href]="sub['isExpanded'] ? 'assets/img/sprite.svg#it-collapse' : 'assets/img/sprite.svg#it-expand'"
+                         <use [attr.xlink:href]="!sub['isExpanded'] ? 'assets/img/sprite.svg#it-collapse' : 'assets/img/sprite.svg#it-expand'"
                               xlink:href=""></use>
                        </svg>
                      </span>
                   </ng-container>
                 </a>
                 <ul [attr.id]="'collSub-' + j"
-                    class="link-sublist collapse none"
+                    class="link-sublist collapse none show"
                     *ngIf="sub.funzioni">
                   <ng-container *ngFor="let subItem of sub.funzioni">
                     <li (click)="getRouterLink(subItem)">
