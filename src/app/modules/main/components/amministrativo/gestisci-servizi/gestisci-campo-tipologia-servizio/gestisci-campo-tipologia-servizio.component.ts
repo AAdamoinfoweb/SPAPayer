@@ -1,15 +1,16 @@
 import {AfterViewInit, OnInit} from '@angular/core';
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {
   CdkDrag,
-  CdkDragStart,
   CdkDropList, CdkDropListGroup, CdkDragMove, CdkDragEnter,
   moveItemInArray
 } from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
-import {AmministrativoService} from "../../../../../../services/amministrativo.service";
-import {CampoTipologiaServizioService} from "../../../../../../services/campo-tipologia-servizio.service";
-import {CampoForm} from "../../../../model/CampoForm";
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
+import {CampoForm} from '../../../../model/CampoForm';
+import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-gestisci-campo-tipologia-servizio',
@@ -29,6 +30,11 @@ export class GestisciCampoTipologiaServizioComponent implements OnInit, AfterVie
   public sourceIndex: number;
   public dragIndex: number;
   public activeContainer;
+  waiting = true;
+
+  readonly lunghezzaMaxCol1: number = 5;
+  readonly lunghezzaMaxCol2: number = 10;
+  readonly lunghezzaMaxCol3: number = 15;
 
   constructor(private viewportRuler: ViewportRuler,
               private amministrativoService: AmministrativoService,
@@ -38,16 +44,18 @@ export class GestisciCampoTipologiaServizioComponent implements OnInit, AfterVie
   }
 
   ngOnInit(): void {
-        this.campoTipologiaServizioService.letturaCampi(13).subscribe(value => {
-          this.items = value;
-        });
-    }
+    this.campoTipologiaServizioService.campiTipologiaServizio(13)
+      .subscribe(value => {
+        this.items = _.sortBy(value, 'posizione');
+        this.waiting = false;
+      });
+  }
 
   ngAfterViewInit() {
-    let phElement = this.placeholder.element.nativeElement;
+    /*let phElement = this.placeholder.element.nativeElement;
 
     phElement.style.display = 'none';
-    phElement.parentElement.removeChild(phElement);
+    phElement.parentElement.removeChild(phElement);*/
   }
 
   add() {
@@ -56,7 +64,7 @@ export class GestisciCampoTipologiaServizioComponent implements OnInit, AfterVie
 
 
   dragMoved(e: CdkDragMove) {
-    let point = this.getPointerPositionOnPage(e.event);
+    const point = this.getPointerPositionOnPage(e.event);
 
     this.listGroup._items.forEach(dropList => {
       if (__isInsideDropListClientRect(dropList, point.x, point.y)) {
@@ -67,11 +75,12 @@ export class GestisciCampoTipologiaServizioComponent implements OnInit, AfterVie
   }
 
   dropListDropped(event: any) {
-    if (!this.target)
+    if (!this.target) {
       return;
+    }
 
-    let phElement = this.placeholder.element.nativeElement;
-    let parent = phElement.parentElement;
+    const phElement = this.placeholder.element.nativeElement;
+    const parent = phElement.parentElement;
 
     phElement.style.display = 'none';
 
@@ -82,23 +91,26 @@ export class GestisciCampoTipologiaServizioComponent implements OnInit, AfterVie
     this.target = null;
     this.source = null;
 
-    if (this.sourceIndex != this.targetIndex)
+    if (this.sourceIndex != this.targetIndex) {
       moveItemInArray(this.items, this.sourceIndex, this.targetIndex);
+    }
   }
 
   dropListEnterPredicate = (drag: CdkDrag, drop: CdkDropList) => {
-    if (drop == this.placeholder)
+    if (drop == this.placeholder) {
       return true;
+    }
 
-    if (drop != this.activeContainer)
+    if (drop != this.activeContainer) {
       return false;
+    }
 
-    let phElement = this.placeholder.element.nativeElement;
-    let sourceElement = drag.dropContainer.element.nativeElement;
-    let dropElement = drop.element.nativeElement;
+    const phElement = this.placeholder.element.nativeElement;
+    const sourceElement = drag.dropContainer.element.nativeElement;
+    const dropElement = drop.element.nativeElement;
 
-    let dragIndex = __indexOf(dropElement.parentElement.children, (this.source ? phElement : sourceElement));
-    let dropIndex = __indexOf(dropElement.parentElement.children, dropElement);
+    const dragIndex = __indexOf(dropElement.parentElement.children, (this.source ? phElement : sourceElement));
+    const dropIndex = __indexOf(dropElement.parentElement.children, dropElement);
 
     if (!this.source) {
       this.sourceIndex = dragIndex;
@@ -131,6 +143,31 @@ export class GestisciCampoTipologiaServizioComponent implements OnInit, AfterVie
       x: point.pageX - scrollPosition.left,
       y: point.pageY - scrollPosition.top
     };
+  }
+
+  removeItem(item: CampoForm) {
+
+  }
+
+  calcolaDimensioneCampo(campo: CampoForm): string {
+    let classe;
+
+    if (campo.tipoCampo === TipoCampoEnum.DATEDDMMYY || campo.tipoCampo === TipoCampoEnum.DATEMMYY || campo.tipoCampo === TipoCampoEnum.DATEYY) {
+      classe = 'col-md-2 form-col-2';
+    } else if (campo.tipoCampo === TipoCampoEnum.INPUT_PREZZO) {
+      classe = 'col-md-2 form-col-2';
+    } else {
+      if (campo.lunghezza <= this.lunghezzaMaxCol1) {
+        classe = 'col-md-1 form-col-1';
+      } else if (campo.lunghezza <= this.lunghezzaMaxCol2) {
+        classe = 'col-md-2 form-col-2';
+      } else if (campo.lunghezza <= this.lunghezzaMaxCol3) {
+        classe = 'col-md-3 form-col-3';
+      } else {
+        classe = 'col-md-4 form-col-4';
+      }
+    }
+    return classe;
   }
 }
 

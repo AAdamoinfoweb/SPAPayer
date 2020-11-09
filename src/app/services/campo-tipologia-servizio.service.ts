@@ -9,17 +9,17 @@ import {environment} from "../../environments/environment";
   providedIn: 'root'
 })
 export class CampoTipologiaServizioService {
-  private readonly baseUrl = '/gestisciCampoTipologiaServizio';
-  private readonly letturaCampiUrl = '/campoTipologiaServizio';
+  private readonly baseUrl = '/gestisciTipologiaServizi';
+  private readonly campiTipologiaServizioUrl = '/campiTipologiaServizio';
 
   constructor(private http: HttpClient) {
   }
 
-  letturaCampi(tipologiaServizioId: number, idFunzione: string = "17"): Observable<CampoForm[]> {
+  campiTipologiaServizio(tipologiaServizioId: number, idFunzione: string = "17"): Observable<CampoForm[]> {
 
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
-    return this.http.get(environment.bffBaseUrl + this.baseUrl + this.letturaCampiUrl + `?tipologiaServizioId=${tipologiaServizioId}`, {
+    return this.http.get(environment.bffBaseUrl + this.baseUrl + this.campiTipologiaServizioUrl + `?tipologiaServizioId=${tipologiaServizioId}`, {
       withCredentials: true,
       headers: h
     }).pipe(map((body: CampoForm[]) => {

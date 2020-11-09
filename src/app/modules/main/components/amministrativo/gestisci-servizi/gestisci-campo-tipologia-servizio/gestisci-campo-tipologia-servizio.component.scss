@@ -8,15 +8,21 @@
   padding: 4px;
 }
 
-.example-container {
-  display: flex;
-  flex-wrap: wrap;
-  min-width: 600px;
-  max-width: 900px;
+.example-box span.close::after {
+  content: '\2715';
+  top: 30%;
+}
+
+span.required::after {
+  content: '\002A';
+  color: red;
+}
+
+span.key::after {
+  content: '\1F511';
 }
 
 .example-box {
-  width: 200px;
   font-size: 1.2em;
   border: solid 1px #ccc;
   font-weight: bold;
@@ -45,7 +51,6 @@
 
 .cdk-drop-list {
   display: flex;
-  padding-right: 10px;
   padding-bottom: 10px;
 }
 

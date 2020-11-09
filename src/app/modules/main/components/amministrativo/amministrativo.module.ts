@@ -55,6 +55,7 @@ import {FormEnteComponent} from './anagrafiche/gestisci-enti/form-ente/form-ente
 import {DatiRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
     TreeTableModule,
     CKEditorModule,
     PipeModule,
-    CommonComponentModule
+    CommonComponentModule,
+    DragDropModule
   ],
   providers: [
     ConfirmationService
