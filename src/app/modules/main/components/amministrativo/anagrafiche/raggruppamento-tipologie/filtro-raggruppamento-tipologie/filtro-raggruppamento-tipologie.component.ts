@@ -6,6 +6,7 @@ import {AmministrativoService} from '../../../../../../../services/amministrativ
 import {NgForm, NgModel} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../../services/RaggruppamentoTipologiaServizio.service';
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-raggruppamento-tipologie',
@@ -32,6 +33,7 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
   }
 
   ngOnChanges(sc: SimpleChanges): void {
+    // Appena la lista viene popolata per la prima volta
     if (sc.listaElementi && !this.opzioniFiltroRaggruppamentiTipologie.length) {
       this.impostaOpzioniFiltroRaggruppamentiTipologieServizi();
     }
@@ -46,6 +48,7 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
         label: raggruppamentoTipologiaServizio.nome
       });
     });
+    Utils.ordinaOpzioniSelect(this.opzioniFiltroRaggruppamentiTipologie);
   }
 
   isCampoInvalido(campo: NgModel) {

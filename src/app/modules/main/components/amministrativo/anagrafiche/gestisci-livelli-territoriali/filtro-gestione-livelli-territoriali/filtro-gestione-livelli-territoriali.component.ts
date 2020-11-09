@@ -6,6 +6,7 @@ import {LivelloTerritorialeService} from '../../../../../../../services/livelloT
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
 import {ActivatedRoute} from "@angular/router";
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-gestione-livelli-territoriali',
@@ -34,6 +35,7 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
   }
 
   ngOnChanges(sc: SimpleChanges): void {
+    // Appena la lista viene popolata per la prima volta
     if (sc.listaElementi && !this.opzioniFiltroLivelliTerritoriali.length) {
       this.impostaOpzioniFiltroLivelliTerritoriali();
     }
@@ -47,6 +49,7 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
         label: livelloTerritoriale.nome
       });
     });
+    Utils.ordinaOpzioniSelect(this.opzioniFiltroLivelliTerritoriali);
   }
 
   isCampoInvalido(campo: NgModel) {
