@@ -212,8 +212,4 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.onClickAnnulla(this.funzione);
   }
 
-  tornaIndietro() {
-    this.router.navigateByUrl('/gestioneAnagrafica/gestioneEnti?funzione=' + this.idFunzione);
-  }
-
 }
