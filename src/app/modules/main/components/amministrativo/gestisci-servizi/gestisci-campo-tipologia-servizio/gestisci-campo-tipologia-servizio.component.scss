@@ -1,3 +1,46 @@
+/* basic positioning */
+.legend {
+  list-style: none;
+}
+
+.legend li {
+  float: left;
+  margin-right: 10px;
+}
+
+.legend span {
+  border: 1px solid #ccc;
+  float: left;
+  width: 12px;
+  height: 12px;
+  margin: 2px;
+}
+
+/* your colors */
+.legend .field-disabled {
+  background-color: #ccc;
+}
+
+.legend .field-input {
+  background-color: #83e95d;
+}
+
+.legend .field-output {
+  background-color: #6a9dea;
+}
+
+.legend .notawesome {
+  background-color: #000000;
+}
+
+.field-input {
+  background-color: #83e95d!important;
+}
+
+.field-output {
+  background-color: #6a9dea!important;
+}
+
 .example-list {
   list-style-type: none;
   padding: 0;
@@ -6,6 +49,11 @@
 .example-list li {
   display: table-cell;
   padding: 4px;
+}
+
+div.disabled {
+  color: gray;
+  background-color: #ccc;
 }
 
 .example-box span.close::after {
