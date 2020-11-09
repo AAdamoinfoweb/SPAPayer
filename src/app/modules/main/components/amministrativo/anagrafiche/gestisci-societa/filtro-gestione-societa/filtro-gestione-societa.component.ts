@@ -19,14 +19,13 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   opzioniFiltroSocieta: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
   @Output()
-  onChangeListaElementi: EventEmitter<Societa[]> = new EventEmitter<Societa[]>();
+  onChangeFiltri: EventEmitter<number> = new EventEmitter<number>();
 
   filtroSocieta: number = null;
 
   idFunzione;
 
-  constructor(private societaService: SocietaService,
-              protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
+  constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
     super(route, amministrativoService);
   }
 
@@ -34,7 +33,7 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaElementi) {
+    if (sc.listaElementi && !this.opzioniFiltroSocieta.length) {
       this.impostaOpzioniFiltroSocieta();
     }
   }
@@ -64,13 +63,11 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.filtroSocieta = null;
-    this.onChangeListaElementi.emit(this.listaElementi);
+    this.onChangeFiltri.emit(null);
   }
 
   cercaElementi(): void {
-    this.societaService.ricercaSocieta(this.filtroSocieta, this.idFunzione).subscribe(listaSocieta => {
-      this.onChangeListaElementi.emit(listaSocieta);
-    });
+    this.onChangeFiltri.emit(this.filtroSocieta);
   }
 
   disabilitaBottone(filtroForm: NgForm): boolean {

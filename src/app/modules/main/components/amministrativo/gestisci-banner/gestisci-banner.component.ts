@@ -18,6 +18,7 @@ import {ConfirmationService} from 'primeng/api';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
 import {Colonna} from '../../../model/tabella/Colonna';
 import {Tabella} from '../../../model/tabella/Tabella';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-gestisci-banner',
@@ -31,7 +32,8 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
 
   breadcrumbList = [];
 
-  listaBanner: Array<Banner> = new Array<Banner>();
+  listaElementi: Array<Banner> = new Array<Banner>();
+  filtriRicerca: ParametriRicercaBanner = null;
   listaBannerIdSelezionati: Array<number> = new Array<number>();
 
   selectionElementi: any[];
@@ -59,10 +61,8 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
-  tempTableData: Tabella = this.tableData;
 
   isMenuCarico = false;
-  waiting = true;
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
@@ -95,21 +95,6 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     this.popolaListaElementi();
   }
 
-  popolaListaElementi(): void {
-    this.listaBanner = [];
-    const parametriRicercaBanner = new ParametriRicercaBanner();
-
-    this.bannerService.ricercaBanner(parametriRicercaBanner, this.idFunzione).subscribe(listaBanner => {
-      this.tableData.rows = [];
-      listaBanner.forEach(banner => {
-        this.listaBanner.push(banner);
-        this.tableData.rows.push(this.creaRigaTabella(banner));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
-      this.waiting = false;
-    });
-  }
-
   ngAfterViewInit(): void {
     if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
@@ -138,6 +123,12 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     return row;
   }
 
+  getObservableFunzioneRicerca(): Observable<Banner[]> {
+    return this.bannerService.ricercaBanner(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {}
+
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
@@ -150,10 +141,10 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.eliminaBannerSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Banner');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Banner');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Banner');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Banner');
         break;
     }
   }
@@ -211,14 +202,6 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
       rigaFormattata.fine = riga.fine.value;
       return rigaFormattata;
     });
-  }
-
-  onChangeListaElementi(listaBannerFiltrati: Banner[]): void {
-    this.tableData.rows = [];
-    listaBannerFiltrati.forEach(banner => {
-      this.tableData.rows.push(this.creaRigaTabella(banner));
-    });
-    this.tempTableData = this.tableData;
   }
 
   getNumeroRecord(): string {

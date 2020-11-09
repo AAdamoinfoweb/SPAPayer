@@ -15,6 +15,8 @@ import {Accesso} from '../../../model/accesso/Accesso';
 import {GruppoEnum} from '../../../../../enums/gruppo.enum';
 import * as moment from 'moment';
 import {Utils} from '../../../../../utils/Utils';
+import {ParametriRicercaAccesso} from '../../../model/accesso/ParametriRicercaAccesso';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-monitora-accessi',
@@ -24,13 +26,13 @@ import {Utils} from '../../../../../utils/Utils';
 export class MonitoraAccessiComponent extends GestisciElementoComponent implements OnInit {
 
   isMenuCarico = false;
-  waiting = true;
 
   idFunzione;
 
   breadcrumbList = [];
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli accessi alle funzionalità amministrative e filtrarli';
-  listaAccessi = [];
+  listaElementi = [];
+  filtriRicerca: ParametriRicercaAccesso = null;
 
   selectionElementi: any[];
 
@@ -124,6 +126,15 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     }
   }
 
+  getObservableFunzioneRicerca(): Observable<Accesso[]> {
+    return this.accessoService.recuperaAccessi(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista(): void {
+    this.ordinaDescrescenteAccessi(this.listaElementi);
+    this.impostaTabella(this.listaElementi);
+  }
+
   getDataSessioneFormattata(dataSessione: Date): string {
     return dataSessione ? moment(dataSessione).format('DD/MM/YYYY HH:mm:ss') : null;
   }
@@ -172,16 +183,8 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     });
   }
 
-  onChangeListaElementi(listaAccessiFiltrati: Accesso[]): void {
-    this.tableData.rows = [];
-    this.ordinaDescrescenteAccessi(listaAccessiFiltrati);
-    listaAccessiFiltrati.forEach(accesso => {
-      this.tableData.rows.push(this.creaRigaTabella(accesso));
-    });
-  }
-
-  ordinaDescrescenteAccessi(listaAccessi: Accesso[]): Accesso[] {
-    return listaAccessi.sort((accesso1, accesso2) => {
+  ordinaDescrescenteAccessi(listaAccessi: Accesso[]): void {
+    listaAccessi.sort((accesso1, accesso2) => {
       if (accesso1.inizioSessione && accesso2.inizioSessione) {
         if (moment(accesso1.inizioSessione) < moment(accesso2.inizioSessione)) {
           return 1;
@@ -200,19 +203,6 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
         }
       }
     });
-  }
-
-  popolaListaElementi(): void {
-    this.listaAccessi = [];
-    this.accessoService.recuperaAccessi(null, this.idFunzione).subscribe(listaAccessi => {
-      // Mostro per primi gli accessi più recenti
-      this.listaAccessi = this.ordinaDescrescenteAccessi(listaAccessi);
-      this.tableData.rows = [];
-      this.listaAccessi.forEach(accesso => {
-        this.tableData.rows.push(this.creaRigaTabella(accesso));
-      });
-    });
-    this.waiting = false;
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {

@@ -19,6 +19,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -38,7 +39,9 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
 
   isMenuCarico = false;
 
-  listaSocieta: Array<Societa> = new Array<Societa>();
+  listaElementi: Array<Societa> = new Array<Societa>();
+  filtriRicerca: number = null;
+
   listaIdSocietaSelezionate: Array<number> = [];
 
   selectionElementi: any[];
@@ -65,9 +68,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     dataKey: 'nome.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
-
-  tempTableData: Tabella;
-  waiting = true;
 
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
@@ -109,20 +109,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     }
   }
 
-  popolaListaElementi() {
-    this.listaSocieta = [];
-    this.societaService.ricercaSocieta(null, this.idFunzione).subscribe(listaSocieta => {
-      this.listaSocieta = listaSocieta;
-
-      this.tableData.rows = [];
-      this.listaSocieta.forEach(societa => {
-        this.tableData.rows.push(this.creaRigaTabella(societa));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
-      this.waiting = false;
-    });
-  }
-
   creaRigaTabella(societa: Societa): object {
     const linkGestioneUtenti = this.funzioneGestioneUtenti
       + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneUtenti])
@@ -138,6 +124,12 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     return riga;
   }
 
+  getObservableFunzioneRicerca(): Observable<Societa[]> {
+    return this.societaService.ricercaSocieta(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {}
+
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
@@ -150,10 +142,10 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
         this.eliminaSocietaSelezionate();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Societa');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Societa');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Societa');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Societa');
         break;
     }
     this.selectionElementi = [];
@@ -207,14 +199,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     });
   }
 
-  onChangeListaElementi(listaSocietaFiltrate: Societa[]): void {
-    this.tableData.rows = [];
-    listaSocietaFiltrate.forEach(societa => {
-      this.tableData.rows.push(this.creaRigaTabella(societa));
-    });
-    this.tempTableData = this.tableData;
-  }
-
   getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length + ' società';
   }
@@ -225,5 +209,4 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdSocietaSelezionate.length !== 1;
     this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdSocietaSelezionate.length === 0;
   }
-
 }

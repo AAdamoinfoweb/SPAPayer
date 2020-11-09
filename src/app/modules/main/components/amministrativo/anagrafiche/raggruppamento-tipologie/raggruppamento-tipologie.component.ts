@@ -15,6 +15,7 @@ import {RaggruppamentoTipologiaServizio} from '../../../../model/RaggruppamentoT
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {Utils} from '../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-raggruppamento-tipologie',
@@ -28,7 +29,8 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   idFunzione;
   breadcrumbList = [];
 
-  listaRaggruppamentiTipologiaServizio: Array<RaggruppamentoTipologiaServizio> = new Array<RaggruppamentoTipologiaServizio>();
+  listaElementi: Array<RaggruppamentoTipologiaServizio> = new Array<RaggruppamentoTipologiaServizio>();
+  filtriRicerca: number = null;
   listaRaggruppamentiIdSelezionati: Array<number> = new Array<number>();
 
   selectionElementi: any[];
@@ -52,10 +54,8 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
-  tempTableData: Tabella = this.tableData;
 
   isMenuCarico = false;
-  waiting = true;
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2,
@@ -89,21 +89,6 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     this.popolaListaElementi();
   }
 
-  popolaListaElementi(): void {
-    this.listaRaggruppamentiTipologiaServizio = [];
-
-    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(null, this.idFunzione).subscribe(listaRaggruppamentoTipologiaServizio => {
-      this.listaRaggruppamentiTipologiaServizio = listaRaggruppamentoTipologiaServizio;
-
-      this.tableData.rows = [];
-      this.listaRaggruppamentiTipologiaServizio.forEach(raggruppamentoTipologiaServizio => {
-        this.tableData.rows.push(this.creaRigaTabella(raggruppamentoTipologiaServizio));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
-      this.waiting = false;
-    });
-  }
-
   ngAfterViewInit(): void {
     if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
@@ -119,6 +104,12 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     };
   }
 
+  getObservableFunzioneRicerca(): Observable<RaggruppamentoTipologiaServizio[]> {
+    return this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {}
+
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
@@ -131,10 +122,10 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
         this.eliminaRaggruppamentiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Raggruppamenti Tipologie');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Raggruppamenti Tipologie');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Raggruppamenti Tipologie');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Raggruppamenti Tipologie');
         break;
     }
   }
@@ -178,14 +169,6 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
       rigaFormattata.descrizione = riga.descrizione.value;
       return rigaFormattata;
     });
-  }
-
-  onChangeListaElementi(listaRaggruppamentiFiltrati: RaggruppamentoTipologiaServizio[]): void {
-    this.tableData.rows = [];
-    listaRaggruppamentiFiltrati.forEach(raggrupamentoTipologiaServizio => {
-      this.tableData.rows.push(this.creaRigaTabella(raggrupamentoTipologiaServizio));
-    });
-    this.tempTableData = this.tableData;
   }
 
   getNumeroRecord(): string {

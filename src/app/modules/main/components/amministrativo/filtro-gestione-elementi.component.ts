@@ -21,9 +21,7 @@ export abstract class FiltroGestioneElementiComponent {
   abstract idFunzione;
   basePath;
 
-  abstract listaElementi: Array<any>;
-
-  abstract onChangeListaElementi: EventEmitter<any[]>;
+  abstract onChangeFiltri: EventEmitter<any>;
 
   abstract pulisciFiltri(filtroForm: NgForm): void;
 

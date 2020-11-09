@@ -8,6 +8,7 @@ import {Tabella} from '../../model/tabella/Tabella';
 import {Colonna} from '../../model/tabella/Colonna';
 import {ToolEnum} from '../../../../enums/Tool.enum';
 import {ImmaginePdf} from '../../model/tabella/ImmaginePdf';
+import {Observable} from 'rxjs';
 
 
 export abstract class GestisciElementoComponent extends AmministrativoParentComponent {
@@ -32,7 +33,13 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract idFunzione;
   basePath;
 
+  abstract tableData: Tabella;
+
+  abstract listaElementi: any[];
+  abstract filtriRicerca: any;
+
   abstract selectionElementi: any[];
+  waiting = true;
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
     const breadcrumbList: SintesiBreadcrumb[] = [];
@@ -45,11 +52,40 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
    this.router.navigateByUrl(this.basePath + linkFunzioneAggiungi);
   }
 
-  abstract popolaListaElementi(): void;
-
   abstract creaRigaTabella(oggetto: any);
 
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
+
+  popolaListaElementi(): void {
+    this.listaElementi = [];
+    this.tableData.rows = [];
+    this.getObservableFunzioneRicerca().subscribe(listaElementi => {
+      if (listaElementi != null) {
+        this.listaElementi = listaElementi;
+        this.impostaTabella(this.listaElementi);
+        this.callbackPopolaLista();
+      }
+      this.waiting = false;
+    });
+  }
+
+  abstract callbackPopolaLista();
+
+  onChangeFiltri(filtri: any): void {
+    this.filtriRicerca = filtri;
+    this.popolaListaElementi();
+  }
+
+  impostaTabella(listaElementi: any[]): void {
+    this.tableData.rows = [];
+    if (listaElementi) {
+      listaElementi.forEach(elemento => {
+        this.tableData.rows.push(this.creaRigaTabella(elemento));
+      });
+    }
+  }
+
+  abstract getObservableFunzioneRicerca(): Observable<any[]>;
 
   mostraDettaglioElemento(linkFunzioneDettaglio: string, id: number) {
     this.router.navigateByUrl(this.basePath + linkFunzioneDettaglio + '/' + id);
@@ -92,8 +128,6 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract getImmaginiFilePdf(): ImmaginePdf[];
 
   abstract selezionaRigaTabella(righeSelezionate: any[]): void;
-
-  abstract onChangeListaElementi(listaElementi: any[]): void;
 
   abstract getNumeroRecord(): string;
 }

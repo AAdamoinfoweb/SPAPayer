@@ -18,6 +18,7 @@ import {GestisciElementoComponent} from "../gestisci-elemento.component";
 import {Colonna} from '../../../model/tabella/Colonna';
 import {Tabella} from '../../../model/tabella/Tabella';
 import {SpinnerOverlayService} from "../../../../../services/spinner-overlay.service";
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-gestione-utenti',
@@ -33,7 +34,8 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   breadcrumbList = [];
 
   codiceFiscaleUtenteDaModificare: string;
-  listaUtente: Array<RicercaUtente> = new Array<RicercaUtente>();
+  listaElementi: Array<RicercaUtente> = new Array<RicercaUtente>();
+  filtriRicerca: ParametriRicercaUtente = null;
   selectionElementi: any[];
 
   toolbarIcons = [
@@ -51,7 +53,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     {value: TipoUtenteEnum.DISABILITATI}
   ];
 
-  nomeTabCorrente: string;
+  nomeTabCorrente: TipoUtenteEnum = TipoUtenteEnum.TUTTI;
 
   tableData: Tabella = {
     rows: [],
@@ -67,22 +69,9 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData: Tabella = {
-    rows: [],
-    cols: [
-      {field: 'iconaUtente', header: '', type: tipoColonna.ICONA},
-      {field: 'id', header: 'User ID (Cod. Fisc.)', type: tipoColonna.TESTO},
-      {field: 'nome', header: 'Cognome e Nome', type: tipoColonna.TESTO},
-      {field: 'gruppoAbilitazioni', header: 'Gruppi Abilitazioni', type: tipoColonna.TESTO},
-      {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
-      {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
-    ],
-    dataKey: 'id.value',
-    tipoTabella: tipoTabella.CHECKBOX_SELECTION
-  };
-  waiting = true;
-
   filtroSocieta = null;
+
+  dataSistema = moment();
 
   constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient,
@@ -104,20 +93,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     });
   }
 
-  popolaListaElementi() {
-    this.listaUtente = [];
-    const parametriRicercaUtente = new ParametriRicercaUtente();
-    this.utenteService.ricercaUtenti(parametriRicercaUtente, this.idFunzione).pipe(map(utenti => {
-      if (utenti != null) {
-        utenti.forEach(utente => {
-          this.listaUtente.push(utente);
-          this.tableData.rows.push(this.creaRigaTabella(utente));
-        });
-      }
-      this.tempTableData = Object.assign({}, this.tableData);
-    })).subscribe();
-  }
-
   ngAfterViewInit(): void {
     if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
@@ -125,8 +100,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   creaRigaTabella(utente: RicercaUtente): object {
-    const dataSistema = moment();
-
     let nomeUtente;
     if (utente.cognome && utente.nome) {
       nomeUtente = utente.cognome?.charAt(0).toUpperCase() + utente.cognome?.slice(1) + ' ' + utente.nome?.charAt(0).toUpperCase() + utente.nome?.slice(1);
@@ -147,7 +120,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     let row;
 
     row = {
-      iconaUtente: Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'none'),
+      iconaUtente: Utils.creaIcona('#it-user', '#ef8157', nomeUtente, this.isUtenteAttivo(utente) ? 'inline' : 'none'),
       id: {value: utente.codiceFiscale.toUpperCase()},
       nome: {value: nomeUtente},
       gruppoAbilitazioni: {value: utente.gruppo},
@@ -155,35 +128,48 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
       ultimoAccesso: ultimoAccesso
     };
 
-    if (utente.dataFineValidita === null
-      || (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema)) {
-      // UTENTE ATTIVO
-      row.iconaUtente = Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'inline');
-    } else if (moment(utente.dataInizioValidita) > dataSistema || moment(utente.dataFineValidita) < dataSistema) {
-      // UTENTE DISABILITATO
-      row.iconaUtente = Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'none');
-    }
-
     return row;
   }
 
-  onChangeTab(value) {
-    const subscription = this.spinnerOverlayService.spinner$.subscribe();
-    let tabRows = this.tableData.rows.map(row => row);
+  getObservableFunzioneRicerca(): Observable<RicercaUtente[]> {
+    return this.utenteService.ricercaUtenti(this.filtriRicerca, this.idFunzione);
+  }
 
-    if (value === TipoUtenteEnum.ATTIVI) {
-      tabRows = tabRows.filter(row => row.iconaUtente.display === 'inline');
-    } else if (value === TipoUtenteEnum.DISABILITATI) {
-      tabRows = tabRows.filter(row => row.iconaUtente.display === 'none');
+  callbackPopolaLista() {
+    this.onChangeTab(this.nomeTabCorrente);
+  }
+
+  isUtenteAttivo(utente: RicercaUtente): boolean {
+    return utente.dataFineValidita === null
+      || (moment(utente.dataInizioValidita) <= this.dataSistema && moment(utente.dataFineValidita) >= this.dataSistema);
+  }
+
+  isRigaUtenteAttivo(row: any): boolean {
+    return row.iconaUtente.display === 'inline';
+  }
+
+  onChangeTab(value: TipoUtenteEnum) {
+    const subscription = this.spinnerOverlayService.spinner$.subscribe();
+    this.nomeTabCorrente = value;
+    let tabRows = null;
+
+    switch (value) {
+      case TipoUtenteEnum.TUTTI:
+        tabRows = this.listaElementi;
+        break;
+      case TipoUtenteEnum.ATTIVI:
+        tabRows = this.listaElementi.filter(utente => this.isUtenteAttivo(utente));
+        break;
+      case TipoUtenteEnum.DISABILITATI:
+        tabRows = this.listaElementi.filter(utente => !this.isUtenteAttivo(utente));
+        break;
     }
 
-    this.tempTableData.rows = tabRows;
-    this.nomeTabCorrente = value;
+    this.impostaTabella(tabRows);
     setTimeout(() => subscription.unsubscribe(), 500);
   }
 
   eseguiAzioni(azioneTool) {
-    const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     switch (azioneTool) {
       case ToolEnum.INSERT:
         this.aggiungiElemento('/aggiungiUtentePermessi');
@@ -192,10 +178,10 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
         this.modificaElementoSelezionato('/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare);
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(dataTable, 'Lista Utenti');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Utenti');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(dataTable, 'Lista Utenti');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Utenti');
         break;
     }
     this.selectionElementi = [];
@@ -222,7 +208,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   getRigheFileExcel(righe: any[]) {
     return righe.map(riga => {
-      riga.iconaUtente = riga.iconaUtente.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
+      riga.iconaUtente = this.isRigaUtenteAttivo(riga) ? 'ATTIVO' : 'DISABILITATO';
       riga.id = riga.id.value;
       riga.nome = riga.nome.value;
       riga.gruppoAbilitazioni = riga.gruppoAbilitazioni.value;
@@ -236,18 +222,10 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     return colonne;
   }
 
-  onChangeListaElementi(listaUtentiFiltrati: RicercaUtente[]): void {
-    this.tableData.rows.length = 0;
-    listaUtentiFiltrati.forEach(utente => {
-      this.tableData.rows.push(this.creaRigaTabella(utente));
-    });
-    this.onChangeTab(this.nomeTabCorrente);
-  }
-
   getNumeroRecord(): string {
-    const numeroUtentiAttivi = this.tableData.rows.filter(row => row.iconaUtente.display === 'inline').length;
-    const numeroUtentiDisabilitati = this.tableData.rows.filter(row => row.iconaUtente.display === 'none').length;
-    return 'Totale: ' + this.tableData.rows.length + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
+    const numeroUtentiAttivi = this.listaElementi.filter(row => this.isUtenteAttivo(row)).length;
+    const numeroUtentiDisabilitati = this.listaElementi.filter(row => !this.isUtenteAttivo(row)).length;
+    return 'Totale: ' + this.listaElementi.length + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
   }
 
   selezionaRigaTabella(rowsChecked): void {
