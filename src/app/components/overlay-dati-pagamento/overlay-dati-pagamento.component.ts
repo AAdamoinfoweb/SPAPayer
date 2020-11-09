@@ -3,13 +3,14 @@ import {OverlayService} from '../../services/overlay.service';
 import {DatiPagamento} from '../../modules/main/model/bollettino/DatiPagamento';
 
 @Component({
-  selector: 'app-overlay',
-  templateUrl: './overlay.component.html',
-  styleUrls: ['./overlay.component.scss']
+  selector: 'app-overlay-dati-pagamento',
+  templateUrl: './overlay-dati-pagamento.component.html',
+  styleUrls: ['./overlay-dati-pagamento.component.scss']
 })
-export class OverlayComponent implements OnInit {
+export class OverlayDatiPagamentoComponent implements OnInit {
+
   @Input()
-  caricamento: boolean;
+  datiPagamento: DatiPagamento;
 
   constructor(private overlayService: OverlayService) { }
 
