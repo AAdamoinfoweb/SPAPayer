@@ -31,9 +31,8 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
 
   listaElementi: Array<RaggruppamentoTipologiaServizio> = new Array<RaggruppamentoTipologiaServizio>();
   filtriRicerca: number = null;
-  listaRaggruppamentiIdSelezionati: Array<number> = new Array<number>();
 
-  selectionElementi: any[];
+   righeSelezionate: any[];
 
   toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi raggruppamento'},
@@ -116,7 +115,7 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
         this.aggiungiElemento('/aggiungiRaggruppamento');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato('/modificaRaggruppamento', this.listaRaggruppamentiIdSelezionati[0]);
+        this.modificaElementoSelezionato('/modificaRaggruppamento', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaRaggruppamentiSelezionati();
@@ -133,12 +132,12 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   eliminaRaggruppamentiSelezionati(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.raggruppamentoTipologiaServizioService.eliminaRaggruppamentoTipologiaServizio(this.listaRaggruppamentiIdSelezionati, this.idFunzione).subscribe(() => {
+          this.raggruppamentoTipologiaServizioService.eliminaRaggruppamentoTipologiaServizio(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
-          this.selectionElementi = [];
+          this.righeSelezionate = [];
+          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )
@@ -176,10 +175,9 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   }
 
   selezionaRigaTabella(rowsChecked): void {
-    this.selectionElementi = rowsChecked;
-    this.listaRaggruppamentiIdSelezionati = rowsChecked.map(riga => riga.id.value);
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaRaggruppamentiIdSelezionati.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaRaggruppamentiIdSelezionati.length === 0;
+    this.righeSelezionate = rowsChecked;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.righeSelezionate.length === 0;
   }
 
   mostraDettaglioRaggruppamentoTipologiaServizio(rigaCliccata: any) {

@@ -690,6 +690,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       }
     });
 
+    Utils.ordinaOpzioniSelect(opzioniSelect);
+
     campo.opzioni = opzioniSelect;
   }
 

@@ -39,11 +39,10 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
 
   isMenuCarico = false;
 
-  selectionElementi: any[];
+   righeSelezionate: any[];
 
   listaElementi: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
   filtriRicerca: number = null;
-  listaIdLivelliTerritorialiSelezionati: Array<number> = [];
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Livello Territoriale'},
@@ -131,7 +130,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
         this.aggiungiElemento('/aggiungiLivelloTerritoriale');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato('/modificaLivelloTerritoriale', this.listaIdLivelliTerritorialiSelezionati[0]);
+        this.modificaElementoSelezionato('/modificaLivelloTerritoriale', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaLivelliTerritorialiSelezionati();
@@ -143,7 +142,6 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Livelli Territoriali');
         break;
     }
-    this.selectionElementi = [];
   }
 
   mostraDettaglioLivelloTerritoriale(rigaTabella) {
@@ -154,11 +152,12 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   eliminaLivelliTerritorialiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.idFunzione).subscribe(() => {
+          this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
+          this.righeSelezionate = [];
+          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )
@@ -198,10 +197,9 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   }
 
   selezionaRigaTabella(righeSelezionate): void {
-    this.selectionElementi = righeSelezionate;
-    this.listaIdLivelliTerritorialiSelezionati = righeSelezionate.map(riga => riga.id.value);
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdLivelliTerritorialiSelezionati.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdLivelliTerritorialiSelezionati.length === 0;
+    this.righeSelezionate = righeSelezionate;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.righeSelezionate.length === 0;
   }
 
 }

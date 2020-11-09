@@ -8,6 +8,7 @@ import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from "../../../../../services/menu.service";
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
+import {Utils} from '../../../../../utils/Utils';
 
 @Component({
   selector: 'app-compila-nuovo-pagamento',
@@ -56,6 +57,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: livello.nome
         });
       });
+      Utils.ordinaOpzioniSelect(this.listaLivelliTerritoriali);
 
       if (this.datiPagamento) {
         this.nuovoPagamentoService.recuperaFiltroEnti(null, null, this.filtroPagamento).pipe(map(enti => {
@@ -126,6 +128,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: ente.nome
         });
       });
+      Utils.ordinaOpzioniSelect(this.listaEnti);
 
       if (this.datiPagamento) {
         const ente = this.listaEnti.find(item => item.value.id === this.datiPagamento.enteId)?.value;
@@ -157,6 +160,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
             label: servizio.nome
           });
         });
+        Utils.ordinaOpzioniSelect(this.listaServizi);
 
         if (this.datiPagamento) {
           const servizio = this.listaServizi.find(item => item.value.id === this.datiPagamento.servizioId)?.value;

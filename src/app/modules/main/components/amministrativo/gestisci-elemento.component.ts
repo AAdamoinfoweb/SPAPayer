@@ -38,7 +38,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract listaElementi: any[];
   abstract filtriRicerca: any;
 
-  abstract selectionElementi: any[];
+  abstract righeSelezionate: any[];
   waiting = true;
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
@@ -49,7 +49,16 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   }
 
   aggiungiElemento(linkFunzioneAggiungi: string) {
-   this.router.navigateByUrl(this.basePath + linkFunzioneAggiungi);
+    this.righeSelezionate = [];
+    this.router.navigateByUrl(this.basePath + linkFunzioneAggiungi);
+  }
+
+  getListaIdElementiSelezionati(): number[] {
+    let listaId = [];
+    if (this.righeSelezionate) {
+      listaId = this.righeSelezionate.map(riga => riga.id.value);
+    }
+    return listaId;
   }
 
   abstract creaRigaTabella(oggetto: any);
@@ -88,10 +97,12 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract getObservableFunzioneRicerca(): Observable<any[]>;
 
   mostraDettaglioElemento(linkFunzioneDettaglio: string, id: number) {
+    this.righeSelezionate = [];
     this.router.navigateByUrl(this.basePath + linkFunzioneDettaglio + '/' + id);
   }
 
   modificaElementoSelezionato(linkFunzioneModifica: string, id: number | string) {
+    this.righeSelezionate = [];
     this.router.navigateByUrl(this.basePath + linkFunzioneModifica + '/' + id);
   }
 

@@ -36,7 +36,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   codiceFiscaleUtenteDaModificare: string;
   listaElementi: Array<RicercaUtente> = new Array<RicercaUtente>();
   filtriRicerca: ParametriRicercaUtente = null;
-  selectionElementi: any[];
+   righeSelezionate: any[];
 
   toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Utente/Permessi'},
@@ -184,7 +184,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Utenti');
         break;
     }
-    this.selectionElementi = [];
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
@@ -229,10 +228,10 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   selezionaRigaTabella(rowsChecked): void {
-    if (rowsChecked.length === 1) {
-      this.codiceFiscaleUtenteDaModificare = rowsChecked[0].id.value;
+    this.righeSelezionate = rowsChecked;
+    if (this.righeSelezionate.length === 1) {
+      this.codiceFiscaleUtenteDaModificare = this.righeSelezionate[0].id.value;
       this.toolbarIcons[this.indiceIconaModifica].disabled = false;
-      this.selectionElementi = rowsChecked;
     } else {
       this.codiceFiscaleUtenteDaModificare = null;
       this.toolbarIcons[this.indiceIconaModifica].disabled = true;

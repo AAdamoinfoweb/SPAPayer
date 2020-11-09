@@ -2,10 +2,10 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {Societa} from '../../../../../model/Societa';
 import {NgForm, NgModel} from '@angular/forms';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
-import {SocietaService} from '../../../../../../../services/societa.service';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
 import {ActivatedRoute} from "@angular/router";
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-gestione-societa',
@@ -33,6 +33,7 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   }
 
   ngOnChanges(sc: SimpleChanges): void {
+    // Appena la lista viene popolata per la prima volta
     if (sc.listaElementi && !this.opzioniFiltroSocieta.length) {
       this.impostaOpzioniFiltroSocieta();
     }
@@ -46,6 +47,7 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
         label: societa.nome
       });
     });
+    Utils.ordinaOpzioniSelect(this.opzioniFiltroSocieta);
   }
 
   isCampoInvalido(campo: NgModel) {

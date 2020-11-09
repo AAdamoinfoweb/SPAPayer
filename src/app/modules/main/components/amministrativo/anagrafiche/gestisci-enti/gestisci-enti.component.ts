@@ -37,7 +37,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   isMenuCarico = false;
 
-  selectionElementi: any[];
+   righeSelezionate: any[];
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Inserisci Ente'},
@@ -61,7 +61,6 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   };
   listaElementi: SintesiEnte[] = [];
   filtriRicerca: ParametriRicercaEnte = null;
-  entiSelezionati: SintesiEnte[];
 
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
@@ -125,11 +124,9 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     switch (azioneTool) {
       case ToolEnum.INSERT:
         this.aggiungiElemento('/aggiungiEnte');
-        this.selectionElementi = []
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato('/modificaEnte', this.selectionElementi[0].id.value);
-        this.selectionElementi = []
+        this.modificaElementoSelezionato('/modificaEnte', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaEntiSelezionati();
@@ -174,15 +171,13 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   private eliminaEntiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-        const listaElementiId = this.entiSelezionati.map(ente => ente.id);
-        this.enteService.eliminaEnti(listaElementiId, this.idFunzione)
-            .subscribe(() => {
-              this.selectionElementi = [];
-              this.popolaListaElementi();
-              const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
-              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
-              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
-            });
+          this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
+            this.popolaListaElementi();
+          });
+          this.righeSelezionate = [];
+          const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
+          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
+          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )
@@ -194,19 +189,11 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   }
 
   selezionaRigaTabella(rows: any[]) {
-    // tslint:disable-next-line:prefer-const
-    let tempEntiSelezionati: SintesiEnte[] = [];
-    rows.forEach(value => {
-      const enteSelezionato: SintesiEnte[] = this.listaElementi
-        .filter(ente => ente.id === value.id.value);
-      tempEntiSelezionati.push(...enteSelezionato);
-    });
-    this.selectionElementi = rows;
-    this.entiSelezionati = tempEntiSelezionati;
+    this.righeSelezionate = rows;
 
     const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
-    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = this.entiSelezionati.length !== 1;
-    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = this.entiSelezionati.length === 0;
+    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = this.righeSelezionate.length === 0;
   }
 
   getMapToolbarIndex(toolbarIcons): Map<ToolEnum, number> {
