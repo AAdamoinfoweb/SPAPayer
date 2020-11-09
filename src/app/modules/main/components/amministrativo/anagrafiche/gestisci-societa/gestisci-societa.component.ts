@@ -19,6 +19,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -108,20 +109,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     }
   }
 
-  popolaListaElementi(): void {
-    this.listaElementi = [];
-    this.tableData.rows = [];
-    this.societaService.ricercaSocieta(this.filtriRicerca, this.idFunzione).subscribe(listaSocieta => {
-      if (listaSocieta != null) {
-        this.listaElementi = listaSocieta;
-        this.listaElementi.forEach(societa => {
-          this.tableData.rows.push(this.creaRigaTabella(societa));
-        });
-      }
-      this.waiting = false;
-    });
-  }
-
   creaRigaTabella(societa: Societa): object {
     const linkGestioneUtenti = this.funzioneGestioneUtenti
       + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneUtenti])
@@ -136,6 +123,12 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     };
     return riga;
   }
+
+  getObservableFunzioneRicerca(): Observable<Societa[]> {
+    return this.societaService.ricercaSocieta(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {}
 
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
@@ -204,11 +197,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
       riga.email = riga.email.value;
       return riga;
     });
-  }
-
-  onChangeFiltri(filtroSocieta: number): void {
-    this.filtriRicerca = filtroSocieta;
-    this.popolaListaElementi();
   }
 
   getNumeroRecord(): string {

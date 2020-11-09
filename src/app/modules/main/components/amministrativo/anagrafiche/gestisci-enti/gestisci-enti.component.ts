@@ -17,6 +17,7 @@ import {Tabella} from '../../../../model/tabella/Tabella';
 import {SintesiEnte} from '../../../../model/ente/SintesiEnte';
 import {EnteService} from '../../../../../../services/ente.service';
 import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -102,20 +103,6 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     }
   }
 
-  popolaListaElementi(): void {
-    this.listaElementi = [];
-    this.tableData.rows = [];
-    this.enteService.ricercaEnti(this.filtriRicerca, this.idFunzione).subscribe((listaElementi) => {
-      if (listaElementi != null) {
-        this.listaElementi = listaElementi;
-        this.tableData.rows = this.listaElementi.map(ente => {
-          return this.creaRigaTabella(ente);
-        });
-      }
-      this.waiting = false;
-    });
-  }
-
   creaRigaTabella(ente: SintesiEnte): object {
     const riga = {
       id: {value: ente.id},
@@ -127,6 +114,12 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     };
     return riga;
   }
+
+  getObservableFunzioneRicerca(): Observable<SintesiEnte[]> {
+    return this.enteService.ricercaEnti(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {}
 
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
@@ -149,11 +142,6 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Enti');
         break;
     }
-  }
-
-  onChangeFiltri(filtri: ParametriRicercaEnte): void {
-    this.filtriRicerca = filtri;
-    this.popolaListaElementi();
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {

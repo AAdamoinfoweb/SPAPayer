@@ -18,6 +18,7 @@ import {ConfirmationService} from 'primeng/api';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
 import {Colonna} from '../../../model/tabella/Colonna';
 import {Tabella} from '../../../model/tabella/Tabella';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-gestisci-banner',
@@ -94,20 +95,6 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     this.popolaListaElementi();
   }
 
-  popolaListaElementi(): void {
-    this.listaElementi = [];
-    this.tableData.rows = [];
-    this.bannerService.ricercaBanner(this.filtriRicerca, this.idFunzione).subscribe(listaBanner => {
-      if (listaBanner != null) {
-        this.listaElementi = listaBanner;
-        this.listaElementi.forEach(banner => {
-          this.tableData.rows.push(this.creaRigaTabella(banner));
-        });
-      }
-      this.waiting = false;
-    });
-  }
-
   ngAfterViewInit(): void {
     if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
@@ -135,6 +122,12 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
 
     return row;
   }
+
+  getObservableFunzioneRicerca(): Observable<Banner[]> {
+    return this.bannerService.ricercaBanner(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {}
 
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
@@ -209,11 +202,6 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
       rigaFormattata.fine = riga.fine.value;
       return rigaFormattata;
     });
-  }
-
-  onChangeFiltri(filtri: ParametriRicercaBanner): void {
-    this.filtriRicerca = filtri;
-    this.popolaListaElementi();
   }
 
   getNumeroRecord(): string {

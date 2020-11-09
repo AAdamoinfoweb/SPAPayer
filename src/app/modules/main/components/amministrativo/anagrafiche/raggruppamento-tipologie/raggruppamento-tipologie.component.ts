@@ -15,6 +15,7 @@ import {RaggruppamentoTipologiaServizio} from '../../../../model/RaggruppamentoT
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {Utils} from '../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-raggruppamento-tipologie',
@@ -88,20 +89,6 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     this.popolaListaElementi();
   }
 
-  popolaListaElementi(): void {
-    this.listaElementi = [];
-    this.tableData.rows = [];
-    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(this.filtriRicerca, this.idFunzione).subscribe(listaRaggruppamentoTipologiaServizio => {
-      if (listaRaggruppamentoTipologiaServizio != null) {
-        this.listaElementi = listaRaggruppamentoTipologiaServizio;
-        this.listaElementi.forEach(raggruppamentoTipologiaServizio => {
-          this.tableData.rows.push(this.creaRigaTabella(raggruppamentoTipologiaServizio));
-        });
-      }
-      this.waiting = false;
-    });
-  }
-
   ngAfterViewInit(): void {
     if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
@@ -116,6 +103,12 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
       descrizione: {value: raggruppamentoTipologiaServizio.descrizione}
     };
   }
+
+  getObservableFunzioneRicerca(): Observable<RaggruppamentoTipologiaServizio[]> {
+    return this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {}
 
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
@@ -176,11 +169,6 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
       rigaFormattata.descrizione = riga.descrizione.value;
       return rigaFormattata;
     });
-  }
-
-  onChangeFiltri(filtroId: number): void {
-    this.filtriRicerca = filtroId;
-    this.popolaListaElementi();
   }
 
   getNumeroRecord(): string {

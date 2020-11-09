@@ -16,6 +16,7 @@ import {GruppoEnum} from '../../../../../enums/gruppo.enum';
 import * as moment from 'moment';
 import {Utils} from '../../../../../utils/Utils';
 import {ParametriRicercaAccesso} from '../../../model/accesso/ParametriRicercaAccesso';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-monitora-accessi',
@@ -125,6 +126,15 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     }
   }
 
+  getObservableFunzioneRicerca(): Observable<Accesso[]> {
+    return this.accessoService.recuperaAccessi(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista(): void {
+    this.ordinaDescrescenteAccessi(this.listaElementi);
+    this.riempiTabella(this.listaElementi);
+  }
+
   getDataSessioneFormattata(dataSessione: Date): string {
     return dataSessione ? moment(dataSessione).format('DD/MM/YYYY HH:mm:ss') : null;
   }
@@ -173,13 +183,8 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     });
   }
 
-  onChangeFiltri(filtri: ParametriRicercaAccesso): void {
-    this.filtriRicerca = filtri;
-    this.popolaListaElementi();
-  }
-
-  ordinaDescrescenteAccessi(listaAccessi: Accesso[]): Accesso[] {
-    return listaAccessi.sort((accesso1, accesso2) => {
+  ordinaDescrescenteAccessi(listaAccessi: Accesso[]): void {
+    listaAccessi.sort((accesso1, accesso2) => {
       if (accesso1.inizioSessione && accesso2.inizioSessione) {
         if (moment(accesso1.inizioSessione) < moment(accesso2.inizioSessione)) {
           return 1;
@@ -198,21 +203,6 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
         }
       }
     });
-  }
-
-  popolaListaElementi(): void {
-    this.listaElementi = [];
-    this.tableData.rows = [];
-    this.accessoService.recuperaAccessi(this.filtriRicerca, this.idFunzione).subscribe(listaAccessi => {
-      if (listaAccessi != null) {
-        this.listaElementi = listaAccessi;
-        // Mostro per primi gli accessi più recenti
-        this.ordinaDescrescenteAccessi(this.listaElementi).forEach(accesso => {
-          this.tableData.rows.push(this.creaRigaTabella(accesso));
-        });
-      }
-    });
-    this.waiting = false;
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {

@@ -18,6 +18,7 @@ import {GestisciElementoComponent} from "../gestisci-elemento.component";
 import {Colonna} from '../../../model/tabella/Colonna';
 import {Tabella} from '../../../model/tabella/Tabella';
 import {SpinnerOverlayService} from "../../../../../services/spinner-overlay.service";
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-gestione-utenti',
@@ -92,21 +93,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     });
   }
 
-  popolaListaElementi(): void {
-    this.listaElementi = [];
-    this.tableData.rows = [];
-    this.utenteService.ricercaUtenti(this.filtriRicerca, this.idFunzione).pipe(map(utenti => {
-      if (utenti != null) {
-        this.listaElementi = utenti;
-        this.listaElementi.forEach(utente => {
-          this.tableData.rows.push(this.creaRigaTabella(utente));
-        });
-        this.onChangeTab(this.nomeTabCorrente);
-      }
-      this.waiting = false;
-    })).subscribe();
-  }
-
   ngAfterViewInit(): void {
     if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
@@ -145,6 +131,14 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     return row;
   }
 
+  getObservableFunzioneRicerca(): Observable<RicercaUtente[]> {
+    return this.utenteService.ricercaUtenti(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {
+    this.onChangeTab(this.nomeTabCorrente);
+  }
+
   isUtenteAttivo(utente: RicercaUtente): boolean {
     return utente.dataFineValidita === null
       || (moment(utente.dataInizioValidita) <= this.dataSistema && moment(utente.dataFineValidita) >= this.dataSistema);
@@ -173,15 +167,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
     this.riempiTabella(tabRows);
     setTimeout(() => subscription.unsubscribe(), 500);
-  }
-
-  riempiTabella(utenti: RicercaUtente[]): void {
-    this.tableData.rows = [];
-    if (utenti) {
-      utenti.forEach(utente => {
-        this.tableData.rows.push(this.creaRigaTabella(utente));
-      });
-    }
   }
 
   eseguiAzioni(azioneTool) {
@@ -235,11 +220,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   getColonneFileExcel(colonne: Colonna[]) {
     return colonne;
-  }
-
-  onChangeFiltri(filtri: ParametriRicercaUtente): void {
-    this.filtriRicerca = filtri;
-    this.popolaListaElementi();
   }
 
   getNumeroRecord(): string {
