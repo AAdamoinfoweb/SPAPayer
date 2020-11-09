@@ -26,6 +26,8 @@
   <div [id]="'collapseCC'+indexDatiContoCorrente" class="collapse show" role="tabpanel"
        aria-labelledby="idCollapseDatiBeneficiario">
     <form #datiContoCorrenteForm="ngForm">
+      <!--      inizio modale cc -->
+      <!--      fine modale cc -->
       <!--    inizio Iban, Intestazione -->
       <div class="row mt-4 mb-0">
         <!--      inizio Iban -->
@@ -119,7 +121,8 @@
           </div>
           <div class="row">
             <div class="col">
-              <input type="text" id="intestazioneCCPostale" name="intestazioneCCPostale" #intestazioneCCPostale="ngModel"
+              <input type="text" id="intestazioneCCPostale" name="intestazioneCCPostale"
+                     #intestazioneCCPostale="ngModel"
                      [(ngModel)]="datiContoCorrente.intestazioneCCPostale"
                      class="pt-0" autocomplete="off" aria-describedby="intestazioneCCPostaleHelpDescription"
                      [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
@@ -129,7 +132,8 @@
           <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
             <div class="col">
               <p *ngIf="!isCampoInvalido(intestazioneCCPostale)">Inserisci intestazione cc postale</p>
-              <p *ngIf="isCampoInvalido(intestazioneCCPostale)" class="text-invalid">{{getMessaggioErrore(intestazioneCCPostale)}}</p>
+              <p *ngIf="isCampoInvalido(intestazioneCCPostale)"
+                 class="text-invalid">{{getMessaggioErrore(intestazioneCCPostale)}}</p>
             </div>
           </div>
         </div>
@@ -142,7 +146,8 @@
         <div class="col-md-2 pb-2">
           <div class="row">
             <div class="col">
-              <label for="inizioValidita" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}"
+              <label for="inizioValidita" class="title"
+                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}"
               >Attivazione</label>
             </div>
           </div>

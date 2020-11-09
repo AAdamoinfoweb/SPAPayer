@@ -1,13 +1,10 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Beneficiario} from '../../../../../model/ente/Beneficiario';
-import {BeneficiarioSingolo} from '../../../../../model/ente/BeneficiarioSingolo';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {ContoCorrenteSingolo} from '../../../../../model/ente/ContoCorrenteSingolo';
 import {NgForm, NgModel} from '@angular/forms';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
-import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-dati-conto-corrente',
@@ -25,6 +22,9 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   // todo verificare data attivazione minima
   readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
   readonly tipoData = ECalendarValue.String;
+
+  // modal
+  display = false;
 
   @Input() indexDatiContoCorrente: number;
   @Input() datiContoCorrente: ContoCorrente;
@@ -88,5 +88,9 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   setMaxDate(datePicker: DatePickerComponent): string {
     return datePicker.inputElementValue
       ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
+  }
+
+  showDialog() {
+    this.display = true;
   }
 }
