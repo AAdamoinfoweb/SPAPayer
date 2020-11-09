@@ -85,6 +85,8 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   filtroSocieta = null;
 
+  dataSistema = moment();
+
   constructor(router: Router, private utenteService: UtenteService, overlayService: OverlayService,
               route: ActivatedRoute, http: HttpClient,
               private renderer: Renderer2, private el: ElementRef, amministrativoService: AmministrativoService,
@@ -128,8 +130,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   creaRigaTabella(utente: RicercaUtente): object {
-    const dataSistema = moment();
-
     let nomeUtente;
     if (utente.cognome && utente.nome) {
       nomeUtente = utente.cognome?.charAt(0).toUpperCase() + utente.cognome?.slice(1) + ' ' + utente.nome?.charAt(0).toUpperCase() + utente.nome?.slice(1);
@@ -150,7 +150,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     let row;
 
     row = {
-      iconaUtente: Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'none'),
+      iconaUtente: Utils.creaIcona('#it-user', '#ef8157', nomeUtente, this.isUtenteAttivo(utente) ? 'inline' : 'none'),
       id: {value: utente.codiceFiscale.toUpperCase()},
       nome: {value: nomeUtente},
       gruppoAbilitazioni: {value: utente.gruppo},
@@ -158,16 +158,16 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
       ultimoAccesso: ultimoAccesso
     };
 
-    if (utente.dataFineValidita === null
-      || (moment(utente.dataInizioValidita) <= dataSistema && moment(utente.dataFineValidita) >= dataSistema)) {
-      // UTENTE ATTIVO
-      row.iconaUtente = Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'inline');
-    } else if (moment(utente.dataInizioValidita) > dataSistema || moment(utente.dataFineValidita) < dataSistema) {
-      // UTENTE DISABILITATO
-      row.iconaUtente = Utils.creaIcona('#it-user', '#ef8157', nomeUtente, 'none');
-    }
-
     return row;
+  }
+
+  isUtenteAttivo(utente: RicercaUtente): boolean {
+    return utente.dataFineValidita === null
+      || (moment(utente.dataInizioValidita) <= this.dataSistema && moment(utente.dataFineValidita) >= this.dataSistema);
+  }
+
+  isRigaUtenteAttivo(row: any): boolean {
+    return row.iconaUtente.display === 'inline';
   }
 
   onChangeTab(value) {
@@ -175,9 +175,9 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     let tabRows = this.tableData.rows.map(row => row);
 
     if (value === TipoUtenteEnum.ATTIVI) {
-      tabRows = tabRows.filter(row => row.iconaUtente.display === 'inline');
+      tabRows = tabRows.filter(row => this.isRigaUtenteAttivo(row));
     } else if (value === TipoUtenteEnum.DISABILITATI) {
-      tabRows = tabRows.filter(row => row.iconaUtente.display === 'none');
+      tabRows = tabRows.filter(row => !this.isRigaUtenteAttivo(row));
     }
 
     this.tempTableData.rows = tabRows;
@@ -225,7 +225,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   getRigheFileExcel(righe: any[]) {
     return righe.map(riga => {
-      riga.iconaUtente = riga.iconaUtente.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
+      riga.iconaUtente = this.isRigaUtenteAttivo(riga) ? 'ATTIVO' : 'DISABILITATO';
       riga.id = riga.id.value;
       riga.nome = riga.nome.value;
       riga.gruppoAbilitazioni = riga.gruppoAbilitazioni.value;
@@ -245,8 +245,8 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   getNumeroRecord(): string {
-    const numeroUtentiAttivi = this.tableData.rows.filter(row => row.iconaUtente.display === 'inline').length;
-    const numeroUtentiDisabilitati = this.tableData.rows.filter(row => row.iconaUtente.display === 'none').length;
+    const numeroUtentiAttivi = this.tableData.rows.filter(row => this.isRigaUtenteAttivo(row)).length;
+    const numeroUtentiDisabilitati = this.tableData.rows.filter(row => !this.isRigaUtenteAttivo(row)).length;
     return 'Totale: ' + this.tableData.rows.length + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
   }
 
