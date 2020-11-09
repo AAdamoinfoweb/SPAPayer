@@ -33,8 +33,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
 
   readonly funzioneGestioneUtenti = '/gestioneUtenti';
 
-  idFunzione;
-
   breadcrumbList = [];
 
   isMenuCarico = false;

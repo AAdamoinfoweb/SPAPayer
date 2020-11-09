@@ -30,7 +30,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     });
   }
 
-  abstract idFunzione;
+  idFunzione;
   basePath;
 
   abstract tableData: Tabella;

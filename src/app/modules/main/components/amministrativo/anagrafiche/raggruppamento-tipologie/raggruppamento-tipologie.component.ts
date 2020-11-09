@@ -26,7 +26,6 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
 
   readonly tooltipTitolo = 'In questa pagina puoi visualizzare la lista dei raggruppamenti relativi alle tipologie di servizio e filtrarli';
 
-  idFunzione;
   breadcrumbList = [];
 
   listaElementi: Array<RaggruppamentoTipologiaServizio> = new Array<RaggruppamentoTipologiaServizio>();
