@@ -17,15 +17,19 @@ export abstract class FormElementoParentComponent {
                         protected amministrativoService: AmministrativoService,
                         protected http: HttpClient,
                         protected router: Router) {
-    this.amministrativoService.asyncAmministrativoSubject.subscribe(() => {
-      activatedRoute.url.subscribe((url) => {
-        const basePath = '/' + url[0].path;
-        this.basePath = basePath;
-        this.idFunzione = String(this.amministrativoService.mappaFunzioni[basePath]);
-        this.verificaAbilitazioneSottopath().subscribe(() => {
-          this.initFormPage(activatedRoute.snapshot);
+    this.amministrativoService.asyncAmministrativoSubject.subscribe((isAmministrativo) => {
+      if(isAmministrativo) {
+        activatedRoute.url.subscribe((url) => {
+          const basePath = '/' + url[0].path;
+          this.basePath = basePath;
+          this.idFunzione = String(this.amministrativoService.mappaFunzioni[basePath]);
+          this.verificaAbilitazioneSottopath().subscribe(() => {
+            this.initFormPage(activatedRoute.snapshot);
+          });
         });
-      });
+      } else {
+        this.router.navigateByUrl('/nonautorizzato');
+      }
     });
   }
 

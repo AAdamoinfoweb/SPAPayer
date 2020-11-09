@@ -14,7 +14,8 @@ import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {RaggruppamentoTipologiaServizio} from '../../../../model/RaggruppamentoTipologiaServizio';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {Utils} from '../../../../../../utils/Utils';
-import {TipoModaleEnum} from "../../../../../../enums/tipoModale.enum";
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-raggruppamento-tipologie',
@@ -28,10 +29,10 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   idFunzione;
   breadcrumbList = [];
 
-  listaRaggruppamentiTipologiaServizio: Array<RaggruppamentoTipologiaServizio> = new Array<RaggruppamentoTipologiaServizio>();
-  listaRaggruppamentiIdSelezionati: Array<number> = new Array<number>();
+  listaElementi: Array<RaggruppamentoTipologiaServizio> = new Array<RaggruppamentoTipologiaServizio>();
+  filtriRicerca: number = null;
 
-  selectionElementi: any[];
+   righeSelezionate: any[];
 
   toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi raggruppamento'},
@@ -52,10 +53,8 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
-  tempTableData: Tabella = this.tableData;
 
   isMenuCarico = false;
-  waiting = true;
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2,
@@ -89,20 +88,6 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     this.popolaListaElementi();
   }
 
-  popolaListaElementi(): void {
-    this.listaRaggruppamentiTipologiaServizio = [];
-
-    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(null, this.idFunzione).subscribe(listaRaggruppamentoTipologiaServizio => {
-      this.tableData.rows = [];
-      listaRaggruppamentoTipologiaServizio.forEach(raggruppamentoTipologiaServizio => {
-        this.listaRaggruppamentiTipologiaServizio.push(raggruppamentoTipologiaServizio);
-        this.tableData.rows.push(this.creaRigaTabella(raggruppamentoTipologiaServizio));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
-      this.waiting = false;
-    });
-  }
-
   ngAfterViewInit(): void {
     if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
@@ -118,22 +103,28 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     };
   }
 
+  getObservableFunzioneRicerca(): Observable<RaggruppamentoTipologiaServizio[]> {
+    return this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {}
+
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
         this.aggiungiElemento('/aggiungiRaggruppamento');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato('/modificaRaggruppamento', this.listaRaggruppamentiIdSelezionati[0]);
+        this.modificaElementoSelezionato('/modificaRaggruppamento', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaRaggruppamentiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Raggruppamenti Tipologie');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Raggruppamenti Tipologie');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Raggruppamenti Tipologie');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Raggruppamenti Tipologie');
         break;
     }
   }
@@ -141,12 +132,12 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   eliminaRaggruppamentiSelezionati(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.raggruppamentoTipologiaServizioService.eliminaRaggruppamentoTipologiaServizio(this.listaRaggruppamentiIdSelezionati, this.idFunzione).subscribe(() => {
+          this.raggruppamentoTipologiaServizioService.eliminaRaggruppamentoTipologiaServizio(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
-          this.selectionElementi = [];
+          this.righeSelezionate = [];
+          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )
@@ -179,22 +170,14 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
     });
   }
 
-  onChangeListaElementi(listaRaggruppamentiFiltrati: RaggruppamentoTipologiaServizio[]): void {
-    this.tableData.rows.length = 0;
-    listaRaggruppamentiFiltrati.forEach(raggrupamentoTipologiaServizio => {
-      this.tableData.rows.push(this.creaRigaTabella(raggrupamentoTipologiaServizio));
-    });
-  }
-
   getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length;
   }
 
   selezionaRigaTabella(rowsChecked): void {
-    this.selectionElementi = rowsChecked;
-    this.listaRaggruppamentiIdSelezionati = rowsChecked.map(riga => riga.id.value);
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaRaggruppamentiIdSelezionati.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaRaggruppamentiIdSelezionati.length === 0;
+    this.righeSelezionate = rowsChecked;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.righeSelezionate.length === 0;
   }
 
   mostraDettaglioRaggruppamentoTipologiaServizio(rigaCliccata: any) {

@@ -19,6 +19,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-gestione-livelli-territoriali',
@@ -38,10 +39,10 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
 
   isMenuCarico = false;
 
-  selectionElementi: any[];
+   righeSelezionate: any[];
 
-  listaLivelliTerritoriali: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
-  listaIdLivelliTerritorialiSelezionati: Array<number> = [];
+  listaElementi: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
+  filtriRicerca: number = null;
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Livello Territoriale'},
@@ -63,9 +64,6 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
-
-  tempTableData: Tabella;
-  waiting = true;
 
   constructor(protected router: Router,
               protected route: ActivatedRoute, protected http: HttpClient, protected amministrativoService: AmministrativoService,
@@ -106,20 +104,6 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     }
   }
 
-  popolaListaElementi() {
-    this.listaLivelliTerritoriali = [];
-    this.livelloTerritorialeService.ricercaLivelliTerritoriali(null, this.idFunzione).subscribe(listaLivelliTerritoriali => {
-      this.listaLivelliTerritoriali = listaLivelliTerritoriali;
-
-      this.tableData.rows = [];
-      this.listaLivelliTerritoriali.forEach(livelloTerritoriale => {
-        this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
-      this.waiting = false;
-    });
-  }
-
   creaRigaTabella(livelloTerritoriale: LivelloTerritoriale): object {
     // TODO testare quando sarà pronto gestione enti
     const linkGestioneEnti = this.funzioneGestioneEnti
@@ -134,25 +118,30 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     return riga;
   }
 
+  getObservableFunzioneRicerca(): Observable<LivelloTerritoriale[]> {
+    return this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {}
+
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
         this.aggiungiElemento('/aggiungiLivelloTerritoriale');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato('/modificaLivelloTerritoriale', this.listaIdLivelliTerritorialiSelezionati[0]);
+        this.modificaElementoSelezionato('/modificaLivelloTerritoriale', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaLivelliTerritorialiSelezionati();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Livelli Territoriali');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Livelli Territoriali');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Livelli Territoriali');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Livelli Territoriali');
         break;
     }
-    this.selectionElementi = [];
   }
 
   mostraDettaglioLivelloTerritoriale(rigaTabella) {
@@ -163,11 +152,12 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   eliminaLivelliTerritorialiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.listaIdLivelliTerritorialiSelezionati, this.idFunzione).subscribe(() => {
+          this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
+          this.righeSelezionate = [];
+          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )
@@ -202,22 +192,14 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     return colonne.filter(col => col.field != 'entiAbilitati');
   }
 
-  onChangeListaElementi(listaLivelliTerritorialiFiltrati: LivelloTerritoriale[]): void {
-    this.tableData.rows.length = 0;
-    listaLivelliTerritorialiFiltrati.forEach(livelloTerritoriale => {
-      this.tableData.rows.push(this.creaRigaTabella(livelloTerritoriale));
-    });
-  }
-
   getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length + (this.tableData.rows.length === 1 ? ' livello territoriale' : ' livelli territoriali');
   }
 
   selezionaRigaTabella(righeSelezionate): void {
-    this.selectionElementi = righeSelezionate;
-    this.listaIdLivelliTerritorialiSelezionati = righeSelezionate.map(riga => riga.id.value);
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdLivelliTerritorialiSelezionati.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdLivelliTerritorialiSelezionati.length === 0;
+    this.righeSelezionate = righeSelezionate;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.righeSelezionate.length === 0;
   }
 
 }

@@ -26,15 +26,12 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
 
   filtroGestioneBannerApplicato: ParametriRicercaBanner;
 
-  @Input()
-  listaElementi: Array<Banner> = new Array<Banner>();
-
   @Output()
-  onChangeListaElementi: EventEmitter<Banner[]> = new EventEmitter<Banner[]>();
+  onChangeFiltri: EventEmitter<ParametriRicercaBanner> = new EventEmitter<ParametriRicercaBanner>();
 
   idFunzione;
 
-  constructor(private bannerService: BannerService, protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
+  constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
     super(route, amministrativoService);
   }
 
@@ -65,8 +62,8 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
 
   pulisciFiltri(filtroGestioneBannerForm: NgForm): void {
     filtroGestioneBannerForm.resetForm();
-    this.onChangeListaElementi.emit(this.listaElementi);
     this.filtroGestioneBannerApplicato = new ParametriRicercaBanner();
+    this.onChangeFiltri.emit(null);
   }
 
   cercaElementi(): void {
@@ -81,13 +78,7 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
     filtro.inizio = filtro.inizio ? moment(filtro.inizio, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     filtro.fine = filtro.fine ? moment(filtro.fine, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
 
-    this.bannerService.ricercaBanner(filtro, this.idFunzione).subscribe(listaBanner => {
-      // Non invio la lista in caso di bad request
-      if (listaBanner) {
-        this.onChangeListaElementi.emit(listaBanner);
-      }
-    });
-
+    this.onChangeFiltri.emit(filtro);
   }
 
   disabilitaBottone(filtroGestioneBannerForm: NgForm, nomeBottone: string): boolean {

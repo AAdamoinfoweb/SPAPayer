@@ -1,10 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForm, NgModel} from '@angular/forms';
-import * as moment from 'moment';
-import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
-import {FunzioneGestioneEnum} from "../../../../../../../enums/funzioneGestione.enum";
-import {InserimentoModificaUtente} from "../../../../../model/utente/InserimentoModificaUtente";
+import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
+import {Utils} from '../../../../../../../utils/Utils';
+import {Societa} from '../../../../../model/Societa';
+import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
+import {Comune} from '../../../../../model/Comune';
+import {Provincia} from '../../../../../model/Provincia';
+import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
+import {SocietaService} from '../../../../../../../services/societa.service';
+import {NuovoPagamentoService} from '../../../../../../../services/nuovo-pagamento.service';
 
 @Component({
   selector: 'app-dati-ente',
@@ -14,21 +19,33 @@ import {InserimentoModificaUtente} from "../../../../../model/utente/Inserimento
 export class DatiEnteComponent implements OnInit {
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
-  displayModal: boolean;
+  telefonoRegex = Utils.TELEFONO_REGEX;
+  codiceFiscalPIvaRegex = Utils.CODICE_FISCALE_O_PARTITA_IVA_REGEX;
+
+  @Input()
+  datiEnte: EnteCompleto;
   @Input()
   funzione: FunzioneGestioneEnum;
   @Output()
   onChangeDatiEnte: EventEmitter<EnteCompleto> = new EventEmitter<EnteCompleto>();
+
   @Output()
   isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  datiEnte: EnteCompleto;
+  // opzioni per select
+  opzioniFiltroSocieta: OpzioneSelect[] = [];
+  opzioniFiltroLivelliTerritoriale: OpzioneSelect[] = [];
+  opzioniFiltroComune: OpzioneSelect[] = [];
+  opzioniFiltroProvincia: OpzioneSelect[] = [];
 
-  constructor() {
+  constructor(private societaService: SocietaService, private nuovoPagamentoService: NuovoPagamentoService) {
   }
 
   ngOnInit(): void {
-    this.datiEnte = new EnteCompleto();
+    this.letturaComuni();
+    this.letturaProvince();
+    this.letturaSocieta();
+    this.letturaLivelloTerritoriale();
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -43,33 +60,81 @@ export class DatiEnteComponent implements OnInit {
     return campo?.errors != null;
   }
 
-  onChangeForm(datiUtenteForm: NgForm) {
-    const model = {...datiUtenteForm.value};
-
-    if (datiUtenteForm.valid) {
-      for (const nomeCampo in model) {
-        if (model[nomeCampo] !== undefined && model[nomeCampo]) {
-          if (typeof model[nomeCampo] === 'object') {
-            model[nomeCampo] = moment(model[nomeCampo]).format('YYYY-MM-DD[T]HH:mm:ss');
-          }
-        } else {
-          model[nomeCampo] = null;
-        }
-      }
-      this.onChangeDatiEnte.emit(model);
-      this.isFormValid.emit(true);
-    } else {
-      this.isFormValid.emit(false);
+  onChangeModel(form: NgForm, campo: NgModel) {
+    if (campo.value == '') {
+      this.datiEnte[campo.name] = null;
     }
+    this.onChangeDatiEnte.emit(this.datiEnte);
+    this.isFormValid.emit(form.valid);
   }
 
-  formattaInput(valore: string, campo: string) {
-    if (valore === '') {
-      this.datiEnte[campo] = null;
-    }
+  letturaSocieta(): void {
+    this.societaService.filtroSocieta()
+      .subscribe(societa => {
+        this.popolaOpzioniFiltroSocieta(societa);
+      });
   }
 
-  showModalDialog() {
-    this.displayModal = true;
+  private popolaOpzioniFiltroSocieta(societa: Societa[]) {
+    societa.forEach(s => {
+      this.opzioniFiltroSocieta.push({
+        value: s.id,
+        label: s.nome
+      });
+    });
+  }
+
+  letturaLivelloTerritoriale(): void {
+    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale()
+      .subscribe(livelliTerritoriali => {
+        this.popolaOpzioniFiltroLivelloTerritoriale(livelliTerritoriali);
+      });
+  }
+
+  private popolaOpzioniFiltroLivelloTerritoriale(livelliTerritoriali: LivelloTerritoriale[]) {
+    livelliTerritoriali.forEach(livello => {
+      this.opzioniFiltroLivelliTerritoriale.push({
+        value: livello.id,
+        label: livello.nome
+      });
+    });
+  }
+
+  letturaComuni() {
+    const comuni: Comune[] = JSON.parse(localStorage.getItem('comuni'));
+    this.popolaOpzioniFiltroComune(comuni);
+  }
+
+  private popolaOpzioniFiltroComune(comuni: Comune[]) {
+    comuni.forEach(comune => {
+      this.opzioniFiltroComune.push({
+        value: comune.codiceIstat,
+        label: comune.nome
+      });
+    });
+  }
+
+  letturaProvince() {
+    const province: Provincia[] = JSON.parse(localStorage.getItem('province'));
+    this.popolaOpzioniFiltroProvincia(province);
+  }
+
+  private popolaOpzioniFiltroProvincia(province: Provincia[]) {
+    province.forEach(provincia => {
+      this.opzioniFiltroProvincia.push({
+        value: provincia.codice,
+        label: provincia.nome
+      });
+    });
+  }
+
+  selezionaComune() {
+    this.datiEnte.provincia = this.datiEnte.comune.substring(0, 3);
+  }
+
+  selezionaProvincia() {
+    if (!(this.datiEnte.comune.includes(this.datiEnte.provincia))) {
+      this.datiEnte.comune = null;
+    }
   }
 }

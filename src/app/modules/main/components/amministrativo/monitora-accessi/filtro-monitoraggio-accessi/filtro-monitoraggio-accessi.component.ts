@@ -27,9 +27,6 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   readonly tipoData = ECalendarValue.String;
   readonly formatoData = Utils.FORMAT_DATE_CALENDAR;
 
-  @Input()
-  listaElementi: Array<Accesso> = [];
-
   listaFunzioniAbilitate: Array<OpzioneSelect> = [];
   funzioneSelezionata: number = null;
 
@@ -42,7 +39,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   idFunzione;
 
   @Output()
-  onChangeListaElementi: EventEmitter<any[]> = new EventEmitter<Accesso[]>();
+  onChangeFiltri: EventEmitter<ParametriRicercaAccesso> = new EventEmitter<ParametriRicercaAccesso>();
 
   constructor(
     protected amministrativoService: AmministrativoService,
@@ -67,6 +64,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
           label: funzione.nome
         });
       });
+      Utils.ordinaOpzioniSelect(this.listaFunzioniAbilitate);
     });
   }
 
@@ -114,12 +112,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   }
 
   cercaElementi(): void {
-    this.accessoService.recuperaAccessi(this.getParametriRicerca(), this.idFunzione).subscribe(listaAccessi => {
-      // Non invio la lista in caso di bad request
-      if (listaAccessi) {
-        this.onChangeListaElementi.emit(listaAccessi);
-      }
-    });
+    this.onChangeFiltri.emit(this.getParametriRicerca());
   }
 
   pulisciFiltri(filtroForm: NgForm): void {
@@ -129,7 +122,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     this.indirizzoIPSelezionato = null;
     this.dataDaSelezionata = null;
     this.dataASelezionata = null;
-    this.onChangeListaElementi.emit(this.listaElementi);
+    this.onChangeFiltri.emit(null);
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {

@@ -6,6 +6,7 @@ import {LivelloTerritorialeService} from '../../../../../../../services/livelloT
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
 import {ActivatedRoute} from "@angular/router";
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-gestione-livelli-territoriali',
@@ -21,7 +22,7 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
   opzioniFiltroLivelliTerritoriali: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
   @Output()
-  onChangeListaElementi: EventEmitter<LivelloTerritoriale[]> = new EventEmitter<LivelloTerritoriale[]>();
+  onChangeFiltri: EventEmitter<number> = new EventEmitter<number>();
 
   filtroLivelliTerritoriali: number = null;
 
@@ -34,7 +35,8 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaElementi) {
+    // Appena la lista viene popolata per la prima volta
+    if (sc.listaElementi && !this.opzioniFiltroLivelliTerritoriali.length) {
       this.impostaOpzioniFiltroLivelliTerritoriali();
     }
   }
@@ -47,6 +49,7 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
         label: livelloTerritoriale.nome
       });
     });
+    Utils.ordinaOpzioniSelect(this.opzioniFiltroLivelliTerritoriali);
   }
 
   isCampoInvalido(campo: NgModel) {
@@ -64,13 +67,11 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.filtroLivelliTerritoriali = null;
-    this.onChangeListaElementi.emit(this.listaElementi);
+    this.onChangeFiltri.emit(null);
   }
 
   cercaElementi(): void {
-    this.livelloTerritorialeService.ricercaLivelliTerritoriali(this.filtroLivelliTerritoriali, this.idFunzione).subscribe(listaLivelliTerritoriali => {
-      this.onChangeListaElementi.emit(listaLivelliTerritoriali);
-    });
+    this.onChangeFiltri.emit(this.filtroLivelliTerritoriali);
   }
 
   disabilitaBottone(filtroForm: NgForm): boolean {

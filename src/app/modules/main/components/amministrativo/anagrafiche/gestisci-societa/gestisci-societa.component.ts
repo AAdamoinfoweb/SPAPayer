@@ -19,6 +19,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -38,10 +39,10 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
 
   isMenuCarico = false;
 
-  listaSocieta: Array<Societa> = new Array<Societa>();
-  listaIdSocietaSelezionate: Array<number> = [];
+  listaElementi: Array<Societa> = new Array<Societa>();
+  filtriRicerca: number = null;
 
-  selectionElementi: any[];
+   righeSelezionate: any[];
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Società'},
@@ -65,9 +66,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     dataKey: 'nome.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
-
-  tempTableData: Tabella;
-  waiting = true;
 
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
@@ -109,20 +107,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     }
   }
 
-  popolaListaElementi() {
-    this.listaSocieta = [];
-    this.societaService.ricercaSocieta(null, this.idFunzione).subscribe(listaSocieta => {
-      this.listaSocieta = listaSocieta;
-
-      this.tableData.rows = [];
-      this.listaSocieta.forEach(societa => {
-        this.tableData.rows.push(this.creaRigaTabella(societa));
-      });
-      this.tempTableData = Object.assign({}, this.tableData);
-      this.waiting = false;
-    });
-  }
-
   creaRigaTabella(societa: Societa): object {
     const linkGestioneUtenti = this.funzioneGestioneUtenti
       + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneUtenti])
@@ -138,25 +122,30 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     return riga;
   }
 
+  getObservableFunzioneRicerca(): Observable<Societa[]> {
+    return this.societaService.ricercaSocieta(this.filtriRicerca, this.idFunzione);
+  }
+
+  callbackPopolaLista() {}
+
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
         this.aggiungiElemento('/aggiungiSocieta');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato('/modificaSocieta', this.listaIdSocietaSelezionate[0]);
+        this.modificaElementoSelezionato('/modificaSocieta', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaSocietaSelezionate();
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tempTableData, 'Lista Societa');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Societa');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tempTableData, 'Lista Societa');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Societa');
         break;
     }
-    this.selectionElementi = [];
   }
 
   mostraDettaglioSocieta(rigaTabella) {
@@ -166,11 +155,12 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   eliminaSocietaSelezionate() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.idFunzione).subscribe(() => {
+          this.societaService.eliminazioneSocieta(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
+          this.righeSelezionate = [];
+          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )
@@ -207,22 +197,13 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     });
   }
 
-  onChangeListaElementi(listaSocietaFiltrate: Societa[]): void {
-    this.tableData.rows.length = 0;
-    listaSocietaFiltrate.forEach(societa => {
-      this.tableData.rows.push(this.creaRigaTabella(societa));
-    });
-  }
-
   getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length + ' società';
   }
 
   selezionaRigaTabella(righeSelezionate): void {
-    this.selectionElementi = righeSelezionate;
-    this.listaIdSocietaSelezionate = righeSelezionate.map(riga => riga.id.value);
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdSocietaSelezionate.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdSocietaSelezionate.length === 0;
+    this.righeSelezionate = righeSelezionate;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.righeSelezionate.length === 0;
   }
-
 }
