@@ -28,13 +28,14 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   readonly formatoData = Utils.FORMAT_DATE_CALENDAR;
 
   listaFunzioniAbilitate: Array<OpzioneSelect> = [];
+
   funzioneSelezionata: number = null;
 
   listaIdUtenti = [];
   idUtenteSelezionato: string = null;
   indirizzoIPSelezionato: string = null;
-  dataDaSelezionata: string = null;
-  dataASelezionata: string = null;
+  dataDaSelezionata: string = moment().subtract(1, 'months').format(this.formatoData);
+  dataASelezionata: string = moment().format(this.formatoData);
 
   idFunzione;
 
@@ -53,6 +54,9 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
   ngOnInit(): void {
     this.popolaFiltroFunzioni();
+
+    // Carico gli accessi con i filtri già impostati
+    this.onChangeFiltri.emit(this.getParametriRicerca());
   }
 
   popolaFiltroFunzioni() {

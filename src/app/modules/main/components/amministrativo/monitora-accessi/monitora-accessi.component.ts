@@ -82,7 +82,9 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Monitora Accessi', link: null}
     ]);
-    this.popolaListaElementi();
+
+    // Non effettuo onInit il popolaLista, aspetto che il componente figlio lanci l'evento onChangeFiltri con i filtri data preimpostati
+    this.waiting = false;
   }
 
   creaRigaTabella(accesso: Accesso) {
