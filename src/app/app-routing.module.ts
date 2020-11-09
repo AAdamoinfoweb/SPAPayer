@@ -28,6 +28,7 @@ import {FormEnteComponent} from "./modules/main/components/amministrativo/anagra
 import {RaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import {FormTipologiaServizioComponent} from "./modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component";
+import {GestisciTipologiaServizioComponent} from './modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -51,7 +52,6 @@ const routes: Routes = [
   {path: 'nuovoPagamento', component: NuovoPagamentoComponent, canActivate: [
       AuthguardService
     ]},
-  {path: 'campotipologiaservizio', component: FormTipologiaServizioComponent},
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
   {path: 'gestisciUtenti', component: GestisciUtentiComponent},
   {path: 'gestisciUtenti/aggiungiUtentePermessi', component: FormUtentePermessiComponent},
@@ -78,7 +78,11 @@ const routes: Routes = [
   {path: 'raggruppamentoTipologie', component: RaggruppamentoTipologieComponent},
   {path: 'raggruppamentoTipologie/aggiungiRaggruppamento', component: FormRaggruppamentoTipologieComponent},
   {path: 'raggruppamentoTipologie/modificaRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
-  {path: 'raggruppamentoTipologie/dettaglioRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent}
+  {path: 'raggruppamentoTipologie/dettaglioRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
+  {path: 'gestisciTipologiaServizi', component: GestisciTipologiaServizioComponent},
+  {path: 'gestisciTipologiaServizi/aggiungiTipologia', component: FormRaggruppamentoTipologieComponent},
+  {path: 'gestisciTipologiaServizi/modificaTipologia/:tipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
+  {path: 'gestisciTipologiaServizi/dettaglioTipologia/:tipologiaServizioId', component: FormRaggruppamentoTipologieComponent}
 ];
 
 @NgModule({

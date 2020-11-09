@@ -58,6 +58,8 @@ import {FormTipologiaServizioComponent} from './gestisci-servizi/gestisci-tipolo
 import {DatiBeneficiarioComponent} from "./anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component";
 import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import { GestisciTipologiaServizioComponent } from './gestisci-servizi/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
+import { FiltroGestioneTipologiaServizioComponent } from './gestisci-servizi/gestisci-tipologia-servizio/filtro-gestione-tipologia-servizio/filtro-gestione-tipologia-servizio.component';
 
 
 @NgModule({
@@ -96,7 +98,9 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
     FormRaggruppamentoTipologieComponent,
     FormTipologiaServizioComponent,
     DatiBeneficiarioComponent,
-    DatiContoCorrenteComponent
+    DatiContoCorrenteComponent,
+    GestisciTipologiaServizioComponent,
+    FiltroGestioneTipologiaServizioComponent
   ],
   imports: [
     HttpClientModule,
