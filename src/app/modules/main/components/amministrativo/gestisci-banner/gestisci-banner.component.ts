@@ -34,9 +34,8 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
 
   listaElementi: Array<Banner> = new Array<Banner>();
   filtriRicerca: ParametriRicercaBanner = null;
-  listaBannerIdSelezionati: Array<number> = new Array<number>();
 
-  selectionElementi: any[];
+   selectionElementi: any[];
 
   toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Banner'},
@@ -135,7 +134,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.aggiungiElemento('/aggiungiBanner');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato('/modificaBanner', this.listaBannerIdSelezionati[0]);
+        this.modificaElementoSelezionato('/modificaBanner', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaBannerSelezionati();
@@ -152,7 +151,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   eliminaBannerSelezionati(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.bannerService.eliminaBanner(this.listaBannerIdSelezionati, this.idFunzione).pipe(map(() => {
+          this.bannerService.eliminaBanner(this.getListaIdElementiSelezionati(), this.idFunzione).pipe(map(() => {
             this.popolaListaElementi();
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
@@ -210,9 +209,8 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
 
   selezionaRigaTabella(rowsChecked): void {
     this.selectionElementi = rowsChecked;
-    this.listaBannerIdSelezionati = rowsChecked.map(riga => riga.id.value);
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaBannerIdSelezionati.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaBannerIdSelezionati.length === 0;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.selectionElementi.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.selectionElementi.length === 0;
   }
 
   mostraDettaglioBanner(rigaCliccata: any) {

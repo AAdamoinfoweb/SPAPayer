@@ -42,9 +42,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   listaElementi: Array<Societa> = new Array<Societa>();
   filtriRicerca: number = null;
 
-  listaIdSocietaSelezionate: Array<number> = [];
-
-  selectionElementi: any[];
+   selectionElementi: any[];
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Società'},
@@ -136,7 +134,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
         this.aggiungiElemento('/aggiungiSocieta');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato('/modificaSocieta', this.listaIdSocietaSelezionate[0]);
+        this.modificaElementoSelezionato('/modificaSocieta', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaSocietaSelezionate();
@@ -148,7 +146,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Societa');
         break;
     }
-    this.selectionElementi = [];
   }
 
   mostraDettaglioSocieta(rigaTabella) {
@@ -158,7 +155,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   eliminaSocietaSelezionate() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.societaService.eliminazioneSocieta(this.listaIdSocietaSelezionate, this.idFunzione).subscribe(() => {
+          this.societaService.eliminazioneSocieta(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
             this.toolbarIcons[this.indiceIconaModifica].disabled = true;
             this.toolbarIcons[this.indiceIconaElimina].disabled = true;
@@ -205,8 +202,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
 
   selezionaRigaTabella(righeSelezionate): void {
     this.selectionElementi = righeSelezionate;
-    this.listaIdSocietaSelezionate = righeSelezionate.map(riga => riga.id.value);
-    this.toolbarIcons[this.indiceIconaModifica].disabled = this.listaIdSocietaSelezionate.length !== 1;
-    this.toolbarIcons[this.indiceIconaElimina].disabled = this.listaIdSocietaSelezionate.length === 0;
+    this.toolbarIcons[this.indiceIconaModifica].disabled = this.selectionElementi.length !== 1;
+    this.toolbarIcons[this.indiceIconaElimina].disabled = this.selectionElementi.length === 0;
   }
 }

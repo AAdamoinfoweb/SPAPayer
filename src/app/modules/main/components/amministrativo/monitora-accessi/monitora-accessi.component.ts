@@ -34,7 +34,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   listaElementi = [];
   filtriRicerca: ParametriRicercaAccesso = null;
 
-  selectionElementi: any[];
+   selectionElementi: any[];
 
   readonly toolbarIcons = [
     {type: ToolEnum.EXPORT_PDF},
@@ -148,7 +148,6 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Accessi');
         break;
     }
-    this.selectionElementi = [];
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
@@ -206,6 +205,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
+    this.selectionElementi = righeSelezionate;
   }
 
   mostraDettaglioAccesso(rigaTabella) {
