@@ -1,0 +1,247 @@
+<div class="ml-3">
+  <!--  inizio Header -->
+  <div class="collapse-header" id="idCollapseDatiBeneficiario">
+    <button data-toggle="collapse" [id]="'buttonCCCollapse' + indexDatiContoCorrente" aria-expanded="true"
+            aria-controls="contenutoSezioneDatiBeneficiario">
+      <div class="row">
+        <div class="col">
+          Dati Conto Corrente
+        </div>
+        <!--    inizio Elimina Dati Beneficario -->
+        <div class="col text-right">
+           <span ngbTooltip="{{testoTooltipIconaElimina}}" placement="bottom"
+                 [ngStyle]="{fill: '#403d39'}"
+           >
+            <svg *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" fill='#004987' class="bg-light icon cursor-pointer"
+                 (click)="onClickDeleteIcon($event)">
+            <use xlink:href="assets/img/sprite.svg#it-delete"></use>
+            </svg>
+           </span>
+        </div>
+        <!--    fine Elimina Dati Beneficiario  -->
+      </div>
+    </button>
+  </div>
+  <!--  fine Header -->
+  <div [id]="'collapseCC'+indexDatiContoCorrente" class="collapse show" role="tabpanel"
+       aria-labelledby="idCollapseDatiBeneficiario">
+    <form #datiContoCorrenteForm="ngForm">
+      <!--      inizio modale cc -->
+      <!--      fine modale cc -->
+      <!--    inizio Iban, Intestazione -->
+      <div class="row mt-4 mb-0">
+        <!--      inizio Iban -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="iban" class="title"
+                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+                Iban</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="iban" name="iban" #iban="ngModel"
+                     [(ngModel)]="datiContoCorrente.iban"
+                     class="pt-0" autocomplete="off" aria-describedby="ibanHelpDescription"
+                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                     [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                     (ngModelChange)="onChangeModel(datiContoCorrenteForm, iban)">
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(iban)">Inserisci iban</p>
+              <p *ngIf="isCampoInvalido(iban)" class="text-invalid">{{getMessaggioErrore(iban)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--      fine Iban -->
+        <!--      inizio Intestazione -->
+        <div class="col-md-8 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="intestazione" class="title ">
+                Intestazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="intestazione" name="intestazione" #intestazione="ngModel"
+                     [(ngModel)]="datiContoCorrente.intestazione"
+                     class="pt-0" autocomplete="off" aria-describedby="intestazioneHelpDescription"
+                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                     (ngModelChange)="onChangeModel(datiContoCorrenteForm, intestazione)">
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(intestazione)">Inserisci intestazione</p>
+              <p *ngIf="isCampoInvalido(intestazione)" class="text-invalid">{{getMessaggioErrore(intestazione)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--      fine Intestazione -->
+      </div>
+      <!--    fine Iban, Intestazione -->
+      <!--    inizio IbanCCPostale, IntestazioneCCPostale -->
+      <div class="row mt-4 mb-0">
+        <!--      inizio IbanCC -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="ibanCCPostale" class="title">
+                Iban cc postale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="ibanCCPostale" name="ibanCCPostale" #ibanCCPostale="ngModel"
+                     [(ngModel)]="datiContoCorrente.ibanCCPostale"
+                     class="pt-0" autocomplete="off" aria-describedby="ibanCCPostaleHelpDescription"
+                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                     (ngModelChange)="onChangeModel(datiContoCorrenteForm, ibanCCPostale)">
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(ibanCCPostale)">Inserisci iban cc postale</p>
+              <p *ngIf="isCampoInvalido(ibanCCPostale)" class="text-invalid">{{getMessaggioErrore(ibanCCPostale)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--      fine IbanCC -->
+        <!--      inizio IntestazioneCC -->
+        <div class="col-md-8 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="intestazioneCCPostale" class="title ">
+                Intestazione cc postale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="intestazioneCCPostale" name="intestazioneCCPostale"
+                     #intestazioneCCPostale="ngModel"
+                     [(ngModel)]="datiContoCorrente.intestazioneCCPostale"
+                     class="pt-0" autocomplete="off" aria-describedby="intestazioneCCPostaleHelpDescription"
+                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                     (ngModelChange)="onChangeModel(datiContoCorrenteForm, intestazioneCCPostale)">
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(intestazioneCCPostale)">Inserisci intestazione cc postale</p>
+              <p *ngIf="isCampoInvalido(intestazioneCCPostale)"
+                 class="text-invalid">{{getMessaggioErrore(intestazioneCCPostale)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--      fine IntestazioneCC -->
+      </div>
+      <!--    fine IbanCCPostale, IntestazioneCCPostale -->
+      <!--    inizio IbanCCPostale, IntestazioneCCPostale -->
+      <div class="row mt-4 mb-0">
+        <!--      inizio Attivazione -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="inizioValidita" class="title"
+                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}"
+              >Attivazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerAttivazione)"
+                   [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="inizioValidita"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYYYY,
+              max: setMaxDate(datePickerScadenza),
+              returnedValueType: tipoData
+            }"
+                #inizioValidita="ngModel"
+                [(ngModel)]="datiContoCorrente.inizioValidita"
+                name="inizioValidita"
+                #datePickerAttivazione
+                (click)="isCalendarOpen = false"
+                (ngModelChange)="onChangeModel(datiContoCorrenteForm, inizioValidita)"
+                [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
+                [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(inizioValidita)">Inserisci data attivazione</p>
+              <p *ngIf="isCampoInvalido(inizioValidita)" class="text-invalid">{{getMessaggioErrore(inizioValidita)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--      fine Attivazione -->
+        <div class="col-md-2 pb-2"></div>
+        <!--      inizio col vuota -->
+        <!--      fine col vuota -->
+        <!--      inizio Scadenza -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="fineValidita" class="title">Scadenza</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenza)"
+                   [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="fineValidita"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: setMinDate(datePickerAttivazione),
+              returnedValueType: tipoData
+            }"
+                #fineValidita="ngModel"
+                [(ngModel)]="datiContoCorrente.fineValidita"
+                name="fineValidita"
+                #datePickerScadenza
+                (click)="isCalendarOpen = false"
+                (ngModelChange)="onChangeModel(datiContoCorrenteForm, fineValidita)"
+                [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(fineValidita)">Inserisci data scadenza</p>
+              <p *ngIf="isCampoInvalido(fineValidita)" class="text-invalid">{{getMessaggioErrore(fineValidita)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--      fine Scadenza -->
+      </div>
+      <!--    fine IbanCCPostale, IntestazioneCCPostale -->
+    </form>
+  </div>
+</div>
+

@@ -55,6 +55,9 @@ import {FormEnteComponent} from './anagrafiche/gestisci-enti/form-ente/form-ente
 import {DatiRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component';
+import {DatiBeneficiarioComponent} from "./anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component";
+import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
+
 
 @NgModule({
   declarations: [
@@ -90,7 +93,9 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
     FormEnteComponent,
     DatiRaggruppamentoTipologieComponent,
     FormRaggruppamentoTipologieComponent,
-    GestisciCampoTipologiaServizioComponent
+    GestisciCampoTipologiaServizioComponent,
+    DatiBeneficiarioComponent,
+    DatiContoCorrenteComponent
   ],
   imports: [
     HttpClientModule,

@@ -17,12 +17,14 @@ import {AmministrativoService} from '../../../../../../../services/amministrativ
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {ConfirmationService} from 'primeng/api';
 import {SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
-import {DatiPermessoComponent} from '../../../gestisci-utenti/dati-permesso/dati-permesso.component';
-import {PermessoSingolo} from '../../../../../model/permesso/PermessoSingolo';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
 import {Beneficiario} from '../../../../../model/ente/Beneficiario';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
 import {HttpClient} from '@angular/common/http';
+import {DatiBeneficiarioComponent} from '../dati-beneficiario/dati-beneficiario.component';
+import {BeneficiarioSingolo} from '../../../../../model/ente/BeneficiarioSingolo';
+import * as moment from "moment";
+import {Utils} from "../../../../../../../utils/Utils";
 
 @Component({
   selector: 'app-form-ente',
@@ -42,14 +44,15 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   datiEnte: EnteCompleto = new EnteCompleto();
   datiBeneficiario: Beneficiario;
   datiContoCorrente: ContoCorrente;
-  mapPermessi: Map<number, PermessoCompleto> = new Map();
-  isFormDatiEnteValido = false;
+  mapBeneficiario: Map<number, Beneficiario> = new Map();
 
+  // form valid
+  isFormDatiEnteValido = false;
 
   @ViewChild('datiBeneficiario', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
 
-  getListaPermessi = (mapPermessi: Map<number, PermessoCompleto>) => Array.from(mapPermessi, ([name, value]) => value);
+  getListaBeneficiari = (mapBeneficiario: Map<number, Beneficiario>) => Array.from(mapBeneficiario, ([name, value]) => value);
 
 
   constructor(router: Router,
@@ -63,15 +66,15 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
     // get route per logica inserimento o modifica
-      this.controllaTipoFunzione(snapshot);
-      this.inizializzaBreadcrumbs();
-      this.inizializzaTitolo();
-      this.inizializzaDatiEnte();
-      if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI){
-        // inizializzazione form modifico o dettaglio
-      } else {
-       // inizializzazione form inserimento
-      }
+    this.controllaTipoFunzione(snapshot);
+    this.inizializzaBreadcrumbs();
+    this.inizializzaTitolo();
+    this.inizializzaDatiEnte();
+    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
+      // inizializzazione form modifico o dettaglio
+    } else {
+      // inizializzazione form inserimento
+    }
   }
 
   ngOnInit(): void {
@@ -116,25 +119,36 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.datiEnte = datiEnte;
   }
 
-  aggiungiSezionePermesso(datiPermesso?: PermessoCompleto): number {
-    const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiPermessoComponent);
+  aggiungiBeneficiario(datiBeneficiario?: Beneficiario): number {
+    // creazione Dati Beneficiario Component
+    const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiBeneficiarioComponent);
     this.componentRef = this.target.createComponent(childComponent);
-    const indexPermesso = this.target.length;
-    this.componentRef.instance.indexSezionePermesso = indexPermesso;
-    this.componentRef.instance.onDeletePermesso.subscribe(index => {
-      // todo controllare cancellazione permesso su icona cestino e valorizzare permessoId
-      const permessoCompleto = this.mapPermessi.get(index);
-      const isPermessoDaModificare: boolean = permessoCompleto.listaFunzioni
-        .some((permessoFunzione) => permessoFunzione.permessoId != null);
-      if (!isPermessoDaModificare) {
-        this.mapPermessi.delete(index);
+    const indexBeneficiario = this.target.length;
+    // input
+    this.componentRef.instance.indexDatiBeneficiario = indexBeneficiario;
+    this.componentRef.instance.funzione = this.funzione;
+    let instanceDatiBeneficiario: Beneficiario;
+    if (datiBeneficiario == null) {
+      instanceDatiBeneficiario = new Beneficiario();
+    } else {
+      instanceDatiBeneficiario = datiBeneficiario;
+    }
+    this.mapBeneficiario.set(indexBeneficiario, instanceDatiBeneficiario);
+    this.componentRef.instance.datiBeneficiario = instanceDatiBeneficiario;
+    // output
+    this.componentRef.instance.onDeleteDatiBeneficiario.subscribe(index => {
+      const beneficiario = this.mapBeneficiario.get(index);
+      const isBeneficiarioDaModificare: boolean = beneficiario != null;
+      if (isBeneficiarioDaModificare) {
+        this.mapBeneficiario.delete(index);
       }
       this.target.remove(index - 1);
     });
-    this.componentRef.instance.onChangeDatiPermesso.subscribe((currentPermesso: PermessoSingolo) => {
+    this.componentRef.instance.onChangeDatiBeneficiario.subscribe((currentBeneficiario: BeneficiarioSingolo) => {
+      this.mapBeneficiario.set(currentBeneficiario.index, currentBeneficiario.beneficiario);
     });
     this.componentRef.changeDetectorRef.detectChanges();
-    return indexPermesso;
+    return indexBeneficiario;
   }
 
   letturaEnti(codiceFiscale) {
@@ -142,18 +156,42 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   disabilitaBottone(): boolean {
-    return !this.isFormDatiEnteValido || this.controlloDate() || this.controlloDatiBeneficiarioDatiContoCorrente();
+    return !this.isFormDatiEnteValido || this.controllaDatiBeneficiario();
   }
 
-  controlloDate(): boolean {
-    // todo controllo date se presenti
-    return false;
+  controllaDatiBeneficiario(): boolean {
+    let ret = false;
+    const listaBeneficiari: Beneficiario[] = this.getListaBeneficiari(this.mapBeneficiario);
+    listaBeneficiari.forEach(beneficiario => {
+      if (beneficiario.descrizione == null || beneficiario.codiceEnte == null) {
+        ret = true;
+      }
+      if (beneficiario.listaContiCorrenti != null && beneficiario.listaContiCorrenti.length > 0){
+        beneficiario.listaContiCorrenti.forEach(contoCorrente => {
+          if (contoCorrente.iban == null || contoCorrente.inizioValidita == null) {
+            ret = true;
+          } else if (contoCorrente.fineValidita != null) {
+            ret = this.controlloDate(contoCorrente);
+          }
+        });
+      }
+    });
+    return ret;
   }
 
-  controlloDatiBeneficiarioDatiContoCorrente(): boolean {
-    // todo controllo dati liste beneficiario e conto corrente
-    return false;
+  controlloDate(contoCorrente: ContoCorrente): boolean {
+    const dataAttivazione = contoCorrente.inizioValidita;
+    const dataScadenza = contoCorrente.fineValidita;
+    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    const isDataScadenzaBeforeDataAttivazione = Utils.isBefore(dataScadenza, dataAttivazione);
+    const ret = this.funzione === FunzioneGestioneEnum.DETTAGLIO ? false : isDataScadenzaBeforeDataAttivazione;
+    return ret;
   }
+
+  // controlloDate(): boolean {
+  //   // todo controllo date se presenti
+  //   return false;
+  // }
 
   onClickSalva(): void {
     // todo inserimento ente e redirect

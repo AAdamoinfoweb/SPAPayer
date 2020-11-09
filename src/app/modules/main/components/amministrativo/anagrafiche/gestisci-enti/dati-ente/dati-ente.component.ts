@@ -60,20 +60,12 @@ export class DatiEnteComponent implements OnInit {
     return campo?.errors != null;
   }
 
-  onChangeForm(form: NgForm) {
-    if (form.valid) {
-      const model = {...form.value};
-      this.onChangeDatiEnte.emit(model);
-      this.isFormValid.emit(true);
-    } else {
-      this.isFormValid.emit(false);
+  onChangeModel(form: NgForm, campo: NgModel) {
+    if (campo.value == '') {
+      this.datiEnte[campo.name] = null;
     }
-  }
-
-  formattaInput(valore: string, campo: string) {
-    if (valore === '') {
-      this.datiEnte[campo] = null;
-    }
+    this.onChangeDatiEnte.emit(this.datiEnte);
+    this.isFormValid.emit(form.valid);
   }
 
   letturaSocieta(): void {
