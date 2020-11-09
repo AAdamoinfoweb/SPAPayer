@@ -154,9 +154,10 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
       Utils.getModale(() => {
           this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
+          this.righeSelezionate = [];
+          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

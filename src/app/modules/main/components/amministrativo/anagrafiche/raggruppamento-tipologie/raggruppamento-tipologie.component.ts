@@ -134,10 +134,10 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
       Utils.getModale(() => {
           this.raggruppamentoTipologiaServizioService.eliminaRaggruppamentoTipologiaServizio(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           });
           this.righeSelezionate = [];
+          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

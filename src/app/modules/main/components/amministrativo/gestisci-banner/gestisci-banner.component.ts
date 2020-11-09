@@ -153,10 +153,10 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
       Utils.getModale(() => {
           this.bannerService.eliminaBanner(this.getListaIdElementiSelezionati(), this.idFunzione).pipe(map(() => {
             this.popolaListaElementi();
-            this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-            this.toolbarIcons[this.indiceIconaElimina].disabled = true;
           })).subscribe();
           this.righeSelezionate = [];
+          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

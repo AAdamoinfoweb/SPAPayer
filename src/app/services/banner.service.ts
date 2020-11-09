@@ -156,13 +156,6 @@ export class BannerService {
     })
       .pipe(map((body: any) => {
         return body;
-      }),
-      catchError((err, caught) => {
-        if (err.status == 401 || err.status == 400) {
-          return of(null);
-        } else {
-          return of(null);
-        }
       }));
   }
 

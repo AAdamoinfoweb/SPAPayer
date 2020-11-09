@@ -171,14 +171,13 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   private eliminaEntiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-        this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione)
-            .subscribe(() => {
-              this.righeSelezionate = [];
-              this.popolaListaElementi();
-              const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
-              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
-              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
-            });
+          this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
+            this.popolaListaElementi();
+          });
+          this.righeSelezionate = [];
+          const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
+          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
+          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )
