@@ -24,7 +24,7 @@
         <div class="col-1"><span [class]="{'required':item.obbligatorio}"></span></div>
         <div class="col-1"><span [class]="{'key':item.chiave}"></span></div>
         <div class="col-4 text-right">
-          <span class="close" (click)="removeItem(item)"></span>
+          <span *ngIf="!item.id" class="close" (click)="removeItem(item)"></span>
         </div>
       </div>
     </div>
