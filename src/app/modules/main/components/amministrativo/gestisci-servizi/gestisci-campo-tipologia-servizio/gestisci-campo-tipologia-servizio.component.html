@@ -11,8 +11,8 @@
          (cdkDragMoved)="dragMoved($event);">
       <div class="row" style="width: 100%">
         <div class="col-6 text-right">{{item.titolo}}</div>
-        <div class="col-1"><span [class]="{'required':item.obbligatorio}"></span></div>
-        <div class="col-1"><span [class]="{'key':item.chiave}"></span></div>
+        <div *ngIf="item.obbligatorio" class="col-1"><span [class]="{'required':item.obbligatorio}"></span></div>
+        <div *ngIf="item.chiave" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
         <div class="col-4 text-right">
           <span class="close" (click)="removeItem(item)"></span>
         </div>
