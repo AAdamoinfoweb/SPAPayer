@@ -11,13 +11,18 @@ import {CampoTipologiaServizioService} from '../../../../../../../services/campo
 import {CampoForm} from '../../../../../model/CampoForm';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import * as _ from 'lodash';
+import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {ConfirmationService} from 'primeng/api';
+import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
   templateUrl: './form-tipologia-servizio.component.html',
   styleUrls: ['./form-tipologia-servizio.component.scss']
 })
-export class FormTipologiaServizioComponent implements OnInit, AfterViewInit {
+export class FormTipologiaServizioComponent extends FormElementoParentComponent implements AfterViewInit {
 
   @ViewChild(CdkDropListGroup) listGroup: CdkDropListGroup<CdkDropList>;
   @ViewChild(CdkDropList) placeholder: CdkDropList;
@@ -32,23 +37,24 @@ export class FormTipologiaServizioComponent implements OnInit, AfterViewInit {
   public activeContainer;
   waiting = true;
 
+  funzione: FunzioneGestioneEnum;
+  idFunzione;
+
   readonly lunghezzaMaxCol1: number = 5;
   readonly lunghezzaMaxCol2: number = 10;
   readonly lunghezzaMaxCol3: number = 15;
 
-  constructor(private viewportRuler: ViewportRuler,
-              private amministrativoService: AmministrativoService,
-              private campoTipologiaServizioService: CampoTipologiaServizioService) {
+  constructor(
+    protected activatedRoute: ActivatedRoute,
+    protected router: Router,
+    protected http: HttpClient,
+    protected amministrativoService: AmministrativoService,
+    private viewportRuler: ViewportRuler,
+    confirmationService: ConfirmationService,
+    private campoTipologiaServizioService: CampoTipologiaServizioService) {
+    super(confirmationService, activatedRoute, amministrativoService, http, router);
     this.target = null;
     this.source = null;
-  }
-
-  ngOnInit(): void {
-    this.campoTipologiaServizioService.campiTipologiaServizio(13)
-      .subscribe(value => {
-        this.items = _.sortBy(value, 'posizione');
-        this.waiting = false;
-      });
   }
 
   ngAfterViewInit() {
@@ -56,6 +62,18 @@ export class FormTipologiaServizioComponent implements OnInit, AfterViewInit {
 
     phElement.style.display = 'none';
     phElement.parentElement.removeChild(phElement);*/
+  }
+
+  initFormPage(snapshot: ActivatedRouteSnapshot) {
+    this.campoTipologiaServizioService.campiTipologiaServizio(13)
+      .subscribe(value => {
+        this.items = _.sortBy(value, 'posizione');
+        this.waiting = false;
+      });
+  }
+
+  onClickSalva(): void {
+    // TODO onclicksalva
   }
 
   add() {
