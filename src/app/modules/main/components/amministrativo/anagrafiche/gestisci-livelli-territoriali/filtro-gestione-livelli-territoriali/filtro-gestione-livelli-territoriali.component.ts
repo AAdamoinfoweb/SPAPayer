@@ -34,7 +34,7 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaElementi) {
+    if (sc.listaElementi && !this.opzioniFiltroLivelliTerritoriali.length) {
       this.impostaOpzioniFiltroLivelliTerritoriali();
     }
   }

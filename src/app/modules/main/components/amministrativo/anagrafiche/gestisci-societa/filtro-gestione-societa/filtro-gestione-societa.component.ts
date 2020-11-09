@@ -33,7 +33,7 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaElementi) {
+    if (sc.listaElementi && !this.opzioniFiltroSocieta.length) {
       this.impostaOpzioniFiltroSocieta();
     }
   }

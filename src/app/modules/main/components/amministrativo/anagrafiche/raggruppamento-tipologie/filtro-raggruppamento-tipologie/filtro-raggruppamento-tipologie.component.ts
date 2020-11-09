@@ -32,7 +32,7 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaElementi) {
+    if (sc.listaElementi && !this.opzioniFiltroRaggruppamentiTipologie.length) {
       this.impostaOpzioniFiltroRaggruppamentiTipologieServizi();
     }
   }
