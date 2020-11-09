@@ -20,16 +20,15 @@
   <app-dati-accesso
     [accesso]="accesso"
   ></app-dati-accesso>
-  <hr/>
-</div>
 
-<!-- Bottoni -->
-<div class="row">
-  <!-- Bottone sx -->
-  <div class="col-2">
-    <button id="buttonAnnulla" class="btn btn-secondary" (click)="onClickAnnulla(funzione)">Indietro</button>
+  <hr/>
+
+  <!-- Bottoni -->
+  <div class="row pt-4">
+    <button type="button" id="buttonIndietro" class="btn btn-secondary btn-indietro" (click)="onClickAnnulla(funzione)">Indietro</button>
   </div>
 </div>
+
 
 <!-- Modale -->
 <p-confirmDialog #cb icon="pi pi-exclamation-triangle">

@@ -19,6 +19,8 @@
   <!-- sezione dati banner per aggiungi/modifica/dettaglio -->
   <app-dati-banner [funzione]="funzione" [datiBanner]="datiBanner" (onValidaForm)="onChangeForm($event)"></app-dati-banner>
 
+  <hr/>
+
   <!-- Bottoni -->
   <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
     <!-- Bottone sx -->
