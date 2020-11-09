@@ -52,7 +52,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     {value: TipoUtenteEnum.DISABILITATI}
   ];
 
-  nomeTabCorrente: string;
+  nomeTabCorrente: TipoUtenteEnum = TipoUtenteEnum.TUTTI;
 
   tableData: Tabella = {
     rows: [],
@@ -68,19 +68,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  tempTableData: Tabella = {
-    rows: [],
-    cols: [
-      {field: 'iconaUtente', header: '', type: tipoColonna.ICONA},
-      {field: 'id', header: 'User ID (Cod. Fisc.)', type: tipoColonna.TESTO},
-      {field: 'nome', header: 'Cognome e Nome', type: tipoColonna.TESTO},
-      {field: 'gruppoAbilitazioni', header: 'Gruppi Abilitazioni', type: tipoColonna.TESTO},
-      {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
-      {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
-    ],
-    dataKey: 'id.value',
-    tipoTabella: tipoTabella.CHECKBOX_SELECTION
-  };
   waiting = true;
 
   filtroSocieta = null;
@@ -116,7 +103,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
         this.listaElementi.forEach(utente => {
           this.tableData.rows.push(this.creaRigaTabella(utente));
         });
-        this.tempTableData = Object.assign({}, this.tableData);
         this.onChangeTab(this.nomeTabCorrente);
       }
       this.waiting = false;
@@ -170,23 +156,37 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     return row.iconaUtente.display === 'inline';
   }
 
-  onChangeTab(value) {
+  onChangeTab(value: TipoUtenteEnum) {
     const subscription = this.spinnerOverlayService.spinner$.subscribe();
-    let tabRows = this.tableData.rows.map(row => row);
+    this.nomeTabCorrente = value;
+    let tabRows = null;
 
-    if (value === TipoUtenteEnum.ATTIVI) {
-      tabRows = tabRows.filter(row => this.isRigaUtenteAttivo(row));
-    } else if (value === TipoUtenteEnum.DISABILITATI) {
-      tabRows = tabRows.filter(row => !this.isRigaUtenteAttivo(row));
+    switch (value) {
+      case TipoUtenteEnum.TUTTI:
+        tabRows = this.listaElementi;
+        break;
+      case TipoUtenteEnum.ATTIVI:
+        tabRows = this.listaElementi.filter(utente => this.isUtenteAttivo(utente));
+        break;
+      case TipoUtenteEnum.DISABILITATI:
+        tabRows = this.listaElementi.filter(utente => !this.isUtenteAttivo(utente));
+        break;
     }
 
-    this.tempTableData.rows = tabRows;
-    this.nomeTabCorrente = value;
+    this.riempiTabella(tabRows);
     setTimeout(() => subscription.unsubscribe(), 500);
   }
 
+  riempiTabella(utenti: RicercaUtente[]): void {
+    this.tableData.rows = [];
+    if (utenti) {
+      utenti.forEach(utente => {
+        this.tableData.rows.push(this.creaRigaTabella(utente));
+      });
+    }
+  }
+
   eseguiAzioni(azioneTool) {
-    const dataTable = JSON.parse(JSON.stringify(this.tempTableData));
     switch (azioneTool) {
       case ToolEnum.INSERT:
         this.aggiungiElemento('/aggiungiUtentePermessi');
@@ -195,10 +195,10 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
         this.modificaElementoSelezionato('/modificaUtentePermessi', this.codiceFiscaleUtenteDaModificare);
         break;
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(dataTable, 'Lista Utenti');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Utenti');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(dataTable, 'Lista Utenti');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Utenti');
         break;
     }
     this.selectionElementi = [];
@@ -245,9 +245,9 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   getNumeroRecord(): string {
-    const numeroUtentiAttivi = this.tableData.rows.filter(row => this.isRigaUtenteAttivo(row)).length;
-    const numeroUtentiDisabilitati = this.tableData.rows.filter(row => !this.isRigaUtenteAttivo(row)).length;
-    return 'Totale: ' + this.tableData.rows.length + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
+    const numeroUtentiAttivi = this.listaElementi.filter(row => this.isUtenteAttivo(row)).length;
+    const numeroUtentiDisabilitati = this.listaElementi.filter(row => !this.isUtenteAttivo(row)).length;
+    return 'Totale: ' + this.listaElementi.length + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
   }
 
   selezionaRigaTabella(rowsChecked): void {
