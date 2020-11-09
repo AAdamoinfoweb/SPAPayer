@@ -65,8 +65,6 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  waiting = true;
-
   constructor(protected router: Router,
               protected route: ActivatedRoute, protected http: HttpClient, protected amministrativoService: AmministrativoService,
               private renderer: Renderer2, private livelloTerritorialeService: LivelloTerritorialeService, private el: ElementRef,

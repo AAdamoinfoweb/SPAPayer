@@ -68,8 +68,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  waiting = true;
-
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private societaService: SocietaService, private el: ElementRef,

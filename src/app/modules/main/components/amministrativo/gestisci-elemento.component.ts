@@ -32,10 +32,12 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract idFunzione;
   basePath;
 
+  abstract tableData: Tabella;
   abstract listaElementi: any[];
   abstract filtriRicerca: any;
 
   abstract selectionElementi: any[];
+  waiting = true;
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
     const breadcrumbList: SintesiBreadcrumb[] = [];

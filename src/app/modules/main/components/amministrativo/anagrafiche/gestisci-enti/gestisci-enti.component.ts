@@ -62,8 +62,6 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   filtriRicerca: ParametriRicercaEnte = null;
   entiSelezionati: SintesiEnte[];
 
-  waiting = true;
-
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private el: ElementRef,

@@ -25,7 +25,6 @@ import {ParametriRicercaAccesso} from '../../../model/accesso/ParametriRicercaAc
 export class MonitoraAccessiComponent extends GestisciElementoComponent implements OnInit {
 
   isMenuCarico = false;
-  waiting = true;
 
   idFunzione;
 

@@ -68,8 +68,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  waiting = true;
-
   filtroSocieta = null;
 
   dataSistema = moment();

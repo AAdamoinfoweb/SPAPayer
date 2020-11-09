@@ -55,7 +55,6 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   };
 
   isMenuCarico = false;
-  waiting = true;
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2,
