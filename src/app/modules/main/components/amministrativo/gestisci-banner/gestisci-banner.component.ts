@@ -103,7 +103,6 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
       if (listaBanner != null) {
         this.listaElementi = listaBanner;
         this.listaElementi.forEach(banner => {
-          this.listaElementi.push(banner);
           this.tableData.rows.push(this.creaRigaTabella(banner));
         });
         this.tempTableData = Object.assign({}, this.tableData);

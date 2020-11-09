@@ -112,7 +112,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
       if (utenti != null) {
         this.listaElementi = utenti;
         this.listaElementi.forEach(utente => {
-          this.listaElementi.push(utente);
           this.tableData.rows.push(this.creaRigaTabella(utente));
         });
         this.tempTableData = Object.assign({}, this.tableData);
