@@ -13,7 +13,7 @@
         <div class="row">
           <div class="col">
             <input id="nomeRaggruppamentoTipologiaServizio" type="text" name="nome"
-              autocomplete="off" #nomeRaggruppamentoInput="ngModel"
+              autocomplete="off" #nomeRaggruppamentoInput="ngModel" maxlength="3"
               [(ngModel)]="raggruppamentoTipologiaServizio.nome"
               [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"

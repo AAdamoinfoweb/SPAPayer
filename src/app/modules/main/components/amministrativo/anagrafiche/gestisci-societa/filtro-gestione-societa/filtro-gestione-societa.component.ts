@@ -2,10 +2,10 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {Societa} from '../../../../../model/Societa';
 import {NgForm, NgModel} from '@angular/forms';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
-import {SocietaService} from '../../../../../../../services/societa.service';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
 import {ActivatedRoute} from "@angular/router";
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-gestione-societa',
@@ -19,14 +19,13 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   opzioniFiltroSocieta: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
   @Output()
-  onChangeListaElementi: EventEmitter<Societa[]> = new EventEmitter<Societa[]>();
+  onChangeFiltri: EventEmitter<number> = new EventEmitter<number>();
 
   filtroSocieta: number = null;
 
   idFunzione;
 
-  constructor(private societaService: SocietaService,
-              protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
+  constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
     super(route, amministrativoService);
   }
 
@@ -34,7 +33,8 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   }
 
   ngOnChanges(sc: SimpleChanges): void {
-    if (sc.listaElementi) {
+    // Appena la lista viene popolata per la prima volta
+    if (sc.listaElementi && !this.opzioniFiltroSocieta.length) {
       this.impostaOpzioniFiltroSocieta();
     }
   }
@@ -47,6 +47,7 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
         label: societa.nome
       });
     });
+    Utils.ordinaOpzioniSelect(this.opzioniFiltroSocieta);
   }
 
   isCampoInvalido(campo: NgModel) {
@@ -64,13 +65,11 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.filtroSocieta = null;
-    this.onChangeListaElementi.emit(this.listaElementi);
+    this.onChangeFiltri.emit(null);
   }
 
   cercaElementi(): void {
-    this.societaService.ricercaSocieta(this.filtroSocieta, this.idFunzione).subscribe(listaSocieta => {
-      this.onChangeListaElementi.emit(listaSocieta);
-    });
+    this.onChangeFiltri.emit(this.filtroSocieta);
   }
 
   disabilitaBottone(filtroForm: NgForm): boolean {

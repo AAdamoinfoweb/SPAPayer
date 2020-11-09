@@ -22,7 +22,8 @@ export class AmministrativoParentComponent implements OnInit {
               protected http: HttpClient, protected amministrativoService: AmministrativoService) {
 
     this.waitingEmitter.emit(true);
-    this.amministrativoService.asyncAmministrativoSubject.subscribe(() => {
+    this.amministrativoService.asyncAmministrativoSubject.subscribe((isAmministrativo) => {
+      if (isAmministrativo) {
       this.route.url.subscribe((url) => {
         const basePath = '/' + url[0].path;
         let h: HttpHeaders = new HttpHeaders();
@@ -38,6 +39,9 @@ export class AmministrativoParentComponent implements OnInit {
         }));
         observable.subscribe();
       });
+      } else {
+        this.router.navigateByUrl('/nonautorizzato');
+      }
     });
   }
 

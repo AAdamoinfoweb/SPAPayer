@@ -18,8 +18,7 @@
 
   <!-- Sottosezione Filtri -->
   <app-filtro-monitoraggio-accessi
-    [listaElementi]="listaAccessi"
-    (onChangeListaElementi)="onChangeListaElementi($event)">
+    (onChangeFiltri)="onChangeFiltri($event)">
   </app-filtro-monitoraggio-accessi>
 
   <!-- Sottosezione Lista -->
@@ -49,7 +48,7 @@
                      (onSelection)="selezionaRigaTabella($event)"
                      [selectedRows]="true"
                      (onClickRow)="mostraDettaglioAccesso($event)"
-                     [selection]="selectionElementi"
+                     [selection]="righeSelezionate"
           >
           </app-table>
         </div>

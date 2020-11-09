@@ -2,9 +2,14 @@
   <form #datiPermessoForm="ngForm">
     <div class="row mt-2 mb-0">
       <div class="col text-right" [id]="indexSezionePermesso">
-          <svg *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" fill='#004987' class="bg-light icon cursor-pointer" (click)="onClickDeleteIcon($event)">
+         <span ngbTooltip="{{testoTooltipIconaElimina}}" placement="bottom"
+               [ngStyle]="{fill: '#403d39'}"
+         >
+          <svg *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" fill='#004987' class="bg-light icon cursor-pointer"
+               (click)="onClickDeleteIcon($event)">
             <use xlink:href="assets/img/sprite.svg#it-delete"></use>
           </svg>
+         </span>
       </div>
     </div>
     <div class="row">
@@ -18,7 +23,8 @@
           <div class="col">
             <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
                     #societaInput="ngModel" [(ngModel)]="datiPermesso.societaId"
-                    (ngModelChange)="onChangeModel(societaInput)" [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                    (ngModelChange)="onChangeModel(societaInput)"
+                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
               <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
             </select>
           </div>
@@ -26,7 +32,7 @@
         <div class="row">
           <div class="col">
             <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-              [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
+               [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
               {{setPlaceholder(societaInput, 'select')}}
             </p>
           </div>
@@ -35,14 +41,16 @@
       <div class="col-md-3 pb-2">
         <div class="row">
           <div class="col">
-            <label for="selectEnte" [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Ente</label>
+            <label for="selectEnte"
+                   [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Ente</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
             <select [ngClass]="{'input-disabled': !listaEnti.length}"
                     id="selectEnte" name="enteId" [required]="datiPermesso.enteId === undefined"
-                    #enteInput="ngModel" [(ngModel)]="datiPermesso.enteId" (ngModelChange)="onChangeModel(enteInput)" [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                    #enteInput="ngModel" [(ngModel)]="datiPermesso.enteId" (ngModelChange)="onChangeModel(enteInput)"
+                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
               <option [ngValue]="undefined" [selected]="true">Seleziona</option>
               <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
             </select>
@@ -51,7 +59,7 @@
         <div class="row">
           <div class="col">
             <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-              [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput), 'text-disabled': !listaEnti.length}">
+               [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput), 'text-disabled': !listaEnti.length}">
               {{setPlaceholder(enteInput, 'select')}}
             </p>
           </div>
@@ -71,7 +79,8 @@
             <select [ngClass]="{'input-disabled': datiPermesso.enteId == null}"
                     id="selectServizio" name="servizioId" required
                     #servizioInput="ngModel" [(ngModel)]="datiPermesso.servizioId"
-                    (ngModelChange)="onChangeModel(servizioInput)" [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                    (ngModelChange)="onChangeModel(servizioInput)"
+                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
               <option [ngValue]="null" [selected]="true" *ngIf="datiPermesso.enteId != null">Seleziona</option>
               <option [ngValue]="null" [selected]="true" *ngIf="datiPermesso.enteId == null">Tutto</option>
               <option *ngFor="let item of listaServizi" [ngValue]="item.value">{{item.label}}</option>
@@ -81,7 +90,7 @@
         <div class="row">
           <div *ngIf="listaServizi.length > 0" class="col">
             <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-              [ngClass]="{'text-muted': !isCampoInvalido(servizioInput), 'text-invalid': isCampoInvalido(servizioInput), 'text-disabled': !isSelectValida(datiPermesso.enteId, listaEnti)}">
+               [ngClass]="{'text-muted': !isCampoInvalido(servizioInput), 'text-invalid': isCampoInvalido(servizioInput), 'text-disabled': !isSelectValida(datiPermesso.enteId, listaEnti)}">
               {{setPlaceholder(servizioInput, 'select')}}
             </p>
           </div>
@@ -127,7 +136,7 @@
         <div class="row">
           <div class="col">
             <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-              [ngClass]="{'text-muted': !isCampoInvalido(attivazioneInput), 'text-invalid': isCampoInvalido(attivazioneInput)}">
+               [ngClass]="{'text-muted': !isCampoInvalido(attivazioneInput), 'text-invalid': isCampoInvalido(attivazioneInput)}">
               {{setPlaceholder(attivazioneInput, 'date')}}
             </p>
           </div>
@@ -141,7 +150,8 @@
         </div>
         <div class="row">
           <div class="col calendar-wrapper">
-            <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenza)" [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}">
+            <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenza)"
+                 [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}">
               <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
             </svg>
             <dp-date-picker
@@ -171,7 +181,7 @@
         <div class="row">
           <div class="col">
             <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-              [ngClass]="{'text-muted': !isCampoInvalido(scadenzaInput), 'text-invalid': isCampoInvalido(scadenzaInput)}">
+               [ngClass]="{'text-muted': !isCampoInvalido(scadenzaInput), 'text-invalid': isCampoInvalido(scadenzaInput)}">
               {{setPlaceholder(scadenzaInput, 'date')}}
             </p>
           </div>
@@ -184,7 +194,8 @@
       <div class="row">
         <div *ngFor="let funzion of listaFunzioni; let i = index" class="col-3">
           <it-checkbox [id]="i" [label]="funzion.label" (change)="onChangeCheckBox($event, funzion.value)"
-                       [checked]="funzion.checked" [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"></it-checkbox>
+                       [checked]="funzion.checked"
+                       [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"></it-checkbox>
         </div>
       </div>
     </div>

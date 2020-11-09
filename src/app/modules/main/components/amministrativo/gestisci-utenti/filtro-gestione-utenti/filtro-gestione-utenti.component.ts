@@ -40,13 +40,10 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
   filtroGestioneUtentiApplicato: ParametriRicercaUtente;
 
   @Input()
-  listaElementi: Array<RicercaUtente> = new Array<RicercaUtente>();
-
-  @Input()
   filtroSocieta = null;
 
   @Output()
-  onChangeListaElementi: EventEmitter<RicercaUtente[]> = new EventEmitter<RicercaUtente[]>();
+  onChangeFiltri: EventEmitter<ParametriRicercaUtente> = new EventEmitter<ParametriRicercaUtente>();
 
   idFunzione;
 
@@ -57,7 +54,6 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
   }
 
   ngOnInit(): void {
-    this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
     this.inizializzaFiltroGestioneUtenti()
     this.recuperaFiltroSocieta();
     this.recuperaFiltroLivelloTerritoriale();
@@ -67,6 +63,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
   }
 
   inizializzaFiltroGestioneUtenti() {
+    this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
     this.filtroGestioneUtentiApplicato.societaId = null;
     this.filtroGestioneUtentiApplicato.servizioId = null;
     this.filtroGestioneUtentiApplicato.enteId = null;
@@ -83,15 +80,15 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
         });
       });
 
+      Utils.ordinaOpzioniSelect(this.listaSocieta);
+
       if (this.filtroSocieta) {
         const isFiltroSocietaValido = this.listaSocieta.some(item => item.value === this.filtroSocieta);
         if (isFiltroSocietaValido) {
           this.filtroGestioneUtentiApplicato.societaId = this.filtroSocieta;
           const parametriRicercaUtente = new ParametriRicercaUtente();
           parametriRicercaUtente.societaId = this.filtroSocieta;
-          this.utenteService.ricercaUtenti(parametriRicercaUtente, this.idFunzione).subscribe(utenti => {
-            this.onChangeListaElementi.emit(utenti);
-          });
+          this.onChangeFiltri.emit(parametriRicercaUtente);
         } else {
           window.open('/nonautorizzato', '_self');
         }
@@ -107,6 +104,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: livello.nome
         });
       });
+      Utils.ordinaOpzioniSelect(this.listaLivelliTerritoriali);
     })).subscribe();
   }
 
@@ -125,6 +123,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: ente.nome
         });
       });
+      Utils.ordinaOpzioniSelect(this.listaEnti);
     })).subscribe();
   }
 
@@ -143,6 +142,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: servizio.nome
         });
       });
+      Utils.ordinaOpzioniSelect(this.listaServizi);
     })).subscribe();
   }
 
@@ -154,6 +154,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: funzione.nome
         });
       });
+      Utils.ordinaOpzioniSelect(this.listaFunzioniAbilitate);
     })).subscribe();
   }
 
@@ -196,8 +197,8 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
 
   pulisciFiltri(filtroGestioneUtentiForm: NgForm): void {
     filtroGestioneUtentiForm.resetForm();
-    this.onChangeListaElementi.emit(this.listaElementi);
-    this.filtroGestioneUtentiApplicato = new ParametriRicercaUtente();
+    this.inizializzaFiltroGestioneUtenti();
+    this.onChangeFiltri.emit(null);
   }
 
   cercaElementi(): void {
@@ -217,12 +218,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
       }
     }
 
-    this.utenteService.ricercaUtenti(filtro, this.idFunzione).pipe(map(listaUtenti => {
-      // Non invio la lista in caso di bad request
-      if (listaUtenti) {
-        this.onChangeListaElementi.emit(listaUtenti);
-      }
-    })).subscribe(value => {});
+    this.onChangeFiltri.emit(filtro);
   }
 
   disabilitaBottone(filtroGestioneUtentiForm: NgForm, nomeBottone: string): boolean {

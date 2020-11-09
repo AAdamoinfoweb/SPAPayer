@@ -13,6 +13,7 @@ import {Comune} from '../../../../../model/Comune';
 import {Provincia} from '../../../../../model/Provincia';
 import {EnteService} from '../../../../../../../services/ente.service';
 import {ActivatedRoute} from "@angular/router";
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-gestione-enti',
@@ -30,11 +31,8 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
 
   idFunzione;
 
-  @Input()
-  listaElementi: Array<any> = new Array<any>();
-
   @Output()
-  onChangeListaElementi: EventEmitter<any[]> = new EventEmitter<any[]>();
+  onChangeFiltri: EventEmitter<ParametriRicercaEnte> = new EventEmitter<ParametriRicercaEnte>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private enteService: EnteService, protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
@@ -72,6 +70,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: s.nome
       });
     });
+    Utils.ordinaOpzioniSelect(this.opzioniFiltroSocieta);
   }
 
   letturaLivelloTerritoriale(): void {
@@ -88,6 +87,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: livello.nome
       });
     });
+    Utils.ordinaOpzioniSelect(this.opzioniFiltroLivelliTerritoriale);
   }
 
   letturaComuni() {
@@ -102,6 +102,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: comune.nome
       });
     });
+    Utils.ordinaOpzioniSelect(this.opzioniFiltroComune);
   }
 
   letturaProvince() {
@@ -116,6 +117,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: provincia.nome
       });
     });
+    Utils.ordinaOpzioniSelect(this.opzioniFiltroProvincia);
   }
 
   isCampoInvalido(campo: NgModel) {
@@ -133,14 +135,11 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.inizializzaFiltroRicercaEnte();
-    this.cercaElementi();
+    this.onChangeFiltri.emit(null);
   }
 
   cercaElementi() {
-    this.enteService.ricercaEnti(this.filtroRicercaEnte, this.idFunzione)
-      .subscribe((listaEnti) => {
-        this.onChangeListaElementi.emit(listaEnti);
-      });
+    this.onChangeFiltri.emit(this.filtroRicercaEnte);
   }
 
   disabilitaBottone(filtroForm: NgForm, nomeBottone: string): boolean {

@@ -15,66 +15,65 @@
       <ng-container *ngFor="let item of menu | orderBy:'posizione'; let i = index">
         <li [ngClass]="{'active': item.nome == selectedElement}" (click)="getRouterLink(item, menu)">
           <a class="list-item medium" [ngClass]="{'active': item.nome == selectedElement}"
-             data-toggle="collapse" [attr.aria-expanded]="false">
+             data-toggle="collapse" [attr.data-target]="'#coll-' + i" [attr.aria-expanded]="false"
+             (click)="item['isExpanded'] = !item['isExpanded']">
             {{item.nome}}
             <ng-container *ngIf="!item.route">
-             <span>
-              <svg *ngIf="!item['isExpanded']" class="icon icon-sm icon-primary right" aria-hidden="true">
-                <use xlink:href="assets/img/sprite.svg#it-expand"></use>
-              </svg>
-              <svg *ngIf="item['isExpanded']" class="icon icon-sm icon-primary right" aria-hidden="true">
-                <use xlink:href="assets/img/sprite.svg#it-collapse"></use>
-              </svg>
+              <span>
+                <svg class="icon icon-sm icon-primary right" aria-hidden="true">
+                  <use [attr.xlink:href]="item['isExpanded'] ? 'assets/img/sprite.svg#it-collapse' : 'assets/img/sprite.svg#it-expand'"
+                       xlink:href=""></use>
+                </svg>
               </span>
             </ng-container>
           </a>
-          <ul [id]="'coll-' + i" class="link-sublist collapse none" [ngClass]="{'show': item.nome == selectedElement}"
+          <ul [attr.id]="'coll-' + i" class="link-sublist collapse none"
               *ngIf="item.sotto_menu">
             <ng-container *ngFor="let sub of item.sotto_menu | orderBy:'posizione'; let j = index">
-              <li>
-                <a (click)="getRouterLink(sub)" class="list-item medium"
+              <li (click)="getRouterLink(sub)">
+                <a class="list-item medium"
                    [ngClass]="{'active': sub.nome == selectedElement}"
-                   data-toggle="collapse" [attr.aria-expanded]="false">
+                   data-toggle="collapse" [attr.data-target]="'#collSub-' + j"
+                   [attr.aria-expanded]="false" (click)="sub['isExpanded'] = !sub['isExpanded']">
                   {{sub.nome}}
                   <ng-container *ngIf="!sub.route">
                      <span>
-                        <svg *ngIf="!sub['isExpanded']" class="icon icon-sm icon-primary right" aria-hidden="true">
-                          <use xlink:href="assets/img/sprite.svg#it-expand"></use>
-                        </svg>
-                        <svg *ngIf="sub['isExpanded']" class="icon icon-sm icon-primary right" aria-hidden="true">
-                          <use xlink:href="assets/img/sprite.svg#it-collapse"></use>
-                        </svg>
-                      </span>
+                       <svg class="icon icon-sm icon-primary right" aria-hidden="true">
+                         <use [attr.xlink:href]="!sub['isExpanded'] ? 'assets/img/sprite.svg#it-collapse' : 'assets/img/sprite.svg#it-expand'"
+                              xlink:href=""></use>
+                       </svg>
+                     </span>
                   </ng-container>
                 </a>
+                <ul [attr.id]="'collSub-' + j"
+                    class="link-sublist collapse none show"
+                    *ngIf="sub.funzioni">
+                  <ng-container *ngFor="let subItem of sub.funzioni">
+                    <li (click)="getRouterLink(subItem)">
+                      <a class="list-item medium active"
+                         data-toggle="collapse" aria-expanded="true">{{subItem.nome}}</a>
+                    </li>
+                  </ng-container>
+                </ul>
               </li>
-              <ul [id]="'collSub-' + j" class="link-sublist collapse none" [ngClass]="{'show': true}"
-                  *ngIf="sub.funzioni">
-                <ng-container *ngFor="let subItem of sub.funzioni">
-                  <li>
-                    <a (click)="getRouterLink(subItem)" class="list-item medium active"
-                       data-toggle="collapse" aria-expanded="true">{{subItem.nome}}</a>
-                  </li>
-                </ng-container>
-              </ul>
             </ng-container>
           </ul>
-          <ul class="link-sublist collapse none" [ngClass]="{'show': item.nome == selectedElement}"
+          <ul [attr.id]="'coll-' + i"
+              class="link-sublist collapse none"
               *ngIf="item.funzioni">
             <ng-container *ngFor="let sub of item.funzioni">
               <li (click)="getRouterLink(sub)">
                 <a class="list-item medium" [ngClass]="{'active': sub.nome == selectedElement}"
-                   data-toggle="collapse" [attr.aria-expanded]="false">
+                   data-toggle="collapse" [attr.aria-expanded]="false"
+                   (click)="sub['isExpanded'] = !sub['isExpanded']">
                   {{sub.nome}}
                   <ng-container *ngIf="!sub.route">
                      <span>
-                      <svg *ngIf="!sub['isExpanded']" class="icon icon-sm icon-primary right" aria-hidden="true">
-                        <use xlink:href="assets/img/sprite.svg#it-expand"></use>
-                      </svg>
-                      <svg *ngIf="sub['isExpanded']" class="icon icon-sm icon-primary right" aria-hidden="true">
-                        <use xlink:href="assets/img/sprite.svg#it-collapse"></use>
-                      </svg>
-                      </span>
+                       <svg class="icon icon-sm icon-primary right" aria-hidden="true">
+                         <use [attr.xlink:href]="sub['isExpanded'] ? 'assets/img/sprite.svg#it-collapse' : 'assets/img/sprite.svg#it-expand'"
+                              xlink:href=""></use>
+                       </svg>
+                     </span>
                   </ng-container>
                 </a>
               </li>

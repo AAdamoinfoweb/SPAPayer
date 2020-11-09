@@ -73,6 +73,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           label: livello.nome
         });
       });
+      Utils.ordinaOpzioniSelect(this.listaLivelliTerritoriali);
     })).subscribe();
   }
 
@@ -84,6 +85,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           label: ente.nome
         });
       });
+      Utils.ordinaOpzioniSelect(this.listaEnti);
     })).subscribe();
   }
 
@@ -95,6 +97,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           label: servizio.nome
         });
       });
+      Utils.ordinaOpzioniSelect(this.listaServizi);
     })).subscribe();
   }
 

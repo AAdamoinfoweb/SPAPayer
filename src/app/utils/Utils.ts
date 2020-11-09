@@ -8,6 +8,7 @@ import {Tabella} from '../modules/main/model/tabella/Tabella';
 import {TipoModaleEnum} from '../enums/tipoModale.enum';
 import {Breadcrumb, SintesiBreadcrumb} from "../modules/main/dto/Breadcrumb";
 import {Colonna} from '../modules/main/model/tabella/Colonna';
+import {OpzioneSelect} from '../modules/main/model/OpzioneSelect';
 
 export class Utils {
 
@@ -19,8 +20,9 @@ export class Utils {
   ];
 
   static readonly EMAIL_REGEX = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
-  static readonly TELEFONO_REGEX = '^(\\+[0-9]{2,2})?[0-9]{9,11}$';
+  static readonly TELEFONO_REGEX = '^\\+[0-9]{12}$|^[0-9]{10}$';
   static readonly CODICE_FISCALE_REGEX = '^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
+  static readonly CODICE_FISCALE_O_PARTITA_IVA_REGEX = '^[0-9]{11}$|^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
 
   static creaLink = (value, link, iconHref?) => {
     return iconHref ? {value, link, iconHref} : {value, link, iconHref: null};
@@ -57,6 +59,18 @@ export class Utils {
 
   static creaIcona = (path, color, tooltip, display) => {
     return {path, color, tooltip, display};
+  }
+
+  static ordinaOpzioniSelect(opzioni: OpzioneSelect[]) {
+    opzioni.sort((opzione1, opzione2) => {
+      if (opzione1.label > opzione2.label) {
+        return 1;
+      } else if (opzione1.label < opzione2.label) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   static getModale(confermaFn, tipoModale: TipoModaleEnum, titolo?, messaggio?) {

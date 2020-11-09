@@ -8,6 +8,7 @@ import {Tabella} from '../../model/tabella/Tabella';
 import {Colonna} from '../../model/tabella/Colonna';
 import {ToolEnum} from '../../../../enums/Tool.enum';
 import {ImmaginePdf} from '../../model/tabella/ImmaginePdf';
+import {Observable} from 'rxjs';
 
 
 export abstract class GestisciElementoComponent extends AmministrativoParentComponent {
@@ -16,19 +17,29 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
                         route: ActivatedRoute, protected http: HttpClient,
                         amministrativoService: AmministrativoService) {
     super(router, route, http, amministrativoService);
-    this.amministrativoService.asyncAmministrativoSubject.subscribe(() => {
-      route.url.subscribe((url) => {
-        const basePath = '/' + url[0].path;
-        this.basePath = basePath;
-        this.idFunzione = String(this.amministrativoService.mappaFunzioni[basePath]);
-      });
+    this.amministrativoService.asyncAmministrativoSubject.subscribe((isAmministrativo) => {
+      if (isAmministrativo) {
+        route.url.subscribe((url) => {
+          const basePath = '/' + url[0].path;
+          this.basePath = basePath;
+          this.idFunzione = String(this.amministrativoService.mappaFunzioni[basePath]);
+        });
+      } else {
+        this.router.navigateByUrl('/nonautorizzato');
+      }
     });
   }
 
   abstract idFunzione;
   basePath;
 
-  abstract selectionElementi: any[];
+  abstract tableData: Tabella;
+
+  abstract listaElementi: any[];
+  abstract filtriRicerca: any;
+
+  abstract righeSelezionate: any[];
+  waiting = true;
 
   inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
     const breadcrumbList: SintesiBreadcrumb[] = [];
@@ -38,20 +49,60 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   }
 
   aggiungiElemento(linkFunzioneAggiungi: string) {
-   this.router.navigateByUrl(this.basePath + linkFunzioneAggiungi);
+    this.righeSelezionate = [];
+    this.router.navigateByUrl(this.basePath + linkFunzioneAggiungi);
   }
 
-  abstract popolaListaElementi(): void;
+  getListaIdElementiSelezionati(): number[] {
+    let listaId = [];
+    if (this.righeSelezionate) {
+      listaId = this.righeSelezionate.map(riga => riga.id.value);
+    }
+    return listaId;
+  }
 
   abstract creaRigaTabella(oggetto: any);
 
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
+  popolaListaElementi(): void {
+    this.listaElementi = [];
+    this.tableData.rows = [];
+    this.getObservableFunzioneRicerca().subscribe(listaElementi => {
+      if (listaElementi != null) {
+        this.listaElementi = listaElementi;
+        this.impostaTabella(this.listaElementi);
+        this.callbackPopolaLista();
+      }
+      this.waiting = false;
+    });
+  }
+
+  abstract callbackPopolaLista();
+
+  onChangeFiltri(filtri: any): void {
+    this.filtriRicerca = filtri;
+    this.popolaListaElementi();
+  }
+
+  impostaTabella(listaElementi: any[]): void {
+    this.tableData.rows = [];
+    if (listaElementi) {
+      listaElementi.forEach(elemento => {
+        this.tableData.rows.push(this.creaRigaTabella(elemento));
+      });
+    }
+  }
+
+  abstract getObservableFunzioneRicerca(): Observable<any[]>;
+
   mostraDettaglioElemento(linkFunzioneDettaglio: string, id: number) {
+    this.righeSelezionate = [];
     this.router.navigateByUrl(this.basePath + linkFunzioneDettaglio + '/' + id);
   }
 
   modificaElementoSelezionato(linkFunzioneModifica: string, id: number | string) {
+    this.righeSelezionate = [];
     this.router.navigateByUrl(this.basePath + linkFunzioneModifica + '/' + id);
   }
 
@@ -88,8 +139,6 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract getImmaginiFilePdf(): ImmaginePdf[];
 
   abstract selezionaRigaTabella(righeSelezionate: any[]): void;
-
-  abstract onChangeListaElementi(listaElementi: any[]): void;
 
   abstract getNumeroRecord(): string;
 }

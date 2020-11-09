@@ -32,6 +32,7 @@ import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enu
 export class DatiPermessoComponent implements OnInit {
   // enums consts
   FunzioneGestioneEnum = FunzioneGestioneEnum;
+  testoTooltipIconaElimina = 'Elimina permesso';
 
   @Input() indexSezionePermesso: number;
   @Input() codiceFiscale: string;
