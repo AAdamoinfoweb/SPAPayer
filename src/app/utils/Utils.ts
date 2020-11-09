@@ -8,6 +8,7 @@ import {Tabella} from '../modules/main/model/tabella/Tabella';
 import {TipoModaleEnum} from '../enums/tipoModale.enum';
 import {Breadcrumb, SintesiBreadcrumb} from "../modules/main/dto/Breadcrumb";
 import {Colonna} from '../modules/main/model/tabella/Colonna';
+import {OpzioneSelect} from '../modules/main/model/OpzioneSelect';
 
 export class Utils {
 
@@ -58,6 +59,18 @@ export class Utils {
 
   static creaIcona = (path, color, tooltip, display) => {
     return {path, color, tooltip, display};
+  }
+
+  static ordinaOpzioniSelect(opzioni: OpzioneSelect[]) {
+    opzioni.sort((opzione1, opzione2) => {
+      if (opzione1.label > opzione2.label) {
+        return 1;
+      } else if (opzione1.label < opzione2.label) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   static getModale(confermaFn, tipoModale: TipoModaleEnum, titolo?, messaggio?) {
