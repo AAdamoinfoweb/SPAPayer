@@ -31,7 +31,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa delle società a cui sei abilitato e filtrarle';
   readonly iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
 
-  readonly funzioneGestioneUtenti = '/gestioneUtenti';
+  readonly funzioneGestisciUtenti = '/gestisciUtenti';
 
   idFunzione;
 
@@ -110,9 +110,8 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   }
 
   creaRigaTabella(societa: Societa): object {
-    const linkGestioneUtenti = this.funzioneGestioneUtenti
-      + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneUtenti])
-      + '&societaId=' + societa.id;
+    const linkGestioneUtenti = this.funzioneGestisciUtenti
+      + '?societaId=' + societa.id;
 
     const riga = {
       id: {value: societa.id},

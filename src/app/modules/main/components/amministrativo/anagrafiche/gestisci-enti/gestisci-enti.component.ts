@@ -128,8 +128,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
         this.selectionElementi = []
         break;
       case ToolEnum.UPDATE:
-        // TODO logica modifica dell'ente selezionato
-        // this.modificaElementoSelezionato('/modificaEnte', idEnte);
+        this.modificaElementoSelezionato('/modificaEnte', this.selectionElementi[0].id.value);
         this.selectionElementi = []
         break;
       case ToolEnum.DELETE:
