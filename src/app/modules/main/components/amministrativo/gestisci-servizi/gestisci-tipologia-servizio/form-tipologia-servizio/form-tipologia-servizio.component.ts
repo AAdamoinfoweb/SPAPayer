@@ -6,18 +6,18 @@ import {
   moveItemInArray
 } from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
-import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
-import {CampoForm} from '../../../../model/CampoForm';
-import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
+import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
+import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
+import {CampoForm} from '../../../../../model/CampoForm';
+import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-gestisci-campo-tipologia-servizio',
-  templateUrl: './gestisci-campo-tipologia-servizio.component.html',
-  styleUrls: ['./gestisci-campo-tipologia-servizio.component.scss']
+  selector: 'app-form-tipologia-servizio',
+  templateUrl: './form-tipologia-servizio.component.html',
+  styleUrls: ['./form-tipologia-servizio.component.scss']
 })
-export class GestisciCampoTipologiaServizioComponent implements OnInit, AfterViewInit {
+export class FormTipologiaServizioComponent implements OnInit, AfterViewInit {
 
   @ViewChild(CdkDropListGroup) listGroup: CdkDropListGroup<CdkDropList>;
   @ViewChild(CdkDropList) placeholder: CdkDropList;

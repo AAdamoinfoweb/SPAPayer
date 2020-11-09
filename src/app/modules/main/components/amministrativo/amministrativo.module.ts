@@ -54,7 +54,7 @@ import {DatiEnteComponent} from './anagrafiche/gestisci-enti/dati-ente/dati-ente
 import {FormEnteComponent} from './anagrafiche/gestisci-enti/form-ente/form-ente.component';
 import {DatiRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
-import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component';
+import {FormTipologiaServizioComponent} from './gestisci-servizi/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component';
 import {DatiBeneficiarioComponent} from "./anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component";
 import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
 import {DragDropModule} from "@angular/cdk/drag-drop";
@@ -94,7 +94,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
     FormEnteComponent,
     DatiRaggruppamentoTipologieComponent,
     FormRaggruppamentoTipologieComponent,
-    GestisciCampoTipologiaServizioComponent,
+    FormTipologiaServizioComponent,
     DatiBeneficiarioComponent,
     DatiContoCorrenteComponent
   ],

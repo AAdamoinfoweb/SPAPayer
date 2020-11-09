@@ -27,7 +27,7 @@ import {PresaincaricopagamentoL1Component} from "./modules/main/components/presa
 import {FormEnteComponent} from "./modules/main/components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component";
 import {RaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
-import {GestisciCampoTipologiaServizioComponent} from "./modules/main/components/amministrativo/gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component";
+import {FormTipologiaServizioComponent} from "./modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -51,7 +51,7 @@ const routes: Routes = [
   {path: 'nuovoPagamento', component: NuovoPagamentoComponent, canActivate: [
       AuthguardService
     ]},
-  {path: 'campotipologiaservizio', component: GestisciCampoTipologiaServizioComponent},
+  {path: 'campotipologiaservizio', component: FormTipologiaServizioComponent},
   {path: 'iMieiPagamenti', component: IMieiPagamentiComponent},
   {path: 'gestisciUtenti', component: GestisciUtentiComponent},
   {path: 'gestisciUtenti/aggiungiUtentePermessi', component: FormUtentePermessiComponent},
