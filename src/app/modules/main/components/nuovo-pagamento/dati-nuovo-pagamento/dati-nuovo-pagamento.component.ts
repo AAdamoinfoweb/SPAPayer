@@ -678,13 +678,14 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {
+          const idSelectPadre = selectPadre.opzioni.find(opzione => opzione.value === valoreSelectPadre)?.id;
           switch (campo.tipologica) {
             // Inserire qui logica per i vari campi select dipendenti da altre select
 
             case TipologicaSelectEnum.COMUNI:
               // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
               valoriSelect = valoriSelect.filter(valore => {
-                return valore.codiceIstat?.substring(0, 3) === valoreSelectPadre;
+                return valore.codiceIstat?.substring(0, 3) === idSelectPadre;
               });
               break;
           }
@@ -695,20 +696,22 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     } else {
       valoriSelect = [];
     }
-
+    
     valoriSelect.forEach(valore => {
       switch (campo.tipologica) {
         // Inserire qui logica per l'impostazione delle opzioni dei vari tipi di select
 
         case TipologicaSelectEnum.PROVINCE:
           opzioniSelect.push({
-            value: valore.codice,
+            id: valore.codice,
+            value: valore.nome,
             label: valore.nome
           });
           break;
         case TipologicaSelectEnum.COMUNI:
           opzioniSelect.push({
-            value: valore.codiceIstat,
+            id: valore.codiceIstat,
+            value: valore.nome,
             label: valore.nome
           });
           break;
