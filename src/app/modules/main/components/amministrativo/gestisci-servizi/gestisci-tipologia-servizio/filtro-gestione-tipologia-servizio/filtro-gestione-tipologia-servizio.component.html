@@ -1,1 +1,38 @@
-<p>filtro-gestione-tipologia-servizio works!</p>
+<!-- Sottotitolo -->
+<div class="collapse-header" id="idCollapseFiltri">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true" aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroForm="ngForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltri">
+    <div class="collapse-body">
+      <!-- Filtri -->
+      <div class="row mt-2 mb-0">
+
+        <div class="col-md-4 pb-2">
+          <!--todo filtro raggruppamento-->
+        </div>
+
+        <div class="col-md-4 pb-2">
+          <!--todo filtro codice-->
+        </div>
+
+      </div>
+
+      <!-- Bottoni Pulisci e Cerca -->
+      <div class="row">
+        <div class="col-6">
+          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroForm)"
+                  (click)="pulisciFiltri(filtroForm)">Pulisci</button>
+        </div>
+        <div class="col-6 btn-find">
+          <button id="bottoneCerca" class="btn"
+                  (click)="cercaElementi()">Cerca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
