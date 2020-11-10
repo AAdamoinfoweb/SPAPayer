@@ -64,6 +64,8 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
       this.datiBeneficiario.listaContiCorrenti.forEach((contoCorrente) => {
         this.aggiungiContoCorrente(contoCorrente);
+        this.isFormValid = true;
+        this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo());
       });
     }
   }
@@ -121,8 +123,6 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     } else {
       instanceContoCorrente = datiContoCorrente;
     }
-    this.mapContoCorrente.set(indexContoCorrente, instanceContoCorrente);
-    this.mapControllo.set(indexContoCorrente, false);
     this.componentRef.instance.datiContoCorrente = instanceContoCorrente;
     if (this.listaContiCorrente != null  && FunzioneGestioneEnum.MODIFICA) {
       this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;

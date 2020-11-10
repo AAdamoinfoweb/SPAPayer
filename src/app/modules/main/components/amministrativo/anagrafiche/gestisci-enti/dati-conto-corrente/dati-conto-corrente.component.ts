@@ -21,6 +21,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   // enums consts
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   testoTooltipIconaElimina = 'Elimina dati conto corrente';
+  ibanRegex = Utils.IBAN_ITALIA_REGEX;
 
   @Input() indexDatiContoCorrente: number;
   @Input() datiContoCorrente: ContoCorrente;
@@ -67,9 +68,20 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     // bind button collapse to new section beneficiario
     const collapseButton = document.getElementById('buttonCCCollapse' + this.indexDatiContoCorrente.toString());
     collapseButton.dataset.target = '#collapseCC' + this.indexDatiContoCorrente;
+    this.inizializzaDatiContoCorrente();
+  }
+
+  private inizializzaDatiContoCorrente() {
     if (this.listaContiCorrente != null) {
       this.impostaTabellaContiCorrente();
     }
+    let isFormValid: boolean;
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+      isFormValid = false;
+    } else {
+      isFormValid = true;
+    }
+    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo(isFormValid));
   }
 
   private impostaTabellaContiCorrente() {
@@ -117,14 +129,14 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     if (campo.value == '') {
       this.datiContoCorrente[campo.name] = null;
     }
-    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo(form));
+    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo(this.controlloForm(form, this.datiContoCorrente)));
   }
 
-  setContoCorrenteSingolo(form: NgForm): ContoCorrenteSingolo {
+  setContoCorrenteSingolo(isFormValid: boolean): ContoCorrenteSingolo {
     const contoCorrenteSingolo: ContoCorrenteSingolo = new ContoCorrenteSingolo();
     contoCorrenteSingolo.index = this.indexDatiContoCorrente;
     contoCorrenteSingolo.contoCorrente = this.datiContoCorrente;
-    contoCorrenteSingolo.isFormValid = this.controlloForm(form, this.datiContoCorrente);
+    contoCorrenteSingolo.isFormValid = isFormValid;
     return contoCorrenteSingolo;
   }
 
@@ -165,14 +177,13 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   onClickRow(row: any) {
-    const contoCorrente: ContoCorrente = new ContoCorrente();
-    contoCorrente.id = row.id.value;
-    contoCorrente.iban = row.iban.value;
-    contoCorrente.intestazione = row.intestazione.value;
-    contoCorrente.ibanCCPostale = row.ibanCCPostale.value;
-    contoCorrente.intestazioneCCPostale = row.intestazioneCCPostale.value;
-    contoCorrente.inizioValidita = row.attivazione.value;
-    contoCorrente.fineValidita = row.scadenza.value;
-    this.datiContoCorrente = contoCorrente;
+    this.datiContoCorrente.iban = row.iban.value;
+    this.datiContoCorrente.intestazione = row.intestazione.value;
+    this.datiContoCorrente.ibanCCPostale = row.ibanCCPostale.value;
+    this.datiContoCorrente.intestazioneCCPostale = row.intestazioneCCPostale.value;
+    this.datiContoCorrente.inizioValidita = row.attivazione.value;
+    this.datiContoCorrente.fineValidita = row.scadenza.value;
+    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo(true));
+    this.display = false;
   }
 }

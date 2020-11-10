@@ -129,7 +129,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
     province.forEach(provincia => {
       this.opzioniFiltroProvincia.push({
         value: provincia.codice,
-        label: provincia.nome
+        label: provincia.sigla
       });
     });
     Utils.ordinaOpzioniSelect(this.opzioniFiltroProvincia);

@@ -72,7 +72,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.inizializzaTitolo();
     this.inizializzaDatiEnte();
     if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
-      // inizializzazione form modifico o dettaglio
+      // inizializzazione form modifica o dettaglio
       const enteId = snapshot.params.enteId;
       this.letturaEnte(enteId);
     } else {
@@ -137,8 +137,6 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     } else {
       instanceDatiBeneficiario = datiBeneficiario;
     }
-    this.mapBeneficiario.set(indexBeneficiario, instanceDatiBeneficiario);
-    this.mapControllo.set(indexBeneficiario, false);
     this.componentRef.instance.datiBeneficiario = instanceDatiBeneficiario;
     if (this.funzione === FunzioneGestioneEnum.MODIFICA && this.listaContiCorrente != null) {
       this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
@@ -163,8 +161,11 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
 
   letturaEnte(idEnte) {
     this.enteService.dettaglioEnte(idEnte, this.idFunzione).subscribe((ente) => {
+      // inizializza dati ente per modifica
       this.datiEnte = ente;
-      if(this.funzione === FunzioneGestioneEnum.MODIFICA){
+      this.isFormDatiEnteValido = true;
+      // recupero conti corrente
+      if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
         this.recuperoContiCorrente(this.datiEnte.id).subscribe((contiCorrente) => {
           this.listaContiCorrente = contiCorrente;
           this.setListaBeneficiari();
@@ -176,7 +177,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   private setListaBeneficiari() {
-    this.datiEnte.listaBeneficiari = this.formattaCampi(this.datiEnte.listaBeneficiari);
+    this.datiEnte.listaBeneficiari = this.formattaCampi(this.datiEnte.listaBeneficiari, true);
     this.datiEnte.listaBeneficiari.forEach((beneficiario) => {
       this.aggiungiBeneficiario(beneficiario);
     });
@@ -193,48 +194,51 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   onClickSalva(): void {
-    this.inserimentoEnte().subscribe(enteId => {
-      this.configuraRouterAndNavigate();
+    let listaBeneficiari: Beneficiario[] = this.getListFromMap(this.mapBeneficiario);
+    listaBeneficiari = this.formattaCampi(listaBeneficiari, false);
+    this.datiEnte.listaBeneficiari = listaBeneficiari;
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+      this.inserimentoEnte();
+    } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
+      this.modificaEnte();
+    }
+  }
+
+  private inserimentoEnte(): void {
+    this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione).subscribe(enteId => {
+      this.configuraRouterAndNavigate('/aggiungiEnte');
     });
   }
 
-  private inserimentoEnte(): Observable<any> {
-    let listaBeneficiari: Beneficiario[] = this.getListFromMap(this.mapBeneficiario);
-    listaBeneficiari = this.formattaCampi(listaBeneficiari);
-    this.datiEnte.listaBeneficiari = listaBeneficiari;
-    return this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione);
+  private modificaEnte() {
+    this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((enteId) => {
+      this.configuraRouterAndNavigate('/modificaEnte/' + enteId);
+    });
   }
 
-  private configuraRouterAndNavigate() {
+  private configuraRouterAndNavigate(pathFunzione: string) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
-    this.router.navigateByUrl(this.basePath + '/aggiungiEnte');
+    this.router.navigateByUrl(this.basePath + pathFunzione);
   }
 
-  private formattaCampi(listaBeneficiari: Beneficiario[]) {
+  private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {
     listaBeneficiari = listaBeneficiari.map((beneficiario) => {
       const contiCorrenti = beneficiario.listaContiCorrenti;
       if (contiCorrenti != null && contiCorrenti.length > 0) {
         beneficiario.listaContiCorrenti = contiCorrenti.map((contoCorrente) => {
+          contoCorrente.iban = contoCorrente.iban.replace(/\s+/g, '');
+          const ibanCCPostale = contoCorrente.ibanCCPostale;
+          if (ibanCCPostale != null) {
+            contoCorrente.ibanCCPostale = ibanCCPostale.replace(/\s+/g, '');
+          }
           const inizioValidita = contoCorrente.inizioValidita;
           if (inizioValidita != null) {
-            if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
-              contoCorrente.inizioValidita = moment(inizioValidita, Utils.FORMAT_DATE_CALENDAR)
-                .format(Utils.FORMAT_LOCAL_DATE_TIME);
-            } else {
-              contoCorrente.inizioValidita = moment(inizioValidita, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
-                .format(Utils.FORMAT_DATE_CALENDAR);
-            }
+            contoCorrente.inizioValidita = this.formattaData(inizioValidita, dateIsIso);
           }
           const fineValidita = contoCorrente.fineValidita;
           if (fineValidita != null) {
-            if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
-              contoCorrente.fineValidita = moment(fineValidita, Utils.FORMAT_DATE_CALENDAR)
-                .format(Utils.FORMAT_LOCAL_DATE_TIME_TO);
-            } else {
-              contoCorrente.fineValidita = moment(fineValidita, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
-                .format(Utils.FORMAT_DATE_CALENDAR);
-            }
+            contoCorrente.fineValidita = this.formattaData(fineValidita, dateIsIso, true);
           }
           return contoCorrente;
         });
@@ -242,6 +246,16 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       return beneficiario;
     });
     return listaBeneficiari;
+  }
+
+  private formattaData(date: string, dateIsIso: boolean, to?: boolean): string {
+    if (dateIsIso) {
+      return moment(date, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
+        .format(Utils.FORMAT_DATE_CALENDAR);
+    } else {
+      return moment(date, Utils.FORMAT_DATE_CALENDAR)
+        .format(to ? Utils.FORMAT_LOCAL_DATE_TIME_TO : Utils.FORMAT_LOCAL_DATE_TIME);
+    }
   }
 
   onClickAnnullaButton() {

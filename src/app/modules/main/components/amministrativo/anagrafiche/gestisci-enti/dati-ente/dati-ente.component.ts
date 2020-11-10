@@ -10,7 +10,6 @@ import {Provincia} from '../../../../../model/Provincia';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {NuovoPagamentoService} from '../../../../../../../services/nuovo-pagamento.service';
-import {LivelloTerritorialeService} from "../../../../../../../services/livelloTerritoriale.service";
 
 @Component({
   selector: 'app-dati-ente',
@@ -42,6 +41,8 @@ export class DatiEnteComponent implements OnInit {
   opzioniFiltroComune: OpzioneSelect[] = [];
   opzioniFiltroProvincia: OpzioneSelect[] = [];
 
+  province: Provincia[];
+
   constructor(private societaService: SocietaService, private nuovoPagamentoService: NuovoPagamentoService) {
   }
 
@@ -50,6 +51,13 @@ export class DatiEnteComponent implements OnInit {
     this.letturaProvince();
     this.letturaSocieta();
     this.letturaLivelloTerritoriale();
+    if(this.funzione === FunzioneGestioneEnum.MODIFICA) {
+      this.inizializzaFormModifica();
+    }
+  }
+
+  private inizializzaFormModifica() {
+    this.isFormValid.emit(true);
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -119,25 +127,28 @@ export class DatiEnteComponent implements OnInit {
   }
 
   letturaProvince() {
-    const province: Provincia[] = JSON.parse(localStorage.getItem('province'));
-    this.popolaOpzioniFiltroProvincia(province);
+    this.province = JSON.parse(localStorage.getItem('province'));
+    this.popolaOpzioniFiltroProvincia(this.province);
   }
 
   private popolaOpzioniFiltroProvincia(province: Provincia[]) {
     province.forEach(provincia => {
       this.opzioniFiltroProvincia.push({
-        value: provincia.codice,
-        label: provincia.nome
+        value: provincia.sigla,
+        label: provincia.sigla
       });
     });
   }
 
   selezionaComune() {
-    this.datiEnte.provincia = this.datiEnte.comune.substring(0, 3);
+    this.datiEnte.provincia = this.province
+      .find((prov) => prov.codice === this.datiEnte.comune.substring(0, 3))
+      .sigla;
   }
 
   selezionaProvincia() {
-    if (!(this.datiEnte.comune.includes(this.datiEnte.provincia))) {
+    const provincia = this.province.find((prov) => prov.sigla === this.datiEnte.provincia);
+    if (!(this.datiEnte.comune.includes(provincia.codice))) {
       this.datiEnte.comune = null;
     }
   }
