@@ -117,12 +117,21 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     if (campo.control?.errors?.required) {
       return 'Il campo è obbligatorio';
     } else {
-      return 'Campo non valido';
+      if (campo.name === 'fineValidita') {
+        return 'Data scadenza antecedente a data attivazione';
+      } else {
+        return 'Campo non valido';
+      }
+
     }
   }
 
   isCampoInvalido(campo: NgModel) {
-    return campo?.errors != null;
+    if (campo?.name === 'fineValidita') {
+      return campo?.errors != null || this.controlloDate(this.datiContoCorrente);
+    } else {
+      return campo?.errors != null;
+    }
   }
 
   onChangeModel(form: NgForm, campo: NgModel) {

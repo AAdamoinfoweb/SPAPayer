@@ -15,11 +15,11 @@ import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.
 import {BeneficiarioSingolo} from '../../../../../model/ente/BeneficiarioSingolo';
 import {NgForm, NgModel} from '@angular/forms';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
-import {ContoCorrenteSingolo} from "../../../../../model/ente/ContoCorrenteSingolo";
-import {DatiContoCorrenteComponent} from "../dati-conto-corrente/dati-conto-corrente.component";
-import * as moment from "moment";
-import {Utils} from "../../../../../../../utils/Utils";
-import {EnteService} from "../../../../../../../services/ente.service";
+import {ContoCorrenteSingolo} from '../../../../../model/ente/ContoCorrenteSingolo';
+import {DatiContoCorrenteComponent} from '../dati-conto-corrente/dati-conto-corrente.component';
+import * as moment from 'moment';
+import {Utils} from '../../../../../../../utils/Utils';
+import {EnteService} from '../../../../../../../services/ente.service';
 
 @Component({
   selector: 'app-dati-beneficiario',
@@ -48,7 +48,9 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   @ViewChild('datiContoCorrente', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
 
-  isFormValid = false;
+  @ViewChild('datiBeneficiarioForm', {static: false, read: NgForm})
+  formDatiBeneficiario: NgForm;
+
   mapContoCorrente: Map<number, ContoCorrente> = new Map<number, ContoCorrente>();
   mapControllo: Map<number, boolean> = new Map<number, boolean>();
   getListaContiCorrente = (mapContoCorrente: Map<number, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
@@ -64,9 +66,10 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
       this.datiBeneficiario.listaContiCorrenti.forEach((contoCorrente) => {
         this.aggiungiContoCorrente(contoCorrente);
-        this.isFormValid = true;
-        this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo());
       });
+      this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(true));
+    } else {
+      this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(false));
     }
   }
 
@@ -86,27 +89,26 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     return campo?.errors != null;
   }
 
-  setBeneficiarioSingolo(): BeneficiarioSingolo {
+  setBeneficiarioSingolo(isFormValid: boolean): BeneficiarioSingolo {
     const beneficiarioSingolo: BeneficiarioSingolo = new BeneficiarioSingolo();
     beneficiarioSingolo.index = this.indexDatiBeneficiario;
     beneficiarioSingolo.beneficiario = this.datiBeneficiario;
-    beneficiarioSingolo.isFormValid = this.controlloForm();
+    beneficiarioSingolo.isFormValid = isFormValid;
     return beneficiarioSingolo;
   }
 
-  controlloForm(): boolean {
+  controlloForm(form?: NgForm): boolean {
     const listaControllo: boolean[] = this.getListaControllo(this.mapControllo);
     const isListaContiCorrentInvalid = listaControllo.length > 0 ? listaControllo.includes(false) : false;
-    const isFormValid = this.isFormValid && !isListaContiCorrentInvalid;
-    return isFormValid;
+    const isFormValid = form ? form.valid : true;
+    return isFormValid && !isListaContiCorrentInvalid;
   }
 
   onChangeModel(form: NgForm, campo: NgModel) {
     if (campo.value == '') {
       this.datiBeneficiario[campo.name] = null;
     }
-    this.isFormValid = form.valid;
-    this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo());
+    this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm(this.formDatiBeneficiario)));
   }
 
   aggiungiContoCorrente(datiContoCorrente?: ContoCorrente): number {
@@ -150,12 +152,10 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   private setListaContiCorrente() {
     const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
     this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
-    this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo());
+    this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm()));
   }
 
   disabilitaBottone(): boolean {
-    const listaControllo: boolean[] = this.getListaControllo(this.mapControllo);
-    const isListaContiCorrentInvalid = listaControllo.includes(false);
-    return !this.isFormValid || isListaContiCorrentInvalid;
+   return !this.controlloForm(this.formDatiBeneficiario);
   }
 }

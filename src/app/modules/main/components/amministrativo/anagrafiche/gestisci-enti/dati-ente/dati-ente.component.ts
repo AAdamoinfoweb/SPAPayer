@@ -51,7 +51,7 @@ export class DatiEnteComponent implements OnInit {
     this.letturaProvince();
     this.letturaSocieta();
     this.letturaLivelloTerritoriale();
-    if(this.funzione === FunzioneGestioneEnum.MODIFICA) {
+    if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
       this.inizializzaFormModifica();
     }
   }
@@ -88,12 +88,14 @@ export class DatiEnteComponent implements OnInit {
   }
 
   private popolaOpzioniFiltroSocieta(societa: Societa[]) {
-    societa.forEach(s => {
-      this.opzioniFiltroSocieta.push({
-        value: s.id,
-        label: s.nome
+    if (societa != null) {
+      societa.forEach(s => {
+        this.opzioniFiltroSocieta.push({
+          value: s.id,
+          label: s.nome
+        });
       });
-    });
+    }
   }
 
   letturaLivelloTerritoriale(): void {
