@@ -70,6 +70,7 @@ div.disabled {
 }
 
 .example-box span.close::after {
+  cursor: pointer;
   content: '\2715';
   top: 30%;
 }
