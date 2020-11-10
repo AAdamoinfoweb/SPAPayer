@@ -3,7 +3,7 @@
   <ul class="legend">
     <li><span class="field-disabled"></span> Campo disabilitato</li>
     <li><span class="field-input"></span> Campo input</li>
-    <li><span class="field-output"></span> Campo calcolato</li>
+    <li><span class="field-output"></span> Campo output</li>
     <li><span class="required"></span> Campo obbligatorio</li>
     <li><span class="key"></span> Campo chiave</li>
   </ul>
@@ -24,7 +24,7 @@
         cdkDrag>
         <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
         <div class="row" style="width: 100%">
-          <div *ngIf="showEditId !== item.id" (dblclick)="showEditId = item.id"
+          <div (click)="showModal(item)" *ngIf="showEditId !== item.id" (dblclick)="showEditId = item.id"
                class="col-7 text-right">{{item.titolo}}</div>
           <div *ngIf="showEditId == item.id" class="col-6 text-right"><input autofocus (keyup.enter)="showEditId = null"
                                                                              [(ngModel)]="item.titolo"/></div>

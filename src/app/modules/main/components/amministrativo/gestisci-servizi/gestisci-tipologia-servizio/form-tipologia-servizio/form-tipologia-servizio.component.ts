@@ -108,4 +108,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.items[event.previousContainer.data.index] = event.container.data.item;
     this.items[event.container.data.index] = event.previousContainer.data.item;
   }
+
+  showModal(item: CampoForm) {
+
+  }
 }
