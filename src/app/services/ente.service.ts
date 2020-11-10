@@ -7,6 +7,8 @@ import {ParametriRicercaEnte} from '../modules/main/model/ente/ParametriRicercaE
 import {SintesiEnte} from '../modules/main/model/ente/SintesiEnte';
 import {EnteCompleto} from '../modules/main/model/ente/EnteCompleto';
 import {ContoCorrente} from "../modules/main/model/ente/ContoCorrente";
+import {Comune} from "../modules/main/model/Comune";
+import {Provincia} from "../modules/main/model/Provincia";
 
 @Injectable({
   providedIn: 'root'
@@ -159,6 +161,52 @@ export class EnteService {
         headers: h,
         params: params
       }).pipe(map((body: ContoCorrente[]) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  ricercaComuni(idFunzione: string): Observable<Comune[]> {
+    const url = environment.bffBaseUrl + this.gestisciEntiBasePath + '/comuni';
+    let h: HttpHeaders = new HttpHeaders();
+    if (idFunzione != null) {
+      h = h.append('idFunzione', idFunzione);
+    }
+
+    return this.http.get(`${url}`,
+      {
+        withCredentials: true,
+        headers: h
+      }).pipe(map((body: Comune[]) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  ricercaProvince(idFunzione: string): Observable<Provincia[]> {
+    const url = environment.bffBaseUrl + this.gestisciEntiBasePath + '/province';
+    let h: HttpHeaders = new HttpHeaders();
+    if (idFunzione != null) {
+      h = h.append('idFunzione', idFunzione);
+    }
+
+    return this.http.get(`${url}`,
+      {
+        withCredentials: true,
+        headers: h
+      }).pipe(map((body: Provincia[]) => {
         return body;
       }),
       catchError((err, caught) => {

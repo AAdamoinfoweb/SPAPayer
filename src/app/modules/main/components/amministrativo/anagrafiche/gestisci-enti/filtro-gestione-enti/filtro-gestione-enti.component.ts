@@ -14,6 +14,7 @@ import {Provincia} from '../../../../../model/Provincia';
 import {EnteService} from '../../../../../../../services/ente.service';
 import {ActivatedRoute} from "@angular/router";
 import {Utils} from '../../../../../../../utils/Utils';
+import {LivelloTerritorialeService} from "../../../../../../../services/livelloTerritoriale.service";
 
 @Component({
   selector: 'app-filtro-gestione-enti',
@@ -34,7 +35,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaEnte> = new EventEmitter<ParametriRicercaEnte>();
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
+  constructor(private livelloTerritorialeService: LivelloTerritorialeService, private societaService: SocietaService,
               private enteService: EnteService, protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
     super(route, amministrativoService);
   }
@@ -57,7 +58,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   }
 
   letturaSocieta(): void {
-    this.societaService.filtroSocieta()
+    this.societaService.ricercaSocieta(null, this.idFunzione)
     .subscribe(societa => {
       this.popolaOpzioniFiltroSocieta(societa);
     });
@@ -74,7 +75,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   }
 
   letturaLivelloTerritoriale(): void {
-    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale()
+    this.livelloTerritorialeService.ricercaLivelliTerritoriali(null, this.idFunzione)
       .subscribe(livelliTerritoriali => {
         this.popolaOpzioniFiltroLivelloTerritoriale(livelliTerritoriali);
       });
@@ -91,8 +92,9 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   }
 
   letturaComuni() {
-    const comuni: Comune[] = JSON.parse(localStorage.getItem('comuni'));
-    this.popolaOpzioniFiltroComune(comuni);
+    this.enteService.ricercaComuni( this.idFunzione).subscribe(comuni => {
+      this.popolaOpzioniFiltroComune(comuni);
+    });
   }
 
   private popolaOpzioniFiltroComune(comuni: Comune[]) {
@@ -106,8 +108,9 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   }
 
   letturaProvince() {
-    const province: Provincia[] = JSON.parse(localStorage.getItem('province'));
-    this.popolaOpzioniFiltroProvincia(province);
+    this.enteService.ricercaProvince(this.idFunzione).subscribe(province => {
+      this.popolaOpzioniFiltroProvincia(province);
+    });
   }
 
   private popolaOpzioniFiltroProvincia(province: Provincia[]) {
