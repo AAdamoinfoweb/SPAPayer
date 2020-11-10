@@ -23,8 +23,6 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
 
   filtroRaggruppamentiTipologieServizi: number = null;
 
-  idFunzione;
-
   constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
     super(route, amministrativoService);
   }

@@ -29,8 +29,6 @@ export class FiltroGestioneBannerComponent extends FiltroGestioneElementiCompone
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaBanner> = new EventEmitter<ParametriRicercaBanner>();
 
-  idFunzione;
-
   constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
     super(route, amministrativoService);
   }

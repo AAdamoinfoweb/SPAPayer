@@ -29,8 +29,6 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   opzioniFiltroComune: OpzioneSelect[] = [];
   opzioniFiltroProvincia: OpzioneSelect[] = [];
 
-  idFunzione;
-
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaEnte> = new EventEmitter<ParametriRicercaEnte>();
 

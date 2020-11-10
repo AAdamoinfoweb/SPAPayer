@@ -37,8 +37,6 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   dataDaSelezionata: string = moment().subtract(1, 'months').format(this.formatoData);
   dataASelezionata: string = moment().format(this.formatoData);
 
-  idFunzione;
-
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaAccesso> = new EventEmitter<ParametriRicercaAccesso>();
 

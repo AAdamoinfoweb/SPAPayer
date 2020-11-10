@@ -45,8 +45,6 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaUtente> = new EventEmitter<ParametriRicercaUtente>();
 
-  idFunzione;
-
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService, private utenteService: UtenteService, private overlayService: OverlayService,
               protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {

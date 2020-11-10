@@ -23,8 +23,6 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
 
   filtroSocieta: number = null;
 
-  idFunzione;
-
   constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
     super(route, amministrativoService);
   }

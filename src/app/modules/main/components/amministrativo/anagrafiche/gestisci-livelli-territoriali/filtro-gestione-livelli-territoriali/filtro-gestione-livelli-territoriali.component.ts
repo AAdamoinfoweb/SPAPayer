@@ -15,8 +15,6 @@ import {Utils} from '../../../../../../../utils/Utils';
 })
 export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneElementiComponent implements OnInit, OnChanges {
 
-  idFunzione;
-
   @Input()
   listaElementi: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
   opzioniFiltroLivelliTerritoriali: Array<OpzioneSelect> = new Array<OpzioneSelect>();
