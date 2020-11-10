@@ -37,7 +37,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaEnte> = new EventEmitter<ParametriRicercaEnte>();
 
-  constructor(private livelloTerritorialeService: LivelloTerritorialeService, private societaService: SocietaService,
+  constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private enteService: EnteService, protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
     super(route, amministrativoService);
   }
@@ -77,7 +77,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   }
 
   letturaLivelloTerritoriale(): void {
-    this.livelloTerritorialeService.ricercaLivelliTerritoriali(null, this.idFunzione)
+    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale(false, true)
       .subscribe(livelliTerritoriali => {
         this.popolaOpzioniFiltroLivelloTerritoriale(livelliTerritoriali);
       });

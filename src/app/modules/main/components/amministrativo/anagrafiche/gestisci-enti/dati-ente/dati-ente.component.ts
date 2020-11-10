@@ -99,7 +99,7 @@ export class DatiEnteComponent implements OnInit {
   }
 
   letturaLivelloTerritoriale(): void {
-    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale(false)
+    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale(false, true)
       .subscribe(livelliTerritoriali => {
         this.popolaOpzioniFiltroLivelloTerritoriale(livelliTerritoriali);
       });
