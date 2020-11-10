@@ -37,7 +37,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   isMenuCarico = false;
 
-   righeSelezionate: any[];
+  righeSelezionate: any[];
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Inserisci Ente'},
@@ -62,6 +62,8 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   listaElementi: SintesiEnte[] = [];
   filtriRicerca: ParametriRicercaEnte = null;
 
+  livelloTerritorialeId = null;
+
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private el: ElementRef,
@@ -70,6 +72,12 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
               private enteService: EnteService
   ) {
     super(router, route, http, amministrativoService);
+
+    this.route.queryParams.subscribe(params => {
+      if (params.livelloTerritorialeId) {
+        this.livelloTerritorialeId = parseInt(params.livelloTerritorialeId);
+      }
+    });
   }
 
   ngOnInit(): void {

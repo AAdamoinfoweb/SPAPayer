@@ -28,25 +28,24 @@
   <div #datiPermesso></div>
 </div>
 <!-- Bottoni -->
-<div class="row">
+<div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
   <!-- Bottone sx -->
   <div class="col-2">
-    <button id="buttonAnnulla" class="btn btn-secondary"
-            (click)="onClickAnnullaButton()">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
+    <button id="buttonAnnulla" class="btn btn-secondary" (click)="onClickAnnullaButton()">Annulla</button>
   </div>
   <!-- Bottoni dx -->
   <div class="col-10 text-right">
-    <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiPermessi" class="btn btn-secondary"
+    <button id="buttonAggiungiPermessi" class="btn btn-secondary"
             [disabled]="disabilitaBottone()"
-
             (click)="aggiungiSezionePermesso()">Aggiungi permessi
     </button>
-    <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonSalva" class="btn"
-            [disabled]="disabilitaBottone()" (click)="onClickSalva()"
-    >
+    <button id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="onClickSalva()">
       Salva
     </button>
   </div>
+</div>
+<div class="row pt-4" *ngIf="funzione === FunzioneGestioneEnum.DETTAGLIO">
+  <button type="button" id="buttonIndietro" class="btn btn-secondary btn-indietro" (click)="onClickAnnulla(funzione)">Indietro</button>
 </div>
 
 <!-- Modale -->
