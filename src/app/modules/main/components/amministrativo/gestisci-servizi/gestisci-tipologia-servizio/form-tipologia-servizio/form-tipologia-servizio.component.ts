@@ -76,7 +76,9 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   add() {
-
+    let campoForm = new CampoForm();
+    campoForm.titolo = "nuovo campo";
+    this.items.push(campoForm);
   }
 
 
