@@ -95,21 +95,23 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     if (!this.target) {
       return;
     }
+    /*
+        const phElement = this.placeholder.element.nativeElement;
+        const parent = phElement.parentElement;
 
-    const phElement = this.placeholder.element.nativeElement;
-    const parent = phElement.parentElement;
+        let clone = _.cloneDeep(phElement);
+        phElement.style.display = 'none';
 
-    phElement.style.display = 'none';
-
-    parent.removeChild(phElement);
-    parent.appendChild(phElement);
-    parent.insertBefore(this.source.element.nativeElement, parent.children[this.sourceIndex]);
-
+        parent.removeChild(phElement);
+        parent.appendChild(clone);
+        parent.insertBefore(this.source.element.nativeElement, parent.children[this.sourceIndex]);
+    */
     this.target = null;
     this.source = null;
 
-    if (this.sourceIndex != this.targetIndex) {
+    if (this.sourceIndex !== this.targetIndex) {
       moveItemInArray(this.items, this.sourceIndex, this.targetIndex);
+      this.items = _.cloneDeep(this.items);
     }
   }
 

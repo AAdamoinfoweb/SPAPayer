@@ -80,8 +80,8 @@ const routes: Routes = [
   {path: 'raggruppamentoTipologie/modificaRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
   {path: 'raggruppamentoTipologie/dettaglioRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
   {path: 'gestisciTipologiaServizi', component: GestisciTipologiaServizioComponent},
-  {path: 'gestisciTipologiaServizi/aggiungiTipologia', component: FormRaggruppamentoTipologieComponent},
-  {path: 'gestisciTipologiaServizi/modificaTipologia/:tipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
+  {path: 'gestisciTipologiaServizi/aggiungiTipologia', component: FormTipologiaServizioComponent},
+  {path: 'gestisciTipologiaServizi/modificaTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
   {path: 'gestisciTipologiaServizi/dettaglioTipologia/:tipologiaServizioId', component: FormRaggruppamentoTipologieComponent}
 ];
 
