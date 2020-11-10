@@ -127,6 +127,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           this.model[this.importoNomeCampo] = bollettino.importo;
         } else {
           if (bollettino.listaCampoDettaglioTransazione) {
+            this.impostaCampi(this.getCampiBollettinoInterno(bollettino.listaCampoDettaglioTransazione));
             bollettino.listaCampoDettaglioTransazione.forEach(dettaglio => {
               const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
               if (campo) {
@@ -393,6 +394,14 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           this.impostaDettaglioPagamento();
         }
         return of(null);
+      } else if (this.datiPagamento && this.datiPagamento.dettaglioTransazioneId) {
+        /*
+        Nel caso della modale dettaglio pagamento legata ad un pagamento presente sul db (con dettaglioTransazioneId),
+        leggo i campi da listaCampiDettaglioTransazione, anziché dalla GET di campi pagamento,
+        dato che i campi potrebbero essere cambiati rispetto a quando fu inserito il pagamento nel db
+         */
+        this.impostaDettaglioPagamento();
+        return of(null);
       } else {
         return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
           this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
@@ -438,6 +447,22 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     campiPagamentoLV1.push(documento);
 
     return campiPagamentoLV1;
+  }
+
+  getCampiBollettinoInterno(listaCampoDettaglioTransazione: CampoDettaglioTransazione[]): CampoForm[] {
+    const campi: CampoForm[] = [];
+    if (listaCampoDettaglioTransazione) {
+      listaCampoDettaglioTransazione.forEach((dettaglio, index) => {
+        const campo = new CampoForm();
+        campo.titolo = dettaglio.titolo;
+        campo.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
+        campo.posizione = index;
+        campo.chiave = false;
+        campo.campo_input = true;
+        campi.push(campo);
+      });
+    }
+    return campi;
   }
 
   formattaInput(event: any, campo: CampoForm): void {
