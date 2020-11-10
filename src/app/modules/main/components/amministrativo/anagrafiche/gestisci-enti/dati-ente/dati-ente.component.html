@@ -93,24 +93,17 @@
       <div class="col-md-2 pb-2">
         <div class="row">
           <div class="col">
-            <label for="pathLogo" class="title ">
+            <label for="canvas" class="title ">
               Logo</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <input type="text" id="pathLogo" name="pathLogo" #pathLogo="ngModel"
-                   [(ngModel)]="datiEnte.pathLogo"
-                   (ngModelChange)="onChangeModel(datiEnteForm, pathLogo)"
-                   class="pt-0" autocomplete="off" aria-describedby="nomeHelpDescription"
-                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                   >
-          </div>
-        </div>
-        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-          <div class="col">
-            <p *ngIf="!isCampoInvalido(pathLogo)">Inserisci url logo</p>
-            <p *ngIf="isCampoInvalido(pathLogo)" class="text-invalid">{{getMessaggioErrore(pathLogo)}}</p>
+            <input id="pathLogo" type='file' accept='image/*' (change)='loadImg($event)' style="display: none"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+            <canvas id="canvas" width="90" height="90" (click)="onClickImage()"
+                    style="border: 1px solid #5c6f82; cursor: pointer;"
+                    disabled="{{funzione === FunzioneGestioneEnum.DETTAGLIO}}"></canvas>
           </div>
         </div>
       </div>

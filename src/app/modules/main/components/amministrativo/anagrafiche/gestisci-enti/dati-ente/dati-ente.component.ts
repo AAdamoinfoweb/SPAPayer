@@ -154,4 +154,29 @@ export class DatiEnteComponent implements OnInit {
       this.datiEnte.comune = null;
     }
   }
+
+  loadImg($event: any) {
+    // @ts-ignore
+    const output: HTMLCanvasElement = document.getElementById('canvas');
+    const context = output.getContext('2d');
+    const input = $event.target;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataURL = reader.result;
+      const imageObj = new Image();
+      if (typeof dataURL === 'string') {
+        imageObj.src = dataURL;
+      }
+      imageObj.onload = () => {
+        const src = imageObj.src.split(',');
+        this.datiEnte.logo = src.length > 1 ? src[1] : output.style.borderColor = 'red';
+        context.drawImage(imageObj, 1, 1, 90, 90);
+      };
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  onClickImage() {
+    document.getElementById('pathLogo').click();
+  }
 }

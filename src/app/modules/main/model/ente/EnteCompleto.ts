@@ -9,7 +9,7 @@ export class EnteCompleto {
    nomeEnte: string;
    cfPiva: string;
    descrizione: string;
-   pathLogo: string;
+   logo: string;
    nomeReferente: string;
    cognomeReferente: string;
    emailReferente: string;
