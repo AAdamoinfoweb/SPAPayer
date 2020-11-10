@@ -31,7 +31,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa dei livelli territoriali a cui sei abilitato e filtrarli';
   readonly iconaGruppoEnti = 'assets/img/users-solid.svg#users-group';
 
-  readonly funzioneGestioneEnti = '/enti';
+  readonly funzioneGestisciEnti = '/gestisciEnti';
 
   idFunzione;
 
@@ -39,7 +39,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
 
   isMenuCarico = false;
 
-   righeSelezionate: any[];
+  righeSelezionate: any[];
 
   listaElementi: Array<LivelloTerritoriale> = new Array<LivelloTerritoriale>();
   filtriRicerca: number = null;
@@ -105,10 +105,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   }
 
   creaRigaTabella(livelloTerritoriale: LivelloTerritoriale): object {
-    // TODO testare quando sarà pronto gestione enti
-    const linkGestioneEnti = this.funzioneGestioneEnti
-      + '?funzione=' + btoa(this.amministrativoService.mappaFunzioni[this.funzioneGestioneEnti])
-      + '&livelloTerritorialeId=' + livelloTerritoriale.id;
+    const linkGestioneEnti = this.funzioneGestisciEnti + '?livelloTerritorialeId=' + livelloTerritoriale.id;
 
     const riga = {
       id: {value: livelloTerritoriale.id},
