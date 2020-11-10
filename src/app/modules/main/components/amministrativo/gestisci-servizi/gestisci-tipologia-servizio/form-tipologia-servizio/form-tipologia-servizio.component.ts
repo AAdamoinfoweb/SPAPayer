@@ -3,7 +3,7 @@ import {Component, ViewChild} from '@angular/core';
 import {
   CdkDrag,
   CdkDropList, CdkDropListGroup, CdkDragMove, CdkDragEnter,
-  moveItemInArray
+  moveItemInArray, CdkDragDrop, transferArrayItem
 } from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
@@ -118,13 +118,13 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   dropListEnterPredicate = (drag: CdkDrag, drop: CdkDropList) => {
-    if (drop == this.placeholder) {
-      return true;
-    }
+    /* if (drop == this.placeholder) {
+       return true;
+     }
 
-    if (drop != this.activeContainer) {
-      return false;
-    }
+     if (drop != this.activeContainer) {
+       return false;
+     }*/
 
     const phElement = this.placeholder.element.nativeElement;
     const sourceElement = drag.dropContainer.element.nativeElement;
@@ -189,6 +189,25 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       }
     }
     return classe;
+  }
+
+  activeNumIndex: number;
+
+  enter(i) {
+    this.activeNumIndex = i;
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.items, event.previousIndex, event.currentIndex);
+  }
+
+  drop1(event: CdkDragDrop<CampoForm[], any>) {
+    moveItemInArray(this.items, event.previousIndex, event.currentIndex);
+  }
+
+  drop2(event: CdkDragDrop<{ item: CampoForm; index: number }, any>) {
+    this.items[event.previousContainer.data.index] = event.container.data.item;
+    this.items[event.container.data.index] = event.previousContainer.data.item;
   }
 }
 

@@ -5,6 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {NgForm} from '@angular/forms';
 import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-filtro-gestione-tipologia-servizio',
@@ -37,7 +38,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     this.onChangeFiltri.emit(null);
   }
 
-  disabilitaBottone(form: NgForm): boolean {
+  disabilitaBottone(form: NgForm) {
     // todo logica disabilita pulisci
   }
 
