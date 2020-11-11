@@ -40,7 +40,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   readonly lunghezzaMaxCol2: number = 10;
   readonly lunghezzaMaxCol3: number = 15;
 
-  showEditId: number;
+  showEditId: string;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -74,6 +74,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     let campoForm = new CampoForm();
     campoForm.titolo = "nuovo campo";
     this.items.push(campoForm);
+    this.showEditId = campoForm.titolo;
   }
 
   removeItem(item: CampoForm) {

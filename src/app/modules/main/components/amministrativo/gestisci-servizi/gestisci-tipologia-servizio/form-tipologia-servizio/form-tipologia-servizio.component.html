@@ -22,9 +22,9 @@
            cdkDrag>
         <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
         <div class="row" style="width: 100%">
-          <div (click)="showModal(item)" *ngIf="showEditId !== item.id" (dblclick)="showEditId = item.id"
+          <div (click)="showModal(item)" *ngIf="showEditId !== item.titolo" (dblclick)="showEditId = item.titolo"
                class="col-7 text-right">{{item.titolo}}</div>
-          <div *ngIf="showEditId == item.id" class="col-6 text-right"><input (blur)="showEditId = null" autofocus
+          <div *ngIf="showEditId == item.titolo" class="col-6 text-right"><input autofocus
                                                                              (keyup.enter)="showEditId = null"
                                                                              [(ngModel)]="item.titolo"/></div>
           <div class="col-1"><span [class]="{'required':item.obbligatorio}"></span></div>
