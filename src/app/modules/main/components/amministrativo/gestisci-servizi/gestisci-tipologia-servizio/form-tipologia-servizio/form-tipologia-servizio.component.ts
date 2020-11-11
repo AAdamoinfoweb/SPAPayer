@@ -116,6 +116,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   showModal(item: CampoForm) {
-    this.overlayService.mostraModaleDettaglioEvent.emit({campoDatiForm: item});
+    this.overlayService.mostraModaleDettaglioEvent.emit({datiCampoForm: item});
   }
 }
