@@ -12,7 +12,7 @@
 <div class="row">
   <button [disabled]="!filtro" class="btn" (click)="add()">Crea campo</button>
 </div>
-<ng-container ngIf="filtro">
+<ng-container *ngIf="filtro">
   <div *ngIf="!waiting" class="row" cdkDropListGroup>
     <ng-container *ngFor="let item of items;let i=index">
       <div (click)="showModal(item)" [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
