@@ -40,6 +40,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   ngOnInit(): void {
+    // todo fixare logica idFunzione, il codice entra qui nell'onInit prima di valorizzare idFunzione nel padre
     this.inizializzaOpzioniRaggruppamento();
   }
 
