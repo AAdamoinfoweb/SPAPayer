@@ -25,6 +25,9 @@ import * as moment from "moment";
 import {Utils} from "../../../../../../../utils/Utils";
 import {EnteService} from "../../../../../../../services/ente.service";
 import {Observable} from "rxjs";
+import {Banner} from "../../../../../model/banner/Banner";
+import {getBannerType, LivelloBanner} from "../../../../../../../enums/livelloBanner.enum";
+import {BannerService} from "../../../../../../../services/banner.service";
 
 @Component({
   selector: 'app-form-ente',
@@ -61,7 +64,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, amministrativoService: AmministrativoService,
               private overlayService: OverlayService, http: HttpClient,
-              confirmationService: ConfirmationService, private enteService: EnteService) {
+              confirmationService: ConfirmationService, private enteService: EnteService, private bannerService: BannerService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
@@ -77,6 +80,19 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       this.letturaEnte(enteId);
     } else {
       // inizializzazione form inserimento
+    }
+    this.controlloEsito();
+  }
+
+  private controlloEsito() {
+    const esito = history.state.esito;
+    if (esito != null) {
+      const banner: Banner = {
+        titolo: 'ATTENZIONE',
+        testo: esito,
+        tipo: getBannerType(LivelloBanner.WARNING)
+      };
+      this.bannerService.bannerEvent.emit([banner]);
     }
   }
 
@@ -205,21 +221,24 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   private inserimentoEnte(): void {
-    this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione).subscribe(enteId => {
-      this.configuraRouterAndNavigate('/aggiungiEnte');
+    this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione).subscribe(esitoInserimentoModificaEnte => {
+      const state = {esito: esitoInserimentoModificaEnte.esito};
+      this.configuraRouterAndNavigate('/aggiungiEnte', state);
     });
   }
 
   private modificaEnte() {
-    this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((enteId) => {
-      this.configuraRouterAndNavigate('/modificaEnte/' + enteId);
+    this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((esitoInserimentoModificaEnte) => {
+      const state = {esito: esitoInserimentoModificaEnte.esito};
+      this.configuraRouterAndNavigate('/modificaEnte/' + esitoInserimentoModificaEnte.idEnte, state);
     });
   }
 
-  private configuraRouterAndNavigate(pathFunzione: string) {
+  private configuraRouterAndNavigate(pathFunzione: string, state) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
-    this.router.navigateByUrl(this.basePath + pathFunzione);
+    // this.router.navigateByUrl(this.basePath + pathFunzione);
+    this.router.navigate([this.basePath + pathFunzione], {state: state });
   }
 
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {

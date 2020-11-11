@@ -62,14 +62,16 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // bind button collapse to new section beneficiario
     const collapseButton = document.getElementById('buttonCollapse' + this.indexDatiBeneficiario.toString());
-    collapseButton.dataset.target = '#collapse' + this.indexDatiBeneficiario;
-    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
-      this.datiBeneficiario.listaContiCorrenti.forEach((contoCorrente) => {
-        this.aggiungiContoCorrente(contoCorrente);
-      });
-      this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(true));
-    } else {
-      this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(false));
+    if (collapseButton != null) {
+      collapseButton.dataset.target = '#collapse' + this.indexDatiBeneficiario;
+      if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
+        this.datiBeneficiario.listaContiCorrenti.forEach((contoCorrente) => {
+          this.aggiungiContoCorrente(contoCorrente);
+        });
+        this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(true));
+      } else {
+        this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(false));
+      }
     }
   }
 
@@ -126,7 +128,7 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
       instanceContoCorrente = datiContoCorrente;
     }
     this.componentRef.instance.datiContoCorrente = instanceContoCorrente;
-    if (this.listaContiCorrente != null  && FunzioneGestioneEnum.MODIFICA) {
+    if (this.listaContiCorrente != null && FunzioneGestioneEnum.MODIFICA) {
       this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
     }
     // output
@@ -156,6 +158,6 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   }
 
   disabilitaBottone(): boolean {
-   return !this.controlloForm(this.formDatiBeneficiario);
+    return !this.controlloForm(this.formDatiBeneficiario);
   }
 }

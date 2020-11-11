@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {NgForm, NgModel} from '@angular/forms';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
@@ -10,13 +10,15 @@ import {Provincia} from '../../../../../model/Provincia';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {NuovoPagamentoService} from '../../../../../../../services/nuovo-pagamento.service';
+import {Logo} from '../../../../../model/ente/Logo';
+import {EnteService} from '../../../../../../../services/ente.service';
 
 @Component({
   selector: 'app-dati-ente',
   templateUrl: './dati-ente.component.html',
   styleUrls: ['./dati-ente.component.scss']
 })
-export class DatiEnteComponent implements OnInit {
+export class DatiEnteComponent implements OnInit, OnChanges {
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   telefonoRegex = Utils.TELEFONO_REGEX;
@@ -43,7 +45,8 @@ export class DatiEnteComponent implements OnInit {
 
   province: Provincia[];
 
-  constructor(private societaService: SocietaService, private nuovoPagamentoService: NuovoPagamentoService) {
+  constructor(private societaService: SocietaService, private nuovoPagamentoService: NuovoPagamentoService,
+              private enteService: EnteService) {
   }
 
   ngOnInit(): void {
@@ -51,13 +54,48 @@ export class DatiEnteComponent implements OnInit {
     this.letturaProvince();
     this.letturaSocieta();
     this.letturaLivelloTerritoriale();
-    if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
+  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.funzione && this.funzione === FunzioneGestioneEnum.MODIFICA) {
       this.inizializzaFormModifica();
     }
+
+    if(changes.datiEnte){
+      if(this.funzione !== FunzioneGestioneEnum.AGGIUNGI){
+        this.caricaImmagine();
+      }
+    }
+
   }
 
   private inizializzaFormModifica() {
     this.isFormValid.emit(true);
+  }
+
+  caricaImmagine() {
+    if(this.datiEnte.logo.contenuto) {
+      // @ts-ignore
+      const output: HTMLCanvasElement = document.getElementById('canvas');
+      if (output != null) {
+        const context = output.getContext('2d');
+        const reader = new FileReader();
+        // @ts-ignore
+        reader.readAsDataURL(Utils.b64toBlob(this.datiEnte.logo.contenuto));
+        reader.onload = () => {
+          const imageObj = new Image();
+          if (typeof reader.result === 'string') {
+            imageObj.src = reader.result;
+          }
+          imageObj.onload = () => {
+            context.clearRect(0, 0, 90, 90);
+            context.drawImage(imageObj, 1, 1, 90, 90);
+          };
+        };
+      }
+    }
+
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -168,8 +206,27 @@ export class DatiEnteComponent implements OnInit {
         imageObj.src = dataURL;
       }
       imageObj.onload = () => {
+        const logo: Logo = new Logo();
+        // recupera nome logo
+        // @ts-ignore
+        const fullPath = document.getElementById('pathLogo').value;
+        if (fullPath) {
+          const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+          let filename = fullPath.substring(startIndex);
+          if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+            filename = filename.substring(1);
+          }
+          logo.nome = filename;
+        }
+        // recupero dati immagine e formato
         const src = imageObj.src.split(',');
-        this.datiEnte.logo = src.length > 1 ? src[1] : output.style.borderColor = 'red';
+        if (src.length > 1) {
+          logo.formato = src[0].split(';')[0].split('/')[1];
+          logo.contenuto = src[1];
+        }
+
+        this.datiEnte.logo = logo;
+        context.clearRect(0, 0, 90, 90);
         context.drawImage(imageObj, 1, 1, 90, 90);
       };
     };
