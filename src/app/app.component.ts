@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
 
   title = '';
   datiPagamento = null;
+  mostraModale = false;
 
   constructor(private menuService: MenuService,
               private router: Router,
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit {
 
       this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(datiPagamento => {
         this.datiPagamento = datiPagamento;
+        this.mostraModale = this.datiPagamento ? true : false;
         this.cdr.detectChanges();
       });
 

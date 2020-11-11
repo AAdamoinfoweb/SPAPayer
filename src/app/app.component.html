@@ -1,5 +1,9 @@
 <div class="wrapper">
-  <app-overlay *ngIf="datiPagamento" [datiPagamento]="datiPagamento"></app-overlay>
+  <app-overlay *ngIf="mostraModale">
+    <ng-template>
+      <app-nuovo-pagamento [filtroPagamento]="false" [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
+    </ng-template>
+  </app-overlay>
   <app-login-bar></app-login-bar>
   <app-sidebar></app-sidebar>
   <div class="header">

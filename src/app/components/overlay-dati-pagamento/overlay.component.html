@@ -1,8 +1,8 @@
-<div *ngIf="datiPagamento">
+<div>
   <div class="background"></div>
-  <div id="component-modal-wrapper" *ngIf="datiPagamento">
+  <div id="component-modal-wrapper">
     <div id="component-modal-background">
-      <app-nuovo-pagamento [filtroPagamento]="false" [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
+      <ng-container [ngTemplateOutlet]="template"></ng-container>
     </div>
   </div>
 </div>

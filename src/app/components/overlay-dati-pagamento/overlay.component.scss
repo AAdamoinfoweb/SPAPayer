@@ -10,16 +10,6 @@
   z-index: 4;
 }
 
-#spinner-wrapper {
-  position: fixed;
-  width: 100%;
-  //lo overlay è largo 48px
-  left: calc(50vw - 24px);
-  top: calc(50vh - 24px);
-
-  z-index: 4;
-}
-
 #component-modal-wrapper {
   position: fixed;
   width: 100%;
