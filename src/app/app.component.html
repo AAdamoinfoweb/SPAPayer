@@ -3,9 +3,11 @@
     <ng-template *ngIf="datiPagamento">
       <app-nuovo-pagamento [filtroPagamento]="false" [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
     </ng-template>
-    <ng-template *ngIf="datiCampoForm">
-
-    </ng-template>
+    <ng-container *ngIf="datiCampoForm">
+      <ng-template >
+        <app-modale-campo-form [campoForm]="datiCampoForm"></app-modale-campo-form>
+      </ng-template>
+    </ng-container>
   </app-overlay>
   <app-login-bar></app-login-bar>
   <app-sidebar></app-sidebar>
