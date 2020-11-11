@@ -61,7 +61,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     return listaId;
   }
 
-  abstract creaRigaTabella(oggetto: any);
+  abstract creaRigaTabella(elemento: any);
 
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
