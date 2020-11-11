@@ -22,11 +22,11 @@ export class ModaleCampoFormComponent implements OnInit {
   listaTipiCampo: any;
 
   constructor(private overlayService: OverlayService,) {
-    this.listaCampiDettaglioTransazione = localStorage.getItem('listaCampiDettaglioTransazione');
-    this.listaControlliLogici = localStorage.getItem('listaControlliLogici');
-    this.listaTipologiche = localStorage.getItem('listaTipologiche');
-    this.listaJsonPath = localStorage.getItem('listaJsonPath');
-    this.listaTipiCampo = localStorage.getItem('listaTipiCampo');
+    this.listaCampiDettaglioTransazione = JSON.parse(localStorage.getItem('listaCampiDettaglioTransazione'));
+    this.listaControlliLogici = JSON.parse(localStorage.getItem('listaControlliLogici'));
+    this.listaTipologiche = JSON.parse(localStorage.getItem('listaTipologiche'));
+    this.listaJsonPath = JSON.parse(localStorage.getItem('listaJsonPath'));
+    this.listaTipiCampo = JSON.parse(localStorage.getItem('listaTipiCampo'));
 
     this.form = new FormGroup({
       titolo: new FormControl(null),

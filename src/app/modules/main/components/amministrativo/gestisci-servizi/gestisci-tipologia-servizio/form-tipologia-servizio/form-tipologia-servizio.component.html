@@ -20,7 +20,7 @@
            cdkDropListOrientation="horizontal"
            [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
         <div style="min-height: 5vh;"
-             [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato, 'field-input': (item.campo_input && !item.disabilitato), 'field-output': item.jsonPath}"
+             [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato, 'field-input': (item.campo_input && !item.disabilitato), 'field-output': (!item.campo_input && !item.disabilitato)}"
              cdkDrag>
           <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
           <div class="row" style="width: 100%">

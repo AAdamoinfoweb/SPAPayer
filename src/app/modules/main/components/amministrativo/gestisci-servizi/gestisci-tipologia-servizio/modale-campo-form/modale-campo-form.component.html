@@ -194,7 +194,7 @@
                   [formControl]="form.controls['campoDettaglioTransazione']"
                   [(ngModel)]="campoForm.campoDettaglioTransazione">
                   <option [ngValue]="null"></option>
-                  <option *ngFor="let item of listaJsonPath" [ngValue]="item.nome">{{item.nome}}</option>
+                  <option *ngFor="let item of listaCampiDettaglioTransazione" [ngValue]="item.nome">{{item.nome}}</option>
                 </select>
               </div>
             </div>
