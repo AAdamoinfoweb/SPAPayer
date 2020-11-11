@@ -9,6 +9,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-gestione-tipologia-servizio',
@@ -54,6 +55,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
             label: raggruppamento.descrizione
           });
         });
+        Utils.ordinaOpzioniSelect(this.opzioniRaggruppamento);
       }
     });
   }
