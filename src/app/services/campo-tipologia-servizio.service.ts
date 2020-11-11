@@ -86,5 +86,10 @@ export class CampoTipologiaServizioService {
         }
       }));
   }
+  eliminaTipologieServizioSelezionate(listaIdTipologieDaEliminare: number[], idFunzione): Observable<any> {
+    // todo chiamare operation elimina
+    return null;
+  }
+
 }
 

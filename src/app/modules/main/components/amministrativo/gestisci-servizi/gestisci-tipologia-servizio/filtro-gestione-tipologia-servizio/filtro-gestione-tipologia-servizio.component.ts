@@ -9,6 +9,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-gestione-tipologia-servizio',
@@ -40,6 +41,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   ngOnInit(): void {
+    // todo fixare logica idFunzione, il codice entra qui nell'onInit prima di valorizzare idFunzione nel padre
     this.inizializzaOpzioniRaggruppamento();
   }
 
@@ -53,6 +55,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
             label: raggruppamento.descrizione
           });
         });
+        Utils.ordinaOpzioniSelect(this.opzioniRaggruppamento);
       }
     });
   }
@@ -108,9 +111,8 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     return this.isPaginaAggiungi ? this.filtriRicerca.raggruppamento != null : null;
   }
 
-  disabilitaBottone(form: NgForm) {
-    // todo logica disabilita pulisci
-    return null;
+  disabilitaPulisci(): boolean {
+    return !this.filtriRicerca.raggruppamento && !this.filtriRicerca.codice ? true : null;
   }
 
 }
