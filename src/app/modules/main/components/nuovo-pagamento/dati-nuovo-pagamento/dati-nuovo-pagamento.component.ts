@@ -194,7 +194,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
   clickIndietro(): void {
     if (this.datiPagamento) {
-      this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+      this.overlayService.mostraModaleDettaglioEvent.emit(null);
     }
 
     this.isFaseVerificaPagamento = false;
@@ -755,11 +755,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         this.aggiornaPrezzoCarrello();
         this.pulisci();
         if (this.datiPagamento) {
-          this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+          this.overlayService.mostraModaleDettaglioEvent.emit(null);
         }
 
       } else {
-        this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+        this.overlayService.mostraModaleDettaglioEvent.emit(null);
       }
     });
   }
@@ -823,7 +823,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
           // Se sono nella modale, la chiudo dopo aver aggiunto il pagamento al carrello
           if (this.datiPagamento) {
-            this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(null);
+            this.overlayService.mostraModaleDettaglioEvent.emit(null);
           }
 
           this.router.navigateByUrl('/carrello');

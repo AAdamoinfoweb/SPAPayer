@@ -10,7 +10,7 @@ export class OverlayService {
   constructor(private router: Router) {
   }
 
-  mostraModaleDettaglioPagamentoEvent: EventEmitter<DatiPagamento> = new EventEmitter<DatiPagamento>();
+  mostraModaleDettaglioEvent: EventEmitter<any> = new EventEmitter<any>();
 
   gestisciErrore(): void {
     this.router.navigateByUrl("/erroregenerico");

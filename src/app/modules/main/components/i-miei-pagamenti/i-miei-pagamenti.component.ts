@@ -314,6 +314,6 @@ export class IMieiPagamentiComponent implements OnInit {
 
   dettaglioPagamento(row: any) {
     const pagamento: DatiPagamento = this.listaPagamenti.find(datiPagamento => datiPagamento.numeroDocumento === row.numeroDocumento.value);
-    this.overlayService.mostraModaleDettaglioPagamentoEvent.emit(pagamento);
+    this.overlayService.mostraModaleDettaglioEvent.emit({datiPagamento: pagamento});
   }
 }

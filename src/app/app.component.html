@@ -1,7 +1,10 @@
 <div class="wrapper">
   <app-overlay *ngIf="mostraModale">
-    <ng-template>
+    <ng-template *ngIf="datiPagamento">
       <app-nuovo-pagamento [filtroPagamento]="false" [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
+    </ng-template>
+    <ng-template *ngIf="datiCampoForm">
+
     </ng-template>
   </app-overlay>
   <app-login-bar></app-login-bar>

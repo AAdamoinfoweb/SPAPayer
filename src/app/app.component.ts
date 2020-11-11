@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
 
   title = '';
   datiPagamento = null;
+  datiCampoForm = null;
   mostraModale = false;
 
   constructor(private menuService: MenuService,
@@ -39,9 +40,11 @@ export class AppComponent implements OnInit {
         this.logout();
       });
 
-      this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(datiPagamento => {
-        this.datiPagamento = datiPagamento;
-        this.mostraModale = this.datiPagamento ? true : false;
+      this.overlayService.mostraModaleDettaglioEvent
+        .subscribe(value => {
+        this.datiPagamento = value?.datiPagamento;
+        this.datiCampoForm = value?.datiCampoForm;
+        this.mostraModale = !!value;
         this.cdr.detectChanges();
       });
 

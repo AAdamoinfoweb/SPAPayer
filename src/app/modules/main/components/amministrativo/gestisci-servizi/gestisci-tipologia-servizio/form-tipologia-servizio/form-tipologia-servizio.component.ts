@@ -13,6 +13,7 @@ import {ConfirmationService} from 'primeng/api';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {Utils} from "../../../../../../../utils/Utils";
 import {TipoModaleEnum} from "../../../../../../../enums/tipoModale.enum";
+import {OverlayService} from "../../../../../../../services/overlay.service";
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -31,7 +32,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   public source: CdkDropList;
   public sourceIndex: number;
   public dragIndex: number;
-  public activeContainer;
   waiting = true;
 
   funzione: FunzioneGestioneEnum;
@@ -41,8 +41,10 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   readonly lunghezzaMaxCol3: number = 15;
 
   showEditId: string;
+  filtro: any = true;
 
   constructor(
+    private overlayService: OverlayService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected http: HttpClient,
@@ -114,6 +116,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   showModal(item: CampoForm) {
-
+    this.overlayService.mostraModaleDettaglioEvent.emit({campoDatiForm: item});
   }
 }
