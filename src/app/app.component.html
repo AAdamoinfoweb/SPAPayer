@@ -1,13 +1,13 @@
 <div class="wrapper">
   <app-overlay *ngIf="mostraModale">
-    <ng-template *ngIf="datiPagamento">
-      <app-nuovo-pagamento [filtroPagamento]="false" [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
-    </ng-template>
-    <ng-container *ngIf="datiCampoForm">
-      <ng-template >
+    <ng-template>
+      <ng-container *ngIf="datiPagamento">
+        <app-nuovo-pagamento [filtroPagamento]="false" [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
+      </ng-container>
+      <ng-container *ngIf="datiCampoForm">
         <app-modale-campo-form [campoForm]="datiCampoForm"></app-modale-campo-form>
-      </ng-template>
-    </ng-container>
+      </ng-container>
+    </ng-template>
   </app-overlay>
   <app-login-bar></app-login-bar>
   <app-sidebar></app-sidebar>
