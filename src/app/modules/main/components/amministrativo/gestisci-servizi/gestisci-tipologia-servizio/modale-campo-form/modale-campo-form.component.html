@@ -1,37 +1,202 @@
-<form [formGroup]="form">
-  <div id="sezioneDati" class="collapse show">
-    <div class="page-section">
-      <div class="row">
-        <div class="col-3">
-          <input
-            [formControl]="form.controls['titolo']"
-            [(ngModel)]="campoForm.titolo"
-            type="text"
-            autocomplete="off"
-          />
-        </div>
-        <div class="col-3">
-          <input
-            type="checkbox"
-            [formControl]="form.controls['obbligatorio']"
-            [(ngModel)]="campoForm.obbligatorio"
-            type="text"
-            autocomplete="off"
-          />
+<div class="container">
+  <div class="row">
+    <form [formGroup]="form">
+      <div id="sezioneDati" class="collapse show">
+        <div class="page-section">
+          <div class="row">
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'titolo'" class="title form-elem-title"
+                >Titolo</label>
+              </div>
+              <div class="row">
+                <input id="titolo"
+                       [formControl]="form.controls['titolo']"
+                       [(ngModel)]="campoForm.titolo"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'obbligatorio'" class="title form-elem-title"
+                >Obbligatorio</label>
+              </div>
+              <div class="row">
+                <input id="obbligatorio"
+                       type="checkbox"
+                       [formControl]="form.controls['obbligatorio']"
+                       [(ngModel)]="campoForm.obbligatorio"
+                       type="checkbox"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'chiave'" class="title form-elem-title"
+                >Chiave</label>
+              </div>
+              <div class="row">
+                <input id="chiave"
+                       type="checkbox"
+                       [formControl]="form.controls['chiave']"
+                       [(ngModel)]="campoForm.chiave"
+                       type="checkbox"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'disabilitato'" class="title form-elem-title"
+                >Disabilitato</label>
+              </div>
+              <div class="row">
+                <input id="disabilitato"
+                       type="checkbox"
+                       [formControl]="form.controls['disabilitato']"
+                       [(ngModel)]="campoForm.disabilitato"
+                       type="checkbox"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'tipoCampo'" class="title form-elem-title"
+                >Tipo Campo</label>
+              </div>
+              <div class="row">
+                <input
+                  type="checkbox"
+                  [formControl]="form.controls['tipoCampo']"
+                  [(ngModel)]="campoForm.tipoCampo"
+                  type="text"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'informazioni'" class="title form-elem-title"
+                >Informazioni</label>
+              </div>
+              <div class="row">
+                <input id="informazioni"
+                       [formControl]="form.controls['informazioni']"
+                       [(ngModel)]="campoForm.informazioni"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'lunghezzaVariabile'" class="title form-elem-title"
+                >Lunghezza variabile</label>
+              </div>
+              <div class="row">
+                <input id="lunghezzaVariabile"
+                       [formControl]="form.controls['lunghezzaVariabile']"
+                       [(ngModel)]="campoForm.lunghezzaVariabile"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'lunghezza'" class="title form-elem-title"
+                >Lunghezza</label>
+              </div>
+              <div class="row">
+                <input id="lunghezza"
+                       [formControl]="form.controls['lunghezza']"
+                       [(ngModel)]="campoForm.lunghezza"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'campoFisso'" class="title form-elem-title"
+                >Campo fisso</label>
+              </div>
+              <div class="row">
+                <input id="campoFisso"
+                       [formControl]="form.controls['campoFisso']"
+                       [(ngModel)]="campoForm.campoFisso"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'campo_input'" class="title form-elem-title"
+                >Campo input</label>
+              </div>
+              <div class="row">
+                <input id="campo_input"
+                       [formControl]="form.controls['campo_input']"
+                       [(ngModel)]="campoForm.campo_input"
+                       type="checkbox"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'jsonPath'" class="title form-elem-title"
+                >Json path</label>
+              </div>
+              <div class="row">
+                <input id="jsonPath"
+                       [formControl]="form.controls['jsonPath']"
+                       [(ngModel)]="campoForm.jsonPath"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
+                >Campo dettaglio transazione</label>
+              </div>
+              <div class="row">
+                <input id="campoDettaglioTransazione"
+                       [formControl]="form.controls['campoDettaglioTransazione']"
+                       [(ngModel)]="campoForm.campoDettaglioTransazione"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+          </div>
+            <div class="row">
+            <div class="col-2">
+              <button type="button" id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">Annulla
+              </button>
+            </div>
+            <div class="col-10 text-right button-space">
+              <button type="button" class="btn"
+                      [disabled]="form.invalid">
+                Salva
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-2">
-          <button type="button" id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">Indietro
-          </button>
-        </div>
-        <div class="col-10 text-right button-space">
-          <button type="button" class="btn"
-                  [disabled]="form.invalid">
-            Salva
-          </button>
-        </div>
-      </div>
-    </div>
+    </form>
   </div>
-</form>
+</div>
