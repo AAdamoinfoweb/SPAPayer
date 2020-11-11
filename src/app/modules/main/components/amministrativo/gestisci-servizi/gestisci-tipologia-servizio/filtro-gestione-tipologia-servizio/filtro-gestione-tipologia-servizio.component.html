@@ -13,17 +13,63 @@
       <div class="row mt-2 mb-0">
 
         <div class="col-md-4 pb-2">
-          <!--todo filtro raggruppamento-->
+          <div class="row">
+            <div class="col">
+              <label for="selectRaggruppamento" class="title">Raggruppamento</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select [ngClass]="{'text-disabled': !opzioniRaggruppamento.length}" id="selectRaggruppamento" name="raggruppamento"
+                      #filtroRaggruppamento = "ngModel"
+                      [(ngModel)]="filtriRicerca.raggruppamento">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniRaggruppamento" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p>
+                {{setPlaceholder(filtroRaggruppamento, TipoCampoEnum.SELECT)}}
+              </p>
+            </div>
+          </div>
+
         </div>
 
         <div class="col-md-4 pb-2">
-          <!--todo filtro codice-->
+
+          <div class="row">
+            <div class="col">
+              <label for="inputCodice" class="title">User ID (cod. fiscale)</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p-autoComplete id="inputCodice" class="pt-0" name="codice"
+                              #filtroCodice = "ngModel" [(ngModel)]="filtriRicerca.codice"
+                              [suggestions]="listaCodiciTipologia" (completeMethod)="caricaCodiciTipologia($event)" (onClear)="listaCodiciTipologia = []"
+                              [minLength]="minCharsRecuperoValoriAutocomplete" delay="0" autoHighlight="true"
+                              [disabled]="disabilitaAutocompleteCodici()"
+              >
+              </p-autoComplete>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': disabilitaAutocompleteCodici(), 'text-invalid': isCampoInvalido(filtroCodice)}">
+                {{setPlaceholder(filtroCodice, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+
         </div>
 
       </div>
 
       <!-- Bottoni Pulisci e Cerca -->
-      <div class="row">
+      <div class="row" *ngIf="!isPaginaAggiungi">
         <div class="col-6">
           <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroForm)"
                   (click)="pulisciFiltri(filtroForm)">Pulisci</button>
