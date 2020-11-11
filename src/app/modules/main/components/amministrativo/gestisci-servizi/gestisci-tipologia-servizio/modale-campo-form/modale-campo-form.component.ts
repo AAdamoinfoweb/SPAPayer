@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {CampoForm} from "../../../../../model/CampoForm";
 import {OverlayService} from "../../../../../../../services/overlay.service";
 
@@ -15,30 +15,41 @@ export class ModaleCampoFormComponent implements OnInit {
   @Input()
   campoForm: CampoForm;
 
+  listaCampiDettaglioTransazione: any;
+  listaControlliLogici: any;
+  listaTipologiche: any;
+  listaJsonPath: any;
+  listaTipiCampo: any;
+
   constructor(private overlayService: OverlayService,) {
+    this.listaCampiDettaglioTransazione = localStorage.getItem('listaCampiDettaglioTransazione');
+    this.listaControlliLogici = localStorage.getItem('listaControlliLogici');
+    this.listaTipologiche = localStorage.getItem('listaTipologiche');
+    this.listaJsonPath = localStorage.getItem('listaJsonPath');
+    this.listaTipiCampo = localStorage.getItem('listaTipiCampo');
+
+    this.form = new FormGroup({
+      titolo: new FormControl(null),
+      obbligatorio: new FormControl(null),
+      tipoCampo: new FormControl(null),
+      informazioni: new FormControl(null),
+      lunghezzaVariabile: new FormControl(null),
+      lunghezza: new FormControl(null),
+      campoFisso: new FormControl(null),
+      disabilitato: new FormControl(null),
+      posizione: new FormControl(null),
+      chiave: new FormControl(null),
+      controllo_logico: new FormControl(null),
+      campo_input: new FormControl(null),
+      jsonPath: new FormControl(null),
+      tipologica: new FormControl(null),
+      campoDettaglioTransazione: new FormControl(null),
+      dipendeDa: new FormControl(null),
+      opzioni: new FormControl(null)
+    });
   }
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      titolo: null,
-      obbligatorio: null,
-      tipoCampo: null,
-      informazioni: null,
-      lunghezzaVariabile: null,
-      lunghezza: null,
-      campoFisso: null,
-      disabilitato: null,
-      posizione: null,
-      chiave: null,
-      controllo_logico: null,
-      campo_input: null,
-      jsonPath: null,
-      tipologica: null,
-      campoDettaglioTransazione: null,
-      dipendeDa: null,
-      opzioni: null
-    });
-
   }
 
   clickIndietro() {

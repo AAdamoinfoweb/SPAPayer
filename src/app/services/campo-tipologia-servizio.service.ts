@@ -14,6 +14,7 @@ export class CampoTipologiaServizioService {
   private readonly baseUrl = '/gestisciTipologiaServizi';
   private readonly tipologiaServizioUrl = '/tipologiaServizi';
   private readonly campiTipologiaServizioUrl = '/campiTipologiaServizio';
+  private configurazioneCampiNuovoPagamentoUrl = '/configurazioneCampiNuovoPagamento';
 
   constructor(private http: HttpClient) {
   }
@@ -50,7 +51,6 @@ export class CampoTipologiaServizioService {
   }
 
   campiTipologiaServizio(tipologiaServizioId: number, idFunzione): Observable<CampoForm[]> {
-
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     return this.http.get(environment.bffBaseUrl + this.baseUrl + this.campiTipologiaServizioUrl + `?tipologiaServizioId=${tipologiaServizioId}`, {
@@ -68,5 +68,23 @@ export class CampoTipologiaServizioService {
       }));
   }
 
+  letturaConfigurazioneCampiNuovoPagamento(idFunzione): Observable<any> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+    return this.http.get(environment.bffBaseUrl + this.baseUrl +
+      this.configurazioneCampiNuovoPagamentoUrl, {
+      withCredentials: true,
+      headers: h
+    }).pipe(map((body: CampoForm[]) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
 }
 

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
@@ -11,16 +11,16 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {ConfirmationService} from 'primeng/api';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {Utils} from "../../../../../../../utils/Utils";
-import {TipoModaleEnum} from "../../../../../../../enums/tipoModale.enum";
-import {OverlayService} from "../../../../../../../services/overlay.service";
+import {Utils} from '../../../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
+import {OverlayService} from '../../../../../../../services/overlay.service';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
   templateUrl: './form-tipologia-servizio.component.html',
   styleUrls: ['./form-tipologia-servizio.component.scss']
 })
-export class FormTipologiaServizioComponent extends FormElementoParentComponent implements AfterViewInit {
+export class FormTipologiaServizioComponent extends FormElementoParentComponent implements OnInit {
 
   @ViewChild(CdkDropListGroup) listGroup: CdkDropListGroup<CdkDropList>;
   @ViewChild(CdkDropList) placeholder: CdkDropList;
@@ -57,10 +57,29 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.source = null;
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
+
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
+    this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
+      .subscribe(((value: any) => {
+        if (!localStorage.getItem('listaCampiDettaglioTransazione')) {
+          localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(value.listaCampiDettaglioTransazione));
+        }
+        if (!localStorage.getItem('listaControlliLogici')) {
+          localStorage.setItem('listaControlliLogici', JSON.stringify(value.listaControlliLogici));
+        }
+        if (!localStorage.getItem('listaTipologiche')) {
+          localStorage.setItem('listaTipologiche', JSON.stringify(value.listaTipologiche));
+        }
+        if (!localStorage.getItem('listaJsonPath')) {
+          localStorage.setItem('listaJsonPath', JSON.stringify(value.listaJsonPath));
+        }
+        if (!localStorage.getItem('listaTipiCampo')) {
+          localStorage.setItem('listaTipiCampo', JSON.stringify(value.listaTipiCampo));
+        }
+      }));
     this.campoTipologiaServizioService.campiTipologiaServizio(13, this.idFunzione)
       .subscribe(value => {
         this.items = _.sortBy(value, 'posizione');
@@ -73,8 +92,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   add() {
-    let campoForm = new CampoForm();
-    campoForm.titolo = "nuovo campo";
+    const campoForm = new CampoForm();
+    campoForm.titolo = 'nuovo campo';
     this.items.push(campoForm);
     this.showEditId = campoForm.titolo;
   }

@@ -20,6 +20,22 @@
             </div>
             <div class="col-3">
               <div class="row">
+                <label [htmlFor]="'informazioni'" class="title form-elem-title"
+                >Informazioni</label>
+              </div>
+              <div class="row">
+                <input id="informazioni"
+                       [formControl]="form.controls['informazioni']"
+                       [(ngModel)]="campoForm.informazioni"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div class="row">
                 <label [htmlFor]="'obbligatorio'" class="title form-elem-title"
                 >Obbligatorio</label>
               </div>
@@ -65,67 +81,6 @@
             </div>
             <div class="col-3">
               <div class="row">
-                <label [htmlFor]="'tipoCampo'" class="title form-elem-title"
-                >Tipo Campo</label>
-              </div>
-              <div class="row">
-                <input
-                  type="checkbox"
-                  [formControl]="form.controls['tipoCampo']"
-                  [(ngModel)]="campoForm.tipoCampo"
-                  type="text"
-                  autocomplete="off"
-                />
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="row">
-                <label [htmlFor]="'informazioni'" class="title form-elem-title"
-                >Informazioni</label>
-              </div>
-              <div class="row">
-                <input id="informazioni"
-                       [formControl]="form.controls['informazioni']"
-                       [(ngModel)]="campoForm.informazioni"
-                       type="text"
-                       autocomplete="off"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-3">
-              <div class="row">
-                <label [htmlFor]="'lunghezzaVariabile'" class="title form-elem-title"
-                >Lunghezza variabile</label>
-              </div>
-              <div class="row">
-                <input id="lunghezzaVariabile"
-                       [formControl]="form.controls['lunghezzaVariabile']"
-                       [(ngModel)]="campoForm.lunghezzaVariabile"
-                       type="text"
-                       autocomplete="off"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-3">
-              <div class="row">
-                <label [htmlFor]="'lunghezza'" class="title form-elem-title"
-                >Lunghezza</label>
-              </div>
-              <div class="row">
-                <input id="lunghezza"
-                       [formControl]="form.controls['lunghezza']"
-                       [(ngModel)]="campoForm.lunghezza"
-                       type="text"
-                       autocomplete="off"
-                />
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="row">
                 <label [htmlFor]="'campoFisso'" class="title form-elem-title"
                 >Campo fisso</label>
               </div>
@@ -133,7 +88,7 @@
                 <input id="campoFisso"
                        [formControl]="form.controls['campoFisso']"
                        [(ngModel)]="campoForm.campoFisso"
-                       type="text"
+                       type="checkbox"
                        autocomplete="off"
                 />
               </div>
@@ -152,38 +107,114 @@
                 />
               </div>
             </div>
+
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'lunghezzaVariabile'" class="title form-elem-title"
+                >Lunghezza variabile</label>
+              </div>
+              <div class="row">
+                <input id="lunghezzaVariabile"
+                       [formControl]="form.controls['lunghezzaVariabile']"
+                       [(ngModel)]="campoForm.lunghezzaVariabile"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'lunghezza'" class="title form-elem-title"
+                >Lunghezza</label>
+              </div>
+              <div class="row">
+                <input id="lunghezza"
+                       [formControl]="form.controls['lunghezza']"
+                       [(ngModel)]="campoForm.lunghezza"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'tipoCampo'" class="title form-elem-title"
+                >Tipo Campo</label>
+              </div>
+              <div class="row">
+                <select
+                  id="tipoCampo"
+                  [formControl]="form.controls['tipoCampo']"
+                  [(ngModel)]="campoForm.tipoCampo">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let item of listaTipiCampo" [ngValue]="item.nome">{{item.informazioni}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'controllo_logico'" class="title form-elem-title"
+                >Controllo logico</label>
+              </div>
+              <div class="row">
+                <select
+                  id="controllo_logico"
+                  [formControl]="form.controls['controllo_logico']"
+                  [(ngModel)]="campoForm.controllo_logico">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let item of listaControlliLogici" [ngValue]="item.regex">{{item.nome}}</option>
+                </select>
+              </div>
+            </div>
             <div class="col-3">
               <div class="row">
                 <label [htmlFor]="'jsonPath'" class="title form-elem-title"
                 >Json path</label>
               </div>
               <div class="row">
-                <input id="jsonPath"
-                       [formControl]="form.controls['jsonPath']"
-                       [(ngModel)]="campoForm.jsonPath"
-                       type="text"
-                       autocomplete="off"
-                />
+                <select
+                  id="jsonPath"
+                  [formControl]="form.controls['jsonPath']"
+                  [(ngModel)]="campoForm.jsonPath">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let item of listaJsonPath" [ngValue]="item.json_path">{{item.nome_attributo}}</option>
+                </select>
               </div>
             </div>
-          </div>
-          <div class="row">
             <div class="col-3">
               <div class="row">
                 <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
                 >Campo dettaglio transazione</label>
               </div>
               <div class="row">
-                <input id="campoDettaglioTransazione"
-                       [formControl]="form.controls['campoDettaglioTransazione']"
-                       [(ngModel)]="campoForm.campoDettaglioTransazione"
-                       type="text"
-                       autocomplete="off"
-                />
+                <select
+                  id="campoDettaglioTransazione"
+                  [formControl]="form.controls['campoDettaglioTransazione']"
+                  [(ngModel)]="campoForm.campoDettaglioTransazione">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let item of listaJsonPath" [ngValue]="item.nome">{{item.nome}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
+                >Tipologica</label>
+              </div>
+              <div class="row">
+                <select
+                  id="tipologica"
+                  [formControl]="form.controls['tipologica']"
+                  [(ngModel)]="campoForm.tipologica">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let item of listaTipologiche" [ngValue]="item.nome">{{item.nome}}</option>
+                </select>
               </div>
             </div>
           </div>
-            <div class="row">
+          <div class="row">
             <div class="col-2">
               <button type="button" id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">Annulla
               </button>
