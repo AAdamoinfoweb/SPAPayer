@@ -61,7 +61,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
-    this.campoTipologiaServizioService.campiTipologiaServizio(13)
+    this.campoTipologiaServizioService.campiTipologiaServizio(13, this.idFunzione)
       .subscribe(value => {
         this.items = _.sortBy(value, 'posizione');
         this.waiting = false;

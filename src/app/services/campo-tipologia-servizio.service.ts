@@ -15,7 +15,7 @@ export class CampoTipologiaServizioService {
   constructor(private http: HttpClient) {
   }
 
-  campiTipologiaServizio(tipologiaServizioId: number, idFunzione: string = "17"): Observable<CampoForm[]> {
+  campiTipologiaServizio(tipologiaServizioId: number, idFunzione): Observable<CampoForm[]> {
 
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
