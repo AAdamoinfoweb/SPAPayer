@@ -108,9 +108,8 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     return this.isPaginaAggiungi ? this.filtriRicerca.raggruppamento != null : null;
   }
 
-  disabilitaBottone(form: NgForm) {
-    // todo logica disabilita pulisci
-    return null;
+  disabilitaPulisci(): boolean {
+    return !this.filtriRicerca.raggruppamento && !this.filtriRicerca.codice ? true : null;
   }
 
 }

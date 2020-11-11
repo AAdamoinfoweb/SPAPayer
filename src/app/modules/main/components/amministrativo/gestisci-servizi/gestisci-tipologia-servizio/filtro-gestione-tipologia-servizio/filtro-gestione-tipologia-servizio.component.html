@@ -71,7 +71,7 @@
       <!-- Bottoni Pulisci e Cerca -->
       <div class="row" *ngIf="!isPaginaAggiungi">
         <div class="col-6">
-          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroForm)"
+          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaPulisci()"
                   (click)="pulisciFiltri(filtroForm)">Pulisci</button>
         </div>
         <div class="col-6 btn-find">
