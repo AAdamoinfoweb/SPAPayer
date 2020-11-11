@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ContentChild, Input, OnInit, TemplateRef} from '@angular/core';
 import {OverlayService} from '../../services/overlay.service';
 import {DatiPagamento} from '../../modules/main/model/bollettino/DatiPagamento';
 
@@ -8,10 +8,10 @@ import {DatiPagamento} from '../../modules/main/model/bollettino/DatiPagamento';
   styleUrls: ['./overlay.component.scss']
 })
 export class OverlayComponent implements OnInit {
-  @Input()
-  caricamento: boolean;
 
-  constructor(private overlayService: OverlayService) { }
+  @ContentChild(TemplateRef) template: TemplateRef<any>;
+
+  constructor() { }
 
   ngOnInit(): void {
   }

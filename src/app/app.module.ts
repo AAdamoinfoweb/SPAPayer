@@ -35,7 +35,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import {TreeTableModule} from 'primeng/treetable';
 import {PipeModule} from './pipe/pipe.module';
-import {OverlayDatiPagamentoComponent} from './components/overlay-dati-pagamento/overlay-dati-pagamento.component';
+import {OverlayComponent} from './components/overlay-dati-pagamento/overlay.component';
 import {CommonComponentModule} from './components/common-component.module';
 import {AmministrativoModule} from './modules/main/components/amministrativo/amministrativo.module';
 
@@ -53,7 +53,7 @@ import {AmministrativoModule} from './modules/main/components/amministrativo/amm
     IMieiPagamentiComponent,
     CompilaNuovoPagamentoComponent,
     DatiNuovoPagamentoComponent,
-    OverlayDatiPagamentoComponent
+    OverlayComponent
   ],
   imports: [
     HttpClientModule,
