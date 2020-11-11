@@ -19,7 +19,6 @@ import {of} from "rxjs";
 export class AppComponent implements OnInit {
 
   title = '';
-  caricamento = false;
   datiPagamento = null;
 
   constructor(private menuService: MenuService,

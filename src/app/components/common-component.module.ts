@@ -3,7 +3,6 @@ import {FooterDirective} from "./footer/FooterDirective";
 import {IntegerNumberDirective} from "../utils/IntegerNumberDirective";
 import {DayInputDirective} from "../utils/DayInputDirective";
 import {MonthInputDirective} from "../utils/MonthInputDirective";
-import {OverlayComponent} from "./overlay/overlay.component";
 import {SpinnerOverlayComponent} from "./spinner-overlay/spinner-overlay.component";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {BrowserModule} from "@angular/platform-browser";
@@ -45,7 +44,6 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
     IntegerNumberDirective,
     DayInputDirective,
     MonthInputDirective,
-    OverlayComponent,
     SpinnerOverlayComponent,
     PaginatorComponent,
     TabViewComponent,
@@ -89,7 +87,6 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
   ],
   exports: [
     FooterDirective,
-    OverlayComponent,
     TableComponent,
     ToolbarComponent,
     TabViewComponent
