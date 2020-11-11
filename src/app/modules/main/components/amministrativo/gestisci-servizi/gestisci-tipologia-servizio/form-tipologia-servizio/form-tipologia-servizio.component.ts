@@ -1,10 +1,5 @@
-import {AfterViewInit, OnInit} from '@angular/core';
-import {Component, ViewChild} from '@angular/core';
-import {
-  CdkDrag,
-  CdkDropList, CdkDropListGroup, CdkDragMove, CdkDragEnter,
-  moveItemInArray, CdkDragDrop, transferArrayItem
-} from '@angular/cdk/drag-drop';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
@@ -16,6 +11,8 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {ConfirmationService} from 'primeng/api';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
+import {Utils} from "../../../../../../../utils/Utils";
+import {TipoModaleEnum} from "../../../../../../../enums/tipoModale.enum";
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -51,7 +48,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     protected http: HttpClient,
     protected amministrativoService: AmministrativoService,
     private viewportRuler: ViewportRuler,
-    confirmationService: ConfirmationService,
+    protected confirmationService: ConfirmationService,
     private campoTipologiaServizioService: CampoTipologiaServizioService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
     this.target = null;
@@ -80,25 +77,31 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   removeItem(item: CampoForm) {
-
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.items.splice(this.items.findIndex((v) => v.id === item.id), 1);
+        },
+        TipoModaleEnum.ELIMINA,
+      )
+    );
   }
 
   calcolaDimensioneCampo(campo: CampoForm): string {
     let classe;
 
     if (campo.tipoCampo === TipoCampoEnum.DATEDDMMYY || campo.tipoCampo === TipoCampoEnum.DATEMMYY || campo.tipoCampo === TipoCampoEnum.DATEYY) {
-      classe = 'col-md-2 form-col-2';
+      classe = 'col-lg-2 col-md-4 col-xs-6';
     } else if (campo.tipoCampo === TipoCampoEnum.INPUT_PREZZO) {
-      classe = 'col-md-2 form-col-2';
+      classe = 'col-lg-2 col-md-4 col-xs-6';
     } else {
       if (campo.lunghezza <= this.lunghezzaMaxCol1) {
-        classe = 'col-md-1 form-col-1';
+        classe = 'col-lg-1 col-md-4 col-xs-6';
       } else if (campo.lunghezza <= this.lunghezzaMaxCol2) {
-        classe = 'col-md-2 form-col-2';
+        classe = 'col-lg-3 col-md-4 col-xs-6';
       } else if (campo.lunghezza <= this.lunghezzaMaxCol3) {
-        classe = 'col-md-3 form-col-3';
+        classe = 'col-lg-4 col-md-5 col-xs-6';
       } else {
-        classe = 'col-md-4 form-col-4';
+        classe = 'col-lg-5 col-md-6 col-xs-6';
       }
     }
     return classe;

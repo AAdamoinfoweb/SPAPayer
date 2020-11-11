@@ -12,7 +12,7 @@ import {AmministrativoService} from "../../../../services/amministrativo.service
 
 export abstract class FormElementoParentComponent {
 
-  protected constructor(private confirmationService: ConfirmationService,
+  protected constructor(protected confirmationService: ConfirmationService,
                         protected activatedRoute: ActivatedRoute,
                         protected amministrativoService: AmministrativoService,
                         protected http: HttpClient,
