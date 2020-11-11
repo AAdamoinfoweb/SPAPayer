@@ -3,11 +3,11 @@ import {OverlayService} from '../../services/overlay.service';
 import {DatiPagamento} from '../../modules/main/model/bollettino/DatiPagamento';
 
 @Component({
-  selector: 'app-overlay-dati-pagamento',
-  templateUrl: './overlay-dati-pagamento.component.html',
-  styleUrls: ['./overlay-dati-pagamento.component.scss']
+  selector: 'app-overlay',
+  templateUrl: './overlay.component.html',
+  styleUrls: ['./overlay.component.scss']
 })
-export class OverlayDatiPagamentoComponent implements OnInit {
+export class OverlayComponent implements OnInit {
 
   @Input()
   datiPagamento: DatiPagamento;
