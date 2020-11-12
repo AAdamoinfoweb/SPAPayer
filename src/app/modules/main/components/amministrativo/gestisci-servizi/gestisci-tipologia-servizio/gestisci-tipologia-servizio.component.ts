@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {GestisciElementoComponent} from '../../gestisci-elemento.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
@@ -24,7 +24,7 @@ import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
   templateUrl: './gestisci-tipologia-servizio.component.html',
   styleUrls: ['./gestisci-tipologia-servizio.component.scss']
 })
-export class GestisciTipologiaServizioComponent extends GestisciElementoComponent implements OnInit {
+export class GestisciTipologiaServizioComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Tipologia Servizio'},
@@ -89,6 +89,12 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
     this.popolaListaElementi();
   }
 
+  ngAfterViewInit(): void {
+    if (!this.waiting) {
+      this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
+    }
+  }
+
   callbackPopolaLista() {
   }
 
@@ -146,16 +152,14 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
-    // todo logica pdf
-    return [];
+    return colonne;
   }
 
-  getRigheFilePdf(righe: any[]) {
-    // todo logica pdf
+  getRigheFilePdf(righe: any[]): any[] {
+    return righe;
   }
 
   getImmaginiFilePdf(): ImmaginePdf[] {
-    // todo logica pdf
     return [];
   }
 
@@ -168,12 +172,17 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    // todo logica excel
-    return [];
+    return colonne.filter(col => col.field !== 'id');
   }
 
-  getRigheFileExcel(righe: any[]) {
-    // todo logica excel
+  getRigheFileExcel(righe: any[]): any[] {
+    return righe.map(riga => {
+      delete riga.id;
+      riga.codice = riga.codice.value;
+      riga.raggruppamento = riga.raggruppamento.value;
+      riga.nome = riga.nome.value;
+      return riga;
+    });
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
