@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   datiPagamento = null;
   datiCampoForm = null;
   mostraModale = false;
+  tipologiaServizio: any;
 
   constructor(private menuService: MenuService,
               private router: Router,
@@ -34,25 +35,27 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-      this.idleService.startWatching();
-      this.idleService.onTimerStart().subscribe(count => console.log(count));
-      this.idleService.onTimeout().subscribe(() => {
-        this.logout();
-      });
+    this.idleService.startWatching();
+    this.idleService.onTimerStart().subscribe(count => console.log(count));
+    this.idleService.onTimeout().subscribe(() => {
+      this.logout();
+    });
 
-      this.overlayService.mostraModaleDettaglioEvent
-        .subscribe(value => {
+    this.overlayService.mostraModaleDettaglioEvent
+      .subscribe(value => {
         this.datiPagamento = value?.datiPagamento;
-        this.datiCampoForm = value?.datiCampoForm;
+        if (value?.datiCampoForm) {
+          this.tipologiaServizio = value;
+        }
         this.mostraModale = !!value;
         this.cdr.detectChanges();
       });
 
-      this.menuService.getInfoUtente().subscribe((info) => {
-        this.menuService.infoUtenteEmitter.emit(info);
-      }, catchError((err, caught) => of(null)));
+    this.menuService.getInfoUtente().subscribe((info) => {
+      this.menuService.infoUtenteEmitter.emit(info);
+    }, catchError((err, caught) => of(null)));
 
-      this.letturatipologicheSelect();
+    this.letturatipologicheSelect();
   }
 
   // @HostListener('window:beforeunload')

@@ -16,7 +16,7 @@
               <div class="row">
                 <input id="titolo"
                        [formControl]="form.controls['titolo']"
-                       [(ngModel)]="campoForm.titolo"
+                       [(ngModel)]="tipologiaServizio.campoForm.titolo"
                        type="text"
                        autocomplete="off"
                 />
@@ -31,7 +31,7 @@
                 <select
                   id="tipoCampo"
                   [formControl]="form.controls['tipoCampo']"
-                  [(ngModel)]="campoForm.tipoCampo">
+                  [(ngModel)]="tipologiaServizio.campoForm.tipoCampo">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of listaTipiCampo" [ngValue]="item.nome">{{item.informazioni}}</option>
                 </select>
@@ -48,7 +48,7 @@
                 <input id="obbligatorio"
                        type="checkbox"
                        [formControl]="form.controls['obbligatorio']"
-                       [(ngModel)]="campoForm.obbligatorio"
+                       [(ngModel)]="tipologiaServizio.campoForm.obbligatorio"
                        type="checkbox"
                        autocomplete="off"
                 />
@@ -62,7 +62,7 @@
               <div class="row">
                 <input id="lunghezzaVariabile"
                        [formControl]="form.controls['lunghezzaVariabile']"
-                       [(ngModel)]="campoForm.lunghezzaVariabile"
+                       [(ngModel)]="tipologiaServizio.campoForm.lunghezzaVariabile"
                        type="checkbox"
                        autocomplete="off"
                 />
@@ -76,7 +76,7 @@
               <div class="row">
                 <input id="lunghezza"
                        [formControl]="form.controls['lunghezza']"
-                       [(ngModel)]="campoForm.lunghezza"
+                       [(ngModel)]="tipologiaServizio.campoForm.lunghezza"
                        type="text"
                        autocomplete="off"
                 />
@@ -90,7 +90,7 @@
               <div class="row">
                 <input id="campoFisso"
                        [formControl]="form.controls['campoFisso']"
-                       [(ngModel)]="campoForm.campoFisso"
+                       [(ngModel)]="tipologiaServizio.campoForm.campoFisso"
                        type="checkbox"
                        autocomplete="off"
                 />
@@ -105,7 +105,7 @@
                 <input id="disabilitato"
                        type="checkbox"
                        [formControl]="form.controls['disabilitato']"
-                       [(ngModel)]="campoForm.disabilitato"
+                       [(ngModel)]="tipologiaServizio.campoForm.disabilitato"
                        type="checkbox"
                        autocomplete="off"
                 />
@@ -120,7 +120,7 @@
                 <input id="chiave"
                        type="checkbox"
                        [formControl]="form.controls['chiave']"
-                       [(ngModel)]="campoForm.chiave"
+                       [(ngModel)]="tipologiaServizio.campoForm.chiave"
                        type="checkbox"
                        autocomplete="off"
                 />
@@ -130,15 +130,15 @@
           <div class="row">
             <div class="col-3">
               <div class="row">
-                <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
+                <label [htmlFor]="'tipologiaServizio.livelloIntegrazione'" class="title form-elem-title"
                 >Livello di Integrazione</label>
               </div>
               <div class="row">
                 <select
-                  id="livelloIntegrazione"
-                  [formControl]="form.controls['livelloIntegrazione']"
-                  [(ngModel)]="livelloIntegrazione"
-                  (ngModelChange)="cambiaLivelloIntegrazione(campoForm, $event)">
+                  id="tipologiaServizio.livelloIntegrazione"
+                  [formControl]="form.controls['tipologiaServizio.livelloIntegrazione']"
+                  [(ngModel)]="tipologiaServizio.livelloIntegrazione"
+                  (ngModelChange)="cambiaLivelloIntegrazione(tipologiaServizio.campoForm, $event)">
                   <option [ngValue]="livelloIntegrazioneEnum.LV2">Livello 2</option>
                   <option [ngValue]="livelloIntegrazioneEnum.LV2_BACK_OFFICE">Livello 2 BO</option>
                   <option [ngValue]="livelloIntegrazioneEnum.LV3">Livello 3</option>
@@ -153,9 +153,9 @@
               <div class="row">
                 <input id="campo_input"
                        [formControl]="form.controls['campo_input']"
-                       [(ngModel)]="campoForm.campo_input"
-                       [attr.disabled]="livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
-                       (ngModelChange)="cambiaLivelloIntegrazione(campoForm, livelloIntegrazione)"
+                       [(ngModel)]="tipologiaServizio.campoForm.campo_input"
+                       [attr.disabled]="tipologiaServizio.livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
+                       (ngModelChange)="cambiaLivelloIntegrazione(tipologiaServizio.campoForm, tipologiaServizio.livelloIntegrazione)"
                        type="checkbox"
                        autocomplete="off"
                 />
@@ -169,9 +169,9 @@
               <div class="row">
                 <select
                   id="jsonPath"
-                  [attr.disabled]="livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
+                  [attr.disabled]="tipologiaServizio.livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
                   [formControl]="form.controls['jsonPath']"
-                  [(ngModel)]="campoForm.jsonPath">
+                  [(ngModel)]="tipologiaServizio.campoForm.jsonPath">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of listaJsonPathFiltrata"
                           [ngValue]="item.json_path">{{item.nome_attributo}}</option>
@@ -187,7 +187,7 @@
                 <select
                   id="tipologica"
                   [formControl]="form.controls['tipologica']"
-                  [(ngModel)]="campoForm.tipologica">
+                  [(ngModel)]="tipologiaServizio.campoForm.tipologica">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of listaTipologiche" [ngValue]="item.nome">{{item.nome}}</option>
                 </select>
@@ -203,7 +203,7 @@
                   [attr.disabled]="dipendeDaIsDisabled()"
                   id="dipendeDa"
                   [formControl]="form.controls['dipendeDa']"
-                  [(ngModel)]="campoForm.dipendeDa">
+                  [(ngModel)]="tipologiaServizio.campoForm.dipendeDa">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of listaDipendeDa" [ngValue]="item.nome">{{item.nome}}</option>
                 </select>
@@ -218,7 +218,7 @@
                 <select
                   id="controllo_logico"
                   [formControl]="form.controls['controllo_logico']"
-                  [(ngModel)]="campoForm.controllo_logico">
+                  [(ngModel)]="tipologiaServizio.campoForm.controllo_logico">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of listaControlliLogici" [ngValue]="item.regex">{{item.nome}}</option>
                 </select>
@@ -233,7 +233,7 @@
                 <select
                   id="campoDettaglioTransazione"
                   [formControl]="form.controls['campoDettaglioTransazione']"
-                  [(ngModel)]="campoForm.campoDettaglioTransazione">
+                  [(ngModel)]="tipologiaServizio.campoForm.campoDettaglioTransazione">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of listaCampiDettaglioTransazione"
                           [ngValue]="item.nome">{{item.nome}}</option>
