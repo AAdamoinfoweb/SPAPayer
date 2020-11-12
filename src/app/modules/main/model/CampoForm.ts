@@ -14,10 +14,17 @@ export class CampoForm {
   posizione: number;
   chiave: boolean;
   controllo_logico: ControlloLogico;
+  controllo_logico_id: number;
   campo_input: boolean;
+
+  dipendeDaInput: string;
+
   jsonPath: string;
   tipologica: string;
   campoDettaglioTransazione: string;
   dipendeDa: number;
+  tipo_campo_id: number;
+  tipologia_servizio_id: number;
+
   opzioni: Array<OpzioneSelect>;
 }

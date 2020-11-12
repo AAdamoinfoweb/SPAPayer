@@ -6,6 +6,7 @@ import {FunzioneGestioneEnum} from "../../../../../../../enums/funzioneGestione.
 import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegrazione.enum";
 
 interface TipologiaServizioCampoForm {
+  listaDipendeDa: any[];
   livelloIntegrazione: LivelloIntegrazioneEnum;
   campoForm: CampoForm;
   funzione: FunzioneGestioneEnum;
@@ -29,7 +30,6 @@ export class ModaleCampoFormComponent implements OnInit {
   listaJsonPath: any[];
   listaTipiCampo: any[];
 
-  listaDipendeDa = [];
   listaJsonPathFiltrata: any[];
 
   livelloIntegrazioneEnum = LivelloIntegrazioneEnum;

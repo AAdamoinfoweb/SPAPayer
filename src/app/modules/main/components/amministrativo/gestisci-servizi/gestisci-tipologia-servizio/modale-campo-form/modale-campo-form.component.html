@@ -31,9 +31,9 @@
                 <select
                   id="tipoCampo"
                   [formControl]="form.controls['tipoCampo']"
-                  [(ngModel)]="tipologiaServizio.campoForm.tipoCampo">
+                  [(ngModel)]="tipologiaServizio.campoForm.tipo_campo_id">
                   <option [ngValue]="null"></option>
-                  <option *ngFor="let item of listaTipiCampo" [ngValue]="item.nome">{{item.informazioni}}</option>
+                  <option *ngFor="let item of listaTipiCampo" [ngValue]="item.id">{{item.informazioni}}</option>
                 </select>
               </div>
             </div>
@@ -130,12 +130,12 @@
           <div class="row">
             <div class="col-3">
               <div class="row">
-                <label [htmlFor]="'tipologiaServizio.livelloIntegrazione'" class="title form-elem-title"
+                <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
                 >Livello di Integrazione</label>
               </div>
               <div class="row">
                 <select
-                  id="tipologiaServizio.livelloIntegrazione"
+                  id="livelloIntegrazione"
                   [formControl]="form.controls['livelloIntegrazione']"
                   [(ngModel)]="tipologiaServizio.livelloIntegrazione"
                   (ngModelChange)="cambiaLivelloIntegrazione(tipologiaServizio.campoForm, $event)">
@@ -205,7 +205,7 @@
                   [formControl]="form.controls['dipendeDa']"
                   [(ngModel)]="tipologiaServizio.campoForm.dipendeDa">
                   <option [ngValue]="null"></option>
-                  <option *ngFor="let item of listaDipendeDa" [ngValue]="item.nome">{{item.nome}}</option>
+                  <option *ngFor="let item of tipologiaServizio.listaDipendeDa" [ngValue]="item.titolo">{{item.titolo}}</option>
                 </select>
               </div>
             </div>

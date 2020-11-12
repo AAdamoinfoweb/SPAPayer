@@ -17,6 +17,9 @@ import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
 import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
+import {subscribeTo} from "rxjs/internal-compatibility";
+import {map} from "rxjs/operators";
+import {Observable, of} from "rxjs";
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -56,6 +59,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   private livelloIntegrazione: LivelloIntegrazioneEnum;
   private listaDipendeDa: CampoForm[];
   private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
+  private tipoCampoIdSelect: number;
 
   constructor(
     private overlayService: OverlayService,
@@ -77,7 +81,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   ngOnInit() {
     this.refreshItemsEvent.subscribe((items) => {
-      this.listaDipendeDa = items.filter((value => value.tipoCampo === TipoCampoEnum.SELECT));
+      this.listaDipendeDa = items.filter((value => value.tipo_campo_id === this.tipoCampoIdSelect));
     });
   }
 
@@ -102,14 +106,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Tipologia Servizio';
     this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una tipologia servizio';
 
-    this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
-      .subscribe(((value: any) => {
-        localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(value.listaCampiDettaglioTransazione));
-        localStorage.setItem('listaControlliLogici', JSON.stringify(value.listaControlliLogici));
-        localStorage.setItem('listaTipologiche', JSON.stringify(value.listaTipologiche));
-        localStorage.setItem('listaJsonPath', JSON.stringify(value.listaJsonPath));
-        localStorage.setItem('listaTipiCampo', JSON.stringify(value.listaTipiCampo));
-      }));
+    let obs = of(null);
     if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       this.tipologiaServizioId = parseInt(this.activatedRoute.snapshot.paramMap.get('tipologiaServizioId'));
 
@@ -120,26 +117,39 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         this.filtro.codiceTipologia = tipologiaServizio.codice;
       });
 
-      this.caricaCampi(this.tipologiaServizioId);
+      obs = this.caricaCampi(this.tipologiaServizioId);
     }
+    this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
+      .pipe(map((value: any) => {
+        localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(value.listaCampiDettaglioTransazione));
+        localStorage.setItem('listaControlliLogici', JSON.stringify(value.listaControlliLogici));
+        localStorage.setItem('listaTipologiche', JSON.stringify(value.listaTipologiche));
+        localStorage.setItem('listaJsonPath', JSON.stringify(value.listaJsonPath));
+
+        let filter = value.listaTipiCampo.filter((tc => tc.nome === TipoCampoEnum.SELECT));
+        if (filter && filter.length > 0)
+          this.tipoCampoIdSelect = filter[0].id;
+
+        localStorage.setItem('listaTipiCampo', JSON.stringify(value.listaTipiCampo));
+      })).pipe(map(() => obs)).subscribe();
   }
 
-  caricaCampi(tipologiaServizioId: number): void {
-    this.campoTipologiaServizioService.campiTipologiaServizio(tipologiaServizioId, this.idFunzione)
-      .subscribe(value => {
+  caricaCampi(tipologiaServizioId: number): Observable<any> {
+    return this.campoTipologiaServizioService.campiTipologiaServizio(tipologiaServizioId, this.idFunzione)
+      .pipe(map(value => {
         this.items = _.sortBy(value, 'posizione');
 
         // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
         if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
           this.items.forEach(campo => {
             campo.id = null;
-            // todo valutare se impostare campo.dipendeDa = null
+            // todo impostare campo.dipendeDa.id = null
           });
         }
 
         this.refreshItemsEvent.emit(this.items);
         this.waiting = false;
-      });
+      }));
   }
 
   inizializzaBreadcrumb(): void {
@@ -220,7 +230,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   showModal(item: CampoForm) {
     this.overlayService.mostraModaleDettaglioEvent.emit({
-      campoForm: item,
+      campoForm: _.cloneDeep(item),
       funzione: this.funzione,
       livelloIntegrazione: this.livelloIntegrazione,
       listaDipendeDa: this.listaDipendeDa
