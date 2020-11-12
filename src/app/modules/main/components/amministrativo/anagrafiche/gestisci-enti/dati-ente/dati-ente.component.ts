@@ -75,7 +75,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   }
 
   caricaImmagine() {
-    if (this.datiEnte && this.datiEnte.logo.contenuto) {
+    if (this.datiEnte && this.datiEnte.logo && this.datiEnte.logo.contenuto) {
       // @ts-ignore
       const canvas: HTMLCanvasElement = document.getElementById('canvas');
       if (canvas != null) {

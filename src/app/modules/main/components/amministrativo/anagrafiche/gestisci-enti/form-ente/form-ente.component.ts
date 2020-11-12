@@ -193,10 +193,10 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   private setListaBeneficiari() {
-    if(this.datiEnte.listaBeneficiari){
+    if (this.datiEnte.listaBeneficiari) {
       this.datiEnte.listaBeneficiari = this.formattaCampi(this.datiEnte.listaBeneficiari, true);
       this.datiEnte.listaBeneficiari.forEach((beneficiario) => {
-        if(this.target != null){
+        if (this.target != null) {
           this.aggiungiBeneficiario(beneficiario);
         }
       });
@@ -226,14 +226,20 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
 
   private inserimentoEnte(): void {
     this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione).subscribe(esitoInserimentoModificaEnte => {
-      const state = {esito: esitoInserimentoModificaEnte.esito};
+      let state = null
+      if (esitoInserimentoModificaEnte.esito) {
+        state = {esito: esitoInserimentoModificaEnte.esito};
+      }
       this.configuraRouterAndNavigate('/aggiungiEnte', state);
     });
   }
 
   private modificaEnte() {
     this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((esitoInserimentoModificaEnte) => {
-      const state = {esito: esitoInserimentoModificaEnte.esito};
+      let state = null
+      if (esitoInserimentoModificaEnte.esito) {
+        state = {esito: esitoInserimentoModificaEnte.esito};
+      }
       this.configuraRouterAndNavigate('/modificaEnte/' + esitoInserimentoModificaEnte.idEnte, state);
     });
   }
@@ -242,7 +248,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     // this.router.navigateByUrl(this.basePath + pathFunzione);
-    this.router.navigate([this.basePath + pathFunzione], {state: state });
+    this.router.navigate([this.basePath + pathFunzione], {state: state});
   }
 
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {
