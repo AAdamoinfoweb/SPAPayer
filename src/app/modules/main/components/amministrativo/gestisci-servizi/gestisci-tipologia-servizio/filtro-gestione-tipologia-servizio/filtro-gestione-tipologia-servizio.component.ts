@@ -50,7 +50,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   ngOnChanges(sc: SimpleChanges) {
-    if (sc.filtriIniziali.currentValue) {
+    if (sc.filtriIniziali?.currentValue) {
       this.filtriRicerca = this.filtriIniziali;
     }
   }
