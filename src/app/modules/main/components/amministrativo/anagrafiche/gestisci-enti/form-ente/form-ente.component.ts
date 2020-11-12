@@ -193,12 +193,14 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   private setListaBeneficiari() {
-    this.datiEnte.listaBeneficiari = this.formattaCampi(this.datiEnte.listaBeneficiari, true);
-    this.datiEnte.listaBeneficiari.forEach((beneficiario) => {
-      if(this.target != null){
-        this.aggiungiBeneficiario(beneficiario);
-      }
-    });
+    if(this.datiEnte.listaBeneficiari){
+      this.datiEnte.listaBeneficiari = this.formattaCampi(this.datiEnte.listaBeneficiari, true);
+      this.datiEnte.listaBeneficiari.forEach((beneficiario) => {
+        if(this.target != null){
+          this.aggiungiBeneficiario(beneficiario);
+        }
+      });
+    }
   }
 
   recuperoContiCorrente(idEnte) {
