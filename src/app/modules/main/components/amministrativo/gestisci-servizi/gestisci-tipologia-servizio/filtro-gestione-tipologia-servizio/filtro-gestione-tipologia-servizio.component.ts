@@ -61,8 +61,8 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   selezionaRaggruppamento() {
-    if (!this.filtriRicerca.raggruppamento) {
-      this.filtriRicerca.codice = null;
+    if (!this.filtriRicerca.raggruppamentoId) {
+      this.filtriRicerca.codiceTipologia = null;
     }
   }
 
@@ -79,7 +79,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
       let filtro = null;
       if (this.isPaginaAggiungi) {
         filtro = new ParametriRicercaTipologiaServizio();
-        filtro.raggruppamento = this.filtriRicerca.raggruppamento;
+        filtro.raggruppamento = this.filtriRicerca.raggruppamentoId;
       }
       this.campoTipologiaServizioService.recuperaTipologieServizio(filtro, this.idFunzione).subscribe(listaTipologieServizio => {
         if (listaTipologieServizio) {
@@ -116,14 +116,14 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   disabilitaAutocompleteCodici(): boolean {
     // L'autocomplete è sempre abilitato nella pagina Gestione; È abilitato solo se è selezionato il raggruppamento nella pagina Aggiungi
     if (this.isPaginaAggiungi) {
-      return this.filtriRicerca.raggruppamento === null ? true : null;
+      return this.filtriRicerca.raggruppamentoId === null ? true : null;
     } else {
       return null;
     }
   }
 
   disabilitaPulisci(): boolean {
-    return !this.filtriRicerca.raggruppamento && !this.filtriRicerca.codice ? true : null;
+    return !this.filtriRicerca.raggruppamentoId && !this.filtriRicerca.codiceTipologia ? true : null;
   }
 
 }

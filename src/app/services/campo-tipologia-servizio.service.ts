@@ -26,11 +26,11 @@ export class CampoTipologiaServizioService {
 
     let params = new HttpParams();
     if (filtri) {
-      if (filtri.raggruppamento) {
-        params = params.set('raggruppamento', filtri.raggruppamento);
+      if (filtri.raggruppamentoId) {
+        params = params.set('raggruppamentoId', filtri.raggruppamentoId);
       }
-      if (filtri.codice) {
-        params = params.set('codice', filtri.codice);
+      if (filtri.codiceTipologia) {
+        params = params.set('codiceTipologia', filtri.codiceTipologia);
       }
     }
 

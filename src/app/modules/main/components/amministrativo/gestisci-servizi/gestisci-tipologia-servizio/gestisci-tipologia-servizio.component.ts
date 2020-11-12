@@ -17,6 +17,7 @@ import {TipologiaServizio} from '../../../../model/tipologiaServizio/TipologiaSe
 import {Utils} from '../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
+import {ParametriRicercaTipologiaServizio} from '../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 
 @Component({
   selector: 'app-gestisci-tipologia-servizio',
@@ -39,7 +40,7 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
   breadcrumbList: Breadcrumb[] = [];
   isMenuCarico: boolean;
 
-  filtriRicerca: any;
+  filtriRicerca: ParametriRicercaTipologiaServizio;
   listaElementi: any[];
   righeSelezionate: any[];
   tableData: Tabella = {

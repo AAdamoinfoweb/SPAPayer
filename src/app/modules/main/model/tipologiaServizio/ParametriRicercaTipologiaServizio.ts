@@ -1,4 +1,4 @@
 export class ParametriRicercaTipologiaServizio {
-  raggruppamento: string = null;
-  codice: string = null;
+  raggruppamentoId: string = null;
+  codiceTipologia: string = null;
 }

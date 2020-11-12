@@ -22,7 +22,7 @@
             <div class="col">
               <select [ngClass]="{'text-disabled': !opzioniRaggruppamento.length}" id="selectRaggruppamento" name="raggruppamento"
                       #filtroRaggruppamento = "ngModel"
-                      [(ngModel)]="filtriRicerca.raggruppamento"
+                      [(ngModel)]="filtriRicerca.raggruppamentoId"
                       (ngModelChange)="selezionaRaggruppamento()"
               >
                 <option [ngValue]="null" selected>Tutti</option>
@@ -50,7 +50,7 @@
           <div class="row">
             <div class="col">
               <p-autoComplete id="inputCodice" class="pt-0" name="codice"
-                              #filtroCodice = "ngModel" [(ngModel)]="filtriRicerca.codice"
+                              #filtroCodice = "ngModel" [(ngModel)]="filtriRicerca.codiceTipologia"
                               [suggestions]="listaCodiciTipologia" (completeMethod)="caricaCodiciTipologia($event)" (onClear)="listaCodiciTipologia = []"
                               [minLength]="minCharsRecuperoValoriAutocomplete" delay="0" autoHighlight="true"
                               [disabled]="disabilitaAutocompleteCodici()"
