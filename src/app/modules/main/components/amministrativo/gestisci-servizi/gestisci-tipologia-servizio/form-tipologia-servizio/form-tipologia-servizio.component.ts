@@ -18,7 +18,7 @@ import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
 import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 import {subscribeTo} from "rxjs/internal-compatibility";
-import {map} from "rxjs/operators";
+import {flatMap, map} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 
 @Component({
@@ -119,7 +119,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
       obs = this.caricaCampi(this.tipologiaServizioId);
     }
-    this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
+    let observable: Observable<number> = this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .pipe(map((value: any) => {
         localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(value.listaCampiDettaglioTransazione));
         localStorage.setItem('listaControlliLogici', JSON.stringify(value.listaControlliLogici));
@@ -131,7 +131,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
           this.tipoCampoIdSelect = filter[0].id;
 
         localStorage.setItem('listaTipiCampo', JSON.stringify(value.listaTipiCampo));
-      })).pipe(map(() => obs)).subscribe();
+      })).pipe(flatMap(() => obs));
+    observable.subscribe();
   }
 
   caricaCampi(tipologiaServizioId: number): Observable<any> {
