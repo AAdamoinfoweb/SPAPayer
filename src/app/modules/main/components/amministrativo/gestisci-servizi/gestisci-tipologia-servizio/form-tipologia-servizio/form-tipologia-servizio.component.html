@@ -17,7 +17,10 @@
   </h3>
 
   <!-- dati -->
-  <!--<app-filtro-gestione-tipologia-servizio [isPaginaAggiungi]="true"></app-filtro-gestione-tipologia-servizio>-->
+  <app-filtro-gestione-tipologia-servizio
+    *ngIf="idFunzione"
+    [isPaginaAggiungi]="true"
+  ></app-filtro-gestione-tipologia-servizio>
   <div class="row">
     <button [disabled]="!filtro" class="btn" (click)="add()">Crea nuovo campo</button>
   </div>
