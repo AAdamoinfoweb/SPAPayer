@@ -20,6 +20,8 @@ export class ModaleCampoFormComponent implements OnInit {
   listaTipologiche: any;
   listaJsonPath: any;
   listaTipiCampo: any;
+  livelloIntegrazione: number;
+  listaDipendeDa = [];
 
   constructor(private overlayService: OverlayService,) {
     this.listaCampiDettaglioTransazione = JSON.parse(localStorage.getItem('listaCampiDettaglioTransazione'));

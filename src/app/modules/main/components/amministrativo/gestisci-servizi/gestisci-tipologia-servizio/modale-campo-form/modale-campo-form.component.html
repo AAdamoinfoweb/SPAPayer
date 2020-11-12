@@ -4,7 +4,10 @@
       <div id="sezioneDati" class="collapse show">
         <div class="page-section">
           <div class="row">
-            <div class="col-3">
+
+          </div>
+          <div class="row">
+            <div class="col-4">
               <div class="row">
                 <label [htmlFor]="'titolo'" class="title form-elem-title"
                 >Titolo</label>
@@ -18,7 +21,22 @@
                 />
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-4">
+              <div class="row">
+                <label [htmlFor]="'tipoCampo'" class="title form-elem-title"
+                >Tipo Campo</label>
+              </div>
+              <div class="row">
+                <select
+                  id="tipoCampo"
+                  [formControl]="form.controls['tipoCampo']"
+                  [(ngModel)]="campoForm.tipoCampo">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let item of listaTipiCampo" [ngValue]="item.nome">{{item.informazioni}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-4">
               <div class="row">
                 <label [htmlFor]="'informazioni'" class="title form-elem-title"
                 >Informazioni</label>
@@ -34,7 +52,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-3">
+            <div class="col-2">
               <div class="row">
                 <label [htmlFor]="'obbligatorio'" class="title form-elem-title"
                 >Obbligatorio</label>
@@ -49,22 +67,49 @@
                 />
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-2">
               <div class="row">
-                <label [htmlFor]="'chiave'" class="title form-elem-title"
-                >Chiave</label>
+                <label [htmlFor]="'lunghezzaVariabile'" class="title form-elem-title"
+                >Lunghezza variabile</label>
               </div>
               <div class="row">
-                <input id="chiave"
-                       type="checkbox"
-                       [formControl]="form.controls['chiave']"
-                       [(ngModel)]="campoForm.chiave"
+                <input id="lunghezzaVariabile"
+                       [formControl]="form.controls['lunghezzaVariabile']"
+                       [(ngModel)]="campoForm.lunghezzaVariabile"
                        type="checkbox"
                        autocomplete="off"
                 />
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-2">
+              <div class="row">
+                <label [htmlFor]="'lunghezza'" class="title form-elem-title"
+                >Lunghezza</label>
+              </div>
+              <div class="row">
+                <input id="lunghezza"
+                       [formControl]="form.controls['lunghezza']"
+                       [(ngModel)]="campoForm.lunghezza"
+                       type="text"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="row">
+                <label [htmlFor]="'campoFisso'" class="title form-elem-title"
+                >Campo fisso</label>
+              </div>
+              <div class="row">
+                <input id="campoFisso"
+                       [formControl]="form.controls['campoFisso']"
+                       [(ngModel)]="campoForm.campoFisso"
+                       type="checkbox"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-2">
               <div class="row">
                 <label [htmlFor]="'disabilitato'" class="title form-elem-title"
                 >Disabilitato</label>
@@ -79,18 +124,38 @@
                 />
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-2">
               <div class="row">
-                <label [htmlFor]="'campoFisso'" class="title form-elem-title"
-                >Campo fisso</label>
+                <label [htmlFor]="'chiave'" class="title form-elem-title"
+                >Chiave</label>
               </div>
               <div class="row">
-                <input id="campoFisso"
-                       [formControl]="form.controls['campoFisso']"
-                       [(ngModel)]="campoForm.campoFisso"
+                <input id="chiave"
+                       type="checkbox"
+                       [formControl]="form.controls['chiave']"
+                       [(ngModel)]="campoForm.chiave"
                        type="checkbox"
                        autocomplete="off"
                 />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
+                >Livello di Integrazione</label>
+              </div>
+              <div class="row">
+                <select
+                  id="livelloIntegrazione"
+                  [formControl]="form.controls['livelloIntegrazione']"
+                  [(ngModel)]="livelloIntegrazione">
+                  <option [ngValue]="null"></option>
+                  <option [ngValue]="2">Livello Integrazione 2</option>
+                  <option [ngValue]="3">Livello Integrazione 2 BO</option>
+                  <option [ngValue]="4">Livello Integrazione 3</option>
+                </select>
               </div>
             </div>
             <div class="col-3">
@@ -107,49 +172,49 @@
                 />
               </div>
             </div>
-
-          </div>
-          <div class="row">
             <div class="col-3">
               <div class="row">
-                <label [htmlFor]="'lunghezzaVariabile'" class="title form-elem-title"
-                >Lunghezza variabile</label>
-              </div>
-              <div class="row">
-                <input id="lunghezzaVariabile"
-                       [formControl]="form.controls['lunghezzaVariabile']"
-                       [(ngModel)]="campoForm.lunghezzaVariabile"
-                       type="text"
-                       autocomplete="off"
-                />
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="row">
-                <label [htmlFor]="'lunghezza'" class="title form-elem-title"
-                >Lunghezza</label>
-              </div>
-              <div class="row">
-                <input id="lunghezza"
-                       [formControl]="form.controls['lunghezza']"
-                       [(ngModel)]="campoForm.lunghezza"
-                       type="text"
-                       autocomplete="off"
-                />
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="row">
-                <label [htmlFor]="'tipoCampo'" class="title form-elem-title"
-                >Tipo Campo</label>
+                <label [htmlFor]="'jsonPath'" class="title form-elem-title"
+                >Json path</label>
               </div>
               <div class="row">
                 <select
-                  id="tipoCampo"
-                  [formControl]="form.controls['tipoCampo']"
-                  [(ngModel)]="campoForm.tipoCampo">
+                  id="jsonPath"
+                  [formControl]="form.controls['jsonPath']"
+                  [(ngModel)]="campoForm.jsonPath">
                   <option [ngValue]="null"></option>
-                  <option *ngFor="let item of listaTipiCampo" [ngValue]="item.nome">{{item.informazioni}}</option>
+                  <option *ngFor="let item of listaJsonPath"
+                          [ngValue]="item.json_path">{{item.nome_attributo}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
+                >Tipologica</label>
+              </div>
+              <div class="row">
+                <select
+                  id="tipologica"
+                  [formControl]="form.controls['tipologica']"
+                  [(ngModel)]="campoForm.tipologica">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let item of listaTipologiche" [ngValue]="item.nome">{{item.nome}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <label [htmlFor]="'dipendeDa'" class="title form-elem-title"
+                >Dipende da</label>
+              </div>
+              <div class="row">
+                <select
+                  id="dipendeDa"
+                  [formControl]="form.controls['dipendeDa']"
+                  [(ngModel)]="campoForm.dipendeDa">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let item of listaDipendeDa" [ngValue]="item.nome">{{item.nome}}</option>
                 </select>
               </div>
             </div>
@@ -170,21 +235,6 @@
             </div>
             <div class="col-3">
               <div class="row">
-                <label [htmlFor]="'jsonPath'" class="title form-elem-title"
-                >Json path</label>
-              </div>
-              <div class="row">
-                <select
-                  id="jsonPath"
-                  [formControl]="form.controls['jsonPath']"
-                  [(ngModel)]="campoForm.jsonPath">
-                  <option [ngValue]="null"></option>
-                  <option *ngFor="let item of listaJsonPath" [ngValue]="item.json_path">{{item.nome_attributo}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="row">
                 <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
                 >Campo dettaglio transazione</label>
               </div>
@@ -194,25 +244,12 @@
                   [formControl]="form.controls['campoDettaglioTransazione']"
                   [(ngModel)]="campoForm.campoDettaglioTransazione">
                   <option [ngValue]="null"></option>
-                  <option *ngFor="let item of listaCampiDettaglioTransazione" [ngValue]="item.nome">{{item.nome}}</option>
+                  <option *ngFor="let item of listaCampiDettaglioTransazione"
+                          [ngValue]="item.nome">{{item.nome}}</option>
                 </select>
               </div>
             </div>
-            <div class="col-3">
-              <div class="row">
-                <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
-                >Tipologica</label>
-              </div>
-              <div class="row">
-                <select
-                  id="tipologica"
-                  [formControl]="form.controls['tipologica']"
-                  [(ngModel)]="campoForm.tipologica">
-                  <option [ngValue]="null"></option>
-                  <option *ngFor="let item of listaTipologiche" [ngValue]="item.nome">{{item.nome}}</option>
-                </select>
-              </div>
-            </div>
+
           </div>
           <div class="row">
             <div class="col-2">
