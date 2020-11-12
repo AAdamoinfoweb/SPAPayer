@@ -4,8 +4,8 @@
       <ng-container *ngIf="datiPagamento">
         <app-nuovo-pagamento [filtroPagamento]="false" [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
       </ng-container>
-      <ng-container *ngIf="datiCampoForm">
-        <app-modale-campo-form [campoForm]="datiCampoForm"></app-modale-campo-form>
+      <ng-container *ngIf="tipologiaServizio">
+        <app-modale-campo-form [tipologiaServizio]="tipologiaServizio"></app-modale-campo-form>
       </ng-container>
     </ng-template>
   </app-overlay>

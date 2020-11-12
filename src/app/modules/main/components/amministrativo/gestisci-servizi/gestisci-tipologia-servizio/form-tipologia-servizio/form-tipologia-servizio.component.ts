@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
@@ -54,6 +54,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   tipologiaServizioId: number;
   private livelloIntegrazione: LivelloIntegrazioneEnum;
   private listaDipendeDa: CampoForm[];
+  private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private overlayService: OverlayService,
@@ -70,13 +71,13 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.items) {
-      this.listaDipendeDa = this.items.filter((value => value.tipoCampo === TipoCampoEnum.SELECT));
-    }
   }
 
-  ngOnInit() {
 
+  ngOnInit() {
+    this.refreshItemsEvent.subscribe((items) => {
+      this.listaDipendeDa = items.filter((value => value.tipoCampo === TipoCampoEnum.SELECT));
+    });
   }
 
   controllaTipoFunzione() {
@@ -122,6 +123,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.campoTipologiaServizioService.campiTipologiaServizio(this.tipologiaServizioId, this.idFunzione)
       .subscribe(value => {
         this.items = _.sortBy(value, 'posizione');
+        this.refreshItemsEvent.emit(this.items);
         this.waiting = false;
       });
   }
@@ -148,6 +150,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     campoForm.titolo = 'nuovo campo';
     this.items.push(campoForm);
     this.showModal(campoForm);
+    this.refreshItemsEvent.emit(this.items);
     //this.showEditId = campoForm.titolo;
   }
 
@@ -155,6 +158,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.confirmationService.confirm(
       Utils.getModale(() => {
           this.items.splice(this.items.findIndex((v) => v.id === item.id), 1);
+          this.refreshItemsEvent.emit(this.items);
         },
         TipoModaleEnum.ELIMINA,
       )
@@ -189,7 +193,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   showModal(item: CampoForm) {
     this.overlayService.mostraModaleDettaglioEvent.emit({
-      datiCampoForm: item,
+      campoForm: item,
       funzione: this.funzione,
       livelloIntegrazione: this.livelloIntegrazione,
       listaDipendeDa: this.listaDipendeDa

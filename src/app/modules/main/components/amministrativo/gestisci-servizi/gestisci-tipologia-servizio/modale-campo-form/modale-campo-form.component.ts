@@ -5,6 +5,12 @@ import {OverlayService} from "../../../../../../../services/overlay.service";
 import {FunzioneGestioneEnum} from "../../../../../../../enums/funzioneGestione.enum";
 import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegrazione.enum";
 
+interface TipologiaServizioCampoForm {
+  livelloIntegrazione: LivelloIntegrazioneEnum;
+  campoForm: CampoForm;
+  funzione: FunzioneGestioneEnum;
+}
+
 @Component({
   selector: 'app-modale-campo-form',
   templateUrl: './modale-campo-form.component.html',
@@ -15,10 +21,7 @@ export class ModaleCampoFormComponent implements OnInit {
   form: FormGroup;
 
   @Input()
-  campoForm: CampoForm;
-
-  @Input()
-  funzione: FunzioneGestioneEnum;
+  tipologiaServizio: TipologiaServizioCampoForm;
 
   listaCampiDettaglioTransazione: any[];
   listaControlliLogici: any[];
@@ -27,9 +30,6 @@ export class ModaleCampoFormComponent implements OnInit {
   listaTipiCampo: any[];
 
   listaDipendeDa = [];
-
-  @Input()
-  livelloIntegrazione: LivelloIntegrazioneEnum = LivelloIntegrazioneEnum.LV2;
   listaJsonPathFiltrata: any[];
 
   livelloIntegrazioneEnum = LivelloIntegrazioneEnum;
@@ -65,14 +65,17 @@ export class ModaleCampoFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO)
+    if (!this.tipologiaServizio.livelloIntegrazione)
+      this.tipologiaServizio.livelloIntegrazione = LivelloIntegrazioneEnum.LV2;
+
+    if (this.tipologiaServizio.funzione === FunzioneGestioneEnum.DETTAGLIO)
       this.form.disable();
     else
       this.form.enable();
 
-    if (this.livelloIntegrazione === LivelloIntegrazioneEnum.LV2) {
-      this.campoForm.campo_input = true;
-      this.campoForm.jsonPath = null;
+    if (this.tipologiaServizio.livelloIntegrazione === LivelloIntegrazioneEnum.LV2) {
+      this.tipologiaServizio.campoForm.campo_input = true;
+      this.tipologiaServizio.campoForm.jsonPath = null;
     }
   }
 
@@ -82,8 +85,8 @@ export class ModaleCampoFormComponent implements OnInit {
 
   cambiaLivelloIntegrazione(item: CampoForm, event: LivelloIntegrazioneEnum) {
     if (event === LivelloIntegrazioneEnum.LV2) {
-      this.campoForm.campo_input = true;
-      this.campoForm.jsonPath = null;
+      this.tipologiaServizio.campoForm.campo_input = true;
+      this.tipologiaServizio.campoForm.jsonPath = null;
     }
     this.listaJsonPathFiltrata = this.listaJsonPath.filter(value => {
       return value.livello_integrazione_id === event && value.campo_input === item.campo_input;
@@ -91,6 +94,6 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   dipendeDaIsDisabled() {
-    return !this.campoForm.tipologica ? true : null;
+    return !this.tipologiaServizio.campoForm.tipologica ? true : null;
   }
 }
