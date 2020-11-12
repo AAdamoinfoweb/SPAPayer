@@ -22,7 +22,9 @@
             <div class="col">
               <select [ngClass]="{'text-disabled': !opzioniRaggruppamento.length}" id="selectRaggruppamento" name="raggruppamento"
                       #filtroRaggruppamento = "ngModel"
-                      [(ngModel)]="filtriRicerca.raggruppamento">
+                      [(ngModel)]="filtriRicerca.raggruppamento"
+                      (ngModelChange)="selezionaRaggruppamento()"
+              >
                 <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of opzioniRaggruppamento" [ngValue]="item.value">{{item.label}}</option>
               </select>

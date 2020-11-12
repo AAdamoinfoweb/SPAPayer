@@ -60,6 +60,12 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     });
   }
 
+  selezionaRaggruppamento() {
+    if (!this.filtriRicerca.raggruppamento) {
+      this.filtriRicerca.codice = null;
+    }
+  }
+
   cercaElementi(): void {
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
@@ -108,7 +114,12 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   disabilitaAutocompleteCodici(): boolean {
-    return this.isPaginaAggiungi ? this.filtriRicerca.raggruppamento != null : null;
+    // L'autocomplete è sempre abilitato nella pagina Gestione; È abilitato solo se è selezionato il raggruppamento nella pagina Aggiungi
+    if (this.isPaginaAggiungi) {
+      return this.filtriRicerca.raggruppamento === null ? true : null;
+    } else {
+      return null;
+    }
   }
 
   disabilitaPulisci(): boolean {
