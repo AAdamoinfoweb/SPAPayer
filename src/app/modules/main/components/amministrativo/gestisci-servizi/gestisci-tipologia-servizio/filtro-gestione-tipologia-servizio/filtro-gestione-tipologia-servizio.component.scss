@@ -16,3 +16,7 @@
 .text-invalid {
   color: #FF0000;
 }
+
+:host ::ng-deep .p-autocomplete.p-component {
+  width: 100%;
+}
