@@ -7,3 +7,28 @@
   color: #FF0000;
 }
 
+:host ::ng-deep .upload-pictures-wall .upload[type=file] + label {
+  background: none;
+  border-color: #bfdfff;
+
+  .icon {
+    fill: #004987;
+  }
+}
+
+:host ::ng-deep .upload-pictures-wall .upload[type=file] + label:hover {
+  border-color: #004987;
+}
+
+:host ::ng-deep .upload-pictures-wall .upload[type=file]:disabled + label {
+  background: none;
+  border-color: #E3E3E3;
+  cursor: default;
+  > .icon {
+    fill: transparent;
+  }
+}
+
+.textArea{
+  height: 128px;
+}

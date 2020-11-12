@@ -75,11 +75,11 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   }
 
   caricaImmagine() {
-    if (this.datiEnte.logo.contenuto) {
+    if (this.datiEnte && this.datiEnte.logo.contenuto) {
       // @ts-ignore
-      const output: HTMLCanvasElement = document.getElementById('canvas');
-      if (output != null) {
-        const context = output.getContext('2d');
+      const canvas: HTMLCanvasElement = document.getElementById('canvas');
+      if (canvas != null) {
+        const context = canvas.getContext('2d');
         const reader = new FileReader();
         // @ts-ignore
         reader.readAsDataURL(Utils.b64toBlob(this.datiEnte.logo.contenuto));
@@ -89,20 +89,21 @@ export class DatiEnteComponent implements OnInit, OnChanges {
             imageObj.src = reader.result;
           }
           imageObj.onload = () => {
-            context.clearRect(0, 0, 90, 90);
-            this.scaleToFit(imageObj, context);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            this.scaleToFit(imageObj, canvas);
           };
         };
       }
     }
   }
 
-  scaleToFit(img, context) {
+  scaleToFit(img, canvas) {
+    const context = canvas.getContext('2d');
     // get the scale
-    const scale = Math.min(90 / img.width, 90 / img.height);
+    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
     // get the top left position of the image
-    const x = (90 / 2) - (img.width / 2) * scale;
-    const y = (90 / 2) - (img.height / 2) * scale;
+    const x = (canvas.width / 2) - (img.width / 2) * scale;
+    const y = (canvas.height / 2) - (img.height / 2) * scale;
     context.drawImage(img, x, y, img.width * scale, img.height * scale);
   }
 
@@ -203,8 +204,8 @@ export class DatiEnteComponent implements OnInit, OnChanges {
 
   loadImg($event: any) {
     // @ts-ignore
-    const output: HTMLCanvasElement = document.getElementById('canvas');
-    const context = output.getContext('2d');
+    const canvas: HTMLCanvasElement = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
     const input = $event.target;
     const reader = new FileReader();
     reader.onload = () => {
@@ -234,8 +235,8 @@ export class DatiEnteComponent implements OnInit, OnChanges {
         }
 
         this.datiEnte.logo = logo;
-        context.clearRect(0, 0, 90, 90);
-        this.scaleToFit(imageObj, context);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        this.scaleToFit(imageObj, canvas);
       };
     };
     reader.readAsDataURL(input.files[0]);

@@ -195,7 +195,9 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   private setListaBeneficiari() {
     this.datiEnte.listaBeneficiari = this.formattaCampi(this.datiEnte.listaBeneficiari, true);
     this.datiEnte.listaBeneficiari.forEach((beneficiario) => {
-      this.aggiungiBeneficiario(beneficiario);
+      if(this.target != null){
+        this.aggiungiBeneficiario(beneficiario);
+      }
     });
   }
 

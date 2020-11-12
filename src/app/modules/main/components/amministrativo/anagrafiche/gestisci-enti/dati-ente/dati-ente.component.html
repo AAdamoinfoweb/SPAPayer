@@ -78,6 +78,7 @@
                (ngModelChange)="onChangeModel(datiEnteForm, descrizione)"
                maxlength="255"
                [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+               class="textArea"
              ></textarea>
           </div>
         </div>
@@ -99,10 +100,18 @@
         </div>
         <div class="row">
           <div class="col">
-            <input id="pathLogo" type='file' accept='image/*' (change)='loadImg($event)' style="display: none"
-                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
-            <canvas id="canvas" width="90" height="90" (click)="onClickImage()"
-                    style="border: 1px solid #5c6f82; cursor: pointer;" class="canvas"
+            <ul class="upload-pictures-wall" style="position:absolute;">
+              <li>
+                <input id="pathLogo" type='file' accept='image/*' (change)='loadImg($event)' class="upload pictures-wall" style="display: none"
+                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                <label for="pathLogo" id="labelLogo">
+                  <svg class="icon icon-sm" aria-hidden="true" *ngIf="datiEnte.logo == null || datiEnte.logo.contenuto == null"><use xlink:href="assets/img/sprite.svg#it-plus"></use></svg>
+                </label>
+              </li>
+            </ul>
+
+            <canvas id="canvas" width="128" height="128" (click)="onClickImage()"
+                    class="canvas"
                     disabled="{{funzione === FunzioneGestioneEnum.DETTAGLIO}}">
             </canvas>
           </div>
