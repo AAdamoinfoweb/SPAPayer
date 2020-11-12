@@ -16,6 +16,7 @@ import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
+import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -50,7 +51,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   readonly lunghezzaMaxCol3: number = 15;
 
   showEditId: string;
-  filtro: any = true;
+  filtro: ParametriRicercaTipologiaServizio;
   tipologiaServizioId: number;
   private livelloIntegrazione: LivelloIntegrazioneEnum;
   private listaDipendeDa: CampoForm[];
@@ -111,18 +112,31 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       }));
     if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       this.tipologiaServizioId = parseInt(this.activatedRoute.snapshot.paramMap.get('tipologiaServizioId'));
-      this.caricaCampi();
-    } else {
-      // todo rimpiazzare mock id per l'inserisci
-      this.tipologiaServizioId = 13;
-      this.caricaCampi();
+
+      this.campoTipologiaServizioService.recuperaDettaglioTipologiaServizio(this.tipologiaServizioId, this.idFunzione).subscribe(tipologiaServizio => {
+        this.filtro = new ParametriRicercaTipologiaServizio();
+        this.filtro.raggruppamentoId = tipologiaServizio.raggruppamentoId;
+
+        this.filtro.codiceTipologia = tipologiaServizio.codice;
+      });
+
+      this.caricaCampi(this.tipologiaServizioId);
     }
   }
 
-  caricaCampi(): void {
-    this.campoTipologiaServizioService.campiTipologiaServizio(this.tipologiaServizioId, this.idFunzione)
+  caricaCampi(tipologiaServizioId: number): void {
+    this.campoTipologiaServizioService.campiTipologiaServizio(tipologiaServizioId, this.idFunzione)
       .subscribe(value => {
         this.items = _.sortBy(value, 'posizione');
+
+        // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
+        if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+          this.items.forEach(campo => {
+            campo.id = null;
+            // todo valutare se impostare campo.dipendeDa = null
+          });
+        }
+
         this.refreshItemsEvent.emit(this.items);
         this.waiting = false;
       });
@@ -143,6 +157,19 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   disabilitaBottone(): boolean {
     // todo logica disabilita bottone salva
     return true;
+  }
+
+  onChangeFiltri(filtri: ParametriRicercaTipologiaServizio) {
+    this.filtro = filtri;
+
+    if (this.filtro.codiceTipologia) {
+      this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtro, this.idFunzione).subscribe(listaTipologie => {
+        // Con una ricerca di raggruppamento+codice, arriva una sola tipologia, che sarà usata per precaricarne e copiarne i campi
+        if (listaTipologie && listaTipologie.length) {
+          this.caricaCampi(listaTipologie[0].id);
+        }
+      });
+    }
   }
 
   add() {

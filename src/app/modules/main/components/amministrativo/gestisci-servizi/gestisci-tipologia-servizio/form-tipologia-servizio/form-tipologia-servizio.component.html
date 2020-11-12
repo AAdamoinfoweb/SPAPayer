@@ -19,12 +19,14 @@
   <!-- dati -->
   <app-filtro-gestione-tipologia-servizio
     *ngIf="idFunzione"
+    [filtriIniziali]="filtro"
     [isPaginaAggiungi]="true"
+    (onChangeFiltri)="onChangeFiltri($event)"
   ></app-filtro-gestione-tipologia-servizio>
   <div class="row">
-    <button [disabled]="!filtro" class="btn" (click)="add()">Crea nuovo campo</button>
+    <button [disabled]="!filtro?.raggruppamentoId" class="btn" (click)="add()">Crea nuovo campo</button>
   </div>
-  <ng-container *ngIf="filtro">
+  <ng-container *ngIf="filtro?.raggruppamentoId">
     <div *ngIf="!waiting" class="row" cdkDropListGroup>
       <ng-container *ngFor="let item of items;let i=index">
         <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList

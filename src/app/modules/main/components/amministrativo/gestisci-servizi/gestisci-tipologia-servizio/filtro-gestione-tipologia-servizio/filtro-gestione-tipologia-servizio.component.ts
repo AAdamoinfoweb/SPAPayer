@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FiltroGestioneElementiComponent} from '../../../filtro-gestione-elementi.component';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {ActivatedRoute} from '@angular/router';
@@ -16,7 +16,7 @@ import {Utils} from '../../../../../../../utils/Utils';
   templateUrl: './filtro-gestione-tipologia-servizio.component.html',
   styleUrls: ['./filtro-gestione-tipologia-servizio.component.scss']
 })
-export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElementiComponent implements OnInit {
+export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElementiComponent implements OnInit, OnChanges {
 
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaTipologiaServizio> = new EventEmitter<ParametriRicercaTipologiaServizio>();
@@ -28,7 +28,11 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   TipoCampoEnum = TipoCampoEnum;
 
   opzioniRaggruppamento: OpzioneSelect[] = [];
+
   filtriRicerca: ParametriRicercaTipologiaServizio = new ParametriRicercaTipologiaServizio();
+
+  @Input()
+  filtriIniziali: ParametriRicercaTipologiaServizio;
 
   listaCodiciTipologia: string[] = [];
 
@@ -43,6 +47,12 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   ngOnInit(): void {
     // todo fixare logica idFunzione, il codice entra qui nell'onInit prima di valorizzare idFunzione nel padre
     this.inizializzaOpzioniRaggruppamento();
+  }
+
+  ngOnChanges(sc: SimpleChanges) {
+    if (sc.filtriIniziali.currentValue) {
+      this.filtriRicerca = this.filtriIniziali;
+    }
   }
 
   inizializzaOpzioniRaggruppamento(): void {
@@ -63,6 +73,15 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   selezionaRaggruppamento() {
     this.filtriRicerca.codiceTipologia = null;
     this.listaCodiciTipologia = [];
+    if (this.isPaginaAggiungi) {
+      this.onChangeFiltri.emit(this.filtriRicerca);
+    }
+  }
+
+  selezionaCodice() {
+    if (this.isPaginaAggiungi) {
+      this.onChangeFiltri.emit(this.filtriRicerca);
+    }
   }
 
   cercaElementi(): void {
@@ -115,7 +134,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   disabilitaAutocompleteCodici(): boolean {
     // L'autocomplete è sempre abilitato nella pagina Gestione; È abilitato solo se è selezionato il raggruppamento nella pagina Aggiungi
     if (this.isPaginaAggiungi) {
-      return this.filtriRicerca.raggruppamentoId === null ? true : null;
+      return !this.filtriRicerca.raggruppamentoId ? true : null;
     } else {
       return null;
     }
