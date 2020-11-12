@@ -82,7 +82,7 @@ const routes: Routes = [
   {path: 'gestisciTipologiaServizi', component: GestisciTipologiaServizioComponent},
   {path: 'gestisciTipologiaServizi/aggiungiTipologia', component: FormTipologiaServizioComponent},
   {path: 'gestisciTipologiaServizi/modificaTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
-  {path: 'gestisciTipologiaServizi/dettaglioTipologia/:tipologiaServizioId', component: FormRaggruppamentoTipologieComponent}
+  {path: 'gestisciTipologiaServizi/dettaglioTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent}
 ];
 
 @NgModule({

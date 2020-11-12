@@ -14,6 +14,7 @@ import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.
 import {Utils} from '../../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
 import {OverlayService} from '../../../../../../../services/overlay.service';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -35,6 +36,13 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   waiting = true;
 
   funzione: FunzioneGestioneEnum;
+
+  FunzioneGestioneEnum = FunzioneGestioneEnum;
+
+  titoloPagina: string;
+  tooltip: string;
+
+  breadcrumbList: Breadcrumb[] = [];
 
   readonly lunghezzaMaxCol1: number = 5;
   readonly lunghezzaMaxCol2: number = 10;
@@ -61,7 +69,27 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   }
 
+  controllaTipoFunzione() {
+    const url = this.activatedRoute.snapshot.url[1].path;
+    switch (url) {
+      case 'dettaglioTipologia':
+        this.funzione = FunzioneGestioneEnum.DETTAGLIO;
+        break;
+      case 'aggiungiTipologia':
+        this.funzione = FunzioneGestioneEnum.AGGIUNGI;
+        break;
+      case 'modificaTipologia':
+        this.funzione = FunzioneGestioneEnum.MODIFICA;
+        break;
+    }
+  }
+
   initFormPage(snapshot: ActivatedRouteSnapshot) {
+    this.controllaTipoFunzione();
+    this.inizializzaBreadcrumb();
+    this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Tipologia Servizio';
+    this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una tipologia servizio';
+
     this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .subscribe(((value: any) => {
         if (!localStorage.getItem('listaCampiDettaglioTransazione')) {
@@ -87,8 +115,21 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       });
   }
 
+  inizializzaBreadcrumb(): void {
+    const breadcrumbs: SintesiBreadcrumb[] = []
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
+    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Tipologie Servizio', this.basePath));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Tipologie Servizio', null));
+    this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
+  }
+
   onClickSalva(): void {
     // TODO onclicksalva
+  }
+
+  disabilitaBottone(): boolean {
+    // todo logica disabilita bottone salva
+    return true;
   }
 
   add() {

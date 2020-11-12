@@ -1,49 +1,73 @@
-<h1>Gestisci Campi di Tipologia servizio</h1>
-<div class="row">
-  <ul class="legend">
-    <li><span class="field-disabled"></span> Campo disabilitato</li>
-    <li><span class="field-input"></span> Campo input</li>
-    <li><span class="field-output"></span> Campo output</li>
-    <li><span class="required"></span> Campo obbligatorio</li>
-    <li><span class="key"></span> Campo chiave</li>
-  </ul>
-</div>
+<div class="container-fluid">
+  <!-- breadcrumb -->
+  <it-breadcrumb [dark]="false" [separator]="'/'">
+    <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
+                        [link]="item.link">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
 
-<!--<app-filtro-gestione-tipologia-servizio [isPaginaAggiungi]="true"></app-filtro-gestione-tipologia-servizio>-->
-<div class="row">
-  <button [disabled]="!filtro" class="btn" (click)="add()">Crea campo</button>
-</div>
-<ng-container *ngIf="filtro">
-  <div *ngIf="!waiting" class="row" cdkDropListGroup>
-    <ng-container *ngFor="let item of items;let i=index">
-      <div (click)="showModal(item)" [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
-           cdkDropListOrientation="horizontal"
-           [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
-        <div style="min-height: 5vh;"
-             [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato, 'field-input': (item.campo_input && !item.disabilitato), 'field-output': (!item.campo_input && !item.disabilitato)}"
-             cdkDrag>
-          <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-          <div class="row" style="width: 100%">
-            <div *ngIf="showEditId !== item.titolo" (dblclick)="showEditId = item.titolo"
-                 class="col-7 text-right">{{item.titolo}}</div>
-            <div *ngIf="showEditId == item.titolo" class="col-6 text-right"><input autofocus
-                                                                                   (keyup.enter)="showEditId = null"
-                                                                                   [(ngModel)]="item.titolo"/></div>
-            <div class="col-1"><span [class]="{'required':item.obbligatorio}"></span></div>
-            <div class="col-1"><span [class]="{'key':item.chiave}"></span></div>
-            <div class="col-3 text-right">
-              <span class="close" (click)="removeItem(item)"></span>
+  <!-- titolo -->
+  <h3 class="mb-2 page-title"><strong>{{titoloPagina}}</strong>
+    <span it-tooltip="{{tooltip}}">
+      <svg class="bg-light icon icon-lg icon-padded">
+        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+      </svg>
+    </span>
+  </h3>
+
+  <!-- dati -->
+  <!--<app-filtro-gestione-tipologia-servizio [isPaginaAggiungi]="true"></app-filtro-gestione-tipologia-servizio>-->
+  <div class="row">
+    <button [disabled]="!filtro" class="btn" (click)="add()">Crea campo</button>
+  </div>
+  <ng-container *ngIf="filtro">
+    <div *ngIf="!waiting" class="row" cdkDropListGroup>
+      <ng-container *ngFor="let item of items;let i=index">
+        <div (click)="showModal(item)" [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
+             cdkDropListOrientation="horizontal"
+             [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
+          <div style="min-height: 5vh;"
+               [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato, 'field-input': (item.campo_input && !item.disabilitato), 'field-output': (!item.campo_input && !item.disabilitato)}"
+               cdkDrag>
+            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+            <div class="row" style="width: 100%">
+              <div *ngIf="showEditId !== item.titolo" (dblclick)="showEditId = item.titolo"
+                   class="col-7 text-right">{{item.titolo}}</div>
+              <div *ngIf="showEditId == item.titolo" class="col-6 text-right"><input autofocus
+                                                                                     (keyup.enter)="showEditId = null"
+                                                                                     [(ngModel)]="item.titolo"/></div>
+              <div class="col-1"><span [class]="{'required':item.obbligatorio}"></span></div>
+              <div class="col-1"><span [class]="{'key':item.chiave}"></span></div>
+              <div class="col-3 text-right">
+                <span class="close" (click)="removeItem(item)"></span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </ng-container>
-  </div>
-  <p-confirmDialog #cb icon="pi pi-exclamation-triangle">
-    <p-footer>
-      <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
-      <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
-    </p-footer>
-  </p-confirmDialog>
-</ng-container>
+      </ng-container>
+    </div>
+  </ng-container>
 
+  <hr/>
+</div>
+
+<!-- Bottoni -->
+<div class="row">
+  <!-- Bottone sx -->
+  <div class="col-2">
+    <button id="buttonAnnulla" class="btn btn-secondary" (click)="onClickAnnulla(funzione)">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
+  </div>
+  <!-- Bottoni dx -->
+  <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+    <button id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="onClickSalva()">Salva</button>
+  </div>
+</div>
+
+<!-- Modale -->
+<p-confirmDialog #cb icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
+    <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
+  </p-footer>
+</p-confirmDialog>
