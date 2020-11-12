@@ -23,30 +23,19 @@ export class CampoTipologiaServizioService {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
-    return of({
-      id: 13,
-      codice: 'cds',
-      descrizione: 'MULTE - TIPOLOGIA SERVIZIO DI PROVA',
-      raggruppamentoId: 1,
-      raggruppamentoCodice: '01',
-      raggruppamentoDescrizione: 'RAGGRUPPAMENTO TIPOLOGIA SERVIZIO DI PROVA 2'
-    });
-
-    // todo rimpiazzare il return mockato con la chiamata al backend quando sarà disponibile l'operation di dettaglio
-
-    // return this.http.get(environment.bffBaseUrl + this.baseUrl + this.tipologiaServizioUrl + idTipologiaServizio, {
-    //   withCredentials: true,
-    //   headers: h
-    // }).pipe(map((body: TipologiaServizio) => {
-    //     return body;
-    //   }),
-    //   catchError((err, caught) => {
-    //     if (err.status === 401 || err.status === 400) {
-    //       return of(null);
-    //     } else {
-    //       return of(null);
-    //     }
-    //   }));
+    return this.http.get(environment.bffBaseUrl + this.baseUrl + this.tipologiaServizioUrl + '/' + idTipologiaServizio, {
+      withCredentials: true,
+      headers: h
+    }).pipe(map((body: TipologiaServizio) => {
+        return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
   }
 
   recuperaTipologieServizio(filtri: ParametriRicercaTipologiaServizio, idFunzione): Observable<TipologiaServizio[]> {
