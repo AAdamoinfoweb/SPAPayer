@@ -3,7 +3,6 @@ import {GestisciElementoComponent} from '../../gestisci-elemento.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {SocietaService} from '../../../../../../services/societa.service';
 import {MenuService} from '../../../../../../services/menu.service';
 import {ConfirmationService} from 'primeng/api';
 import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
@@ -15,7 +15,7 @@ import {Utils} from '../../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
-import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegrazione.enum";
+import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -51,6 +51,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   showEditId: string;
   filtro: any = true;
+  tipologiaServizioId: number;
   private livelloIntegrazione: LivelloIntegrazioneEnum;
   private listaDipendeDa: CampoForm[];
 
@@ -107,7 +108,18 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         localStorage.setItem('listaJsonPath', JSON.stringify(value.listaJsonPath));
         localStorage.setItem('listaTipiCampo', JSON.stringify(value.listaTipiCampo));
       }));
-    this.campoTipologiaServizioService.campiTipologiaServizio(13, this.idFunzione)
+    if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      this.tipologiaServizioId = parseInt(this.activatedRoute.snapshot.paramMap.get('tipologiaServizioId'));
+      this.caricaCampi();
+    } else {
+      // todo rimpiazzare mock id per l'inserisci
+      this.tipologiaServizioId = 13;
+      this.caricaCampi();
+    }
+  }
+
+  caricaCampi(): void {
+    this.campoTipologiaServizioService.campiTipologiaServizio(this.tipologiaServizioId, this.idFunzione)
       .subscribe(value => {
         this.items = _.sortBy(value, 'posizione');
         this.waiting = false;
