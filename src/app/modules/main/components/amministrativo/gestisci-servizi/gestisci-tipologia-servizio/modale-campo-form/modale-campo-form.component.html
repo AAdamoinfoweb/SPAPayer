@@ -136,7 +136,7 @@
               <div class="row">
                 <select
                   id="tipologiaServizio.livelloIntegrazione"
-                  [formControl]="form.controls['tipologiaServizio.livelloIntegrazione']"
+                  [formControl]="form.controls['livelloIntegrazione']"
                   [(ngModel)]="tipologiaServizio.livelloIntegrazione"
                   (ngModelChange)="cambiaLivelloIntegrazione(tipologiaServizio.campoForm, $event)">
                   <option [ngValue]="livelloIntegrazioneEnum.LV2">Livello 2</option>

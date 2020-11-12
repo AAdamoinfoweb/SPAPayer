@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
     this.overlayService.mostraModaleDettaglioEvent
       .subscribe(value => {
         this.datiPagamento = value?.datiPagamento;
-        if (value?.datiCampoForm) {
+        if (value?.campoForm) {
           this.tipologiaServizio = value;
         }
         this.mostraModale = !!value;

@@ -193,8 +193,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   showModal(item: CampoForm) {
     this.overlayService.mostraModaleDettaglioEvent.emit({
-      datiCampoForm: item,
-      a: this.funzione,
+      campoForm: item,
+      funzione: this.funzione,
       livelloIntegrazione: this.livelloIntegrazione,
       listaDipendeDa: this.listaDipendeDa
     });
