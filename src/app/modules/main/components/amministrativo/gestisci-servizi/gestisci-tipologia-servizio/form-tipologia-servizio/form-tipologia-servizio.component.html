@@ -41,7 +41,7 @@
               </div>
               <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span></div>
               <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
-              <div class="col-3 text-right">
+              <div (click)="showModal(item)" class="col-3 text-right">
                 <span class="close" (click)="removeItem(item)"></span>
               </div>
             </div>
