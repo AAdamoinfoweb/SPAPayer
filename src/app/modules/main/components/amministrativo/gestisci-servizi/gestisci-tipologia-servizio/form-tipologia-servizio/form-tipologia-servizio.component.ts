@@ -15,6 +15,7 @@ import {Utils} from '../../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
+import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegrazione.enum";
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -50,6 +51,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   showEditId: string;
   filtro: any = true;
+  private livelloIntegrazione: LivelloIntegrazioneEnum;
 
   constructor(
     private overlayService: OverlayService,
@@ -176,6 +178,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   showModal(item: CampoForm) {
-    this.overlayService.mostraModaleDettaglioEvent.emit({datiCampoForm: item});
+    this.overlayService.mostraModaleDettaglioEvent.emit({datiCampoForm: item, funzione: this.funzione, livelloIntegrazione: this.livelloIntegrazione});
   }
 }

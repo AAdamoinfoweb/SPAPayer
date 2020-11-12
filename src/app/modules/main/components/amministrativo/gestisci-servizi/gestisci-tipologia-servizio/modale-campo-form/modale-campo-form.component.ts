@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CampoForm} from "../../../../../model/CampoForm";
 import {OverlayService} from "../../../../../../../services/overlay.service";
+import {FunzioneGestioneEnum} from "../../../../../../../enums/funzioneGestione.enum";
+import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegrazione.enum";
 
 @Component({
   selector: 'app-modale-campo-form',
@@ -15,6 +17,9 @@ export class ModaleCampoFormComponent implements OnInit {
   @Input()
   campoForm: CampoForm;
 
+  @Input()
+  funzione: FunzioneGestioneEnum;
+
   listaCampiDettaglioTransazione: any[];
   listaControlliLogici: any[];
   listaTipologiche: any[];
@@ -24,8 +29,10 @@ export class ModaleCampoFormComponent implements OnInit {
   listaDipendeDa = [];
 
   @Input()
-  livelloIntegrazione: number = 2;
+  livelloIntegrazione: LivelloIntegrazioneEnum = LivelloIntegrazioneEnum.LV2;
   listaJsonPathFiltrata: any[];
+
+  livelloIntegrazioneEnum = LivelloIntegrazioneEnum;
 
   constructor(private overlayService: OverlayService,) {
     this.listaCampiDettaglioTransazione = JSON.parse(localStorage.getItem('listaCampiDettaglioTransazione'));
@@ -57,7 +64,13 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.livelloIntegrazione === 2) {
+
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO)
+      this.form.disable();
+    else
+      this.form.enable();
+
+    if (this.livelloIntegrazione === LivelloIntegrazioneEnum.LV2) {
       this.campoForm.campo_input = true;
       this.campoForm.jsonPath = null;
     }
@@ -67,12 +80,12 @@ export class ModaleCampoFormComponent implements OnInit {
     this.overlayService.mostraModaleDettaglioEvent.emit(null);
   }
 
-  cambiaLivelloIntegrazione(event: any) {
-    if(event == 2) {
+  cambiaLivelloIntegrazione(event: LivelloIntegrazioneEnum) {
+    if (event === LivelloIntegrazioneEnum.LV2) {
       this.campoForm.campo_input = true;
       this.campoForm.jsonPath = null;
     }
-    this.listaJsonPathFiltrata = this.listaJsonPath.filter(value => (value.livello_integrazione_id == event));
+    this.listaJsonPathFiltrata = this.listaJsonPath.filter(value => value.livello_integrazione_id === event);
   }
 
   dipendeDaIsDisabled() {

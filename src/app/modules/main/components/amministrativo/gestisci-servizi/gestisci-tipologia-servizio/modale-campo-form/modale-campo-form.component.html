@@ -1,3 +1,4 @@
+
 <div class="container">
   <div class="row">
     <form [formGroup]="form">
@@ -152,9 +153,9 @@
                   [formControl]="form.controls['livelloIntegrazione']"
                   [(ngModel)]="livelloIntegrazione"
                   (ngModelChange)="cambiaLivelloIntegrazione($event)">
-                  <option [ngValue]="2">Livello 2</option>
-                  <option [ngValue]="3">Livello 2 BO</option>
-                  <option [ngValue]="4">Livello 3</option>
+                  <option [ngValue]="livelloIntegrazioneEnum.LV2">Livello 2</option>
+                  <option [ngValue]="livelloIntegrazioneEnum.LV2_BACK_OFFICE">Livello 2 BO</option>
+                  <option [ngValue]="livelloIntegrazioneEnum.LV3">Livello 3</option>
                 </select>
               </div>
             </div>
