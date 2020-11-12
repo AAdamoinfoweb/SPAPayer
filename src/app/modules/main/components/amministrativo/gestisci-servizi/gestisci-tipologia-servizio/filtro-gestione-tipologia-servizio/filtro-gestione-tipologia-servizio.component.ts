@@ -61,9 +61,8 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   selezionaRaggruppamento() {
-    if (!this.filtriRicerca.raggruppamentoId) {
-      this.filtriRicerca.codiceTipologia = null;
-    }
+    this.filtriRicerca.codiceTipologia = null;
+    this.listaCodiciTipologia = [];
   }
 
   cercaElementi(): void {
