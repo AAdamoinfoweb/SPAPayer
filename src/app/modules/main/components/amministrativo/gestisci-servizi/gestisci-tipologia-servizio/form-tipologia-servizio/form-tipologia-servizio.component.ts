@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
@@ -22,7 +22,7 @@ import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegra
   templateUrl: './form-tipologia-servizio.component.html',
   styleUrls: ['./form-tipologia-servizio.component.scss']
 })
-export class FormTipologiaServizioComponent extends FormElementoParentComponent implements OnInit {
+export class FormTipologiaServizioComponent extends FormElementoParentComponent implements OnInit, OnChanges {
 
   @ViewChild(CdkDropListGroup) listGroup: CdkDropListGroup<CdkDropList>;
   @ViewChild(CdkDropList) placeholder: CdkDropList;
@@ -52,6 +52,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   showEditId: string;
   filtro: any = true;
   private livelloIntegrazione: LivelloIntegrazioneEnum;
+  private listaDipendeDa: CampoForm[];
 
   constructor(
     private overlayService: OverlayService,
@@ -65,6 +66,12 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     super(confirmationService, activatedRoute, amministrativoService, http, router);
     this.target = null;
     this.source = null;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.items) {
+      this.listaDipendeDa = this.items.filter((value => value.tipoCampo === TipoCampoEnum.SELECT));
+    }
   }
 
   ngOnInit() {
@@ -119,8 +126,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = []
-    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Anagrafiche', null));
-    breadcrumbs.push(new SintesiBreadcrumb( 'Gestisci Tipologie Servizio', this.basePath));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Anagrafiche', null));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Tipologie Servizio', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Tipologie Servizio', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
@@ -178,6 +185,11 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   showModal(item: CampoForm) {
-    this.overlayService.mostraModaleDettaglioEvent.emit({datiCampoForm: item, funzione: this.funzione, livelloIntegrazione: this.livelloIntegrazione});
+    this.overlayService.mostraModaleDettaglioEvent.emit({
+      datiCampoForm: item,
+      funzione: this.funzione,
+      livelloIntegrazione: this.livelloIntegrazione,
+      listaDipendeDa: this.listaDipendeDa
+    });
   }
 }
