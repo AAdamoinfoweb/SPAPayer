@@ -121,6 +121,10 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       this.tipologiaServizioId = parseInt(this.activatedRoute.snapshot.paramMap.get('tipologiaServizioId'));
       this.caricaCampi();
+    } else {
+      // todo rimpiazzare mock id per l'inserisci
+      this.tipologiaServizioId = 13;
+      this.caricaCampi();
     }
   }
 
