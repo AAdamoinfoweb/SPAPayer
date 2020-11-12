@@ -150,11 +150,11 @@
                 <select
                   id="livelloIntegrazione"
                   [formControl]="form.controls['livelloIntegrazione']"
-                  [(ngModel)]="livelloIntegrazione">
-                  <option [ngValue]="null"></option>
-                  <option [ngValue]="2">Livello Integrazione 2</option>
-                  <option [ngValue]="3">Livello Integrazione 2 BO</option>
-                  <option [ngValue]="4">Livello Integrazione 3</option>
+                  [(ngModel)]="livelloIntegrazione"
+                  (ngModelChange)="cambiaLivelloIntegrazione($event)">
+                  <option [ngValue]="2">Livello 2</option>
+                  <option [ngValue]="3">Livello 2 BO</option>
+                  <option [ngValue]="4">Livello 3</option>
                 </select>
               </div>
             </div>
@@ -167,6 +167,7 @@
                 <input id="campo_input"
                        [formControl]="form.controls['campo_input']"
                        [(ngModel)]="campoForm.campo_input"
+                       [attr.disabled]="livelloIntegrazione == 2 ? true : null"
                        type="checkbox"
                        autocomplete="off"
                 />
@@ -180,10 +181,11 @@
               <div class="row">
                 <select
                   id="jsonPath"
+                  [attr.disabled]="livelloIntegrazione == 2 ? true : null"
                   [formControl]="form.controls['jsonPath']"
                   [(ngModel)]="campoForm.jsonPath">
                   <option [ngValue]="null"></option>
-                  <option *ngFor="let item of listaJsonPath"
+                  <option *ngFor="let item of listaJsonPathFiltrata"
                           [ngValue]="item.json_path">{{item.nome_attributo}}</option>
                 </select>
               </div>
@@ -210,6 +212,7 @@
               </div>
               <div class="row">
                 <select
+                  [attr.disabled]="dipendeDaIsDisabled()"
                   id="dipendeDa"
                   [formControl]="form.controls['dipendeDa']"
                   [(ngModel)]="campoForm.dipendeDa">

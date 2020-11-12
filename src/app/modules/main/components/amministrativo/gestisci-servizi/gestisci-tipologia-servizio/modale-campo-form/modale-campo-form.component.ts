@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CampoForm} from "../../../../../model/CampoForm";
 import {OverlayService} from "../../../../../../../services/overlay.service";
 
@@ -15,13 +15,17 @@ export class ModaleCampoFormComponent implements OnInit {
   @Input()
   campoForm: CampoForm;
 
-  listaCampiDettaglioTransazione: any;
-  listaControlliLogici: any;
-  listaTipologiche: any;
-  listaJsonPath: any;
-  listaTipiCampo: any;
-  livelloIntegrazione: number;
+  listaCampiDettaglioTransazione: any[];
+  listaControlliLogici: any[];
+  listaTipologiche: any[];
+  listaJsonPath: any[];
+  listaTipiCampo: any[];
+
   listaDipendeDa = [];
+
+  @Input()
+  livelloIntegrazione: number = 2;
+  listaJsonPathFiltrata: any[];
 
   constructor(private overlayService: OverlayService,) {
     this.listaCampiDettaglioTransazione = JSON.parse(localStorage.getItem('listaCampiDettaglioTransazione'));
@@ -31,10 +35,11 @@ export class ModaleCampoFormComponent implements OnInit {
     this.listaTipiCampo = JSON.parse(localStorage.getItem('listaTipiCampo'));
 
     this.form = new FormGroup({
-      titolo: new FormControl(null),
-      obbligatorio: new FormControl(null),
-      tipoCampo: new FormControl(null),
+      titolo: new FormControl(null, [Validators.required]),
+      tipoCampo: new FormControl(null, [Validators.required]),
       informazioni: new FormControl(null),
+      livelloIntegrazione: new FormControl(null),
+      obbligatorio: new FormControl(null),
       lunghezzaVariabile: new FormControl(null),
       lunghezza: new FormControl(null),
       campoFisso: new FormControl(null),
@@ -52,9 +57,25 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.livelloIntegrazione === 2) {
+      this.campoForm.campo_input = true;
+      this.campoForm.jsonPath = null;
+    }
   }
 
   clickIndietro() {
     this.overlayService.mostraModaleDettaglioEvent.emit(null);
+  }
+
+  cambiaLivelloIntegrazione(event: any) {
+    if(event == 2) {
+      this.campoForm.campo_input = true;
+      this.campoForm.jsonPath = null;
+    }
+    this.listaJsonPathFiltrata = this.listaJsonPath.filter(value => (value.livello_integrazione_id == event));
+  }
+
+  dipendeDaIsDisabled() {
+    return !this.campoForm.tipologica ? true : null;
   }
 }
