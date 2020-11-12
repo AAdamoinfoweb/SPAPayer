@@ -47,9 +47,9 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista delle statistiche e filtrarle';
   breadcrumbList = [];
   readonly toolbarIcons = [
-    {type: ToolEnum.INSERT, tooltip: 'Inserisci Ente'},
-    {type: ToolEnum.UPDATE, disabled: true, tooltip: 'Modifica Ente'},
-    {type: ToolEnum.DELETE, disabled: true, tooltip: 'Elimina Ente'},
+    {type: ToolEnum.INSERT, tooltip: 'Inserisci Statistica'},
+    {type: ToolEnum.UPDATE, disabled: true, tooltip: 'Modifica Statistica'},
+    {type: ToolEnum.DELETE, disabled: true, tooltip: 'Elimina Statistica'},
     {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
     {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'}
   ];
