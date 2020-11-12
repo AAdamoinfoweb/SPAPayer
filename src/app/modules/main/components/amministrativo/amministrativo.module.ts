@@ -59,6 +59,7 @@ import {DatiBeneficiarioComponent} from "./anagrafiche/gestisci-enti/dati-benefi
 import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
 import {DialogModule} from "primeng/dialog";
 import { GestisciStatisticheComponent } from './gestisci-statistiche/gestisci-statistiche.component';
+import { FiltroGestisciStatisticheComponent } from './gestisci-statistiche/filtro-gestisci-statistiche/filtro-gestisci-statistiche.component';
 
 
 @NgModule({
@@ -98,7 +99,8 @@ import { GestisciStatisticheComponent } from './gestisci-statistiche/gestisci-st
     GestisciCampoTipologiaServizioComponent,
     DatiBeneficiarioComponent,
     DatiContoCorrenteComponent,
-    GestisciStatisticheComponent
+    GestisciStatisticheComponent,
+    FiltroGestisciStatisticheComponent
   ],
   imports: [
     HttpClientModule,

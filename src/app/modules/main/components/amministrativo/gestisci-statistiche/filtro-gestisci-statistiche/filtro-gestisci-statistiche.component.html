@@ -1,0 +1,142 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="heading1">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true"
+          aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroForm="ngForm" (ngSubmit)="filtroForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="heading1">
+    <div class="collapse-body">
+      <!-- inizio Avvio schedulazione, Fine Schedulazione, Attiva -->
+      <div class="row mt-2 mb-0">
+        <!--        inizio Avvio schedulazione -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="avvioSchedulazione" class="title">Avvio schedulazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerAvvioSchedulazione)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="avvioSchedulazione"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYYYY,
+              returnedValueType: tipoData
+	          }"
+                #avvioSchedulazione="ngModel"
+                [(ngModel)]="filtroRicercaStatistiche.avvioSchedulazione"
+                name="avvioSchedulazione"
+                #datePickerAvvioSchedulazione
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(avvioSchedulazione)">Inserisci avvio schedulazione</p>
+              <p *ngIf="isCampoInvalido(avvioSchedulazione)"
+                 class="text-invalid">{{getMessaggioErrore(avvioSchedulazione)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Avvio schedulazione-->
+        <!--        inizio Fine schedulazione -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="fineSchedulazione" class="title">Fine schedulazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerFineSchedulazione)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="fineSchedulazione"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYYYY,
+              returnedValueType: tipoData
+	          }"
+                #fineSchedulazione="ngModel"
+                [(ngModel)]="filtroRicercaStatistiche.fineSchedulazione"
+                name="fineSchedulazione"
+                #datePickerFineSchedulazione
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(fineSchedulazione)">Inserisci fine schedulazione</p>
+              <p *ngIf="isCampoInvalido(fineSchedulazione)"
+                 class="text-invalid">{{getMessaggioErrore(fineSchedulazione)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Fine schedulazione-->
+        <!--        inizio Attiva -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="attiva" class="title">Attiva</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="toggles">
+                <label for="attiva">
+                  <input type="checkbox" name="attiva"
+                         id="attiva"
+                         #attiva="ngModel"
+                         [(ngModel)]="filtroRicercaStatistiche.attiva" style="display: none">
+                  <span class="lever"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--        fine Attiva -->
+      </div>
+      <!-- fine Avvio schedulazione, Fine Schedulazione, Attiva -->
+      <!-- inizio Pulisci e Cerca -->
+      <div class="row align-content-around">
+        <div class="col-6">
+          <button id="bottonePulisci" class="btn btn-secondary"
+                  (click)="pulisciFiltri(filtroForm)">Pulisci
+          </button>
+        </div>
+        <div class="col-6 text-right">
+          <button id="bottoneCerca" class="btn"
+                  (click)="cercaElementi()">Cerca
+          </button>
+        </div>
+      </div>
+      <!-- fine Pulisci e Cerca -->
+    </div>
+  </div>
+</form>
+
