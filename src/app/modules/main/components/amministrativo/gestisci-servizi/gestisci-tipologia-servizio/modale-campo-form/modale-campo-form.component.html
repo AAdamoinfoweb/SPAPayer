@@ -37,20 +37,6 @@
                 </select>
               </div>
             </div>
-            <div class="col-4">
-              <div class="row">
-                <label [htmlFor]="'informazioni'" class="title form-elem-title"
-                >Informazioni</label>
-              </div>
-              <div class="row">
-                <input id="informazioni"
-                       [formControl]="form.controls['informazioni']"
-                       [(ngModel)]="campoForm.informazioni"
-                       type="text"
-                       autocomplete="off"
-                />
-              </div>
-            </div>
           </div>
           <div class="row">
             <div class="col-2">
@@ -152,7 +138,7 @@
                   id="livelloIntegrazione"
                   [formControl]="form.controls['livelloIntegrazione']"
                   [(ngModel)]="livelloIntegrazione"
-                  (ngModelChange)="cambiaLivelloIntegrazione($event)">
+                  (ngModelChange)="cambiaLivelloIntegrazione(campoForm, $event)">
                   <option [ngValue]="livelloIntegrazioneEnum.LV2">Livello 2</option>
                   <option [ngValue]="livelloIntegrazioneEnum.LV2_BACK_OFFICE">Livello 2 BO</option>
                   <option [ngValue]="livelloIntegrazioneEnum.LV3">Livello 3</option>
@@ -168,7 +154,8 @@
                 <input id="campo_input"
                        [formControl]="form.controls['campo_input']"
                        [(ngModel)]="campoForm.campo_input"
-                       [attr.disabled]="livelloIntegrazione == 2 ? true : null"
+                       [attr.disabled]="livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
+                       (ngModelChange)="cambiaLivelloIntegrazione(campoForm, livelloIntegrazione)"
                        type="checkbox"
                        autocomplete="off"
                 />
@@ -182,7 +169,7 @@
               <div class="row">
                 <select
                   id="jsonPath"
-                  [attr.disabled]="livelloIntegrazione == 2 ? true : null"
+                  [attr.disabled]="livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
                   [formControl]="form.controls['jsonPath']"
                   [(ngModel)]="campoForm.jsonPath">
                   <option [ngValue]="null"></option>

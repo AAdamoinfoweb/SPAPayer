@@ -101,21 +101,11 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
     this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .subscribe(((value: any) => {
-        if (!localStorage.getItem('listaCampiDettaglioTransazione')) {
-          localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(value.listaCampiDettaglioTransazione));
-        }
-        if (!localStorage.getItem('listaControlliLogici')) {
-          localStorage.setItem('listaControlliLogici', JSON.stringify(value.listaControlliLogici));
-        }
-        if (!localStorage.getItem('listaTipologiche')) {
-          localStorage.setItem('listaTipologiche', JSON.stringify(value.listaTipologiche));
-        }
-        if (!localStorage.getItem('listaJsonPath')) {
-          localStorage.setItem('listaJsonPath', JSON.stringify(value.listaJsonPath));
-        }
-        if (!localStorage.getItem('listaTipiCampo')) {
-          localStorage.setItem('listaTipiCampo', JSON.stringify(value.listaTipiCampo));
-        }
+        localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(value.listaCampiDettaglioTransazione));
+        localStorage.setItem('listaControlliLogici', JSON.stringify(value.listaControlliLogici));
+        localStorage.setItem('listaTipologiche', JSON.stringify(value.listaTipologiche));
+        localStorage.setItem('listaJsonPath', JSON.stringify(value.listaJsonPath));
+        localStorage.setItem('listaTipiCampo', JSON.stringify(value.listaTipiCampo));
       }));
     this.campoTipologiaServizioService.campiTipologiaServizio(13, this.idFunzione)
       .subscribe(value => {
@@ -145,7 +135,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     const campoForm = new CampoForm();
     campoForm.titolo = 'nuovo campo';
     this.items.push(campoForm);
-    this.showEditId = campoForm.titolo;
+    this.showModal(campoForm);
+    //this.showEditId = campoForm.titolo;
   }
 
   removeItem(item: CampoForm) {

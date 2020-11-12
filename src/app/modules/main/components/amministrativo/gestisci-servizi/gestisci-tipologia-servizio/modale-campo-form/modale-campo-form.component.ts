@@ -80,12 +80,14 @@ export class ModaleCampoFormComponent implements OnInit {
     this.overlayService.mostraModaleDettaglioEvent.emit(null);
   }
 
-  cambiaLivelloIntegrazione(event: LivelloIntegrazioneEnum) {
+  cambiaLivelloIntegrazione(item: CampoForm, event: LivelloIntegrazioneEnum) {
     if (event === LivelloIntegrazioneEnum.LV2) {
       this.campoForm.campo_input = true;
       this.campoForm.jsonPath = null;
     }
-    this.listaJsonPathFiltrata = this.listaJsonPath.filter(value => value.livello_integrazione_id === event);
+    this.listaJsonPathFiltrata = this.listaJsonPath.filter(value => {
+      return value.livello_integrazione_id === event && value.campo_input === item.campo_input;
+    });
   }
 
   dipendeDaIsDisabled() {
