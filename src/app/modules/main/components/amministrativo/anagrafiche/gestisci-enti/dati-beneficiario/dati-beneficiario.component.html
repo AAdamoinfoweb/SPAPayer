@@ -144,6 +144,27 @@
         <!--      fine Codice Ufficio -->
       </div>
       <!--    fine Decrizione, Codice Ente, Tipo Ufficio, Codice Ufficio -->
+      <!--      inizio servizio -->
+      <div class="row mt-4 mb-0" *ngIf="datiBeneficiario.nomeServizio != null && funzione !== FunzioneGestioneEnum.AGGIUNGI">
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="servizioId" class="title">
+                Servizio</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="servizioId" name="servizioId" #servizioId="ngModel"
+                     [(ngModel)]="datiBeneficiario.nomeServizio"
+                     class="pt-0" autocomplete="off" aria-describedby="codiceEnteHelpDescription"
+                     [disabled]="true"
+                     >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--      fine servizio -->
       <!--      inizio Dati Conto Corrente-->
       <div #datiContoCorrente></div>
       <!--      fine Dati Conto Corrente -->

@@ -2,7 +2,7 @@ import {ContoCorrente} from "./ContoCorrente";
 
 export class Beneficiario {
   id: number;
-  servizioId: number;
+  nomeServizio: string;
   enteId: number;
   descrizione: string;
   codiceEnte: string;

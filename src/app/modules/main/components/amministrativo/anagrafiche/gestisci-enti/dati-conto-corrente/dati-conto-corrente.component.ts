@@ -144,7 +144,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   setContoCorrenteSingolo(isFormValid: boolean): ContoCorrenteSingolo {
     const contoCorrenteSingolo: ContoCorrenteSingolo = new ContoCorrenteSingolo();
     contoCorrenteSingolo.index = this.indexDatiContoCorrente;
-    contoCorrenteSingolo.contoCorrente = this.datiContoCorrente;
+    contoCorrenteSingolo.contoCorrente = Object.assign({}, this.datiContoCorrente);
     contoCorrenteSingolo.isFormValid = isFormValid;
     return contoCorrenteSingolo;
   }
@@ -158,8 +158,9 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   controlloDate(contoCorrente: ContoCorrente): boolean {
-    const dataAttivazione = contoCorrente.inizioValidita;
-    const dataScadenza = contoCorrente.fineValidita;
+    const controlloCC = Object.assign({}, contoCorrente);
+    const dataAttivazione = controlloCC.inizioValidita;
+    const dataScadenza = controlloCC.fineValidita;
     const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
     const isDataScadenzaBeforeDataAttivazione = Utils.isBefore(dataScadenza, dataAttivazione);
     const ret = this.funzione === FunzioneGestioneEnum.DETTAGLIO ? false : isDataScadenzaBeforeDataAttivazione;

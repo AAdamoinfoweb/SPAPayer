@@ -25,6 +25,7 @@ export class Utils {
   static readonly IBAN_ITALIA_REGEX = '[IT]{2}\\d{2} ?[A-Z]\\d{3} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{3}';
   static readonly CODICE_FISCALE_REGEX = '^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
   static readonly CODICE_FISCALE_O_PARTITA_IVA_REGEX = '^[0-9]{11}$|^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
+  static readonly PARTITA_IVA_REGEX = '^[0-9]{11}$';
 
   static creaLink = (value, link, iconHref?) => {
     return iconHref ? {value, link, iconHref} : {value, link, iconHref: null};

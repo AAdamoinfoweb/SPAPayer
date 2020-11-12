@@ -23,7 +23,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   telefonoRegex = Utils.TELEFONO_REGEX;
   emailRegex = Utils.EMAIL_REGEX;
-  codiceFiscalPIvaRegex = Utils.CODICE_FISCALE_O_PARTITA_IVA_REGEX;
+  codiceFiscalPIvaRegex = Utils.PARTITA_IVA_REGEX;
 
   @Input()
   idFunzione;
@@ -62,8 +62,8 @@ export class DatiEnteComponent implements OnInit, OnChanges {
       this.inizializzaFormModifica();
     }
 
-    if(changes.datiEnte){
-      if(this.funzione !== FunzioneGestioneEnum.AGGIUNGI){
+    if (changes.datiEnte) {
+      if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
         this.caricaImmagine();
       }
     }
@@ -75,7 +75,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   }
 
   caricaImmagine() {
-    if(this.datiEnte.logo.contenuto) {
+    if (this.datiEnte.logo.contenuto) {
       // @ts-ignore
       const output: HTMLCanvasElement = document.getElementById('canvas');
       if (output != null) {
@@ -90,12 +90,20 @@ export class DatiEnteComponent implements OnInit, OnChanges {
           }
           imageObj.onload = () => {
             context.clearRect(0, 0, 90, 90);
-            context.drawImage(imageObj, 1, 1, 90, 90);
+            this.scaleToFit(imageObj, context);
           };
         };
       }
     }
+  }
 
+  scaleToFit(img, context) {
+    // get the scale
+    const scale = Math.min(90 / img.width, 90 / img.height);
+    // get the top left position of the image
+    const x = (90 / 2) - (img.width / 2) * scale;
+    const y = (90 / 2) - (img.height / 2) * scale;
+    context.drawImage(img, x, y, img.width * scale, img.height * scale);
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -227,7 +235,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
 
         this.datiEnte.logo = logo;
         context.clearRect(0, 0, 90, 90);
-        context.drawImage(imageObj, 1, 1, 90, 90);
+        this.scaleToFit(imageObj, context);
       };
     };
     reader.readAsDataURL(input.files[0]);

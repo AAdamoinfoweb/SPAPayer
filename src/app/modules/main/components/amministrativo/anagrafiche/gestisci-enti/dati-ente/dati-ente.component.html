@@ -102,8 +102,9 @@
             <input id="pathLogo" type='file' accept='image/*' (change)='loadImg($event)' style="display: none"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
             <canvas id="canvas" width="90" height="90" (click)="onClickImage()"
-                    style="border: 1px solid #5c6f82; cursor: pointer;"
-                    disabled="{{funzione === FunzioneGestioneEnum.DETTAGLIO}}"></canvas>
+                    style="border: 1px solid #5c6f82; cursor: pointer;" class="canvas"
+                    disabled="{{funzione === FunzioneGestioneEnum.DETTAGLIO}}">
+            </canvas>
           </div>
         </div>
         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
