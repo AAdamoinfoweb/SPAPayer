@@ -23,9 +23,11 @@
     [isPaginaAggiungi]="true"
     (onChangeFiltri)="onChangeFiltri($event)"
   ></app-filtro-gestione-tipologia-servizio>
-  <div class="row">
+
+  <div class="row" *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI">
     <button [disabled]="!filtro?.raggruppamentoId" class="btn" (click)="add()">Crea nuovo campo</button>
   </div>
+  
   <ng-container *ngIf="filtro?.raggruppamentoId">
     <div *ngIf="!waiting" class="row" cdkDropListGroup>
       <ng-container *ngFor="let item of items;let i=index">
