@@ -1,10 +1,9 @@
-<div class="container" *ngIf="!waiting">
+<div class="container">
   <div class="row">
     <form [formGroup]="form">
       <div id="sezioneDati" class="collapse show">
         <div class="page-section">
           <div class="row">
-
           </div>
           <div class="row">
             <div class="col-4">
@@ -205,7 +204,8 @@
                   [formControl]="form.controls['dipendeDa']"
                   [(ngModel)]="tipologiaServizio.campoForm.dipendeDa">
                   <option [ngValue]="null"></option>
-                  <option *ngFor="let item of tipologiaServizio.listaDipendeDa" [ngValue]="item">{{item.titolo}}</option>
+                  <option *ngFor="let item of tipologiaServizio.listaDipendeDa"
+                          [ngValue]="item">{{item.titolo}}</option>
                 </select>
               </div>
             </div>

@@ -34,7 +34,6 @@ export class ModaleCampoFormComponent implements OnInit {
   listaJsonPathFiltrata: any[];
 
   livelloIntegrazioneEnum = LivelloIntegrazioneEnum;
-  waiting: boolean;
 
   constructor(private overlayService: OverlayService, private amministrativoService: AmministrativoService) {
     this.listaCampiDettaglioTransazione = JSON.parse(localStorage.getItem('listaCampiDettaglioTransazione'));
@@ -66,12 +65,11 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.waiting = true;
     this.tipologiaServizio.listaDipendeDa =
       this.tipologiaServizio.listaDipendeDa.filter((value => value.titolo !== this.tipologiaServizio.campoForm.titolo));
 
     this.tipologiaServizio.campoForm.dipendeDa =
-      this.tipologiaServizio.listaDipendeDa.find((value => value.titolo == this.tipologiaServizio.campoForm.dipendeDa.titolo));
+      this.tipologiaServizio.listaDipendeDa.find((value => value && value.titolo == this.tipologiaServizio.campoForm.dipendeDa.titolo));
 
     if (!this.tipologiaServizio.livelloIntegrazione)
       this.tipologiaServizio.livelloIntegrazione = LivelloIntegrazioneEnum.LV2;
@@ -85,7 +83,6 @@ export class ModaleCampoFormComponent implements OnInit {
       this.tipologiaServizio.campoForm.campoInput = true;
       this.tipologiaServizio.campoForm.jsonPath = null;
     }
-    this.waiting = false;
   }
 
   clickIndietro() {

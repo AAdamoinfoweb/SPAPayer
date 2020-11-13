@@ -25,7 +25,7 @@ import {Observable, of} from 'rxjs';
   templateUrl: './form-tipologia-servizio.component.html',
   styleUrls: ['./form-tipologia-servizio.component.scss']
 })
-export class FormTipologiaServizioComponent extends FormElementoParentComponent implements OnInit, OnChanges {
+export class FormTipologiaServizioComponent extends FormElementoParentComponent implements OnInit {
 
   @ViewChild(CdkDropListGroup) listGroup: CdkDropListGroup<CdkDropList>;
   @ViewChild(CdkDropList) placeholder: CdkDropList;
