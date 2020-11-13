@@ -79,6 +79,15 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   selezionaCodice() {
+    if (this.filtriIniziali.codiceTipologia === '') {
+      this.filtriIniziali.codiceTipologia = null;
+    }
+
+    if (this.filtriIniziali.codiceTipologia) {
+      this.filtriIniziali.codiceTipologia = this.filtriIniziali.codiceTipologia.toUpperCase();
+
+    }
+
     if (this.isPaginaAggiungi) {
       this.onChangeFiltri.emit(this.filtriRicerca);
     }
