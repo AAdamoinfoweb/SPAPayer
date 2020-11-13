@@ -5,11 +5,12 @@ import {OverlayService} from "../../../../../../../services/overlay.service";
 import {FunzioneGestioneEnum} from "../../../../../../../enums/funzioneGestione.enum";
 import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegrazione.enum";
 import {AmministrativoService} from "../../../../../../../services/amministrativo.service";
+import {CampoTipologiaServizio} from "../../../../../model/CampoTipologiaServizio";
 
 interface TipologiaServizioCampoForm {
   listaDipendeDa: any[];
   livelloIntegrazione: LivelloIntegrazioneEnum;
-  campoForm: CampoForm;
+  campoForm: CampoTipologiaServizio;
   funzione: FunzioneGestioneEnum;
 }
 
@@ -92,7 +93,7 @@ export class ModaleCampoFormComponent implements OnInit {
     this.overlayService.mostraModaleDettaglioEvent.emit(null);
   }
 
-  cambiaLivelloIntegrazione(item: CampoForm, event: LivelloIntegrazioneEnum) {
+  cambiaLivelloIntegrazione(item: CampoTipologiaServizio, event: LivelloIntegrazioneEnum) {
     if (event === LivelloIntegrazioneEnum.LV2) {
       this.tipologiaServizio.campoForm.campoInput = true;
       this.tipologiaServizio.campoForm.jsonPath = null;
