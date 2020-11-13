@@ -2,6 +2,7 @@ import {Schedulazione} from './Schedulazione';
 import {Destinatario} from './Destinatario';
 
 export class Statistica {
+  id: number;
   titolo: string;
   querySql: string;
   descrizione: string;

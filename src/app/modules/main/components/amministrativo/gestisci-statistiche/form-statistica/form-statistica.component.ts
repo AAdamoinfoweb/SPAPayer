@@ -8,6 +8,9 @@ import {HttpClient} from '@angular/common/http';
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Statistica} from '../../../../model/statistica/Statistica';
 import {Schedulazione} from "../../../../model/statistica/Schedulazione";
+import {StatisticaService} from "../../../../../../services/statistica.service";
+import {Tabella} from "../../../../model/tabella/Tabella";
+import {Utils} from "../../../../../../utils/Utils";
 
 @Component({
   selector: 'app-form-statistica',
@@ -19,7 +22,7 @@ export class FormStatisticaComponent extends FormElementoParentComponent impleme
   constructor(confirmationService: ConfirmationService,
               protected activatedRoute: ActivatedRoute,
               protected amministrativoService: AmministrativoService,
-              protected http: HttpClient,
+              protected http: HttpClient, private statisticaService: StatisticaService,
               protected router: Router) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
@@ -91,7 +94,18 @@ export class FormStatisticaComponent extends FormElementoParentComponent impleme
   }
 
   eseguiScaricaFile() {
+    this.statisticaService.eseguiQuery(this.datiStatistica.querySql, this.idFunzione).subscribe((value) => {
+      console.log(value);
+      this.esportaExcel(value, 'Statistiche');
+    });
+  }
 
+  esportaExcel(elementi: any[], nomeFile: string) {
+    const headerColonne = [];
+    const fogli = {};
+    fogli[nomeFile] = null;
+    const workbook = {Sheets: fogli, SheetNames: []};
+    Utils.creaFileExcel(elementi, headerColonne, nomeFile, [nomeFile], workbook, nomeFile);
   }
 
   letturaStatistica(statisticaId) {
