@@ -36,6 +36,8 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
 
   listaCodiciTipologia: string[] = [];
 
+  isTipologiaCreata: boolean = undefined;
+
   constructor(
     protected amministrativoService: AmministrativoService, protected route: ActivatedRoute,
     private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService,
@@ -47,6 +49,9 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   ngOnInit(): void {
     // todo fixare logica idFunzione, il codice entra qui nell'onInit prima di valorizzare idFunzione nel padre
     this.inizializzaOpzioniRaggruppamento();
+    if (this.isPaginaAggiungi) {
+      this.isTipologiaCreata = false;
+    }
   }
 
   ngOnChanges(sc: SimpleChanges) {
@@ -90,7 +95,8 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
 
-  creaCampi(): void {
+  creaTipologia(): void {
+    this.isTipologiaCreata = true;
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
 
@@ -137,17 +143,35 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     this.onChangeFiltri.emit(null);
   }
 
-  disabilitaAutocompleteCodici(): boolean {
-    // L'autocomplete è sempre abilitato nella pagina Gestione; È abilitato solo se è selezionato il raggruppamento nella pagina Aggiungi
-    if (this.isPaginaAggiungi) {
-      return !this.filtriRicerca.raggruppamentoId ? true : null;
+  disabilitaFiltroRaggruppamento(): boolean {
+    if (this.isPaginaAggiungi && this.isTipologiaCreata) {
+      return true;
     } else {
       return null;
     }
   }
 
-  disabilitaPulisci(): boolean {
+  disabilitaFiltroCodice(): boolean {
+    // L'autocomplete è sempre abilitato nella pagina Gestione; È abilitato solo se è selezionato il raggruppamento nella pagina Aggiungi
+    if (this.isPaginaAggiungi) {
+      if (this.isTipologiaCreata) {
+        return true;
+      } else if (!this.filtriRicerca.raggruppamentoId) {
+        return true;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  disabilitaBottonePulisci(): boolean {
     return !this.filtriRicerca.raggruppamentoId && !this.filtriRicerca.codiceTipologia ? true : null;
+  }
+
+  disabilitaPulsanteCrea(): boolean {
+    return !this.filtriRicerca.raggruppamentoId || this.isTipologiaCreata;
   }
 
 }
