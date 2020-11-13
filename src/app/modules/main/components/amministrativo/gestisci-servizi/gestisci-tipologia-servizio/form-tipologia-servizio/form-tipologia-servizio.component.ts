@@ -22,6 +22,7 @@ import {Observable, of} from 'rxjs';
 import {ConfiguratoreCampiNuovoPagamento} from '../../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 import {v4 as uuidv4} from 'uuid';
 import {InserimentoTipologiaServizio} from "../../../../../model/campo/InserimentoTipologiaServizio";
+import {ModificaTipologiaServizio} from "../../../../../model/campo/ModificaTipologiaServizio";
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -129,6 +130,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         this.filtro.raggruppamentoId = tipologiaServizio.raggruppamentoId;
 
         this.filtro.codiceTipologia = tipologiaServizio.codice;
+        this.codiceTipologia = tipologiaServizio.codice;
+        this.nomeTipologia = tipologiaServizio.descrizione;
       });
 
       obs = this.caricaCampi(this.tipologiaServizioId);
@@ -194,7 +197,16 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
           this.resettaFiltri();
         });
     } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
-
+      this.items.forEach((value, index) => value.posizione = index + 1);
+      
+      let modificaTipologiaServizio: ModificaTipologiaServizio = new ModificaTipologiaServizio();
+      modificaTipologiaServizio.raggruppamentoId = this.filtro.raggruppamentoId;
+      modificaTipologiaServizio.descrizione = this.nomeTipologia;
+      modificaTipologiaServizio.listaCampiTipologiaServizio = this.items;
+      this.campoTipologiaServizioService.modificaTipologiaServizio(modificaTipologiaServizio, this.idFunzione)
+        .subscribe(() => {
+          this.resettaFiltri();
+        });
     }
   }
 

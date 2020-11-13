@@ -9,6 +9,7 @@ import {TipologiaServizio} from '../modules/main/model/tipologiaServizio/Tipolog
 import {CampoTipologiaServizio} from "../modules/main/model/CampoTipologiaServizio";
 import {ConfiguratoreCampiNuovoPagamento} from '../modules/main/model/campo/ConfiguratoreCampiNuovoPagamento';
 import {InserimentoTipologiaServizio} from "../modules/main/model/campo/InserimentoTipologiaServizio";
+import {ModificaTipologiaServizio} from "../modules/main/model/campo/ModificaTipologiaServizio";
 
 @Injectable({
   providedIn: 'root'
@@ -123,6 +124,25 @@ export class CampoTipologiaServizioService {
       headers: h
     }).pipe(map((id: number) => {
         return id;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  modificaTipologiaServizio(body: ModificaTipologiaServizio, idFunzione): Observable<any> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+    return this.http.put(environment.bffBaseUrl + this.baseUrl +
+      this.tipologiaServizioUrl, body, {
+      withCredentials: true,
+      headers: h
+    }).pipe(map((id: number) => {
+        return null;
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
