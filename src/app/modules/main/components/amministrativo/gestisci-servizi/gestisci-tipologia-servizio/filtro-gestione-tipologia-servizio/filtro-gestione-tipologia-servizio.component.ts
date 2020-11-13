@@ -38,7 +38,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
 
   listaCodiciTipologia: string[] = [];
 
-  isTipologiaCreata: boolean = undefined;
+  isTipologiaCreata = false;
 
   constructor(
     protected amministrativoService: AmministrativoService, protected route: ActivatedRoute,
@@ -49,16 +49,13 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   ngOnInit(): void {
-    // todo fixare logica idFunzione, il codice entra qui nell'onInit prima di valorizzare idFunzione nel padre
     this.inizializzaOpzioniRaggruppamento();
-    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
-      this.isTipologiaCreata = false;
-    }
   }
 
   ngOnChanges(sc: SimpleChanges) {
     if (sc.filtriIniziali?.currentValue) {
       this.filtriRicerca = this.filtriIniziali;
+      this.isTipologiaCreata = false;
     }
   }
 
