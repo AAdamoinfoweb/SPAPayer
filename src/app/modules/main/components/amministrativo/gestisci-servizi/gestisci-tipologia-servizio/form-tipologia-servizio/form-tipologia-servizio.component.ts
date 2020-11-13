@@ -20,6 +20,7 @@ import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaS
 import {flatMap, map} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {ConfiguratoreCampiNuovoPagamento} from '../../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
+import {v4 as uuidv4} from 'uuid';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -82,10 +83,11 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   ngOnInit() {
     this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoTipologiaServizio) => {
-      let campoFormIdx = this.items.findIndex((value: CampoTipologiaServizio) => (value.id && campoForm.id && value.id == campoForm.id) || value.titolo == campoForm.titolo);
+      let campoFormIdx = this.items.findIndex((value: CampoTipologiaServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
       if (campoFormIdx != -1) {
         this.items[campoFormIdx] = campoForm;
       } else {
+        campoForm.uuid = uuidv4();
         this.items.push(campoForm);
         this.cdr.detectChanges();
       }
@@ -158,6 +160,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
           this.items.forEach(campo => {
             campo.id = null;
+            campo.uuid = uuidv4();
             if (campo.dipendeDa)
               campo.dipendeDa.id = null;
           });
@@ -180,7 +183,16 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       this.items.forEach((value, index) => value.posizione = index + 1);
 
+      // let inserimento: InserimentoTipologiaServizio = new InserimentoTipologiaServizio();
+      // inserimento.raggruppamentoId = this.filtro.raggruppamentoId;
+      // inserimento.codice = this.codiceTipologia;
+      // inserimento.nome = this.nomeTipologia;
+      // inserimento.listaCampiTipologiaServizio = this.items;
+      // this.campoTipologiaServizioService.inserimentoTipologiaServizio(inserimento).subscribe();
+
       this.resettaFiltri();
+    } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
+
     }
   }
 

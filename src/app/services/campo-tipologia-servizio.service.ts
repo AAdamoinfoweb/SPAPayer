@@ -112,5 +112,8 @@ export class CampoTipologiaServizioService {
     return null;
   }
 
+  // inserimentoTipologiaServizio(inserimento: InserimentoTipologiaServizio) {
+  //
+  // }
 }
 

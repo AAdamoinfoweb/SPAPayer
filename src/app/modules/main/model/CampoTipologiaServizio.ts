@@ -1,4 +1,5 @@
 export class CampoTipologiaServizio {
+  uuid: string;
   id: number;
   titolo: string;
   tipologiaServizioId: number;
