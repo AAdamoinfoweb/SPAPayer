@@ -150,7 +150,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
           this.items.forEach(campo => {
             campo.id = null;
-            // todo impostare campo.dipendeDa.id = null
+            if (campo.dipendeDa)
+              campo.dipendeDa.id = null;
           });
         }
 
