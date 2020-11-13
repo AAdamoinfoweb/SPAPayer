@@ -171,6 +171,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   onChangeFiltri(filtri: ParametriRicercaTipologiaServizio) {
+    // todo valutare se distruggere i campi attuali se viene deselezionato il raggruppamento e/o il codice
+
     this.filtro = filtri;
 
     if (this.filtro.codiceTipologia) {
