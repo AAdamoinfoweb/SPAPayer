@@ -120,7 +120,9 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum): string {
-    if (this.isCampoInvalido(campo)) {
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      return null;
+    } else if (this.isCampoInvalido(campo)) {
       return 'campo non valido';
     } else {
       switch (tipoCampo) {
@@ -141,8 +143,14 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     this.onChangeFiltri.emit(null);
   }
 
+  isPaginaGestione(): boolean {
+    return this.funzione === undefined;
+  }
+
   disabilitaFiltroRaggruppamento(): boolean {
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI && this.isTipologiaCreata) {
+      return true;
+    } else if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       return true;
     } else {
       return null;

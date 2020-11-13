@@ -129,7 +129,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         this.filtro = new ParametriRicercaTipologiaServizio();
         this.filtro.raggruppamentoId = tipologiaServizio.raggruppamentoId;
 
-        this.filtro.codiceTipologia = tipologiaServizio.codice;
         this.codiceTipologia = tipologiaServizio.codice;
         this.nomeTipologia = tipologiaServizio.descrizione;
       });

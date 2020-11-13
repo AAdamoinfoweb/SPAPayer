@@ -26,7 +26,7 @@
                       (ngModelChange)="selezionaRaggruppamento()"
                       [disabled]="disabilitaFiltroRaggruppamento()"
               >
-                <option [ngValue]="null" selected>Tutti</option>
+                <option [ngValue]="null" selected *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI">Tutti</option>
                 <option *ngFor="let item of opzioniRaggruppamento" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
@@ -41,7 +41,7 @@
 
         </div>
 
-        <div class="col-md-4 pb-2">
+        <div class="col-md-4 pb-2" *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI || isPaginaGestione()">
           <div class="row">
             <div class="col">
               <label for="inputCodice" class="title">Codice</label>
@@ -77,7 +77,7 @@
       </div>
 
       <!-- Bottoni-->
-      <div class="row" *ngIf="funzione === undefined">
+      <div class="row" *ngIf="isPaginaGestione()">
         <div class="col-6">
           <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottonePulisci()"
                   (click)="pulisciFiltri(filtroForm)">Pulisci</button>
