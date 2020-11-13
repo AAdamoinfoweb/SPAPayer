@@ -198,12 +198,12 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         });
     } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
       this.items.forEach((value, index) => value.posizione = index + 1);
-      
+
       let modificaTipologiaServizio: ModificaTipologiaServizio = new ModificaTipologiaServizio();
       modificaTipologiaServizio.raggruppamentoId = this.filtro.raggruppamentoId;
       modificaTipologiaServizio.descrizione = this.nomeTipologia;
       modificaTipologiaServizio.listaCampiTipologiaServizio = this.items;
-      this.campoTipologiaServizioService.modificaTipologiaServizio(modificaTipologiaServizio, this.idFunzione)
+      this.campoTipologiaServizioService.modificaTipologiaServizio(this.tipologiaServizioId, modificaTipologiaServizio, this.idFunzione)
         .subscribe(() => {
           this.resettaFiltri();
         });

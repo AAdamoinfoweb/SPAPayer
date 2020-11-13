@@ -134,14 +134,14 @@ export class CampoTipologiaServizioService {
       }));
   }
 
-  modificaTipologiaServizio(body: ModificaTipologiaServizio, idFunzione): Observable<any> {
+  modificaTipologiaServizio(id: number, body: ModificaTipologiaServizio, idFunzione): Observable<any> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     return this.http.put(environment.bffBaseUrl + this.baseUrl +
-      this.tipologiaServizioUrl, body, {
+      this.tipologiaServizioUrl + '/' + id, body, {
       withCredentials: true,
       headers: h
-    }).pipe(map((id: number) => {
+    }).pipe(map(() => {
         return null;
       }),
       catchError((err, caught) => {
