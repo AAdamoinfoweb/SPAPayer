@@ -25,18 +25,68 @@
   ></app-filtro-gestione-tipologia-servizio>
 
   <ng-container *ngIf="filtro?.raggruppamentoId">
+
+    <div class="row">
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="codice" class="title">Codice</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input id="codice"
+              [(ngModel)]="codiceTipologia"
+            />
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>
+
+            </p>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="nome" class="title">Nome</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input id="nome"
+              [(ngModel)]="nomeTipologia"
+            />
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>
+
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-2">
       </div>
     </div>
     <div class="row">
       <div class="col-3">
-      <label class="title">Lista campi tipologia servizio</label>
+        <label class="title">Lista campi tipologia servizio</label>
       </div>
       <div class="col-2 pointer" *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI">
         <span ngbTooltip="Crea nuovo campo" placement="bottom"
               [ngStyle]="{fill: '#403d39'}">
-          <svg  (click)="add()" class="bg-light icon icon-sm filled">
+          <svg (click)="add()" class="bg-light icon icon-sm filled">
             <use xlink:href="assets/img/sprite.svg#it-plus"></use>
           </svg>
         </span>
@@ -81,22 +131,21 @@
         </div>
       </ng-container>
     </div>
+
+    <hr/>
+
+    <div class="row">
+      <!-- Bottone sx -->
+      <div class="col-2">
+        <button id="buttonAnnulla" class="btn btn-secondary"
+                (click)="onClickAnnulla(funzione)">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
+      </div>
+      <!-- Bottoni dx -->
+      <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+        <button id="buttonSalva" class="btn" [disabled]="!abilitaSalva()" (click)="onClickSalva()">Salva</button>
+      </div>
+    </div>
   </ng-container>
-
-  <hr/>
-</div>
-
-<!-- Bottoni -->
-<div class="row">
-  <!-- Bottone sx -->
-  <div class="col-2">
-    <button id="buttonAnnulla" class="btn btn-secondary"
-            (click)="onClickAnnulla(funzione)">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
-  </div>
-  <!-- Bottoni dx -->
-  <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-    <button id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="onClickSalva()">Salva</button>
-  </div>
 </div>
 
 <!-- Modale -->

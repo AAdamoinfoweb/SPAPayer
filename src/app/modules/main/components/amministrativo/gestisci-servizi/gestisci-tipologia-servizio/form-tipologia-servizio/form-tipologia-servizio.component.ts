@@ -61,6 +61,9 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
   private tipoCampoIdSelect: number;
 
+  codiceTipologia: string;
+  nomeTipologia: string;
+
   constructor(
     private overlayService: OverlayService,
     protected activatedRoute: ActivatedRoute,
@@ -172,9 +175,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     // TODO onclicksalva
   }
 
-  disabilitaBottone(): boolean {
-    // todo logica disabilita bottone salva
-    return true;
+  abilitaSalva(): boolean {
+    return this.codiceTipologia && this.codiceTipologia != "" && this.nomeTipologia && this.nomeTipologia != "" && this.items.length > 0;
   }
 
   onChangeFiltri(filtri: ParametriRicercaTipologiaServizio) {
