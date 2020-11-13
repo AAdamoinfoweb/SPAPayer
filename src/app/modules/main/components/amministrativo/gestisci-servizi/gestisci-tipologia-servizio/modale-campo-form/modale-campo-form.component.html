@@ -54,6 +54,22 @@
             </div>
             <div class="col-2">
               <div class="row">
+                <label [htmlFor]="'chiave'" class="title form-elem-title"
+                >Chiave</label>
+              </div>
+              <div class="row">
+                <input id="chiave"
+                       type="checkbox"
+                       [formControl]="form.controls['chiave']"
+                       [(ngModel)]="tipologiaServizio.campoForm.chiave"
+                       (click)="clickChiave($event)"
+                       type="checkbox"
+                       autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="row">
                 <label [htmlFor]="'lunghezzaVariabile'" class="title form-elem-title"
                 >Lunghezza variabile</label>
               </div>
@@ -104,22 +120,6 @@
                        type="checkbox"
                        [formControl]="form.controls['disabilitato']"
                        [(ngModel)]="tipologiaServizio.campoForm.disabilitato"
-                       type="checkbox"
-                       autocomplete="off"
-                />
-              </div>
-            </div>
-            <div class="col-2">
-              <div class="row">
-                <label [htmlFor]="'chiave'" class="title form-elem-title"
-                >Chiave</label>
-              </div>
-              <div class="row">
-                <input id="chiave"
-                       type="checkbox"
-                       [formControl]="form.controls['chiave']"
-                       [(ngModel)]="tipologiaServizio.campoForm.chiave"
-                       (click)="clickChiave($event)"
                        type="checkbox"
                        autocomplete="off"
                 />
