@@ -36,6 +36,7 @@
         <div class="row">
           <div class="col">
             <input id="codice"
+                   type="text"
                    [disabled]="this.funzione != FunzioneGestioneEnum.AGGIUNGI"
                    [(ngModel)]="codiceTipologia"
             />
@@ -60,6 +61,7 @@
         <div class="row">
           <div class="col">
             <input id="nome"
+                   type="text"
                    [(ngModel)]="nomeTipologia"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             />
