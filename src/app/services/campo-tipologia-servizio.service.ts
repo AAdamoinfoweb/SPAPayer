@@ -6,6 +6,7 @@ import {catchError, map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 import {ParametriRicercaTipologiaServizio} from '../modules/main/model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 import {TipologiaServizio} from '../modules/main/model/tipologiaServizio/TipologiaServizio';
+import {CampoTipologiaServizio} from "../modules/main/model/CampoTipologiaServizio";
 
 @Injectable({
   providedIn: 'root'
@@ -69,7 +70,7 @@ export class CampoTipologiaServizioService {
       }));
   }
 
-  campiTipologiaServizio(tipologiaServizioId: number, idFunzione): Observable<CampoForm[]> {
+  campiTipologiaServizio(tipologiaServizioId: number, idFunzione): Observable<CampoTipologiaServizio[]> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     return this.http.get(environment.bffBaseUrl + this.baseUrl + this.campiTipologiaServizioUrl + `?tipologiaServizioId=${tipologiaServizioId}`, {
@@ -94,7 +95,7 @@ export class CampoTipologiaServizioService {
       this.configurazioneCampiNuovoPagamentoUrl, {
       withCredentials: true,
       headers: h
-    }).pipe(map((body: CampoForm[]) => {
+    }).pipe(map((body) => {
         return body;
       }),
       catchError((err, caught) => {

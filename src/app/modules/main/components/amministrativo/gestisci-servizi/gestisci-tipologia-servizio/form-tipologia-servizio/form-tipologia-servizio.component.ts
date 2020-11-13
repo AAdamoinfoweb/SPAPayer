@@ -3,7 +3,7 @@ import {CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop
 import {ViewportRuler} from '@angular/cdk/overlay';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
-import {CampoForm} from '../../../../../model/CampoForm';
+import {CampoTipologiaServizio} from '../../../../../model/CampoTipologiaServizio';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import * as _ from 'lodash';
 import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
@@ -17,7 +17,6 @@ import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
 import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
-import {subscribeTo} from "rxjs/internal-compatibility";
 import {flatMap, map} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 
@@ -31,7 +30,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   @ViewChild(CdkDropListGroup) listGroup: CdkDropListGroup<CdkDropList>;
   @ViewChild(CdkDropList) placeholder: CdkDropList;
 
-  public items: CampoForm[] = [];
+  public items: CampoTipologiaServizio[] = [];
 
   public target: CdkDropList;
   public targetIndex: number;
@@ -57,12 +56,13 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   filtro: ParametriRicercaTipologiaServizio;
   tipologiaServizioId: number;
   private livelloIntegrazione: LivelloIntegrazioneEnum;
-  private listaDipendeDa: CampoForm[];
+  private listaDipendeDa: CampoTipologiaServizio[];
   private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
   private tipoCampoIdSelect: number;
 
   codiceTipologia: string;
   nomeTipologia: string;
+  private listaTipiCampo: any[];
 
   constructor(
     private overlayService: OverlayService,
@@ -83,16 +83,17 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
 
   ngOnInit() {
-    this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoForm) => {
-      let campoFormIdx = this.items.findIndex((value: CampoForm) => value.id == campoForm.id || value.titolo == campoForm.titolo);
+    this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoTipologiaServizio) => {
+      let campoFormIdx = this.items.findIndex((value: CampoTipologiaServizio) => value.id == campoForm.id || value.titolo == campoForm.titolo);
       if (campoFormIdx != -1) {
         this.items[campoFormIdx] = campoForm;
-      } else{
+      } else {
         this.items.push(campoForm);
       }
+      this.overlayService.mostraModaleDettaglioEvent.emit(null);
     });
     this.refreshItemsEvent.subscribe((items) => {
-      this.listaDipendeDa = items.filter((value => value.tipo_campo_id === this.tipoCampoIdSelect));
+      this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
     });
   }
 
@@ -136,6 +137,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         localStorage.setItem('listaControlliLogici', JSON.stringify(value.listaControlliLogici));
         localStorage.setItem('listaTipologiche', JSON.stringify(value.listaTipologiche));
         localStorage.setItem('listaJsonPath', JSON.stringify(value.listaJsonPath));
+
+        this.listaTipiCampo = value.listaTipiCampo;
 
         let filter = value.listaTipiCampo.filter((tc => tc.nome === TipoCampoEnum.SELECT));
         if (filter && filter.length > 0)
@@ -197,12 +200,12 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   add() {
-    const campoForm = new CampoForm();
+    const campoForm = new CampoTipologiaServizio();
     this.refreshItemsEvent.emit(this.items);
     this.showModal(campoForm);
   }
 
-  removeItem(item: CampoForm) {
+  removeItem(item: CampoTipologiaServizio) {
     this.confirmationService.confirm(
       Utils.getModale(() => {
           this.items.splice(this.items.findIndex((v) => v.id === item.id), 1);
@@ -213,12 +216,14 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     );
   }
 
-  calcolaDimensioneCampo(campo: CampoForm): string {
+  calcolaDimensioneCampo(campo: CampoTipologiaServizio): string {
     let classe;
 
-    if (campo.tipoCampo === TipoCampoEnum.DATEDDMMYY || campo.tipoCampo === TipoCampoEnum.DATEMMYY || campo.tipoCampo === TipoCampoEnum.DATEYY) {
+    if (this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.DATEDDMMYY ||
+      this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.DATEMMYY ||
+      this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.DATEYY) {
       classe = 'col-lg-2 col-md-4 col-xs-6';
-    } else if (campo.tipoCampo === TipoCampoEnum.INPUT_PREZZO) {
+    } else if (this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.INPUT_PREZZO) {
       classe = 'col-lg-2 col-md-4 col-xs-6';
     } else {
       if (campo.lunghezza <= this.lunghezzaMaxCol1) {
@@ -234,12 +239,20 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     return classe;
   }
 
-  dropEvt(event: CdkDragDrop<{ item: CampoForm; index: number }, any>) {
+  private decodeTipoCampo(tipoCampoId: number): string {
+    let find = this.listaTipiCampo.find((value) => value.id = tipoCampoId);
+    if(find)
+      return find.nome;
+    else
+      return "";
+  }
+
+  dropEvt(event: CdkDragDrop<{ item: CampoTipologiaServizio; index: number }, any>) {
     this.items[event.previousContainer.data.index] = event.container.data.item;
     this.items[event.container.data.index] = event.previousContainer.data.item;
   }
 
-  showModal(item: CampoForm) {
+  showModal(item: CampoTipologiaServizio) {
     this.overlayService.mostraModaleDettaglioEvent.emit({
       campoForm: _.cloneDeep(item),
       funzione: this.funzione,
