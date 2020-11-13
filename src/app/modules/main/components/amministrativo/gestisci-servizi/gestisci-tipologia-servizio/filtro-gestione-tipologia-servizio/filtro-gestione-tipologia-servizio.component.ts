@@ -5,11 +5,11 @@ import {ActivatedRoute} from '@angular/router';
 import {NgForm, NgModel} from '@angular/forms';
 import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
 import {Utils} from '../../../../../../../utils/Utils';
+import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 
 @Component({
   selector: 'app-filtro-gestione-tipologia-servizio',
@@ -23,9 +23,11 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
 
   minCharsRecuperoValoriAutocomplete = 1;
 
-  @Input()
-  isPaginaAggiungi: boolean;
   TipoCampoEnum = TipoCampoEnum;
+
+  @Input()
+  funzione: FunzioneGestioneEnum;
+  FunzioneGestioneEnum = FunzioneGestioneEnum;
 
   opzioniRaggruppamento: OpzioneSelect[] = [];
 
@@ -49,7 +51,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   ngOnInit(): void {
     // todo fixare logica idFunzione, il codice entra qui nell'onInit prima di valorizzare idFunzione nel padre
     this.inizializzaOpzioniRaggruppamento();
-    if (this.isPaginaAggiungi) {
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       this.isTipologiaCreata = false;
     }
   }
@@ -107,7 +109,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
       this.listaCodiciTipologia = [];
     } else if (input.length === this.minCharsRecuperoValoriAutocomplete) {
       let filtro = null;
-      if (this.isPaginaAggiungi) {
+      if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
         filtro = new ParametriRicercaTipologiaServizio();
         filtro.raggruppamento = this.filtriRicerca.raggruppamentoId;
       }
@@ -144,7 +146,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   disabilitaFiltroRaggruppamento(): boolean {
-    if (this.isPaginaAggiungi && this.isTipologiaCreata) {
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI && this.isTipologiaCreata) {
       return true;
     } else {
       return null;
@@ -153,7 +155,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
 
   disabilitaFiltroCodice(): boolean {
     // L'autocomplete è sempre abilitato nella pagina Gestione; È abilitato solo se è selezionato il raggruppamento nella pagina Aggiungi
-    if (this.isPaginaAggiungi) {
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       if (this.isTipologiaCreata) {
         return true;
       } else if (!this.filtriRicerca.raggruppamentoId) {

@@ -20,7 +20,7 @@
   <app-filtro-gestione-tipologia-servizio
     *ngIf="idFunzione"
     [filtriIniziali]="filtro"
-    [isPaginaAggiungi]="true"
+    [funzione]="funzione"
     (onChangeFiltri)="onChangeFiltri($event)"
   ></app-filtro-gestione-tipologia-servizio>
 

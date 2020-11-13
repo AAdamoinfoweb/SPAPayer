@@ -73,7 +73,7 @@
       </div>
 
       <!-- Bottoni-->
-      <div class="row" *ngIf="!isPaginaAggiungi">
+      <div class="row" *ngIf="funzione === undefined">
         <div class="col-6">
           <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottonePulisci()"
                   (click)="pulisciFiltri(filtroForm)">Pulisci</button>
@@ -84,7 +84,7 @@
         </div>
       </div>
 
-      <div class="row" *ngIf="isPaginaAggiungi">
+      <div *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI">
         <button id="bottoneCrea" class="btn" [disabled]="disabilitaPulsanteCrea()"
                 (click)="creaTipologia()">Crea</button>
       </div>
