@@ -221,7 +221,7 @@
                 <select
                   id="controllo_logico"
                   [formControl]="form.controls['controllo_logico']"
-                  [(ngModel)]="tipologiaServizio.campoForm.controllo_logico">
+                  [(ngModel)]="tipologiaServizio.campoForm.controlloLogicoId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of listaControlliLogici" [ngValue]="item.regex">{{item.nome}}</option>
                 </select>
