@@ -19,6 +19,7 @@ export class CampoTipologiaServizioService {
   private readonly tipologiaServizioUrl = '/tipologiaServizi';
   private readonly campiTipologiaServizioUrl = '/campiTipologiaServizio';
   private configurazioneCampiNuovoPagamentoUrl = '/configurazioneCampiNuovoPagamento';
+  private inserimentoTipoCampoUrl = '/tipoCampo';
 
   constructor(private http: HttpClient) {
   }
@@ -139,6 +140,25 @@ export class CampoTipologiaServizioService {
     h = h.append('idFunzione', idFunzione);
     return this.http.put(environment.bffBaseUrl + this.baseUrl +
       this.tipologiaServizioUrl + '/' + id, body, {
+      withCredentials: true,
+      headers: h
+    }).pipe(map(() => {
+        return null;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  inserimentoTipoCampo(body, idFunzione) {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+    return this.http.post(environment.bffBaseUrl + this.baseUrl +
+      this.inserimentoTipoCampoUrl, body, {
       withCredentials: true,
       headers: h
     }).pipe(map(() => {
