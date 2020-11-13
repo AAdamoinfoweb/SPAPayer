@@ -19,6 +19,7 @@ import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegra
 import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 import {flatMap, map} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
+import {ConfiguratoreCampiNuovoPagamento} from '../../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -130,19 +131,19 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       obs = this.caricaCampi(this.tipologiaServizioId);
     }
     let observable: Observable<number> = this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
-      .pipe(map((value: any) => {
-        localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(value.listaCampiDettaglioTransazione));
-        localStorage.setItem('listaControlliLogici', JSON.stringify(value.listaControlliLogici));
-        localStorage.setItem('listaTipologiche', JSON.stringify(value.listaTipologiche));
-        localStorage.setItem('listaJsonPath', JSON.stringify(value.listaJsonPath));
+      .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
+        localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
+        localStorage.setItem('listaControlliLogici', JSON.stringify(configuratore.listaControlliLogici));
+        localStorage.setItem('listaTipologiche', JSON.stringify(configuratore.listaTipologiche));
+        localStorage.setItem('listaJsonPath', JSON.stringify(configuratore.listaJsonPath));
 
-        this.listaTipiCampo = value.listaTipiCampo;
+        this.listaTipiCampo = configuratore.listaTipiCampo;
 
-        let filter = value.listaTipiCampo.filter((tc => tc.nome === TipoCampoEnum.SELECT));
+        let filter = configuratore.listaTipiCampo.filter((tc => tc.nome === TipoCampoEnum.SELECT));
         if (filter && filter.length > 0)
           this.tipoCampoIdSelect = filter[0].id;
 
-        localStorage.setItem('listaTipiCampo', JSON.stringify(value.listaTipiCampo));
+        localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
       })).pipe(flatMap(() => obs));
     observable.subscribe();
   }

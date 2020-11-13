@@ -1,5 +1,8 @@
 import {ControlloLogico} from '../ControlloLogico';
 import {TipoCampo} from './TipoCampo';
+import {ConfigurazioneCampoDettaglioTransazione} from './ConfigurazioneCampoDettaglioTransazione';
+import {ConfigurazioneTipologica} from './ConfigurazioneTipologica';
+import {ConfigurazioneJsonPath} from './ConfigurazioneJsonPath';
 
 export class ConfiguratoreCampiNuovoPagamento {
   listaCampiDettaglioTransazione: ConfigurazioneCampoDettaglioTransazione[];
@@ -7,18 +10,4 @@ export class ConfiguratoreCampiNuovoPagamento {
   listaTipologiche: ConfigurazioneTipologica[];
   listaJsonPath: ConfigurazioneJsonPath[];
   listaTipiCampo: TipoCampo[];
-}
-
-// todo definire le classi innestate del configuratore
-
-export class ConfigurazioneCampoDettaglioTransazione {
-
-}
-
-export class ConfigurazioneTipologica {
-
-}
-
-export class ConfigurazioneJsonPath {
-
 }

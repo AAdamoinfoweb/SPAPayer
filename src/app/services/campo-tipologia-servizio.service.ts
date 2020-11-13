@@ -7,6 +7,7 @@ import {environment} from "../../environments/environment";
 import {ParametriRicercaTipologiaServizio} from '../modules/main/model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 import {TipologiaServizio} from '../modules/main/model/tipologiaServizio/TipologiaServizio';
 import {CampoTipologiaServizio} from "../modules/main/model/CampoTipologiaServizio";
+import {ConfiguratoreCampiNuovoPagamento} from '../modules/main/model/campo/ConfiguratoreCampiNuovoPagamento';
 
 @Injectable({
   providedIn: 'root'
@@ -76,7 +77,7 @@ export class CampoTipologiaServizioService {
     return this.http.get(environment.bffBaseUrl + this.baseUrl + this.campiTipologiaServizioUrl + `?tipologiaServizioId=${tipologiaServizioId}`, {
       withCredentials: true,
       headers: h
-    }).pipe(map((body: CampoForm[]) => {
+    }).pipe(map((body: CampoTipologiaServizio[]) => {
         return body;
       }),
       catchError((err, caught) => {
@@ -88,14 +89,14 @@ export class CampoTipologiaServizioService {
       }));
   }
 
-  letturaConfigurazioneCampiNuovoPagamento(idFunzione): Observable<any> {
+  letturaConfigurazioneCampiNuovoPagamento(idFunzione): Observable<ConfiguratoreCampiNuovoPagamento> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     return this.http.get(environment.bffBaseUrl + this.baseUrl +
       this.configurazioneCampiNuovoPagamentoUrl, {
       withCredentials: true,
       headers: h
-    }).pipe(map((body) => {
+    }).pipe(map((body: ConfiguratoreCampiNuovoPagamento) => {
         return body;
       }),
       catchError((err, caught) => {
