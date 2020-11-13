@@ -121,6 +121,7 @@
                        type="checkbox"
                        [formControl]="form.controls['chiave']"
                        [(ngModel)]="tipologiaServizio.campoForm.chiave"
+                       (ngModelChange)="tipologiaServizio.campoForm.obbligatorio = $event"
                        type="checkbox"
                        autocomplete="off"
                 />
