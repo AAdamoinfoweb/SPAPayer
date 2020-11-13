@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
@@ -37,7 +37,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   public source: CdkDropList;
   public sourceIndex: number;
   public dragIndex: number;
-  waiting = true;
+  waiting = false;
 
   funzione: FunzioneGestioneEnum;
 
@@ -65,6 +65,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   private listaTipiCampo: any[];
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private overlayService: OverlayService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
@@ -78,17 +79,14 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.source = null;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-  }
-
-
   ngOnInit() {
     this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoTipologiaServizio) => {
-      let campoFormIdx = this.items.findIndex((value: CampoTipologiaServizio) => value.id == campoForm.id || value.titolo == campoForm.titolo);
+      let campoFormIdx = this.items.findIndex((value: CampoTipologiaServizio) => (value.id && campoForm.id && value.id == campoForm.id) || value.titolo == campoForm.titolo);
       if (campoFormIdx != -1) {
         this.items[campoFormIdx] = campoForm;
       } else {
         this.items.push(campoForm);
+        this.cdr.detectChanges();
       }
       this.overlayService.mostraModaleDettaglioEvent.emit(null);
     });
@@ -150,6 +148,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   caricaCampi(tipologiaServizioId: number): Observable<any> {
+    this.waiting = true;
     return this.campoTipologiaServizioService.campiTipologiaServizio(tipologiaServizioId, this.idFunzione)
       .pipe(map(value => {
         this.items = _.sortBy(value, 'posizione');
