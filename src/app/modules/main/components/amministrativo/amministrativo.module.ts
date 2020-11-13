@@ -61,6 +61,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import { GestisciTipologiaServizioComponent } from './gestisci-servizi/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
 import { FiltroGestioneTipologiaServizioComponent } from './gestisci-servizi/gestisci-tipologia-servizio/filtro-gestione-tipologia-servizio/filtro-gestione-tipologia-servizio.component';
 import { ModaleCampoFormComponent } from './gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
+import { ModaleAggiungiTipoCampoComponent } from './gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import { ModaleCampoFormComponent } from './gestisci-servizi/gestisci-tipologia-
         DatiContoCorrenteComponent,
         GestisciTipologiaServizioComponent,
         FiltroGestioneTipologiaServizioComponent,
-        ModaleCampoFormComponent
+        ModaleCampoFormComponent,
+        ModaleAggiungiTipoCampoComponent
     ],
     imports: [
         HttpClientModule,
