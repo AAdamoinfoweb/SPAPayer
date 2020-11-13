@@ -31,7 +31,7 @@
                 <select
                   id="tipoCampo"
                   [formControl]="form.controls['tipoCampo']"
-                  [(ngModel)]="tipologiaServizio.campoForm.tipo_campo_id">
+                  [(ngModel)]="tipologiaServizio.campoForm.tipoCampoId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of listaTipiCampo" [ngValue]="item.id">{{item.informazioni}}</option>
                 </select>
