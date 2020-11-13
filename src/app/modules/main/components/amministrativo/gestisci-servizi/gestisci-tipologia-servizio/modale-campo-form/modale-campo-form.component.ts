@@ -25,6 +25,8 @@ export class ModaleCampoFormComponent implements OnInit {
   @Input()
   tipologiaServizio: TipologiaServizioCampoForm;
 
+  FunzioneGestioneEnum = FunzioneGestioneEnum;
+
   listaCampiDettaglioTransazione: any[];
   listaControlliLogici: any[];
   listaTipologiche: any[];

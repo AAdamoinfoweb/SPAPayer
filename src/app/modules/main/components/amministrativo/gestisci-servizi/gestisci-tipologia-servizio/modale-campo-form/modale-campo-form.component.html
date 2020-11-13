@@ -244,10 +244,10 @@
           </div>
           <div class="row">
             <div class="col-2">
-              <button type="button" id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">Annulla
+              <button type="button" id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">{{tipologiaServizio.funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Dettaglio'}}
               </button>
             </div>
-            <div class="col-10 text-right button-space">
+            <div class="col-10 text-right button-space" *ngIf="tipologiaServizio.funzione !== FunzioneGestioneEnum.DETTAGLIO">
               <button (click)="salvaCampoForm()" type="button" class="btn"
                       [disabled]="form.invalid">
                 Salva
