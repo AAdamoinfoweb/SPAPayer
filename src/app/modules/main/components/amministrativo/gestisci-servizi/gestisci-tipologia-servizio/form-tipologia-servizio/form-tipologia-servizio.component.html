@@ -36,6 +36,7 @@
         <div class="row">
           <div class="col">
             <input id="codice"
+                   type="text"
                    [disabled]="this.funzione != FunzioneGestioneEnum.AGGIUNGI"
                    [(ngModel)]="codiceTipologia"
             />
@@ -60,6 +61,7 @@
         <div class="row">
           <div class="col">
             <input id="nome"
+                   type="text"
                    [(ngModel)]="nomeTipologia"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
             />
@@ -84,14 +86,14 @@
     <div class="row">
       <div class="col-3">
         <label class="title">Lista campi tipologia servizio</label>
-      </div>
-      <div class="col-2 pointer"
-           *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
+        <span class="pointer bottone-campo"
+             *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
         <span ngbTooltip="Crea nuovo campo" placement="bottom"
               [ngStyle]="{fill: '#403d39'}">
           <svg (click)="add()" class="bg-light icon icon-sm filled">
             <use xlink:href="assets/img/sprite.svg#it-plus"></use>
           </svg>
+        </span>
         </span>
       </div>
     </div>
