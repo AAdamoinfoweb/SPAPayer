@@ -87,6 +87,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       let campoFormIdx = this.items.findIndex((value: CampoForm) => value.id == campoForm.id || value.titolo == campoForm.titolo);
       if (campoFormIdx != -1) {
         this.items[campoFormIdx] = campoForm;
+      } else{
+        this.items.push(campoForm);
       }
     });
     this.refreshItemsEvent.subscribe((items) => {
@@ -176,7 +178,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   abilitaSalva(): boolean {
-    return this.codiceTipologia && this.codiceTipologia != "" && this.nomeTipologia && this.nomeTipologia != "" && this.items.length > 0;
+    return this.codiceTipologia && this.codiceTipologia != "" && this.nomeTipologia && this.nomeTipologia != "";
   }
 
   onChangeFiltri(filtri: ParametriRicercaTipologiaServizio) {
@@ -196,11 +198,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   add() {
     const campoForm = new CampoForm();
-    campoForm.titolo = 'nuovo campo';
-    this.items.push(campoForm);
-    this.showModal(campoForm);
     this.refreshItemsEvent.emit(this.items);
-    //this.showEditId = campoForm.titolo;
+    this.showModal(campoForm);
   }
 
   removeItem(item: CampoForm) {
