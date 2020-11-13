@@ -244,7 +244,8 @@
           </div>
           <div class="row">
             <div class="col-2">
-              <button type="button" id="bottoneIndietro" class="btn btn-secondary" (click)="clickIndietro()">{{tipologiaServizio.funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Dettaglio'}}
+              <button type="button" id="bottoneIndietro" class="btn btn-secondary"
+                      (click)="clickIndietro()">{{tipologiaServizio.funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}
               </button>
             </div>
             <div class="col-10 text-right button-space" *ngIf="tipologiaServizio.funzione !== FunzioneGestioneEnum.DETTAGLIO">
