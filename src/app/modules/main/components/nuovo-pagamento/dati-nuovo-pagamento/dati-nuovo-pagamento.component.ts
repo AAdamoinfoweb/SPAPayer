@@ -200,7 +200,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.isFaseVerificaPagamento = false;
     this.rimuoviCampoImporto();
 
-    const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+    const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campoInput);
     campiOutput.forEach(campo => {
       delete this.model[this.getNomeCampoForm(campo)];
     });
@@ -211,7 +211,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     // Mapping valori dei campi input da usare per la precompilazione
     const valoriPerPrecompilazione = {};
     this.listaCampiDinamici.forEach(campo => {
-      if (campo.campo_input && campo.jsonPath) {
+      if (campo.campoInput && campo.jsonPath) {
         valoriPerPrecompilazione[campo.jsonPath] = this.model[this.getNomeCampoForm(campo)];
       }
     });
@@ -229,7 +229,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   impostaValoriCampiOutput(valoriCampiPrecompilati): void {
-    const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+    const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campoInput);
     campiOutput.forEach(campo => {
       this.model[this.getNomeCampoForm(campo)] = JSONPath({
         path: campo.jsonPath,
@@ -248,7 +248,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     let classe;
 
     if (this.isBollettinoPrecompilato
-      && !campo.campo_input
+      && !campo.campoInput
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
     } else if (campo.tipoCampo === TipoCampoEnum.DATEDDMMYY || campo.tipoCampo === TipoCampoEnum.DATEMMYY || campo.tipoCampo === TipoCampoEnum.DATEYY) {
@@ -418,7 +418,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     campoAnno.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     campoAnno.posizione = 1;
     campoAnno.chiave = false;
-    campoAnno.campo_input = true;
+    campoAnno.campoInput = true;
     campiPagamentoLV1.push(campoAnno);
 
     const causale = new CampoForm();
@@ -426,7 +426,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     causale.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     causale.posizione = 2;
     campoAnno.chiave = false;
-    causale.campo_input = true;
+    causale.campoInput = true;
     campiPagamentoLV1.push(causale);
 
     const documento = new CampoForm();
@@ -434,7 +434,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     documento.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     documento.posizione = 3;
     campoAnno.chiave = true;
-    documento.campo_input = true;
+    documento.campoInput = true;
     campiPagamentoLV1.push(documento);
 
     return campiPagamentoLV1;
@@ -465,7 +465,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
     campi.forEach(campo => {
       const campoForm = new FormControl();
-      if (campo.disabilitato || !campo.campo_input || this.datiPagamento) {
+      if (campo.disabilitato || !campo.campoInput || this.datiPagamento) {
         campoForm.disable();
       }
 
