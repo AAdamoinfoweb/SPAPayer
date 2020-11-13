@@ -69,7 +69,8 @@ export class ModaleCampoFormComponent implements OnInit {
       this.tipologiaServizio.listaDipendeDa.filter((value => value.titolo !== this.tipologiaServizio.campoForm.titolo));
 
     this.tipologiaServizio.campoForm.dipendeDa =
-      this.tipologiaServizio.listaDipendeDa.find((value => value && value.titolo == this.tipologiaServizio.campoForm.dipendeDa.titolo));
+      this.tipologiaServizio.listaDipendeDa.find((value => this.tipologiaServizio.campoForm.dipendeDa &&
+        value.titolo == this.tipologiaServizio.campoForm.dipendeDa.titolo));
 
     if (!this.tipologiaServizio.livelloIntegrazione)
       this.tipologiaServizio.livelloIntegrazione = LivelloIntegrazioneEnum.LV2;
@@ -105,5 +106,9 @@ export class ModaleCampoFormComponent implements OnInit {
 
   salvaCampoForm() {
     this.amministrativoService.salvaCampoFormEvent.emit(this.tipologiaServizio.campoForm);
+  }
+
+  clickChiave(event: any) {
+    this.tipologiaServizio.campoForm.obbligatorio = event.target.value == "on";
   }
 }
