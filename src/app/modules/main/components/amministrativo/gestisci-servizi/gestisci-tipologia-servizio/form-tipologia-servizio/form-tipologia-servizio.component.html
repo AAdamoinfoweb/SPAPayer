@@ -24,12 +24,24 @@
     (onChangeFiltri)="onChangeFiltri($event)"
   ></app-filtro-gestione-tipologia-servizio>
 
-  <div class="row" *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI">
-    <button [disabled]="!filtro?.raggruppamentoId" class="btn" (click)="add()">Crea nuovo campo</button>
-  </div>
-
   <ng-container *ngIf="filtro?.raggruppamentoId">
-
+    <div class="row">
+      <div class="col-2">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+      <label class="title">Lista campi tipologia servizio</label>
+      </div>
+      <div class="col-2 pointer" *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI">
+        <span ngbTooltip="Crea nuovo campo" placement="bottom"
+              [ngStyle]="{fill: '#403d39'}">
+          <svg  (click)="add()" class="bg-light icon icon-sm filled">
+            <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+          </svg>
+        </span>
+      </div>
+    </div>
     <div class="row">
       <ul class="legend">
         <li><span class="field-disabled"></span> Campo disabilitato</li>
