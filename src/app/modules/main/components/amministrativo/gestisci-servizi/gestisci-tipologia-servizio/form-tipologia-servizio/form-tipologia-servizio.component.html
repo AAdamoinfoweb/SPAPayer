@@ -27,9 +27,21 @@
   <div class="row" *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI">
     <button [disabled]="!filtro?.raggruppamentoId" class="btn" (click)="add()">Crea nuovo campo</button>
   </div>
-  
+
   <ng-container *ngIf="filtro?.raggruppamentoId">
+
+    <div class="row">
+      <ul class="legend">
+        <li><span class="field-disabled"></span> Campo disabilitato</li>
+        <li><span class="field-input"></span> Campo input</li>
+        <li><span class="field-output"></span> Campo output</li>
+        <li><span class="required"></span> Campo obbligatorio</li>
+        <li><span class="key"></span> Campo chiave</li>
+      </ul>
+    </div>
+
     <div *ngIf="!waiting" class="row" cdkDropListGroup>
+
       <ng-container *ngFor="let item of items;let i=index">
         <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
              cdkDropListOrientation="horizontal"
