@@ -17,8 +17,8 @@ import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
 import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
-import {flatMap, map} from "rxjs/operators";
-import {Observable, of} from "rxjs";
+import {flatMap, map} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -177,11 +177,19 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   onClickSalva(): void {
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+      this.resettaFiltri();
+    }
+
     // TODO onclicksalva
   }
 
   abilitaSalva(): boolean {
     return this.codiceTipologia && this.codiceTipologia != "" && this.nomeTipologia && this.nomeTipologia != "";
+  }
+
+  resettaFiltri(): void {
+    this.filtro = new ParametriRicercaTipologiaServizio();
   }
 
   onChangeFiltri(filtri: ParametriRicercaTipologiaServizio) {
