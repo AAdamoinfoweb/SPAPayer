@@ -140,7 +140,8 @@ import { ModaleAggiungiTipoCampoComponent } from './gestisci-servizi/gestisci-ti
         ConfirmationService
     ],
     exports: [
-        ModaleCampoFormComponent
+        ModaleCampoFormComponent,
+        ModaleAggiungiTipoCampoComponent
     ],
     schemas: [NO_ERRORS_SCHEMA]
 })

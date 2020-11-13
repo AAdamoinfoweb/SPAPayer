@@ -113,4 +113,8 @@ export class ModaleCampoFormComponent implements OnInit {
   clickChiave(event: any) {
     this.tipologiaServizio.campoForm.obbligatorio = event.target.value == "on";
   }
+
+  addTipoCampo() {
+    this.overlayService.mostraModaleDettaglioEvent.emit({idFunzione: this.tipologiaServizio.funzione});
+  }
 }

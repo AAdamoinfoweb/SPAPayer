@@ -7,6 +7,9 @@
       <ng-container *ngIf="tipologiaServizio">
         <app-modale-campo-form [tipologiaServizio]="tipologiaServizio"></app-modale-campo-form>
       </ng-container>
+      <ng-container *ngIf="idFunzione">
+        <app-modale-aggiungi-tipo-campo [idFunzione]="idFunzione"></app-modale-aggiungi-tipo-campo>
+      </ng-container>
     </ng-template>
   </app-overlay>
   <app-login-bar></app-login-bar>

@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
   datiCampoForm = null;
   mostraModale = false;
   tipologiaServizio: any;
+  idFunzione: string;
 
   constructor(private menuService: MenuService,
               private router: Router,
@@ -46,7 +47,8 @@ export class AppComponent implements OnInit {
         this.datiPagamento = value?.datiPagamento;
         if (value?.campoForm) {
           this.tipologiaServizio = value;
-        }
+        } else if (value?.idFunzione)
+          this.idFunzione = value.idFunzione;
         this.mostraModale = !!value;
         this.cdr.detectChanges();
       });
