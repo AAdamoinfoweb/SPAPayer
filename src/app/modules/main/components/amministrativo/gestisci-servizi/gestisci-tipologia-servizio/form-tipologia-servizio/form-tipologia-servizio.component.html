@@ -36,7 +36,7 @@
         <div class="row">
           <div class="col">
             <input id="codice"
-              [(ngModel)]="codiceTipologia"
+                   [(ngModel)]="codiceTipologia"
             />
 
           </div>
@@ -59,7 +59,7 @@
         <div class="row">
           <div class="col">
             <input id="nome"
-              [(ngModel)]="nomeTipologia"
+                   [(ngModel)]="nomeTipologia"
             />
 
           </div>
@@ -83,7 +83,8 @@
       <div class="col-3">
         <label class="title">Lista campi tipologia servizio</label>
       </div>
-      <div class="col-2 pointer" *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
+      <div class="col-2 pointer"
+           *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
         <span ngbTooltip="Crea nuovo campo" placement="bottom"
               [ngStyle]="{fill: '#403d39'}">
           <svg (click)="add()" class="bg-light icon icon-sm filled">
@@ -92,7 +93,7 @@
         </span>
       </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="items.length > 0">
       <ul class="legend">
         <li><span class="field-disabled"></span> Campo disabilitato</li>
         <li><span class="field-input"></span> Campo input</li>
@@ -103,7 +104,6 @@
     </div>
 
     <div *ngIf="!waiting" class="row" cdkDropListGroup>
-
       <ng-container *ngFor="let item of items;let i=index">
         <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
              cdkDropListOrientation="horizontal"
