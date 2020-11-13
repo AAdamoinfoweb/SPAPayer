@@ -29,6 +29,7 @@ import {RaggruppamentoTipologieComponent} from './modules/main/components/ammini
 import {FormRaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import {GestisciCampoTipologiaServizioComponent} from "./modules/main/components/amministrativo/gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component";
 import {GestisciStatisticheComponent} from "./modules/main/components/amministrativo/gestisci-statistiche/gestisci-statistiche.component";
+import {FormStatisticaComponent} from "./modules/main/components/amministrativo/gestisci-statistiche/form-statistica/form-statistica.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -80,7 +81,10 @@ const routes: Routes = [
   {path: 'raggruppamentoTipologie/aggiungiRaggruppamento', component: FormRaggruppamentoTipologieComponent},
   {path: 'raggruppamentoTipologie/modificaRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
   {path: 'raggruppamentoTipologie/dettaglioRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
-  {path: 'gestisciStatistiche', component: GestisciStatisticheComponent}
+  {path: 'gestisciStatistiche', component: GestisciStatisticheComponent},
+  {path: 'gestisciStatistiche/aggiungiStatistica', component: FormStatisticaComponent},
+  {path: 'gestisciStatistiche/modificaStatistica/:statisticaId', component: FormStatisticaComponent},
+  {path: 'gestisciStatistiche/dettaglioStatistica/:statisticaId', component: FormStatisticaComponent}
 ];
 
 @NgModule({

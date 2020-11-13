@@ -44,12 +44,12 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
 
   // page
   isMenuCarico: boolean;
-  readonly tooltipTitolo = 'In questa pagina puoi consultare la lista delle statistiche e filtrarle';
+  readonly tooltipTitolo = 'In questa pagina puoi consultare la lista delle statistica e filtrarle';
   breadcrumbList = [];
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Inserisci Statistica'},
     {type: ToolEnum.UPDATE, disabled: true, tooltip: 'Modifica Statistica'},
-    {type: ToolEnum.DELETE, disabled: true, tooltip: 'Elimina Statistica'},
+    {type: ToolEnum.DELETE, disabled: true, tooltip: 'Elimina Statistiche'},
     {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
     {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'}
   ];
@@ -88,7 +88,24 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
   creaRigaTabella(oggetto: any) {
   }
 
-  eseguiAzioni(azioneTool: ToolEnum): void {
+  eseguiAzioni(azioneTool) {
+    switch (azioneTool) {
+      case ToolEnum.INSERT:
+        this.aggiungiElemento('/aggiungiStatistica');
+        break;
+      case ToolEnum.UPDATE:
+        this.modificaElementoSelezionato('/modificaEnte', this.getListaIdElementiSelezionati()[0]);
+        break;
+      case ToolEnum.DELETE:
+        this.eliminaStatisticheSelezionate();
+        break;
+      case ToolEnum.EXPORT_PDF:
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Statistiche');
+        break;
+      case ToolEnum.EXPORT_XLS:
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Statistiche');
+        break;
+    }
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
@@ -104,7 +121,7 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
   }
 
   getNumeroRecord(): string {
-    return '';
+    return 'Numero di statistica trovate: Di cui attive: Di cui disabilitate:';
   }
 
   getObservableFunzioneRicerca(): Observable<any[]> {
@@ -121,6 +138,10 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
   }
 
   dettaglioStatistica($event: any) {
+
+  }
+
+  private eliminaStatisticheSelezionate() {
 
   }
 }

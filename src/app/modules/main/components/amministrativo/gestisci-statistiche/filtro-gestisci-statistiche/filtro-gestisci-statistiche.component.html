@@ -107,15 +107,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <div class="toggles">
-                <label for="attiva">
-                  <input type="checkbox" name="attiva"
-                         id="attiva"
-                         #attiva="ngModel"
-                         [(ngModel)]="filtroRicercaStatistiche.attiva" style="display: none">
-                  <span class="lever"></span>
-                </label>
-              </div>
+              <it-toggle id="attiva" [(ngModel)]="filtroRicercaStatistiche.attiva" name="attiva"></it-toggle>
             </div>
           </div>
         </div>

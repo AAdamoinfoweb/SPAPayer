@@ -3,7 +3,7 @@ import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.co
 import {NgForm, NgModel} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {ParametriRicercaStatistiche} from "../../../../model/statistiche/ParametriRicercaStatistiche";
+import {ParametriRicercaStatistiche} from "../../../../model/statistica/ParametriRicercaStatistiche";
 import {DatePickerComponent, ECalendarValue} from "ng2-date-picker";
 import * as moment from "moment";
 

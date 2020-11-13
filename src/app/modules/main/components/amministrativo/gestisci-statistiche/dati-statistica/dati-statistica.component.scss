@@ -1,0 +1,13 @@
+.filled{
+  fill: #004987;
+  cursor: pointer;
+}
+
+.filled:hover{
+  fill: #EE7622;
+}
+
+.filled:disabled {
+  fill: #77777B;
+  cursor: not-allowed;
+}
