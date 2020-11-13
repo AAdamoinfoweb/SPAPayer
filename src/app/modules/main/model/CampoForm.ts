@@ -27,7 +27,7 @@ export class CampoForm {
   jsonPath: string;
   tipologica: string;
   campoDettaglioTransazione: string;
-  dipendeDa: DipendeDa;
+  dipendeDa: any;
   tipo_campo_id: number;
   tipologia_servizio_id: number;
 
