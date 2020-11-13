@@ -21,6 +21,7 @@ import {flatMap, map} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {ConfiguratoreCampiNuovoPagamento} from '../../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 import {v4 as uuidv4} from 'uuid';
+import {InserimentoTipologiaServizio} from "../../../../../model/campo/InserimentoTipologiaServizio";
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -183,14 +184,15 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       this.items.forEach((value, index) => value.posizione = index + 1);
 
-      // let inserimento: InserimentoTipologiaServizio = new InserimentoTipologiaServizio();
-      // inserimento.raggruppamentoId = this.filtro.raggruppamentoId;
-      // inserimento.codice = this.codiceTipologia;
-      // inserimento.nome = this.nomeTipologia;
-      // inserimento.listaCampiTipologiaServizio = this.items;
-      // this.campoTipologiaServizioService.inserimentoTipologiaServizio(inserimento).subscribe();
-
-      this.resettaFiltri();
+      let inserimento: InserimentoTipologiaServizio = new InserimentoTipologiaServizio();
+      inserimento.raggruppamentoId = this.filtro.raggruppamentoId;
+      inserimento.codice = this.codiceTipologia;
+      inserimento.descrizione = this.nomeTipologia;
+      inserimento.listaCampiTipologiaServizio = this.items;
+      this.campoTipologiaServizioService.inserimentoTipologiaServizio(inserimento, this.idFunzione)
+        .subscribe((id) => {
+          this.resettaFiltri();
+        });
     } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
 
     }
@@ -202,6 +204,9 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   resettaFiltri(): void {
     this.filtro = new ParametriRicercaTipologiaServizio();
+    this.codiceTipologia = null;
+    this.nomeTipologia = null;
+    this.items = [];
   }
 
   onChangeFiltri(filtri: ParametriRicercaTipologiaServizio) {

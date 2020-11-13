@@ -8,6 +8,7 @@ import {ParametriRicercaTipologiaServizio} from '../modules/main/model/tipologia
 import {TipologiaServizio} from '../modules/main/model/tipologiaServizio/TipologiaServizio';
 import {CampoTipologiaServizio} from "../modules/main/model/CampoTipologiaServizio";
 import {ConfiguratoreCampiNuovoPagamento} from '../modules/main/model/campo/ConfiguratoreCampiNuovoPagamento';
+import {InserimentoTipologiaServizio} from "../modules/main/model/campo/InserimentoTipologiaServizio";
 
 @Injectable({
   providedIn: 'root'
@@ -107,13 +108,29 @@ export class CampoTipologiaServizioService {
         }
       }));
   }
+
   eliminaTipologieServizioSelezionate(listaIdTipologieDaEliminare: number[], idFunzione): Observable<any> {
     // todo chiamare operation elimina
     return null;
   }
 
-  // inserimentoTipologiaServizio(inserimento: InserimentoTipologiaServizio) {
-  //
-  // }
+  inserimentoTipologiaServizio(body: InserimentoTipologiaServizio, idFunzione): Observable<number> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+    return this.http.post(environment.bffBaseUrl + this.baseUrl +
+      this.tipologiaServizioUrl, body, {
+      withCredentials: true,
+      headers: h
+    }).pipe(map((id: number) => {
+        return id;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
 }
 

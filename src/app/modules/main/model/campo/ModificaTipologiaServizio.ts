@@ -1,5 +1,7 @@
-import {InserimentoTipologiaServizio} from './InserimentoTipologiaServizio';
+import {CampoTipologiaServizio} from "../CampoTipologiaServizio";
 
-export class ModificaTipologiaServizio extends InserimentoTipologiaServizio {
-  codice: string;
+export class ModificaTipologiaServizio {
+  descrizione: string;
+  raggruppamentoId: number;
+  listaCampiTipologiaServizio: CampoTipologiaServizio[];
 }
