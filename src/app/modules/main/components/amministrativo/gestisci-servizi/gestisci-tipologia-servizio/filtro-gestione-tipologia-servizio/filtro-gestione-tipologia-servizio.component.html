@@ -54,6 +54,7 @@
                               [suggestions]="listaCodiciTipologia" (completeMethod)="caricaCodiciTipologia($event)" (onClear)="listaCodiciTipologia = []"
                               [minLength]="minCharsRecuperoValoriAutocomplete" delay="0" autoHighlight="true"
                               [disabled]="disabilitaAutocompleteCodici()"
+                              placeholder="Tutti"
               >
               </p-autoComplete>
             </div>
@@ -70,7 +71,7 @@
 
       </div>
 
-      <!-- Bottoni Pulisci e Cerca -->
+      <!-- Bottoni-->
       <div class="row" *ngIf="!isPaginaAggiungi">
         <div class="col-6">
           <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaPulisci()"
@@ -81,6 +82,12 @@
                   (click)="cercaElementi()">Cerca</button>
         </div>
       </div>
+
+      <div class="row" *ngIf="isPaginaAggiungi">
+        <button id="bottoneCrea" class="btn" [disabled]="!this.filtriRicerca.raggruppamentoId"
+                (click)="creaCampi()">Crea</button>
+      </div>
+
     </div>
   </div>
 </form>

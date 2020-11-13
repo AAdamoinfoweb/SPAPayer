@@ -73,9 +73,6 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   selezionaRaggruppamento() {
     this.filtriRicerca.codiceTipologia = null;
     this.listaCodiciTipologia = [];
-    if (this.isPaginaAggiungi) {
-      this.onChangeFiltri.emit(this.filtriRicerca);
-    }
   }
 
   selezionaCodice() {
@@ -87,13 +84,13 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
       this.filtriIniziali.codiceTipologia = this.filtriIniziali.codiceTipologia.toUpperCase();
 
     }
-
-    if (this.isPaginaAggiungi) {
-      this.onChangeFiltri.emit(this.filtriRicerca);
-    }
   }
 
   cercaElementi(): void {
+    this.onChangeFiltri.emit(this.filtriRicerca);
+  }
+
+  creaCampi(): void {
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
 
