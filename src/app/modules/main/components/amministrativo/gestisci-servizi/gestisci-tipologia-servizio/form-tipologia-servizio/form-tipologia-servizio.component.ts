@@ -80,6 +80,12 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
 
   ngOnInit() {
+    this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoForm) => {
+      let campoFormIdx = this.items.findIndex((value: CampoForm) => value.id == campoForm.id || value.titolo == campoForm.titolo);
+      if (campoFormIdx != -1) {
+        this.items[campoFormIdx] = campoForm;
+      }
+    });
     this.refreshItemsEvent.subscribe((items) => {
       this.listaDipendeDa = items.filter((value => value.tipo_campo_id === this.tipoCampoIdSelect));
     });

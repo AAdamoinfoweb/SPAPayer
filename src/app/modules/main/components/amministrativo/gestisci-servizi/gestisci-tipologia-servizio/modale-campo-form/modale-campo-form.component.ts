@@ -4,6 +4,7 @@ import {CampoForm} from "../../../../../model/CampoForm";
 import {OverlayService} from "../../../../../../../services/overlay.service";
 import {FunzioneGestioneEnum} from "../../../../../../../enums/funzioneGestione.enum";
 import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegrazione.enum";
+import {AmministrativoService} from "../../../../../../../services/amministrativo.service";
 
 interface TipologiaServizioCampoForm {
   listaDipendeDa: any[];
@@ -34,7 +35,7 @@ export class ModaleCampoFormComponent implements OnInit {
 
   livelloIntegrazioneEnum = LivelloIntegrazioneEnum;
 
-  constructor(private overlayService: OverlayService,) {
+  constructor(private overlayService: OverlayService, private amministrativoService: AmministrativoService) {
     this.listaCampiDettaglioTransazione = JSON.parse(localStorage.getItem('listaCampiDettaglioTransazione'));
     this.listaControlliLogici = JSON.parse(localStorage.getItem('listaControlliLogici'));
     this.listaTipologiche = JSON.parse(localStorage.getItem('listaTipologiche'));
@@ -64,7 +65,6 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     if (!this.tipologiaServizio.livelloIntegrazione)
       this.tipologiaServizio.livelloIntegrazione = LivelloIntegrazioneEnum.LV2;
 
@@ -95,5 +95,9 @@ export class ModaleCampoFormComponent implements OnInit {
 
   dipendeDaIsDisabled() {
     return !this.tipologiaServizio.campoForm.tipologica ? true : null;
+  }
+
+  salvaCampoForm() {
+    this.amministrativoService.salvaCampoFormEvent.emit(this.tipologiaServizio.campoForm);
   }
 }
