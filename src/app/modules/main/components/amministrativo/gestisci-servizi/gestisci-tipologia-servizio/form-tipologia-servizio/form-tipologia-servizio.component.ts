@@ -177,10 +177,10 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   onClickSalva(): void {
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+      this.items.forEach((value, index) => value.posizione = index + 1);
+
       this.resettaFiltri();
     }
-
-    // TODO onclicksalva
   }
 
   abilitaSalva(): boolean {
