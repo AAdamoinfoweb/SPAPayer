@@ -1,11 +1,5 @@
 import {ControlloLogico} from './ControlloLogico';
 import {OpzioneSelect} from './OpzioneSelect';
-
-interface DipendeDa {
-  id: number;
-  titolo: string;
-}
-
 export class CampoForm {
   id: number;
   titolo: string;
@@ -19,15 +13,10 @@ export class CampoForm {
   posizione: number;
   chiave: boolean;
   controllo_logico: ControlloLogico;
-  controlloLogicoId: number;
   campoInput: boolean;
-
   jsonPath: string;
   tipologica: string;
   campoDettaglioTransazione: string;
-  dipendeDa: any;
-  tipoCampoId: number;
-  tipologiaServizioId: number;
-
+  dipendeDa: number;
   opzioni: Array<OpzioneSelect>;
 }
