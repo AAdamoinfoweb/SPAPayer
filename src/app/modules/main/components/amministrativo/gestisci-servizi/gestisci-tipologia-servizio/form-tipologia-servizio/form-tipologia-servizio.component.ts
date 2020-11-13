@@ -206,14 +206,16 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   removeItem(item: CampoTipologiaServizio) {
-    this.confirmationService.confirm(
-      Utils.getModale(() => {
-          this.items.splice(this.items.findIndex((v) => v.id === item.id), 1);
-          this.refreshItemsEvent.emit(this.items);
-        },
-        TipoModaleEnum.ELIMINA,
-      )
-    );
+    if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
+      this.confirmationService.confirm(
+        Utils.getModale(() => {
+            this.items.splice(this.items.findIndex((v) => v.id === item.id), 1);
+            this.refreshItemsEvent.emit(this.items);
+          },
+          TipoModaleEnum.ELIMINA,
+        )
+      );
+    }
   }
 
   calcolaDimensioneCampo(campo: CampoTipologiaServizio): string {
@@ -241,7 +243,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   private decodeTipoCampo(tipoCampoId: number): string {
     let find = this.listaTipiCampo.find((value) => value.id = tipoCampoId);
-    if(find)
+    if (find)
       return find.nome;
     else
       return "";
