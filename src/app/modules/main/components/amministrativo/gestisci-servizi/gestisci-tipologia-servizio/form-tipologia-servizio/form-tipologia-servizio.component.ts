@@ -99,6 +99,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   ngOnInit() {
     this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoTipologiaServizio) => {
       let campoFormIdx = this.items.findIndex((value: CampoTipologiaServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
+      campoForm.campoInput = true;
       if (campoFormIdx != -1) {
         this.items[campoFormIdx] = campoForm;
       } else {

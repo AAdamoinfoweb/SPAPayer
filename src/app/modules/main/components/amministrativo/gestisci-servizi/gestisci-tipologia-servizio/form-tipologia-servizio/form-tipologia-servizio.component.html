@@ -100,8 +100,6 @@
     <div class="row" *ngIf="items.length > 0">
       <ul class="legend">
         <li><span class="field-disabled"></span> Campo disabilitato</li>
-        <li><span class="field-input"></span> Campo input</li>
-        <li><span class="field-output"></span> Campo output</li>
         <li><span class="required"></span> Campo obbligatorio</li>
         <li><span class="key"></span> Campo chiave</li>
       </ul>
@@ -114,7 +112,7 @@
              [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
           <div style="min-height: 5vh;"
                [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
-               'field-input': (item.campoInput && !item.disabilitato), 'field-output': (!item.campoInput && !item.disabilitato)}"
+               'field-input': (item.campoInput && !item.disabilitato)}"
                [cdkDragDisabled]="funzione == FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
             <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
             <div class="row" style="width: 100%">
