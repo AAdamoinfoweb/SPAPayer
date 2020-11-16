@@ -31,7 +31,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   readonly tipoData = ECalendarValue.String;
 
   @Input()
-  funzione: FunzioneGestioneEnum;
+  funzione: FunzioneGestioneEnum = FunzioneGestioneEnum.AGGIUNGI;
   FunzioneGestioneEnum = FunzioneGestioneEnum;
 
   opzioniRaggruppamento: OpzioneSelect[] = [];
@@ -43,7 +43,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
 
   listaCodiciTipologia: string[] = [];
 
-  isTipologiaCreata = false;
+  disabilitaFiltri = false;
 
   constructor(
     protected amministrativoService: AmministrativoService, protected route: ActivatedRoute,
@@ -60,7 +60,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   ngOnChanges(sc: SimpleChanges) {
     if (sc.filtriIniziali?.currentValue) {
       this.filtriRicerca = this.filtriIniziali;
-      this.isTipologiaCreata = false;
+      this.disabilitaFiltri = false;
     }
   }
 
@@ -79,10 +79,6 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
       });
   }
 
-  selezionaRaggruppamento(event) {
-
-  }
-
   selezionaCodice() {
     if (this.filtriRicerca.codiceTipologia === '') {
       this.filtriRicerca.codiceTipologia = null;
@@ -98,7 +94,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   creaTipologia(): void {
-    this.isTipologiaCreata = true;
+    this.disabilitaFiltri = true;
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
 
@@ -152,7 +148,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   disabilitaFiltroRaggruppamento(): boolean {
-    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI && this.isTipologiaCreata) {
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI && this.disabilitaFiltri) {
       return true;
     } else if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       return true;
@@ -162,7 +158,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   disabilitaFiltroCodice(): boolean {
-   return !this.filtriRicerca.raggruppamentoId;
+    return !this.filtriRicerca.raggruppamentoId || this.disabilitaFiltri;
   }
 
   disabilitaBottonePulisci(): boolean {
@@ -170,7 +166,8 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   disabilitaPulsanteCrea(): boolean {
-    return !this.filtriRicerca.raggruppamentoId || this.isTipologiaCreata;
+    return !this.filtriRicerca.raggruppamentoId || !this.filtriRicerca.codiceTipologia
+      || !this.filtriRicerca.nomeServizio || !this.filtriRicerca.abilitaDa || !this.filtriRicerca.abilitaA || this.disabilitaFiltri;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -178,4 +175,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
     this.isCalendarOpen = !this.isCalendarOpen;
   }
 
+  disabilitaCampi() {
+    return this.disabilitaFiltri;
+  }
 }
