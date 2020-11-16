@@ -29,6 +29,7 @@ import {RaggruppamentoTipologieComponent} from './modules/main/components/ammini
 import {FormRaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import {FormTipologiaServizioComponent} from "./modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component";
 import {GestisciTipologiaServizioComponent} from './modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
+import {FormServizioComponent} from "./modules/main/components/amministrativo/gestisci-servizi/form-servizio/form-servizio.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -82,7 +83,8 @@ const routes: Routes = [
   {path: 'gestisciTipologiaServizi', component: GestisciTipologiaServizioComponent},
   {path: 'gestisciTipologiaServizi/aggiungiTipologia', component: FormTipologiaServizioComponent},
   {path: 'gestisciTipologiaServizi/modificaTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
-  {path: 'gestisciTipologiaServizi/dettaglioTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent}
+  {path: 'gestisciTipologiaServizi/dettaglioTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
+  {path: 'configuraServizi/aggiungiServizio', component: FormServizioComponent},
 ];
 
 @NgModule({

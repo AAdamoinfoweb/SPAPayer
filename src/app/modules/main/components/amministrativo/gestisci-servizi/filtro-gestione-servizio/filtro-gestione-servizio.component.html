@@ -1,0 +1,174 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="idCollapseFiltri">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true" aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroForm="ngForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltri">
+    <div class="collapse-body">
+      <!-- Filtri -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectRaggruppamento" class="title">Raggruppamento</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select [ngClass]="{'text-disabled': !opzioniRaggruppamento.length}" id="selectRaggruppamento" name="raggruppamento"
+                      #filtroRaggruppamento = "ngModel"
+                      [(ngModel)]="filtriRicerca.raggruppamentoId"
+                      (ngModelChange)="selezionaRaggruppamento($event)"
+                      [disabled]="disabilitaFiltroRaggruppamento()"
+              >
+                <option [ngValue]="null" selected *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI">Tutti</option>
+                <option *ngFor="let item of opzioniRaggruppamento" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p>
+                {{setPlaceholder(filtroRaggruppamento, TipoCampoEnum.SELECT)}}
+              </p>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-4 pb-2" *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI || isPaginaGestione()">
+          <div class="row">
+            <div class="col">
+              <label for="inputCodice" class="title">Codice</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p-autoComplete id="inputCodice" class="pt-0" name="codice"
+                              #filtroCodice = "ngModel" [(ngModel)]="filtriRicerca.codiceTipologia" (ngModelChange)="selezionaCodice()"
+                              [suggestions]="listaCodiciTipologia" (completeMethod)="caricaCodiciTipologia($event)" (onClear)="listaCodiciTipologia = []"
+                              [minLength]="minCharsRecuperoValoriAutocomplete" delay="0" autoHighlight="true"
+                              [disabled]="disabilitaFiltroCodice()"
+                              placeholder="Non selezionato"
+              >
+              </p-autoComplete>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': disabilitaFiltroCodice(), 'text-invalid': isCampoInvalido(filtroCodice)}">
+                {{setPlaceholder(filtroCodice, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="scadenzaDataDa" class="title">Abilita Da</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaDa)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="scadenzaDataDa"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYY,
+              returnedValueType: tipoData
+	          }"
+                #scadenzaDaInput="ngModel"
+                [(ngModel)]="filtriRicerca.abilitaDa"
+                name="abilitaDa"
+                #datePickerScadenzaDa
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(scadenzaDaInput), 'text-invalid': isCampoInvalido(scadenzaDaInput)}">
+                {{setPlaceholder(scadenzaDaInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--        A -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="scadenzaDataA" class="title">Abilita A</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerScadenzaA)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="scadenzaDataA"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYY,
+              returnedValueType: tipoData
+            }"
+                #scadenzaAInput="ngModel"
+                [(ngModel)]="filtriRicerca.abilitaA"
+                name="abilitaA"
+                #datePickerScadenzaA
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(scadenzaAInput), 'text-invalid': isCampoInvalido(scadenzaAInput)}">
+                {{setPlaceholder(scadenzaAInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-1 pb-2" id="containerBottoneCrea" *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI">
+          <button id="bottoneCrea" class="btn" [disabled]="disabilitaPulsanteCrea()"
+                  (click)="creaTipologia()">Crea</button>
+        </div>
+
+      </div>
+
+      <!-- Bottoni-->
+      <div class="row" *ngIf="isPaginaGestione()">
+        <div class="col-6">
+          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottonePulisci()"
+                  (click)="pulisciFiltri(filtroForm)">Pulisci</button>
+        </div>
+        <div class="col-6 btn-find">
+          <button id="bottoneCerca" class="btn"
+                  (click)="cercaElementi()">Cerca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
