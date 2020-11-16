@@ -26,7 +26,7 @@
                       (ngModelChange)="selezionaRaggruppamento()"
                       [disabled]="disabilitaFiltroRaggruppamento()"
               >
-                <option [ngValue]="null" selected *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI">Tutti</option>
+                <option [ngValue]="null" selected *ngIf="isPaginaGestione()">Tutti</option>
                 <option *ngFor="let item of opzioniRaggruppamento" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
