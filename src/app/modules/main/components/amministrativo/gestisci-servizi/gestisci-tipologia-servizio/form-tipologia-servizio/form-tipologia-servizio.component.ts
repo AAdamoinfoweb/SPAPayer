@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, EventEmitter, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
@@ -29,7 +38,7 @@ import {ModificaTipologiaServizio} from "../../../../../model/campo/ModificaTipo
   templateUrl: './form-tipologia-servizio.component.html',
   styleUrls: ['./form-tipologia-servizio.component.scss']
 })
-export class FormTipologiaServizioComponent extends FormElementoParentComponent implements OnInit {
+export class FormTipologiaServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy {
 
   @ViewChild(CdkDropListGroup) listGroup: CdkDropListGroup<CdkDropList>;
   @ViewChild(CdkDropList) placeholder: CdkDropList;
@@ -81,6 +90,10 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     super(confirmationService, activatedRoute, amministrativoService, http, router);
     this.target = null;
     this.source = null;
+  }
+
+  ngOnDestroy(): void {
+    this.amministrativoService.salvaCampoFormEvent.unsubscribe();
   }
 
   ngOnInit() {
