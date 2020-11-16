@@ -131,7 +131,7 @@ export class StatisticaService {
       }));
   }
 
-  eseguiQuery(query: string, idFunzione: string): Observable<any[]> {
+  eseguiQuery(query: string, idFunzione: string): Observable<any> {
     const url = environment.bffBaseUrl + this.eseguiQueryUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -145,9 +145,9 @@ export class StatisticaService {
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
-          return of(null);
+          return of(err);
         } else {
-          return of(null);
+          return of(err);
         }
       }));
   }
