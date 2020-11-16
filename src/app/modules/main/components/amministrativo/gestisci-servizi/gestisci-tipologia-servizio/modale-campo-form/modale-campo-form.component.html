@@ -223,7 +223,7 @@
                   [formControl]="form.controls['controllo_logico']"
                   [(ngModel)]="tipologiaServizio.campoForm.controlloLogicoId">
                   <option [ngValue]="null"></option>
-                  <option *ngFor="let item of listaControlliLogici" [ngValue]="item.regex">{{item.nome}}</option>
+                  <option *ngFor="let item of listaControlliLogici" [ngValue]="item.nome">{{item.nome}}</option>
                 </select>
               </div>
             </div>
