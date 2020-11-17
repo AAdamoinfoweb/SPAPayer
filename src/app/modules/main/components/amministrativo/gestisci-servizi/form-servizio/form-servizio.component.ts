@@ -9,8 +9,31 @@ import {ViewportRuler} from "@angular/cdk/overlay";
 import {ConfirmationService} from "primeng/api";
 import {CampoTipologiaServizioService} from "../../../../../../services/campo-tipologia-servizio.service";
 import {Breadcrumb, SintesiBreadcrumb} from "../../../../dto/Breadcrumb";
-import {ParametriRicercaTipologiaServizio} from "../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio";
 import {ParametriRicercaServizio} from "../../../../model/servizio/ParametriRicercaServizio";
+import {LivelloIntegrazioneEnum} from "../../../../../../enums/livelloIntegrazione.enum";
+import {NgModel} from "@angular/forms";
+import {Societa} from "../../../../model/Societa";
+import {Ente} from "../../../../model/Ente";
+import {SocietaService} from "../../../../../../services/societa.service";
+import {map} from "rxjs/operators";
+import {EnteService} from "../../../../../../services/ente.service";
+import {Observable} from "rxjs";
+import {SintesiEnte} from "../../../../model/ente/SintesiEnte";
+import {ParametriRicercaEnte} from "../../../../model/ente/ParametriRicercaEnte";
+
+export class LivelloIntegrazioneServizio {
+  id: number = null;
+  codiceIDServizio: number = null;
+  numeroTentativiNotifica: number = 0;
+  notificaUtente: boolean = false;
+  redirect: boolean;
+}
+
+export class ImpositoreServizio {
+  societaId: number = null;
+  enteId: number = null;
+  mostraAlVersante: boolean = false;
+}
 
 @Component({
   selector: 'app-form-servizio',
@@ -26,8 +49,22 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   funzione: FunzioneGestioneEnum;
   filtro: ParametriRicercaServizio;
 
+  LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
+
+  servizio: any = {};
+  contatto: any = {};
+  impositore: ImpositoreServizio = new ImpositoreServizio();
+  livelloIntegrazione: LivelloIntegrazioneServizio = new LivelloIntegrazioneServizio();
+
+
+  listaSocieta: Societa[] = [];
+  FunzioneGestioneEnum = FunzioneGestioneEnum;
+  listaEnti: SintesiEnte[] = [];
+
   constructor(private cdr: ChangeDetectorRef,
               private overlayService: OverlayService,
+              private societaService: SocietaService,
+              private enteService: EnteService,
               protected activatedRoute: ActivatedRoute,
               protected router: Router,
               protected http: HttpClient,
@@ -42,6 +79,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
+    this.societaService.ricercaSocieta(null, this.idFunzione)
+      .pipe(map((value: Societa[]) => this.listaSocieta = value)).subscribe();
     this.controllaTipoFunzione();
     this.inizializzaBreadcrumb();
     this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Servizio';
@@ -80,6 +119,38 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onChangeFiltri($event: any) {
+
+  }
+
+  cambiaLivelloIntegrazione($event: any) {
+
+  }
+
+  disabilitaCampi() {
+    return false;
+  }
+
+  onChangeSocieta(societaInput: NgModel) {
+    this.getObservableFunzioneRicerca(societaInput.value)
+      .pipe(map((value) => this.listaEnti = value)).subscribe();
+  }
+
+  getObservableFunzioneRicerca(societaId): Observable<SintesiEnte[]> {
+    let params = new ParametriRicercaEnte();
+    params.societaId = societaId;
+    return this.enteService.ricercaEnti(params, this.idFunzione);
+  }
+
+  isCampoInvalido(societaInput: NgModel) {
+    return false;
+  }
+
+  setPlaceholder(societaInput: NgModel, select: string) {
+
+
+  }
+
+  onChangeEnte(enteInput: NgModel) {
 
   }
 }
