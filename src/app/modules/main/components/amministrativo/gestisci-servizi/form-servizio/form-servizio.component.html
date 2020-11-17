@@ -285,6 +285,35 @@
       <div class="col-md-3 pb-2">
         <div class="row">
           <div class="col">
+            <label for="livelloTerritorialeId" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+              Livello Territoriale</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <select
+              id="livelloTerritorialeId"
+              name="livelloTerritorialeId"
+              #livelloTerritorialeId="ngModel"
+              [(ngModel)]="impositore.livelloTerritorialeId"
+              [disabled]="!impositore.societaId"
+              (ngModelChange)="onChangeLivelloTerritoriale(societaInput, livelloTerritorialeId)"
+            >
+              <option [ngValue]="null" selected>Seleziona</option>
+              <option *ngFor="let item of listaLivelloTerritoriale"
+                      [ngValue]="item.id">{{item.nome}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(livelloTerritorialeId)">Seleziona livello territoriale</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
             <label for="selectEnte"
                    [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Ente</label>
           </div>
@@ -295,7 +324,7 @@
                     id="selectEnte" name="enteId"
                     #enteInput="ngModel" [(ngModel)]="impositore.enteId"
                     (ngModelChange)="onChangeEnte(enteInput)"
-                    [disabled]="!impositore.societaId">
+                    [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId">
               <option [ngValue]="null" [selected]="true">Seleziona</option>
               <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nomeEnte}}</option>
             </select>

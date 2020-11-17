@@ -20,6 +20,7 @@ import {EnteService} from "../../../../../../services/ente.service";
 import {Observable} from "rxjs";
 import {SintesiEnte} from "../../../../model/ente/SintesiEnte";
 import {ParametriRicercaEnte} from "../../../../model/ente/ParametriRicercaEnte";
+import {LivelloTerritoriale} from "../../../../model/LivelloTerritoriale";
 
 export class LivelloIntegrazioneServizio {
   id: number = null;
@@ -27,12 +28,16 @@ export class LivelloIntegrazioneServizio {
   numeroTentativiNotifica: number = 0;
   notificaUtente: boolean = false;
   redirect: boolean;
+  codiceEnte: number;
+  tipoUfficio: string;
+  codiceUfficio: string;
 }
 
 export class ImpositoreServizio {
   societaId: number = null;
   enteId: number = null;
   mostraAlVersante: boolean = false;
+  livelloTerritorialeId: number = null;
 }
 
 @Component({
@@ -58,8 +63,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
 
   listaSocieta: Societa[] = [];
-  FunzioneGestioneEnum = FunzioneGestioneEnum;
+  listaLivelloTerritoriale: LivelloTerritoriale[] = [];
   listaEnti: SintesiEnte[] = [];
+  FunzioneGestioneEnum = FunzioneGestioneEnum;
 
   constructor(private cdr: ChangeDetectorRef,
               private overlayService: OverlayService,
@@ -131,13 +137,18 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onChangeSocieta(societaInput: NgModel) {
-    this.getObservableFunzioneRicerca(societaInput.value)
+
+  }
+
+  onChangeLivelloTerritoriale(societaInput: NgModel, livelloTerritorialeInput: NgModel) {
+    this.getObservableFunzioneRicerca(societaInput.value, livelloTerritorialeInput.value)
       .pipe(map((value) => this.listaEnti = value)).subscribe();
   }
 
-  getObservableFunzioneRicerca(societaId): Observable<SintesiEnte[]> {
+  getObservableFunzioneRicerca(societaId, livelloTerritorialeId): Observable<SintesiEnte[]> {
     let params = new ParametriRicercaEnte();
     params.societaId = societaId;
+    params.livelloTerritorialeId = livelloTerritorialeId;
     return this.enteService.ricercaEnti(params, this.idFunzione);
   }
 
