@@ -1,31 +1,31 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {FormElementoParentComponent} from "../../form-elemento-parent.component";
-import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
-import {OverlayService} from "../../../../../../services/overlay.service";
-import {HttpClient} from "@angular/common/http";
-import {AmministrativoService} from "../../../../../../services/amministrativo.service";
-import {ViewportRuler} from "@angular/cdk/overlay";
-import {ConfirmationService} from "primeng/api";
-import {CampoTipologiaServizioService} from "../../../../../../services/campo-tipologia-servizio.service";
-import {Breadcrumb, SintesiBreadcrumb} from "../../../../dto/Breadcrumb";
-import {ParametriRicercaServizio} from "../../../../model/servizio/ParametriRicercaServizio";
-import {LivelloIntegrazioneEnum} from "../../../../../../enums/livelloIntegrazione.enum";
-import {NgModel} from "@angular/forms";
-import {Societa} from "../../../../model/Societa";
-import {SocietaService} from "../../../../../../services/societa.service";
-import {map} from "rxjs/operators";
-import {EnteService} from "../../../../../../services/ente.service";
-import {Observable} from "rxjs";
-import {SintesiEnte} from "../../../../model/ente/SintesiEnte";
-import {ParametriRicercaEnte} from "../../../../model/ente/ParametriRicercaEnte";
-import {LivelloTerritoriale} from "../../../../model/LivelloTerritoriale";
+import {FormElementoParentComponent} from '../../form-elemento-parent.component';
+import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {OverlayService} from '../../../../../../services/overlay.service';
+import {HttpClient} from '@angular/common/http';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {ViewportRuler} from '@angular/cdk/overlay';
+import {ConfirmationService} from 'primeng/api';
+import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
+import {ParametriRicercaServizio} from '../../../../model/servizio/ParametriRicercaServizio';
+import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
+import {NgModel} from '@angular/forms';
+import {Societa} from '../../../../model/Societa';
+import {SocietaService} from '../../../../../../services/societa.service';
+import {map} from 'rxjs/operators';
+import {EnteService} from '../../../../../../services/ente.service';
+import {Observable} from 'rxjs';
+import {SintesiEnte} from '../../../../model/ente/SintesiEnte';
+import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte';
+import {LivelloTerritoriale} from '../../../../model/LivelloTerritoriale';
 
 export class LivelloIntegrazioneServizio {
   id: number = null;
   codiceIDServizio: number = null;
-  numeroTentativiNotifica: number = 0;
-  notificaUtente: boolean = false;
+  numeroTentativiNotifica = 0;
+  notificaUtente = false;
   redirect: boolean;
   codiceEnte: number;
   tipoUfficio: string;
@@ -35,7 +35,13 @@ export class LivelloIntegrazioneServizio {
 export class ImpositoreServizio {
   societaId: number = null;
   enteId: number = null;
-  mostraAlVersante: boolean = false;
+  mostraAlVersante = false;
+  livelloTerritorialeId: number = null;
+}
+
+export class BeneficiarioServizio {
+  societaId: number = null;
+  enteId: number = null;
   livelloTerritorialeId: number = null;
 }
 
@@ -59,13 +65,18 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   contatto: any = {};
   impositore: ImpositoreServizio = new ImpositoreServizio();
   livelloIntegrazione: LivelloIntegrazioneServizio = new LivelloIntegrazioneServizio();
-
+  beneficiario: BeneficiarioServizio = new BeneficiarioServizio();
 
   listaSocieta: Societa[] = [];
   listaLivelloTerritoriale: LivelloTerritoriale[] = [];
   listaEnti: SintesiEnte[] = [];
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   filtri: any;
+
+  listaSocietaBenef: Societa[] = [];
+  listaEntiBenef: SintesiEnte[] = [];
+  listaLivelloTerritorialeBenef: LivelloTerritoriale[] = [];
+
 
   constructor(private cdr: ChangeDetectorRef,
               private overlayService: OverlayService,
@@ -146,7 +157,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   getObservableFunzioneRicerca(societaId, livelloTerritorialeId): Observable<SintesiEnte[]> {
-    let params = new ParametriRicercaEnte();
+    const params = new ParametriRicercaEnte();
     params.societaId = societaId;
     params.livelloTerritorialeId = livelloTerritorialeId;
     return this.enteService.ricercaEnti(params, this.idFunzione);

@@ -34,7 +34,7 @@
       </div>
       <div id="contatti" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltri">
         <div class="row mt-2 mb-0">
-          <div class="col-md-2 pb-2">
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
             <div class="row">
               <div class="col">
                 <label for="nome" class="title">Nome</label>
@@ -47,7 +47,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 pb-2">
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
             <div class="row">
               <div class="col">
                 <label for="cognome" class="title">Cognome</label>
@@ -60,7 +60,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3 pb-2">
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
             <div class="row">
               <div class="col">
                 <label for="tel" class="title">Tel. ufficio o cellulare</label>
@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="row mt-2 mb-0">
-          <div class="col-md-3 pb-2">
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
             <div class="row">
               <div class="col">
                 <label for="email" class="title">Email</label>
@@ -112,7 +112,7 @@
       </div>
       <div id="integrazione" class="collapse show" role="tabpanel" aria-labelledby="idCollapseIntegrazione">
         <div class="row mt-2 mb-0">
-          <div class="col-md-3 pb-2">
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
             <div class="row">
               <div class="col">
                 <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
@@ -138,7 +138,7 @@
             </div>
           </div>
           <ng-container *ngIf="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV1">
-            <div class="col-md-2 pb-2">
+            <div class="col-xs-6 col-md-4 col-lg-2 pb-2">
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'codiceEnte'" class="title form-elem-title"
@@ -154,7 +154,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 pb-2">
+            <div class="col-xs-6 col-md-4 col-lg-2 pb-2">
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'tipoUfficio'" class="title form-elem-title"
@@ -169,7 +169,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 pb-2">
+            <div class="col-xs-6 col-md-4 col-lg-2 pb-2">
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'codiceUfficio'" class="title form-elem-title"
@@ -184,7 +184,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 pb-2">
+            <div class="col-xs-6 col-md-4 col-lg-2 pb-2">
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'codiceIDServizio'" class="title form-elem-title"
@@ -200,7 +200,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 pb-2">
+            <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'numeroTentativiNotifica'" class="title form-elem-title"
@@ -217,7 +217,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 pb-2">
+            <div class="col-xs-6 col-md-4 col-lg-2 pb-2">
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'notificaUtente'" class="title form-elem-title"
@@ -235,7 +235,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 pb-2">
+            <div class="col-xs-6 col-md-4 col-lg-2 pb-2">
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'redirect'" class="title form-elem-title"
@@ -261,7 +261,7 @@
       </div>
       <div id="impositore" class="collapse show" role="tabpanel" aria-labelledby="idCollapseImpositore">
         <div class="row mt-2 mb-0">
-          <div class="col-md-3 pb-2">
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
             <div class="row">
               <div class="col">
                 <label for="selectSocieta" class="title"
@@ -288,7 +288,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3 pb-2">
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
             <div class="row">
               <div class="col">
                 <label for="livelloTerritorialeId" class="title"
@@ -318,7 +318,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3 pb-2">
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
             <div class="row">
               <div class="col">
                 <label for="selectEnte"
@@ -343,7 +343,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 pb-2">
+          <div class="col-xs-6 col-md-4 col-lg-2 pb-2">
             <div class="row">
               <div class="col">
                 <label for="switchMostraAlVersante" class="title">Mostra al versante</label>
@@ -364,7 +364,90 @@
         </button>
       </div>
       <div id="beneficiario" class="collapse show" role="tabpanel" aria-labelledby="idCollapseBeneficiario">
-
+        <div class="row mt-2 mb-0">
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="selectSocietaBenef" class="title"
+                       [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Società</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select [ngClass]="{'text-disabled': !listaSocietaBenef.length}" id="selectSocietaBenef" name="societaIdBenef"
+                        #societaBenefInput="ngModel" [(ngModel)]="beneficiario.societaId"
+                        (ngModelChange)="onChangeSocieta(societaBenefInput)"
+                        [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                  <option [ngValue]="null" [selected]="true">Seleziona</option>
+                  <option *ngFor="let item of listaSocietaBenef" [ngValue]="item.id">{{item.nome}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(societaBenefInput), 'text-invalid': isCampoInvalido(societaBenefInput), 'text-disabled': !listaSocieta.length}">
+                  {{setPlaceholder(societaBenefInput, 'select')}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="livelloTerritorialeIdBenef" class="title"
+                       [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+                  Livello Territoriale</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select
+                  id="livelloTerritorialeIdBenef"
+                  name="livelloTerritorialeIdBenef"
+                  #livelloTerritorialeIdBenef="ngModel"
+                  [(ngModel)]="beneficiario.livelloTerritorialeId"
+                  [disabled]="!beneficiario.societaId"
+                  (ngModelChange)="onChangeLivelloTerritoriale(societaBenefInput, livelloTerritorialeIdBenef)"
+                >
+                  <option [ngValue]="null" selected>Seleziona</option>
+                  <option *ngFor="let item of listaLivelloTerritorialeBenef"
+                          [ngValue]="item.id">{{item.nome}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+              <div class="col">
+                <p *ngIf="!isCampoInvalido(livelloTerritorialeIdBenef)">Seleziona livello territoriale</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="selectEnteBenef"
+                       [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Ente</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select [ngClass]="{'input-disabled': !listaEntiBenef.length}"
+                        id="selectEnteBenef" name="enteIdBenef"
+                        #enteBenefInput="ngModel" [(ngModel)]="beneficiario.enteId"
+                        (ngModelChange)="onChangeEnte(enteBenefInput)"
+                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId">
+                  <option [ngValue]="null" [selected]="true">Seleziona</option>
+                  <option *ngFor="let item of listaEntiBenef" [ngValue]="item.id">{{item.nomeEnte}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p *ngIf="!isCampoInvalido(enteBenefInput)">Seleziona Ente</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="collapse-header" id="idCollapseCampiServizio">
