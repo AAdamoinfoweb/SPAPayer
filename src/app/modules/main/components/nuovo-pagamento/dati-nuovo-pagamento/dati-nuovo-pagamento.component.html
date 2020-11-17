@@ -318,9 +318,9 @@
       </button>
     </div>
 
-    <div *ngIf="isBollettinoPrecompilato && !isFaseVerificaPagamento"
+    <div type="button" *ngIf="isBollettinoPrecompilato && !isFaseVerificaPagamento"
          class="col-10 text-right">
-      <button type="button" id="bottoneProcedi" class="btn" [disabled]="form.invalid" (click)="clickProcedi()">Procedi</button>
+      <button id="bottoneProcedi" class="btn" [disabled]="form.invalid" (click)="clickProcedi()">Procedi</button>
     </div>
   </div>
 </form>

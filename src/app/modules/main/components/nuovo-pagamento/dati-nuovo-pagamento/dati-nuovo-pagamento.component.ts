@@ -127,6 +127,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           this.model[this.importoNomeCampo] = bollettino.importo;
         } else {
           if (bollettino.listaCampoDettaglioTransazione) {
+            this.impostaCampi(this.getCampiBollettinoInterno(bollettino.listaCampoDettaglioTransazione));
             bollettino.listaCampoDettaglioTransazione.forEach(dettaglio => {
               const campo = this.listaCampiDinamici.find(campo => this.getTitoloCampo(campo) === dettaglio.titolo);
               if (campo) {
@@ -393,6 +394,14 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           this.impostaDettaglioPagamento();
         }
         return of(null);
+      } else if (this.datiPagamento && this.datiPagamento.dettaglioTransazioneId) {
+        /*
+        Nel caso della modale dettaglio pagamento legata ad un pagamento presente sul db (con dettaglioTransazioneId),
+        leggo i campi da listaCampiDettaglioTransazione, anziché dalla GET di campi pagamento,
+        dato che i campi potrebbero essere cambiati rispetto a quando fu inserito il pagamento nel db
+         */
+        this.impostaDettaglioPagamento();
+        return of(null);
       } else {
         return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
           this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
@@ -438,6 +447,22 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     campiPagamentoLV1.push(documento);
 
     return campiPagamentoLV1;
+  }
+
+  getCampiBollettinoInterno(listaCampoDettaglioTransazione: CampoDettaglioTransazione[]): CampoForm[] {
+    const campi: CampoForm[] = [];
+    if (listaCampoDettaglioTransazione) {
+      listaCampoDettaglioTransazione.forEach((dettaglio, index) => {
+        const campo = new CampoForm();
+        campo.titolo = dettaglio.titolo;
+        campo.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
+        campo.posizione = index;
+        campo.chiave = false;
+        campo.campoInput = true;
+        campi.push(campo);
+      });
+    }
+    return campi;
   }
 
   formattaInput(event: any, campo: CampoForm): void {
@@ -653,13 +678,14 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
         if (valoreSelectPadre) {
+          const idSelectPadre = selectPadre.opzioni.find(opzione => opzione.value === valoreSelectPadre)?.id;
           switch (campo.tipologica) {
             // Inserire qui logica per i vari campi select dipendenti da altre select
 
             case TipologicaSelectEnum.COMUNI:
               // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
               valoriSelect = valoriSelect.filter(valore => {
-                return valore.codiceIstat?.substring(0, 3) === valoreSelectPadre;
+                return valore.codiceIstat?.substring(0, 3) === idSelectPadre;
               });
               break;
           }
@@ -677,13 +703,15 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
         case TipologicaSelectEnum.PROVINCE:
           opzioniSelect.push({
-            value: valore.codice,
+            id: valore.codice,
+            value: valore.nome,
             label: valore.nome
           });
           break;
         case TipologicaSelectEnum.COMUNI:
           opzioniSelect.push({
-            value: valore.codiceIstat,
+            id: valore.codiceIstat,
+            value: valore.nome,
             label: valore.nome
           });
           break;
