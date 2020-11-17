@@ -369,17 +369,18 @@
             <div class="row">
               <div class="col">
                 <label for="selectSocietaBenef" class="title"
-                       [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Società</label>
+                       [ngClass]="{'required': livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1}">Società</label>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <select [ngClass]="{'text-disabled': !listaSocietaBenef.length}" id="selectSocietaBenef" name="societaIdBenef"
+                <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocietaBenef" name="societaIdBenef"
+                        [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
                         #societaBenefInput="ngModel" [(ngModel)]="beneficiario.societaId"
                         (ngModelChange)="onChangeSocieta(societaBenefInput)"
                         [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
-                  <option *ngFor="let item of listaSocietaBenef" [ngValue]="item.id">{{item.nome}}</option>
+                  <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
               </div>
             </div>
@@ -396,7 +397,7 @@
             <div class="row">
               <div class="col">
                 <label for="livelloTerritorialeIdBenef" class="title"
-                       [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+                       [ngClass]="{'required': livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1}">
                   Livello Territoriale</label>
               </div>
             </div>
@@ -408,6 +409,7 @@
                   #livelloTerritorialeIdBenef="ngModel"
                   [(ngModel)]="beneficiario.livelloTerritorialeId"
                   [disabled]="!beneficiario.societaId"
+                  [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
                   (ngModelChange)="onChangeLivelloTerritoriale(societaBenefInput, livelloTerritorialeIdBenef)"
                 >
                   <option [ngValue]="null" selected>Seleziona</option>
@@ -426,7 +428,7 @@
             <div class="row">
               <div class="col">
                 <label for="selectEnteBenef"
-                       [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Ente</label>
+                       [ngClass]="{'title': true, 'required': livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1}">Ente</label>
               </div>
             </div>
             <div class="row">
@@ -435,6 +437,7 @@
                         id="selectEnteBenef" name="enteIdBenef"
                         #enteBenefInput="ngModel" [(ngModel)]="beneficiario.enteId"
                         (ngModelChange)="onChangeEnte(enteBenefInput)"
+                        [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
                         [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaEntiBenef" [ngValue]="item.id">{{item.nomeEnte}}</option>
