@@ -85,7 +85,7 @@ export class ModaleCampoFormComponent implements OnInit {
 
     if (this.tipologiaServizio.livelloIntegrazione === LivelloIntegrazioneEnum.LV2) {
       this.tipologiaServizio.campoForm.campoInput = true;
-      this.tipologiaServizio.campoForm.jsonPath = null;
+      this.tipologiaServizio.campoForm.jsonPathId = null;
     }
   }
 
@@ -96,7 +96,7 @@ export class ModaleCampoFormComponent implements OnInit {
   cambiaLivelloIntegrazione(item: CampoTipologiaServizio, event: LivelloIntegrazioneEnum) {
     if (event === LivelloIntegrazioneEnum.LV2) {
       this.tipologiaServizio.campoForm.campoInput = true;
-      this.tipologiaServizio.campoForm.jsonPath = null;
+      this.tipologiaServizio.campoForm.jsonPathId = null;
     }
     this.listaJsonPathFiltrata = this.listaJsonPath.filter(value => {
       return value.livello_integrazione_id === event && value.campo_input === item.campoInput;
