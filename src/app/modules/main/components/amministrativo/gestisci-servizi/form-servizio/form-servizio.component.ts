@@ -13,7 +13,6 @@ import {ParametriRicercaServizio} from "../../../../model/servizio/ParametriRice
 import {LivelloIntegrazioneEnum} from "../../../../../../enums/livelloIntegrazione.enum";
 import {NgModel} from "@angular/forms";
 import {Societa} from "../../../../model/Societa";
-import {Ente} from "../../../../model/Ente";
 import {SocietaService} from "../../../../../../services/societa.service";
 import {map} from "rxjs/operators";
 import {EnteService} from "../../../../../../services/ente.service";
@@ -98,13 +97,13 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   controllaTipoFunzione() {
     const url = this.activatedRoute.snapshot.url[1].path;
     switch (url) {
-      case 'dettaglioTipologia':
+      case 'dettaglioServizio':
         this.funzione = FunzioneGestioneEnum.DETTAGLIO;
         break;
-      case 'aggiungiTipologia':
+      case 'aggiungiServizio':
         this.funzione = FunzioneGestioneEnum.AGGIUNGI;
         break;
-      case 'modificaTipologia':
+      case 'modificaServizio':
         this.funzione = FunzioneGestioneEnum.MODIFICA;
         break;
     }

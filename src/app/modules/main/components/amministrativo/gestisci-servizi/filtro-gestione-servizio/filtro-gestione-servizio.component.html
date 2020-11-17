@@ -118,7 +118,7 @@
             <div class="col">
               <p
                 [ngClass]="{'text-muted': !isCampoInvalido(scadenzaDaInput), 'text-invalid': isCampoInvalido(scadenzaDaInput)}">
-                {{setPlaceholder(scadenzaDaInput, 'date')}}
+                {{setPlaceholder(scadenzaDaInput, TipoCampoEnum.DATEDDMMYY)}}
               </p>
             </div>
           </div>
@@ -162,7 +162,7 @@
             <div class="col">
               <p
                 [ngClass]="{'text-muted': !isCampoInvalido(scadenzaAInput), 'text-invalid': isCampoInvalido(scadenzaAInput)}">
-                {{setPlaceholder(scadenzaAInput, 'date')}}
+                {{setPlaceholder(scadenzaAInput, TipoCampoEnum.DATEDDMMYY)}}
               </p>
             </div>
           </div>
