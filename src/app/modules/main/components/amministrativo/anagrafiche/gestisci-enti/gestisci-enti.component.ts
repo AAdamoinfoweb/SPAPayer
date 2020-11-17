@@ -195,7 +195,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
             }
           });
           this.righeSelezionate = [];
-          const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
+          const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
           this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
           this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
         },
@@ -211,22 +211,12 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   selezionaRigaTabella(rows: any[]) {
     this.righeSelezionate = rows;
 
-    const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
+    const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
     this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = this.righeSelezionate.length !== 1;
     this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = this.righeSelezionate.length === 0;
   }
 
-  getMapToolbarIndex(toolbarIcons): Map<ToolEnum, number> {
-    const mappaIndexToolbar: Map<ToolEnum, number> =  new Map<ToolEnum, number>();
-    const toolbarType = toolbarIcons.map(el => el.type);
 
-    mappaIndexToolbar.set(ToolEnum.INSERT, toolbarType.indexOf(ToolEnum.INSERT));
-    mappaIndexToolbar.set(ToolEnum.UPDATE, toolbarType.indexOf(ToolEnum.UPDATE));
-    mappaIndexToolbar.set(ToolEnum.DELETE, toolbarType.indexOf(ToolEnum.DELETE));
-    mappaIndexToolbar.set(ToolEnum.EXPORT_PDF, toolbarType.indexOf(ToolEnum.EXPORT_PDF));
-    mappaIndexToolbar.set(ToolEnum.EXPORT_XLS, toolbarType.indexOf(ToolEnum.EXPORT_XLS));
-    return mappaIndexToolbar;
-  }
 
   dettaglioEnte(row) {
     this.mostraDettaglioElemento('/dettaglioEnte', row.id.value);

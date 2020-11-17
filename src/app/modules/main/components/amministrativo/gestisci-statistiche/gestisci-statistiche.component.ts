@@ -11,6 +11,15 @@ import {Observable, of} from 'rxjs';
 import {tipoColonna} from "../../../../../enums/TipoColonna.enum";
 import {tipoTabella} from "../../../../../enums/TipoTabella.enum";
 import {MenuService} from "../../../../../services/menu.service";
+import {StatisticaService} from "../../../../../services/statistica.service";
+import {SintesiStatistica} from "../../../model/statistica/SintesiStatistica";
+import {Utils} from "../../../../../utils/Utils";
+import * as moment from 'moment';
+import {ParametriRicercaStatistiche} from "../../../model/statistica/ParametriRicercaStatistiche";
+import {Banner} from "../../../model/banner/Banner";
+import {getBannerType, LivelloBanner} from "../../../../../enums/livelloBanner.enum";
+import {TipoModaleEnum} from "../../../../../enums/tipoModale.enum";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-gestisci-statistiche',
@@ -21,7 +30,7 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
 
   constructor(protected router: Router, protected activatedRoute: ActivatedRoute,
               protected http: HttpClient, protected amministrativoService: AmministrativoService,
-              private menuService: MenuService) {
+              private menuService: MenuService, private statisticaService: StatisticaService, private confirmationService: ConfirmationService) {
     super(router, activatedRoute, http, amministrativoService);
   }
 
@@ -35,8 +44,8 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
       {field: 'icona', header: '', type: tipoColonna.ICONA},
       {field: 'titolo', header: 'Titolo', type: tipoColonna.TESTO},
       {field: 'descrizione', header: 'Descrizione', type: tipoColonna.TESTO},
-      {field: 'inizio', header: 'Inizio', type: tipoColonna.TESTO},
-      {field: 'fine', header: 'Fine', type: tipoColonna.TESTO}
+      {field: 'avvioSchedulazione', header: 'Inizio', type: tipoColonna.TESTO},
+      {field: 'fineSchedulazione', header: 'Fine', type: tipoColonna.TESTO}
     ],
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
@@ -79,13 +88,26 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
     this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Gestisci Statistiche', link: null}
     ]);
+    this.inizializzaFiltriRicerca();
     this.popolaListaElementi();
   }
 
   callbackPopolaLista() {
   }
 
-  creaRigaTabella(oggetto: any) {
+  creaRigaTabella(statistica: SintesiStatistica) {
+    const riga = {
+      id: {value: statistica.id},
+      icona: Utils.creaIcona('#it-clock', '#ef8157', 'Attiva e schedulata',
+        this.isStatisticaAttiva(statistica) ? 'inline' : 'none'),
+      titolo: {value: statistica.titolo},
+      descrizione: {value: statistica.descrizione},
+      avvioSchedulazione: {value: statistica.avvioSchedulazione ?
+          moment(statistica.avvioSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO).format(Utils.FORMAT_DATE_CALENDAR) : null},
+      fineSchedulazione: {value: statistica.fineSchedulazione ?
+          moment(statistica.fineSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO).format(Utils.FORMAT_DATE_CALENDAR) : null}
+    };
+    return riga;
   }
 
   eseguiAzioni(azioneTool) {
@@ -94,7 +116,7 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
         this.aggiungiElemento('/aggiungiStatistica');
         break;
       case ToolEnum.UPDATE:
-        this.modificaElementoSelezionato('/modificaEnte', this.getListaIdElementiSelezionati()[0]);
+        this.modificaElementoSelezionato('/modificaStatistica', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaStatisticheSelezionate();
@@ -109,39 +131,89 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    return [];
+    return colonne;
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
-    return [];
+    return colonne;
   }
 
   getImmaginiFilePdf(): ImmaginePdf[] {
-    return [];
+    const iconaStatisticaAttiva = new ImmaginePdf();
+    iconaStatisticaAttiva.indiceColonna = 0;
+    iconaStatisticaAttiva.srcIcona = 'assets/img/active-banner.png';
+    iconaStatisticaAttiva.posizioneX = 2;
+    iconaStatisticaAttiva.posizioneY = 2;
+    iconaStatisticaAttiva.larghezza = 9;
+    iconaStatisticaAttiva.altezza = 17;
+    return [iconaStatisticaAttiva];
   }
 
   getNumeroRecord(): string {
-    return 'Numero di statistica trovate: Di cui attive: Di cui disabilitate:';
+    const map: Map<string, number> = this.calcolaAttivaDisabilitate();
+    return `Numero di statistica trovate: ${this.listaElementi.length} Di cui attive: ${map.get('attive')} Di cui disabilitate: ${map.get('disabilitate')}`;
   }
 
   getObservableFunzioneRicerca(): Observable<any[]> {
-    return of([]);
+    return this.statisticaService.ricercaStatistiche(this.filtriRicerca, this.idFunzione);
   }
 
   getRigheFileExcel(righe: any[]) {
+    return righe;
   }
 
   getRigheFilePdf(righe: any[]) {
+    return righe;
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
+    this.righeSelezionate = righeSelezionate;
+
+    const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
+    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = this.righeSelezionate.length !== 1;
+    this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = this.righeSelezionate.length === 0;
   }
 
-  dettaglioStatistica($event: any) {
-
+  dettaglioStatistica(row: any) {
+    this.mostraDettaglioElemento('/dettaglioStatistica', row.id.value);
   }
 
   private eliminaStatisticheSelezionate() {
+    this.confirmationService.confirm(
+      Utils.getModale(() => {
+          this.statisticaService.eliminaStatistiche(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
+            this.popolaListaElementi();
+          });
+          this.righeSelezionate = [];
+          const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
+          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
+          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
+        },
+        TipoModaleEnum.ELIMINA
+      )
+    );
+  }
 
+  private isStatisticaAttiva(statistica: SintesiStatistica): boolean {
+    const now = moment();
+    const momentInzio = statistica.avvioSchedulazione ? moment(statistica.avvioSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    const momentFine = statistica.fineSchedulazione ? moment(statistica.fineSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    return statistica.abilitato && momentInzio.isSameOrBefore(now) && momentFine.isSameOrAfter(now);
+  }
+
+  private inizializzaFiltriRicerca() {
+    this.filtriRicerca = new ParametriRicercaStatistiche();
+    this.filtriRicerca.avvioSchedulazione = null;
+    this.filtriRicerca.fineSchedulazione = null;
+    this.filtriRicerca.attiva = null;
+  }
+
+  private calcolaAttivaDisabilitate(): Map<string, number> {
+    const map: Map<string, number> = new Map<string, number>();
+    const attive = this.listaElementi.filter((statistica: SintesiStatistica) => this.isStatisticaAttiva(statistica));
+    const disabilitate = this.listaElementi.filter((statistica: SintesiStatistica) => !(this.isStatisticaAttiva(statistica)));
+    map.set('attive', attive.length);
+    map.set('disabilitate', disabilitate.length);
+    return map;
   }
 }

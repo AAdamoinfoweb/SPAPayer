@@ -1,11 +1,14 @@
 export class Schedulazione {
-  inizioSchedulazione: string;
-  fineSchedulazione: string;
-  ora: number;
-  minuti: number;
-  secondi: number;
-  giorno: number;
-  mese: number;
-  anno: number;
-  giornoSettimana: string;
+  inizio: string;
+  fine: string;
+  second: number;
+  minute: number;
+  hour: number;
+  day: number;
+  weekDay: string;
+  month: number;
+  year: number;
+  timeZone: string;
+  extraSchedules: string;
+  holidays: string;
 }

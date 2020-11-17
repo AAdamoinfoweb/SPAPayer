@@ -14,6 +14,7 @@ import {Utils} from '../../../../../../utils/Utils';
 import {Banner} from '../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
 import {BannerService} from '../../../../../../services/banner.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-form-statistica',
@@ -43,6 +44,7 @@ export class FormStatisticaComponent extends FormElementoParentComponent impleme
   idFunzione;
   funzione: FunzioneGestioneEnum;
   datiStatistica: Statistica = new Statistica();
+  isFormValid: boolean;
 
   ngOnInit(): void {
   }
@@ -86,28 +88,77 @@ export class FormStatisticaComponent extends FormElementoParentComponent impleme
 
   private inizializzaTitolo() {
     this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Statistica';
-    this.tooltipTitolo = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una statistica ed eseguire una query';
+    this.tooltipTitolo = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una statistica' + (this.funzione !== FunzioneGestioneEnum.DETTAGLIO ? ' ed eseguire una query' : '');
   }
 
   inizializzaDatiStatistica() {
+    this.datiStatistica.schedulazione.timeZone = Utils.TIME_ZONE;
+    this.datiStatistica.abilitato = false;
   }
 
   onClickSalva(): void {
+    // controllo che nella query non siano presenti parole chiave non consentite
+    const paroleChiaveNonConsentitePresenti = this.controlloParoleChiaveNonConsentite();
+    if (!paroleChiaveNonConsentitePresenti) {
+      const statistica = this.formattaDati(this.datiStatistica);
+      if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+        this.inserimentoStatistica(statistica);
+      } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
+        this.modificaStatistica(statistica);
+      }
+    } else {
+      this.showBannerQuery();
+    }
+  }
+
+  private formattaDati(statistica: Statistica, lettura = false): Statistica {
+    const statisticaCopy: Statistica = JSON.parse(JSON.stringify(statistica));
+    if (statisticaCopy.schedulazione.inizio) {
+      statisticaCopy.schedulazione.inizio = !lettura ?
+        moment(statisticaCopy.schedulazione.inizio, Utils.FORMAT_DATE_CALENDAR)
+          .format(Utils.FORMAT_LOCAL_DATE_TIME) :
+        moment(statisticaCopy.schedulazione.inizio, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
+          .format(Utils.FORMAT_DATE_CALENDAR);
+    }
+    if (statisticaCopy.schedulazione.fine) {
+      statisticaCopy.schedulazione.fine = !lettura ?
+        moment(statisticaCopy.schedulazione.fine, Utils.FORMAT_DATE_CALENDAR)
+          .format(Utils.FORMAT_LOCAL_DATE_TIME_TO) :
+        moment(statisticaCopy.schedulazione.fine, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
+          .format(Utils.FORMAT_DATE_CALENDAR);
+    }
+    return statisticaCopy;
+  }
+
+  private inserimentoStatistica(statistica: Statistica) {
+    this.statisticaService.inserimentoStatistica(statistica, this.idFunzione).subscribe((statisticaId) =>
+      this.configuraRouterAndNavigate('/aggiungiStatistica/'));
+  }
+
+  private modificaStatistica(statistica: Statistica) {
+    this.statisticaService.modificaStatistica(statistica, this.idFunzione).subscribe((statisticaId) =>
+      this.configuraRouterAndNavigate('/modificaStatistica/' + statisticaId));
+  }
+
+  private configuraRouterAndNavigate(pathFunzione: string) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([this.basePath + pathFunzione]);
   }
 
   disabilitaBottone(): boolean {
-    return false;
+    return !this.isFormValid;
   }
 
   eseguiScaricaFile() {
     // controllo che nella query non siano presenti parole chiave non consentite
     const paroleChiaveNonConsentitePresenti = this.controlloParoleChiaveNonConsentite();
     if (!paroleChiaveNonConsentitePresenti) {
-      this.statisticaService.eseguiQuery(this.datiStatistica.querySql, this.idFunzione).subscribe((value) => {
+      this.statisticaService.eseguiQuery(this.datiStatistica.query, this.idFunzione).subscribe((value) => {
         if (value.errors == null) {
           if (value && value.length > 0) {
             this.scaricaFile(value, 'Statistiche');
-          } else {
+          } else if (value && value.length === 0) {
             // mostro banner di informazione
             const banner: Banner = {
               titolo: 'INFORMAZIONE',
@@ -119,18 +170,22 @@ export class FormStatisticaComponent extends FormElementoParentComponent impleme
         }
       });
     } else {
-      const banner: Banner = {
-        titolo: 'ATTENZIONE',
-        testo: this.messaggioParolaChiavePresente,
-        tipo: getBannerType(LivelloBanner.ERROR)
-      };
-      this.bannerService.bannerEvent.emit([banner]);
+      this.showBannerQuery();
     }
+  }
+
+  private showBannerQuery() {
+    const banner: Banner = {
+      titolo: 'ATTENZIONE',
+      testo: this.messaggioParolaChiavePresente,
+      tipo: getBannerType(LivelloBanner.ERROR)
+    };
+    this.bannerService.bannerEvent.emit([banner]);
   }
 
   private controlloParoleChiaveNonConsentite() {
     let paroleChiaveNonConsentitePresenti = false;
-    const query = this.datiStatistica.querySql;
+    const query = this.datiStatistica.query;
     this.NOT_ALLOWED_KEYWORDS.forEach(parolaChiaveNonConsetita => {
       if (query.toLowerCase().includes(parolaChiaveNonConsetita.toLowerCase())) {
         paroleChiaveNonConsentitePresenti = true;
@@ -148,5 +203,11 @@ export class FormStatisticaComponent extends FormElementoParentComponent impleme
   }
 
   letturaStatistica(statisticaId) {
+    this.statisticaService.dettaglioStatistica(statisticaId, this.idFunzione).subscribe((statistica) => {
+      // inizializza dati ente per modifica
+      statistica = this.formattaDati(statistica, true);
+      this.datiStatistica = statistica;
+      this.isFormValid = true;
+    });
   }
 }

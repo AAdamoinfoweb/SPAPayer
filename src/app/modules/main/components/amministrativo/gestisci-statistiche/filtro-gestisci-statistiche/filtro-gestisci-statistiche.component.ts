@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.component';
 import {NgForm, NgModel} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
@@ -6,6 +6,7 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {ParametriRicercaStatistiche} from "../../../../model/statistica/ParametriRicercaStatistiche";
 import {DatePickerComponent, ECalendarValue} from "ng2-date-picker";
 import * as moment from "moment";
+import {Utils} from "../../../../../../utils/Utils";
 
 @Component({
   selector: 'app-filtro-gestisci-statistiche',
@@ -19,7 +20,8 @@ export class FiltroGestisciStatisticheComponent extends FiltroGestioneElementiCo
   }
 
   idFunzione;
-  onChangeFiltri: EventEmitter<any>;
+  @Output()
+  onChangeFiltri: EventEmitter<ParametriRicercaStatistiche> = new EventEmitter<ParametriRicercaStatistiche>();
 
   filtroRicercaStatistiche: ParametriRicercaStatistiche;
 
@@ -36,17 +38,26 @@ export class FiltroGestisciStatisticheComponent extends FiltroGestioneElementiCo
     this.filtroRicercaStatistiche = new ParametriRicercaStatistiche();
     this.filtroRicercaStatistiche.avvioSchedulazione = null;
     this.filtroRicercaStatistiche.fineSchedulazione = null;
-    this.filtroRicercaStatistiche.attiva = false;
+    this.filtroRicercaStatistiche.attiva = null;
   }
 
   cercaElementi(): void {
-    this.onChangeFiltri.emit(this.filtroRicercaStatistiche);
+    const filtri = this.formattaFiltri();
+    this.onChangeFiltri.emit(filtri);
+  }
+
+  private formattaFiltri() {
+    const filtri: ParametriRicercaStatistiche = JSON.parse(JSON.stringify(this.filtroRicercaStatistiche));
+    filtri.avvioSchedulazione = filtri.avvioSchedulazione ? moment(filtri.avvioSchedulazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    filtri.fineSchedulazione = filtri.fineSchedulazione ? moment(filtri.fineSchedulazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
+    return filtri;
   }
 
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.inizializzaFiltroRicercaStatistiche();
-    this.onChangeFiltri.emit(null);
+    const filtri = this.formattaFiltri();
+    this.onChangeFiltri.emit(filtri);
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {

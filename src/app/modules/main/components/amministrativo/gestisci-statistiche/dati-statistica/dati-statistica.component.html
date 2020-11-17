@@ -1,12 +1,12 @@
 <div class="ml-3">
   <form #datiForm="ngForm">
-    <!--    inizio Titolo -->
+    <!--    inizio Titolo, Attiva -->
     <div class="row mt-4 mb-0">
       <!--    inizio Titolo -->
       <div class="col-md-4 pb-2">
         <div class="row">
           <div class="col">
-            <label for="titolo" class="title ">
+            <label for="titolo" class="title " [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
               Titolo</label>
           </div>
         </div>
@@ -27,9 +27,25 @@
         </div>
       </div>
       <!--      fine Titolo -->
+      <!--        inizio Attiva -->
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="abilitato" class="title">Attiva</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <it-toggle id="abilitato" [(ngModel)]="datiStatistica.abilitato" name="abilitato"
+                       [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO" #abilitato="ngModel"
+                       (ngModelChange)="onChangeModel(datiForm, abilitato)"></it-toggle>
+          </div>
+        </div>
+      </div>
+      <!--        fine Attiva -->
     </div>
-    <!--    fine Titolo -->
-    <!--    inizio Descrizione, Logo -->
+    <!--    fine Titolo, Attiva -->
+    <!--    inizio Descrizione, QuerySQL -->
     <div class="row mt-4 mb-0">
       <!--    inizio Descrizione -->
       <div class="col-md-6 pb-2">
@@ -67,20 +83,20 @@
       <div class="col-md-6 pb-2">
         <div class="row">
           <div class="col">
-            <label for="querySql" class="title ">
+            <label for="query" class="title " [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
               Query SQL</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
              <textarea
-               id="querySql"
+               id="query"
                type="text"
-               name="querySql"
+               name="query"
                autocomplete="off"
-               #querySql="ngModel"
-               [(ngModel)]="datiStatistica.querySql"
-               (ngModelChange)="onChangeModel(datiForm, querySql)"
+               #query="ngModel"
+               [(ngModel)]="datiStatistica.query"
+               (ngModelChange)="onChangeModel(datiForm, query)"
                maxlength="4000"
                [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
@@ -90,14 +106,14 @@
         </div>
         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <div class="col">
-            <p *ngIf="!isCampoInvalido(querySql)">Inserisci query SQL</p>
-            <p *ngIf="isCampoInvalido(querySql)" class="text-invalid">{{getMessaggioErrore(querySql)}}</p>
+            <p *ngIf="!isCampoInvalido(query)">Inserisci query SQL</p>
+            <p *ngIf="isCampoInvalido(query)" class="text-invalid">{{getMessaggioErrore(query)}}</p>
           </div>
         </div>
       </div>
       <!--      fine Query SQL -->
     </div>
-    <!--    fine Decrizione, Logo -->
+    <!--    fine Decrizione, QuerySQL -->
     <!--    inizio Destinatari, Schedulazione -->
     <div class="row mt-4 mb-0">
       <!--    inizio Destinatari -->
@@ -107,11 +123,10 @@
             <label for="destinatari" class="title ">
               Destinatari (indirizzi E-mail)</label>
           </div>
-          <div class="col-auto">
-            <span ngbTooltip="Inserisci destinatario" placement="bottom" [ngStyle]="{fill: '#403d39'}">
+          <div class="col-auto" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <span ngbTooltip="Inserisci destinatario" placement="bottom" [ngStyle]="{fill: '#403d39'}" >
             <svg class="bg-light icon icon-sm filled"
-                 (click)="aggiungiDestinatario()"
-                 disabled="{{funzione === FunzioneGestioneEnum.DETTAGLIO}}">
+                 (click)="aggiungiDestinatario(datiForm)">
               <use xlink:href="assets/img/sprite.svg#it-plus"></use>
             </svg>
               </span>
@@ -124,17 +139,24 @@
                      class="pt-0" autocomplete="off" aria-describedby="destinatarioHelpDescription"
                      [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                      [(ngModel)]="destinatario.email"
-                     #destinatario="ngModel"
-                     (ngModelChange)="onChangeModel(datiForm, destinatario)">
+                     [pattern]="emailRegex"
+                     #email="ngModel"
+                     (ngModelChange)="onChangeModel(datiForm, email)">
             </div>
-            <div class="col-2 align-self-center">
+            <div class="col-2 align-self-center" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
               <span ngbTooltip="Elimina destinatario" placement="bottom" [ngStyle]="{fill: '#403d39'}">
             <svg class="bg-light icon icon-sm filled"
-                 (click)="eliminaDestinatario(index)"
-                 disabled="{{funzione === FunzioneGestioneEnum.DETTAGLIO}}">
+                 (click)="eliminaDestinatario(datiForm, email, index)">
               <use xlink:href="assets/img/sprite.svg#it-close"></use>
             </svg>
               </span>
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(email)">Inserisci destinatario</p>
+              <p *ngIf="isCampoInvalido(email)"
+                 class="text-invalid">{{getMessaggioErrore(email)}}</p>
             </div>
           </div>
         </div>
@@ -156,7 +178,7 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col">
-                    <label for="inizioSchedulazione" class="title ">
+                    <label for="inizio" class="title ">
                       Inizio schedulazione</label>
                   </div>
                 </div>
@@ -167,7 +189,7 @@
                     </svg>
                     <dp-date-picker
                       mode="day"
-                      id="inizioSchedulazione"
+                      id="inizio"
                       theme="dp-material"
                       [config]="{
               locale: 'it',
@@ -177,21 +199,24 @@
               openOnClick: isCalendarOpen,
               openOnFocus: false,
               min: minDateDDMMYYYY,
+              max: setMaxDate(datePickerFineSchedulazione),
               returnedValueType: tipoData
 	          }"
-                      #inizioSchedulazione="ngModel"
-                      [(ngModel)]="datiStatistica.schedulazione.inizioSchedulazione"
+                      #inizio="ngModel"
+                      [(ngModel)]="datiStatistica.schedulazione.inizio"
                       name="inizioSchedulazione"
+                      [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
                       #datePickerInizioSchedulazione
                       (click)="isCalendarOpen = false"
+                      (ngModelChange)="onChangeModel(datiForm, inizio)"
                     ></dp-date-picker>
                   </div>
                 </div>
                 <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
                   <div class="col">
-                    <p *ngIf="!isCampoInvalido(inizioSchedulazione)">Inserisci data fine schedulazione</p>
-                    <p *ngIf="isCampoInvalido(inizioSchedulazione)"
-                       class="text-invalid">{{getMessaggioErrore(inizioSchedulazione)}}</p>
+                    <p *ngIf="!isCampoInvalido(inizio)">Inserisci data inizio schedulazione</p>
+                    <p *ngIf="isCampoInvalido(inizio)"
+                       class="text-invalid">{{getMessaggioErrore(inizio)}}</p>
                   </div>
                 </div>
               </div>
@@ -200,7 +225,7 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col">
-                    <label for="fineSchedulazione" class="title ">
+                    <label for="fine" class="title ">
                       Fine schedulazione</label>
                   </div>
                 </div>
@@ -211,7 +236,7 @@
                     </svg>
                     <dp-date-picker
                       mode="day"
-                      id="fineSchedulazione"
+                      id="fine"
                       theme="dp-material"
                       [config]="{
               locale: 'it',
@@ -220,22 +245,24 @@
               showGoToCurrent: false,
               openOnClick: isCalendarOpen,
               openOnFocus: false,
-              min: minDateDDMMYYYY,
+              min: setMinDate(datePickerInizioSchedulazione),
               returnedValueType: tipoData
 	          }"
-                      #fineSchedulazione="ngModel"
-                      [(ngModel)]="datiStatistica.schedulazione.fineSchedulazione"
+                      #fine="ngModel"
+                      [(ngModel)]="datiStatistica.schedulazione.fine"
                       name="fineSchedulazione"
                       #datePickerFineSchedulazione
+                      [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
                       (click)="isCalendarOpen = false"
+                      (ngModelChange)="onChangeModel(datiForm, fine)"
                     ></dp-date-picker>
                   </div>
                 </div>
                 <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
                   <div class="col">
-                    <p *ngIf="!isCampoInvalido(fineSchedulazione)">Inserisci data inizio schedulazione</p>
-                    <p *ngIf="isCampoInvalido(fineSchedulazione)"
-                       class="text-invalid">{{getMessaggioErrore(fineSchedulazione)}}</p>
+                    <p *ngIf="!isCampoInvalido(fine)">Inserisci data fine schedulazione</p>
+                    <p *ngIf="isCampoInvalido(fine)"
+                       class="text-invalid">{{getMessaggioErrore(fine)}}</p>
                   </div>
                 </div>
               </div>
@@ -261,23 +288,23 @@
                       <div class="col-md-4 pb-2">
                         <div class="row">
                           <div class="col">
-                            <label for="ora" class="title ">
+                            <label for="hour" class="title ">
                               Ora</label>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col">
-                            <input type="text" id="ora" name="ora" #ora="ngModel"
-                                   [(ngModel)]="datiStatistica.schedulazione.ora"
+                            <input type="text" id="hour" name="hour" #hour="ngModel"
+                                   [(ngModel)]="datiStatistica.schedulazione.hour"
                                    class="pt-0" autocomplete="off" aria-describedby="oraHelpDescription"
                                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                                   (ngModelChange)="onChangeModel(datiForm, ora)">
+                                   (ngModelChange)="onChangeModel(datiForm, hour)">
                           </div>
                         </div>
                         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
                           <div class="col">
-                            <p *ngIf="!isCampoInvalido(ora)">Inserisci ora</p>
-                            <p *ngIf="isCampoInvalido(ora)" class="text-invalid">{{getMessaggioErrore(ora)}}</p>
+                            <p *ngIf="!isCampoInvalido(hour)">Inserisci ora</p>
+                            <p *ngIf="isCampoInvalido(hour)" class="text-invalid">{{getMessaggioErrore(hour)}}</p>
                           </div>
                         </div>
                       </div>
@@ -286,23 +313,23 @@
                       <div class="col-md-4 pb-2">
                         <div class="row">
                           <div class="col">
-                            <label for="minuti" class="title ">
+                            <label for="minute" class="title ">
                               Minuti</label>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col">
-                            <input type="text" id="minuti" name="minuti" #minuti="ngModel"
-                                   [(ngModel)]="datiStatistica.schedulazione.minuti"
+                            <input type="text" id="minute" name="minute" #minute="ngModel"
+                                   [(ngModel)]="datiStatistica.schedulazione.minute"
                                    class="pt-0" autocomplete="off" aria-describedby="minutiHelpDescription"
                                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                                   (ngModelChange)="onChangeModel(datiForm, minuti)">
+                                   (ngModelChange)="onChangeModel(datiForm, minute)">
                           </div>
                         </div>
                         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
                           <div class="col">
-                            <p *ngIf="!isCampoInvalido(minuti)">Inserisci minuti</p>
-                            <p *ngIf="isCampoInvalido(minuti)" class="text-invalid">{{getMessaggioErrore(minuti)}}</p>
+                            <p *ngIf="!isCampoInvalido(minute)">Inserisci minuti</p>
+                            <p *ngIf="isCampoInvalido(minute)" class="text-invalid">{{getMessaggioErrore(minute)}}</p>
                           </div>
                         </div>
                       </div>
@@ -311,52 +338,52 @@
                       <div class="col-md-4 pb-2">
                         <div class="row">
                           <div class="col">
-                            <label for="secondi" class="title ">
+                            <label for="second" class="title ">
                               Secondi</label>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col">
-                            <input type="text" id="secondi" name="secondi" #secondi="ngModel"
-                                   [(ngModel)]="datiStatistica.schedulazione.secondi"
+                            <input type="text" id="second" name="second" #second="ngModel"
+                                   [(ngModel)]="datiStatistica.schedulazione.second"
                                    class="pt-0" autocomplete="off" aria-describedby="secondiHelpDescription"
                                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                                   (ngModelChange)="onChangeModel(datiForm, secondi)">
+                                   (ngModelChange)="onChangeModel(datiForm, second)">
                           </div>
                         </div>
                         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
                           <div class="col">
-                            <p *ngIf="!isCampoInvalido(secondi)">Inserisci secondi</p>
-                            <p *ngIf="isCampoInvalido(secondi)" class="text-invalid">{{getMessaggioErrore(secondi)}}</p>
+                            <p *ngIf="!isCampoInvalido(second)">Inserisci secondi</p>
+                            <p *ngIf="isCampoInvalido(second)" class="text-invalid">{{getMessaggioErrore(second)}}</p>
                           </div>
                         </div>
                       </div>
                       <!--      fine Secondi -->
                     </div>
                     <!--                fine Ora, Minuti, Secondi -->
-                    <!--                inizio Giorno, Mese, Anno -->
+                    <!--                inizio Giorno, Mese, Giorno settimana -->
                     <div class="row mt-2">
                       <!--    inizio Giorno -->
                       <div class="col-md-4 pb-2">
                         <div class="row">
                           <div class="col">
-                            <label for="giorno" class="title ">
+                            <label for="day" class="title ">
                               Giorno</label>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col">
-                            <input type="text" id="giorno" name="giorno" #giorno="ngModel"
-                                   [(ngModel)]="datiStatistica.schedulazione.giorno"
+                            <input type="text" id="day" name="day" #day="ngModel"
+                                   [(ngModel)]="datiStatistica.schedulazione.day"
                                    class="pt-0" autocomplete="off" aria-describedby="giornoHelpDescription"
                                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                                   (ngModelChange)="onChangeModel(datiForm, giorno)">
+                                   (ngModelChange)="onChangeModel(datiForm, day)">
                           </div>
                         </div>
                         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
                           <div class="col">
-                            <p *ngIf="!isCampoInvalido(giorno)">Inserisci giorno</p>
-                            <p *ngIf="isCampoInvalido(giorno)" class="text-invalid">{{getMessaggioErrore(giorno)}}</p>
+                            <p *ngIf="!isCampoInvalido(day)">Inserisci giorno</p>
+                            <p *ngIf="isCampoInvalido(day)" class="text-invalid">{{getMessaggioErrore(day)}}</p>
                           </div>
                         </div>
                       </div>
@@ -365,84 +392,117 @@
                       <div class="col-md-4 pb-2">
                         <div class="row">
                           <div class="col">
-                            <label for="mese" class="title ">
+                            <label for="month" class="title ">
                               Mese</label>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col">
-                            <input type="text" id="mese" name="mese" #mese="ngModel"
-                                   [(ngModel)]="datiStatistica.schedulazione.mese"
+                            <input type="text" id="month" name="month" #month="ngModel"
+                                   [(ngModel)]="datiStatistica.schedulazione.month"
                                    class="pt-0" autocomplete="off" aria-describedby="meseHelpDescription"
                                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                                   (ngModelChange)="onChangeModel(datiForm, mese)">
+                                   (ngModelChange)="onChangeModel(datiForm, month)">
                           </div>
                         </div>
                         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
                           <div class="col">
-                            <p *ngIf="!isCampoInvalido(mese)">Inserisci mese</p>
-                            <p *ngIf="isCampoInvalido(mese)" class="text-invalid">{{getMessaggioErrore(mese)}}</p>
+                            <p *ngIf="!isCampoInvalido(month)">Inserisci mese</p>
+                            <p *ngIf="isCampoInvalido(month)" class="text-invalid">{{getMessaggioErrore(month)}}</p>
                           </div>
                         </div>
                       </div>
                       <!--      fine Mese -->
-                      <!--    inizio Anno -->
+                      <!--    inizio Giorno settimana -->
                       <div class="col-md-4 pb-2">
                         <div class="row">
                           <div class="col">
-                            <label for="anno" class="title ">
-                              Anno</label>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <input type="text" id="anno" name="anno" #anno="ngModel"
-                                   [(ngModel)]="datiStatistica.schedulazione.anno"
-                                   class="pt-0" autocomplete="off" aria-describedby="annoHelpDescription"
-                                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                                   (ngModelChange)="onChangeModel(datiForm, anno)">
-                          </div>
-                        </div>
-                        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-                          <div class="col">
-                            <p *ngIf="!isCampoInvalido(anno)">Inserisci anno</p>
-                            <p *ngIf="isCampoInvalido(anno)" class="text-invalid">{{getMessaggioErrore(anno)}}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <!--      fine Anno -->
-                    </div>
-                    <!--                fine Giorno, Mese, Anno -->
-                    <!--                inizio Giorno settimana -->
-                    <div class="row mt-2">
-                      <!--    inizio Giorno settimana -->
-                      <div class="col-md-6 pb-2">
-                        <div class="row">
-                          <div class="col">
-                            <label for="giornoSettimana" class="title ">
+                            <label for="weekDay" class="title ">
                               Giorno della settimana</label>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col">
-                            <input type="text" id="giornoSettimana" name="giornoSettimana" #giornoSettimana="ngModel"
-                                   [(ngModel)]="datiStatistica.schedulazione.giornoSettimana"
+                            <input type="text" id="weekDay" name="weekDay" #weekDay="ngModel"
+                                   [(ngModel)]="datiStatistica.schedulazione.weekDay"
                                    class="pt-0" autocomplete="off" aria-describedby="giornoSettimanaHelpDescription"
                                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                                   (ngModelChange)="onChangeModel(datiForm, giornoSettimana)">
+                                   (ngModelChange)="onChangeModel(datiForm, weekDay)">
                           </div>
                         </div>
                         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
                           <div class="col">
-                            <p *ngIf="!isCampoInvalido(giornoSettimana)">Inserisci giorno della settimana</p>
-                            <p *ngIf="isCampoInvalido(giornoSettimana)"
-                               class="text-invalid">{{getMessaggioErrore(giornoSettimana)}}</p>
+                            <p *ngIf="!isCampoInvalido(weekDay)">Inserisci giorno della settimana</p>
+                            <p *ngIf="isCampoInvalido(weekDay)"
+                               class="text-invalid">{{getMessaggioErrore(weekDay)}}</p>
                           </div>
                         </div>
                       </div>
                       <!--      fine Giorno settimana-->
                     </div>
-                    <!--                fine Giorno settimana -->
+                    <!--                fine Giorno, Mese, Giorno settimana -->
+                    <!--                inizio Anno, TimeZone -->
+                    <div class="row mt-2">
+                      <!--    inizio Anno -->
+                      <div class="col-md-4 pb-2">
+                        <div class="row">
+                          <div class="col">
+                            <label for="year" class="title ">
+                              Anno</label>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <input type="text" id="year" name="year" #year="ngModel"
+                                   [(ngModel)]="datiStatistica.schedulazione.year"
+                                   class="pt-0" autocomplete="off" aria-describedby="annoHelpDescription"
+                                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                                   (ngModelChange)="onChangeModel(datiForm, year)">
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                          <div class="col">
+                            <p *ngIf="!isCampoInvalido(year)">Inserisci anno</p>
+                            <p *ngIf="isCampoInvalido(year)" class="text-invalid">{{getMessaggioErrore(year)}}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <!--      fine Anno -->
+                      <!--    inizio Time Zone -->
+                      <div class="col-md-5 pb-2">
+                        <div class="row">
+                          <div class="col">
+                            <label for="timeZone" class="title ">
+                              Time zone</label>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <select
+                              id="timeZone"
+                              name="timeZone"
+                              #timeZone="ngModel"
+                              [(ngModel)]="datiStatistica.schedulazione.timeZone"
+                              [disabled]="true"
+                              (ngModelChange)="onChangeModel(datiForm, timeZone)"
+                            >
+                              <option [ngValue]="null" selected>Seleziona</option>
+                              <option *ngFor="let item of opzioniTimeZone"
+                                      [ngValue]="item.value">{{item.label}}</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                          <div class="col">
+                            <p *ngIf="!isCampoInvalido(timeZone)">Seleziona time zone</p>
+                            <p *ngIf="isCampoInvalido(timeZone)"
+                               class="text-invalid">{{getMessaggioErrore(timeZone)}}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <!--      fine Time Zone -->
+                    </div>
+                    <!--                fine Anno, Time zone -->
                   </div>
                 </div>
               </div>
@@ -453,24 +513,36 @@
               <div class="col">
                 <div class="row">
                   <div class="col">
-                    <label for="schedulazioneExtra" class="title ">
+                    <label for="extraSchedules" class="title ">
                       Schedulazione extra</label>
+                    <span it-tooltip="{{tooltipSchedulazioniExtra}}">
+                      <svg class="bg-light icon icon-padded">
+                        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+                      </svg>
+                    </span>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col">
-                    <input type="text" id="schedulazioneExtra" name="schedulazioneExtra" #schedulazioneExtra="ngModel"
-                           [(ngModel)]="datiStatistica.schedulazioneExtra"
-                           class="pt-0" autocomplete="off" aria-describedby="schedulazioneExtraHelpDescription"
-                           [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                           (ngModelChange)="onChangeModel(datiForm, schedulazioneExtra)">
+                    <textarea
+                      id="extraSchedules"
+                      type="text"
+                      name="extraSchedules"
+                      autocomplete="off"
+                      #extraSchedules="ngModel"
+                      [(ngModel)]="datiStatistica.schedulazione.extraSchedules"
+                      (ngModelChange)="onChangeModel(datiForm, extraSchedules)"
+                      maxlength="255"
+                      [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                      class="textArea"
+                    ></textarea>
                   </div>
                 </div>
                 <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
                   <div class="col">
-                    <p *ngIf="!isCampoInvalido(schedulazioneExtra)">Inserisci schedulazione extra</p>
-                    <p *ngIf="isCampoInvalido(schedulazioneExtra)"
-                       class="text-invalid">{{getMessaggioErrore(schedulazioneExtra)}}</p>
+                    <p *ngIf="!isCampoInvalido(extraSchedules)">Inserisci schedulazione extra</p>
+                    <p *ngIf="isCampoInvalido(extraSchedules)"
+                       class="text-invalid">{{getMessaggioErrore(extraSchedules)}}</p>
                   </div>
                 </div>
               </div>
@@ -481,24 +553,36 @@
               <div class="col">
                 <div class="row">
                   <div class="col">
-                    <label for="festivita" class="title ">
+                    <label for="holidays" class="title ">
                       Festività</label>
+                    <span it-tooltip="{{tooltipFestivita}}">
+                      <svg class="bg-light icon icon-padded">
+                        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+                      </svg>
+                    </span>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col">
-                    <input type="text" id="festivita" name="festivita" #festivita="ngModel"
-                           [(ngModel)]="datiStatistica.festivita"
-                           class="pt-0" autocomplete="off" aria-describedby="festivitaHelpDescription"
-                           [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                           (ngModelChange)="onChangeModel(datiForm, festivita)">
+                    <textarea
+                      id="holidays"
+                      type="text"
+                      name="holidays"
+                      autocomplete="off"
+                      #holidays="ngModel"
+                      [(ngModel)]="datiStatistica.schedulazione.holidays"
+                      (ngModelChange)="onChangeModel(datiForm, holidays)"
+                      maxlength="255"
+                      [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                      class="textArea"
+                    ></textarea>
                   </div>
                 </div>
                 <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
                   <div class="col">
-                    <p *ngIf="!isCampoInvalido(festivita)">Inserisci festività</p>
-                    <p *ngIf="isCampoInvalido(festivita)"
-                       class="text-invalid">{{getMessaggioErrore(festivita)}}</p>
+                    <p *ngIf="!isCampoInvalido(holidays)">Inserisci festività</p>
+                    <p *ngIf="isCampoInvalido(holidays)"
+                       class="text-invalid">{{getMessaggioErrore(holidays)}}</p>
                   </div>
                 </div>
               </div>
@@ -509,7 +593,6 @@
       </div>
       <!--      fine Schedulazione -->
     </div>
-    <!--    fine Decrizione, Logo -->
   </form>
 </div>
 

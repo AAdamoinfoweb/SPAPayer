@@ -4,12 +4,11 @@ import {Destinatario} from './Destinatario';
 export class Statistica {
   id: number;
   titolo: string;
-  querySql: string;
+  query: string;
   descrizione: string;
+  abilitato: boolean;
   destinatari: Destinatario[];
   schedulazione: Schedulazione;
-  schedulazioneExtra: any;
-  festivita: any;
 
   constructor() {
     this.destinatari = [];

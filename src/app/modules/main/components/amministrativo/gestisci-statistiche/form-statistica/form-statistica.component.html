@@ -17,7 +17,9 @@
   </h3>
   <span *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
   <!-- inizio Dati Statistica -->
-  <app-dati-statistica [datiStatistica]="datiStatistica"></app-dati-statistica>
+  <app-dati-statistica [datiStatistica]="datiStatistica" [idFunzione]="idFunzione" [funzione]="funzione"
+  (isFormValid)="isFormValid = $event">
+  </app-dati-statistica>
   <!-- fine Dati Statistica -->
 </div>
 
