@@ -72,12 +72,16 @@ export class AppComponent implements OnInit {
   }
 
   letturatipologicheSelect(): void {
-    this.toponomasticaService.recuperaProvince().pipe(map(res => {
-      localStorage.setItem(TipologicaSelectEnum.PROVINCE, JSON.stringify(res));
-    })).subscribe();
+    if (!localStorage.getItem(TipologicaSelectEnum.PROVINCE)) {
+      this.toponomasticaService.recuperaProvince().pipe(map(res => {
+        localStorage.setItem(TipologicaSelectEnum.PROVINCE, JSON.stringify(res));
+      })).subscribe();
+    }
 
-    this.toponomasticaService.recuperaComuni().pipe(map(res => {
-      localStorage.setItem(TipologicaSelectEnum.COMUNI, JSON.stringify(res));
-    })).subscribe();
+    if (!localStorage.getItem(TipologicaSelectEnum.COMUNI)) {
+      this.toponomasticaService.recuperaComuni().pipe(map(res => {
+        localStorage.setItem(TipologicaSelectEnum.COMUNI, JSON.stringify(res));
+      })).subscribe();
+    }
   }
 }
