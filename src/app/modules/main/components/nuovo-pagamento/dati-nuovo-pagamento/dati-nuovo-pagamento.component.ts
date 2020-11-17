@@ -673,12 +673,13 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
       // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
       if (campo.dipendeDa) {
-        const selectPadre = this.listaCampiDinamici.find(item => item.id === campo.dipendeDa);
-        const valoreSelectPadre = this.model[this.getNomeCampoForm(selectPadre)];
+        const campoPadre = this.listaCampiDinamici.find(item => item.id === campo.dipendeDa);
+        const valoreCampoPadre = this.model[this.getNomeCampoForm(campoPadre)];
 
-        // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
-        if (valoreSelectPadre) {
-          const idSelectPadre = selectPadre.opzioni.find(opzione => opzione.value === valoreSelectPadre)?.id;
+        // Se il campo da cui si dipende è una select ed è avvalorato, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
+        if (campoPadre.tipoCampo === TipoCampoEnum.SELECT && valoreCampoPadre) {
+          const idSelectPadre = campoPadre.opzioni.find(opzione => opzione.value === valoreCampoPadre)?.id;
+          
           switch (campo.tipologica) {
             // Inserire qui logica per i vari campi select dipendenti da altre select
 
