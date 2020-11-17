@@ -374,7 +374,8 @@
             </div>
             <div class="row">
               <div class="col">
-                <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocietaBenef" name="societaIdBenef"
+                <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocietaBenef"
+                        name="societaIdBenef"
                         [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
                         #societaBenefInput="ngModel" [(ngModel)]="beneficiario.societaId"
                         (ngModelChange)="onChangeSocieta(societaBenefInput)"
@@ -460,7 +461,50 @@
         </button>
       </div>
       <div id="campiServizio" class="collapse show" role="tabpanel" aria-labelledby="idCollapseCampiServizio">
-
+        <div class="row">
+          <div class="col-3">
+            <label class="title">Lista campi tipologia servizio</label>
+            <span class="pointer bottone-campo"
+                  *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
+        <span ngbTooltip="Crea nuovo campo" placement="bottom"
+              [ngStyle]="{fill: '#403d39'}">
+          <svg (click)="add()" class="bg-light icon icon-sm filled">
+            <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+          </svg>
+        </span>
+        </span>
+          </div>
+        </div>
+        <div class="row" *ngIf="campoTipologiaServizioList">
+          <ul class="legend">
+            <li><span class="field-disabled"></span> Campo disabilitato</li>
+            <li><span class="required"></span> Campo obbligatorio</li>
+            <li><span class="key"></span> Campo chiave</li>
+          </ul>
+        </div>
+        <div class="row" cdkDropListGroup *ngIf="campoTipologiaServizioList">
+          <ng-container *ngFor="let item of campoTipologiaServizioList;let i=index">
+            <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
+                 cdkDropListOrientation="horizontal"
+                 [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
+              <div style="min-height: 5vh;"
+                   [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
+               'field-input': (item.campoInput && !item.disabilitato)}"
+                   [cdkDragDisabled]="true" cdkDrag>
+                <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                <div class="row" style="width: 100%">
+                  <div (click)="showModal(item)" class="col-7 text-right">{{item.titolo}}</div>
+                  <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>
+                  </div>
+                  <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
+                  <div class="col-3 text-right">
+                    <span class="close" (click)="removeItem(item)"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
       </div>
     </form>
   </ng-container>
