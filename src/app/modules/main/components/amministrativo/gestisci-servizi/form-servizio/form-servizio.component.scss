@@ -6,3 +6,146 @@
 :host ::ng-deep .text-invalid {
   color: #FF0000;
 }
+
+.placeholder {
+  flex: 1 0 5rem;                 /* NEW */
+  margin: 5px;                   /* NEW */
+  background-color: white;
+  height: 5rem;
+  text-align: center;
+  line-height: 5rem;
+  border:1px
+}
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* basic positioning */
+.legend {
+  list-style: none;
+}
+
+.legend li {
+  float: left;
+  margin-right: 10px;
+}
+
+.legend span {
+  border: 1px solid #ccc;
+  float: left;
+  width: 12px;
+  height: 12px;
+  margin: 2px;
+}
+
+/* your colors */
+.legend .field-disabled {
+  background-color: #ccc;
+}
+
+.legend .field-input {
+  background-color: #83e95d;
+}
+
+.legend .field-output {
+  background-color: #6a9dea;
+}
+
+.legend .notawesome {
+  background-color: #000000;
+}
+
+.field-input {
+  background-color: #83e95d!important;
+}
+
+.field-output {
+  background-color: #6a9dea!important;
+}
+
+.example-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.example-list li {
+  display: table-cell;
+  padding: 4px;
+}
+
+div.disabled {
+  color: gray;
+  background-color: #ccc;
+}
+
+.example-box span.close::after {
+  cursor: pointer;
+  content: '\2715';
+  top: 30%;
+}
+
+span.required::after {
+  content: '\002A';
+  color: red;
+}
+
+span.key::after {
+  content: '\1F511';
+}
+
+.example-box {
+  font-size: 1.2em;
+  border: solid 1px #ccc;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.87);
+  cursor: move;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #fff;
+  border-radius: 4px;
+  position: relative;
+  z-index: 1;
+  transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+  0 2px 2px 0 rgba(0, 0, 0, 0.14),
+  0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.example-box:active {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  opacity: .6;
+}
+
+.cdk-drop-list {
+  display: flex;
+  padding-bottom: 10px;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: .3;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+button {
+  margin-right: 4px;
+}
+
+.bottone-campo {
+  margin-left: 10px;
+}
+

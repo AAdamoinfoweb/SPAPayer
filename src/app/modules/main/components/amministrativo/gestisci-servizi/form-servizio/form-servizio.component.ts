@@ -20,6 +20,10 @@ import {Observable} from 'rxjs';
 import {SintesiEnte} from '../../../../model/ente/SintesiEnte';
 import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte';
 import {LivelloTerritoriale} from '../../../../model/LivelloTerritoriale';
+import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
+import {v4 as uuidv4} from 'uuid';
+import * as _ from 'lodash';
+import {CdkDragDrop} from "@angular/cdk/drag-drop";
 
 export class LivelloIntegrazioneServizio {
   id: number = null;
@@ -71,11 +75,14 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   listaLivelloTerritoriale: LivelloTerritoriale[] = [];
   listaEnti: SintesiEnte[] = [];
   FunzioneGestioneEnum = FunzioneGestioneEnum;
-  filtri: any;
+  filtri: ParametriRicercaServizio;
 
-  listaSocietaBenef: Societa[] = [];
   listaEntiBenef: SintesiEnte[] = [];
   listaLivelloTerritorialeBenef: LivelloTerritoriale[] = [];
+
+  campoTipologiaServizioOriginal: CampoTipologiaServizio[];
+
+  campoTipologiaServizioList: CampoTipologiaServizio[];
 
 
   constructor(private cdr: ChangeDetectorRef,
@@ -102,8 +109,26 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.inizializzaBreadcrumb();
     this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Servizio';
     this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una tipologia servizio';
+  }
 
+  caricaCampi(tipologiaServizioId: number): Observable<any> {
+    return this.campoTipologiaServizioService.campiTipologiaServizio(tipologiaServizioId, this.idFunzione)
+      .pipe(map(value => {
+        this.campoTipologiaServizioOriginal = _.sortBy(value, 'posizione');
+        this.campoTipologiaServizioList = _.cloneDeep(this.campoTipologiaServizioOriginal);
 
+        // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
+        if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+          this.campoTipologiaServizioOriginal.forEach(campo => {
+            campo.id = null;
+            campo.uuid = uuidv4();
+            if (campo.dipendeDa)
+              campo.dipendeDa.id = null;
+          });
+        }
+
+        // this.refreshItemsEvent.emit(this.items);
+      }));
   }
 
   controllaTipoFunzione() {
@@ -135,8 +160,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   onClickSalva(): void {
   }
 
-  onChangeFiltri(event: any) {
+  onChangeFiltri(event: ParametriRicercaServizio) {
     this.filtri = event;
+    this.caricaCampi(event.tipologiaServizio.id).subscribe();
   }
 
   cambiaLivelloIntegrazione($event: any) {
@@ -173,6 +199,27 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onChangeEnte(enteInput: NgModel) {
+
+  }
+
+  showModal(item: CampoTipologiaServizio) {
+
+  }
+
+  removeItem(item: CampoTipologiaServizio) {
+
+  }
+
+  calcolaDimensioneCampo(item: CampoTipologiaServizio) {
+
+  }
+
+  dropEvt($event: CdkDragDrop<{ item: CampoTipologiaServizio; index: number }, any>) {
+
+  }
+
+  add() {
+
 
   }
 }

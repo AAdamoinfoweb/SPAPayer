@@ -1,16 +1,17 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.component';
 import {ParametriRicercaServizio} from '../../../../model/servizio/ParametriRicercaServizio';
-import {OpzioneSelect} from "../../../../model/OpzioneSelect";
-import {AmministrativoService} from "../../../../../../services/amministrativo.service";
-import {ActivatedRoute} from "@angular/router";
-import {RaggruppamentoTipologiaServizioService} from "../../../../../../services/RaggruppamentoTipologiaServizio.service";
-import {CampoTipologiaServizioService} from "../../../../../../services/campo-tipologia-servizio.service";
-import {Utils} from "../../../../../../utils/Utils";
-import {TipoCampoEnum} from "../../../../../../enums/tipoCampo.enum";
-import {NgForm, NgModel} from "@angular/forms";
-import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
-import {DatePickerComponent, ECalendarValue} from "ng2-date-picker";
+import {OpzioneSelect} from '../../../../model/OpzioneSelect';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {ActivatedRoute} from '@angular/router';
+import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
+import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
+import {Utils} from '../../../../../../utils/Utils';
+import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
+import {NgForm, NgModel} from '@angular/forms';
+import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
+import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
+import {TipologiaServizio} from '../../../../model/tipologiaServizio/TipologiaServizio';
 
 @Component({
   selector: 'app-filtro-gestione-servizio',
@@ -41,7 +42,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   @Input()
   filtriIniziali: ParametriRicercaServizio;
 
-  listaCodiciTipologia: string[] = [];
+  listaCodiciTipologia: TipologiaServizio[] = [];
 
   disabilitaFiltri = false;
 
@@ -79,16 +80,6 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
       });
   }
 
-  selezionaCodice() {
-    if (this.filtriRicerca.codiceTipologia === '') {
-      this.filtriRicerca.codiceTipologia = null;
-    }
-
-    if (this.filtriRicerca.codiceTipologia) {
-      this.filtriRicerca.codiceTipologia = this.filtriRicerca.codiceTipologia.toUpperCase();
-    }
-  }
-
   cercaElementi(): void {
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
@@ -111,11 +102,11 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
       }
       this.campoTipologiaServizioService.recuperaTipologieServizio(filtro, this.idFunzione).subscribe(listaTipologieServizio => {
         if (listaTipologieServizio) {
-          this.listaCodiciTipologia = listaTipologieServizio.map(tipologiaServizio => tipologiaServizio.codice);
+          this.listaCodiciTipologia = listaTipologieServizio;
         }
       });
     } else {
-      this.listaCodiciTipologia = this.listaCodiciTipologia.filter(codice => codice.toLowerCase().startsWith(input.toLowerCase()));
+      this.listaCodiciTipologia = this.listaCodiciTipologia.filter(value => value.codice.toLowerCase().startsWith(input.toLowerCase()));
     }
   }
 
@@ -162,11 +153,11 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   disabilitaBottonePulisci(): boolean {
-    return !this.filtriRicerca.raggruppamentoId && !this.filtriRicerca.codiceTipologia ? true : null;
+    return !this.filtriRicerca.raggruppamentoId && !this.filtriRicerca.tipologiaServizio ? true : null;
   }
 
   disabilitaPulsanteCrea(): boolean {
-    return !this.filtriRicerca.raggruppamentoId || !this.filtriRicerca.codiceTipologia
+    return !this.filtriRicerca.raggruppamentoId || !this.filtriRicerca.tipologiaServizio
       || !this.filtriRicerca.nomeServizio || !this.filtriRicerca.abilitaDa || !this.filtriRicerca.abilitaA || this.disabilitaFiltri;
   }
 
