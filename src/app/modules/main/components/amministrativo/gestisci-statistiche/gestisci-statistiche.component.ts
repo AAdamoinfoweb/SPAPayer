@@ -131,7 +131,7 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    return colonne;
+    return colonne.filter(col => col.field !== 'id');
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
@@ -151,7 +151,7 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
 
   getNumeroRecord(): string {
     const map: Map<string, number> = this.calcolaAttivaDisabilitate();
-    return `Numero di statistica trovate: ${this.listaElementi.length} Di cui attive: ${map.get('attive')} Di cui disabilitate: ${map.get('disabilitate')}`;
+    return `Totale: ${this.listaElementi.length} Di cui attive: ${map.get('attive')} Di cui disabilitate: ${map.get('disabilitate')}`;
   }
 
   getObservableFunzioneRicerca(): Observable<any[]> {
@@ -159,7 +159,16 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
   }
 
   getRigheFileExcel(righe: any[]) {
-    return righe;
+    return righe.map(riga => {
+      const rigaFormattata = riga;
+      delete rigaFormattata.id;
+      rigaFormattata.icona = riga.icona.display === 'none' ? 'DISABILITATA' : 'ATTIVA';
+      rigaFormattata.titolo = riga.titolo.value;
+      rigaFormattata.descrizione = riga.descrizione.value;
+      rigaFormattata.avvioSchedulazione = riga.avvioSchedulazione.value;
+      rigaFormattata.fineSchedulazione = riga.fineSchedulazione.value;
+      return rigaFormattata;
+    });
   }
 
   getRigheFilePdf(righe: any[]) {
