@@ -1,0 +1,8 @@
+:host ::ng-deep .required:after {
+  content: ' *';
+  color: red;
+}
+
+:host ::ng-deep .text-invalid {
+  color: #FF0000;
+}

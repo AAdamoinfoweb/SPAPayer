@@ -24,352 +24,358 @@
     (onChangeFiltri)="onChangeFiltri($event)"
   ></app-filtro-gestione-servizio>
 
-  <div class="collapse-header" id="idCollapseFiltri">
-    <button data-toggle="collapse" data-target="#contatti" aria-expanded="true"
-            aria-controls="contatti">
-      Contatti
-    </button>
-  </div>
-  <div id="contatti" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltri">
-    <div class="row mt-2 mb-0">
-      <div class="col-md-2 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="nome" class="title">Nome</label>
+  <ng-container *ngIf="filtri">
+    <form #datiForm="ngForm">
+      <div class="collapse-header" id="idCollapseFiltri">
+        <button data-toggle="collapse" data-target="#contatti" aria-expanded="true"
+                aria-controls="contatti">
+          Contatti
+        </button>
+      </div>
+      <div id="contatti" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltri">
+        <div class="row mt-2 mb-0">
+          <div class="col-md-2 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="nome" class="title">Nome</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <input id="nome" name="nome" type="text" class="input-text pt-0" autocomplete="off"
+                       #nome="ngModel" [(ngModel)]="contatto.nome" [disabled]="disabilitaCampi()">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="cognome" class="title">Cognome</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <input id="cognome" name="cognome" type="text" class="input-text pt-0" autocomplete="off"
+                       #cognome="ngModel" [(ngModel)]="contatto.cognome" [disabled]="disabilitaCampi()">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="tel" class="title">Tel. ufficio o cellulare</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <input id="tel" name="tel" type="text" class="input-text pt-0" autocomplete="off"
+                       #tel="ngModel" [(ngModel)]="contatto.tel" [disabled]="disabilitaCampi()">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col">
-            <input id="nome" name="nome" type="text" class="input-text pt-0" autocomplete="off"
-                   #nome="ngModel" [(ngModel)]="contatto.nome" [disabled]="disabilitaCampi()">
+        <div class="row mt-2 mb-0">
+          <div class="col-md-3 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="email" class="title">Email</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <input id="email" name="email" type="text" class="input-text pt-0" autocomplete="off"
+                       #email="ngModel" [(ngModel)]="contatto.email" [disabled]="disabilitaCampi()">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="reperibile" class="title">Giorni e orario in cui è reperibile</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <input id="reperibile" name="reperibile" type="text" class="input-text pt-0" autocomplete="off"
+                       #reperibile="ngModel" [(ngModel)]="contatto.reperibile" [disabled]="disabilitaCampi()">
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-2 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="cognome" class="title">Cognome</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <input id="cognome" name="cognome" type="text" class="input-text pt-0" autocomplete="off"
-                   #cognome="ngModel" [(ngModel)]="contatto.cognome" [disabled]="disabilitaCampi()">
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="tel" class="title">Tel. ufficio o cellulare</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <input id="tel" name="tel" type="text" class="input-text pt-0" autocomplete="off"
-                   #tel="ngModel" [(ngModel)]="contatto.tel" [disabled]="disabilitaCampi()">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-2 mb-0">
-      <div class="col-md-3 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="email" class="title">Email</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <input id="email" name="email" type="text" class="input-text pt-0" autocomplete="off"
-                   #email="ngModel" [(ngModel)]="contatto.email" [disabled]="disabilitaCampi()">
-          </div>
-        </div>
-      </div>
-      <div class="col-md-5 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="reperibile" class="title">Giorni e orario in cui è reperibile</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <input id="reperibile" name="reperibile" type="text" class="input-text pt-0" autocomplete="off"
-                   #reperibile="ngModel" [(ngModel)]="contatto.reperibile" [disabled]="disabilitaCampi()">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="collapse-header" id="idCollapseIntegrazione">
-    <button data-toggle="collapse" data-target="#integrazione" aria-expanded="true"
-            aria-controls="integrazione">
-      Integrazione
-    </button>
-  </div>
-  <div id="integrazione" class="collapse show" role="tabpanel" aria-labelledby="idCollapseIntegrazione">
-    <div class="row mt-2 mb-0">
-      <div class="col-md-3 pb-2">
-        <div class="row">
-          <div class="col">
-            <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
-            >Livello di Integrazione</label>
+      <div class="collapse-header" id="idCollapseIntegrazione">
+        <button data-toggle="collapse" data-target="#integrazione" aria-expanded="true"
+                aria-controls="integrazione">
+          Integrazione
+        </button>
+      </div>
+      <div id="integrazione" class="collapse show" role="tabpanel" aria-labelledby="idCollapseIntegrazione">
+        <div class="row mt-2 mb-0">
+          <div class="col-md-3 pb-2">
+            <div class="row">
+              <div class="col">
+                <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
+                       [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}"
+                >Livello di Integrazione</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select
+                  id="livelloIntegrazione"
+                  name="livelloIntegrazione"
+                  [(ngModel)]="livelloIntegrazione.id"
+                  [required]="true"
+                  (ngModelChange)="cambiaLivelloIntegrazione($event)">
+                  <option [ngValue]="null" [selected]="true">Seleziona</option>
+                  <option [ngValue]="LivelloIntegrazioneEnum.LV1">Livello 1</option>
+                  <option [ngValue]="LivelloIntegrazioneEnum.LV2">Livello 2</option>
+                  <option [ngValue]="LivelloIntegrazioneEnum.LV2_BACK_OFFICE">Livello 2 BO</option>
+                  <option [ngValue]="LivelloIntegrazioneEnum.LV3">Livello 3</option>
+                </select>
+              </div>
+            </div>
           </div>
+          <ng-container *ngIf="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV1">
+            <div class="col-md-2 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label [htmlFor]="'codiceEnte'" class="title form-elem-title"
+                  >Codice Ente</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
+                         [required]="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV1"
+                         #codiceEnte="ngModel" [(ngModel)]="livelloIntegrazione.codiceEnte"
+                         [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label [htmlFor]="'tipoUfficio'" class="title form-elem-title"
+                  >Tipo Ufficio</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input id="tipoUfficio" name="tipoUfficio" type="text" class="input-text pt-0" autocomplete="off"
+                         #tipoUfficio="ngModel" [(ngModel)]="livelloIntegrazione.tipoUfficio"
+                         [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label [htmlFor]="'codiceUfficio'" class="title form-elem-title"
+                  >Codice Ufficio</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input id="codiceUfficio" name="codiceUfficio" type="text" class="input-text pt-0" autocomplete="off"
+                         #codiceUfficio="ngModel" [(ngModel)]="livelloIntegrazione.codiceUfficio"
+                         [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label [htmlFor]="'codiceIDServizio'" class="title form-elem-title"
+                  >Codice IDServizio</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input id="codiceIDServizio" name="codiceIDServizio" type="text" class="input-text pt-0"
+                         autocomplete="off"
+                         #codiceIDServizio="ngModel" [(ngModel)]="livelloIntegrazione.codiceIDServizio"
+                         [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label [htmlFor]="'numeroTentativiNotifica'" class="title form-elem-title"
+                  >Numero tentativi di notifica</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input id="numeroTentativiNotifica" name="numeroTentativiNotifica" type="number"
+                         class="input-text pt-0"
+                         autocomplete="off"
+                         #numeroTentativiNotifica="ngModel" [(ngModel)]="livelloIntegrazione.numeroTentativiNotifica"
+                         [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label [htmlFor]="'notificaUtente'" class="title form-elem-title"
+                  >Notifica utente</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <select id="notificaUtente" name="notificaUtente"
+                          #notificaUtente="ngModel" [(ngModel)]="livelloIntegrazione.notificaUtente"
+                          [disabled]="disabilitaCampi()">
+                    <option [ngValue]="false" [selected]="true">NO</option>
+                    <option [ngValue]="true">SI</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label [htmlFor]="'redirect'" class="title form-elem-title"
+                  >Redirect</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input id="redirect" name="redirect" type="checkbox" class="input-text pt-0" autocomplete="off"
+                         #redirect="ngModel" [(ngModel)]="livelloIntegrazione.redirect"
+                         [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+            </div>
+          </ng-container>
         </div>
-        <div class="row">
-          <div class="col">
-            <select
-              id="livelloIntegrazione"
-              name="livelloIntegrazione"
-              [(ngModel)]="livelloIntegrazione.id"
-              [required]="true"
-              (ngModelChange)="cambiaLivelloIntegrazione($event)">
-              <option [ngValue]="null" [selected]="true">Seleziona</option>
-              <option [ngValue]="LivelloIntegrazioneEnum.LV1">Livello 1</option>
-              <option [ngValue]="LivelloIntegrazioneEnum.LV2">Livello 2</option>
-              <option [ngValue]="LivelloIntegrazioneEnum.LV2_BACK_OFFICE">Livello 2 BO</option>
-              <option [ngValue]="LivelloIntegrazioneEnum.LV3">Livello 3</option>
-            </select>
+      </div>
+      <div class="collapse-header" id="idCollapseImpositore">
+        <button data-toggle="collapse" data-target="#impositore" aria-expanded="true"
+                aria-controls="impositore">
+          Impositore
+        </button>
+      </div>
+      <div id="impositore" class="collapse show" role="tabpanel" aria-labelledby="idCollapseImpositore">
+        <div class="row mt-2 mb-0">
+          <div class="col-md-3 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="selectSocieta" class="title"
+                       [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Società</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
+                        #societaInput="ngModel" [(ngModel)]="impositore.societaId"
+                        (ngModelChange)="onChangeSocieta(societaInput)"
+                        [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                  <option [ngValue]="null" [selected]="true">Seleziona</option>
+                  <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
+                  {{setPlaceholder(societaInput, 'select')}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="livelloTerritorialeId" class="title"
+                       [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+                  Livello Territoriale</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select
+                  id="livelloTerritorialeId"
+                  name="livelloTerritorialeId"
+                  #livelloTerritorialeId="ngModel"
+                  [(ngModel)]="impositore.livelloTerritorialeId"
+                  [disabled]="!impositore.societaId"
+                  (ngModelChange)="onChangeLivelloTerritoriale(societaInput, livelloTerritorialeId)"
+                >
+                  <option [ngValue]="null" selected>Seleziona</option>
+                  <option *ngFor="let item of listaLivelloTerritoriale"
+                          [ngValue]="item.id">{{item.nome}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+              <div class="col">
+                <p *ngIf="!isCampoInvalido(livelloTerritorialeId)">Seleziona livello territoriale</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="selectEnte"
+                       [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Ente</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select [ngClass]="{'input-disabled': !listaEnti.length}"
+                        id="selectEnte" name="enteId"
+                        #enteInput="ngModel" [(ngModel)]="impositore.enteId"
+                        (ngModelChange)="onChangeEnte(enteInput)"
+                        [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId">
+                  <option [ngValue]="null" [selected]="true">Seleziona</option>
+                  <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nomeEnte}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p *ngIf="!isCampoInvalido(enteInput)">Seleziona Ente</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="switchMostraAlVersante" class="title">Mostra al versante</label>
+              </div>
+            </div>
+            <div class="row">
+              <it-toggle id="switchMostraAlVersante" [disabled]="disabilitaCampi()"
+                         [(ngModel)]="impositore.mostraAlVersante" name="switchMostraAlVersante"></it-toggle>
+            </div>
           </div>
         </div>
       </div>
-      <ng-container *ngIf="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV1">
-        <div class="col-md-2 pb-2">
-          <div class="row">
-            <div class="col">
-              <label [htmlFor]="'codiceEnte'" class="title form-elem-title"
-              >Codice Ente</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
-                     [required]="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV1"
-                     #codiceEnte="ngModel" [(ngModel)]="livelloIntegrazione.codiceEnte" [disabled]="disabilitaCampi()">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-2 pb-2">
-          <div class="row">
-            <div class="col">
-              <label [htmlFor]="'tipoUfficio'" class="title form-elem-title"
-              >Tipo Ufficio</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <input id="tipoUfficio" name="tipoUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                     #tipoUfficio="ngModel" [(ngModel)]="livelloIntegrazione.tipoUfficio"
-                     [disabled]="disabilitaCampi()">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-2 pb-2">
-          <div class="row">
-            <div class="col">
-              <label [htmlFor]="'codiceUfficio'" class="title form-elem-title"
-              >Codice Ufficio</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <input id="codiceUfficio" name="codiceUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                     #codiceUfficio="ngModel" [(ngModel)]="livelloIntegrazione.codiceUfficio"
-                     [disabled]="disabilitaCampi()">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-2 pb-2">
-          <div class="row">
-            <div class="col">
-              <label [htmlFor]="'codiceIDServizio'" class="title form-elem-title"
-              >Codice IDServizio</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <input id="codiceIDServizio" name="codiceIDServizio" type="text" class="input-text pt-0"
-                     autocomplete="off"
-                     #codiceIDServizio="ngModel" [(ngModel)]="livelloIntegrazione.codiceIDServizio"
-                     [disabled]="disabilitaCampi()">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 pb-2">
-          <div class="row">
-            <div class="col">
-              <label [htmlFor]="'numeroTentativiNotifica'" class="title form-elem-title"
-              >Numero tentativi di notifica</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <input id="numeroTentativiNotifica" name="numeroTentativiNotifica" type="number" class="input-text pt-0"
-                     autocomplete="off"
-                     #numeroTentativiNotifica="ngModel" [(ngModel)]="livelloIntegrazione.numeroTentativiNotifica"
-                     [disabled]="disabilitaCampi()">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-2 pb-2">
-          <div class="row">
-            <div class="col">
-              <label [htmlFor]="'notificaUtente'" class="title form-elem-title"
-              >Notifica utente</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <select id="notificaUtente" name="notificaUtente"
-                      #notificaUtente="ngModel" [(ngModel)]="livelloIntegrazione.notificaUtente"
-                      [disabled]="disabilitaCampi()">
-                <option [ngValue]="false" [selected]="true">NO</option>
-                <option [ngValue]="true">SI</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-2 pb-2">
-          <div class="row">
-            <div class="col">
-              <label [htmlFor]="'redirect'" class="title form-elem-title"
-              >Redirect</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <input id="redirect" name="redirect" type="checkbox" class="input-text pt-0" autocomplete="off"
-                     #redirect="ngModel" [(ngModel)]="livelloIntegrazione.redirect"
-                     [disabled]="disabilitaCampi()">
-            </div>
-          </div>
-        </div>
-      </ng-container>
-    </div>
-  </div>
-  <div class="collapse-header" id="idCollapseImpositore">
-    <button data-toggle="collapse" data-target="#impositore" aria-expanded="true"
-            aria-controls="impositore">
-      Impositore
-    </button>
-  </div>
-  <div id="impositore" class="collapse show" role="tabpanel" aria-labelledby="idCollapseImpositore">
-    <div class="row mt-2 mb-0">
-      <div class="col-md-3 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="selectSocieta" class="title">Società</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
-                    #societaInput="ngModel" [(ngModel)]="impositore.societaId"
-                    (ngModelChange)="onChangeSocieta(societaInput)"
-                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
-              <option [ngValue]="null" [selected]="true">Seleziona</option>
-              <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
-            </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-               [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
-              {{setPlaceholder(societaInput, 'select')}}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="livelloTerritorialeId" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
-              Livello Territoriale</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <select
-              id="livelloTerritorialeId"
-              name="livelloTerritorialeId"
-              #livelloTerritorialeId="ngModel"
-              [(ngModel)]="impositore.livelloTerritorialeId"
-              [disabled]="!impositore.societaId"
-              (ngModelChange)="onChangeLivelloTerritoriale(societaInput, livelloTerritorialeId)"
-            >
-              <option [ngValue]="null" selected>Seleziona</option>
-              <option *ngFor="let item of listaLivelloTerritoriale"
-                      [ngValue]="item.id">{{item.nome}}</option>
-            </select>
-          </div>
-        </div>
-        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-          <div class="col">
-            <p *ngIf="!isCampoInvalido(livelloTerritorialeId)">Seleziona livello territoriale</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="selectEnte"
-                   [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Ente</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <select [ngClass]="{'input-disabled': !listaEnti.length}"
-                    id="selectEnte" name="enteId"
-                    #enteInput="ngModel" [(ngModel)]="impositore.enteId"
-                    (ngModelChange)="onChangeEnte(enteInput)"
-                    [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId">
-              <option [ngValue]="null" [selected]="true">Seleziona</option>
-              <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nomeEnte}}</option>
-            </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-               [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput), 'text-disabled': !listaEnti.length}">
-              {{setPlaceholder(enteInput, 'select')}}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-2 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="switchMostraAlVersante" class="title">Mostra al versante</label>
-          </div>
-        </div>
-        <div class="row">
-          <it-toggle id="switchMostraAlVersante" [disabled]="disabilitaCampi()"
-                     [(ngModel)]="impositore.mostraAlVersante" name="switchMostraAlVersante"></it-toggle>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="collapse-header" id="idCollapseBeneficiario">
-    <button data-toggle="collapse" data-target="#beneficiario" aria-expanded="true"
-            aria-controls="beneficiario">
-      Beneficiario
-    </button>
-  </div>
-  <div id="beneficiario" class="collapse show" role="tabpanel" aria-labelledby="idCollapseBeneficiario">
+      <div class="collapse-header" id="idCollapseBeneficiario">
+        <button data-toggle="collapse" data-target="#beneficiario" aria-expanded="true"
+                aria-controls="beneficiario">
+          Beneficiario
+        </button>
+      </div>
+      <div id="beneficiario" class="collapse show" role="tabpanel" aria-labelledby="idCollapseBeneficiario">
 
-  </div>
+      </div>
 
-  <div class="collapse-header" id="idCollapseCampiServizio">
-    <button data-toggle="collapse" data-target="#campiServizio" aria-expanded="true"
-            aria-controls="campiServizio">
-      Campi del Servizio
-    </button>
-  </div>
-  <div id="campiServizio" class="collapse show" role="tabpanel" aria-labelledby="idCollapseCampiServizio">
+      <div class="collapse-header" id="idCollapseCampiServizio">
+        <button data-toggle="collapse" data-target="#campiServizio" aria-expanded="true"
+                aria-controls="campiServizio">
+          Campi del Servizio
+        </button>
+      </div>
+      <div id="campiServizio" class="collapse show" role="tabpanel" aria-labelledby="idCollapseCampiServizio">
 
-  </div>
+      </div>
+    </form>
+  </ng-container>
 </div>

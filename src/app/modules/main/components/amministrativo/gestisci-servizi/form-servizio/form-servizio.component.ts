@@ -65,6 +65,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   listaLivelloTerritoriale: LivelloTerritoriale[] = [];
   listaEnti: SintesiEnte[] = [];
   FunzioneGestioneEnum = FunzioneGestioneEnum;
+  filtri: any;
 
   constructor(private cdr: ChangeDetectorRef,
               private overlayService: OverlayService,
@@ -123,8 +124,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   onClickSalva(): void {
   }
 
-  onChangeFiltri($event: any) {
-
+  onChangeFiltri(event: any) {
+    this.filtri = event;
   }
 
   cambiaLivelloIntegrazione($event: any) {
