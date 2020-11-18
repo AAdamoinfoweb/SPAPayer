@@ -173,13 +173,18 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
   }
 
   getRigheFilePdf(righe: any[]) {
-    // TODO logica creazione righe da inserire all'interno della tabella del file pdf
-    return null;
+    return righe;
   }
 
   getImmaginiFilePdf(): ImmaginePdf[] {
-    // TODO settare posizione dell'immagine da inserire nella riga nel pdf
-    return null;
+    const iconaAttivitaAttivaSchedulata = new ImmaginePdf();
+    iconaAttivitaAttivaSchedulata.indiceColonna = 0;
+    iconaAttivitaAttivaSchedulata.srcIcona = 'assets/img/active-statistic-or-activity.png';
+    iconaAttivitaAttivaSchedulata.posizioneX = 4;
+    iconaAttivitaAttivaSchedulata.posizioneY = 1;
+    iconaAttivitaAttivaSchedulata.larghezza = 18;
+    iconaAttivitaAttivaSchedulata.altezza = 19;
+    return [iconaAttivitaAttivaSchedulata];
   }
 
   getColonneFileExcel(colonne: Colonna[]) {
