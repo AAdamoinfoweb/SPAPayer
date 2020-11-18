@@ -58,11 +58,14 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
 import {DatiBeneficiarioComponent} from "./anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component";
 import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
 import {DialogModule} from "primeng/dialog";
-import { GestisciStatisticheComponent } from './gestisci-statistiche/gestisci-statistiche.component';
-import { FiltroGestisciStatisticheComponent } from './gestisci-statistiche/filtro-gestisci-statistiche/filtro-gestisci-statistiche.component';
-import { DatiStatisticaComponent } from './gestisci-statistiche/dati-statistica/dati-statistica.component';
-import { FormStatisticaComponent } from './gestisci-statistiche/form-statistica/form-statistica.component';
+import {GestisciStatisticheComponent} from './gestisci-statistiche/gestisci-statistiche.component';
+import {FiltroGestisciStatisticheComponent} from './gestisci-statistiche/filtro-gestisci-statistiche/filtro-gestisci-statistiche.component';
+import {DatiStatisticaComponent} from './gestisci-statistiche/dati-statistica/dati-statistica.component';
+import {FormStatisticaComponent} from './gestisci-statistiche/form-statistica/form-statistica.component';
 import {GestisciAttivitaPianificateComponent} from './gestisci-attivita-pianificate/gestisci-attivita-pianificate.component';
+import {DatiAttivitaPianificateComponent} from "./gestisci-attivita-pianificate/dati-attivita-pianificate/dati-attivita-pianificate.component";
+import {FormAttivitaPianificateComponent} from "./gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component";
+import {SchedulazioneComponent} from "./schedulazione/schedulazione.component";
 
 
 @NgModule({
@@ -106,7 +109,10 @@ import {GestisciAttivitaPianificateComponent} from './gestisci-attivita-pianific
     FiltroGestisciStatisticheComponent,
     DatiStatisticaComponent,
     FormStatisticaComponent,
-    GestisciAttivitaPianificateComponent
+    GestisciAttivitaPianificateComponent,
+    DatiAttivitaPianificateComponent,
+    FormAttivitaPianificateComponent,
+    SchedulazioneComponent,
   ],
   imports: [
     HttpClientModule,
