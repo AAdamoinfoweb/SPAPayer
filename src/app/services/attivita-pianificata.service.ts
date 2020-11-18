@@ -3,9 +3,9 @@ import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
-import {ParametriRicercaStatistiche} from "../modules/main/model/statistica/ParametriRicercaStatistiche";
-import {Statistica} from "../modules/main/model/statistica/Statistica";
-import {AttivitaPianificata} from "../modules/main/model/attivitapianificata/AttivitaPianificata";
+import {ParametriRicercaStatistiche} from '../modules/main/model/statistica/ParametriRicercaStatistiche';
+import {AttivitaPianificata} from '../modules/main/model/attivitapianificata/AttivitaPianificata';
+import {SintesiAttivitaPianificata} from '../modules/main/model/attivitapianificata/SintesiAttivitaPianificata';
 
 @Injectable({
   providedIn: 'root'
@@ -21,20 +21,20 @@ export class AttivitaPianificataService {
   constructor(private http: HttpClient) {
   }
 
-  ricercaAttivitaPianificate(parametriRicercaStatistiche: ParametriRicercaStatistiche, idFunzione: string): Observable<any[]> {
+  ricercaAttivitaPianificate(parametriRicercaStatistiche: ParametriRicercaStatistiche, idFunzione: string): Observable<SintesiAttivitaPianificata[]> {
     const url = environment.bffBaseUrl + this.attivitaPianificataBaseUrl;
     // set headers
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     // set params
     let params = new HttpParams();
-    if (parametriRicercaStatistiche.attiva != null) {
+    if (parametriRicercaStatistiche?.attiva != null) {
       params = params.set('attiva', String(parametriRicercaStatistiche.attiva));
     }
-    if (parametriRicercaStatistiche.avvioSchedulazione) {
+    if (parametriRicercaStatistiche?.avvioSchedulazione) {
       params = params.set('avvioSchedulazione', parametriRicercaStatistiche.avvioSchedulazione);
     }
-    if (parametriRicercaStatistiche.fineSchedulazione) {
+    if (parametriRicercaStatistiche?.fineSchedulazione) {
       params = params.set('fineSchedulazione', parametriRicercaStatistiche.fineSchedulazione);
     }
 
@@ -44,7 +44,7 @@ export class AttivitaPianificataService {
         headers: h,
         params
       }).pipe(map((body: any[]) => {
-        return body;
+        return body as SintesiAttivitaPianificata[];
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
@@ -55,12 +55,12 @@ export class AttivitaPianificataService {
       }));
   }
 
-  eliminaAttivitaPianificate(listaStatisticheId: Array<number>, idFunzione: string): Observable<any> {
+  eliminaAttivitaPianificate(listaAttivitaPianificateId: Array<number>, idFunzione: string): Observable<any> {
     const url = environment.bffBaseUrl + this.eliminaAttivitaPianificateUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
-    return this.http.post(`${url}`, listaStatisticheId,
+    return this.http.post(`${url}`, listaAttivitaPianificateId,
       {
         withCredentials: true,
         headers: h
@@ -69,7 +69,7 @@ export class AttivitaPianificataService {
     }));
   }
 
-  inserimentoAttivitaPianificata(attivitaPianificata: AttivitaPianificata, idFunzione: string): Observable<number> {
+  inserimentoAttivitaPianificate(attivitaPianificata: AttivitaPianificata, idFunzione: string): Observable<number> {
     const url = environment.bffBaseUrl + this.attivitaPianificataBaseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -120,7 +120,7 @@ export class AttivitaPianificataService {
       {
         withCredentials: true,
         headers: h
-      }).pipe(map((body: Statistica) => {
+      }).pipe(map((body: AttivitaPianificata) => {
         return body;
       }),
       catchError((err, caught) => {
