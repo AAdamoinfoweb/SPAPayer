@@ -63,6 +63,7 @@ import { FiltroGestisciStatisticheComponent } from './gestisci-statistiche/filtr
 import { DatiStatisticaComponent } from './gestisci-statistiche/dati-statistica/dati-statistica.component';
 import { FormStatisticaComponent } from './gestisci-statistiche/form-statistica/form-statistica.component';
 import {GestisciAttivitaPianificateComponent} from './gestisci-attivita-pianificate/gestisci-attivita-pianificate.component';
+import {FiltroGestioneAttivitaPianificateComponent} from './gestisci-attivita-pianificate/filtro-gestione-attivita-pianificate/filtro-gestione-attivita-pianificate.component';
 
 
 @NgModule({
@@ -106,7 +107,8 @@ import {GestisciAttivitaPianificateComponent} from './gestisci-attivita-pianific
     FiltroGestisciStatisticheComponent,
     DatiStatisticaComponent,
     FormStatisticaComponent,
-    GestisciAttivitaPianificateComponent
+    GestisciAttivitaPianificateComponent,
+    FiltroGestioneAttivitaPianificateComponent
   ],
   imports: [
     HttpClientModule,
