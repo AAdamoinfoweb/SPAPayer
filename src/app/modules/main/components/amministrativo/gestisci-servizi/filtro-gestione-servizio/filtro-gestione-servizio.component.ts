@@ -59,6 +59,9 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
 
   ngOnInit(): void {
     this.inizializzaOpzioniRaggruppamento();
+    if (this.isPaginaGestione()) {
+      this.caricaCodiciTipologia();
+    }
   }
 
   ngOnChanges(sc: SimpleChanges) {
@@ -84,6 +87,16 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
       });
   }
 
+  selezionaRaggruppamento(): void {
+    this.filtriRicerca.tipologiaServizio = new TipologiaServizio();
+    this.listaCodiciTipologia = [];
+    this.listaCodiciTipologiaFiltrati = [];
+
+    if (this.filtriRicerca.raggruppamentoId) {
+      this.caricaCodiciTipologia();
+    }
+  }
+
   cercaElementi(): void {
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
@@ -104,19 +117,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
 
   filtraCodiciTipologia(event): void {
     const input = event.query;
-
-    if (input.length < this.minCharsRecuperoValoriAutocomplete) {
-      this.listaCodiciTipologiaFiltrati = [];
-    } else if (input.length === this.minCharsRecuperoValoriAutocomplete) {
-      let filtro = null;
-      if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
-        filtro = new ParametriRicercaServizio();
-        filtro.raggruppamento = this.filtriRicerca.raggruppamentoId;
-      }
-      this.caricaCodiciTipologia();
-    } else {
-      this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia.filter(value => value.codice.toLowerCase().startsWith(input.toLowerCase()));
-    }
+    this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia.filter(value => value.codice.toLowerCase().startsWith(input.toLowerCase()));
   }
 
   setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum): string {

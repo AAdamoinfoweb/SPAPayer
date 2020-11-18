@@ -25,6 +25,7 @@
                       name="raggruppamento"
                       #filtroRaggruppamento="ngModel"
                       [(ngModel)]="filtriRicerca.raggruppamentoId"
+                      (ngModelChange)="selezionaRaggruppamento()"
                       [disabled]="disabilitaFiltroRaggruppamento()"
               >
                 <option [ngValue]="null" selected *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI">Seleziona</option>
@@ -57,7 +58,6 @@
                               [suggestions]="listaCodiciTipologiaFiltrati"
                               (completeMethod)="filtraCodiciTipologia($event)"
                               (onClear)="listaCodiciTipologiaFiltrati = []"
-                              [minLength]="minCharsRecuperoValoriAutocomplete"
                               delay="0" autoHighlight="true"
                               [disabled]="disabilitaFiltroCodice()"
                               placeholder="Non selezionato"
