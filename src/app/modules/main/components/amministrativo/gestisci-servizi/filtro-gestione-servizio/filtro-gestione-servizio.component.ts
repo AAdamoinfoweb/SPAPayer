@@ -109,6 +109,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   caricaCodiciTipologia(): void {
     this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione).subscribe(listaTipologieServizio => {
       if (listaTipologieServizio) {
+        Utils.ordinaArrayDiOggetti(listaTipologieServizio, 'codice');
         this.listaCodiciTipologia = listaTipologieServizio;
         this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia;
       }
