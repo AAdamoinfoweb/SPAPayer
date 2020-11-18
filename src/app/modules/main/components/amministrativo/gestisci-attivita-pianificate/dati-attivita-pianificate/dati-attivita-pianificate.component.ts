@@ -1,42 +1,76 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Statistica} from '../../../../model/statistica/Statistica';
+import {
+  AfterViewInit,
+  Component,
+  ComponentFactoryResolver,
+  ComponentRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
 import {NgForm, NgModel} from '@angular/forms';
-import {Destinatario} from '../../../../model/statistica/Destinatario';
-import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
-import * as moment from 'moment';
-import {OpzioneSelect} from '../../../../model/OpzioneSelect';
 import {Utils} from '../../../../../../utils/Utils';
+import {AttivitaPianificata} from "../../../../model/attivitapianificata/AttivitaPianificata";
+import {ParametroAttivitaPianificata} from "../../../../model/attivitapianificata/ParametroAttivitaPianificata";
+import {DatiContoCorrenteComponent} from "../../anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
+import {ContoCorrente} from "../../../../model/ente/ContoCorrente";
+import {ContoCorrenteSingolo} from "../../../../model/ente/ContoCorrenteSingolo";
+import {DatiParametroComponent} from "../dati-parametri/dati-parametro.component";
 
 @Component({
   selector: 'app-dati-attivita-pianificate',
   templateUrl: './dati-attivita-pianificate.component.html',
   styleUrls: ['./dati-attivita-pianificate.component.scss']
 })
-export class DatiAttivitaPianificateComponent implements OnInit {
-  constructor() {
+export class DatiAttivitaPianificateComponent implements OnInit, AfterViewInit {
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
   // enums e consts
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
-  emailRegex: string = Utils.EMAIL_REGEX;
 
   @Input()
   idFunzione;
   @Input()
-  datiStatistica: Statistica;
+  datiAttivitaPianificata: AttivitaPianificata;
   @Input()
   funzione: FunzioneGestioneEnum;
   @Output()
   isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  @ViewChild('parametro', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
+  private componentRef: ComponentRef<any>;
+
+  @ViewChild('datiForm', {static: false, read: NgForm})
+  datiForm: NgForm;
+
   isSchedulazioneFormValid: boolean;
+
+  mapParametri: Map<number, ParametroAttivitaPianificata> = new Map<number, ParametroAttivitaPianificata>();
+  mapControllo: Map<number, boolean> = new Map<number, boolean>();
+  getListaFromMap = (map: Map<number, any>) => Array.from(map, ([name, value]) => value);
+
 
   ngOnInit(): void {
   }
 
+  ngAfterViewInit(): void {
+    this.inizializzazioneChiaveValore();
+  }
+
+  private inizializzazioneChiaveValore() {
+    if (this.datiAttivitaPianificata.parametri != null && this.datiAttivitaPianificata.parametri.length > 0) {
+      this.datiAttivitaPianificata.parametri.forEach(parametro => this.aggiungiChiaveValore(parametro));
+    } else {
+      this.aggiungiChiaveValore();
+    }
+  }
+
   isCampoInvalido(campo: NgModel) {
-      return campo?.errors != null;
+    return campo?.errors != null;
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -49,26 +83,13 @@ export class DatiAttivitaPianificateComponent implements OnInit {
 
   onChangeModel(form: NgForm, campo?: NgModel) {
     if (campo?.value == '') {
-      this.datiStatistica[campo.name] = null;
+      this.datiAttivitaPianificata[campo.name] = null;
     }
 
     this.formsValid(form, this.isSchedulazioneFormValid);
   }
 
 
-  aggiungiDestinatario(form: NgForm) {
-    const destinatario: Destinatario = new Destinatario();
-    destinatario.email = null;
-    this.datiStatistica.destinatari.push(destinatario);
-    this.onChangeModel(form);
-  }
-
-  eliminaDestinatario(form: NgForm, campo: NgModel, currentIndex) {
-    form.getControl(campo).patchValue(null);
-    this.datiStatistica.destinatari = this.datiStatistica.destinatari
-      .filter((value, index) => index !== currentIndex);
-    this.onChangeModel(form);
-  }
 
   schedulazioneFormValid(form: NgForm, isSchedulazioneFormValid: boolean) {
     this.isSchedulazioneFormValid = isSchedulazioneFormValid;
@@ -76,8 +97,55 @@ export class DatiAttivitaPianificateComponent implements OnInit {
   }
 
   formsValid(form: NgForm, isSchedulazioneFormValid: boolean) {
-    const isValid = form.valid && isSchedulazioneFormValid;
+    const listaControllo: boolean[] = this.getListaFromMap(this.mapControllo);
+    const areParametriNotValid = listaControllo.length > 0 ? listaControllo.includes(false) : false;
+    const isValid = form.valid && isSchedulazioneFormValid && !areParametriNotValid;
     this.isFormValid.emit(isValid);
   }
 
+  aggiungiChiaveValore(parametro?: ParametroAttivitaPianificata) {
+    // creazione Dati Conto Corrente Component
+    const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiParametroComponent);
+    this.componentRef = this.target.createComponent(childComponent);
+    const index = this.target.length;
+    // input
+    this.componentRef.instance.index = index;
+    this.componentRef.instance.funzione = this.funzione;
+    let instance: ParametroAttivitaPianificata;
+    if (parametro == null) {
+      instance = new ParametroAttivitaPianificata();
+    } else {
+      instance = parametro;
+    }
+    this.componentRef.instance.parametro = instance;
+    // output
+    this.componentRef.instance.onDeleteDatiParametro.subscribe(currentIndex => {
+      const currentParametro = this.mapParametri.get(currentIndex);
+      if (currentParametro != null) {
+        this.mapParametri.delete(currentIndex);
+        this.mapControllo.delete(currentIndex);
+      }
+      const zeroBasedIndex = currentIndex - 1;
+      // controllo se esiste un view ref, se esiste uso remove altrimenti clear
+      const viewRef = this.target.get(zeroBasedIndex);
+      if (viewRef == null) {
+        this.target.clear();
+      } else {
+        this.target.remove(zeroBasedIndex);
+      }
+      this.setListaParametri();
+    });
+    this.componentRef.instance.onChangeDatiParametro.subscribe((parametroIndex) => {
+      this.mapParametri.set(parametroIndex.index, parametroIndex.parametro);
+      this.mapControllo.set(parametroIndex.index, parametroIndex.isFormValid);
+      this.setListaParametri();
+    });
+    this.componentRef.changeDetectorRef.detectChanges();
+  }
+
+  private setListaParametri() {
+    const listaParametri: ParametroAttivitaPianificata[] = this.getListaFromMap(this.mapParametri);
+    this.datiAttivitaPianificata.parametri = listaParametri;
+    this.formsValid(this.datiForm, this.isSchedulazioneFormValid);
+  }
 }

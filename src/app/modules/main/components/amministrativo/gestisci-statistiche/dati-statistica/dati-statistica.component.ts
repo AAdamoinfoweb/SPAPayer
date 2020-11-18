@@ -60,10 +60,10 @@ export class DatiStatisticaComponent implements OnInit {
     this.onChangeModel(form);
   }
 
-  eliminaDestinatario(form: NgForm, campo: NgModel, currentIndex) {
+  eliminaDestinatario(form: NgForm, campo: NgModel, currentUUID) {
     form.getControl(campo).patchValue(null);
     this.datiStatistica.destinatari = this.datiStatistica.destinatari
-      .filter((value, index) => index !== currentIndex);
+      .filter((value) => value.uuid !== currentUUID);
     this.onChangeModel(form);
   }
 

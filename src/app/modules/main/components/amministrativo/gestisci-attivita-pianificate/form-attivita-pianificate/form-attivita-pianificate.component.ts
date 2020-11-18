@@ -7,17 +7,17 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {HttpClient} from '@angular/common/http';
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Statistica} from '../../../../model/statistica/Statistica';
-import {Schedulazione} from '../../../../model/schedulazione/Schedulazione';
 import {StatisticaService} from '../../../../../../services/statistica.service';
-import {Tabella} from '../../../../model/tabella/Tabella';
 import {Utils} from '../../../../../../utils/Utils';
-import {Banner} from '../../../../model/banner/Banner';
-import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
 import {BannerService} from '../../../../../../services/banner.service';
 import * as moment from 'moment';
+import {AttivitaPianificata} from "../../../../model/attivitapianificata/AttivitaPianificata";
+import {AttivitaPianificataService} from "../../../../../../services/attivita-pianificata.service";
+import {ParametroAttivitaPianificata} from "../../../../model/attivitapianificata/ParametroAttivitaPianificata";
+import {parseArguments} from "@angular/cli/models/parser";
 
 @Component({
-  selector: 'app-form-statistica',
+  selector: 'app-form-attivita-pianificate',
   templateUrl: './form-attivita-pianificate.component.html',
   styleUrls: ['./form-attivita-pianificate.component.scss']
 })
@@ -26,16 +26,14 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
   constructor(confirmationService: ConfirmationService,
               protected activatedRoute: ActivatedRoute,
               protected amministrativoService: AmministrativoService,
-              protected http: HttpClient, private statisticaService: StatisticaService,
+              protected http: HttpClient, private attivitaPianificataService: AttivitaPianificataService,
               protected router: Router, private bannerService: BannerService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
-  private messaggioListaVuota = 'L\'esecuzione della query non ha riporatato risultati';
-  private messaggioParolaChiavePresente = 'Parola chiave non consentita';
-  private NOT_ALLOWED_KEYWORDS = ['INSERT', 'UPDATE', 'DELETE', 'ALTER', 'CREATE'];
+
   // page
   breadcrumbList = [];
   tooltipTitolo: string;
@@ -43,7 +41,7 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
   // dati
   idFunzione;
   funzione: FunzioneGestioneEnum;
-  datiStatistica: Statistica = new Statistica();
+  datiAttivitaPianificata: AttivitaPianificata = new AttivitaPianificata();
   isFormValid: boolean;
 
   ngOnInit(): void {
@@ -54,11 +52,11 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
     this.controllaTipoFunzione(snapshot);
     this.inizializzaBreadcrumbs();
     this.inizializzaTitolo();
-    this.inizializzaDatiStatistica();
+    this.inizializzaDatiAttivitaPianificata();
     if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
       // inizializzazione form modifica o dettaglio
-      const statisticaId = snapshot.params.statisticaId;
-      this.letturaStatistica(statisticaId);
+      const attivitaId = snapshot.params.attivitaId;
+      this.letturaAttivitaPianificata(attivitaId);
     } else {
       // inizializzazione form inserimento
     }
@@ -67,13 +65,13 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
   controllaTipoFunzione(snapshot) {
     const url = snapshot.url[1].path;
     switch (url) {
-      case 'dettaglioStatistica':
+      case 'dettaglioAttivitaPianificata':
         this.funzione = FunzioneGestioneEnum.DETTAGLIO;
         break;
-      case 'aggiungiStatistica':
+      case 'aggiungiAttivitaPianificata':
         this.funzione = FunzioneGestioneEnum.AGGIUNGI;
         break;
-      case 'modificaStatistica':
+      case 'modificaAttivitaPianificata':
         this.funzione = FunzioneGestioneEnum.MODIFICA;
         break;
     }
@@ -81,63 +79,77 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
 
   inizializzaBreadcrumbs(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Statistiche', this.basePath));
-    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Statistica', null));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Attività Pianificate', this.basePath));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Attività Pianificata', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
 
   private inizializzaTitolo() {
-    this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Statistica';
-    this.tooltipTitolo = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una statistica' + (this.funzione !== FunzioneGestioneEnum.DETTAGLIO ? ' ed eseguire una query' : '');
+    this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Attività Pianificata';
+    this.tooltipTitolo = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una attività pianificata';
   }
 
-  inizializzaDatiStatistica() {
-    this.datiStatistica.schedulazione.timeZone = Utils.TIME_ZONE;
-    this.datiStatistica.abilitato = false;
+  inizializzaDatiAttivitaPianificata() {
+    this.datiAttivitaPianificata.schedulazione.timeZone = Utils.TIME_ZONE;
+    this.datiAttivitaPianificata.abilitato = false;
+    // inizializzo campo da compilare
+    const parametri: ParametroAttivitaPianificata = new ParametroAttivitaPianificata();
+    parametri.chiave = null;
+    parametri.valore = null;
+    parametri.uuid = Utils.uuidv4();
+    this.datiAttivitaPianificata.parametri.push(parametri);
   }
 
   onClickSalva(): void {
-    // controllo che nella query non siano presenti parole chiave non consentite
-    const paroleChiaveNonConsentitePresenti = this.controlloParoleChiaveNonConsentite();
-    if (!paroleChiaveNonConsentitePresenti) {
-      const statistica = this.formattaDati(this.datiStatistica);
-      if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
-        this.inserimentoStatistica(statistica);
-      } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
-        this.modificaStatistica(statistica);
-      }
-    } else {
-      this.showBannerQuery();
+    const attivitaPianificata: AttivitaPianificata = this.formattaDati(this.datiAttivitaPianificata);
+    if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+      this.inserimentoAttivitaPianificata(attivitaPianificata);
+    } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
+      this.modificaAttivitaPianificata(attivitaPianificata);
     }
   }
 
-  private formattaDati(statistica: Statistica, lettura = false): Statistica {
-    const statisticaCopy: Statistica = JSON.parse(JSON.stringify(statistica));
-    if (statisticaCopy.schedulazione.inizio) {
-      statisticaCopy.schedulazione.inizio = !lettura ?
-        moment(statisticaCopy.schedulazione.inizio, Utils.FORMAT_DATE_CALENDAR)
+  private formattaDati(attivitaPianificata: AttivitaPianificata, lettura = false): AttivitaPianificata {
+    const attivitaPianificataCopy: AttivitaPianificata = JSON.parse(JSON.stringify(attivitaPianificata));
+    if (attivitaPianificataCopy.schedulazione.inizio) {
+      attivitaPianificataCopy.schedulazione.inizio = !lettura ?
+        moment(attivitaPianificataCopy.schedulazione.inizio, Utils.FORMAT_DATE_CALENDAR)
           .format(Utils.FORMAT_LOCAL_DATE_TIME) :
-        moment(statisticaCopy.schedulazione.inizio, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
+        moment(attivitaPianificataCopy.schedulazione.inizio, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
           .format(Utils.FORMAT_DATE_CALENDAR);
     }
-    if (statisticaCopy.schedulazione.fine) {
-      statisticaCopy.schedulazione.fine = !lettura ?
-        moment(statisticaCopy.schedulazione.fine, Utils.FORMAT_DATE_CALENDAR)
+    if (attivitaPianificataCopy.schedulazione.fine) {
+      attivitaPianificataCopy.schedulazione.fine = !lettura ?
+        moment(attivitaPianificataCopy.schedulazione.fine, Utils.FORMAT_DATE_CALENDAR)
           .format(Utils.FORMAT_LOCAL_DATE_TIME_TO) :
-        moment(statisticaCopy.schedulazione.fine, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
+        moment(attivitaPianificataCopy.schedulazione.fine, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
           .format(Utils.FORMAT_DATE_CALENDAR);
     }
-    return statisticaCopy;
+    if (lettura && (attivitaPianificataCopy.parametri != null && attivitaPianificataCopy.parametri.length > 0)) {
+      // utilizzo il campo uuid di Destinatario per identificare i destinatari
+      attivitaPianificataCopy.parametri = attivitaPianificataCopy.parametri.map((parametro) => {
+        parametro.uuid = Utils.uuidv4();
+        return parametro;
+      });
+    }
+    if (!lettura && (attivitaPianificataCopy.parametri != null && attivitaPianificataCopy.parametri.length > 0)) {
+      // elimino il campo uuid di Destinatario
+      attivitaPianificataCopy.parametri = attivitaPianificataCopy.parametri.map((parametro) => {
+        delete parametro.uuid;
+        return parametro;
+      });
+    }
+    return attivitaPianificataCopy;
   }
 
-  private inserimentoStatistica(statistica: Statistica) {
-    this.statisticaService.inserimentoStatistica(statistica, this.idFunzione).subscribe((statisticaId) =>
-      this.configuraRouterAndNavigate('/aggiungiStatistica/'));
+  private inserimentoAttivitaPianificata(attivitaPianificata: AttivitaPianificata) {
+    this.attivitaPianificataService.inserimentoAttivitaPianificata(attivitaPianificata, this.idFunzione).subscribe((attivitaPianificataId) =>
+      this.configuraRouterAndNavigate('/aggiungiAttivitaPianificata/'));
   }
 
-  private modificaStatistica(statistica: Statistica) {
-    this.statisticaService.modificaStatistica(statistica, this.idFunzione).subscribe((statisticaId) =>
-      this.configuraRouterAndNavigate('/modificaStatistica/' + statisticaId));
+  private modificaAttivitaPianificata(attivitaPianificata: AttivitaPianificata) {
+    this.attivitaPianificataService.modificaAttivitaPianificata(attivitaPianificata, this.idFunzione).subscribe((attivitaPianificataId) =>
+      this.configuraRouterAndNavigate('/modificaAttivitaPianificata/' + attivitaPianificataId));
   }
 
   private configuraRouterAndNavigate(pathFunzione: string) {
@@ -150,63 +162,11 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
     return !this.isFormValid;
   }
 
-  eseguiScaricaFile() {
-    // controllo che nella query non siano presenti parole chiave non consentite
-    const paroleChiaveNonConsentitePresenti = this.controlloParoleChiaveNonConsentite();
-    if (!paroleChiaveNonConsentitePresenti) {
-      this.statisticaService.eseguiQuery(this.datiStatistica.query, this.idFunzione).subscribe((value) => {
-        if (value.errors == null) {
-          if (value && value.length > 0) {
-            this.scaricaFile(value, 'Statistiche');
-          } else if (value && value.length === 0) {
-            // mostro banner di informazione
-            const banner: Banner = {
-              titolo: 'INFORMAZIONE',
-              testo: this.messaggioListaVuota,
-              tipo: getBannerType(LivelloBanner.INFO)
-            };
-            this.bannerService.bannerEvent.emit([banner]);
-          }
-        }
-      });
-    } else {
-      this.showBannerQuery();
-    }
-  }
-
-  private showBannerQuery() {
-    const banner: Banner = {
-      titolo: 'ATTENZIONE',
-      testo: this.messaggioParolaChiavePresente,
-      tipo: getBannerType(LivelloBanner.ERROR)
-    };
-    this.bannerService.bannerEvent.emit([banner]);
-  }
-
-  private controlloParoleChiaveNonConsentite() {
-    let paroleChiaveNonConsentitePresenti = false;
-    const query = this.datiStatistica.query;
-    this.NOT_ALLOWED_KEYWORDS.forEach(parolaChiaveNonConsetita => {
-      if (query.toLowerCase().includes(parolaChiaveNonConsetita.toLowerCase())) {
-        paroleChiaveNonConsentitePresenti = true;
-      }
-    });
-    return paroleChiaveNonConsentitePresenti;
-  }
-
-  scaricaFile(elementi: any[], nomeFile: string) {
-    const headerColonne = [];
-    const fogli = {};
-    fogli[nomeFile] = null;
-    const workbook = {Sheets: fogli, SheetNames: []};
-    Utils.creaFileExcel(elementi, headerColonne, nomeFile, [nomeFile], workbook, nomeFile);
-  }
-
-  letturaStatistica(statisticaId) {
-    this.statisticaService.dettaglioStatistica(statisticaId, this.idFunzione).subscribe((statistica) => {
+  letturaAttivitaPianificata(attivitaPianificataId) {
+    this.attivitaPianificataService.dettaglioAttivitaPianificata(attivitaPianificataId, this.idFunzione).subscribe((attivitaPianificata) => {
       // inizializza dati ente per modifica
-      statistica = this.formattaDati(statistica, true);
-      this.datiStatistica = statistica;
+      attivitaPianificata = this.formattaDati(attivitaPianificata, true);
+      this.datiAttivitaPianificata = attivitaPianificata;
       this.isFormValid = true;
     });
   }

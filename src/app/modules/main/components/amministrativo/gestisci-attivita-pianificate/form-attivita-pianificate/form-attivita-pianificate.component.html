@@ -17,9 +17,9 @@
   </h3>
   <span *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
   <!-- inizio Dati Statistica -->
-  <app-dati-statistica [datiStatistica]="datiStatistica" [idFunzione]="idFunzione" [funzione]="funzione"
-  (isFormValid)="isFormValid = $event">
-  </app-dati-statistica>
+  <app-dati-attivita-pianificate [datiAttivitaPianificata]="datiAttivitaPianificata" [idFunzione]="idFunzione" [funzione]="funzione"
+                                 (isFormValid)="isFormValid = $event">
+  </app-dati-attivita-pianificate>
   <!-- fine Dati Statistica -->
 </div>
 
@@ -32,10 +32,6 @@
   </div>
   <!-- Bottoni dx -->
   <div class="col-10 text-right">
-    <button id="buttonEseguiScaricaFile" class="btn btn-primary esegui"
-            [disabled]="disabilitaBottone()" (click)="eseguiScaricaFile()">
-      Esegui e scarica file
-    </button>
     <button id="buttonSalva" class="btn" [disabled]="disabilitaBottone()" (click)="onClickSalva()">
       Salva
     </button>
