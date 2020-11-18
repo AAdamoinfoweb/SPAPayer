@@ -1,4 +1,6 @@
+import {TipologiaServizio} from './TipologiaServizio';
+
 export class ParametriRicercaTipologiaServizio {
   raggruppamentoId: number = null;
-  codiceTipologia: string = null;
+  tipologia: TipologiaServizio = new TipologiaServizio();
 }

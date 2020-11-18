@@ -10,6 +10,7 @@ import {RaggruppamentoTipologiaServizioService} from '../../../../../../../servi
 import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
 import {Utils} from '../../../../../../../utils/Utils';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
+import {TipologiaServizio} from '../../../../../model/tipologiaServizio/TipologiaServizio';
 
 @Component({
   selector: 'app-filtro-gestione-tipologia-servizio',
@@ -36,8 +37,8 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   @Input()
   filtriIniziali: ParametriRicercaTipologiaServizio;
 
-  listaCodiciTipologia: string[] = [];
-  listaCodiciTipologiaFiltrati: string[] = [];
+  listaTipologie: TipologiaServizio[] = [];
+  listaTipologieFiltrate: TipologiaServizio[] = [];
 
   isTipologiaCreata = false;
 
@@ -67,7 +68,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
       // Va controllato che i valori del filtro in input siano diversi per distinguere dal caso in cui, dopo l'onChange del filtro premendo Crea, arriva un nuovo filtro in input con i valori appena impostati
       if (this.funzione === FunzioneGestioneEnum.AGGIUNGI
         && (sc.filtriIniziali.currentValue.raggruppamentoId !== this.filtriRicerca.raggruppamentoId
-            || sc.filtriIniziali.currentValue.codiceTipologia !== this.filtriRicerca.codiceTipologia)) {
+            || sc.filtriIniziali.currentValue.tipologia?.codice !== this.filtriRicerca.tipologia?.codice)) {
         this.filtriRicerca = this.filtriIniziali;
         this.isTipologiaCreata = false;
       }
@@ -91,22 +92,12 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
 
   selezionaRaggruppamento() {
     // resetto il filtro codice
-    this.filtriRicerca.codiceTipologia = null;
-    this.listaCodiciTipologia = [];
+    this.filtriRicerca.tipologia = new TipologiaServizio();
+    this.listaTipologie = [];
 
     // Nella pagina Form, carico solo i codici tipologia relativi al raggruppamento selezionato
     if (!this.isPaginaGestione() && this.filtriRicerca.raggruppamentoId) {
       this.caricaCodiciTipologia();
-    }
-  }
-
-  selezionaCodice() {
-    if (this.filtriRicerca.codiceTipologia === '') {
-      this.filtriRicerca.codiceTipologia = null;
-    }
-
-    if (this.filtriRicerca.codiceTipologia) {
-      this.filtriRicerca.codiceTipologia = this.filtriRicerca.codiceTipologia.toUpperCase();
     }
   }
 
@@ -123,14 +114,14 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione).subscribe(listaTipologieServizio => {
       if (listaTipologieServizio) {
         Utils.ordinaArrayDiOggetti(listaTipologieServizio, 'codice');
-        this.listaCodiciTipologia = listaTipologieServizio.map(tipologiaServizio => tipologiaServizio.codice);
+        this.listaTipologie = listaTipologieServizio;
       }
     });
   }
 
   filtraCodiciTipologia(event): void {
     const input = event.query;
-    this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia.filter(codice => codice.toLowerCase().startsWith(input.toLowerCase()));
+    this.listaTipologieFiltrate = this.listaTipologie.filter(tipologia => tipologia.codice.toLowerCase().startsWith(input.toLowerCase()));
   }
 
   setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum): string {
@@ -187,7 +178,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   disabilitaBottonePulisci(): boolean {
-    return !this.filtriRicerca.raggruppamentoId && !this.filtriRicerca.codiceTipologia ? true : null;
+    return !this.filtriRicerca.raggruppamentoId && !this.filtriRicerca.tipologia?.codice ? true : null;
   }
 
   disabilitaPulsanteCrea(): boolean {
