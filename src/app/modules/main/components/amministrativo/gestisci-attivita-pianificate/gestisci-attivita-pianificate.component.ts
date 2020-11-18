@@ -205,8 +205,17 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
   }
 
   getNumeroRecord(): string {
-    // TODO stringa composta da numero totale di attività, numero attività attive, numero attività disabilitate
-    return null;
+    const map: Map<string, number> = this.calcolaNumeroAttivitaAttiveDisabilitate();
+    return `Totale: ${this.listaElementi.length} \b Di cui attive: ${map.get('attive')} \b Di cui disabilitate: ${map.get('disabilitate')}`;
+  }
+
+  private calcolaNumeroAttivitaAttiveDisabilitate(): Map<string, number> {
+    const map: Map<string, number> = new Map<string, number>();
+    const attive = this.listaElementi.filter((attivitaPianificata: SintesiAttivitaPianificata) => this.isAttivitaAttiva(attivitaPianificata));
+    const disabilitate = this.listaElementi.filter((attivitaPianificata: SintesiAttivitaPianificata) => !(this.isAttivitaAttiva(attivitaPianificata)));
+    map.set('attive', attive.length);
+    map.set('disabilitate', disabilitate.length);
+    return map;
   }
 
   selezionaRigaTabella(rowsChecked): void {
