@@ -81,6 +81,18 @@ class FiltroUfficio {
   descrizioneUfficio: string = null;
 }
 
+class RendicontazioneGiornaliera {
+  emailEnabled = false;
+  ftpEnabled = false;
+  email: string;
+  emailCcn: string;
+  server: string;
+  username: string;
+  password: string;
+  directory: string;
+
+}
+
 @Component({
   selector: 'app-form-servizio',
   templateUrl: './form-servizio.component.html',
@@ -149,6 +161,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
   private listaDipendeDa: CampoTipologiaServizio[];
+  rendicontazioneGiornaliera: RendicontazioneGiornaliera = new RendicontazioneGiornaliera();
+  rendicontazioneFlussoPA: RendicontazioneGiornaliera = new RendicontazioneGiornaliera();
 
   constructor(private cdr: ChangeDetectorRef,
               private renderer: Renderer2,

@@ -539,7 +539,7 @@
         </button>
       </div>
       <div id="campiServizio" class="collapse show" role="tabpanel" aria-labelledby="idCollapseCampiServizio">
-        <ng-container *ngIf="livelloIntegrazione.id !== LivelloIntegrazioneEnum.LV1">
+        <ng-container *ngIf="livelloIntegrazione.id && livelloIntegrazione.id !== LivelloIntegrazioneEnum.LV1">
           <div class="row">
             <div class="col-12">
               <label class="title">Lista campi tipologia servizio</label>
@@ -585,6 +585,127 @@
             </ng-container>
           </div>
         </ng-container>
+      </div>
+      <div class="collapse-header" id="idCollapseFlussi">
+        <button data-toggle="collapse" data-target="#flussi" aria-expanded="true"
+                aria-controls="flussi">
+          Flussi e notifiche
+        </button>
+      </div>
+      <div id="flussi" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFlussi">
+
+        <div class="collapse-header" id="idCollapseGiornaliera">
+          <button data-toggle="collapse" data-target="#giornaliera" aria-expanded="true"
+                  aria-controls="giornaliera">
+            Invio e rendicontazione giornaliera
+          </button>
+        </div>
+        <div id="giornaliera" class="collapse show" role="tabpanel" aria-labelledby="idCollapseGiornaliera">
+          <div class="row mt-2 mb-0">
+            <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
+              <div class="row">
+                <div class="col">
+                  <label for="emailGiornaliera" class="title">Email</label>
+                </div>
+                <div class="col-2">
+                  <it-toggle id="emailGiornaliera"
+                             [(ngModel)]="rendicontazioneGiornaliera.emailEnabled" name="emailGiornaliera"></it-toggle>
+                </div>
+              </div>
+              <div class="row">
+                <input type="text" autocomplete="off" placeholder="Email" id="emailGiornalieraId"
+                       name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
+                       [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
+                <input type="text" autocomplete="off" placeholder="Ccn" id="emailGiornalieraCcn"
+                       name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.emailCcn"
+                       [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
+              <div class="row">
+                <div class="col">
+                  <label for="ftpGiornaliera" class="title">Ftp</label>
+                </div>
+                <div class="col-2">
+                  <it-toggle id="ftpGiornaliera"
+                             [(ngModel)]="rendicontazioneGiornaliera.ftpEnabled" name="ftpGiornaliera"></it-toggle>
+                </div>
+              </div>
+              <div class="row">
+                <input type="text" autocomplete="off" placeholder="Server" id="server" name="server"
+                       [(ngModel)]="rendicontazioneGiornaliera.server"
+                       [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                <input type="text" autocomplete="off" placeholder="Username" id="username" name="username"
+                       [(ngModel)]="rendicontazioneGiornaliera.username"
+                       [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                <input type="text" autocomplete="off" placeholder="Password" id="password" name="password"
+                       [(ngModel)]="rendicontazioneGiornaliera.password"
+                       [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                <input type="text" autocomplete="off" placeholder="Directory" id="directory" name="directory"
+                       [(ngModel)]="rendicontazioneGiornaliera.directory"
+                       [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="collapse-header" id="idCollapseflussoPA">
+          <button data-toggle="collapse" data-target="#flussoPA" aria-expanded="true"
+                  aria-controls="flussoPA">
+            Invio flusso di riversamento PagoPA
+          </button>
+        </div>
+        <div id="flussoPA" class="collapse show" role="tabpanel" aria-labelledby="idCollapseflussoPA">
+          <div class="row mt-2 mb-0">
+            <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
+              <div class="row">
+                <div class="col">
+                  <label for="emailFlussoPA" class="title">Email</label>
+                </div>
+                <div class="col-2">
+                  <it-toggle id="emailFlussoPA"
+                             [(ngModel)]="rendicontazioneFlussoPA.emailEnabled" name="emailFlussoPA"></it-toggle>
+                </div>
+              </div>
+              <div class="row">
+                <input type="text" autocomplete="off" placeholder="Email" id="emailFlussoPAId"
+                       name="emailFlussoPAId" [(ngModel)]="rendicontazioneFlussoPA.email"
+                       [disabled]="!rendicontazioneFlussoPA.emailEnabled ? true : null">
+                <input type="text" autocomplete="off" placeholder="Ccn" id="emailFlussoPACcn"
+                       name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.emailCcn"
+                       [disabled]="!rendicontazioneFlussoPA.emailEnabled ? true : null">
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
+              <div class="row">
+                <div class="col">
+                  <label for="ftpFlussoPA" class="title">Ftp</label>
+                </div>
+                <div class="col-2">
+                  <it-toggle id="ftpFlussoPA"
+                             [(ngModel)]="rendicontazioneFlussoPA.ftpEnabled" name="ftpFlussoPA"></it-toggle>
+                </div>
+              </div>
+              <div class="row">
+                <input type="text" autocomplete="off" placeholder="Server" id="serverFlussoPA" name="serverFlussoPA"
+                       [(ngModel)]="rendicontazioneFlussoPA.server"
+                       [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                <input type="text" autocomplete="off" placeholder="Username" id="usernameFlussoPA"
+                       name="usernameFlussoPA"
+                       [(ngModel)]="rendicontazioneFlussoPA.username"
+                       [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                <input type="text" autocomplete="off" placeholder="Password" id="passwordFlussoPA"
+                       name="passwordFlussoPA"
+                       [(ngModel)]="rendicontazioneFlussoPA.password"
+                       [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                <input type="text" autocomplete="off" placeholder="Directory" id="directoryFlussoPA"
+                       name="directoryFlussoPA"
+                       [(ngModel)]="rendicontazioneFlussoPA.directory"
+                       [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
