@@ -665,63 +665,64 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   impostaOpzioniSelect(campo: CampoForm): void {
-    const opzioniSelect: Array<OpzioneSelect> = [];
+    campo.opzioni = [];
 
-    let valoriSelect = JSON.parse(localStorage.getItem(campo.tipologica));
+    const valoriTipologica = JSON.parse(localStorage.getItem(campo.tipologica));
 
-    if (valoriSelect) {
+    if (valoriTipologica) {
 
-      // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
+      // Converto i valori in oggetti OpzioneSelect
+      valoriTipologica.forEach(valore => {
+        switch (campo.tipologica) {
+          // Inserire qui logica per l'impostazione delle opzioni di nuove tipologiche di select
+
+          case TipologicaSelectEnum.PROVINCE:
+            campo.opzioni.push({
+              id: valore.codice,
+              value: valore.nome,
+              label: valore.nome
+            });
+            break;
+          case TipologicaSelectEnum.COMUNI:
+            campo.opzioni.push({
+              id: valore.codiceIstat,
+              value: valore.nome,
+              label: valore.nome
+            });
+            break;
+        }
+      });
+
+      // Se la select dipende da un'altra select, filtro le opzioni
       if (campo.dipendeDa) {
         const campoPadre = this.listaCampiDinamici.find(item => item.id === campo.dipendeDa);
         const valoreCampoPadre = this.model[this.getNomeCampoForm(campoPadre)];
+        this.filtraOpzioniSelectDipendente(campo, campoPadre, valoreCampoPadre);
+      }
 
-        // Se il campo da cui si dipende è una select ed è avvalorato, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
-        if (campoPadre.tipoCampo === TipoCampoEnum.SELECT && valoreCampoPadre) {
-          const idSelectPadre = campoPadre.opzioni.find(opzione => opzione.value === valoreCampoPadre)?.id;
-          
-          switch (campo.tipologica) {
-            // Inserire qui logica per i vari campi select dipendenti da altre select
+      // Ordino le opzioni della select
+      Utils.ordinaOpzioniSelect(campo.opzioni);
+    }
+  }
 
-            case TipologicaSelectEnum.COMUNI:
-              // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
-              valoriSelect = valoriSelect.filter(valore => {
-                return valore.codiceIstat?.substring(0, 3) === idSelectPadre;
-              });
-              break;
-          }
-        } else {
-          valoriSelect = [];
-        }
+  filtraOpzioniSelectDipendente(campo: CampoForm, campoPadre: CampoForm, valoreCampoPadre: any) {
+    /*
+        Inserire qui altre regole di dipendenza custom fra le tipologiche.
+        In mancanza di una regola custom, la select dipendente avrà tutte le opzioni se la select padre è selezionata, e nessuna opzione se la select padre NON è selezionata
+     */
+
+    if (campoPadre.tipoCampo === TipoCampoEnum.SELECT && valoreCampoPadre) {
+      if (campo.tipologica === TipologicaSelectEnum.COMUNI && campoPadre.tipologica === TipologicaSelectEnum.PROVINCE) {
+        const idOpzioneSelezionataCampoPadre = campoPadre.opzioni.find(opzione => opzione.value === valoreCampoPadre)?.id;
+        // inserisco nelle opzioni solo i comuni che hanno l'id (codiceIstat) che inizia con le 3 cifre dell'id (codice) della provincia
+        campo.opzioni = campo.opzioni.filter(opzione => opzione.id?.substring(0, 3) === idOpzioneSelezionataCampoPadre);
+      } else {
+        // Le opzioni non vengono filtrate
+        campo.opzioni = campo.opzioni;
       }
     } else {
-      valoriSelect = [];
+      campo.opzioni = [];
     }
-
-    valoriSelect.forEach(valore => {
-      switch (campo.tipologica) {
-        // Inserire qui logica per l'impostazione delle opzioni dei vari tipi di select
-
-        case TipologicaSelectEnum.PROVINCE:
-          opzioniSelect.push({
-            id: valore.codice,
-            value: valore.nome,
-            label: valore.nome
-          });
-          break;
-        case TipologicaSelectEnum.COMUNI:
-          opzioniSelect.push({
-            id: valore.codiceIstat,
-            value: valore.nome,
-            label: valore.nome
-          });
-          break;
-      }
-    });
-
-    Utils.ordinaOpzioniSelect(opzioniSelect);
-
-    campo.opzioni = opzioniSelect;
   }
 
   creaListaBollettini(): Bollettino[] {
