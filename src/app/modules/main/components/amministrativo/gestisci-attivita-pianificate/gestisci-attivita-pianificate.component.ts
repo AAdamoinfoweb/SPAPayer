@@ -15,6 +15,9 @@ import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
 import {Colonna} from '../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import {ParametriRicercaStatistiche} from '../../../model/statistica/ParametriRicercaStatistiche';
+import {SintesiAttivitaPianificata} from '../../../model/attivitapianificata/SintesiAttivitaPianificata';
+import {AttivitaPianificataService} from '../../../../../services/attivita-pianificata.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-gestisci-attivita-pianificate',
@@ -29,7 +32,7 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
 
   breadcrumbList = [];
 
-  listaElementi: Array<any> = new Array<any>();
+  listaElementi: Array<SintesiAttivitaPianificata> = new Array<SintesiAttivitaPianificata>();
   filtriRicerca: ParametriRicercaStatistiche = null;
 
   righeSelezionate: any[];
@@ -61,7 +64,8 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
-              private menuService: MenuService, private confirmationService: ConfirmationService) {
+              private menuService: MenuService, private confirmationService: ConfirmationService,
+              private attivitaPianificataService: AttivitaPianificataService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -85,7 +89,15 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
     this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Gestisci Attività', link: null}
     ]);
+    this.inizializzaFiltriRicerca();
     this.popolaListaElementi();
+  }
+
+  private inizializzaFiltriRicerca() {
+    this.filtriRicerca = new ParametriRicercaStatistiche();
+    this.filtriRicerca.avvioSchedulazione = null;
+    this.filtriRicerca.fineSchedulazione = null;
+    this.filtriRicerca.attiva = null;
   }
 
   ngAfterViewInit(): void {
@@ -94,14 +106,31 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
     }
   }
 
-  creaRigaTabella(oggetto: any) {
-    // TODO logica creazione riga tabella
-    return null;
+  creaRigaTabella(attivitaPianificata: SintesiAttivitaPianificata) {
+    return {
+      id: {value: attivitaPianificata.id},
+      iconaAttivitaAttiveSchedulate: Utils.creaIcona('#it-clock', '#EF8157',
+        'Attiva e schedulata', this.isAttivitaAttiva(attivitaPianificata) ? 'inline' : 'none'),
+      titolo: {value: attivitaPianificata.titolo},
+      descrizione: {value: attivitaPianificata.descrizione},
+      inizio: {value: attivitaPianificata.avvioSchedulazione
+          ? moment(attivitaPianificata.avvioSchedulazione).format(Utils.FORMAT_DATE_CALENDAR) : null},
+      fine: {value: attivitaPianificata.fineSchedulazione
+          ? moment(attivitaPianificata.fineSchedulazione).format(Utils.FORMAT_DATE_CALENDAR) : null}
+    };
   }
 
-  getObservableFunzioneRicerca(): Observable<any[]> {
-    // TODO invocare operation di ricercaAttivitaPianificate
-    return null;
+  isAttivitaAttiva(attivitaPianificata: SintesiAttivitaPianificata): boolean {
+    const dataSistema = moment();
+    const momentInzio = attivitaPianificata.avvioSchedulazione
+      ? moment(attivitaPianificata.avvioSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    const momentFine = attivitaPianificata.fineSchedulazione
+      ? moment(attivitaPianificata.fineSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    return attivitaPianificata.abilitato && momentInzio.isSameOrBefore(dataSistema) && momentFine.isSameOrAfter(dataSistema);
+  }
+
+  getObservableFunzioneRicerca(): Observable<SintesiAttivitaPianificata[]> {
+    return this.attivitaPianificataService.ricercaAttivitaPianificate(this.filtriRicerca, this.idFunzione);
   }
 
   callbackPopolaLista() {}
