@@ -52,7 +52,7 @@
               <p-autoComplete id="inputCodice" class="pt-0" name="codice"
                               #filtroCodice = "ngModel" [(ngModel)]="filtriRicerca.tipologia"
                               [suggestions]="listaTipologieFiltrate" field="codice" (completeMethod)="filtraCodiciTipologia($event)"
-                              [minLength]="minCharsRecuperoValoriAutocomplete" delay="0" autoHighlight="true"
+                              delay="0" autoHighlight="true"
                               [disabled]="disabilitaFiltroCodice()"
                               placeholder="Non selezionato"
               >

@@ -22,8 +22,6 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaTipologiaServizio> = new EventEmitter<ParametriRicercaTipologiaServizio>();
 
-  minCharsRecuperoValoriAutocomplete = 1;
-
   TipoCampoEnum = TipoCampoEnum;
 
   @Input()
@@ -94,6 +92,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     // resetto il filtro codice
     this.filtriRicerca.tipologia = new TipologiaServizio();
     this.listaTipologie = [];
+    this.listaTipologieFiltrate = [];
 
     // Nella pagina Form, carico solo i codici tipologia relativi al raggruppamento selezionato
     if (!this.isPaginaGestione() && this.filtriRicerca.raggruppamentoId) {
