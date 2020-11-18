@@ -13,6 +13,7 @@ export class ConfiguraServizioService {
 
   private readonly configuraServiziBasePath = '/configuraServizi';
   private filtroRaggruppamentoUrl = '/filtroRaggruppamento';
+  private filtroUfficioUrl = '/filtroUfficio';
 
   constructor(private http: HttpClient) {
   }
@@ -102,4 +103,27 @@ export class ConfiguraServizioService {
         }));
   }
 
+  configuraServiziFiltroUfficio(value: number, idFunzione: string) {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    let params = new HttpParams();
+    params = params.set('enteId', String(value));
+
+    return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.filtroUfficioUrl, {
+      params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as RaggruppamentoTipologiaServizio[];
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
 }

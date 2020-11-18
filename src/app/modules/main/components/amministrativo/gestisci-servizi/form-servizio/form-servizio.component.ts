@@ -20,7 +20,7 @@ import {CampoTipologiaServizioService} from '../../../../../../services/campo-ti
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {ParametriRicercaServizio} from '../../../../model/servizio/ParametriRicercaServizio';
 import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
-import {NgForm, NgModel} from '@angular/forms';
+import {NgForm, NgModel, Validators} from '@angular/forms';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
 import {map} from 'rxjs/operators';
@@ -65,11 +65,20 @@ export class BeneficiarioServizio {
   societaId: number = null;
   enteId: number = null;
   livelloTerritorialeId: number = null;
+  ufficio: FiltroUfficio;
 }
 
 export class FiltroConfiguraServizi {
   id: number = null;
   nome: string = null;
+}
+
+class FiltroUfficio {
+  enteId: number = null;
+  codiceEnte: string = null;
+  tipoUfficio: string = null;
+  codiceUfficio: string = null;
+  descrizioneUfficio: string = null;
 }
 
 @Component({
@@ -105,6 +114,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   listaLivelloTerritoriale: FiltroConfiguraServizi[] = [];
   listaEnti: FiltroConfiguraServizi[] = [];
   listaEntiBenef: FiltroConfiguraServizi[] = [];
+  listaUfficio: FiltroUfficio[] = [];
 
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   filtri: ParametriRicercaServizio;
@@ -134,8 +144,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   mapContoCorrente: Map<number, ContoCorrente> = new Map<number, ContoCorrente>();
   mapControllo: Map<number, boolean> = new Map<number, boolean>();
   getListaContiCorrente = (mapContoCorrente: Map<number, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
-  getListaControllo = (mapControllo: Map<number, boolean>) => Array.from(mapControllo, ([name, value]) => value);
-
+  getListaControllo = (mapControllo: Map<number, boolean>) => Array.from(mapControllo, ([name, value]) => value);ì
 
   constructor(private cdr: ChangeDetectorRef,
               private configuraServizioService: ConfiguraServizioService,
@@ -276,7 +285,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onChangeEnte(enteInput: NgModel) {
-
+    return this.configuraServizioService.configuraServiziFiltroUfficio(enteInput.value, this.idFunzione)
+      .pipe(map((value) => this.listaUfficio = value)).subscribe();
   }
 
   showModal(item: CampoTipologiaServizio) {
@@ -369,5 +379,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
     this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
     //this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm()));
+  }
+
+  changeUrlWsValidator(url: string) {
+    const reg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+    Validators.pattern(reg).apply(url);
   }
 }
