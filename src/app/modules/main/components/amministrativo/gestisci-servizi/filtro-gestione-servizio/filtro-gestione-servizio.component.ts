@@ -107,6 +107,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   caricaCodiciTipologia(): void {
+    // todo caricare in modo condizionale dal controller di Servizio o TipologiaServizio a seconda che sia la pagina Gestione o Form
     this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione).subscribe(listaTipologieServizio => {
       if (listaTipologieServizio) {
         Utils.ordinaArrayDiOggetti(listaTipologieServizio, 'codice');
