@@ -146,6 +146,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   getListaContiCorrente = (mapContoCorrente: Map<number, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
   getListaControllo = (mapControllo: Map<number, boolean>) => Array.from(mapControllo, ([name, value]) => value);ì
 
+  private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
+  private listaDipendeDa: CampoTipologiaServizio[];
+
   constructor(private cdr: ChangeDetectorRef,
               private configuraServizioService: ConfiguraServizioService,
               private componentFactoryResolver: ComponentFactoryResolver,
@@ -166,6 +169,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
+    this.refreshItemsEvent.subscribe((items) => {
+      this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
+    });
     this.societaService.ricercaSocieta(null, this.idFunzione)
       .pipe(map((value: Societa[]) => this.listaSocieta = value)).subscribe();
 
@@ -207,7 +213,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           });
         }
 
-        // this.refreshItemsEvent.emit(this.items);
+        this.refreshItemsEvent.emit(this.campoTipologiaServizioList);
       }));
   }
 
@@ -242,7 +248,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   onChangeFiltri(event: ParametriRicercaServizio) {
     this.filtri = event;
-    this.aggiungiContoCorrente();
+    // this.aggiungiContoCorrente();
     this.caricaCampi(event.tipologiaServizio.id).subscribe();
   }
 
@@ -291,7 +297,12 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   showModal(item: CampoTipologiaServizio) {
-
+    this.overlayService.mostraModaleDettaglioEvent.emit({
+      campoForm: _.cloneDeep(item),
+      funzione: this.funzione,
+      livelloIntegrazione: this.livelloIntegrazione,
+      listaDipendeDa: this.listaDipendeDa
+    });
   }
 
   removeItem(item: CampoTipologiaServizio) {
@@ -329,13 +340,15 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       return "";
   }
 
-  dropEvt($event: CdkDragDrop<{ item: CampoTipologiaServizio; index: number }, any>) {
-
+  dropEvt(event: CdkDragDrop<{ item: CampoTipologiaServizio; index: number }, any>) {
+    this.campoTipologiaServizioList[event.previousContainer.data.index] = event.container.data.item;
+    this.campoTipologiaServizioList[event.container.data.index] = event.previousContainer.data.item;
   }
 
   add() {
-
-
+    const campoForm = new CampoTipologiaServizio();
+    this.refreshItemsEvent.emit(this.campoTipologiaServizioList);
+    this.showModal(campoForm);
   }
 
   aggiungiContoCorrente(datiContoCorrente?: ContoCorrente): number {
