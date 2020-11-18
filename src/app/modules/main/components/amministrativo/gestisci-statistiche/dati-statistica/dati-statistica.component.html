@@ -135,7 +135,7 @@
         <div id="destinatari" *ngFor="let destinatario of datiStatistica.destinatari, index as index">
           <div class="row">
             <div class="col-10">
-              <input type="text" id="{{'destinatario' + index}}" name="{{'destinatario' + index}}"
+              <input type="text" id="{{'destinatario' + destinatario.uuid}}" name="{{'destinatario' + destinatario.uuid}}"
                      class="pt-0" autocomplete="off" aria-describedby="destinatarioHelpDescription"
                      [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                      [(ngModel)]="destinatario.email"

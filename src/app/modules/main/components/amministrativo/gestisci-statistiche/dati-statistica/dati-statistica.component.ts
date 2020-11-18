@@ -55,6 +55,7 @@ export class DatiStatisticaComponent implements OnInit {
   aggiungiDestinatario(form: NgForm) {
     const destinatario: Destinatario = new Destinatario();
     destinatario.email = null;
+    destinatario.uuid = Utils.uuidv4();
     this.datiStatistica.destinatari.push(destinatario);
     this.onChangeModel(form);
   }
