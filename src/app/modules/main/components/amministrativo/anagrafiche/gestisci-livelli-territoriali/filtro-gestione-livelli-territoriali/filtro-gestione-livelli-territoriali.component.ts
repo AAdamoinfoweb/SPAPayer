@@ -47,7 +47,7 @@ export class FiltroGestioneLivelliTerritorialiComponent extends FiltroGestioneEl
         label: livelloTerritoriale.nome
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroLivelliTerritoriali);
+    Utils.ordinaArrayDiOggetti(this.opzioniFiltroLivelliTerritoriali, 'label');
   }
 
   isCampoInvalido(campo: NgModel) {

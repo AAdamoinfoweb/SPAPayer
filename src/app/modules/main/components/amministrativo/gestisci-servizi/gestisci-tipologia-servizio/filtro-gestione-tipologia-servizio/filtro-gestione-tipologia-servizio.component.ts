@@ -84,7 +84,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
             label: raggruppamento.descrizione
           });
         });
-        Utils.ordinaOpzioniSelect(this.opzioniRaggruppamento);
+        Utils.ordinaArrayDiOggetti(this.opzioniRaggruppamento, 'label');
       }
     });
   }

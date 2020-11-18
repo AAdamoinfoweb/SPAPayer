@@ -45,7 +45,7 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
         label: societa.nome
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroSocieta);
+    Utils.ordinaArrayDiOggetti(this.opzioniFiltroSocieta, 'label');
   }
 
   isCampoInvalido(campo: NgModel) {

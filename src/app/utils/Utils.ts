@@ -64,16 +64,19 @@ export class Utils {
     return {path, color, tooltip, display};
   }
 
-  static ordinaOpzioniSelect(opzioni: OpzioneSelect[]) {
-    opzioni.sort((opzione1, opzione2) => {
-      if (opzione1.label > opzione2.label) {
-        return 1;
-      } else if (opzione1.label < opzione2.label) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+  // L'ordinamento avviene inplace (l'array in input viene modificato)
+  static ordinaArrayDiOggetti(array: any[], attributoSuCuiOrdinare: string, isOrdinamentoCrescente: boolean = true): void {
+    if (array) {
+      array.sort((item1, item2) => {
+        if (item1[attributoSuCuiOrdinare] > item2[attributoSuCuiOrdinare]) {
+          return isOrdinamentoCrescente ? 1 : -1;
+        } else if (item1[attributoSuCuiOrdinare] < item2[attributoSuCuiOrdinare]) {
+          return isOrdinamentoCrescente ? -1 : 1;
+        } else {
+          return 0;
+        }
+      });
+    }
   }
 
   static getModale(confermaFn, tipoModale: TipoModaleEnum, titolo?, messaggio?) {

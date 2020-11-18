@@ -78,7 +78,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
         });
       });
 
-      Utils.ordinaOpzioniSelect(this.listaSocieta);
+      Utils.ordinaArrayDiOggetti(this.listaSocieta, 'label');
 
       if (this.filtroSocieta) {
         const isFiltroSocietaValido = this.listaSocieta.some(item => item.value === this.filtroSocieta);
@@ -102,7 +102,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: livello.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaLivelliTerritoriali);
+      Utils.ordinaArrayDiOggetti(this.listaLivelliTerritoriali, 'label');
     })).subscribe();
   }
 
@@ -121,7 +121,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: ente.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaEnti);
+      Utils.ordinaArrayDiOggetti(this.listaEnti, 'label');
     })).subscribe();
   }
 
@@ -140,7 +140,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: servizio.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaServizi);
+      Utils.ordinaArrayDiOggetti(this.listaServizi, 'label');
     })).subscribe();
   }
 
@@ -152,7 +152,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: funzione.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaFunzioniAbilitate);
+      Utils.ordinaArrayDiOggetti(this.listaFunzioniAbilitate, 'label');
     })).subscribe();
   }
 
