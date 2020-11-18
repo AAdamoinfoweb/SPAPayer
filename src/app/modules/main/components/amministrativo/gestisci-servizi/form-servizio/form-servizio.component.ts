@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver, ComponentRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output, ViewChild, ViewContainerRef
+} from '@angular/core';
 import {FormElementoParentComponent} from '../../form-elemento-parent.component';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
@@ -11,7 +20,7 @@ import {CampoTipologiaServizioService} from '../../../../../../services/campo-ti
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {ParametriRicercaServizio} from '../../../../model/servizio/ParametriRicercaServizio';
 import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
-import {NgModel} from '@angular/forms';
+import {NgForm, NgModel} from '@angular/forms';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
 import {map} from 'rxjs/operators';
@@ -26,6 +35,11 @@ import * as _ from 'lodash';
 import {CdkDragDrop} from "@angular/cdk/drag-drop";
 import {TipoCampoEnum} from "../../../../../../enums/tipoCampo.enum";
 import {ConfiguratoreCampiNuovoPagamento} from "../../../../model/campo/ConfiguratoreCampiNuovoPagamento";
+import {ContoCorrente} from "../../../../model/ente/ContoCorrente";
+import {DatiContoCorrenteComponent} from "../../anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
+import {ContoCorrenteSingolo} from "../../../../model/ente/ContoCorrenteSingolo";
+import {Beneficiario} from "../../../../model/ente/Beneficiario";
+import {BeneficiarioSingolo} from "../../../../model/ente/BeneficiarioSingolo";
 
 export class LivelloIntegrazioneServizio {
   id: number = null;
@@ -95,8 +109,30 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   campoTipologiaServizioList: CampoTipologiaServizio[];
   private tipoCampoIdSelect: number;
 
+  testoTooltipIconaElimina = 'Elimina dati beneficiario';
+
+  @Input() indexDatiBeneficiario: number;
+  @Input() datiBeneficiario: Beneficiario;
+  @Input() listaContiCorrente: ContoCorrente[];
+  @Output()
+  onChangeDatiBeneficiario: EventEmitter<BeneficiarioSingolo> = new EventEmitter<BeneficiarioSingolo>();
+  @Output()
+  onDeleteDatiBeneficiario: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('datiContoCorrente', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
+  private componentRef: ComponentRef<any>;
+
+  @ViewChild('datiBeneficiarioForm', {static: false, read: NgForm})
+  formDatiBeneficiario: NgForm;
+
+  mapContoCorrente: Map<number, ContoCorrente> = new Map<number, ContoCorrente>();
+  mapControllo: Map<number, boolean> = new Map<number, boolean>();
+  getListaContiCorrente = (mapContoCorrente: Map<number, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
+  getListaControllo = (mapControllo: Map<number, boolean>) => Array.from(mapControllo, ([name, value]) => value);
+
 
   constructor(private cdr: ChangeDetectorRef,
+              private componentFactoryResolver: ComponentFactoryResolver,
               private overlayService: OverlayService,
               private societaService: SocietaService,
               private enteService: EnteService,
@@ -276,5 +312,49 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   add() {
 
 
+  }
+
+  aggiungiContoCorrente(datiContoCorrente?: ContoCorrente): number {
+    // creazione Dati Conto Corrente Component
+    const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiContoCorrenteComponent);
+    this.componentRef = this.target.createComponent(childComponent);
+    const indexContoCorrente = this.target.length;
+    // input
+    this.componentRef.instance.indexDatiContoCorrente = indexContoCorrente;
+    this.componentRef.instance.funzione = this.funzione;
+    let instanceContoCorrente: ContoCorrente;
+    if (datiContoCorrente == null) {
+      instanceContoCorrente = new ContoCorrente();
+    } else {
+      instanceContoCorrente = datiContoCorrente;
+    }
+    this.componentRef.instance.datiContoCorrente = instanceContoCorrente;
+    if (this.listaContiCorrente != null && FunzioneGestioneEnum.MODIFICA) {
+      this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
+    }
+    // output
+    this.componentRef.instance.onDeleteDatiContoCorrente.subscribe(index => {
+      const contoCorrente = this.mapContoCorrente.get(index);
+      const isContoCorrenteDaModificare: boolean = contoCorrente != null;
+      if (isContoCorrenteDaModificare) {
+        this.mapContoCorrente.delete(index);
+        this.mapControllo.delete(index);
+      }
+      this.target.remove(index - 1);
+      this.setListaContiCorrente();
+    });
+    this.componentRef.instance.onChangeDatiContoCorrente.subscribe((currentContoCorrente: ContoCorrenteSingolo) => {
+      this.mapContoCorrente.set(currentContoCorrente.index, currentContoCorrente.contoCorrente);
+      this.mapControllo.set(currentContoCorrente.index, currentContoCorrente.isFormValid);
+      this.setListaContiCorrente();
+    });
+    this.componentRef.changeDetectorRef.detectChanges();
+    return indexContoCorrente;
+  }
+
+  private setListaContiCorrente() {
+    const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
+    this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
+    //this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm()));
   }
 }

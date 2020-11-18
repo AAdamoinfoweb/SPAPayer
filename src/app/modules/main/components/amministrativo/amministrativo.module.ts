@@ -55,100 +55,20 @@ import {FormEnteComponent} from './anagrafiche/gestisci-enti/form-ente/form-ente
 import {DatiRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import {FormTipologiaServizioComponent} from './gestisci-servizi/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component';
-import {DatiBeneficiarioComponent} from "./anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component";
-import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
-import {DragDropModule} from "@angular/cdk/drag-drop";
-import { GestisciTipologiaServizioComponent } from './gestisci-servizi/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
-import { FiltroGestioneTipologiaServizioComponent } from './gestisci-servizi/gestisci-tipologia-servizio/filtro-gestione-tipologia-servizio/filtro-gestione-tipologia-servizio.component';
-import { ModaleCampoFormComponent } from './gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
-import { ModaleAggiungiTipoCampoComponent } from './gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
-import { FormServizioComponent } from './gestisci-servizi/form-servizio/form-servizio.component';
-import { FiltroGestioneServizioComponent } from './gestisci-servizi/filtro-gestione-servizio/filtro-gestione-servizio.component';
-import {DialogModule} from "primeng/dialog";
+import {DatiBeneficiarioComponent} from './anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component';
+import {DatiContoCorrenteComponent} from './anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {GestisciTipologiaServizioComponent} from './gestisci-servizi/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
+import {FiltroGestioneTipologiaServizioComponent} from './gestisci-servizi/gestisci-tipologia-servizio/filtro-gestione-tipologia-servizio/filtro-gestione-tipologia-servizio.component';
+import {ModaleCampoFormComponent} from './gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
+import {ModaleAggiungiTipoCampoComponent} from './gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
+import {FormServizioComponent} from './gestisci-servizi/form-servizio/form-servizio.component';
+import {FiltroGestioneServizioComponent} from './gestisci-servizi/filtro-gestione-servizio/filtro-gestione-servizio.component';
+import {DialogModule} from 'primeng/dialog';
 
 
 @NgModule({
-    declarations: [
-        FormUtentePermessiComponent,
-        GestisciUtentiComponent,
-
-        FiltroGestioneUtentiComponent,
-        DatiUtenteComponent,
-        DatiPermessoComponent,
-        AmministrativoParentComponent,
-        GestisciSocietaComponent,
-        FiltroGestioneSocietaComponent,
-        GestisciLivelliTerritorialiComponent,
-        FiltroGestioneLivelliTerritorialiComponent,
-        GestisciBannerComponent,
-        FiltroGestioneBannerComponent,
-        DatiBannerComponent,
-        FormBannerComponent,
-        GestisciEntiComponent,
-        MonitoraAccessiComponent,
-        FiltroMonitoraggioAccessiComponent,
-        RaggruppamentoTipologieComponent,
-        FiltroRaggruppamentoTipologieComponent,
-        FormSocietaComponent,
-        DatiSocietaComponent,
-        DatiLivelloTerritorialeComponent,
-        FormLivelloTerritorialeComponent,
-        DatiSocietaComponent,
-        FiltroGestioneEntiComponent,
-        DettaglioAccessoComponent,
-        DatiAccessoComponent,
-        DatiEnteComponent,
-        FormEnteComponent,
-        DatiRaggruppamentoTipologieComponent,
-        FormRaggruppamentoTipologieComponent,
-        FormTipologiaServizioComponent,
-        DatiBeneficiarioComponent,
-        DatiContoCorrenteComponent,
-        GestisciTipologiaServizioComponent,
-        FiltroGestioneTipologiaServizioComponent,
-        ModaleCampoFormComponent,
-        ModaleAggiungiTipoCampoComponent,
-        FormServizioComponent,
-        FiltroGestioneServizioComponent
-    ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        AppRoutingModule,
-        NgbModule,
-        FormsModule,
-        DesignAngularKitModule,
-        ReactiveFormsModule,
-        UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
-        DpDatePickerModule,
-        NgxDatatableModule,
-        AccordionModule,
-        TableModule,
-        ButtonModule,
-        BrowserAnimationsModule,
-        TabViewModule,
-        ToolbarModule,
-        DpDatePickerModule,
-        NgxCurrencyModule,
-        CustomFormsModule,
-        ConfirmDialogModule,
-        BrowserAnimationsModule,
-        CustomFormsModule,
-        AutoCompleteModule,
-        TreeTableModule,
-        CKEditorModule,
-        PipeModule,
-        CommonComponentModule,
-        DragDropModule
-    ],
-    providers: [
-        ConfirmationService
-    ],
-    exports: [
-        ModaleCampoFormComponent,
-        ModaleAggiungiTipoCampoComponent
-    ],
-    schemas: [NO_ERRORS_SCHEMA]
+  declarations: [
     FiltroGestioneUtentiComponent,
     DatiUtenteComponent,
     DatiPermessoComponent,
@@ -178,9 +98,50 @@ import {DialogModule} from "primeng/dialog";
     FormEnteComponent,
     DatiRaggruppamentoTipologieComponent,
     FormRaggruppamentoTipologieComponent,
-    GestisciCampoTipologiaServizioComponent,
     DatiBeneficiarioComponent,
-    DatiContoCorrenteComponent
+    DatiContoCorrenteComponent,
+
+    FormUtentePermessiComponent,
+    GestisciUtentiComponent,
+
+    FiltroGestioneUtentiComponent,
+    DatiUtenteComponent,
+    DatiPermessoComponent,
+    AmministrativoParentComponent,
+    GestisciSocietaComponent,
+    FiltroGestioneSocietaComponent,
+    GestisciLivelliTerritorialiComponent,
+    FiltroGestioneLivelliTerritorialiComponent,
+    GestisciBannerComponent,
+    FiltroGestioneBannerComponent,
+    DatiBannerComponent,
+    FormBannerComponent,
+    GestisciEntiComponent,
+    MonitoraAccessiComponent,
+    FiltroMonitoraggioAccessiComponent,
+    RaggruppamentoTipologieComponent,
+    FiltroRaggruppamentoTipologieComponent,
+    FormSocietaComponent,
+    DatiSocietaComponent,
+    DatiLivelloTerritorialeComponent,
+    FormLivelloTerritorialeComponent,
+    DatiSocietaComponent,
+    FiltroGestioneEntiComponent,
+    DettaglioAccessoComponent,
+    DatiAccessoComponent,
+    DatiEnteComponent,
+    FormEnteComponent,
+    DatiRaggruppamentoTipologieComponent,
+    FormRaggruppamentoTipologieComponent,
+    FormTipologiaServizioComponent,
+    DatiBeneficiarioComponent,
+    DatiContoCorrenteComponent,
+    GestisciTipologiaServizioComponent,
+    FiltroGestioneTipologiaServizioComponent,
+    ModaleCampoFormComponent,
+    ModaleAggiungiTipoCampoComponent,
+    FormServizioComponent,
+    FiltroGestioneServizioComponent
   ],
   imports: [
     HttpClientModule,
@@ -210,10 +171,42 @@ import {DialogModule} from "primeng/dialog";
     CKEditorModule,
     PipeModule,
     CommonComponentModule,
-    DialogModule
+    DialogModule,
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    FormsModule,
+    DesignAngularKitModule,
+    ReactiveFormsModule,
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
+    DpDatePickerModule,
+    NgxDatatableModule,
+    AccordionModule,
+    TableModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    TabViewModule,
+    ToolbarModule,
+    DpDatePickerModule,
+    NgxCurrencyModule,
+    CustomFormsModule,
+    ConfirmDialogModule,
+    BrowserAnimationsModule,
+    CustomFormsModule,
+    AutoCompleteModule,
+    TreeTableModule,
+    CKEditorModule,
+    PipeModule,
+    CommonComponentModule,
+    DragDropModule
   ],
   providers: [
     ConfirmationService
+  ],
+  exports: [
+    ModaleCampoFormComponent,
+    ModaleAggiungiTipoCampoComponent
   ],
   schemas: [NO_ERRORS_SCHEMA]
 })

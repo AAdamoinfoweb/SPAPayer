@@ -472,6 +472,28 @@
         </div>
       </div>
 
+      <div class="collapse-header" id="idCollapseDatiBonifico">
+        <button data-toggle="collapse" data-target="#datiBonifico" aria-expanded="true"
+                aria-controls="datiBonifico">
+          Dati Bonifico
+        </button>
+      </div>
+      <div id="datiBonifico" class="collapse show" role="tabpanel" aria-labelledby="idCollapseDatiBonifico">
+
+        <div class="row">
+          <div #datiContoCorrente></div>
+        </div>
+      <div class="row">
+        <div class="col text-right">
+          <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiContoCorrente"
+                  class="btn btn-secondary"
+                 (click)="aggiungiContoCorrente()">
+            Aggiungi conto corrente
+          </button>
+        </div>
+      </div>
+      </div>
+
       <div class="collapse-header" id="idCollapseCampiServizio">
         <button data-toggle="collapse" data-target="#campiServizio" aria-expanded="true"
                 aria-controls="campiServizio">
