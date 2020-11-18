@@ -1,6 +1,13 @@
+.modal-wrapper {
+  height: 100%;
+}
+
 .page-section {
   margin: 3vh 3vw;
-  
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .dynamic-form-elem {
