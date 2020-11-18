@@ -264,7 +264,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
     this.filtro = filtri;
 
-    if (this.filtro.codiceTipologia) {
+    if (this.filtro.tipologia?.codice) {
       this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtro, this.idFunzione).subscribe(listaTipologie => {
         // Con una ricerca di raggruppamento+codice, arriva una sola tipologia, che sarà usata per precaricarne e copiarne i campi
         if (listaTipologie && listaTipologie.length) {

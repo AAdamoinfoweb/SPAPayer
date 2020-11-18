@@ -50,8 +50,8 @@
           <div class="row">
             <div class="col">
               <p-autoComplete id="inputCodice" class="pt-0" name="codice"
-                              #filtroCodice = "ngModel" [(ngModel)]="filtriRicerca.codiceTipologia" (ngModelChange)="selezionaCodice()"
-                              [suggestions]="listaCodiciTipologiaFiltrati" (completeMethod)="filtraCodiciTipologia($event)"
+                              #filtroCodice = "ngModel" [(ngModel)]="filtriRicerca.tipologia"
+                              [suggestions]="listaTipologieFiltrate" field="codice" (completeMethod)="filtraCodiciTipologia($event)"
                               [minLength]="minCharsRecuperoValoriAutocomplete" delay="0" autoHighlight="true"
                               [disabled]="disabilitaFiltroCodice()"
                               placeholder="Non selezionato"

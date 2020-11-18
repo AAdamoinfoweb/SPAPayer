@@ -53,8 +53,8 @@ export class CampoTipologiaServizioService {
       if (filtri.raggruppamentoId) {
         params = params.set('raggruppamentoId', String(filtri.raggruppamentoId));
       }
-      if (filtri.codiceTipologia) {
-        params = params.set('codiceTipologia', filtri.codiceTipologia);
+      if (filtri.tipologia?.codice) {
+        params = params.set('codiceTipologia', filtri.tipologia.codice);
       }
     }
 
