@@ -161,7 +161,14 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       if (!isPermessoDaModificare) {
         this.mapPermessi.delete(index);
       }
-      this.target.remove(index - 1);
+      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
+      const zeroBasedIndex = index - 1;
+      const viewRef = this.target.get(zeroBasedIndex);
+      if (viewRef == null && this.target.length === 1) {
+        this.target.clear();
+      } else {
+        this.target.remove(zeroBasedIndex);
+      }
     });
     this.componentRef.instance.onChangeDatiPermesso.subscribe((currentPermesso: PermessoSingolo) => {
       if (this.mapPermessi.has(currentPermesso.index)) {

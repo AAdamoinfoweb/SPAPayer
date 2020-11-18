@@ -125,10 +125,11 @@ export class DatiAttivitaPianificateComponent implements OnInit, AfterViewInit {
         this.mapParametri.delete(currentIndex);
         this.mapControllo.delete(currentIndex);
       }
+
+      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
       const zeroBasedIndex = currentIndex - 1;
-      // controllo se esiste un view ref, se esiste uso remove altrimenti clear
       const viewRef = this.target.get(zeroBasedIndex);
-      if (viewRef == null) {
+      if (viewRef == null && this.target.length === 1) {
         this.target.clear();
       } else {
         this.target.remove(zeroBasedIndex);

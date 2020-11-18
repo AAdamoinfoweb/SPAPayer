@@ -139,7 +139,14 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
         this.mapContoCorrente.delete(index);
         this.mapControllo.delete(index);
       }
-      this.target.remove(index - 1);
+      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
+      const zeroBasedIndex = index - 1;
+      const viewRef = this.target.get(zeroBasedIndex);
+      if (viewRef == null && this.target.length === 1) {
+        this.target.clear();
+      } else {
+        this.target.remove(zeroBasedIndex);
+      }
       this.setListaContiCorrente();
     });
     this.componentRef.instance.onChangeDatiContoCorrente.subscribe((currentContoCorrente: ContoCorrenteSingolo) => {

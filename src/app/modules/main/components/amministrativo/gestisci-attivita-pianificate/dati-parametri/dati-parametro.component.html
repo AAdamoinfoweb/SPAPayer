@@ -32,7 +32,7 @@
             </div>
           </div>
         </div>
-        <div class="col-2 align-self-center" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO || index !== 0">
+        <div class="col-2 align-self-center" *ngIf="(funzione !== FunzioneGestioneEnum.DETTAGLIO) && (index !== 1)">
               <span ngbTooltip="Elimina parametro" placement="bottom" [ngStyle]="{fill: '#403d39'}">
             <svg class="bg-light icon icon-sm filled"
                  (click)="onClickDeleteIcon()">

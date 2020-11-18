@@ -69,7 +69,7 @@ export class AttivitaPianificataService {
     }));
   }
 
-  inserimentoAttivitaPianificate(attivitaPianificata: AttivitaPianificata, idFunzione: string): Observable<number> {
+  inserimentoAttivitaPianificata(attivitaPianificata: AttivitaPianificata, idFunzione: string): Observable<number> {
     const url = environment.bffBaseUrl + this.attivitaPianificataBaseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
