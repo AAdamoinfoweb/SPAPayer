@@ -122,11 +122,11 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
 
   isAttivitaAttiva(attivitaPianificata: SintesiAttivitaPianificata): boolean {
     const dataSistema = moment();
-    const momentInzio = attivitaPianificata.avvioSchedulazione
+    const momentInizio = attivitaPianificata.avvioSchedulazione
       ? moment(attivitaPianificata.avvioSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
     const momentFine = attivitaPianificata.fineSchedulazione
       ? moment(attivitaPianificata.fineSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
-    return attivitaPianificata.abilitato && momentInzio.isSameOrBefore(dataSistema) && momentFine.isSameOrAfter(dataSistema);
+    return attivitaPianificata.abilitato && momentInizio.isSameOrBefore(dataSistema) && momentFine.isSameOrAfter(dataSistema);
   }
 
   getObservableFunzioneRicerca(): Observable<SintesiAttivitaPianificata[]> {
