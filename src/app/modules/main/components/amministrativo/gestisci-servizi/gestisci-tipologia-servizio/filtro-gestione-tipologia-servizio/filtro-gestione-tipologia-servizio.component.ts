@@ -37,6 +37,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   filtriIniziali: ParametriRicercaTipologiaServizio;
 
   listaCodiciTipologia: string[] = [];
+  listaCodiciTipologiaFiltrati: string[] = [];
 
   isTipologiaCreata = false;
 
@@ -50,6 +51,9 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
 
   ngOnInit(): void {
     this.inizializzaOpzioniRaggruppamento();
+    if (this.isPaginaGestione()) {
+      this.caricaCodiciTipologia();
+    }
   }
 
   ngOnChanges(sc: SimpleChanges) {
@@ -74,8 +78,14 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   selezionaRaggruppamento() {
+    // resetto il filtro codice
     this.filtriRicerca.codiceTipologia = null;
     this.listaCodiciTipologia = [];
+
+    // Nella pagina Form, carico solo i codici tipologia relativi al raggruppamento selezionato
+    if (!this.isPaginaGestione() && this.filtriRicerca.raggruppamentoId) {
+      this.caricaCodiciTipologia();
+    }
   }
 
   selezionaCodice() {
@@ -97,25 +107,17 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
 
-  caricaCodiciTipologia(event): void {
-    const input = event.query;
-
-    if (input.length < this.minCharsRecuperoValoriAutocomplete) {
-      this.listaCodiciTipologia = [];
-    } else if (input.length === this.minCharsRecuperoValoriAutocomplete) {
-      let filtro = null;
-      if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
-        filtro = new ParametriRicercaTipologiaServizio();
-        filtro.raggruppamento = this.filtriRicerca.raggruppamentoId;
+  caricaCodiciTipologia(): void {
+    this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione).subscribe(listaTipologieServizio => {
+      if (listaTipologieServizio) {
+        this.listaCodiciTipologia = listaTipologieServizio.map(tipologiaServizio => tipologiaServizio.codice);
       }
-      this.campoTipologiaServizioService.recuperaTipologieServizio(filtro, this.idFunzione).subscribe(listaTipologieServizio => {
-        if (listaTipologieServizio) {
-          this.listaCodiciTipologia = listaTipologieServizio.map(tipologiaServizio => tipologiaServizio.codice);
-        }
-      });
-    } else {
-      this.listaCodiciTipologia = this.listaCodiciTipologia.filter(codice => codice.toLowerCase().startsWith(input.toLowerCase()));
-    }
+    });
+  }
+
+  filtraCodiciTipologia(event): void {
+    const input = event.query;
+    this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia.filter(codice => codice.toLowerCase().startsWith(input.toLowerCase()));
   }
 
   setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum): string {
