@@ -6,7 +6,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Output, ViewChild, ViewContainerRef
+  Output, Renderer2, ViewChild, ViewContainerRef
 } from '@angular/core';
 import {FormElementoParentComponent} from '../../form-elemento-parent.component';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
@@ -150,6 +150,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   private listaDipendeDa: CampoTipologiaServizio[];
 
   constructor(private cdr: ChangeDetectorRef,
+              private renderer: Renderer2,
               private configuraServizioService: ConfiguraServizioService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private overlayService: OverlayService,
@@ -355,6 +356,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     // creazione Dati Conto Corrente Component
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiContoCorrenteComponent);
     this.componentRef = this.target.createComponent(childComponent);
+    this.renderer.setStyle(this.componentRef.instance.el.nativeElement, 'width', '100%');
     const indexContoCorrente = this.target.length;
     // input
     this.componentRef.instance.indexDatiContoCorrente = indexContoCorrente;

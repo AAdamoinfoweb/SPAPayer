@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {ContoCorrenteSingolo} from '../../../../../model/ente/ContoCorrenteSingolo';
 import {NgForm, NgModel} from '@angular/forms';
@@ -58,7 +58,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     tipoTabella: tipoTabella.TEMPLATING
   };
 
-  constructor(private enteService: EnteService) {
+  constructor(public el: ElementRef, private enteService: EnteService) {
   }
 
   ngOnInit(): void {
