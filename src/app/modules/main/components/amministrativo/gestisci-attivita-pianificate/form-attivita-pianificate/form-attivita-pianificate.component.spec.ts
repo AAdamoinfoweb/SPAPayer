@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormAttivitaPianificateComponent } from './form-attivita-pianificate.component';
 
-describe('FormStatisticaComponent', () => {
+describe('FormAttivitaPianificateComponent', () => {
   let component: FormAttivitaPianificateComponent;
   let fixture: ComponentFixture<FormAttivitaPianificateComponent>;
 
