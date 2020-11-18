@@ -149,7 +149,8 @@
                 <div class="col">
                   <input id="urlWsBO" name="urlWsBO" type="text" class="input-text pt-0" autocomplete="off"
                          [required]="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV2_BACK_OFFICE"
-                         #codiceEnte="ngModel" [(ngModel)]="livelloIntegrazione.urlWsBO"
+                         #urlWsBO="ngModel" [(ngModel)]="livelloIntegrazione.urlWsBO"
+                         (ngModelChange)="changeUrlWsValidator($event)"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -351,7 +352,7 @@
                         (ngModelChange)="onChangeEnte(enteInput)"
                         [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
-                  <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nomeEnte}}</option>
+                  <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
               </div>
             </div>
@@ -469,6 +470,46 @@
               </div>
             </div>
           </div>
+          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="selectEnteUfficio"
+                       [ngClass]="{'title': true, 'required': livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1}">Ufficio</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select [ngClass]="{'input-disabled': !listaEntiBenef.length}"
+                        id="selectEnteUfficio" name="selectEnteUfficio"
+                        #ufficioBenefInput="ngModel" [(ngModel)]="beneficiario.ufficio"
+                        [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
+                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId">
+                  <option [ngValue]="null" [selected]="true">Seleziona</option>
+                  <option *ngFor="let item of listaUfficio"
+                          [ngValue]="item">{{item.codiceEnte}} {{item.tipoUfficio}} {{item.codiceUfficio}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p *ngIf="!isCampoInvalido(enteBenefInput)">Seleziona Ufficio</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+            <div class="row">
+              <div class="col">
+                <label for="descrUfficio">Descrizione</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <input id="descrUfficio" name="descrUfficio" type="text" class="input-text pt-0" autocomplete="off"
+                       #descrUfficio="ngModel" [ngModel]="beneficiario.ufficio?.descrizioneUfficio"
+                       [disabled]="true">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -483,15 +524,15 @@
         <div class="row">
           <div #datiContoCorrente></div>
         </div>
-      <div class="row">
-        <div class="col text-right">
-          <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiContoCorrente"
-                  class="btn btn-secondary"
-                 (click)="aggiungiContoCorrente()">
-            Aggiungi conto corrente
-          </button>
+        <div class="row">
+          <div class="col text-right">
+            <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiContoCorrente"
+                    class="btn btn-secondary"
+                    (click)="aggiungiContoCorrente()">
+              Aggiungi conto corrente
+            </button>
+          </div>
         </div>
-      </div>
       </div>
 
       <div class="collapse-header" id="idCollapseCampiServizio">
