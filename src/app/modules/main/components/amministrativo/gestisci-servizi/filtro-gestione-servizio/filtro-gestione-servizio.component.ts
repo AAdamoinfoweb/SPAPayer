@@ -73,13 +73,13 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   inizializzaOpzioniRaggruppamento(): void {
-    this.configuraServizioService.configuraServiziFiltroRaggruppamento(this.idFunzione)
+    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(null, this.idFunzione)
       .subscribe(listaRaggruppamenti => {
         if (listaRaggruppamenti) {
           listaRaggruppamenti.forEach(raggruppamento => {
             this.opzioniRaggruppamento.push({
               value: raggruppamento.id,
-              label: raggruppamento.nome
+              label: raggruppamento.descrizione
             });
           });
           Utils.ordinaArrayDiOggetti(this.opzioniRaggruppamento, 'label');

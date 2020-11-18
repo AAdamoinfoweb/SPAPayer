@@ -20,7 +20,7 @@ import {CampoTipologiaServizioService} from '../../../../../../services/campo-ti
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {ParametriRicercaServizio} from '../../../../model/servizio/ParametriRicercaServizio';
 import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
-import {NgForm, NgModel, Validators} from '@angular/forms';
+import {FormControl, NgForm, NgModel, ValidatorFn, Validators} from '@angular/forms';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
 import {map} from 'rxjs/operators';
@@ -144,7 +144,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   mapContoCorrente: Map<number, ContoCorrente> = new Map<number, ContoCorrente>();
   mapControllo: Map<number, boolean> = new Map<number, boolean>();
   getListaContiCorrente = (mapContoCorrente: Map<number, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
-  getListaControllo = (mapControllo: Map<number, boolean>) => Array.from(mapControllo, ([name, value]) => value);ì
+  getListaControllo = (mapControllo: Map<number, boolean>) => Array.from(mapControllo, ([name, value]) => value);
+  ì
 
   private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
   private listaDipendeDa: CampoTipologiaServizio[];
@@ -250,11 +251,16 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   onChangeFiltri(event: ParametriRicercaServizio) {
     this.filtri = event;
     // this.aggiungiContoCorrente();
-    this.caricaCampi(event.tipologiaServizio.id).subscribe();
+
   }
 
-  cambiaLivelloIntegrazione($event: any) {
-
+  cambiaLivelloIntegrazione(event: any) {
+    if (event !== LivelloIntegrazioneEnum.LV1)
+      this.caricaCampi(this.filtri.tipologiaServizio.id).subscribe();
+    else {
+      this.campoTipologiaServizioOriginal = null;
+      this.campoTipologiaServizioList = null;
+    }
   }
 
   disabilitaCampi() {
@@ -264,7 +270,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   onChangeSocieta(societaInput: NgModel) {
     this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(societaInput.value, this.idFunzione)
       .pipe(map((value) => this.listaLivelloTerritoriale = value)).subscribe();
-
   }
 
   onChangeLivelloTerritorialeImpositore(societaInput: NgModel, livelloTerritorialeInput: NgModel) {
@@ -397,8 +402,16 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     //this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm()));
   }
 
-  changeUrlWsValidator(url: string) {
-    const reg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-    Validators.pattern(reg).apply(url);
+  validateUrl() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '(http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
+        if (!new RegExp(regex).test(control.value))
+          return {url: false};
+      }
+
+      return null;
+    }) as ValidatorFn;
   }
 }

@@ -66,7 +66,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
       // Va controllato che i valori del filtro in input siano diversi per distinguere dal caso in cui, dopo l'onChange del filtro premendo Crea, arriva un nuovo filtro in input con i valori appena impostati
       if (this.funzione === FunzioneGestioneEnum.AGGIUNGI
         && (sc.filtriIniziali.currentValue.raggruppamentoId !== this.filtriRicerca.raggruppamentoId
-            || sc.filtriIniziali.currentValue.tipologia?.codice !== this.filtriRicerca.tipologia?.codice)) {
+          || sc.filtriIniziali.currentValue.tipologia?.codice !== this.filtriRicerca.tipologia?.codice)) {
         this.filtriRicerca = this.filtriIniziali;
         this.isTipologiaCreata = false;
       }
@@ -76,16 +76,16 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   inizializzaOpzioniRaggruppamento(): void {
     this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(null, this.idFunzione)
       .subscribe(listaRaggruppamenti => {
-      if (listaRaggruppamenti) {
-        listaRaggruppamenti.forEach(raggruppamento => {
-          this.opzioniRaggruppamento.push({
-            value: raggruppamento.id,
-            label: raggruppamento.descrizione
+        if (listaRaggruppamenti) {
+          listaRaggruppamenti.forEach(raggruppamento => {
+            this.opzioniRaggruppamento.push({
+              value: raggruppamento.id,
+              label: raggruppamento.descrizione
+            });
           });
-        });
-        Utils.ordinaArrayDiOggetti(this.opzioniRaggruppamento, 'label');
-      }
-    });
+          Utils.ordinaArrayDiOggetti(this.opzioniRaggruppamento, 'label');
+        }
+      });
   }
 
   selezionaRaggruppamento() {

@@ -138,7 +138,7 @@
             </div>
           </div>
           <ng-container *ngIf="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV2_BACK_OFFICE">
-            <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
+            <div class="col-sm-6 col-md-5 col-lg-5 pb-2">
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'urlWsBO'" class="title form-elem-title"
@@ -148,9 +148,9 @@
               <div class="row">
                 <div class="col">
                   <input id="urlWsBO" name="urlWsBO" type="text" class="input-text pt-0" autocomplete="off"
+                         [customvalidator]="validateUrl()"
                          [required]="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV2_BACK_OFFICE"
                          #urlWsBO="ngModel" [(ngModel)]="livelloIntegrazione.urlWsBO"
-                         (ngModelChange)="changeUrlWsValidator($event)"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -512,7 +512,6 @@
           </div>
         </div>
       </div>
-
       <div class="collapse-header" id="idCollapseDatiBonifico">
         <button data-toggle="collapse" data-target="#datiBonifico" aria-expanded="true"
                 aria-controls="datiBonifico">
@@ -520,7 +519,6 @@
         </button>
       </div>
       <div id="datiBonifico" class="collapse show" role="tabpanel" aria-labelledby="idCollapseDatiBonifico">
-
         <div class="row">
           <div #datiContoCorrente></div>
         </div>
@@ -534,7 +532,6 @@
           </div>
         </div>
       </div>
-
       <div class="collapse-header" id="idCollapseCampiServizio">
         <button data-toggle="collapse" data-target="#campiServizio" aria-expanded="true"
                 aria-controls="campiServizio">
@@ -542,11 +539,12 @@
         </button>
       </div>
       <div id="campiServizio" class="collapse show" role="tabpanel" aria-labelledby="idCollapseCampiServizio">
-        <div class="row">
-          <div class="col-12">
-            <label class="title">Lista campi tipologia servizio</label>
-            <span class="pointer bottone-campo"
-                  *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
+        <ng-container *ngIf="livelloIntegrazione.id !== LivelloIntegrazioneEnum.LV1">
+          <div class="row">
+            <div class="col-12">
+              <label class="title">Lista campi tipologia servizio</label>
+              <span class="pointer bottone-campo"
+                    *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
         <span ngbTooltip="Crea nuovo campo" placement="bottom"
               [ngStyle]="{fill: '#403d39'}">
           <svg (click)="add()" class="bg-light icon icon-sm filled">
@@ -554,38 +552,39 @@
           </svg>
         </span>
         </span>
+            </div>
           </div>
-        </div>
-        <div class="row" *ngIf="campoTipologiaServizioList">
-          <ul class="legend">
-            <li><span class="field-disabled"></span> Campo disabilitato</li>
-            <li><span class="required"></span> Campo obbligatorio</li>
-            <li><span class="key"></span> Campo chiave</li>
-          </ul>
-        </div>
-        <div class="row" cdkDropListGroup *ngIf="campoTipologiaServizioList">
-          <ng-container *ngFor="let item of campoTipologiaServizioList;let i=index">
-            <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
-                 cdkDropListOrientation="horizontal"
-                 [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
-              <div style="min-height: 5vh;"
-                   [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
+          <div class="row" *ngIf="campoTipologiaServizioList">
+            <ul class="legend">
+              <li><span class="field-disabled"></span> Campo disabilitato</li>
+              <li><span class="required"></span> Campo obbligatorio</li>
+              <li><span class="key"></span> Campo chiave</li>
+            </ul>
+          </div>
+          <div class="row" cdkDropListGroup *ngIf="campoTipologiaServizioList">
+            <ng-container *ngFor="let item of campoTipologiaServizioList;let i=index">
+              <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
+                   cdkDropListOrientation="horizontal"
+                   [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
+                <div style="min-height: 5vh;"
+                     [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
                'field-input': (item.campoInput && !item.disabilitato)}"
-                   [cdkDragDisabled]="true" cdkDrag>
-                <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                <div class="row" style="width: 100%">
-                  <div (click)="showModal(item)" class="col-7 text-right">{{item.titolo}}</div>
-                  <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>
-                  </div>
-                  <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
-                  <div class="col-3 text-right">
-                    <span class="close" (click)="removeItem(item)"></span>
+                     [cdkDragDisabled]="true" cdkDrag>
+                  <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                  <div class="row" style="width: 100%">
+                    <div (click)="showModal(item)" class="col-7 text-right">{{item.titolo}}</div>
+                    <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>
+                    </div>
+                    <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
+                    <div class="col-3 text-right">
+                      <span class="close" (click)="removeItem(item)"></span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </ng-container>
-        </div>
+            </ng-container>
+          </div>
+        </ng-container>
       </div>
     </form>
   </div>
