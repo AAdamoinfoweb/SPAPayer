@@ -27,6 +27,31 @@
        aria-labelledby="idCollapseDatiBeneficiario">
     <form #datiContoCorrenteForm="ngForm">
       <!--      inizio modale cc -->
+      <div class="row mt-4 mb-0" *ngIf="funzione === FunzioneGestioneEnum.MODIFICA">
+        <div class="col-md pb-2">
+          <p-dialog header="Lista conti correnti" [(visible)]="display">
+            <div class="row">
+              <div class="col">
+                <app-table [dataKey]="tableData.dataKey"
+                           [cols]="tableData.cols"
+                           [rows]="tableData.rows"
+                           [tipoTabella]="tableData.tipoTabella"
+                           [selectedRows]="true"
+                           (onClickRow)="onClickRow($event)"
+                >
+                </app-table>
+              </div>
+            </div>
+            <div class="row pt-2">
+              <div class="col text-center">
+                <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla"
+                        (click)="showDialog()"></button>
+              </div>
+            </div>
+          </p-dialog>
+          <a href="javascript:void(0)" (click)="showDialog()">Seleziona da un conto corrente esistente</a>
+        </div>
+      </div>
       <!--      fine modale cc -->
       <!--    inizio Iban, Intestazione -->
       <div class="row mt-4 mb-0">
@@ -44,6 +69,7 @@
               <input type="text" id="iban" name="iban" #iban="ngModel"
                      [(ngModel)]="datiContoCorrente.iban"
                      class="pt-0" autocomplete="off" aria-describedby="ibanHelpDescription"
+                     [pattern]="ibanRegex"
                      [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                      [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                      (ngModelChange)="onChangeModel(datiContoCorrenteForm, iban)">
@@ -98,6 +124,7 @@
             <div class="col">
               <input type="text" id="ibanCCPostale" name="ibanCCPostale" #ibanCCPostale="ngModel"
                      [(ngModel)]="datiContoCorrente.ibanCCPostale"
+                     [pattern]="ibanRegex"
                      class="pt-0" autocomplete="off" aria-describedby="ibanCCPostaleHelpDescription"
                      [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                      (ngModelChange)="onChangeModel(datiContoCorrenteForm, ibanCCPostale)">

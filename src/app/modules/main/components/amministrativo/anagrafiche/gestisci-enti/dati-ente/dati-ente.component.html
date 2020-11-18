@@ -78,6 +78,7 @@
                (ngModelChange)="onChangeModel(datiEnteForm, descrizione)"
                maxlength="255"
                [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+               class="textArea"
              ></textarea>
           </div>
         </div>
@@ -93,24 +94,31 @@
       <div class="col-md-2 pb-2">
         <div class="row">
           <div class="col">
-            <label for="pathLogo" class="title ">
+            <label for="canvas" class="title ">
               Logo</label>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <input type="text" id="pathLogo" name="pathLogo" #pathLogo="ngModel"
-                   [(ngModel)]="datiEnte.pathLogo"
-                   (ngModelChange)="onChangeModel(datiEnteForm, pathLogo)"
-                   class="pt-0" autocomplete="off" aria-describedby="nomeHelpDescription"
-                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                   >
+            <ul class="upload-pictures-wall" style="position:absolute;">
+              <li>
+                <input id="pathLogo" type='file' accept='image/*' (change)='loadImg($event)' class="upload pictures-wall" style="display: none"
+                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                <label for="pathLogo" id="labelLogo">
+                  <svg class="icon icon-sm" aria-hidden="true" *ngIf="datiEnte.logo == null || datiEnte.logo.contenuto == null"><use xlink:href="assets/img/sprite.svg#it-plus"></use></svg>
+                </label>
+              </li>
+            </ul>
+
+            <canvas id="canvas" width="128" height="128" (click)="onClickImage()"
+                    class="canvas"
+                    disabled="{{funzione === FunzioneGestioneEnum.DETTAGLIO}}">
+            </canvas>
           </div>
         </div>
         <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <div class="col">
-            <p *ngIf="!isCampoInvalido(pathLogo)">Inserisci url logo</p>
-            <p *ngIf="isCampoInvalido(pathLogo)" class="text-invalid">{{getMessaggioErrore(pathLogo)}}</p>
+            <p>Inserisci logo ente</p>
           </div>
         </div>
       </div>
@@ -190,6 +198,7 @@
           <div class="col">
             <input type="text" id="emailReferente" name="emailReferente" #emailReferente="ngModel"
                    [(ngModel)]="datiEnte.emailReferente"
+                   [pattern]="emailRegex"
                    (ngModelChange)="onChangeModel(datiEnteForm, emailReferente)"
                    class="pt-0" autocomplete="off" aria-describedby="emailReferenteHelpDescription"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">

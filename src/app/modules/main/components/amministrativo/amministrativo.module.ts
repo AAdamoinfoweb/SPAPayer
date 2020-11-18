@@ -64,6 +64,7 @@ import { ModaleCampoFormComponent } from './gestisci-servizi/gestisci-tipologia-
 import { ModaleAggiungiTipoCampoComponent } from './gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
 import { FormServizioComponent } from './gestisci-servizi/form-servizio/form-servizio.component';
 import { FiltroGestioneServizioComponent } from './gestisci-servizi/filtro-gestione-servizio/filtro-gestione-servizio.component';
+import {DialogModule} from "primeng/dialog";
 
 
 @NgModule({
@@ -148,6 +149,73 @@ import { FiltroGestioneServizioComponent } from './gestisci-servizi/filtro-gesti
         ModaleAggiungiTipoCampoComponent
     ],
     schemas: [NO_ERRORS_SCHEMA]
+    FiltroGestioneUtentiComponent,
+    DatiUtenteComponent,
+    DatiPermessoComponent,
+    AmministrativoParentComponent,
+    GestisciSocietaComponent,
+    FiltroGestioneSocietaComponent,
+    GestisciLivelliTerritorialiComponent,
+    FiltroGestioneLivelliTerritorialiComponent,
+    GestisciBannerComponent,
+    FiltroGestioneBannerComponent,
+    DatiBannerComponent,
+    FormBannerComponent,
+    GestisciEntiComponent,
+    MonitoraAccessiComponent,
+    FiltroMonitoraggioAccessiComponent,
+    RaggruppamentoTipologieComponent,
+    FiltroRaggruppamentoTipologieComponent,
+    FormSocietaComponent,
+    DatiSocietaComponent,
+    DatiLivelloTerritorialeComponent,
+    FormLivelloTerritorialeComponent,
+    DatiSocietaComponent,
+    FiltroGestioneEntiComponent,
+    DettaglioAccessoComponent,
+    DatiAccessoComponent,
+    DatiEnteComponent,
+    FormEnteComponent,
+    DatiRaggruppamentoTipologieComponent,
+    FormRaggruppamentoTipologieComponent,
+    GestisciCampoTipologiaServizioComponent,
+    DatiBeneficiarioComponent,
+    DatiContoCorrenteComponent
+  ],
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    FormsModule,
+    DesignAngularKitModule,
+    ReactiveFormsModule,
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
+    DpDatePickerModule,
+    NgxDatatableModule,
+    AccordionModule,
+    TableModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    TabViewModule,
+    ToolbarModule,
+    DpDatePickerModule,
+    NgxCurrencyModule,
+    CustomFormsModule,
+    ConfirmDialogModule,
+    BrowserAnimationsModule,
+    CustomFormsModule,
+    AutoCompleteModule,
+    TreeTableModule,
+    CKEditorModule,
+    PipeModule,
+    CommonComponentModule,
+    DialogModule
+  ],
+  providers: [
+    ConfirmationService
+  ],
+  schemas: [NO_ERRORS_SCHEMA]
 })
 export class AmministrativoModule {
 }

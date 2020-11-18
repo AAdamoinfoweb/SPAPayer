@@ -1,4 +1,5 @@
 import {Beneficiario} from "./Beneficiario";
+import {Logo} from "./Logo";
 
 export class EnteCompleto {
    id: number;
@@ -9,7 +10,7 @@ export class EnteCompleto {
    nomeEnte: string;
    cfPiva: string;
    descrizione: string;
-   pathLogo: string;
+   logo: Logo;
    nomeReferente: string;
    cognomeReferente: string;
    emailReferente: string;

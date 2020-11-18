@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
-  Component, ComponentFactoryResolver,
+  Component,
+  ComponentFactoryResolver,
   ComponentRef,
   EventEmitter,
   Input,
@@ -14,10 +15,11 @@ import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.
 import {BeneficiarioSingolo} from '../../../../../model/ente/BeneficiarioSingolo';
 import {NgForm, NgModel} from '@angular/forms';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
-import {ContoCorrenteSingolo} from "../../../../../model/ente/ContoCorrenteSingolo";
-import {DatiContoCorrenteComponent} from "../dati-conto-corrente/dati-conto-corrente.component";
-import * as moment from "moment";
-import {Utils} from "../../../../../../../utils/Utils";
+import {ContoCorrenteSingolo} from '../../../../../model/ente/ContoCorrenteSingolo';
+import {DatiContoCorrenteComponent} from '../dati-conto-corrente/dati-conto-corrente.component';
+import * as moment from 'moment';
+import {Utils} from '../../../../../../../utils/Utils';
+import {EnteService} from '../../../../../../../services/ente.service';
 
 @Component({
   selector: 'app-dati-beneficiario',
@@ -25,6 +27,11 @@ import {Utils} from "../../../../../../../utils/Utils";
   styleUrls: ['./dati-beneficiario.component.scss']
 })
 export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
+
+
+  constructor(private componentFactoryResolver: ComponentFactoryResolver, private enteService: EnteService) {
+  }
+
   // enums consts
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   testoTooltipIconaElimina = 'Elimina dati beneficiario';
@@ -32,6 +39,7 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   @Input() indexDatiBeneficiario: number;
   @Input() datiBeneficiario: Beneficiario;
   @Input() funzione: FunzioneGestioneEnum;
+  @Input() listaContiCorrente: ContoCorrente[];
   @Output()
   onChangeDatiBeneficiario: EventEmitter<BeneficiarioSingolo> = new EventEmitter<BeneficiarioSingolo>();
   @Output()
@@ -40,12 +48,13 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   @ViewChild('datiContoCorrente', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
 
+  @ViewChild('datiBeneficiarioForm', {static: false, read: NgForm})
+  formDatiBeneficiario: NgForm;
+
   mapContoCorrente: Map<number, ContoCorrente> = new Map<number, ContoCorrente>();
+  mapControllo: Map<number, boolean> = new Map<number, boolean>();
   getListaContiCorrente = (mapContoCorrente: Map<number, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
-
-
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
-  }
+  getListaControllo = (mapControllo: Map<number, boolean>) => Array.from(mapControllo, ([name, value]) => value);
 
   ngOnInit(): void {
   }
@@ -53,7 +62,17 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // bind button collapse to new section beneficiario
     const collapseButton = document.getElementById('buttonCollapse' + this.indexDatiBeneficiario.toString());
-    collapseButton.dataset.target = '#collapse' + this.indexDatiBeneficiario;
+    if (collapseButton != null) {
+      collapseButton.dataset.target = '#collapse' + this.indexDatiBeneficiario;
+      if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
+        this.datiBeneficiario.listaContiCorrenti.forEach((contoCorrente) => {
+          this.aggiungiContoCorrente(contoCorrente);
+        });
+        this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(true));
+      } else {
+        this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(false));
+      }
+    }
   }
 
   onClickDeleteIcon(event) {
@@ -72,18 +91,26 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     return campo?.errors != null;
   }
 
-  setBeneficiarioSingolo(): BeneficiarioSingolo {
+  setBeneficiarioSingolo(isFormValid: boolean): BeneficiarioSingolo {
     const beneficiarioSingolo: BeneficiarioSingolo = new BeneficiarioSingolo();
     beneficiarioSingolo.index = this.indexDatiBeneficiario;
     beneficiarioSingolo.beneficiario = this.datiBeneficiario;
+    beneficiarioSingolo.isFormValid = isFormValid;
     return beneficiarioSingolo;
+  }
+
+  controlloForm(form?: NgForm): boolean {
+    const listaControllo: boolean[] = this.getListaControllo(this.mapControllo);
+    const isListaContiCorrentInvalid = listaControllo.length > 0 ? listaControllo.includes(false) : false;
+    const isFormValid = form ? form.valid : true;
+    return isFormValid && !isListaContiCorrentInvalid;
   }
 
   onChangeModel(form: NgForm, campo: NgModel) {
     if (campo.value == '') {
       this.datiBeneficiario[campo.name] = null;
     }
-    this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo());
+    this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm(this.formDatiBeneficiario)));
   }
 
   aggiungiContoCorrente(datiContoCorrente?: ContoCorrente): number {
@@ -100,20 +127,24 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     } else {
       instanceContoCorrente = datiContoCorrente;
     }
-    this.mapContoCorrente.set(indexContoCorrente, instanceContoCorrente);
     this.componentRef.instance.datiContoCorrente = instanceContoCorrente;
+    if (this.listaContiCorrente != null && FunzioneGestioneEnum.MODIFICA) {
+      this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
+    }
     // output
     this.componentRef.instance.onDeleteDatiContoCorrente.subscribe(index => {
       const contoCorrente = this.mapContoCorrente.get(index);
       const isContoCorrenteDaModificare: boolean = contoCorrente != null;
       if (isContoCorrenteDaModificare) {
         this.mapContoCorrente.delete(index);
+        this.mapControllo.delete(index);
       }
       this.target.remove(index - 1);
       this.setListaContiCorrente();
     });
     this.componentRef.instance.onChangeDatiContoCorrente.subscribe((currentContoCorrente: ContoCorrenteSingolo) => {
       this.mapContoCorrente.set(currentContoCorrente.index, currentContoCorrente.contoCorrente);
+      this.mapControllo.set(currentContoCorrente.index, currentContoCorrente.isFormValid);
       this.setListaContiCorrente();
     });
     this.componentRef.changeDetectorRef.detectChanges();
@@ -123,32 +154,10 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   private setListaContiCorrente() {
     const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
     this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
-    this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo());
+    this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm()));
   }
 
   disabilitaBottone(): boolean {
-    return this.controllaDatiContoCorrente();
-  }
-
-  controllaDatiContoCorrente(): boolean {
-    let ret = false;
-    const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
-    listaContiCorrente.forEach(contoCorrente => {
-      if (contoCorrente.iban == null || contoCorrente.inizioValidita == null) {
-        ret = true;
-      } else if (contoCorrente.fineValidita != null) {
-        ret = this.controlloDate(contoCorrente);
-      }
-    });
-    return ret;
-  }
-
-  controlloDate(contoCorrente: ContoCorrente): boolean {
-    const dataAttivazione = contoCorrente.inizioValidita;
-    const dataScadenza = contoCorrente.fineValidita;
-    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    const isDataScadenzaBeforeDataAttivazione = Utils.isBefore(dataScadenza, dataAttivazione);
-    const ret = this.funzione === FunzioneGestioneEnum.DETTAGLIO ? false : isDataScadenzaBeforeDataAttivazione;
-    return ret;
+    return !this.controlloForm(this.formDatiBeneficiario);
   }
 }

@@ -13,6 +13,7 @@ import {OpzioneSelect} from '../modules/main/model/OpzioneSelect';
 export class Utils {
 
   static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00:00';
+  static FORMAT_LOCAL_DATE_TIME_ISO = 'YYYY-MM-DD[T]hh:mm:ss';
   static FORMAT_LOCAL_DATE_TIME_TO = 'YYYY-MM-DD[T]23:59:59';
   static FORMAT_DATE_CALENDAR = 'DD/MM/YYYY';
   static ACCEPTED_FORMAT_DATES = [
@@ -20,9 +21,11 @@ export class Utils {
   ];
 
   static readonly EMAIL_REGEX = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
-  static readonly TELEFONO_REGEX = '^\\+[0-9]{12}$|^[0-9]{10}$';
+  static readonly TELEFONO_REGEX = '^\\+?\\d{8,12}';
+  static readonly IBAN_ITALIA_REGEX = '[IT]{2}\\d{2} ?[A-Z]\\d{3} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{3}';
   static readonly CODICE_FISCALE_REGEX = '^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
   static readonly CODICE_FISCALE_O_PARTITA_IVA_REGEX = '^[0-9]{11}$|^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
+  static readonly PARTITA_IVA_REGEX = '^[0-9]{11}$';
 
   static creaLink = (value, link, iconHref?) => {
     return iconHref ? {value, link, iconHref} : {value, link, iconHref: null};
@@ -211,4 +214,23 @@ export class Utils {
     return breadcrumbList;
   }
 
+  static b64toBlob(b64Data, contentType = '', sliceSize = 512) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+  }
 }

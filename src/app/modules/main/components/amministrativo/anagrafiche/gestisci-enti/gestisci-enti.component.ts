@@ -18,6 +18,9 @@ import {SintesiEnte} from '../../../../model/ente/SintesiEnte';
 import {EnteService} from '../../../../../../services/ente.service';
 import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte';
 import {Observable} from 'rxjs';
+import {Banner} from "../../../../model/banner/Banner";
+import {getBannerType, LivelloBanner} from "../../../../../../enums/livelloBanner.enum";
+import {BannerService} from "../../../../../../services/banner.service";
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -35,7 +38,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   isMenuCarico = false;
 
-   righeSelezionate: any[];
+  righeSelezionate: any[];
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Inserisci Ente'},
@@ -60,14 +63,23 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   listaElementi: SintesiEnte[] = [];
   filtriRicerca: ParametriRicercaEnte = null;
 
+  livelloTerritorialeId = null;
+
   constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private el: ElementRef,
               private menuService: MenuService,
               private confirmationService: ConfirmationService,
-              private enteService: EnteService
+              private enteService: EnteService,
+              private bannerService: BannerService
   ) {
     super(router, route, http, amministrativoService);
+
+    this.route.queryParams.subscribe(params => {
+      if (params.livelloTerritorialeId) {
+        this.livelloTerritorialeId = parseInt(params.livelloTerritorialeId);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -169,8 +181,16 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   private eliminaEntiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
+          this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((esitoEnte) => {
             this.popolaListaElementi();
+            if(esitoEnte.esito != null){
+                const banner: Banner = {
+                  titolo: 'ATTENZIONE',
+                  testo: esitoEnte.esito,
+                  tipo: getBannerType(LivelloBanner.WARNING)
+                };
+                this.bannerService.bannerEvent.emit([banner]);
+            }
           });
           this.righeSelezionate = [];
           const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);

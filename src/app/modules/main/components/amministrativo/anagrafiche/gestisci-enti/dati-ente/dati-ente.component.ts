@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {NgForm, NgModel} from '@angular/forms';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
@@ -10,18 +10,23 @@ import {Provincia} from '../../../../../model/Provincia';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {NuovoPagamentoService} from '../../../../../../../services/nuovo-pagamento.service';
+import {Logo} from '../../../../../model/ente/Logo';
+import {EnteService} from '../../../../../../../services/ente.service';
 
 @Component({
   selector: 'app-dati-ente',
   templateUrl: './dati-ente.component.html',
   styleUrls: ['./dati-ente.component.scss']
 })
-export class DatiEnteComponent implements OnInit {
+export class DatiEnteComponent implements OnInit, OnChanges {
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   telefonoRegex = Utils.TELEFONO_REGEX;
-  codiceFiscalPIvaRegex = Utils.CODICE_FISCALE_O_PARTITA_IVA_REGEX;
+  emailRegex = Utils.EMAIL_REGEX;
+  codiceFiscalPIvaRegex = Utils.PARTITA_IVA_REGEX;
 
+  @Input()
+  idFunzione;
   @Input()
   datiEnte: EnteCompleto;
   @Input()
@@ -38,7 +43,10 @@ export class DatiEnteComponent implements OnInit {
   opzioniFiltroComune: OpzioneSelect[] = [];
   opzioniFiltroProvincia: OpzioneSelect[] = [];
 
-  constructor(private societaService: SocietaService, private nuovoPagamentoService: NuovoPagamentoService) {
+  province: Provincia[];
+
+  constructor(private societaService: SocietaService, private nuovoPagamentoService: NuovoPagamentoService,
+              private enteService: EnteService) {
   }
 
   ngOnInit(): void {
@@ -46,6 +54,57 @@ export class DatiEnteComponent implements OnInit {
     this.letturaProvince();
     this.letturaSocieta();
     this.letturaLivelloTerritoriale();
+  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.funzione && this.funzione === FunzioneGestioneEnum.MODIFICA) {
+      this.inizializzaFormModifica();
+    }
+
+    if (changes.datiEnte) {
+      if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
+        this.caricaImmagine();
+      }
+    }
+
+  }
+
+  private inizializzaFormModifica() {
+    this.isFormValid.emit(true);
+  }
+
+  caricaImmagine() {
+    if (this.datiEnte && this.datiEnte.logo && this.datiEnte.logo.contenuto) {
+      // @ts-ignore
+      const canvas: HTMLCanvasElement = document.getElementById('canvas');
+      if (canvas != null) {
+        const context = canvas.getContext('2d');
+        const reader = new FileReader();
+        // @ts-ignore
+        reader.readAsDataURL(Utils.b64toBlob(this.datiEnte.logo.contenuto));
+        reader.onload = () => {
+          const imageObj = new Image();
+          if (typeof reader.result === 'string') {
+            imageObj.src = reader.result;
+          }
+          imageObj.onload = () => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            this.scaleToFit(imageObj, canvas);
+          };
+        };
+      }
+    }
+  }
+
+  scaleToFit(img, canvas) {
+    const context = canvas.getContext('2d');
+    // get the scale
+    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+    // get the top left position of the image
+    const x = (canvas.width / 2) - (img.width / 2) * scale;
+    const y = (canvas.height / 2) - (img.height / 2) * scale;
+    context.drawImage(img, x, y, img.width * scale, img.height * scale);
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -69,23 +128,25 @@ export class DatiEnteComponent implements OnInit {
   }
 
   letturaSocieta(): void {
-    this.societaService.filtroSocieta()
+    this.societaService.ricercaSocieta(null, this.idFunzione)
       .subscribe(societa => {
         this.popolaOpzioniFiltroSocieta(societa);
       });
   }
 
   private popolaOpzioniFiltroSocieta(societa: Societa[]) {
-    societa.forEach(s => {
-      this.opzioniFiltroSocieta.push({
-        value: s.id,
-        label: s.nome
+    if (societa != null) {
+      societa.forEach(s => {
+        this.opzioniFiltroSocieta.push({
+          value: s.id,
+          label: s.nome
+        });
       });
-    });
+    }
   }
 
   letturaLivelloTerritoriale(): void {
-    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale()
+    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale(false, true)
       .subscribe(livelliTerritoriali => {
         this.popolaOpzioniFiltroLivelloTerritoriale(livelliTerritoriali);
       });
@@ -115,26 +176,73 @@ export class DatiEnteComponent implements OnInit {
   }
 
   letturaProvince() {
-    const province: Provincia[] = JSON.parse(localStorage.getItem('province'));
-    this.popolaOpzioniFiltroProvincia(province);
+    this.province = JSON.parse(localStorage.getItem('province'));
+    this.popolaOpzioniFiltroProvincia(this.province);
   }
 
   private popolaOpzioniFiltroProvincia(province: Provincia[]) {
     province.forEach(provincia => {
       this.opzioniFiltroProvincia.push({
-        value: provincia.codice,
-        label: provincia.nome
+        value: provincia.sigla,
+        label: provincia.sigla
       });
     });
   }
 
   selezionaComune() {
-    this.datiEnte.provincia = this.datiEnte.comune.substring(0, 3);
+    this.datiEnte.provincia = this.province
+      .find((prov) => prov.codice === this.datiEnte.comune.substring(0, 3))
+      .sigla;
   }
 
   selezionaProvincia() {
-    if (!(this.datiEnte.comune.includes(this.datiEnte.provincia))) {
+    const provincia = this.province.find((prov) => prov.sigla === this.datiEnte.provincia);
+    if (!(this.datiEnte.comune.includes(provincia.codice))) {
       this.datiEnte.comune = null;
     }
+  }
+
+  loadImg($event: any) {
+    // @ts-ignore
+    const canvas: HTMLCanvasElement = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const input = $event.target;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataURL = reader.result;
+      const imageObj = new Image();
+      if (typeof dataURL === 'string') {
+        imageObj.src = dataURL;
+      }
+      imageObj.onload = () => {
+        const logo: Logo = new Logo();
+        // recupera nome logo
+        // @ts-ignore
+        const fullPath = document.getElementById('pathLogo').value;
+        if (fullPath) {
+          const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+          let filename = fullPath.substring(startIndex);
+          if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+            filename = filename.substring(1);
+          }
+          logo.nome = filename;
+        }
+        // recupero dati immagine e formato
+        const src = imageObj.src.split(',');
+        if (src.length > 1) {
+          logo.formato = src[0].split(';')[0].split('/')[1];
+          logo.contenuto = src[1];
+        }
+
+        this.datiEnte.logo = logo;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        this.scaleToFit(imageObj, canvas);
+      };
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  onClickImage() {
+    document.getElementById('pathLogo').click();
   }
 }
