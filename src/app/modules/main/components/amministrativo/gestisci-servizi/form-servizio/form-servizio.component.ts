@@ -36,6 +36,7 @@ export class LivelloIntegrazioneServizio {
   codiceEnte: number;
   tipoUfficio: string;
   codiceUfficio: string;
+  urlWsBO: string;
 }
 
 export class ImpositoreServizio {

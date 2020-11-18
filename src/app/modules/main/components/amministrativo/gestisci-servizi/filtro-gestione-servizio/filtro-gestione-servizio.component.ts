@@ -12,6 +12,7 @@ import {NgForm, NgModel} from '@angular/forms';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {TipologiaServizio} from '../../../../model/tipologiaServizio/TipologiaServizio';
+import {ConfiguraServizioService} from "../../../../../../services/configura-servizio.service";
 
 @Component({
   selector: 'app-filtro-gestione-servizio',
@@ -49,6 +50,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   constructor(
     protected amministrativoService: AmministrativoService, protected route: ActivatedRoute,
     private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService,
+    private configuraServizioService: ConfiguraServizioService,
     private campoTipologiaServizioService: CampoTipologiaServizioService
   ) {
     super(route, amministrativoService);
@@ -66,13 +68,13 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   inizializzaOpzioniRaggruppamento(): void {
-    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(null, this.idFunzione)
+    this.configuraServizioService.configuraServiziFiltroRaggruppamento(this.idFunzione)
       .subscribe(listaRaggruppamenti => {
         if (listaRaggruppamenti) {
           listaRaggruppamenti.forEach(raggruppamento => {
             this.opzioniRaggruppamento.push({
               value: raggruppamento.id,
-              label: raggruppamento.descrizione
+              label: raggruppamento.nome
             });
           });
           Utils.ordinaOpzioniSelect(this.opzioniRaggruppamento);

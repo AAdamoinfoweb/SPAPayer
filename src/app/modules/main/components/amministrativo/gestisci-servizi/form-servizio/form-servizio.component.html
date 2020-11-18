@@ -137,6 +137,24 @@
               </div>
             </div>
           </div>
+          <ng-container *ngIf="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV2_BACK_OFFICE">
+            <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label [htmlFor]="'urlWsBO'" class="title form-elem-title"
+                  >Url del web service di Back Office</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input id="urlWsBO" name="urlWsBO" type="text" class="input-text pt-0" autocomplete="off"
+                         [required]="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV2_BACK_OFFICE"
+                         #codiceEnte="ngModel" [(ngModel)]="livelloIntegrazione.urlWsBO"
+                         [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+            </div>
+          </ng-container>
           <ng-container *ngIf="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV1">
             <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
               <div class="row">
