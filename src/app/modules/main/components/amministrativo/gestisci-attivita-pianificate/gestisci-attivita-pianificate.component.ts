@@ -158,7 +158,9 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
   eliminaAttivitaSelezionate(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          // TODO invocare operation eliminaAttivitaPianificate
+          this.attivitaPianificataService.eliminaAttivitaPianificate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
+            this.popolaListaElementi();
+          });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;
           this.toolbarIcons[this.indiceIconaElimina].disabled = true;
