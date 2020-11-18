@@ -24,6 +24,8 @@ import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
 import {v4 as uuidv4} from 'uuid';
 import * as _ from 'lodash';
 import {CdkDragDrop} from "@angular/cdk/drag-drop";
+import {TipoCampoEnum} from "../../../../../../enums/tipoCampo.enum";
+import {ConfiguratoreCampiNuovoPagamento} from "../../../../model/campo/ConfiguratoreCampiNuovoPagamento";
 
 export class LivelloIntegrazioneServizio {
   id: number = null;
@@ -60,10 +62,17 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   tooltip: string;
 
   breadcrumbList: Breadcrumb[] = [];
+
+  readonly lunghezzaMaxCol1: number = 5;
+  readonly lunghezzaMaxCol2: number = 10;
+  readonly lunghezzaMaxCol3: number = 15;
+
   funzione: FunzioneGestioneEnum;
   filtro: ParametriRicercaServizio;
 
   LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
+
+  private listaTipiCampo: any[];
 
   servizio: any = {};
   contatto: any = {};
@@ -83,6 +92,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   campoTipologiaServizioOriginal: CampoTipologiaServizio[];
 
   campoTipologiaServizioList: CampoTipologiaServizio[];
+  private tipoCampoIdSelect: number;
 
 
   constructor(private cdr: ChangeDetectorRef,
@@ -105,6 +115,23 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   initFormPage(snapshot: ActivatedRouteSnapshot) {
     this.societaService.ricercaSocieta(null, this.idFunzione)
       .pipe(map((value: Societa[]) => this.listaSocieta = value)).subscribe();
+
+    this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
+      .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
+        localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
+        localStorage.setItem('listaControlliLogici', JSON.stringify(configuratore.listaControlliLogici));
+        localStorage.setItem('listaTipologiche', JSON.stringify(configuratore.listaTipologiche));
+        localStorage.setItem('listaJsonPath', JSON.stringify(configuratore.listaJsonPath));
+
+        this.listaTipiCampo = configuratore.listaTipiCampo;
+
+        let filter = configuratore.listaTipiCampo.filter((tc => tc.nome === TipoCampoEnum.SELECT));
+        if (filter && filter.length > 0)
+          this.tipoCampoIdSelect = filter[0].id;
+
+        localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
+      })).subscribe();
+
     this.controllaTipoFunzione();
     this.inizializzaBreadcrumb();
     this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Servizio';
@@ -210,8 +237,35 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   }
 
-  calcolaDimensioneCampo(item: CampoTipologiaServizio) {
+  calcolaDimensioneCampo(campo: CampoTipologiaServizio): string {
+    let classe;
 
+    if (this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.DATEDDMMYY ||
+      this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.DATEMMYY ||
+      this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.DATEYY) {
+      classe = 'col-lg-2 col-md-4 col-xs-6';
+    } else if (this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.INPUT_PREZZO) {
+      classe = 'col-lg-2 col-md-4 col-xs-6';
+    } else {
+      if (campo.lunghezza <= this.lunghezzaMaxCol1) {
+        classe = 'col-lg-1 col-md-4 col-xs-6';
+      } else if (campo.lunghezza <= this.lunghezzaMaxCol2) {
+        classe = 'col-lg-3 col-md-4 col-xs-6';
+      } else if (campo.lunghezza <= this.lunghezzaMaxCol3) {
+        classe = 'col-lg-4 col-md-5 col-xs-6';
+      } else {
+        classe = 'col-lg-5 col-md-6 col-xs-6';
+      }
+    }
+    return classe;
+  }
+
+  private decodeTipoCampo(tipoCampoId: number): string {
+    let find = this.listaTipiCampo.find((value) => value.id = tipoCampoId);
+    if (find)
+      return find.nome;
+    else
+      return "";
   }
 
   dropEvt($event: CdkDragDrop<{ item: CampoTipologiaServizio; index: number }, any>) {
