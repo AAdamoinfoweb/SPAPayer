@@ -88,9 +88,9 @@ const routes: Routes = [
   {path: 'gestisciStatistiche/modificaStatistica/:statisticaId', component: FormStatisticaComponent},
   {path: 'gestisciStatistiche/dettaglioStatistica/:statisticaId', component: FormStatisticaComponent},
   {path: 'gestisciAttivitaPianificate', component: GestisciAttivitaPianificateComponent},
-  {path: 'gestisciAttivita/aggiungiAttivita', component: FormAttivitaPianificateComponent},
-  {path: 'gestisciAttivita/modificaAttivita/:attivitaId', component: FormAttivitaPianificateComponent},
-  {path: 'gestisciAttivita/dettaglioAttivita/:attivitaId', component: FormAttivitaPianificateComponent},
+  {path: 'gestisciAttivitaPianificate/aggiungiAttivitaPianificata', component: FormAttivitaPianificateComponent},
+  {path: 'gestisciAttivitaPianificate/modificaAttivitaPianificata/:attivitaId', component: FormAttivitaPianificateComponent},
+  {path: 'gestisciAttivitaPianificate/dettaglioAttivitaPianificata/:attivitaId', component: FormAttivitaPianificateComponent},
 ];
 
 @NgModule({

@@ -19,14 +19,8 @@ export class DatiAttivitaPianificateComponent implements OnInit {
 
   // enums e consts
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
-  tooltipFestivita = 'Definisce date o ore in cui il lavoro non deve essere eseguito.' +
-    '\nQueste date possono essere definite utilizzando espressioni cron di Quartz come spiegato nella documentazione di CronCalendar, con ciascuna definizione di festività su una nuova riga.' +
-    '\nIn alternativa, è possibile utilizzare codice groovy, con il codice che restituisce un Calendar o un elenco di Calendar.' +
-    '\nSe si utilizza codice groovy, il campo dovrebbe iniziare con "g [" e terminare con "] g".';
-  tooltipSchedulazioniExtra = 'Definizioni di schedulazioni extra su cui eseguire il lavoro, oltre alla schedulazione principale definita nei singoli campi della schedulazione.' +
-    '\nLe pianificazioni possono essere definite come espressioni cron di Quartz, con ciascuna schedulazione su una nuova riga.' +
-    '\nIn alternativa, è possibile utilizzare codice groovy, con il codice che restituisce un Trigger o un elenco di Trigger.' +
-    '\nSe si utilizza codice groovy, il campo dovrebbe iniziare con "g [" e terminare con "] g".';
+  emailRegex: string = Utils.EMAIL_REGEX;
+
   @Input()
   idFunzione;
   @Input()
@@ -34,35 +28,15 @@ export class DatiAttivitaPianificateComponent implements OnInit {
   @Input()
   funzione: FunzioneGestioneEnum;
   @Output()
-  onChangeDatiStatistica: EventEmitter<Statistica> = new EventEmitter<Statistica>();
-
-
-  @Output()
   isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  // calendar
-  isCalendarOpen: boolean;
-  readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
-  readonly tipoData = ECalendarValue.String;
-  opzioniTimeZone: OpzioneSelect[] = [];
-  emailRegex: string = Utils.EMAIL_REGEX;
+
+  isSchedulazioneFormValid: boolean;
 
   ngOnInit(): void {
-    this.inizializzaTimeZone();
-  }
-
-  private inizializzaTimeZone() {
-    this.opzioniTimeZone.push({
-      value: Utils.TIME_ZONE,
-      label: Utils.TIME_ZONE
-    });
   }
 
   isCampoInvalido(campo: NgModel) {
-    if (campo?.name === 'fineSchedulazione') {
-      return campo?.errors != null || this.controlloDate(this.datiStatistica);
-    } else {
       return campo?.errors != null;
-    }
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -75,29 +49,12 @@ export class DatiAttivitaPianificateComponent implements OnInit {
 
   onChangeModel(form: NgForm, campo?: NgModel) {
     if (campo?.value == '') {
-      if (this.datiStatistica[campo.name]) {
-        this.datiStatistica[campo.name] = null;
-      } else {
-        this.datiStatistica.schedulazione[campo.name] = null;
-      }
+      this.datiStatistica[campo.name] = null;
     }
-    let isFineBeforeInizio = false;
-    if (this.datiStatistica.schedulazione.fine != null) {
-      isFineBeforeInizio = this.controlloDate(this.datiStatistica);
-    }
-    this.onChangeDatiStatistica.emit(this.datiStatistica);
-    const isValid = form.valid && !isFineBeforeInizio;
-    this.isFormValid.emit(isValid);
+
+    this.formsValid(form, this.isSchedulazioneFormValid);
   }
 
-  controlloDate(statistica: Statistica): boolean {
-    const statisticaCopy: Statistica = JSON.parse(JSON.stringify(statistica));
-    const inizio = statisticaCopy.schedulazione.inizio;
-    const fine = statisticaCopy.schedulazione.fine;
-    const isFineBeforeInzio = Utils.isBefore(fine, inizio);
-    const ret = this.funzione === FunzioneGestioneEnum.DETTAGLIO ? false : isFineBeforeInzio;
-    return ret;
-  }
 
   aggiungiDestinatario(form: NgForm) {
     const destinatario: Destinatario = new Destinatario();
@@ -113,19 +70,14 @@ export class DatiAttivitaPianificateComponent implements OnInit {
     this.onChangeModel(form);
   }
 
-  openDatepicker(datePickerComponent: DatePickerComponent): void {
-    datePickerComponent.api.open();
-    this.isCalendarOpen = !this.isCalendarOpen;
+  schedulazioneFormValid(form: NgForm, isSchedulazioneFormValid: boolean) {
+    this.isSchedulazioneFormValid = isSchedulazioneFormValid;
+    this.formsValid(form, this.isSchedulazioneFormValid);
   }
 
-  setMinDate(datePicker: DatePickerComponent): string {
-    return datePicker.inputElementValue
-      ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').add(1, 'day').format('DD/MM/YYYY') : this.minDateDDMMYYYY;
-  }
-
-  setMaxDate(datePicker: DatePickerComponent): string {
-    return datePicker.inputElementValue
-      ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
+  formsValid(form: NgForm, isSchedulazioneFormValid: boolean) {
+    const isValid = form.valid && isSchedulazioneFormValid;
+    this.isFormValid.emit(isValid);
   }
 
 }
