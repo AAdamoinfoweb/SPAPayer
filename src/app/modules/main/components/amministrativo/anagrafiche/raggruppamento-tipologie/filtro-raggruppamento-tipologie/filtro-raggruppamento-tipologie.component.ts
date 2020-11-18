@@ -46,7 +46,7 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
         label: raggruppamentoTipologiaServizio.nome
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroRaggruppamentiTipologie);
+    Utils.ordinaArrayDiOggetti(this.opzioniFiltroRaggruppamentiTipologie, 'label');
   }
 
   isCampoInvalido(campo: NgModel) {

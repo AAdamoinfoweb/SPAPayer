@@ -77,7 +77,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
               label: raggruppamento.nome
             });
           });
-          Utils.ordinaOpzioniSelect(this.opzioniRaggruppamento);
+          Utils.ordinaArrayDiOggetti(this.opzioniRaggruppamento, 'label');
         }
       });
   }

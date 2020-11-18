@@ -66,7 +66,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
           label: funzione.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaFunzioniAbilitate);
+      Utils.ordinaArrayDiOggetti(this.listaFunzioniAbilitate, 'label');
     });
   }
 

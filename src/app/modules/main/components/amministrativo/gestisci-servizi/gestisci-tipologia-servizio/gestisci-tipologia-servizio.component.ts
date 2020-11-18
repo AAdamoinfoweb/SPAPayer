@@ -164,7 +164,7 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
   }
 
   getNumeroRecord(): string {
-    return 'Totale: ' + this.listaElementi.length + 'tipologie servizio';
+    return 'Totale: ' + this.listaElementi.length + ' tipologie servizio';
   }
 
   getObservableFunzioneRicerca(): Observable<any[]> {

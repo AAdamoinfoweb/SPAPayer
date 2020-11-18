@@ -73,7 +73,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: s.nome
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroSocieta);
+    Utils.ordinaArrayDiOggetti(this.opzioniFiltroSocieta, 'label');
   }
 
   letturaLivelloTerritoriale(): void {
@@ -90,7 +90,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: livello.nome
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroLivelliTerritoriale);
+    Utils.ordinaArrayDiOggetti(this.opzioniFiltroLivelliTerritoriale, 'label');
 
     if (this.livelloTerritorialeId) {
       const isFiltroLivelloTerritorialeValido = this.opzioniFiltroLivelliTerritoriale.some(item => item.value === this.livelloTerritorialeId);
@@ -116,7 +116,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: comune.nome
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroComune);
+    Utils.ordinaArrayDiOggetti(this.opzioniFiltroComune, 'label');
   }
 
   letturaProvince() {
@@ -132,7 +132,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: provincia.sigla
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroProvincia);
+    Utils.ordinaArrayDiOggetti(this.opzioniFiltroProvincia, 'label');
   }
 
   isCampoInvalido(campo: NgModel) {

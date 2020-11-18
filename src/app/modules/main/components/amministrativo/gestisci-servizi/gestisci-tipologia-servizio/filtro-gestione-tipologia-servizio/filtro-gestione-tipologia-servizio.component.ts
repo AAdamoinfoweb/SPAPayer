@@ -57,8 +57,20 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   ngOnChanges(sc: SimpleChanges) {
-    if ((this.funzione === FunzioneGestioneEnum.MODIFICA || FunzioneGestioneEnum.DETTAGLIO) && sc.filtriIniziali.currentValue) {
-      this.filtriRicerca = this.filtriIniziali;
+    if (sc.filtriIniziali.currentValue) {
+      // Carico il filtro raggruppamento quando termina la GET del dettaglio tipologia
+      if (this.funzione === FunzioneGestioneEnum.MODIFICA || FunzioneGestioneEnum.DETTAGLIO) {
+        this.filtriRicerca = this.filtriIniziali;
+      }
+
+      // Svuoto i filtri dopo che è stata salvata la tipologia (al Salva, in FormTipologia si crea un nuovo oggetto filtro)
+      // Va controllato che i valori del filtro in input siano diversi per distinguere dal caso in cui, dopo l'onChange del filtro premendo Crea, arriva un nuovo filtro in input con i valori appena impostati
+      if (this.funzione === FunzioneGestioneEnum.AGGIUNGI
+        && (sc.filtriIniziali.currentValue.raggruppamentoId !== this.filtriRicerca.raggruppamentoId
+            || sc.filtriIniziali.currentValue.codiceTipologia !== this.filtriRicerca.codiceTipologia)) {
+        this.filtriRicerca = this.filtriIniziali;
+        this.isTipologiaCreata = false;
+      }
     }
   }
 
@@ -72,7 +84,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
             label: raggruppamento.descrizione
           });
         });
-        Utils.ordinaOpzioniSelect(this.opzioniRaggruppamento);
+        Utils.ordinaArrayDiOggetti(this.opzioniRaggruppamento, 'label');
       }
     });
   }
@@ -110,6 +122,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   caricaCodiciTipologia(): void {
     this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione).subscribe(listaTipologieServizio => {
       if (listaTipologieServizio) {
+        Utils.ordinaArrayDiOggetti(listaTipologieServizio, 'codice');
         this.listaCodiciTipologia = listaTipologieServizio.map(tipologiaServizio => tipologiaServizio.codice);
       }
     });

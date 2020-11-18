@@ -483,14 +483,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.salvaParziale(this.model[nomeCampo], campo);
   }
 
-  ordinaPerPosizione(campi: Array<CampoForm>): void {
-    campi.sort((campo1: CampoForm, campo2: CampoForm) => {
-      return campo1.posizione > campo2.posizione ? 1 : (campo1.posizione < campo2.posizione ? -1 : 0);
-    });
-  }
-
   impostaCampi(campi: Array<CampoForm>, isTipologiaServizio: boolean = null): void {
-    this.ordinaPerPosizione(campi);
+    Utils.ordinaArrayDiOggetti(campi, 'posizione');
 
     campi.forEach(campo => {
       const campoForm = new FormControl();
@@ -715,7 +709,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       }
 
       // Ordino le opzioni della select
-      Utils.ordinaOpzioniSelect(campo.opzioni);
+      Utils.ordinaArrayDiOggetti(campo.opzioni, 'label');
     }
   }
 
