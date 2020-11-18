@@ -29,3 +29,9 @@
 :host ::ng-deep .text-invalid {
   color: #FF0000;
 }
+
+@media screen and (min-width: 768px) {
+  #containerBottoneCrea {
+    margin-top: 25px;
+  }
+}
