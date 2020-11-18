@@ -180,7 +180,7 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
     const iconaAttivitaAttivaSchedulata = new ImmaginePdf();
     iconaAttivitaAttivaSchedulata.indiceColonna = 0;
     iconaAttivitaAttivaSchedulata.srcIcona = 'assets/img/active-statistic-or-activity.png';
-    iconaAttivitaAttivaSchedulata.posizioneX = 4;
+    iconaAttivitaAttivaSchedulata.posizioneX = 3;
     iconaAttivitaAttivaSchedulata.posizioneY = 1;
     iconaAttivitaAttivaSchedulata.larghezza = 18;
     iconaAttivitaAttivaSchedulata.altezza = 19;
@@ -192,8 +192,16 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
   }
 
   getRigheFileExcel(righe: any[]) {
-    // TODO logica creazione righe file excel
-    return null;
+    return righe.map(riga => {
+      const rigaFormattata = riga;
+      delete rigaFormattata.id;
+      rigaFormattata.iconaAttivitaAttiveSchedulate = riga.iconaAttivitaAttiveSchedulate.display === 'none' ? 'DISABILITATA' : 'ATTIVA';
+      rigaFormattata.titolo = riga.titolo.value;
+      rigaFormattata.descrizione = riga.descrizione.value;
+      rigaFormattata.inizio = riga.inizio.value;
+      rigaFormattata.fine = riga.fine.value;
+      return rigaFormattata;
+    });
   }
 
   getNumeroRecord(): string {
