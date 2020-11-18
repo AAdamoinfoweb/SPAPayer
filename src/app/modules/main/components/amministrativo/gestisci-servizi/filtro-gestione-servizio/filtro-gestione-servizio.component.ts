@@ -44,6 +44,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   filtriIniziali: ParametriRicercaServizio;
 
   listaCodiciTipologia: TipologiaServizio[] = [];
+  listaCodiciTipologiaFiltrati: TipologiaServizio[] = [];
 
   disabilitaFiltri = false;
 
@@ -65,6 +66,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
       this.filtriRicerca = this.filtriIniziali;
       this.disabilitaFiltri = false;
     }
+
   }
 
   inizializzaOpzioniRaggruppamento(): void {
@@ -95,6 +97,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
     this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione).subscribe(listaTipologieServizio => {
       if (listaTipologieServizio) {
         this.listaCodiciTipologia = listaTipologieServizio;
+        this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia;
       }
     });
   }
@@ -103,7 +106,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
     const input = event.query;
 
     if (input.length < this.minCharsRecuperoValoriAutocomplete) {
-      this.listaCodiciTipologia = [];
+      this.listaCodiciTipologiaFiltrati = [];
     } else if (input.length === this.minCharsRecuperoValoriAutocomplete) {
       let filtro = null;
       if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
@@ -112,7 +115,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
       }
       this.caricaCodiciTipologia();
     } else {
-      this.listaCodiciTipologia = this.listaCodiciTipologia.filter(value => value.codice.toLowerCase().startsWith(input.toLowerCase()));
+      this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia.filter(value => value.codice.toLowerCase().startsWith(input.toLowerCase()));
     }
   }
 
