@@ -24,7 +24,7 @@
     (onChangeFiltri)="onChangeFiltri($event)"
   ></app-filtro-gestione-tipologia-servizio>
 
-  <ng-container *ngIf="filtro?.raggruppamentoId">
+  <div *ngIf="filtro?.raggruppamentoId" class="ml-4">
 
     <div class="row">
       <div class="col-md-4 pb-2">
@@ -147,7 +147,7 @@
         <button id="buttonSalva" class="btn" [disabled]="!abilitaSalva()" (click)="onClickSalva()">Salva</button>
       </div>
     </div>
-  </ng-container>
+  </div>
 </div>
 
 <!-- Modale -->

@@ -24,7 +24,7 @@
     (onChangeFiltri)="onChangeFiltri($event)"
   ></app-filtro-gestione-servizio>
 
-  <ng-container *ngIf="filtri">
+  <div *ngIf="filtri" class="ml-4">
     <form #datiForm="ngForm">
       <div class="collapse-header" id="idCollapseFiltri">
         <button data-toggle="collapse" data-target="#contatti" aria-expanded="true"
@@ -588,5 +588,5 @@
         </div>
       </div>
     </form>
-  </ng-container>
+  </div>
 </div>
