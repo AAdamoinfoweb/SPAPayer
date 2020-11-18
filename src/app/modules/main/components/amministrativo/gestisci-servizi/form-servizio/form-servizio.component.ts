@@ -242,6 +242,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   onChangeFiltri(event: ParametriRicercaServizio) {
     this.filtri = event;
+    this.aggiungiContoCorrente();
     this.caricaCampi(event.tipologiaServizio.id).subscribe();
   }
 
