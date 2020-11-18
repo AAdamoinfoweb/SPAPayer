@@ -539,8 +539,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     });
   }
 
-  getCampoDettaglioTransazione(nomeCampo: string) {
-    const campoForms: CampoForm[] = this.listaCampiDinamici.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
+  getCampoDettaglioTransazione(campoDettaglioTransazione: string) {
+    const campoForms: CampoForm[] = this.listaCampiDinamici.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == campoDettaglioTransazione.toLocaleLowerCase());
     if (campoForms.length > 0) {
       return this.getNomeCampoForm(campoForms[0]);
     } else {
@@ -548,6 +548,10 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     }
   }
 
+  /*
+    Metodo usato per astrarre il formato della chiave con cui leggere/scrivere sul model il valore di un oggetto CampoForm.
+    Da non confondere con il metodo getTitoloCampo che restituisce l'attributo titolo di un oggetto CampoForm.
+  */
   getNomeCampoForm(campo: CampoForm): string {
     return campo.titolo;
   }
@@ -753,7 +757,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.listaCampiDinamici.forEach(campo => {
       const nomeCampo = this.getNomeCampoForm(campo);
       const field: CampoDettaglioTransazione = new CampoDettaglioTransazione();
-      field.titolo = nomeCampo;
+      field.titolo = this.getTitoloCampo(campo);
       field.valore = this.model[nomeCampo];
       bollettino.listaCampoDettaglioTransazione.push(field);
     });
