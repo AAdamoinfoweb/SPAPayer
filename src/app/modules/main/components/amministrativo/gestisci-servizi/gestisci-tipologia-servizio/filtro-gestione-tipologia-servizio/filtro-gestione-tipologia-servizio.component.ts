@@ -53,9 +53,8 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   ngOnChanges(sc: SimpleChanges) {
-    if (sc.filtriIniziali?.currentValue) {
+    if ((this.funzione === FunzioneGestioneEnum.MODIFICA || FunzioneGestioneEnum.DETTAGLIO) && sc.filtriIniziali.currentValue) {
       this.filtriRicerca = this.filtriIniziali;
-      this.isTipologiaCreata = false;
     }
   }
 
