@@ -4,6 +4,7 @@ import {Observable, of} from 'rxjs';
 import {RaggruppamentoTipologiaServizio} from '../modules/main/model/RaggruppamentoTipologiaServizio';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
+import {ParametriRicercaEnte} from "../modules/main/model/ente/ParametriRicercaEnte";
 
 @Injectable({
   providedIn: 'root'
@@ -36,4 +37,69 @@ export class ConfiguraServizioService {
           }
         }));
   }
+
+  configuraServiziFiltroLivelloTerritoriale(societaId: any, idFunzione: any) {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    let params = new HttpParams();
+    params = params.set('societaId', String(societaId));
+
+    return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.filtroRaggruppamentoUrl, {
+      params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as RaggruppamentoTipologiaServizio[];
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  configuraServiziFiltroEnteImpositore(params: ParametriRicercaEnte, idFunzione: any) {
+    return this.getListaEnti('/filtroEnteImpositore', params, idFunzione);
+  }
+
+
+  configuraServiziFiltroEnteBeneficiario(params: ParametriRicercaEnte, idFunzione: any) {
+    return this.getListaEnti('/filtroEnteBeneficiario', params, idFunzione);
+  }
+
+  private getListaEnti(serviceName: string, parametriRicercaEnte: ParametriRicercaEnte, idFunzione: string) {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    let params = new HttpParams();
+    if (parametriRicercaEnte) {
+      if (parametriRicercaEnte.societaId != null) {
+        params = params.set('societaId', String(parametriRicercaEnte.societaId));
+      }
+      if (parametriRicercaEnte.livelloTerritorialeId != null) {
+        params = params.set('livelloTerritorialeId', String(parametriRicercaEnte.livelloTerritorialeId));
+      }
+    }
+
+    return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + serviceName, {
+      params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as RaggruppamentoTipologiaServizio[];
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
 }

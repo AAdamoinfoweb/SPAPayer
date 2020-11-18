@@ -40,6 +40,7 @@ import {DatiContoCorrenteComponent} from "../../anagrafiche/gestisci-enti/dati-c
 import {ContoCorrenteSingolo} from "../../../../model/ente/ContoCorrenteSingolo";
 import {Beneficiario} from "../../../../model/ente/Beneficiario";
 import {BeneficiarioSingolo} from "../../../../model/ente/BeneficiarioSingolo";
+import {ConfiguraServizioService} from "../../../../../../services/configura-servizio.service";
 
 export class LivelloIntegrazioneServizio {
   id: number = null;
@@ -64,6 +65,11 @@ export class BeneficiarioServizio {
   societaId: number = null;
   enteId: number = null;
   livelloTerritorialeId: number = null;
+}
+
+export class FiltroConfiguraServizi {
+  id: number = null;
+  nome: string = null;
 }
 
 @Component({
@@ -96,13 +102,13 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   beneficiario: BeneficiarioServizio = new BeneficiarioServizio();
 
   listaSocieta: Societa[] = [];
-  listaLivelloTerritoriale: LivelloTerritoriale[] = [];
-  listaEnti: SintesiEnte[] = [];
+  listaLivelloTerritoriale: FiltroConfiguraServizi[] = [];
+  listaEnti: FiltroConfiguraServizi[] = [];
+  listaEntiBenef: FiltroConfiguraServizi[] = [];
+
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   filtri: ParametriRicercaServizio;
 
-  listaEntiBenef: SintesiEnte[] = [];
-  listaLivelloTerritorialeBenef: LivelloTerritoriale[] = [];
 
   campoTipologiaServizioOriginal: CampoTipologiaServizio[];
 
@@ -132,6 +138,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
 
   constructor(private cdr: ChangeDetectorRef,
+              private configuraServizioService: ConfiguraServizioService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private overlayService: OverlayService,
               private societaService: SocietaService,
@@ -238,19 +245,25 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onChangeSocieta(societaInput: NgModel) {
+    this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(societaInput.value, this.idFunzione)
+      .pipe(map((value) => this.listaLivelloTerritoriale = value)).subscribe();
 
   }
 
-  onChangeLivelloTerritoriale(societaInput: NgModel, livelloTerritorialeInput: NgModel) {
-    this.getObservableFunzioneRicerca(societaInput.value, livelloTerritorialeInput.value)
+  onChangeLivelloTerritorialeImpositore(societaInput: NgModel, livelloTerritorialeInput: NgModel) {
+    const params = new ParametriRicercaEnte();
+    params.societaId = societaInput.value;
+    params.livelloTerritorialeId = livelloTerritorialeInput.value;
+    return this.configuraServizioService.configuraServiziFiltroEnteImpositore(params, this.idFunzione)
       .pipe(map((value) => this.listaEnti = value)).subscribe();
   }
 
-  getObservableFunzioneRicerca(societaId, livelloTerritorialeId): Observable<SintesiEnte[]> {
+  onChangeLivelloTerritorialeBeneficiario(societaInput: NgModel, livelloTerritorialeInput: NgModel) {
     const params = new ParametriRicercaEnte();
-    params.societaId = societaId;
-    params.livelloTerritorialeId = livelloTerritorialeId;
-    return this.enteService.ricercaEnti(params, this.idFunzione);
+    params.societaId = societaInput.value;
+    params.livelloTerritorialeId = livelloTerritorialeInput.value;
+    return this.configuraServizioService.configuraServiziFiltroEnteBeneficiario(params, this.idFunzione)
+      .pipe(map((value) => this.listaEntiBenef = value)).subscribe();
   }
 
   isCampoInvalido(societaInput: NgModel) {

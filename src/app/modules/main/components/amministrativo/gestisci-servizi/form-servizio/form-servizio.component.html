@@ -322,7 +322,7 @@
                   #livelloTerritorialeId="ngModel"
                   [(ngModel)]="impositore.livelloTerritorialeId"
                   [disabled]="!impositore.societaId"
-                  (ngModelChange)="onChangeLivelloTerritoriale(societaInput, livelloTerritorialeId)"
+                  (ngModelChange)="onChangeLivelloTerritorialeImpositore(societaInput, livelloTerritorialeId)"
                 >
                   <option [ngValue]="null" selected>Seleziona</option>
                   <option *ngFor="let item of listaLivelloTerritoriale"
@@ -429,10 +429,10 @@
                   [(ngModel)]="beneficiario.livelloTerritorialeId"
                   [disabled]="!beneficiario.societaId"
                   [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
-                  (ngModelChange)="onChangeLivelloTerritoriale(societaBenefInput, livelloTerritorialeIdBenef)"
+                  (ngModelChange)="onChangeLivelloTerritorialeBeneficiario(societaBenefInput, livelloTerritorialeIdBenef)"
                 >
                   <option [ngValue]="null" selected>Seleziona</option>
-                  <option *ngFor="let item of listaLivelloTerritorialeBenef"
+                  <option *ngFor="let item of listaLivelloTerritoriale"
                           [ngValue]="item.id">{{item.nome}}</option>
                 </select>
               </div>
@@ -459,7 +459,7 @@
                         [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
                         [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
-                  <option *ngFor="let item of listaEntiBenef" [ngValue]="item.id">{{item.nomeEnte}}</option>
+                  <option *ngFor="let item of listaEntiBenef" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
               </div>
             </div>
