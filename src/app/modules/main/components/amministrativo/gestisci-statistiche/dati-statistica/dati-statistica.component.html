@@ -126,39 +126,14 @@
           <div class="col-auto" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
             <span ngbTooltip="Aggiungi destinatario" placement="bottom" [ngStyle]="{fill: '#403d39'}" >
             <svg class="bg-light icon icon-sm filled"
-                 (click)="aggiungiDestinatario(datiForm)">
+                 (click)="aggiungiDestinatario()">
               <use xlink:href="assets/img/sprite.svg#it-plus"></use>
             </svg>
               </span>
           </div>
         </div>
-        <div id="destinatari" *ngFor="let destinatario of datiStatistica.destinatari, index as index">
-          <div class="row">
-            <div class="col-10">
-              <input type="text" id="{{'destinatario' + destinatario.uuid}}" name="{{'destinatario' + destinatario.uuid}}"
-                     class="pt-0" autocomplete="off" aria-describedby="destinatarioHelpDescription"
-                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                     [(ngModel)]="destinatario.email"
-                     [pattern]="emailRegex"
-                     #email="ngModel"
-                     (ngModelChange)="onChangeModel(datiForm, email)">
-            </div>
-            <div class="col-2 align-self-center" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-              <span ngbTooltip="Elimina destinatario" placement="bottom" [ngStyle]="{fill: '#403d39'}">
-            <svg class="bg-light icon icon-sm filled"
-                 (click)="eliminaDestinatario(datiForm, email, index)">
-              <use xlink:href="assets/img/sprite.svg#it-close"></use>
-            </svg>
-              </span>
-            </div>
-          </div>
-          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-            <div class="col">
-              <p *ngIf="!isCampoInvalido(email)">Inserisci destinatario</p>
-              <p *ngIf="isCampoInvalido(email)"
-                 class="text-invalid">{{getMessaggioErrore(email)}}</p>
-            </div>
-          </div>
+        <div id="destinatari">
+          <div #destinatario></div>
         </div>
       </div>
       <!--      fine Destinatari -->

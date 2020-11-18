@@ -12,12 +12,8 @@ import {
 } from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
 import {NgForm, NgModel} from '@angular/forms';
-import {Utils} from '../../../../../../utils/Utils';
 import {AttivitaPianificata} from "../../../../model/attivitapianificata/AttivitaPianificata";
 import {ParametroAttivitaPianificata} from "../../../../model/attivitapianificata/ParametroAttivitaPianificata";
-import {DatiContoCorrenteComponent} from "../../anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
-import {ContoCorrente} from "../../../../model/ente/ContoCorrente";
-import {ContoCorrenteSingolo} from "../../../../model/ente/ContoCorrenteSingolo";
 import {DatiParametroComponent} from "../dati-parametri/dati-parametro.component";
 
 @Component({

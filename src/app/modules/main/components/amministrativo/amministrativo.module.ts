@@ -68,6 +68,7 @@ import {DatiAttivitaPianificateComponent} from './gestisci-attivita-pianificate/
 import {FormAttivitaPianificateComponent} from './gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component';
 import {SchedulazioneComponent} from "./schedulazione/schedulazione.component";
 import { DatiParametroComponent } from './gestisci-attivita-pianificate/dati-parametri/dati-parametro.component';
+import { DatiDestinatarioComponent } from './gestisci-statistiche/dati-destinatario/dati-destinatario.component';
 
 
 @NgModule({
@@ -117,6 +118,7 @@ import { DatiParametroComponent } from './gestisci-attivita-pianificate/dati-par
     SchedulazioneComponent,
     FormAttivitaPianificateComponent,
     DatiParametroComponent,
+    DatiDestinatarioComponent,
   ],
   imports: [
     HttpClientModule,

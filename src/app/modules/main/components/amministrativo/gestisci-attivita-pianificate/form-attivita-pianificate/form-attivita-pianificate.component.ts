@@ -125,20 +125,6 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
         moment(attivitaPianificataCopy.schedulazione.fine, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
           .format(Utils.FORMAT_DATE_CALENDAR);
     }
-    if (lettura && (attivitaPianificataCopy.parametri != null && attivitaPianificataCopy.parametri.length > 0)) {
-      // utilizzo il campo uuid di Destinatario per identificare i destinatari
-      attivitaPianificataCopy.parametri = attivitaPianificataCopy.parametri.map((parametro) => {
-        parametro.uuid = Utils.uuidv4();
-        return parametro;
-      });
-    }
-    if (!lettura && (attivitaPianificataCopy.parametri != null && attivitaPianificataCopy.parametri.length > 0)) {
-      // elimino il campo uuid di Destinatario
-      attivitaPianificataCopy.parametri = attivitaPianificataCopy.parametri.map((parametro) => {
-        delete parametro.uuid;
-        return parametro;
-      });
-    }
     return attivitaPianificataCopy;
   }
 

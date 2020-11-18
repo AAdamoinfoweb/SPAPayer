@@ -127,20 +127,6 @@ export class FormStatisticaComponent extends FormElementoParentComponent impleme
         moment(statisticaCopy.schedulazione.fine, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
           .format(Utils.FORMAT_DATE_CALENDAR);
     }
-    if (lettura && (statisticaCopy.destinatari != null && statisticaCopy.destinatari.length > 0)) {
-      // utilizzo il campo uuid di Destinatario per identificare i destinatari
-      statisticaCopy.destinatari = statisticaCopy.destinatari.map((destinatario) => {
-        destinatario.uuid = Utils.uuidv4();
-        return destinatario;
-      });
-    }
-    if (!lettura && (statisticaCopy.destinatari != null && statisticaCopy.destinatari.length > 0)) {
-      // elimino il campo uuid di Destinatario
-      statisticaCopy.destinatari = statisticaCopy.destinatari.map((destinatario) => {
-        delete destinatario.uuid;
-        return destinatario;
-      });
-    }
     return statisticaCopy;
   }
 

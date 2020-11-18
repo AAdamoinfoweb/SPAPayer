@@ -2,7 +2,7 @@
   <!--    inizio Parametri -->
       <div class="row">
         <div class="col-5">
-          <input type="text" id="{{'chiave' + parametro.uuid}}" name="{{'chiave' + parametro.uuid}}"
+          <input type="text" id="{{'chiave' + index}}" name="{{'chiave' + index}}"
                  class="pt-0" autocomplete="off" aria-describedby="destinatarioHelpDescription"
                  [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                  [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="col-5">
-          <input type="text" id="{{'valore' + parametro.uuid}}" name="{{'valore' + parametro.uuid}}"
+          <input type="text" id="{{'valore' + index}}" name="{{'valore' + index}}"
                  class="pt-0" autocomplete="off" aria-describedby="destinatarioHelpDescription"
                  [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                  [(ngModel)]="parametro.valore"
