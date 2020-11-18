@@ -404,8 +404,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         return of(null);
       } else {
         return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
-          this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
-          this.impostaCampi(campiNuovoPagamento.campiServizio);
+          this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio, true);
+          this.impostaCampi(campiNuovoPagamento.campiServizio, false);
 
           this.restoreParziale();
 
@@ -423,6 +423,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     const campiPagamentoLV1: CampoForm[] = [];
 
     const campoAnno = new CampoForm();
+    campoAnno.id = 1;
     campoAnno.titolo = this.nomeCampoAnnoBollettinoLV1;
     campoAnno.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     campoAnno.posizione = 1;
@@ -431,6 +432,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     campiPagamentoLV1.push(campoAnno);
 
     const causale = new CampoForm();
+    causale.id = 2;
     causale.titolo = this.nomeCampoCausaleBollettinoLV1;
     causale.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     causale.posizione = 2;
@@ -439,6 +441,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     campiPagamentoLV1.push(causale);
 
     const documento = new CampoForm();
+    documento.id = 3;
     documento.titolo = this.nomeCampoDocumentoBollettinoLV1;
     documento.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     documento.posizione = 3;
@@ -454,6 +457,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     if (listaCampoDettaglioTransazione) {
       listaCampoDettaglioTransazione.forEach((dettaglio, index) => {
         const campo = new CampoForm();
+        campo.id = index;
         campo.titolo = dettaglio.titolo;
         campo.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
         campo.posizione = index;
@@ -485,7 +489,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     });
   }
 
-  impostaCampi(campi: Array<CampoForm>): void {
+  impostaCampi(campi: Array<CampoForm>, isTipologiaServizio: boolean = null): void {
     this.ordinaPerPosizione(campi);
 
     campi.forEach(campo => {
@@ -533,6 +537,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
       campoForm.setValidators(validatori);
 
+      campo.isCampoTipologiaServizio = isTipologiaServizio;
       this.model[this.getNomeCampoForm(campo)] = null;
       this.form.addControl(this.getNomeCampoForm(campo), campoForm);
       this.listaCampiDinamici.push(campo);
@@ -553,7 +558,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     Da non confondere con il metodo getTitoloCampo che restituisce l'attributo titolo di un oggetto CampoForm.
   */
   getNomeCampoForm(campo: CampoForm): string {
-    return campo.titolo;
+    if (campo.isCampoTipologiaServizio === null) {
+      // Per i casi in cui i campi sono generati manualmente invece di chiamare la GET, usiamo l'id generato manualmente
+      return '' + campo.id;
+    } else {
+      return campo.isCampoTipologiaServizio ? 'TS' + campo.id : 'S' + campo.id;
+    }
   }
 
   getTitoloCampo(campo: CampoForm): string {

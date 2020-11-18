@@ -19,4 +19,5 @@ export class CampoForm {
   campoDettaglioTransazione: string;
   dipendeDa: number;
   opzioni: Array<OpzioneSelect>;
+  isCampoTipologiaServizio: boolean; // variabile aggiunta per usarla in coppia con l'id per creare un identificativo univoco
 }
