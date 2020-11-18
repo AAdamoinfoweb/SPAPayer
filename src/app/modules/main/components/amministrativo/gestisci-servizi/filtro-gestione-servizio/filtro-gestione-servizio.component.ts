@@ -91,7 +91,15 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
 
-  caricaCodiciTipologia(event): void {
+  caricaCodiciTipologia(): void {
+    this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione).subscribe(listaTipologieServizio => {
+      if (listaTipologieServizio) {
+        this.listaCodiciTipologia = listaTipologieServizio;
+      }
+    });
+  }
+
+  filtraCodiciTipologia(event): void {
     const input = event.query;
 
     if (input.length < this.minCharsRecuperoValoriAutocomplete) {
@@ -102,11 +110,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
         filtro = new ParametriRicercaServizio();
         filtro.raggruppamento = this.filtriRicerca.raggruppamentoId;
       }
-      this.campoTipologiaServizioService.recuperaTipologieServizio(filtro, this.idFunzione).subscribe(listaTipologieServizio => {
-        if (listaTipologieServizio) {
-          this.listaCodiciTipologia = listaTipologieServizio;
-        }
-      });
+      this.caricaCodiciTipologia();
     } else {
       this.listaCodiciTipologia = this.listaCodiciTipologia.filter(value => value.codice.toLowerCase().startsWith(input.toLowerCase()));
     }

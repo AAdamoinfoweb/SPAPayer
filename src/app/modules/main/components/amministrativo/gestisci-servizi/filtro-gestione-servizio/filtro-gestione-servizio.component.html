@@ -55,7 +55,7 @@
                               [(ngModel)]="filtriRicerca.tipologiaServizio"
                               [field]="'codice'"
                               [suggestions]="listaCodiciTipologia"
-                              (completeMethod)="caricaCodiciTipologia($event)"
+                              (completeMethod)="filtraCodiciTipologia($event)"
                               (onClear)="listaCodiciTipologia = []"
                               [minLength]="minCharsRecuperoValoriAutocomplete"
                               delay="0" autoHighlight="true"

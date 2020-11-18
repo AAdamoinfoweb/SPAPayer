@@ -10,6 +10,7 @@ import {CampoTipologiaServizio} from "../modules/main/model/CampoTipologiaServiz
 import {ConfiguratoreCampiNuovoPagamento} from '../modules/main/model/campo/ConfiguratoreCampiNuovoPagamento';
 import {InserimentoTipologiaServizio} from "../modules/main/model/campo/InserimentoTipologiaServizio";
 import {ModificaTipologiaServizio} from "../modules/main/model/campo/ModificaTipologiaServizio";
+import {ParametriRicercaServizio} from '../modules/main/model/servizio/ParametriRicercaServizio';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,7 @@ export class CampoTipologiaServizioService {
       }));
   }
 
-  recuperaTipologieServizio(filtri: ParametriRicercaTipologiaServizio, idFunzione): Observable<TipologiaServizio[]> {
+  recuperaTipologieServizio(filtri: ParametriRicercaTipologiaServizio | ParametriRicercaServizio, idFunzione): Observable<TipologiaServizio[]> {
 
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -53,8 +54,11 @@ export class CampoTipologiaServizioService {
       if (filtri.raggruppamentoId) {
         params = params.set('raggruppamentoId', String(filtri.raggruppamentoId));
       }
-      if (filtri.tipologia?.codice) {
+      if (filtri instanceof ParametriRicercaTipologiaServizio && filtri.tipologia?.codice) {
         params = params.set('codiceTipologia', filtri.tipologia.codice);
+      }
+      if (filtri instanceof ParametriRicercaServizio && filtri.tipologiaServizio?.codice) {
+        params = params.set('codiceTipologia', filtri.tipologiaServizio.codice);
       }
     }
 
