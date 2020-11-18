@@ -7,7 +7,7 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {HttpClient} from '@angular/common/http';
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Statistica} from '../../../../model/statistica/Statistica';
-import {Schedulazione} from '../../../../model/statistica/Schedulazione';
+import {Schedulazione} from '../../../../model/schedulazione/Schedulazione';
 import {StatisticaService} from '../../../../../../services/statistica.service';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {Utils} from '../../../../../../utils/Utils';

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
-import {Schedulazione} from '../../../model/statistica/Schedulazione';
+import {Schedulazione} from '../../../model/schedulazione/Schedulazione';
 import {FunzioneGestioneEnum} from '../../../../../enums/funzioneGestione.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {NgForm, NgModel} from '@angular/forms';

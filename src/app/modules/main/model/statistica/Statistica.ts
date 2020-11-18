@@ -1,4 +1,4 @@
-import {Schedulazione} from './Schedulazione';
+import {Schedulazione} from '../schedulazione/Schedulazione';
 import {Destinatario} from './Destinatario';
 
 export class Statistica {
