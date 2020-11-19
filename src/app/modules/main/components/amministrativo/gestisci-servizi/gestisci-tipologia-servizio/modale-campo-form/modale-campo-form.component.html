@@ -32,8 +32,10 @@
       </div>
     </div>
 
-    <div class="col-md-4 form-elem-container" id="containerBottoneAggiungiTipoCampo">
-      <button class="btn" [disabled]="tipologiaServizio.funzione == FunzioneGestioneEnum.DETTAGLIO" (click)="addTipoCampo()">Aggiungi Tipo campo</button>
+    <div class="col-md-4 form-elem-container">
+      <div id="containerBottoneAggiungiTipoCampo">
+        <button class="btn" [disabled]="tipologiaServizio.funzione == FunzioneGestioneEnum.DETTAGLIO" (click)="addTipoCampo()">Aggiungi Tipo campo</button>
+      </div>
     </div>
 
     <div class="col-md-2 form-elem-container">
@@ -216,5 +218,5 @@
     </div>
 
   </div>
-  
+
 </form>
