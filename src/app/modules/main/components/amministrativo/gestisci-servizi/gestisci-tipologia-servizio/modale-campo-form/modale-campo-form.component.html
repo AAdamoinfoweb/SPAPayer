@@ -199,22 +199,22 @@
       </div>
     </div>
 
-  </div>
+    <div class="col-12">
+      <div class="row buttons-row">
 
-  <!--Bottoni-->
-  <div class="row buttons-row">
+        <div class="col-2">
+          <button type="button" id="bottoneIndietro" class="btn btn-secondary"
+                  (click)="clickIndietro()">{{tipologiaServizio.funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}
+          </button>
+        </div>
 
-    <div class="col-2">
-      <button type="button" id="bottoneIndietro" class="btn btn-secondary"
-              (click)="clickIndietro()">{{tipologiaServizio.funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}
-      </button>
-    </div>
-
-    <div class="col-10 text-right" *ngIf="tipologiaServizio.funzione !== FunzioneGestioneEnum.DETTAGLIO">
-      <button (click)="salvaCampoForm()" type="button" class="btn"
-              [disabled]="form.invalid">
-        Salva
-      </button>
+        <div class="col-10 text-right" *ngIf="tipologiaServizio.funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <button (click)="salvaCampoForm()" type="button" class="btn"
+                  [disabled]="form.invalid">
+            Salva
+          </button>
+        </div>
+      </div>
     </div>
 
   </div>
