@@ -18,7 +18,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <p *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI &&  (codiceFiscale != null && codiceFiscale.length < 16)" [ngClass]="{'text-muted': !isCampoInvalido(codicefiscaleinput), 'text-invalid': isCampoInvalido(codicefiscaleinput)}">
+            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" [ngClass]="{'text-muted': !isCampoInvalido(codicefiscaleinput), 'text-invalid': isCampoInvalido(codicefiscaleinput)}">
               {{setPlaceholder(codicefiscaleinput, 'string')}}
             </p>
           </div>

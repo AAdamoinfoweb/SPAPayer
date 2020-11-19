@@ -9,8 +9,13 @@ import {TipoModaleEnum} from '../enums/tipoModale.enum';
 import {Breadcrumb, SintesiBreadcrumb} from "../modules/main/dto/Breadcrumb";
 import {Colonna} from '../modules/main/model/tabella/Colonna';
 import {OpzioneSelect} from '../modules/main/model/OpzioneSelect';
+import {Banner} from "../modules/main/model/banner/Banner";
+import {getBannerType, LivelloBanner} from "../enums/livelloBanner.enum";
 
 export class Utils {
+
+  constructor() {
+  }
 
   static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00:00';
   static FORMAT_LOCAL_DATE_TIME_ISO = 'YYYY-MM-DD[T]hh:mm:ss';
@@ -232,5 +237,14 @@ export class Utils {
 
     const blob = new Blob(byteArrays, {type: contentType});
     return blob;
+  }
+
+  static bannerOperazioneSuccesso(): Banner {
+    const banner: Banner = {
+      titolo: 'SUCCESSO',
+      testo: 'Operazione conclusa con successo',
+      tipo: getBannerType(LivelloBanner.SUCCESS)
+    };
+    return banner;
   }
 }
