@@ -139,10 +139,10 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.INSERT:
-        // TODO this.aggiungiElemento('/aggiungiAttivita');
+        this.aggiungiElemento('/aggiungiAttivitaPianificata');
         break;
       case ToolEnum.UPDATE:
-        // TODO this.modificaElementoSelezionato('/modificaAttivita', this.getListaIdElementiSelezionati()[0]);
+        this.modificaElementoSelezionato('/modificaAttivitaPianificata', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
         this.eliminaAttivitaSelezionate();
@@ -228,7 +228,7 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
   }
 
   mostraDettaglioAttivita(rigaCliccata: any) {
-    // TODO this.mostraDettaglioElemento('/dettaglioAttivita', rigaCliccata.id.value);
+    this.mostraDettaglioElemento('/dettaglioAttivitaPianificata', rigaCliccata.id.value);
   }
 
 }
