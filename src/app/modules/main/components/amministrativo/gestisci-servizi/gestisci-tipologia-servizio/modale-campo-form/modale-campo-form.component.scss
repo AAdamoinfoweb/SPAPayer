@@ -20,7 +20,7 @@ input[type=checkbox] {
 }
 
 // risoluzione >= col-md
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 576px) {
   .form-elem-container {
     margin-top: 3vh;
   }
@@ -41,8 +41,8 @@ input[type=checkbox] {
   }
 }
 
-// risoluzione < col-md
-@media screen and (max-width: 767px) {
+// risoluzione < col-sm
+@media screen and (max-width: 575px) {
   .form-elem-container {
     margin-top: 1vh;
   }

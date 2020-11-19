@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="modal-wrapper">
   <div class="row form-row">
 
-    <div class="col-md-4 form-elem-container">
+    <div class="col-sm-6 col-md-4 form-elem-container">
       <div class="row">
         <label [htmlFor]="'titolo'" class="title form-elem-title"
         >Titolo</label>
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="col-md-4 form-elem-container">
+    <div class="col-sm-6 col-md-4 form-elem-container">
       <div class="row">
         <label [htmlFor]="'tipoCampo'" class="title form-elem-title"
         >Tipo Campo</label>
@@ -32,13 +32,13 @@
       </div>
     </div>
 
-    <div class="col-md-4 form-elem-container">
+    <div class="col-sm-12 col-md-4 form-elem-container">
       <div id="containerBottoneAggiungiTipoCampo">
         <button class="btn" [disabled]="tipologiaServizio.funzione == FunzioneGestioneEnum.DETTAGLIO" (click)="addTipoCampo()">Aggiungi Tipo campo</button>
       </div>
     </div>
 
-    <div class="col-md-2 form-elem-container">
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
       <div class="row">
         <label [htmlFor]="'obbligatorio'" class="title form-elem-title"
         >Obbligatorio</label>
@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <div class="col-md-2 form-elem-container">
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
       <div class="row">
         <label [htmlFor]="'chiave'" class="title form-elem-title"
         >Chiave</label>
@@ -71,7 +71,7 @@
       </div>
     </div>
 
-    <div class="col-md-2 form-elem-container">
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
       <div class="row">
         <label [htmlFor]="'lunghezzaVariabile'" class="title form-elem-title"
         >Lunghezza variabile</label>
@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <div class="col-md-2 form-elem-container">
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
       <div class="row">
         <label [htmlFor]="'lunghezza'" class="title form-elem-title"
         >Lunghezza</label>
@@ -101,7 +101,7 @@
       </div>
     </div>
 
-    <div class="col-md-2 form-elem-container">
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
       <div class="row">
         <label [htmlFor]="'campoFisso'" class="title form-elem-title"
         >Campo fisso</label>
@@ -116,7 +116,7 @@
       </div>
     </div>
 
-    <div class="col-md-2 form-elem-container">
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
       <div class="row">
         <label [htmlFor]="'disabilitato'" class="title form-elem-title"
         >Disabilitato</label>
@@ -132,7 +132,7 @@
       </div>
     </div>
 
-    <div class="col-md-3 form-elem-container">
+    <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
       <div class="row">
         <label [htmlFor]="'tipologica'" class="title form-elem-title"
         >Tipologica</label>
@@ -148,7 +148,7 @@
       </div>
     </div>
 
-    <div class="col-md-3 form-elem-container">
+    <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
       <div class="row">
         <label [htmlFor]="'dipendeDa'" class="title form-elem-title"
         >Dipende da</label>
@@ -166,7 +166,7 @@
       </div>
     </div>
 
-    <div class="col-md-3 form-elem-container">
+    <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
       <div class="row">
         <label [htmlFor]="'controllo_logico'" class="title form-elem-title"
         >Controllo logico</label>
@@ -182,7 +182,7 @@
       </div>
     </div>
 
-    <div class="col-md-3 form-elem-container">
+    <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
       <div class="row">
         <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
         >Campo dettaglio transazione</label>
