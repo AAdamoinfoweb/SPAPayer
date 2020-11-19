@@ -7,7 +7,7 @@ import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegra
 import {AmministrativoService} from "../../../../../../../services/amministrativo.service";
 import {CampoTipologiaServizio} from "../../../../../model/CampoTipologiaServizio";
 
-interface TipologiaServizioCampoForm {
+export interface DatiModaleCampo {
   listaDipendeDa: any[];
   livelloIntegrazione: LivelloIntegrazioneEnum;
   campoForm: CampoTipologiaServizio;
@@ -24,7 +24,7 @@ export class ModaleCampoFormComponent implements OnInit {
   form: FormGroup;
 
   @Input()
-  tipologiaServizio: TipologiaServizioCampoForm;
+  tipologiaServizio: DatiModaleCampo;
 
   FunzioneGestioneEnum = FunzioneGestioneEnum;
 

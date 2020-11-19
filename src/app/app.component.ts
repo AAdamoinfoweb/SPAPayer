@@ -49,11 +49,9 @@ export class AppComponent implements OnInit {
       });
 
     this.overlayService.mostraModaleCampoEvent
-      .subscribe(value => {
-        if (value?.campoForm) {
-          this.tipologiaServizio = value;
-        }
-        this.mostraModale = !!value;
+      .subscribe(datiModaleCampo => {
+        this.tipologiaServizio = datiModaleCampo;
+        this.mostraModale = datiModaleCampo != null;
         this.cdr.detectChanges();
       });
 
