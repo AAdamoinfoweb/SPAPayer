@@ -15,7 +15,7 @@ export class BannerComponent implements OnInit {
   attivo;
   banners: Banner[] = [];
   livello;
-  classe: string[] = ['alert alert-dismissible fade show'];
+  classe: string = 'alert alert-dismissible fade show';
 
 
   constructor(private bannerService: BannerService) {
@@ -24,7 +24,7 @@ export class BannerComponent implements OnInit {
   ngOnInit(): void {
     this.bannerService.bannerEvent.subscribe((banners: Banner[]) => {
       const bannersTemp = banners.map(banner => {
-        this.classe.push(banner.tipo ? banner.tipo.classe : getBannerType(LivelloBanner.INFO).classe);
+        this.classe = banner.tipo ? banner.tipo.classe : getBannerType(LivelloBanner.INFO).classe;
         banner.classe = this.classe;
         return banner;
       });

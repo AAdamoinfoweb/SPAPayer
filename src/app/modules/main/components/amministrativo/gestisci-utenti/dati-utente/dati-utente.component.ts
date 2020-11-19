@@ -68,19 +68,7 @@ export class DatiUtenteComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
-    if (campo?.name === 'attivazione' || campo?.name === 'scadenza') {
-      return this.controlloDate(campo, campo.model);
-    } else {
       return campo?.errors != null;
-    }
-  }
-
-  controlloDate(campo: NgModel, value: string): boolean {
-    const dataDaControllare = value;
-    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    const ret = Utils.isBefore(dataDaControllare, dataSistema) ||
-      campo?.errors != null;
-    return this.funzione === FunzioneGestioneEnum.AGGIUNGI ? ret : false;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
