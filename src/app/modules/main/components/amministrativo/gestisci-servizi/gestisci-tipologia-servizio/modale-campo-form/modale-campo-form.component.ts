@@ -90,7 +90,7 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   clickIndietro() {
-    this.overlayService.mostraModaleTipoCampoEvent.emit(null);
+    this.overlayService.mostraModaleCampoEvent.emit(null);
   }
 
   cambiaLivelloIntegrazione(item: CampoTipologiaServizio, event: LivelloIntegrazioneEnum) {
