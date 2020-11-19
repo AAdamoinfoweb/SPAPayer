@@ -1,15 +1,9 @@
 .modal-wrapper {
   height: 100%;
   margin-top: 2vh;
-  margin-left: 2vw;
-  margin-right: 2vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .form-elem-container {
-  margin-top: 1vh;
   padding-left: 2vw;
   padding-right: 2vw;
 }
@@ -34,10 +28,22 @@ input[type=checkbox] {
   #containerBottoneAggiungiTipoCampo {
     margin-top: 25px;
   }
+
+  .modal-wrapper {
+    margin-left: 2vw;
+    margin-right: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 // risoluzione < col-md
 @media screen and (max-width: 767px) {
+  .form-elem-container {
+    margin-top: 1vh;
+  }
+
   #containerBottoneAggiungiTipoCampo {
     padding-left: 0px;
   }
