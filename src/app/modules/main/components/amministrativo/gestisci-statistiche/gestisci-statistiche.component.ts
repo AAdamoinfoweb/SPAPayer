@@ -141,11 +141,11 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
   getImmaginiFilePdf(): ImmaginePdf[] {
     const iconaStatisticaAttiva = new ImmaginePdf();
     iconaStatisticaAttiva.indiceColonna = 0;
-    iconaStatisticaAttiva.srcIcona = 'assets/img/active-banner.png';
-    iconaStatisticaAttiva.posizioneX = 2;
-    iconaStatisticaAttiva.posizioneY = 2;
-    iconaStatisticaAttiva.larghezza = 9;
-    iconaStatisticaAttiva.altezza = 17;
+    iconaStatisticaAttiva.srcIcona = 'assets/img/active-statistic-or-activity.png';
+    iconaStatisticaAttiva.posizioneX = 1;
+    iconaStatisticaAttiva.posizioneY = 1;
+    iconaStatisticaAttiva.larghezza = 18;
+    iconaStatisticaAttiva.altezza = 19;
     return [iconaStatisticaAttiva];
   }
 
