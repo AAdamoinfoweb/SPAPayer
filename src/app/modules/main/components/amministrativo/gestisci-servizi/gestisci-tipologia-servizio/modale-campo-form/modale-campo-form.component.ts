@@ -24,7 +24,7 @@ export class ModaleCampoFormComponent implements OnInit {
   form: FormGroup;
 
   @Input()
-  tipologiaServizio: DatiModaleCampo;
+  datiModaleCampo: DatiModaleCampo;
 
   FunzioneGestioneEnum = FunzioneGestioneEnum;
 
@@ -68,24 +68,24 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.tipologiaServizio.listaDipendeDa =
-      this.tipologiaServizio.listaDipendeDa.filter((value => value.titolo !== this.tipologiaServizio.campoForm.titolo));
+    this.datiModaleCampo.listaDipendeDa =
+      this.datiModaleCampo.listaDipendeDa.filter((value => value.titolo !== this.datiModaleCampo.campoForm.titolo));
 
-    this.tipologiaServizio.campoForm.dipendeDa =
-      this.tipologiaServizio.listaDipendeDa.find((value => this.tipologiaServizio.campoForm.dipendeDa &&
-        value.titolo == this.tipologiaServizio.campoForm.dipendeDa.titolo));
+    this.datiModaleCampo.campoForm.dipendeDa =
+      this.datiModaleCampo.listaDipendeDa.find((value => this.datiModaleCampo.campoForm.dipendeDa &&
+        value.titolo == this.datiModaleCampo.campoForm.dipendeDa.titolo));
 
-    if (!this.tipologiaServizio.livelloIntegrazione)
-      this.tipologiaServizio.livelloIntegrazione = LivelloIntegrazioneEnum.LV2;
+    if (!this.datiModaleCampo.livelloIntegrazione)
+      this.datiModaleCampo.livelloIntegrazione = LivelloIntegrazioneEnum.LV2;
 
-    if (this.tipologiaServizio.funzione === FunzioneGestioneEnum.DETTAGLIO)
+    if (this.datiModaleCampo.funzione === FunzioneGestioneEnum.DETTAGLIO)
       this.form.disable();
     else
       this.form.enable();
 
-    if (this.tipologiaServizio.livelloIntegrazione === LivelloIntegrazioneEnum.LV2) {
-      this.tipologiaServizio.campoForm.campoInput = true;
-      this.tipologiaServizio.campoForm.jsonPathId = null;
+    if (this.datiModaleCampo.livelloIntegrazione === LivelloIntegrazioneEnum.LV2) {
+      this.datiModaleCampo.campoForm.campoInput = true;
+      this.datiModaleCampo.campoForm.jsonPathId = null;
     }
   }
 
@@ -95,8 +95,8 @@ export class ModaleCampoFormComponent implements OnInit {
 
   cambiaLivelloIntegrazione(item: CampoTipologiaServizio, event: LivelloIntegrazioneEnum) {
     if (event === LivelloIntegrazioneEnum.LV2) {
-      this.tipologiaServizio.campoForm.campoInput = true;
-      this.tipologiaServizio.campoForm.jsonPathId = null;
+      this.datiModaleCampo.campoForm.campoInput = true;
+      this.datiModaleCampo.campoForm.jsonPathId = null;
     }
     this.listaJsonPathFiltrata = this.listaJsonPath.filter(value => {
       return value.livello_integrazione_id === event && value.campo_input === item.campoInput;
@@ -104,18 +104,18 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   dipendeDaIsDisabled() {
-    return !this.tipologiaServizio.campoForm.tipologica ? true : null;
+    return !this.datiModaleCampo.campoForm.tipologica ? true : null;
   }
 
   salvaCampoForm() {
-    this.amministrativoService.salvaCampoFormEvent.emit(this.tipologiaServizio.campoForm);
+    this.amministrativoService.salvaCampoFormEvent.emit(this.datiModaleCampo.campoForm);
   }
 
   clickChiave(event: any) {
-    this.tipologiaServizio.campoForm.obbligatorio = event.target.value == "on";
+    this.datiModaleCampo.campoForm.obbligatorio = event.target.value == "on";
   }
 
   addTipoCampo() {
-    this.overlayService.mostraModaleTipoCampoEvent.emit({idFunzione: this.tipologiaServizio.funzione});
+    this.overlayService.mostraModaleTipoCampoEvent.emit({idFunzione: this.datiModaleCampo.funzione});
   }
 }
