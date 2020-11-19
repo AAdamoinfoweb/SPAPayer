@@ -90,7 +90,7 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   clickIndietro() {
-    this.overlayService.mostraModaleDettaglioEvent.emit(null);
+    this.overlayService.mostraModaleTipoCampoEvent.emit(null);
   }
 
   cambiaLivelloIntegrazione(item: CampoTipologiaServizio, event: LivelloIntegrazioneEnum) {
@@ -116,6 +116,6 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   addTipoCampo() {
-    this.overlayService.mostraModaleDettaglioEvent.emit({idFunzione: this.tipologiaServizio.funzione});
+    this.overlayService.mostraModaleTipoCampoEvent.emit({idFunzione: this.tipologiaServizio.funzione});
   }
 }

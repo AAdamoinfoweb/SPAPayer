@@ -107,7 +107,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         this.items.push(campoForm);
         this.cdr.detectChanges();
       }
-      this.overlayService.mostraModaleDettaglioEvent.emit(null);
+      this.overlayService.mostraModaleCampoEvent.emit(null);
     });
     this.refreshItemsEvent.subscribe((items) => {
       this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
@@ -330,7 +330,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   showModal(item: CampoTipologiaServizio) {
-    this.overlayService.mostraModaleDettaglioEvent.emit({
+    this.overlayService.mostraModaleCampoEvent.emit({
       campoForm: _.cloneDeep(item),
       funzione: this.funzione,
       livelloIntegrazione: this.livelloIntegrazione,

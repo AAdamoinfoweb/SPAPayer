@@ -29,7 +29,7 @@ export class ModaleAggiungiTipoCampoComponent implements OnInit {
   }
 
   clickIndietro() {
-    this.overlayService.mostraModaleDettaglioEvent.emit(null);
+    this.overlayService.mostraModaleTipoCampoEvent.emit(null);
   }
 
   salvaTipoCampo() {

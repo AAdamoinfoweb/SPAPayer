@@ -357,7 +357,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   showModal(item: CampoTipologiaServizio) {
-    this.overlayService.mostraModaleDettaglioEvent.emit({
+    this.overlayService.mostraModaleCampoEvent.emit({
       campoForm: _.cloneDeep(item),
       funzione: this.funzione,
       livelloIntegrazione: this.integrazione,

@@ -42,13 +42,27 @@ export class AppComponent implements OnInit {
       this.logout();
     });
 
-    this.overlayService.mostraModaleDettaglioEvent
+    this.overlayService.mostraModaleDettaglioPagamentoEvent
       .subscribe(value => {
         this.datiPagamento = value?.datiPagamento;
+        this.mostraModale = !!value;
+        this.cdr.detectChanges();
+      });
+
+    this.overlayService.mostraModaleCampoEvent
+      .subscribe(value => {
         if (value?.campoForm) {
           this.tipologiaServizio = value;
-        } else if (value?.idFunzione)
+        }
+        this.mostraModale = !!value;
+        this.cdr.detectChanges();
+      });
+
+    this.overlayService.mostraModaleTipoCampoEvent
+      .subscribe(value => {
+        if (value?.idFunzione) {
           this.idFunzione = value.idFunzione;
+        }
         this.mostraModale = !!value;
         this.cdr.detectChanges();
       });
