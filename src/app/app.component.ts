@@ -57,6 +57,7 @@ export class AppComponent implements OnInit {
 
     this.overlayService.mostraModaleTipoCampoEvent
       .subscribe(value => {
+        // todo rifattorizzare tipo dato trasmesso sull'event (attendere chiarimenti su funzione / idFunzione)
         if (value?.idFunzione) {
           this.idFunzione = value.idFunzione;
         }
