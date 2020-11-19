@@ -140,8 +140,11 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   }
 
   isUtenteAttivo(utente: RicercaUtente): boolean {
-    return utente.dataFineValidita === null
-      || (moment(utente.dataInizioValidita) <= this.dataSistema && moment(utente.dataFineValidita) >= this.dataSistema);
+    const momentInizio = utente.dataInizioValidita ? moment(utente.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    const momentFine = utente.dataFineValidita ? moment(utente.dataFineValidita, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    const now = this.dataSistema;
+    const attivo = now.isSameOrAfter(momentInizio) && (momentFine == null || now.isSameOrBefore(momentFine));
+    return attivo;
   }
 
   isRigaUtenteAttivo(row: any): boolean {
@@ -212,7 +215,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
       riga.nome = riga.nome.value;
       riga.gruppoAbilitazioni = riga.gruppoAbilitazioni.value;
       riga.scadenza = riga.scadenza.value;
-      riga.ultimoAccesso = riga.ultimoAccesso?.testo;
+      riga.ultimoAccesso = riga.ultimoAccesso?.value;
       return riga;
     });
   }
