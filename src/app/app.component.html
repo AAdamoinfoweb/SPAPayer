@@ -6,9 +6,13 @@
       </ng-container>
       <ng-container *ngIf="tipologiaServizio">
         <app-modale-campo-form [tipologiaServizio]="tipologiaServizio"></app-modale-campo-form>
-      </ng-container>
-      <ng-container *ngIf="idFunzione">
-        <app-modale-aggiungi-tipo-campo [idFunzione]="idFunzione"></app-modale-aggiungi-tipo-campo>
+        <ng-container *ngIf="idFunzione">
+          <app-overlay>
+            <ng-template>
+              <app-modale-aggiungi-tipo-campo [idFunzione]="idFunzione"></app-modale-aggiungi-tipo-campo>
+            </ng-template>
+          </app-overlay>
+        </ng-container>
       </ng-container>
     </ng-template>
   </app-overlay>
