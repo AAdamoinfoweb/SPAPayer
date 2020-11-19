@@ -4,9 +4,9 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   EventEmitter,
-  Input,
+  Input, OnChanges,
   OnInit,
-  Output,
+  Output, SimpleChanges,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -21,7 +21,7 @@ import {DatiParametroComponent} from "../dati-parametri/dati-parametro.component
   templateUrl: './dati-attivita-pianificate.component.html',
   styleUrls: ['./dati-attivita-pianificate.component.scss']
 })
-export class DatiAttivitaPianificateComponent implements OnInit, AfterViewInit {
+export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
@@ -53,12 +53,14 @@ export class DatiAttivitaPianificateComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
   }
 
-  ngAfterViewInit(): void {
-    this.inizializzazioneChiaveValore();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.datiAttivitaPianificata) {
+      this.inizializzazioneChiaveValore();
+    }
   }
 
   private inizializzazioneChiaveValore() {
-    if (this.datiAttivitaPianificata.parametri != null && this.datiAttivitaPianificata.parametri.length > 0) {
+    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI && this.datiAttivitaPianificata.parametri != null && this.datiAttivitaPianificata.parametri.length > 0) {
       this.datiAttivitaPianificata.parametri.forEach(parametro => this.aggiungiChiaveValore(parametro));
     } else {
       this.aggiungiChiaveValore();

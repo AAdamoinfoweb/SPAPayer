@@ -95,24 +95,26 @@
               </span>
               </div>
             </div>
-            <div id="parametri">
-              <div #parametro>
-            </div>
+            <div id="parametri" class="row">
+              <div class="col">
+                <div #parametro>
+                </div>
+              </div>
             </div>
           </div>
-        <!--      fine Parametri -->
+          <!--      fine Parametri -->
+        </div>
+        <!--    fine Parametri -->
       </div>
-      <!--    fine Parametri -->
+      <!--      fine Descrizione -->
+      <!--    inizio Schedulazione -->
+      <div class="col-md-6 pb-2">
+        <app-schedulazione [funzione]="funzione" (isFormValid)="schedulazioneFormValid(datiForm, $event)"
+                           [schedulazione]="datiAttivitaPianificata.schedulazione"></app-schedulazione>
+      </div>
+      <!--      fine Schedulazione -->
     </div>
-    <!--      fine Descrizione -->
-    <!--    inizio Schedulazione -->
-    <div class="col-md-6 pb-2">
-      <app-schedulazione [funzione]="funzione" (isFormValid)="schedulazioneFormValid(datiForm, $event)"
-                         [schedulazione]="datiAttivitaPianificata.schedulazione"></app-schedulazione>
-    </div>
-    <!--      fine Schedulazione -->
-</div>
-<!--    fine Decrizione, Schedulazione -->
-</form>
+    <!--    fine Decrizione, Schedulazione -->
+  </form>
 </div>
 

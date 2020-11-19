@@ -1,7 +1,9 @@
 <form #datiForm="ngForm">
   <!--    inizio Parametri -->
+  <div class="row">
+    <div class="col-md-5 col-12">
       <div class="row">
-        <div class="col-5">
+        <div class="col">
           <input type="text" id="{{'chiave' + index}}" name="{{'chiave' + index}}"
                  class="pt-0" autocomplete="off" aria-describedby="destinatarioHelpDescription"
                  [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
@@ -9,30 +11,27 @@
                  [(ngModel)]="parametro.chiave"
                  (ngModelChange)="onChangeModel(datiForm, chiave)"
                  #chiave="ngModel">
-          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-            <div class="col">
-              <p *ngIf="!isCampoInvalido(chiave)">Inserisci chiave</p>
-              <p *ngIf="isCampoInvalido(chiave)"
-                 class="text-invalid">{{getMessaggioErrore(chiave)}}</p>
-            </div>
-          </div>
         </div>
-        <div class="col-5">
+      </div>
+      <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+        <div class="col">
+          <p *ngIf="!isCampoInvalido(chiave)">Inserisci chiave</p>
+          <p *ngIf="isCampoInvalido(chiave)"
+             class="text-invalid">{{getMessaggioErrore(chiave)}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7 col-12">
+      <div class="row">
+        <div class="col-md-10 col-10">
           <input type="text" id="{{'valore' + index}}" name="{{'valore' + index}}"
                  class="pt-0" autocomplete="off" aria-describedby="destinatarioHelpDescription"
                  [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                  [(ngModel)]="parametro.valore"
                  #valore="ngModel"
                  (ngModelChange)="onChangeModel(datiForm, valore)">
-          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-            <div class="col">
-              <p *ngIf="!isCampoInvalido(valore)">Inserisci valore</p>
-              <p *ngIf="isCampoInvalido(valore)"
-                 class="text-invalid">{{getMessaggioErrore(valore)}}</p>
-            </div>
-          </div>
         </div>
-        <div class="col-2 align-self-center" *ngIf="(funzione !== FunzioneGestioneEnum.DETTAGLIO) && (index !== 1)">
+        <div class="col-md-2 col-2 align-self-center" *ngIf="(funzione !== FunzioneGestioneEnum.DETTAGLIO) && (index !== 1)">
               <span ngbTooltip="Elimina parametro" placement="bottom" [ngStyle]="{fill: '#403d39'}">
             <svg class="bg-light icon icon-sm filled"
                  (click)="onClickDeleteIcon()">
@@ -41,5 +40,14 @@
               </span>
         </div>
       </div>
+      <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+        <div class="col">
+          <p *ngIf="!isCampoInvalido(valore)">Inserisci valore</p>
+          <p *ngIf="isCampoInvalido(valore)"
+             class="text-invalid">{{getMessaggioErrore(valore)}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
   <!--      fine Parametri -->
 </form>
