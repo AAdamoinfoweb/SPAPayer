@@ -360,7 +360,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.overlayService.mostraModaleCampoEvent.emit({
       campoForm: _.cloneDeep(item),
       funzione: this.funzione,
-      livelloIntegrazione: this.integrazione,
+      livelloIntegrazione: this.integrazione.livelloIntegrazioneId,
       listaDipendeDa: this.listaDipendeDa
     });
   }
