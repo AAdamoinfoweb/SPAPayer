@@ -1,230 +1,221 @@
 <form [formGroup]="form" class="modal-wrapper">
-  <div class="page-section">
+  <div class="row">
 
-    <div class="row">
-
-      <div class="col-md-4 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'titolo'" class="title form-elem-title"
-          >Titolo</label>
-        </div>
-        <div class="row">
-          <input id="titolo"
-                 [formControl]="form.controls['titolo']"
-                 [(ngModel)]="tipologiaServizio.campoForm.titolo"
-                 type="text"
-                 autocomplete="off"
-          />
-        </div>
+    <div class="col-md-4 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'titolo'" class="title form-elem-title"
+        >Titolo</label>
       </div>
-
-      <div class="col-md-4 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'tipoCampo'" class="title form-elem-title"
-          >Tipo Campo</label>
-        </div>
-        <div class="row">
-          <select
-            id="tipoCampo"
-            [formControl]="form.controls['tipoCampo']"
-            [(ngModel)]="tipologiaServizio.campoForm.tipoCampoId">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let item of listaTipiCampo" [ngValue]="item.id">{{item.nome}} - {{item.informazioni}}</option>
-          </select>
-        </div>
+      <div class="row">
+        <input id="titolo"
+               [formControl]="form.controls['titolo']"
+               [(ngModel)]="tipologiaServizio.campoForm.titolo"
+               type="text"
+               autocomplete="off"
+        />
       </div>
-
-      <div class="col-md-4 form-elem-container">
-        <button class="btn" id="bottoneAggiungiTipoCampo" [disabled]="tipologiaServizio.funzione == FunzioneGestioneEnum.DETTAGLIO" (click)="addTipoCampo()">Aggiungi Tipo campo</button>
-      </div>
-
     </div>
 
-    <div class="row">
-
-      <div class="col-md-2 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'obbligatorio'" class="title form-elem-title"
-          >Obbligatorio</label>
-        </div>
-        <div class="row">
-          <input id="obbligatorio"
-                 type="checkbox"
-                 [formControl]="form.controls['obbligatorio']"
-                 [(ngModel)]="tipologiaServizio.campoForm.obbligatorio"
-                 type="checkbox"
-                 autocomplete="off"
-          />
-        </div>
+    <div class="col-md-4 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'tipoCampo'" class="title form-elem-title"
+        >Tipo Campo</label>
       </div>
-
-      <div class="col-md-2 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'chiave'" class="title form-elem-title"
-          >Chiave</label>
-        </div>
-        <div class="row">
-          <input id="chiave"
-                 type="checkbox"
-                 [formControl]="form.controls['chiave']"
-                 [(ngModel)]="tipologiaServizio.campoForm.chiave"
-                 (click)="clickChiave($event)"
-                 type="checkbox"
-                 autocomplete="off"
-          />
-        </div>
+      <div class="row">
+        <select
+          id="tipoCampo"
+          [formControl]="form.controls['tipoCampo']"
+          [(ngModel)]="tipologiaServizio.campoForm.tipoCampoId">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of listaTipiCampo" [ngValue]="item.id">{{item.nome}} - {{item.informazioni}}</option>
+        </select>
       </div>
-
-      <div class="col-md-2 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'lunghezzaVariabile'" class="title form-elem-title"
-          >Lunghezza variabile</label>
-        </div>
-        <div class="row">
-          <input id="lunghezzaVariabile"
-                 [formControl]="form.controls['lunghezzaVariabile']"
-                 [(ngModel)]="tipologiaServizio.campoForm.lunghezzaVariabile"
-                 type="checkbox"
-                 autocomplete="off"
-          />
-        </div>
-      </div>
-
-      <div class="col-md-2 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'lunghezza'" class="title form-elem-title"
-          >Lunghezza</label>
-        </div>
-        <div class="row">
-          <input id="lunghezza"
-                 [formControl]="form.controls['lunghezza']"
-                 [(ngModel)]="tipologiaServizio.campoForm.lunghezza"
-                 type="text"
-                 autocomplete="off"
-          />
-        </div>
-      </div>
-
-      <div class="col-md-2 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'campoFisso'" class="title form-elem-title"
-          >Campo fisso</label>
-        </div>
-        <div class="row">
-          <input id="campoFisso"
-                 [formControl]="form.controls['campoFisso']"
-                 [(ngModel)]="tipologiaServizio.campoForm.campoFisso"
-                 type="checkbox"
-                 autocomplete="off"
-          />
-        </div>
-      </div>
-
-      <div class="col-md-2 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'disabilitato'" class="title form-elem-title"
-          >Disabilitato</label>
-        </div>
-        <div class="row">
-          <input id="disabilitato"
-                 type="checkbox"
-                 [formControl]="form.controls['disabilitato']"
-                 [(ngModel)]="tipologiaServizio.campoForm.disabilitato"
-                 type="checkbox"
-                 autocomplete="off"
-          />
-        </div>
-      </div>
-
     </div>
 
-    <div class="row">
-
-      <div class="col-md-3 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
-          >Tipologica</label>
-        </div>
-        <div class="row">
-          <select
-            id="tipologica"
-            [formControl]="form.controls['tipologica']"
-            [(ngModel)]="tipologiaServizio.campoForm.tipologica">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let item of listaTipologiche" [ngValue]="item.nome">{{item.nome}}</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="col-md-3 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'dipendeDa'" class="title form-elem-title"
-          >Dipende da</label>
-        </div>
-        <div class="row">
-          <select
-            [attr.disabled]="dipendeDaIsDisabled()"
-            id="dipendeDa"
-            [formControl]="form.controls['dipendeDa']"
-            [(ngModel)]="tipologiaServizio.campoForm.dipendeDa">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let item of tipologiaServizio.listaDipendeDa"
-                    [ngValue]="item">{{item.titolo}}</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="col-md-3 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'controllo_logico'" class="title form-elem-title"
-          >Controllo logico</label>
-        </div>
-        <div class="row">
-          <select
-            id="controllo_logico"
-            [formControl]="form.controls['controllo_logico']"
-            [(ngModel)]="tipologiaServizio.campoForm.controlloLogicoId">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let item of listaControlliLogici" [ngValue]="item.nome">{{item.nome}}</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="col-md-3 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
-          >Campo dettaglio transazione</label>
-        </div>
-        <div class="row">
-          <select
-            id="campoDettaglioTransazione"
-            [formControl]="form.controls['campoDettaglioTransazione']"
-            [(ngModel)]="tipologiaServizio.campoForm.campoDettaglioTransazione">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let item of listaCampiDettaglioTransazione"
-                    [ngValue]="item.nome">{{item.nome}}</option>
-          </select>
-        </div>
-      </div>
-
+    <div class="col-md-4 form-elem-container" id="containerBottoneAggiungiTipoCampo">
+      <button class="btn" [disabled]="tipologiaServizio.funzione == FunzioneGestioneEnum.DETTAGLIO" (click)="addTipoCampo()">Aggiungi Tipo campo</button>
     </div>
 
-    <div class="row">
-
-      <div class="col-md-2 form-elem-container">
-        <button type="button" id="bottoneIndietro" class="btn btn-secondary"
-                (click)="clickIndietro()">{{tipologiaServizio.funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}
-        </button>
+    <div class="col-md-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'obbligatorio'" class="title form-elem-title"
+        >Obbligatorio</label>
       </div>
-
-      <div class="col-md-1 form-elem-container0 text-right button-space" *ngIf="tipologiaServizio.funzione !== FunzioneGestioneEnum.DETTAGLIO">
-        <button (click)="salvaCampoForm()" type="button" class="btn"
-                [disabled]="form.invalid">
-          Salva
-        </button>
+      <div class="row">
+        <input id="obbligatorio"
+               type="checkbox"
+               [formControl]="form.controls['obbligatorio']"
+               [(ngModel)]="tipologiaServizio.campoForm.obbligatorio"
+               type="checkbox"
+               autocomplete="off"
+        />
       </div>
+    </div>
 
+    <div class="col-md-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'chiave'" class="title form-elem-title"
+        >Chiave</label>
+      </div>
+      <div class="row">
+        <input id="chiave"
+               type="checkbox"
+               [formControl]="form.controls['chiave']"
+               [(ngModel)]="tipologiaServizio.campoForm.chiave"
+               (click)="clickChiave($event)"
+               type="checkbox"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'lunghezzaVariabile'" class="title form-elem-title"
+        >Lunghezza variabile</label>
+      </div>
+      <div class="row">
+        <input id="lunghezzaVariabile"
+               [formControl]="form.controls['lunghezzaVariabile']"
+               [(ngModel)]="tipologiaServizio.campoForm.lunghezzaVariabile"
+               type="checkbox"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'lunghezza'" class="title form-elem-title"
+        >Lunghezza</label>
+      </div>
+      <div class="row">
+        <input id="lunghezza"
+               [formControl]="form.controls['lunghezza']"
+               [(ngModel)]="tipologiaServizio.campoForm.lunghezza"
+               type="text"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'campoFisso'" class="title form-elem-title"
+        >Campo fisso</label>
+      </div>
+      <div class="row">
+        <input id="campoFisso"
+               [formControl]="form.controls['campoFisso']"
+               [(ngModel)]="tipologiaServizio.campoForm.campoFisso"
+               type="checkbox"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'disabilitato'" class="title form-elem-title"
+        >Disabilitato</label>
+      </div>
+      <div class="row">
+        <input id="disabilitato"
+               type="checkbox"
+               [formControl]="form.controls['disabilitato']"
+               [(ngModel)]="tipologiaServizio.campoForm.disabilitato"
+               type="checkbox"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-3 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
+        >Tipologica</label>
+      </div>
+      <div class="row">
+        <select
+          id="tipologica"
+          [formControl]="form.controls['tipologica']"
+          [(ngModel)]="tipologiaServizio.campoForm.tipologica">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of listaTipologiche" [ngValue]="item.nome">{{item.nome}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-3 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'dipendeDa'" class="title form-elem-title"
+        >Dipende da</label>
+      </div>
+      <div class="row">
+        <select
+          [attr.disabled]="dipendeDaIsDisabled()"
+          id="dipendeDa"
+          [formControl]="form.controls['dipendeDa']"
+          [(ngModel)]="tipologiaServizio.campoForm.dipendeDa">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of tipologiaServizio.listaDipendeDa"
+                  [ngValue]="item">{{item.titolo}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-3 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'controllo_logico'" class="title form-elem-title"
+        >Controllo logico</label>
+      </div>
+      <div class="row">
+        <select
+          id="controllo_logico"
+          [formControl]="form.controls['controllo_logico']"
+          [(ngModel)]="tipologiaServizio.campoForm.controlloLogicoId">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of listaControlliLogici" [ngValue]="item.nome">{{item.nome}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-3 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
+        >Campo dettaglio transazione</label>
+      </div>
+      <div class="row">
+        <select
+          id="campoDettaglioTransazione"
+          [formControl]="form.controls['campoDettaglioTransazione']"
+          [(ngModel)]="tipologiaServizio.campoForm.campoDettaglioTransazione">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of listaCampiDettaglioTransazione"
+                  [ngValue]="item.nome">{{item.nome}}</option>
+        </select>
+      </div>
     </div>
 
   </div>
+
+  <!--Bottoni-->
+  <div class="row">
+
+    <div class="col-md-2">
+      <button type="button" id="bottoneIndietro" class="btn btn-secondary"
+              (click)="clickIndietro()">{{tipologiaServizio.funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}
+      </button>
+    </div>
+
+    <div class="col-md-1 text-right button-space" *ngIf="tipologiaServizio.funzione !== FunzioneGestioneEnum.DETTAGLIO">
+      <button (click)="salvaCampoForm()" type="button" class="btn"
+              [disabled]="form.invalid">
+        Salva
+      </button>
+    </div>
+
+  </div>
+
+
 </form>
