@@ -43,7 +43,15 @@
             <div class="row">
               <div class="col">
                 <input id="nome" name="nome" type="text" class="input-text pt-0" autocomplete="off"
-                       #nome="ngModel" [(ngModel)]="contatto.nome" [disabled]="disabilitaCampi()">
+                       #nome="ngModel" [(ngModel)]="contatti.nome" [disabled]="disabilitaCampi()">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p
+                  [ngClass]="{'text-invalid': isCampoInvalido(nome)}">
+                  {{setPlaceholder(nome, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
               </div>
             </div>
           </div>
@@ -56,7 +64,15 @@
             <div class="row">
               <div class="col">
                 <input id="cognome" name="cognome" type="text" class="input-text pt-0" autocomplete="off"
-                       #cognome="ngModel" [(ngModel)]="contatto.cognome" [disabled]="disabilitaCampi()">
+                       #cognome="ngModel" [(ngModel)]="contatti.cognome" [disabled]="disabilitaCampi()">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p
+                  [ngClass]="{'text-invalid': isCampoInvalido(cognome)}">
+                  {{setPlaceholder(cognome, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
               </div>
             </div>
           </div>
@@ -69,7 +85,15 @@
             <div class="row">
               <div class="col">
                 <input id="tel" name="tel" type="text" class="input-text pt-0" autocomplete="off"
-                       #tel="ngModel" [(ngModel)]="contatto.tel" [disabled]="disabilitaCampi()">
+                       #tel="ngModel" [(ngModel)]="contatti.tel" [disabled]="disabilitaCampi()">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p
+                  [ngClass]="{'text-invalid': isCampoInvalido(tel)}">
+                  {{setPlaceholder(tel, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
               </div>
             </div>
           </div>
@@ -84,7 +108,15 @@
             <div class="row">
               <div class="col">
                 <input id="email" name="email" type="text" class="input-text pt-0" autocomplete="off"
-                       #email="ngModel" [(ngModel)]="contatto.email" [disabled]="disabilitaCampi()">
+                       #email="ngModel" [(ngModel)]="contatti.email" [disabled]="disabilitaCampi()">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p
+                  [ngClass]="{'text-invalid': isCampoInvalido(email)}">
+                  {{setPlaceholder(email, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
               </div>
             </div>
           </div>
@@ -97,7 +129,15 @@
             <div class="row">
               <div class="col">
                 <input id="reperibile" name="reperibile" type="text" class="input-text pt-0" autocomplete="off"
-                       #reperibile="ngModel" [(ngModel)]="contatto.reperibile" [disabled]="disabilitaCampi()">
+                       #reperibile="ngModel" [(ngModel)]="contatti.reperibile" [disabled]="disabilitaCampi()">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p
+                  [ngClass]="{'text-invalid': isCampoInvalido(reperibile)}">
+                  {{setPlaceholder(reperibile, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
               </div>
             </div>
           </div>
@@ -125,7 +165,8 @@
                 <select
                   id="livelloIntegrazione"
                   name="livelloIntegrazione"
-                  [(ngModel)]="livelloIntegrazione.id"
+                  [(ngModel)]="integrazione.livelloIntegrazioneId"
+                  #livelloIntegrazione="ngModel"
                   [required]="true"
                   (ngModelChange)="cambiaLivelloIntegrazione($event)">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
@@ -136,8 +177,16 @@
                 </select>
               </div>
             </div>
+            <div class="row">
+              <div class="col">
+                <p
+                  [ngClass]="{'text-invalid': isCampoInvalido(livelloIntegrazione)}">
+                  {{setPlaceholder(livelloIntegrazione, TipoCampoEnum.SELECT)}}
+                </p>
+              </div>
+            </div>
           </div>
-          <ng-container *ngIf="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV2_BACK_OFFICE">
+          <ng-container *ngIf="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE">
             <div class="col-sm-6 col-md-5 col-lg-5 pb-2">
               <div class="row">
                 <div class="col">
@@ -149,14 +198,22 @@
                 <div class="col">
                   <input id="urlWsBO" name="urlWsBO" type="text" class="input-text pt-0" autocomplete="off"
                          [customvalidator]="validateUrl()"
-                         [required]="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV2_BACK_OFFICE"
-                         #urlWsBO="ngModel" [(ngModel)]="livelloIntegrazione.urlWsBO"
+                         [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE"
+                         #urlWsBO="ngModel" [(ngModel)]="integrazione.urlWsBO"
                          [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p
+                    [ngClass]="{'text-invalid': isCampoInvalido(urlWsBO)}">
+                    {{setPlaceholder(urlWsBO, TipoCampoEnum.INPUT_TESTUALE)}}
+                  </p>
                 </div>
               </div>
             </div>
           </ng-container>
-          <ng-container *ngIf="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV1">
+          <ng-container *ngIf="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1">
             <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
               <div class="row">
                 <div class="col">
@@ -167,8 +224,8 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
-                         [required]="livelloIntegrazione.id == LivelloIntegrazioneEnum.LV1"
-                         #codiceEnte="ngModel" [(ngModel)]="livelloIntegrazione.codiceEnte"
+                         [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
+                         #codiceEnte="ngModel" [(ngModel)]="integrazione.codiceEnte"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -183,7 +240,7 @@
               <div class="row">
                 <div class="col">
                   <input id="tipoUfficio" name="tipoUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                         #tipoUfficio="ngModel" [(ngModel)]="livelloIntegrazione.tipoUfficio"
+                         #tipoUfficio="ngModel" [(ngModel)]="integrazione.tipoUfficio"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -198,7 +255,7 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceUfficio" name="codiceUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                         #codiceUfficio="ngModel" [(ngModel)]="livelloIntegrazione.codiceUfficio"
+                         #codiceUfficio="ngModel" [(ngModel)]="integrazione.codiceUfficio"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -214,7 +271,7 @@
                 <div class="col">
                   <input id="codiceIDServizio" name="codiceIDServizio" type="text" class="input-text pt-0"
                          autocomplete="off"
-                         #codiceIDServizio="ngModel" [(ngModel)]="livelloIntegrazione.codiceIDServizio"
+                         #codiceIDServizio="ngModel" [(ngModel)]="integrazione.codiceIdServizio"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -231,7 +288,7 @@
                   <input id="numeroTentativiNotifica" name="numeroTentativiNotifica" type="number"
                          class="input-text pt-0"
                          autocomplete="off"
-                         #numeroTentativiNotifica="ngModel" [(ngModel)]="livelloIntegrazione.numeroTentativiNotifica"
+                         #numeroTentativiNotifica="ngModel" [(ngModel)]="integrazione.numeroTentativiNotifica"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -246,7 +303,7 @@
               <div class="row">
                 <div class="col">
                   <select id="notificaUtente" name="notificaUtente"
-                          #notificaUtente="ngModel" [(ngModel)]="livelloIntegrazione.notificaUtente"
+                          #notificaUtente="ngModel" [(ngModel)]="integrazione.notificaUtente"
                           [disabled]="disabilitaCampi()">
                     <option [ngValue]="false" [selected]="true">NO</option>
                     <option [ngValue]="true">SI</option>
@@ -264,7 +321,7 @@
               <div class="row">
                 <div class="col">
                   <input id="redirect" name="redirect" type="checkbox" class="input-text pt-0" autocomplete="off"
-                         #redirect="ngModel" [(ngModel)]="livelloIntegrazione.redirect"
+                         #redirect="ngModel" [(ngModel)]="integrazione.redirect"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -291,7 +348,7 @@
               <div class="col">
                 <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
                         #societaInput="ngModel" [(ngModel)]="impositore.societaId"
-                        (ngModelChange)="onChangeSocieta(societaInput)"
+                        (ngModelChange)="onChangeSocietaImpositore(societaInput)"
                         [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
@@ -302,7 +359,7 @@
               <div class="col">
                 <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                    [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
-                  {{setPlaceholder(societaInput, 'select')}}
+                  {{setPlaceholder(societaInput, TipoCampoEnum.SELECT)}}
                 </p>
               </div>
             </div>
@@ -388,16 +445,16 @@
             <div class="row">
               <div class="col">
                 <label for="selectSocietaBenef" class="title"
-                       [ngClass]="{'required': livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1}">Società</label>
+                       [ngClass]="{'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">Società</label>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocietaBenef"
                         name="societaIdBenef"
-                        [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
+                        [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
                         #societaBenefInput="ngModel" [(ngModel)]="beneficiario.societaId"
-                        (ngModelChange)="onChangeSocieta(societaBenefInput)"
+                        (ngModelChange)="onChangeSocietaBeneficiario(societaBenefInput)"
                         [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
@@ -408,7 +465,7 @@
               <div class="col">
                 <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                    [ngClass]="{'text-muted': !isCampoInvalido(societaBenefInput), 'text-invalid': isCampoInvalido(societaBenefInput), 'text-disabled': !listaSocieta.length}">
-                  {{setPlaceholder(societaBenefInput, 'select')}}
+                  {{setPlaceholder(societaBenefInput, TipoCampoEnum.SELECT)}}
                 </p>
               </div>
             </div>
@@ -417,7 +474,7 @@
             <div class="row">
               <div class="col">
                 <label for="livelloTerritorialeIdBenef" class="title"
-                       [ngClass]="{'required': livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1}">
+                       [ngClass]="{'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">
                   Livello Territoriale</label>
               </div>
             </div>
@@ -429,7 +486,7 @@
                   #livelloTerritorialeIdBenef="ngModel"
                   [(ngModel)]="beneficiario.livelloTerritorialeId"
                   [disabled]="!beneficiario.societaId"
-                  [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
+                  [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
                   (ngModelChange)="onChangeLivelloTerritorialeBeneficiario(societaBenefInput, livelloTerritorialeIdBenef)"
                 >
                   <option [ngValue]="null" selected>Seleziona</option>
@@ -448,7 +505,7 @@
             <div class="row">
               <div class="col">
                 <label for="selectEnteBenef"
-                       [ngClass]="{'title': true, 'required': livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1}">Ente</label>
+                       [ngClass]="{'title': true, 'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">Ente</label>
               </div>
             </div>
             <div class="row">
@@ -457,7 +514,7 @@
                         id="selectEnteBenef" name="enteIdBenef"
                         #enteBenefInput="ngModel" [(ngModel)]="beneficiario.enteId"
                         (ngModelChange)="onChangeEnte(enteBenefInput)"
-                        [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
+                        [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
                         [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaEntiBenef" [ngValue]="item.id">{{item.nome}}</option>
@@ -474,7 +531,7 @@
             <div class="row">
               <div class="col">
                 <label for="selectEnteUfficio"
-                       [ngClass]="{'title': true, 'required': livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1}">Ufficio</label>
+                       [ngClass]="{'title': true, 'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">Ufficio</label>
               </div>
             </div>
             <div class="row">
@@ -482,7 +539,7 @@
                 <select [ngClass]="{'input-disabled': !listaEntiBenef.length}"
                         id="selectEnteUfficio" name="selectEnteUfficio"
                         #ufficioBenefInput="ngModel" [(ngModel)]="beneficiario.ufficio"
-                        [required]="livelloIntegrazione.id != LivelloIntegrazioneEnum.LV1"
+                        [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
                         [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaUfficio"
@@ -539,7 +596,7 @@
         </button>
       </div>
       <div id="campiServizio" class="collapse show" role="tabpanel" aria-labelledby="idCollapseCampiServizio">
-        <ng-container *ngIf="livelloIntegrazione.id && livelloIntegrazione.id !== LivelloIntegrazioneEnum.LV1">
+        <ng-container *ngIf="integrazione.livelloIntegrazioneId && integrazione.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV1">
           <div class="row">
             <div class="col-12">
               <label class="title">Lista campi tipologia servizio</label>

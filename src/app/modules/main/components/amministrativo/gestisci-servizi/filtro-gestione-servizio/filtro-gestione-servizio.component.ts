@@ -133,6 +133,8 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
           return 'seleziona un elemento dalla lista';
         case TipoCampoEnum.INPUT_TESTUALE:
           return 'inserisci testo';
+        case TipoCampoEnum.DATEDDMMYY:
+          return 'inserisci data';
       }
     }
   }
