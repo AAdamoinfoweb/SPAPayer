@@ -60,8 +60,9 @@ export class AppComponent implements OnInit {
         // todo rifattorizzare tipo dato trasmesso sull'event (attendere chiarimenti su funzione / idFunzione)
         if (value?.idFunzione) {
           this.idFunzione = value.idFunzione;
+        } else {
+          this.idFunzione = null;
         }
-        this.mostraModale = !!value;
         this.cdr.detectChanges();
       });
 
