@@ -19,9 +19,8 @@ import {of} from "rxjs";
 export class AppComponent implements OnInit {
 
   title = '';
-  datiPagamento = null;
-  datiCampoForm = null;
   mostraModale = false;
+  datiPagamento: DatiPagamento = null;
   tipologiaServizio: any;
   idFunzione: string;
 
