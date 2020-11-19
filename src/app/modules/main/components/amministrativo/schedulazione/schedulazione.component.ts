@@ -54,11 +54,7 @@ export class SchedulazioneComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
-    if (campo?.name === 'fineSchedulazione') {
-      return campo?.errors != null || this.controlloDate(this.schedulazione);
-    } else {
-      return campo?.errors != null;
-    }
+    return campo?.errors != null;
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -68,26 +64,12 @@ export class SchedulazioneComponent implements OnInit {
       return 'Campo non valido';
     }
   }
+
   onChangeModel(form: NgForm, campo?: NgModel) {
     if (campo?.value == '') {
         this.schedulazione[campo.name] = null;
     }
-    let isFineBeforeInizio = false;
-    if (this.schedulazione.fine != null) {
-      isFineBeforeInizio = this.controlloDate(this.schedulazione);
-    }
-
-    const isValid = form.valid && !isFineBeforeInizio;
-    this.isFormValid.emit(isValid);
-  }
-
-  controlloDate(schedulazione: Schedulazione): boolean {
-    const schedulazioneCopy: Schedulazione = JSON.parse(JSON.stringify(schedulazione));
-    const inizio = schedulazioneCopy.inizio;
-    const fine = schedulazioneCopy.fine;
-    const isFineBeforeInzio = Utils.isBefore(fine, inizio);
-    const ret = this.funzione === FunzioneGestioneEnum.DETTAGLIO ? false : isFineBeforeInzio;
-    return ret;
+    this.isFormValid.emit(form.valid);
   }
 
   // funzioni calendar
@@ -105,4 +87,5 @@ export class SchedulazioneComponent implements OnInit {
     return datePicker.inputElementValue
       ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
   }
+
 }
