@@ -42,9 +42,9 @@ export class AppComponent implements OnInit {
     });
 
     this.overlayService.mostraModaleDettaglioPagamentoEvent
-      .subscribe(value => {
-        this.datiPagamento = value?.datiPagamento;
-        this.mostraModale = !!value;
+      .subscribe(datiPagamento => {
+        this.datiPagamento = datiPagamento;
+        this.mostraModale = datiPagamento != null;
         this.cdr.detectChanges();
       });
 

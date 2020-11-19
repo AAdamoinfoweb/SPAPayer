@@ -10,7 +10,7 @@ export class OverlayService {
   constructor(private router: Router) {
   }
 
-  mostraModaleDettaglioPagamentoEvent: EventEmitter<any> = new EventEmitter<any>();
+  mostraModaleDettaglioPagamentoEvent: EventEmitter<DatiPagamento> = new EventEmitter<DatiPagamento>();
   mostraModaleCampoEvent: EventEmitter<any> = new EventEmitter<any>();
   mostraModaleTipoCampoEvent: EventEmitter<any> = new EventEmitter<any>();
 
