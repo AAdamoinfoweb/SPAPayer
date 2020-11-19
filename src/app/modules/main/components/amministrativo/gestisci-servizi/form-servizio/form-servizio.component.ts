@@ -468,4 +468,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       return null;
     }) as ValidatorFn;
   }
+
+  getPlaceholderRequired(label: string, required: boolean) {
+    if (required)
+      return label + ' *';
+    return label;
+  }
 }

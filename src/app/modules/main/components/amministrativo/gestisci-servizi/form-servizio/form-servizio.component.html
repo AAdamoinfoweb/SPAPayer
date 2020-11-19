@@ -406,7 +406,6 @@
                 <select [ngClass]="{'input-disabled': !listaEnti.length}"
                         id="selectEnte" name="enteId"
                         #enteInput="ngModel" [(ngModel)]="impositore.enteId"
-                        (ngModelChange)="onChangeEnte(enteInput)"
                         [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nome}}</option>
@@ -540,7 +539,7 @@
                         id="selectEnteUfficio" name="selectEnteUfficio"
                         #ufficioBenefInput="ngModel" [(ngModel)]="beneficiario.ufficio"
                         [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
-                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId">
+                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || !beneficiario.enteId">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaUfficio"
                           [ngValue]="item">{{item.codiceEnte}} {{item.tipoUfficio}} {{item.codiceUfficio}}</option>
@@ -596,7 +595,8 @@
         </button>
       </div>
       <div id="campiServizio" class="collapse show" role="tabpanel" aria-labelledby="idCollapseCampiServizio">
-        <ng-container *ngIf="integrazione.livelloIntegrazioneId && integrazione.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV1">
+        <ng-container
+          *ngIf="integrazione.livelloIntegrazioneId && integrazione.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV1">
           <div class="row">
             <div class="col-12">
               <label class="title">Lista campi tipologia servizio</label>
@@ -670,12 +670,43 @@
                 </div>
               </div>
               <div class="row">
-                <input type="text" autocomplete="off" placeholder="Email" id="emailGiornalieraId"
-                       name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
-                       [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
-                <input type="text" autocomplete="off" placeholder="Ccn" id="emailGiornalieraCcn"
-                       name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.emailCcn"
-                       [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
+                <div class="col-12">
+                  <input type="text" autocomplete="off"
+                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.ftpEnabled)"
+                         #emailGiornalieraId="ngModel"
+                         id="emailGiornalieraId"
+                         name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
+                         [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(emailGiornalieraId),
+                       'text-invalid': isCampoInvalido(emailGiornalieraId)}">
+                        {{setPlaceholder(emailGiornalieraId, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="text" autocomplete="off" placeholder="Ccn"
+                         #emailGiornalieraCcn="ngModel"
+                         id="emailGiornalieraCcn"
+                         name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.emailCcn"
+                         [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(emailGiornalieraCcn),
+                       'text-invalid': isCampoInvalido(emailGiornalieraCcn)}">
+                        {{setPlaceholder(emailGiornalieraCcn, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
@@ -689,18 +720,78 @@
                 </div>
               </div>
               <div class="row">
-                <input type="text" autocomplete="off" placeholder="Server" id="server" name="server"
-                       [(ngModel)]="rendicontazioneGiornaliera.server"
-                       [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
-                <input type="text" autocomplete="off" placeholder="Username" id="username" name="username"
-                       [(ngModel)]="rendicontazioneGiornaliera.username"
-                       [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
-                <input type="text" autocomplete="off" placeholder="Password" id="password" name="password"
-                       [(ngModel)]="rendicontazioneGiornaliera.password"
-                       [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
-                <input type="text" autocomplete="off" placeholder="Directory" id="directory" name="directory"
-                       [(ngModel)]="rendicontazioneGiornaliera.directory"
-                       [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                <div class="col-12">
+                  <input type="text" autocomplete="off" placeholder="Server"
+                         [placeholder]="getPlaceholderRequired('Server', rendicontazioneGiornaliera.ftpEnabled)"
+                         id="server" name="server" #server="ngModel"
+                         [(ngModel)]="rendicontazioneGiornaliera.server"
+                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(server),
+                       'text-invalid': isCampoInvalido(server)}">
+                        {{setPlaceholder(server, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="text" autocomplete="off" placeholder="Username"
+                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneGiornaliera.ftpEnabled)"
+                         id="username" name="username" #username="ngModel"
+                         [(ngModel)]="rendicontazioneGiornaliera.username"
+                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(username),
+                       'text-invalid': isCampoInvalido(username)}">
+                        {{setPlaceholder(username, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="text" autocomplete="off"
+                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneGiornaliera.ftpEnabled)"
+                         id="password" name="password" #password="ngModel"
+                         [(ngModel)]="rendicontazioneGiornaliera.password"
+                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(password),
+                       'text-invalid': isCampoInvalido(password)}">
+                        {{setPlaceholder(password, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="text" autocomplete="off"
+                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneGiornaliera.ftpEnabled)"
+                         id="directory" name="directory" #directory="ngModel"
+                         [(ngModel)]="rendicontazioneGiornaliera.directory"
+                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(directory),
+                       'text-invalid': isCampoInvalido(directory)}">
+                        {{setPlaceholder(directory, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -725,12 +816,42 @@
                 </div>
               </div>
               <div class="row">
-                <input type="text" autocomplete="off" placeholder="Email" id="emailFlussoPAId"
-                       name="emailFlussoPAId" [(ngModel)]="rendicontazioneFlussoPA.email"
-                       [disabled]="!rendicontazioneFlussoPA.emailEnabled ? true : null">
-                <input type="text" autocomplete="off" placeholder="Ccn" id="emailFlussoPACcn"
-                       name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.emailCcn"
-                       [disabled]="!rendicontazioneFlussoPA.emailEnabled ? true : null">
+                <div class="col-12">
+                  <input type="text" autocomplete="off"
+                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneFlussoPA.emailEnabled)"
+                         id="emailFlussoPAId"
+                         name="emailFlussoPAId" [(ngModel)]="rendicontazioneFlussoPA.email"
+                         #emailFlussoPAId="ngModel"
+                         [disabled]="!rendicontazioneFlussoPA.emailEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(emailFlussoPAId),
+                       'text-invalid': isCampoInvalido(emailFlussoPAId)}">
+                        {{setPlaceholder(emailFlussoPAId, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="text" autocomplete="off" placeholder="Ccn" id="emailFlussoPACcn"
+                         name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.emailCcn"
+                         #emailFlussoPACcn="ngModel"
+                         [disabled]="!rendicontazioneFlussoPA.emailEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(emailFlussoPACcn),
+                       'text-invalid': isCampoInvalido(emailFlussoPACcn)}">
+                        {{setPlaceholder(emailFlussoPACcn, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
@@ -744,21 +865,82 @@
                 </div>
               </div>
               <div class="row">
-                <input type="text" autocomplete="off" placeholder="Server" id="serverFlussoPA" name="serverFlussoPA"
-                       [(ngModel)]="rendicontazioneFlussoPA.server"
-                       [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
-                <input type="text" autocomplete="off" placeholder="Username" id="usernameFlussoPA"
-                       name="usernameFlussoPA"
-                       [(ngModel)]="rendicontazioneFlussoPA.username"
-                       [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
-                <input type="text" autocomplete="off" placeholder="Password" id="passwordFlussoPA"
-                       name="passwordFlussoPA"
-                       [(ngModel)]="rendicontazioneFlussoPA.password"
-                       [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
-                <input type="text" autocomplete="off" placeholder="Directory" id="directoryFlussoPA"
-                       name="directoryFlussoPA"
-                       [(ngModel)]="rendicontazioneFlussoPA.directory"
-                       [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+
+                <div class="col-12">
+                  <input type="text" autocomplete="off"
+                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneFlussoPA.ftpEnabled)"
+                         id="serverFlussoPA" name="serverFlussoPA"
+                         [(ngModel)]="rendicontazioneFlussoPA.server" #serverFlussoPA="ngModel"
+                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(serverFlussoPA),
+                       'text-invalid': isCampoInvalido(serverFlussoPA)}">
+                        {{setPlaceholder(serverFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <input type="text" autocomplete="off"
+                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneFlussoPA.ftpEnabled)"
+                         id="usernameFlussoPA"
+                         name="usernameFlussoPA"
+                         [(ngModel)]="rendicontazioneFlussoPA.username"
+                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(serverFlussoPA),
+                       'text-invalid': isCampoInvalido(serverFlussoPA)}">
+                        {{setPlaceholder(serverFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="text" autocomplete="off"
+                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneFlussoPA.ftpEnabled)"
+                         id="passwordFlussoPA"
+                         name="passwordFlussoPA" #passwordFlussoPA="ngModel"
+                         [(ngModel)]="rendicontazioneFlussoPA.password"
+                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(passwordFlussoPA),
+                       'text-invalid': isCampoInvalido(passwordFlussoPA)}">
+                        {{setPlaceholder(passwordFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="text" autocomplete="off" id="directoryFlussoPA"
+                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneFlussoPA.ftpEnabled)"
+                         name="directoryFlussoPA" #directoryFlussoPA="ngModel"
+                         [(ngModel)]="rendicontazioneFlussoPA.directory"
+                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(directoryFlussoPA),
+                       'text-invalid': isCampoInvalido(directoryFlussoPA)}">
+                        {{setPlaceholder(directoryFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
