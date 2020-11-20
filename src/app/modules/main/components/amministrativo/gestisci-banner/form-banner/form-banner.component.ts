@@ -10,6 +10,7 @@ import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Utils} from '../../../../../../utils/Utils';
 import * as moment from 'moment';
 import {HttpClient} from '@angular/common/http';
+import {OperazioneEsitoEnum} from '../../../../../../enums/operazioneEsito.enum';
 
 @Component({
   selector: 'app-dettaglio-banner',
@@ -99,11 +100,15 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
           if (banner != null) {
             this.datiBanner = new Banner();
             this.isFormValido = false;
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.bannerService.modificaBanner(datiBanner, this.idFunzione).subscribe(() => {
+        this.bannerService.modificaBanner(datiBanner, this.idFunzione).subscribe((error) => {
+          if (error == null) {
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
           this.isFormValido = false;
         });
         break;
