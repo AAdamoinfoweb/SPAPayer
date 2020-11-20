@@ -18,15 +18,16 @@ import {SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
 import {Beneficiario} from '../../../../../model/ente/Beneficiario';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {DatiBeneficiarioComponent} from '../dati-beneficiario/dati-beneficiario.component';
-import * as moment from "moment";
-import {Utils} from "../../../../../../../utils/Utils";
-import {EnteService} from "../../../../../../../services/ente.service";
-import {Banner} from "../../../../../model/banner/Banner";
-import {getBannerType, LivelloBanner} from "../../../../../../../enums/livelloBanner.enum";
-import {BannerService} from "../../../../../../../services/banner.service";
-import {ComponenteDinamico} from "../../../../../model/ComponenteDinamico";
+import * as moment from 'moment';
+import {Utils} from '../../../../../../../utils/Utils';
+import {EnteService} from '../../../../../../../services/ente.service';
+import {Banner} from '../../../../../model/banner/Banner';
+import {getBannerType, LivelloBanner} from '../../../../../../../enums/livelloBanner.enum';
+import {BannerService} from '../../../../../../../services/banner.service';
+import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
+import {Util} from 'design-angular-kit/lib/util/util';
 
 @Component({
   selector: 'app-form-ente',
@@ -49,6 +50,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   listaContiCorrente: ContoCorrente[];
   mapBeneficiario: Map<string, Beneficiario> = new Map();
   mapControllo: Map<string, boolean> = new Map();
+  esito;
 
   // form valid
   isFormDatiEnteValido = false;
@@ -80,15 +82,13 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     } else {
       // inizializzazione form inserimento
     }
-    this.controlloEsito();
   }
 
   private controlloEsito() {
-    const esito = history.state.esito;
-    if (esito != null) {
+    if (this.esito != null) {
       const banner: Banner = {
         titolo: 'ATTENZIONE',
-        testo: esito,
+        testo: this.esito,
         tipo: getBannerType(LivelloBanner.WARNING)
       };
       this.bannerService.bannerEvent.emit([banner]);
@@ -211,7 +211,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   recuperoContiCorrente(idEnte) {
-    return this.enteService.recuperaContiCorrenti(idEnte, this.idFunzione)
+    return this.enteService.recuperaContiCorrenti(idEnte, this.idFunzione);
   }
 
   disabilitaBottone(): boolean {
@@ -232,30 +232,35 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   private inserimentoEnte(): void {
-    this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione).subscribe(esitoInserimentoModificaEnte => {
-      let state = null
-      if (esitoInserimentoModificaEnte.esito) {
-        state = {esito: esitoInserimentoModificaEnte.esito};
-      }
-      this.configuraRouterAndNavigate('/aggiungiEnte', state);
-    });
+    this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione).subscribe(
+      (response) => {
+        if (!(response instanceof HttpErrorResponse)) {
+          this.esito = response.esito;
+          this.pulisciEnte();
+        }
+
+      });
+  }
+
+  private pulisciEnte() {
+    this.controlloEsito();
+    this.datiEnte = new EnteCompleto();
+    this.inizializzaDatiEnte();
+    if (this.esito == null) {
+      this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+    }
   }
 
   private modificaEnte() {
-    this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((esitoInserimentoModificaEnte) => {
-      let state = null
-      if (esitoInserimentoModificaEnte.esito) {
-        state = {esito: esitoInserimentoModificaEnte.esito};
+    this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((response) => {
+      if (!(response instanceof HttpErrorResponse)) {
+        this.esito = response.esito;
+        this.controlloEsito();
+        if (this.esito == null) {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+        }
       }
-      this.configuraRouterAndNavigate('/modificaEnte/' + esitoInserimentoModificaEnte.idEnte, state);
     });
-  }
-
-  private configuraRouterAndNavigate(pathFunzione: string, state) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    // this.router.navigateByUrl(this.basePath + pathFunzione);
-    this.router.navigate([this.basePath + pathFunzione], {state: state});
   }
 
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {

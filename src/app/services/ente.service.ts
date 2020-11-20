@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {AsyncSubject, BehaviorSubject, Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaEnte} from '../modules/main/model/ente/ParametriRicercaEnte';
 import {SintesiEnte} from '../modules/main/model/ente/SintesiEnte';
@@ -70,7 +70,7 @@ export class EnteService {
       }));
   }
 
-  eliminaEnti(listaEntiId: Array<number>, idFunzione: string): Observable<EsitoInserimentoModificaEnte> {
+  eliminaEnti(listaEntiId: Array<number>, idFunzione: string): Observable<EsitoInserimentoModificaEnte | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.eliminaEntiUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -81,10 +81,17 @@ export class EnteService {
         headers: h
       }).pipe(map((body: EsitoInserimentoModificaEnte) => {
       return body;
-    }));
+    }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(err);
+        } else {
+          return of(err);
+        }
+      }));
   }
 
-  inserimentoEnte(ente: EnteCompleto, idFunzione: string): Observable<EsitoInserimentoModificaEnte> {
+  inserimentoEnte(ente: EnteCompleto, idFunzione: string): Observable<EsitoInserimentoModificaEnte | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.entiBaseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -98,9 +105,9 @@ export class EnteService {
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
-          return of(null);
+          return of(err);
         } else {
-          return of(null);
+          return of(err);
         }
       }));
   }
@@ -120,9 +127,9 @@ export class EnteService {
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
-          return of(null);
+          return of(err);
         } else {
-          return of(null);
+          return of(err);
         }
       }));
   }

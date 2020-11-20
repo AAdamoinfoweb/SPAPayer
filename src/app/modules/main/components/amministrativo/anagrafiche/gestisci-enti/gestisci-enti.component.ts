@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
 import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
@@ -130,7 +130,8 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     return this.enteService.ricercaEnti(this.filtriRicerca, this.idFunzione);
   }
 
-  callbackPopolaLista() {}
+  callbackPopolaLista() {
+  }
 
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
@@ -183,15 +184,20 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   private eliminaEntiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((esitoEnte) => {
-            this.popolaListaElementi();
-            if(esitoEnte.esito != null){
-                const banner: Banner = {
+          this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              let banner: Banner;
+              if (response.esito != null) {
+                  banner = {
                   titolo: 'ATTENZIONE',
-                  testo: esitoEnte.esito,
+                  testo: response.esito,
                   tipo: getBannerType(LivelloBanner.WARNING)
                 };
-                this.bannerService.bannerEvent.emit([banner]);
+              } else {
+                banner = Utils.bannerOperazioneSuccesso();
+              }
+              this.bannerService.bannerEvent.emit([banner]);
             }
           });
           this.righeSelezionate = [];
@@ -215,7 +221,6 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = this.righeSelezionate.length !== 1;
     this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = this.righeSelezionate.length === 0;
   }
-
 
 
   dettaglioEnte(row) {
