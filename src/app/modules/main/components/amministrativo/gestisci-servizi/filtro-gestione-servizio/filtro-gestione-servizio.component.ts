@@ -6,7 +6,6 @@ import {AmministrativoService} from '../../../../../../services/amministrativo.s
 import {ActivatedRoute} from '@angular/router';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
-import {Utils} from '../../../../../../utils/Utils';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {NgForm, NgModel} from '@angular/forms';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
@@ -82,7 +81,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
               label: raggruppamento.descrizione
             });
           });
-          Utils.ordinaArrayDiOggetti(this.opzioniRaggruppamento, 'label');
+          this.opzioniRaggruppamento = _.sortBy(this.opzioniRaggruppamento, ['label']);
         }
       });
   }
@@ -110,7 +109,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
     // todo caricare in modo condizionale dal controller di Servizio o TipologiaServizio a seconda che sia la pagina Gestione o Form
     this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione).subscribe(listaTipologieServizio => {
       if (listaTipologieServizio) {
-        Utils.ordinaArrayDiOggetti(listaTipologieServizio, 'codice');
+        listaTipologieServizio = _.sortBy(listaTipologieServizio, ['codice']);
         this.listaCodiciTipologia = listaTipologieServizio;
         this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia;
       }

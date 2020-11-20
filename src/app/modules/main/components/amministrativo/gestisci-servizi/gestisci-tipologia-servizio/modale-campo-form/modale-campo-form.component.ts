@@ -11,7 +11,6 @@ import {ConfigurazioneJsonPath} from '../../../../../model/campo/ConfigurazioneJ
 import {ConfigurazioneTipologica} from '../../../../../model/campo/ConfigurazioneTipologica';
 import {ControlloLogico} from '../../../../../model/ControlloLogico';
 import {ConfigurazioneCampoDettaglioTransazione} from '../../../../../model/campo/ConfigurazioneCampoDettaglioTransazione';
-import {Utils} from '../../../../../../../utils/Utils';
 import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
 import * as _ from 'lodash';
 
@@ -78,13 +77,13 @@ export class ModaleCampoFormComponent implements OnInit {
 
   leggiConfigurazioneCampi(): void {
     this.listaCampiDettaglioTransazione = JSON.parse(localStorage.getItem('listaCampiDettaglioTransazione'));
-    Utils.ordinaArrayDiOggetti(this.listaCampiDettaglioTransazione, 'nome');
+    this.listaCampiDettaglioTransazione = _.sortBy(this.listaCampiDettaglioTransazione, ['nome']);
     this.listaControlliLogici = JSON.parse(localStorage.getItem('listaControlliLogici'));
-    Utils.ordinaArrayDiOggetti(this.listaControlliLogici, 'nome');
+    this.listaControlliLogici = _.sortBy(this.listaControlliLogici, ['nome']);
     this.listaTipologiche = JSON.parse(localStorage.getItem('listaTipologiche'));
-    Utils.ordinaArrayDiOggetti(this.listaTipologiche, 'nome');
+    this.listaTipologiche = _.sortBy(this.listaTipologiche, ['nome']);
     this.listaJsonPath = JSON.parse(localStorage.getItem('listaJsonPath'));
-    Utils.ordinaArrayDiOggetti(this.listaJsonPath, 'nome_attributo');
+    this.listaJsonPath = _.sortBy(this.listaJsonPath, ['nome_attributo']);
     this.listaTipiCampo = JSON.parse(localStorage.getItem('listaTipiCampo'));
     this.listaTipiCampo = _.sortBy(this.listaTipiCampo, ['nome', 'informazioni']);
   }

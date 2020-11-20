@@ -13,6 +13,7 @@ import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../utils/Utils';
 import {ActivatedRoute} from "@angular/router";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-filtro-monitoraggio-accessi',
@@ -66,7 +67,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
           label: funzione.nome
         });
       });
-      Utils.ordinaArrayDiOggetti(this.listaFunzioniAbilitate, 'label');
+      this.listaFunzioniAbilitate = _.sortBy(this.listaFunzioniAbilitate, ['label']);
     });
   }
 

@@ -5,8 +5,7 @@ import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {NgForm, NgModel} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {RaggruppamentoTipologiaServizioService} from '../../../../../../../services/RaggruppamentoTipologiaServizio.service';
-import {Utils} from '../../../../../../../utils/Utils';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-filtro-raggruppamento-tipologie',
@@ -46,7 +45,7 @@ export class FiltroRaggruppamentoTipologieComponent extends FiltroGestioneElemen
         label: raggruppamentoTipologiaServizio.nome
       });
     });
-    Utils.ordinaArrayDiOggetti(this.opzioniFiltroRaggruppamentiTipologie, 'label');
+    this.opzioniFiltroRaggruppamentiTipologie = _.sortBy(this.opzioniFiltroRaggruppamentiTipologie, ['label']);
   }
 
   isCampoInvalido(campo: NgModel) {
