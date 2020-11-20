@@ -333,6 +333,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.overlayService.mostraModaleCampoEvent.emit({
       campoForm: _.cloneDeep(item),
       funzione: this.funzione,
+      idFunzione: this.idFunzione,
       livelloIntegrazione: this.livelloIntegrazione,
       listaDipendeDa: this.listaDipendeDa
     });

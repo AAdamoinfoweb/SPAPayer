@@ -15,7 +15,7 @@ export class ModaleAggiungiTipoCampoComponent implements OnInit {
   informazioni: string;
 
   @Input()
-  idFunzione: string;
+  idFunzione: number;
 
   constructor(private overlayService: OverlayService, private campoTipologiaServizioService: CampoTipologiaServizioService) {
     this.form = new FormGroup({

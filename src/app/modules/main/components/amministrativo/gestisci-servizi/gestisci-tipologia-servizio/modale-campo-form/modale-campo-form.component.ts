@@ -12,6 +12,7 @@ export interface DatiModaleCampo {
   livelloIntegrazione: LivelloIntegrazioneEnum;
   campoForm: CampoTipologiaServizio;
   funzione: FunzioneGestioneEnum;
+  idFunzione: number;
 }
 
 @Component({
@@ -116,6 +117,6 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   addTipoCampo() {
-    this.overlayService.mostraModaleTipoCampoEvent.emit({idFunzione: this.datiModaleCampo.funzione});
+    this.overlayService.mostraModaleTipoCampoEvent.emit({idFunzione: this.datiModaleCampo.idFunzione});
   }
 }
