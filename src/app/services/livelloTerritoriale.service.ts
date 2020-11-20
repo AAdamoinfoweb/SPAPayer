@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {LivelloTerritoriale} from '../modules/main/model/LivelloTerritoriale';
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
@@ -79,7 +79,7 @@ export class LivelloTerritorialeService {
       }));
   }
 
-  modificaLivelloTerritoriale(livelloTerritoriale: LivelloTerritoriale, idFunzione: string): Observable<any> {
+  modificaLivelloTerritoriale(livelloTerritoriale: LivelloTerritoriale, idFunzione: string): Observable<any | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.livelloTerritorialeBaseUrl + '/' + livelloTerritoriale.id;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);

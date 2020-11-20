@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {XsrfService} from './xsrf.service';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
@@ -125,7 +125,7 @@ export class BannerService {
         }));
   }
 
-  modificaBanner(datiBanner: Banner, idFunzione: string): Observable<any> {
+  modificaBanner(datiBanner: Banner, idFunzione: string): Observable<any | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.bannerAmministrativoBaseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);

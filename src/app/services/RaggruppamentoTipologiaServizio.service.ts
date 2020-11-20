@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {RaggruppamentoTipologiaServizio} from '../modules/main/model/RaggruppamentoTipologiaServizio';
 import {environment} from '../../environments/environment';
@@ -62,7 +62,7 @@ export class RaggruppamentoTipologiaServizioService {
         }));
   }
 
-  modificaRaggruppamentoTipologiaServizio(raggruppamentoTipologiaServizio: RaggruppamentoTipologiaServizio, idFunzione: string): Observable<any> {
+  modificaRaggruppamentoTipologiaServizio(raggruppamentoTipologiaServizio: RaggruppamentoTipologiaServizio, idFunzione: string): Observable<any | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.baseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);

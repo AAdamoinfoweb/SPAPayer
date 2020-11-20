@@ -9,7 +9,7 @@ import {LivelloTerritorialeService} from '../../../../../../../services/livelloT
 import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {BannerService} from '../../../../../../../services/banner.service';
 
 @Component({
@@ -94,8 +94,8 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe((error) => {
-          if (error == null) {
+        this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe((response) => {
+          if (!(response instanceof HttpErrorResponse)) {
             this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });

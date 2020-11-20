@@ -3,7 +3,7 @@ import {FormElementoParentComponent} from '../../../form-elemento-parent.compone
 import {FunzioneGestioneEnum} from 'src/app/enums/funzioneGestione.enum';
 import {RaggruppamentoTipologiaServizio} from '../../../../../model/RaggruppamentoTipologiaServizio';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {ConfirmationService} from 'primeng/api';
 import {SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
@@ -98,8 +98,8 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.raggruppamentoTipologiaServizioService.modificaRaggruppamentoTipologiaServizio(this.raggruppamentoTipologiaServizio, this.idFunzione).subscribe((error) => {
-          if (error == null) {
+        this.raggruppamentoTipologiaServizioService.modificaRaggruppamentoTipologiaServizio(this.raggruppamentoTipologiaServizio, this.idFunzione).subscribe((response) => {
+          if (!(response instanceof HttpErrorResponse)) {
             this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
           this.isFormValido = false;

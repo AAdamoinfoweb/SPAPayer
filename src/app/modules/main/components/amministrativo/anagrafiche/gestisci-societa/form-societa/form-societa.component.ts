@@ -9,7 +9,7 @@ import {SocietaService} from '../../../../../../../services/societa.service';
 import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {BannerService} from '../../../../../../../services/banner.service';
 
 @Component({
@@ -93,8 +93,8 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.societaService.modificaSocieta(this.societa, this.idFunzione).subscribe((error) => {
-          if (error == null) {
+        this.societaService.modificaSocieta(this.societa, this.idFunzione).subscribe((response) => {
+          if (!(response instanceof HttpErrorResponse)) {
             this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });

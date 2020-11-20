@@ -9,7 +9,7 @@ import {FormElementoParentComponent} from '../../form-elemento-parent.component'
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Utils} from '../../../../../../utils/Utils';
 import * as moment from 'moment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-dettaglio-banner',
@@ -104,8 +104,8 @@ export class FormBannerComponent extends FormElementoParentComponent implements 
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.bannerService.modificaBanner(datiBanner, this.idFunzione).subscribe((error) => {
-          if (error == null) {
+        this.bannerService.modificaBanner(datiBanner, this.idFunzione).subscribe((response) => {
+          if (!(response instanceof HttpErrorResponse)) {
             this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
           this.isFormValido = false;
