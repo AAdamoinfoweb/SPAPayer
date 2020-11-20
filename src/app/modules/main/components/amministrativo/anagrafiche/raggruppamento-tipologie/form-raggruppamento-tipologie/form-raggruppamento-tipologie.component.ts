@@ -8,6 +8,8 @@ import {AmministrativoService} from '../../../../../../../services/amministrativ
 import {ConfirmationService} from 'primeng/api';
 import {SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../../services/RaggruppamentoTipologiaServizio.service';
+import {BannerService} from '../../../../../../../services/banner.service';
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-form-raggruppamento-tipologie',
@@ -34,7 +36,8 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
               protected http: HttpClient,
               protected amministrativoService: AmministrativoService,
               confirmationService: ConfirmationService,
-              private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService) {
+              private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService,
+              private bannerService: BannerService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
@@ -90,11 +93,15 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
           if (raggruppamento != null) {
             this.raggruppamentoTipologiaServizio = new RaggruppamentoTipologiaServizio();
             this.isFormValido = false;
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.raggruppamentoTipologiaServizioService.modificaRaggruppamentoTipologiaServizio(this.raggruppamentoTipologiaServizio, this.idFunzione).subscribe(() => {
+        this.raggruppamentoTipologiaServizioService.modificaRaggruppamentoTipologiaServizio(this.raggruppamentoTipologiaServizio, this.idFunzione).subscribe((error) => {
+          if (error == null) {
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
           this.isFormValido = false;
         });
         break;

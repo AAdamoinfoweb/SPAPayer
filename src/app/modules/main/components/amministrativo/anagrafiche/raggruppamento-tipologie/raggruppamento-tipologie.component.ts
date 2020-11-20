@@ -16,6 +16,7 @@ import {RaggruppamentoTipologiaServizioService} from '../../../../../../services
 import {Utils} from '../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {Observable} from 'rxjs';
+import {BannerService} from '../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-raggruppamento-tipologie',
@@ -60,7 +61,8 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
               protected amministrativoService: AmministrativoService, private renderer: Renderer2,
               private el: ElementRef, private menuService: MenuService,
               private confirmationService: ConfirmationService,
-              private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService) {
+              private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService,
+              private bannerService: BannerService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -134,6 +136,7 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
       Utils.getModale(() => {
           this.raggruppamentoTipologiaServizioService.eliminaRaggruppamentoTipologiaServizio(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;
