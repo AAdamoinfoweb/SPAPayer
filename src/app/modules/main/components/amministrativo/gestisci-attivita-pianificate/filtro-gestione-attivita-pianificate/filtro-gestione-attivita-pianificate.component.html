@@ -1,0 +1,126 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="idCollapseFiltriAttivita">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true" aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+<!-- Form filtri -->
+<form #filtroGestioneAttivitaForm="ngForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltriAttivita">
+    <div class="collapse-body">
+      <!-- Avvio schedulazione, Fine schedulazione -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="inizio" class="title">Avvio schedulazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div [ngClass]="{'col calendar-wrapper': true}">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerInizio)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="inizio"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #avvioSchedulazioneInput = "ngModel"
+                [(ngModel)]="filtroGestioneAttivitaPianificata.avvioSchedulazione"
+                name="avvioSchedulazione"
+                #datePickerInizio
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(avvioSchedulazioneInput), 'text-invalid': isCampoInvalido(avvioSchedulazioneInput)}">
+                {{setPlaceholder(avvioSchedulazioneInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="fine" class="title">Fine schedulazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerFine)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="fine"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #fineSchedulazioneInput = "ngModel"
+                [(ngModel)]="filtroGestioneAttivitaPianificata.fineSchedulazione"
+                name="fineSchedulazione"
+                #datePickerFine
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(fineSchedulazioneInput), 'text-invalid': isCampoInvalido(fineSchedulazioneInput)}">
+                {{setPlaceholder(fineSchedulazioneInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="switchAttivitaAttiva" class="title">Attiva</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <it-toggle id="switchAttivitaAttiva" [(ngModel)]="filtroGestioneAttivitaPianificata.attiva" name="attiva"></it-toggle>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottoni Pulisci e Cerca -->
+      <div class="row">
+        <div class="col-6">
+          <button type="button" id="bottonePulisci" class="btn btn-secondary"
+                  [disabled]="disabilitaBottone(filtroGestioneAttivitaForm, 'Pulisci')"
+                  (click)="pulisciFiltri(filtroGestioneAttivitaForm)">Pulisci</button>
+        </div>
+        <div class="col-6 text-right">
+          <button type="button" id="bottoneCerca" class="btn"
+                  [disabled]="disabilitaBottone(filtroGestioneAttivitaForm, 'Cerca')"
+                  (click)="cercaElementi()">Cerca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

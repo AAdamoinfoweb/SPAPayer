@@ -58,6 +58,17 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
 import {DatiBeneficiarioComponent} from "./anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component";
 import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
 import {DialogModule} from "primeng/dialog";
+import {GestisciStatisticheComponent} from './gestisci-statistiche/gestisci-statistiche.component';
+import {FiltroGestisciStatisticheComponent} from './gestisci-statistiche/filtro-gestisci-statistiche/filtro-gestisci-statistiche.component';
+import {DatiStatisticaComponent} from './gestisci-statistiche/dati-statistica/dati-statistica.component';
+import {FormStatisticaComponent} from './gestisci-statistiche/form-statistica/form-statistica.component';
+import {GestisciAttivitaPianificateComponent} from './gestisci-attivita-pianificate/gestisci-attivita-pianificate.component';
+import {FiltroGestioneAttivitaPianificateComponent} from './gestisci-attivita-pianificate/filtro-gestione-attivita-pianificate/filtro-gestione-attivita-pianificate.component';
+import {DatiAttivitaPianificateComponent} from './gestisci-attivita-pianificate/dati-attivita-pianificate/dati-attivita-pianificate.component';
+import {FormAttivitaPianificateComponent} from './gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component';
+import {SchedulazioneComponent} from "./schedulazione/schedulazione.component";
+import { DatiParametroComponent } from './gestisci-attivita-pianificate/dati-parametri/dati-parametro.component';
+import { DatiDestinatarioComponent } from './gestisci-statistiche/dati-destinatario/dati-destinatario.component';
 import { SelezionaContoCorrenteComponent } from './anagrafiche/gestisci-enti/dati-conto-corrente/seleziona-conto-corrente/seleziona-conto-corrente.component';
 
 
@@ -98,6 +109,17 @@ import { SelezionaContoCorrenteComponent } from './anagrafiche/gestisci-enti/dat
     GestisciCampoTipologiaServizioComponent,
     DatiBeneficiarioComponent,
     DatiContoCorrenteComponent,
+    GestisciStatisticheComponent,
+    FiltroGestisciStatisticheComponent,
+    DatiStatisticaComponent,
+    FormStatisticaComponent,
+    GestisciAttivitaPianificateComponent,
+    FiltroGestioneAttivitaPianificateComponent,
+    DatiAttivitaPianificateComponent,
+    SchedulazioneComponent,
+    FormAttivitaPianificateComponent,
+    DatiParametroComponent,
+    DatiDestinatarioComponent,
     SelezionaContoCorrenteComponent
   ],
   imports: [

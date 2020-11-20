@@ -1,0 +1,120 @@
+<div class="ml-3">
+  <form #datiForm="ngForm">
+    <!--    inizio Titolo, Attiva -->
+    <div class="row mt-4 mb-0">
+      <!--    inizio Titolo -->
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="titolo" class="title " [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+              Titolo</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="titolo" name="titolo" #titolo="ngModel"
+                   [(ngModel)]="datiAttivitaPianificata.titolo" [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   class="pt-0" autocomplete="off" aria-describedby="nomeHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   (ngModelChange)="onChangeModel(datiForm, titolo)">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(titolo)">Inserisci titolo attività pianificata</p>
+            <p *ngIf="isCampoInvalido(titolo)" class="text-invalid">{{getMessaggioErrore(titolo)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--      fine Titolo -->
+      <!--        inizio Attiva -->
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="abilitato" class="title">Attiva</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <it-toggle id="abilitato" [(ngModel)]="datiAttivitaPianificata.abilitato" name="abilitato"
+                       [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO" #abilitato="ngModel"
+                       (ngModelChange)="onChangeModel(datiForm, abilitato)"></it-toggle>
+          </div>
+        </div>
+      </div>
+      <!--        fine Attiva -->
+    </div>
+    <!--    fine Titolo, Attiva -->
+    <!--    inizio Descrizione, Schedulazione -->
+    <div class="row mt-4 mb-0">
+      <!--    inizio Descrizione -->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="descrizione" class="title ">
+              Descrizione</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+             <textarea
+               id="descrizione"
+               type="text"
+               name="descrizione"
+               autocomplete="off"
+               #descrizione="ngModel"
+               [(ngModel)]="datiAttivitaPianificata.descrizione"
+               (ngModelChange)="onChangeModel(datiForm, descrizione)"
+               maxlength="255"
+               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+               class="textArea"
+             ></textarea>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(descrizione)">Inserisci descrizione attività pianificata</p>
+            <p *ngIf="isCampoInvalido(descrizione)" class="text-invalid">{{getMessaggioErrore(descrizione)}}</p>
+          </div>
+        </div>
+        <!--    inizio Parametri -->
+        <div class="row mt-4 mb-0">
+          <!--    inizio Parametri -->
+          <div class="col pb-2">
+            <div class="row">
+              <div class="col-auto pr-1">
+                <label for="parametri" class="title ">
+                  Parametri</label>
+              </div>
+              <div class="col-auto" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <span ngbTooltip="Aggiungi chiave valore" placement="bottom" [ngStyle]="{fill: '#403d39'}">
+            <svg class="bg-light icon icon-sm filled"
+                 (click)="aggiungiChiaveValore()">
+              <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+            </svg>
+              </span>
+              </div>
+            </div>
+            <div id="parametri" class="row">
+              <div class="col">
+                <div #parametro>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--      fine Parametri -->
+        </div>
+        <!--    fine Parametri -->
+      </div>
+      <!--      fine Descrizione -->
+      <!--    inizio Schedulazione -->
+      <div class="col-md-6 pb-2">
+        <app-schedulazione [funzione]="funzione" (isFormValid)="schedulazioneFormValid(datiForm, $event)"
+                           [schedulazione]="datiAttivitaPianificata.schedulazione"></app-schedulazione>
+      </div>
+      <!--      fine Schedulazione -->
+    </div>
+    <!--    fine Decrizione, Schedulazione -->
+  </form>
+</div>
+

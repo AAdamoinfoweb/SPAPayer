@@ -28,6 +28,10 @@ import {FormEnteComponent} from "./modules/main/components/amministrativo/anagra
 import {RaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
 import {GestisciCampoTipologiaServizioComponent} from "./modules/main/components/amministrativo/gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component";
+import {GestisciStatisticheComponent} from "./modules/main/components/amministrativo/gestisci-statistiche/gestisci-statistiche.component";
+import {FormStatisticaComponent} from "./modules/main/components/amministrativo/gestisci-statistiche/form-statistica/form-statistica.component";
+import {GestisciAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/gestisci-attivita-pianificate.component';
+import {FormAttivitaPianificateComponent} from "./modules/main/components/amministrativo/gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -78,7 +82,15 @@ const routes: Routes = [
   {path: 'raggruppamentoTipologie', component: RaggruppamentoTipologieComponent},
   {path: 'raggruppamentoTipologie/aggiungiRaggruppamento', component: FormRaggruppamentoTipologieComponent},
   {path: 'raggruppamentoTipologie/modificaRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
-  {path: 'raggruppamentoTipologie/dettaglioRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent}
+  {path: 'raggruppamentoTipologie/dettaglioRaggruppamento/:raggruppamentoTipologiaServizioId', component: FormRaggruppamentoTipologieComponent},
+  {path: 'gestisciStatistiche', component: GestisciStatisticheComponent},
+  {path: 'gestisciStatistiche/aggiungiStatistica', component: FormStatisticaComponent},
+  {path: 'gestisciStatistiche/modificaStatistica/:statisticaId', component: FormStatisticaComponent},
+  {path: 'gestisciStatistiche/dettaglioStatistica/:statisticaId', component: FormStatisticaComponent},
+  {path: 'gestisciAttivitaPianificate', component: GestisciAttivitaPianificateComponent},
+  {path: 'gestisciAttivitaPianificate/aggiungiAttivitaPianificata', component: FormAttivitaPianificateComponent},
+  {path: 'gestisciAttivitaPianificate/modificaAttivitaPianificata/:attivitaId', component: FormAttivitaPianificateComponent},
+  {path: 'gestisciAttivitaPianificate/dettaglioAttivitaPianificata/:attivitaId', component: FormAttivitaPianificateComponent},
 ];
 
 @NgModule({
