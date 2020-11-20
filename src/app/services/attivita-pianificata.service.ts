@@ -55,7 +55,7 @@ export class AttivitaPianificataService {
       }));
   }
 
-  eliminaAttivitaPianificate(listaAttivitaPianificateId: Array<number>, idFunzione: string): Observable<any> {
+  eliminaAttivitaPianificate(listaAttivitaPianificateId: Array<number>, idFunzione: string): Observable<any | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.eliminaAttivitaPianificateUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -66,7 +66,14 @@ export class AttivitaPianificataService {
         headers: h
       }).pipe(map((body: any) => {
       return body;
-    }));
+    }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(err);
+        } else {
+          return of(err);
+        }
+      }));
   }
 
   inserimentoAttivitaPianificata(attivitaPianificata: AttivitaPianificata, idFunzione: string): Observable<number> {

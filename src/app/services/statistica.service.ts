@@ -55,7 +55,7 @@ export class StatisticaService {
       }));
   }
 
-  eliminaStatistiche(listaStatisticheId: Array<number>, idFunzione: string): Observable<any> {
+  eliminaStatistiche(listaStatisticheId: Array<number>, idFunzione: string): Observable<any | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.eliminaStatisticheUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -66,7 +66,14 @@ export class StatisticaService {
         headers: h
       }).pipe(map((body: any) => {
       return body;
-    }));
+    }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(err);
+        } else {
+          return of(err);
+        }
+      }));
   }
 
   inserimentoStatistica(statistica: Statistica, idFunzione: string): Observable<number> {

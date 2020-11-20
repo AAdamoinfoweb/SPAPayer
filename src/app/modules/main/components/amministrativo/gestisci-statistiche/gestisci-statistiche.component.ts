@@ -1,25 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GestisciElementoComponent} from '../gestisci-elemento.component';
 import {Tabella} from '../../../model/tabella/Tabella';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
 import {ToolEnum} from '../../../../../enums/Tool.enum';
 import {Colonna} from '../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
-import {Observable, of} from 'rxjs';
-import {tipoColonna} from "../../../../../enums/TipoColonna.enum";
-import {tipoTabella} from "../../../../../enums/TipoTabella.enum";
-import {MenuService} from "../../../../../services/menu.service";
-import {StatisticaService} from "../../../../../services/statistica.service";
-import {SintesiStatistica} from "../../../model/statistica/SintesiStatistica";
-import {Utils} from "../../../../../utils/Utils";
+import {Observable} from 'rxjs';
+import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
+import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
+import {MenuService} from '../../../../../services/menu.service';
+import {StatisticaService} from '../../../../../services/statistica.service';
+import {SintesiStatistica} from '../../../model/statistica/SintesiStatistica';
+import {Utils} from '../../../../../utils/Utils';
 import * as moment from 'moment';
-import {ParametriRicercaStatistiche} from "../../../model/statistica/ParametriRicercaStatistiche";
-import {Banner} from "../../../model/banner/Banner";
-import {getBannerType, LivelloBanner} from "../../../../../enums/livelloBanner.enum";
-import {TipoModaleEnum} from "../../../../../enums/tipoModale.enum";
-import {ConfirmationService} from "primeng/api";
+import {ParametriRicercaStatistiche} from '../../../model/statistica/ParametriRicercaStatistiche';
+import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
+import {ConfirmationService} from 'primeng/api';
+import {BannerService} from '../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestisci-statistiche',
@@ -30,7 +29,8 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
 
   constructor(protected router: Router, protected activatedRoute: ActivatedRoute,
               protected http: HttpClient, protected amministrativoService: AmministrativoService,
-              private menuService: MenuService, private statisticaService: StatisticaService, private confirmationService: ConfirmationService) {
+              private menuService: MenuService, private statisticaService: StatisticaService,
+              private confirmationService: ConfirmationService, private bannerService: BannerService) {
     super(router, activatedRoute, http, amministrativoService);
   }
 
@@ -190,8 +190,11 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
   private eliminaStatisticheSelezionate() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.statisticaService.eliminaStatistiche(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
-            this.popolaListaElementi();
+          this.statisticaService.eliminaStatistiche(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+            }
           });
           this.righeSelezionate = [];
           const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
