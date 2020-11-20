@@ -38,6 +38,16 @@ export class ModaleAggiungiTipoCampoComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  selezionaNome(): void {
+    if (!this.nome) {
+      this.informazione = null;
+    }
+  }
+
+  disabilitaCampoInformazioni(): boolean {
+    return !this.nome ? true : null;
+  }
+
   clickIndietro() {
     this.overlayService.mostraModaleTipoCampoEvent.emit(null);
   }

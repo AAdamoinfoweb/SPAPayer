@@ -9,7 +9,9 @@
         <select
           id="nome"
           [formControl]="form.controls['nome']"
-          [(ngModel)]="nome">
+          [(ngModel)]="nome"
+          (ngModelChange)="selezionaNome()"
+        >
           <option [ngValue]="null"></option>
           <option *ngFor="let item of listaNomi" [ngValue]="item">{{item}}</option>
         </select>
@@ -24,6 +26,7 @@
         <input id="informazione"
                [formControl]="form.controls['informazione']"
                [(ngModel)]="informazione"
+               [attr.disabled]="disabilitaCampoInformazioni()"
                type="text"
                autocomplete="off"
         />
