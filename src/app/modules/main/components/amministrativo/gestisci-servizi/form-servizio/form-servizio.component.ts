@@ -5,10 +5,8 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   EventEmitter,
-  Input,
   OnDestroy,
   OnInit,
-  Output,
   QueryList,
   Renderer2,
   ViewChild,
@@ -42,8 +40,6 @@ import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {ConfiguratoreCampiNuovoPagamento} from '../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 import {ContoCorrente} from '../../../../model/ente/ContoCorrente';
 import {DatiContoCorrenteComponent} from '../../anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component';
-
-import {Beneficiario} from '../../../../model/ente/Beneficiario';
 import {ConfiguraServizioService} from '../../../../../../services/configura-servizio.service';
 import {RendicontazioneGiornaliera} from '../../../../model/servizio/RendicontazioneGiornaliera';
 import {CampoServizio} from '../../../../model/servizio/CampoServizio';
@@ -57,6 +53,7 @@ import {Servizio} from '../../../../model/servizio/Servizio';
 import {FlussoRiversamentoPagoPA} from '../../../../model/servizio/FlussoRiversamentoPagoPA';
 import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
 import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
+import {Utils} from "../../../../../../utils/Utils";
 
 @Component({
   selector: 'app-form-servizio',
@@ -124,25 +121,13 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   testoTooltipIconaElimina = 'Elimina dati beneficiario';
 
-  @Input() indexDatiBeneficiario: number;
-  @Input() datiBeneficiario: Beneficiario;
-  @Input() listaContiCorrente: ContoCorrente[];
-  @Output()
-  onChangeDatiBeneficiario: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
-  onDeleteDatiBeneficiario: EventEmitter<any> = new EventEmitter<any>();
+  listaContiCorrente: ContoCorrente[];
 
-  @ViewChildren('datiBeneficiarioForm')
-  private datiBeneficiarioFormQuery: QueryList<any>;
+  @ViewChildren('datiContoCorrente', {read: ViewContainerRef})
+  datiBeneficiarioFormQuery: QueryList<any>;
 
   @ViewChild('datiContoCorrente', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
-
-  @ViewChild('datiBeneficiarioForm', {static: false, read: NgForm})
-  formDatiBeneficiario: NgForm;
-
-  mapContoCorrente: Map<number, ContoCorrente> = new Map<number, ContoCorrente>();
-  mapControllo: Map<number, boolean> = new Map<number, boolean>();
 
   private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
   private listaDipendeDa: CampoTipologiaServizio[];
@@ -152,8 +137,12 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   invioNotifiche: any = {};
   emailsControl: FormControl[] = [new FormControl()];
   displayCc = false;
-  getListaContiCorrente = (mapContoCorrente: Map<number, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
-  getListaControllo = (mapControllo: Map<number, boolean>) => Array.from(mapControllo, ([name, value]) => value);
+
+  mapContoCorrente: Map<string, ContoCorrente> = new Map<string, ContoCorrente>();
+  mapControllo: Map<string, boolean> = new Map<string, boolean>();
+  getListaContiCorrente = (mapContoCorrente: Map<string, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
+  getListaControllo = (mapControllo: Map<string, boolean>) => Array.from(mapControllo, ([name, value]) => value);
+
 
   ngOnInit(): void {
   }
@@ -396,7 +385,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     });
   }
 
-  removeItem(item: CampoTipologiaServizio) {
+  removeItem(item: CampoServizio) {
 
   }
 
@@ -433,8 +422,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   dropEvt(event: CdkDragDrop<{ item: CampoServizio; index: number }, any>) {
-    this.campoTipologiaServizioList[event.previousContainer.data.index] = event.container.data.item;
-    this.campoTipologiaServizioList[event.container.data.index] = event.previousContainer.data.item;
+    this.campoServizioAddList[event.previousContainer.data.index] = event.container.data.item;
+    this.campoServizioAddList[event.container.data.index] = event.previousContainer.data.item;
   }
 
   add() {
@@ -447,11 +436,15 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     // creazione Dati Conto Corrente Component
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiContoCorrenteComponent);
     this.componentRef = this.target.createComponent(childComponent);
-    this.renderer.setStyle(this.componentRef.instance.el.nativeElement, 'width', '100%');
     const indexContoCorrente = this.target.length;
     // input
+    this.componentRef.instance.uuid = Utils.uuidv4();
     this.componentRef.instance.indexDatiContoCorrente = indexContoCorrente;
     this.componentRef.instance.funzione = this.funzione;
+    this.enteService.recuperaContiCorrenti(this.beneficiario.enteId, this.idFunzione)
+      .subscribe((value) => {
+        this.componentRef.instance.listaContiCorrenti = value;
+      });
     let instanceContoCorrente: ContoCorrente;
     if (datiContoCorrente == null) {
       instanceContoCorrente = new ContoCorrente();
@@ -463,25 +456,36 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
     }
     // output
-    this.componentRef.instance.onDeleteDatiContoCorrente.subscribe(index => {
-      const contoCorrente = this.mapContoCorrente.get(index);
+    this.componentRef.instance.onDeleteDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
+      const contoCorrente = this.mapContoCorrente.get(componenteDinamico.uuid);
       const isContoCorrenteDaModificare: boolean = contoCorrente != null;
       if (isContoCorrenteDaModificare) {
-        this.mapContoCorrente.delete(index);
-        this.mapControllo.delete(index);
+        this.mapContoCorrente.delete(componenteDinamico.uuid);
+        this.mapControllo.delete(componenteDinamico.uuid);
       }
-      this.target.remove(index - 1);
+      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
+      const zeroBasedIndex = componenteDinamico.index - 1;
+      const viewRef = this.target.get(zeroBasedIndex);
+      if (viewRef == null && this.target.length === 1) {
+        this.target.clear();
+      } else {
+        this.target.remove(zeroBasedIndex);
+      }
       this.setListaContiCorrente();
     });
-
+    this.componentRef.instance.onChangeDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
+      this.mapContoCorrente.set(componenteDinamico.uuid, componenteDinamico.oggetto);
+      this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
+      this.setListaContiCorrente();
+    });
     this.componentRef.changeDetectorRef.detectChanges();
     return indexContoCorrente;
   }
 
+
   private setListaContiCorrente() {
     const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
-    // this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
-    // this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm()));
+    this.beneficiario.listaContiCorrenti = listaContiCorrente;
   }
 
   validateUrl() {

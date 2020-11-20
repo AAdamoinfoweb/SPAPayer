@@ -588,30 +588,16 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="collapse-header" id="idCollapseDatiBonifico">
-        <button data-toggle="collapse" data-target="#datiBonifico" aria-expanded="true"
-                aria-controls="datiBonifico">
-          Dati Bonifico
-        </button>
-      </div>
-      <div id="datiBonifico" class="collapse show" role="tabpanel" aria-labelledby="idCollapseDatiBonifico">
-        <div class="row pt-2">
-          <div class="col text-center">
-            <a href="javascript:void(0)" (click)="selezionaDaCC()">Seleziona da un conto corrente esistente</a>
-          </div>
+        <div [attr.disabled]="beneficiario.enteId" class="collapse-header" id="idCollapseDatiBonifico">
+          <button data-toggle="collapse" data-target="#datiBonifico" aria-expanded="true"
+                  aria-controls="datiBonifico">
+            Dati Bonifico
+          </button>
         </div>
-        <div class="row">
+        <div  id="datiBonifico" class="collapse show" role="tabpanel" aria-labelledby="idCollapseDatiBonifico">
+          <div #datiContoCorrente></div>
 
-        </div>
-        <div class="row">
-          <div class="col text-right">
-            <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiContoCorrente"
-                    class="btn btn-secondary"
-                    (click)="aggiungiContoCorrente()">
-              Aggiungi conto corrente
-            </button>
-          </div>
+
         </div>
       </div>
       <div class="collapse-header" id="idCollapseCampiServizio">
@@ -648,7 +634,7 @@
             <ng-container *ngFor="let item of campoTipologiaServizioList;let i=index">
               <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
                    cdkDropListOrientation="horizontal"
-                   [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
+                   [cdkDropListData]="{item:item, index:i}">
                 <div style="min-height: 5vh;"
                      [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
                'field-input': (item.campoInput && !item.disabilitato)}"
