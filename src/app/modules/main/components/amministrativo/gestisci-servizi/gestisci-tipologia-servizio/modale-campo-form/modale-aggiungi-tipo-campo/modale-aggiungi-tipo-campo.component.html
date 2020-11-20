@@ -6,12 +6,13 @@
         >Nome</label>
       </div>
       <div class="row">
-        <input id="nome"
-               [formControl]="form.controls['nome']"
-               [(ngModel)]="nome"
-               type="text"
-               autocomplete="off"
-        />
+        <select
+          id="nome"
+          [formControl]="form.controls['nome']"
+          [(ngModel)]="nome">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of listaNomi" [ngValue]="item">{{item}}</option>
+        </select>
       </div>
     </div>
     <div class="offset-md-2 col-md-4">
