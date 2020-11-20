@@ -9,9 +9,14 @@ import {TipoModaleEnum} from '../enums/tipoModale.enum';
 import {Breadcrumb, SintesiBreadcrumb} from "../modules/main/dto/Breadcrumb";
 import {Colonna} from '../modules/main/model/tabella/Colonna';
 import {OpzioneSelect} from '../modules/main/model/OpzioneSelect';
+import {Banner} from "../modules/main/model/banner/Banner";
+import {getBannerType, LivelloBanner} from "../enums/livelloBanner.enum";
 import {ToolEnum} from "../enums/Tool.enum";
 
 export class Utils {
+
+  constructor() {
+  }
 
   static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00:00';
   static FORMAT_LOCAL_DATE_TIME_ISO = 'YYYY-MM-DD[T]hh:mm:ss';
@@ -249,5 +254,14 @@ export class Utils {
     mappaIndexToolbar.set(ToolEnum.EXPORT_PDF, toolbarType.indexOf(ToolEnum.EXPORT_PDF));
     mappaIndexToolbar.set(ToolEnum.EXPORT_XLS, toolbarType.indexOf(ToolEnum.EXPORT_XLS));
     return mappaIndexToolbar;
+  }
+
+  static bannerOperazioneSuccesso(): Banner {
+    const banner: Banner = {
+      titolo: 'SUCCESSO',
+      testo: 'Operazione conclusa con successo',
+      tipo: getBannerType(LivelloBanner.SUCCESS)
+    };
+    return banner;
   }
 }
