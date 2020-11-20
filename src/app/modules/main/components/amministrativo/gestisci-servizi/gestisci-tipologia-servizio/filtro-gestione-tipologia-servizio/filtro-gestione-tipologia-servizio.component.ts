@@ -144,6 +144,9 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
 
   pulisciFiltri(form: NgForm): void {
     form.reset();
+    if (this.isPaginaGestione()) {
+      this.caricaCodiciTipologia();
+    }
     this.onChangeFiltri.emit(null);
   }
 
