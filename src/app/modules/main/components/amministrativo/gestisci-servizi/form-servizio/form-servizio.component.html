@@ -691,7 +691,7 @@
                   <label for="emailGiornaliera" class="title">Email</label>
                 </div>
                 <div class="col-2">
-                  <it-toggle id="emailGiornaliera"
+                  <it-toggle id="emailGiornaliera" (ngModelChange)="changeEmailGiornaliera($event)"
                              [(ngModel)]="rendicontazioneGiornaliera.emailEnabled" name="emailGiornaliera"></it-toggle>
                 </div>
               </div>
@@ -718,7 +718,7 @@
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Ccn"
                          #emailGiornalieraCcn="ngModel"
-                         id="emailGiornalieraCcn"
+                         id="emailGiornalieraCcn" [customvalidator]="validateEmail()"
                          name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.emailCcn"
                          [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
                 </div>
@@ -742,7 +742,7 @@
                          [ngClass]="{'required': rendicontazioneGiornaliera.ftpEnabled, 'title':true}">Ftp</label>
                 </div>
                 <div class="col-2">
-                  <it-toggle id="ftpGiornaliera"
+                  <it-toggle id="ftpGiornaliera" (ngModelChange)="changeFtpGiornaliera($event)"
                              [(ngModel)]="rendicontazioneGiornaliera.ftpEnabled" name="ftpGiornaliera"></it-toggle>
                 </div>
               </div>
@@ -750,7 +750,7 @@
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Server"
                          [placeholder]="getPlaceholderRequired('Server', rendicontazioneGiornaliera.ftpEnabled)"
-                         id="server" name="server" #server="ngModel"
+                         id="server" name="server" #server="ngModel"  [customvalidator]="validateServer()"
                          [(ngModel)]="rendicontazioneGiornaliera.server"
                          [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
                 </div>
@@ -838,7 +838,7 @@
                   <label for="emailFlussoPA" class="title">Email</label>
                 </div>
                 <div class="col-2">
-                  <it-toggle id="emailFlussoPA"
+                  <it-toggle id="emailFlussoPA" (ngModelChange)="changeEmailFlussoPagoPA($event)"
                              [(ngModel)]="rendicontazioneFlussoPA.emailEnabled" name="emailFlussoPA"></it-toggle>
                 </div>
               </div>
@@ -865,7 +865,7 @@
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Ccn" id="emailFlussoPACcn"
                          name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.emailCcn"
-                         #emailFlussoPACcn="ngModel"
+                         #emailFlussoPACcn="ngModel" [customvalidator]="validateEmail()"
                          [disabled]="!rendicontazioneFlussoPA.emailEnabled ? true : null">
                 </div>
                 <div class="col-12">
@@ -887,7 +887,7 @@
                   <label for="ftpFlussoPA" [ngClass]="{'required': rendicontazioneFlussoPA.ftpEnabled, 'title':true}">Ftp</label>
                 </div>
                 <div class="col-2">
-                  <it-toggle id="ftpFlussoPA"
+                  <it-toggle id="ftpFlussoPA" (ngModelChange)="changeFtpFlussoPagoPA($event)"
                              [(ngModel)]="rendicontazioneFlussoPA.ftpEnabled" name="ftpFlussoPA"></it-toggle>
                 </div>
               </div>
@@ -896,7 +896,7 @@
                 <div class="col-12">
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneFlussoPA.ftpEnabled)"
-                         id="serverFlussoPA" name="serverFlussoPA"
+                         id="serverFlussoPA" name="serverFlussoPA"  [customvalidator]="validateServer()"
                          [(ngModel)]="rendicontazioneFlussoPA.server" #serverFlussoPA="ngModel"
                          [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
                 </div>

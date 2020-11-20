@@ -265,10 +265,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.abilitaA = this.filtri.abilitaA;
     this.servizio.flagAttiva = this.filtri.attivo;
 
-    this.servizio.contatti  = this.contatti;
-    this.servizio.integrazione  = this.integrazione;
-    this.servizio.impositore  = this.impositore;
-    this.servizio.beneficiario  = this.beneficiario;
+    this.servizio.contatti = this.contatti;
+    this.servizio.integrazione = this.integrazione;
+    this.servizio.impositore = this.impositore;
+    this.servizio.beneficiario = this.beneficiario;
     this.servizio.listaContiCorrenti = this.listaContiCorrente;
     this.servizio.listaCampiServizio = campoServizios;
 
@@ -484,6 +484,20 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
 
+  validateServer() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
+        if (!new RegExp(regex).test(control.value)) {
+          return {url: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
   validateEmail() {
     return ((control: FormControl) => {
 
@@ -515,5 +529,38 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   selezionaDaCC() {
     this.displayCc = !this.displayCc;
+  }
+
+  changeEmailGiornaliera(event: boolean) {
+    if (!event) {
+      this.rendicontazioneGiornaliera.email = null;
+      this.rendicontazioneGiornaliera.emailCcn = null;
+    }
+  }
+
+  changeEmailFlussoPagoPA(event: boolean) {
+    if (!event) {
+      this.rendicontazioneFlussoPA.email = null;
+      this.rendicontazioneFlussoPA.emailCcn = null;
+    }
+  }
+
+  changeFtpFlussoPagoPA(event: boolean) {
+    if (!event) {
+      this.rendicontazioneFlussoPA.server = null;
+      this.rendicontazioneFlussoPA.username = null;
+      this.rendicontazioneFlussoPA.password = null;
+      this.rendicontazioneFlussoPA.directory = null;
+    }
+  }
+
+  changeFtpGiornaliera(event: boolean) {
+    if (!event) {
+      this.rendicontazioneGiornaliera.server = null;
+      this.rendicontazioneGiornaliera.username = null;
+      this.rendicontazioneGiornaliera.password = null;
+      this.rendicontazioneGiornaliera.directory = null;
+      this.rendicontazioneGiornaliera.nuovoFormato = null;
+    }
   }
 }

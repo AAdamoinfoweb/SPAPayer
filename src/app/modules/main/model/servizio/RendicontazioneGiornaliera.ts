@@ -1,11 +1,5 @@
-export class RendicontazioneGiornaliera {
-  emailEnabled = false;
-  ftpEnabled = false;
-  email: string;
-  emailCcn: string;
-  server: string;
-  username: string;
-  password: string;
-  directory: string;
+import {FlussoRiversamentoPagoPA} from "./FlussoRiversamentoPagoPA";
 
+export class RendicontazioneGiornaliera extends FlussoRiversamentoPagoPA {
+  nuovoFormato: boolean;
 }
