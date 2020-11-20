@@ -56,16 +56,21 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.datiAttivitaPianificata) {
       this.inizializzazioneChiaveValore();
-    }
   }
 
   private inizializzazioneChiaveValore() {
-    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI && this.datiAttivitaPianificata.parametri != null && this.datiAttivitaPianificata.parametri.length > 0) {
-      this.datiAttivitaPianificata.parametri.forEach(parametro => this.aggiungiChiaveValore(parametro));
+    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
+      if (this.datiAttivitaPianificata.parametri != null && this.datiAttivitaPianificata.parametri.length > 0) {
+        this.datiAttivitaPianificata.parametri.forEach(parametro => this.aggiungiChiaveValore(parametro));
+      } else {
+        this.aggiungiChiaveValore();
+      }
     } else {
-      this.aggiungiChiaveValore();
+      if (this.datiAttivitaPianificata.parametri == null || this.datiAttivitaPianificata.parametri.length === 0) {
+        this.target.clear();
+        this.aggiungiChiaveValore();
+      }
     }
   }
 

@@ -56,18 +56,24 @@ export class DatiStatisticaComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.datiStatistica) {
-        this.inizializzazioneDestinatari();
+      this.inizializzazioneDestinatari();
     }
   }
 
   private inizializzazioneDestinatari() {
-    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI && this.datiStatistica.destinatari != null && this.datiStatistica.destinatari.length > 0) {
-      this.datiStatistica.destinatari.forEach(destinatario => this.aggiungiDestinatario(destinatario));
+    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
+      if (this.datiStatistica.destinatari != null && this.datiStatistica.destinatari.length > 0) {
+        this.datiStatistica.destinatari.forEach(destinatario => this.aggiungiDestinatario(destinatario));
+      }
+    } else {
+      if (this.datiStatistica.destinatari == null || this.datiStatistica.destinatari.length === 0) {
+        this.target.clear();
+      }
     }
   }
 
   isCampoInvalido(campo: NgModel) {
-      return campo?.errors != null;
+    return campo?.errors != null;
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -80,7 +86,7 @@ export class DatiStatisticaComponent implements OnInit, OnChanges {
 
   onChangeModel(form: NgForm, campo?: NgModel) {
     if (campo?.value == '') {
-        this.datiStatistica[campo.name] = null;
+      this.datiStatistica[campo.name] = null;
     }
 
     this.formsValid(form, this.isSchedulazioneFormValid);

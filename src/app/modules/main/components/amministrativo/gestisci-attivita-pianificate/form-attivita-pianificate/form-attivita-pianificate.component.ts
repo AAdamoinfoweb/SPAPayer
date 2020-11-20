@@ -89,12 +89,6 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
   inizializzaDatiAttivitaPianificata() {
     this.datiAttivitaPianificata.schedulazione.timeZone = Utils.TIME_ZONE;
     this.datiAttivitaPianificata.abilitato = false;
-    // inizializzo campo da compilare
-    const parametri: ParametroAttivitaPianificata = new ParametroAttivitaPianificata();
-    parametri.chiave = null;
-    parametri.valore = null;
-    parametri.uuid = Utils.uuidv4();
-    this.datiAttivitaPianificata.parametri.push(parametri);
   }
 
   onClickSalva(): void {

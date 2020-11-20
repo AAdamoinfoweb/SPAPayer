@@ -238,7 +238,6 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
           this.esito = response.esito;
           this.pulisciEnte();
         }
-
       });
   }
 
@@ -246,6 +245,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.controlloEsito();
     this.datiEnte = new EnteCompleto();
     this.inizializzaDatiEnte();
+    this.target.clear();
     if (this.esito == null) {
       this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
     }
@@ -265,9 +265,10 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
 
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {
     listaBeneficiari = listaBeneficiari.map((beneficiario) => {
-      const contiCorrenti = beneficiario.listaContiCorrenti;
+      const beneficiarioCopy = JSON.parse(JSON.stringify(beneficiario));
+      const contiCorrenti = beneficiarioCopy.listaContiCorrenti;
       if (contiCorrenti != null && contiCorrenti.length > 0) {
-        beneficiario.listaContiCorrenti = contiCorrenti.map((contoCorrente) => {
+        beneficiarioCopy.listaContiCorrenti = contiCorrenti.map((contoCorrente) => {
           contoCorrente.iban = contoCorrente.iban.replace(/\s+/g, '');
           const ibanCCPostale = contoCorrente.ibanCCPostale;
           if (ibanCCPostale != null) {
@@ -284,7 +285,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
           return contoCorrente;
         });
       }
-      return beneficiario;
+      return beneficiarioCopy;
     });
     return listaBeneficiari;
   }
