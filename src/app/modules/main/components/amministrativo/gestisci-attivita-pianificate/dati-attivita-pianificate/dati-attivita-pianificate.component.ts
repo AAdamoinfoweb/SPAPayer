@@ -15,6 +15,8 @@ import {NgForm, NgModel} from '@angular/forms';
 import {AttivitaPianificata} from "../../../../model/attivitapianificata/AttivitaPianificata";
 import {ParametroAttivitaPianificata} from "../../../../model/attivitapianificata/ParametroAttivitaPianificata";
 import {DatiParametroComponent} from "../dati-parametri/dati-parametro.component";
+import {Utils} from "../../../../../../utils/Utils";
+import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
 
 @Component({
   selector: 'app-dati-attivita-pianificate',
@@ -45,9 +47,9 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
 
   isSchedulazioneFormValid: boolean;
 
-  mapParametri: Map<number, ParametroAttivitaPianificata> = new Map<number, ParametroAttivitaPianificata>();
-  mapControllo: Map<number, boolean> = new Map<number, boolean>();
-  getListaFromMap = (map: Map<number, any>) => Array.from(map, ([name, value]) => value);
+  mapParametri: Map<string, ParametroAttivitaPianificata> = new Map<string, ParametroAttivitaPianificata>();
+  mapControllo: Map<string, boolean> = new Map<string, boolean>();
+  getListaFromMap = (map: Map<string, any>) => Array.from(map, ([name, value]) => value);
 
 
   ngOnInit(): void {
@@ -107,6 +109,7 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
     this.componentRef = this.target.createComponent(childComponent);
     const index = this.target.length;
     // input
+    this.componentRef.instance.uuid = Utils.uuidv4();
     this.componentRef.instance.index = index;
     this.componentRef.instance.funzione = this.funzione;
     let instance: ParametroAttivitaPianificata;
@@ -117,15 +120,15 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
     }
     this.componentRef.instance.parametro = instance;
     // output
-    this.componentRef.instance.onDeleteDatiParametro.subscribe(currentIndex => {
-      const currentParametro = this.mapParametri.get(currentIndex);
+    this.componentRef.instance.onDeleteDatiParametro.subscribe((componenteDinamico: ComponenteDinamico) => {
+      const currentParametro = this.mapParametri.get(componenteDinamico.uuid);
       if (currentParametro != null) {
-        this.mapParametri.delete(currentIndex);
-        this.mapControllo.delete(currentIndex);
+        this.mapParametri.delete(componenteDinamico.uuid);
+        this.mapControllo.delete(componenteDinamico.uuid);
       }
 
       // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
-      const zeroBasedIndex = currentIndex - 1;
+      const zeroBasedIndex = componenteDinamico.index - 1;
       const viewRef = this.target.get(zeroBasedIndex);
       if (viewRef == null && this.target.length === 1) {
         this.target.clear();
@@ -134,9 +137,9 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
       }
       this.setListaParametri();
     });
-    this.componentRef.instance.onChangeDatiParametro.subscribe((parametroIndex) => {
-      this.mapParametri.set(parametroIndex.index, parametroIndex.parametro);
-      this.mapControllo.set(parametroIndex.index, parametroIndex.isFormValid);
+    this.componentRef.instance.onChangeDatiParametro.subscribe((componenteDinamico: ComponenteDinamico) => {
+      this.mapParametri.set(componenteDinamico.uuid, componenteDinamico.oggetto);
+      this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
       this.setListaParametri();
     });
     this.componentRef.changeDetectorRef.detectChanges();
