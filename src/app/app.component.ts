@@ -57,13 +57,9 @@ export class AppComponent implements OnInit {
       });
 
     this.overlayService.mostraModaleTipoCampoEvent
-      .subscribe(value => {
-        // todo rifattorizzare tipo dato trasmesso sull'event (attendere chiarimenti su funzione / idFunzione)
-        if (value?.idFunzione) {
-          this.idFunzione = value.idFunzione;
-        } else {
-          this.idFunzione = null;
-        }
+      .subscribe(idFunzione => {
+        this.idFunzione = idFunzione;
+        // Non imposto mostraModale false se idFunzione null in quando mostraModale gestisce la comparsa delle modali di primo livello (non innestate)
         this.cdr.detectChanges();
       });
 

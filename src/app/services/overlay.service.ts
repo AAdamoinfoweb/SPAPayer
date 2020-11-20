@@ -13,7 +13,7 @@ export class OverlayService {
 
   mostraModaleDettaglioPagamentoEvent: EventEmitter<DatiPagamento> = new EventEmitter<DatiPagamento>();
   mostraModaleCampoEvent: EventEmitter<DatiModaleCampo> = new EventEmitter<DatiModaleCampo>();
-  mostraModaleTipoCampoEvent: EventEmitter<any> = new EventEmitter<any>();
+  mostraModaleTipoCampoEvent: EventEmitter<number> = new EventEmitter<number>();
 
   gestisciErrore(): void {
     this.router.navigateByUrl("/erroregenerico");

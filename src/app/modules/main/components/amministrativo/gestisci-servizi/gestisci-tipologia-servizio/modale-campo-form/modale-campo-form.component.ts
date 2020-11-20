@@ -117,6 +117,6 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   addTipoCampo() {
-    this.overlayService.mostraModaleTipoCampoEvent.emit({idFunzione: this.datiModaleCampo.idFunzione});
+    this.overlayService.mostraModaleTipoCampoEvent.emit(this.datiModaleCampo.idFunzione);
   }
 }
