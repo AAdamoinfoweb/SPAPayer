@@ -117,28 +117,19 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     if (campo.control?.errors?.required) {
       return 'Il campo è obbligatorio';
     } else {
-      if (campo.name === 'fineValidita') {
-        return 'Data scadenza antecedente a data attivazione';
-      } else {
-        return 'Campo non valido';
-      }
-
+      return 'Campo non valido';
     }
   }
 
   isCampoInvalido(campo: NgModel) {
-    if (campo?.name === 'fineValidita') {
-      return campo?.errors != null || this.controlloDate(this.datiContoCorrente);
-    } else {
-      return campo?.errors != null;
-    }
+    return campo?.errors != null;
   }
 
   onChangeModel(form: NgForm, campo: NgModel) {
     if (campo.value == '') {
       this.datiContoCorrente[campo.name] = null;
     }
-    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo(this.controlloForm(form, this.datiContoCorrente)));
+    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo(this.controlloForm(form)));
   }
 
   setContoCorrenteSingolo(isFormValid: boolean): ContoCorrenteSingolo {
@@ -149,22 +140,8 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     return contoCorrenteSingolo;
   }
 
-  controlloForm(form: NgForm, contoCorrente: ContoCorrente): boolean {
-    let ret = false;
-    if (contoCorrente.fineValidita != null) {
-      ret = this.controlloDate(contoCorrente);
-    }
-    return form.valid && !ret;
-  }
-
-  controlloDate(contoCorrente: ContoCorrente): boolean {
-    const controlloCC = Object.assign({}, contoCorrente);
-    const dataAttivazione = controlloCC.inizioValidita;
-    const dataScadenza = controlloCC.fineValidita;
-    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    const isDataScadenzaBeforeDataAttivazione = Utils.isBefore(dataScadenza, dataAttivazione);
-    const ret = this.funzione === FunzioneGestioneEnum.DETTAGLIO ? false : isDataScadenzaBeforeDataAttivazione;
-    return ret;
+  controlloForm(form: NgForm): boolean {
+    return form.valid;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
