@@ -32,6 +32,7 @@ import {HttpClient} from '@angular/common/http';
 import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaUtente';
 import {map} from 'rxjs/operators';
 import {OperazioneEsitoEnum} from "../../../../../../enums/operazioneEsito.enum";
+import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -53,7 +54,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
   datiPermesso: PermessoCompleto;
   asyncSubject: AsyncSubject<string> = new AsyncSubject<string>();
-  mapPermessi: Map<number, PermessoCompleto> = new Map();
+  mapPermessi: Map<string, PermessoCompleto> = new Map();
   isFormDatiUtenteValido = false;
   funzione: FunzioneGestioneEnum;
   idFunzione;
@@ -61,7 +62,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
 
-  getListaPermessi = (mapPermessi: Map<number, PermessoCompleto>) => Array.from(mapPermessi, ([name, value]) => value);
+  getListaPermessi = (mapPermessi: Map<string, PermessoCompleto>) => Array.from(mapPermessi, ([name, value]) => value);
 
 
   constructor(private utenteService: UtenteService, protected router: Router,
@@ -158,33 +159,35 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.datiUtente = datiUtente;
   }
 
-  aggiungiSezionePermesso(datiPermesso?: PermessoCompleto): number {
+  aggiungiSezionePermesso(datiPermesso?: PermessoCompleto): string {
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiPermessoComponent);
     this.componentRef = this.target.createComponent(childComponent);
     const indexPermesso = this.target.length;
     this.componentRef.instance.indexSezionePermesso = indexPermesso;
-    this.componentRef.instance.onDeletePermesso.subscribe(index => {
-      const permessoCompleto = this.mapPermessi.get(index);
+    const uuidComponente = Utils.uuidv4();
+    this.componentRef.instance.uuid = uuidComponente;
+    this.componentRef.instance.onDeletePermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
+      const permessoCompleto = this.mapPermessi.get(componenteDinamico.uuid);
       const isPermessoDaModificare: boolean = permessoCompleto.listaFunzioni
         .some((permessoFunzione) => permessoFunzione.permessoId != null);
       if (!isPermessoDaModificare) {
-        this.mapPermessi.delete(index);
+        this.mapPermessi.delete(componenteDinamico.uuid);
       }
-      this.target.remove(index - 1);
+      this.target.remove(componenteDinamico.index - 1);
     });
-    this.componentRef.instance.onChangeDatiPermesso.subscribe((currentPermesso: PermessoSingolo) => {
-      if (this.mapPermessi.has(currentPermesso.index)) {
-        const permessoCompleto: PermessoCompleto = this.mapPermessi.get(currentPermesso.index);
+    this.componentRef.instance.onChangeDatiPermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
+      if (this.mapPermessi.has(componenteDinamico.uuid)) {
+        const permessoCompleto: PermessoCompleto = this.mapPermessi.get(componenteDinamico.uuid);
         if (permessoCompleto.enteId == null && permessoCompleto.listaFunzioni.length > 0) {
           // da amministrativo a gestionale
-          if (currentPermesso.permessoCompleto.enteId != null) {
+          if (componenteDinamico.oggetto.enteId != null) {
             // elimina logicamente permesso amministrativo precedente
             permessoCompleto.listaFunzioni[0].permessoCancellato = true;
             this.mapPermessi.set(Utils.uuidv4(), permessoCompleto);
           }
         } else if (permessoCompleto.enteId != null && permessoCompleto.listaFunzioni.length > 0) {
           // da gestionale ad amministrativo
-          if (currentPermesso.permessoCompleto.enteId == null) {
+          if (componenteDinamico.oggetto.enteId == null) {
             // elimina logicamente permessi gestionali precedenti
             const listaFunzioniAggiornata = permessoCompleto.listaFunzioni.map((permessoFunzione) => {
               permessoFunzione.permessoCancellato = true;
@@ -195,7 +198,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
           }
         }
       }
-      this.mapPermessi.set(currentPermesso.index, currentPermesso.permessoCompleto);
+      this.mapPermessi.set(componenteDinamico.uuid, componenteDinamico.oggetto);
     });
     if (datiPermesso) {
       this.datiPermesso = datiPermesso;
@@ -204,7 +207,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.componentRef.instance.funzione = this.funzione;
     this.componentRef.instance.idFunzione = this.idFunzione;
     this.componentRef.changeDetectorRef.detectChanges();
-    return indexPermesso;
+    return uuidComponente;
   }
 
   letturaPermessi(codiceFiscale) {
@@ -214,8 +217,8 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
           moment(permesso.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
         permesso.dataFineValidita = permesso.dataFineValidita ?
           moment(permesso.dataFineValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
-        const indexPermesso = this.aggiungiSezionePermesso(permesso);
-        this.mapPermessi.set(indexPermesso, permesso);
+        const uuidComponente = this.aggiungiSezionePermesso(permesso);
+        this.mapPermessi.set(uuidComponente, permesso);
       });
     });
   }
