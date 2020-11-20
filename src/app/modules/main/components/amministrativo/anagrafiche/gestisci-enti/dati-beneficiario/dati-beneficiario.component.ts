@@ -20,6 +20,7 @@ import {DatiContoCorrenteComponent} from '../dati-conto-corrente/dati-conto-corr
 import * as moment from 'moment';
 import {Utils} from '../../../../../../../utils/Utils';
 import {EnteService} from '../../../../../../../services/ente.service';
+import {ComponenteDinamico} from "../../../../../model/ComponenteDinamico";
 
 @Component({
   selector: 'app-dati-beneficiario',
@@ -51,10 +52,10 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   @ViewChild('datiBeneficiarioForm', {static: false, read: NgForm})
   formDatiBeneficiario: NgForm;
 
-  mapContoCorrente: Map<number, ContoCorrente> = new Map<number, ContoCorrente>();
-  mapControllo: Map<number, boolean> = new Map<number, boolean>();
-  getListaContiCorrente = (mapContoCorrente: Map<number, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
-  getListaControllo = (mapControllo: Map<number, boolean>) => Array.from(mapControllo, ([name, value]) => value);
+  mapContoCorrente: Map<string, ContoCorrente> = new Map<string, ContoCorrente>();
+  mapControllo: Map<string, boolean> = new Map<string, boolean>();
+  getListaContiCorrente = (mapContoCorrente: Map<string, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
+  getListaControllo = (mapControllo: Map<string, boolean>) => Array.from(mapControllo, ([name, value]) => value);
 
   ngOnInit(): void {
   }
@@ -119,6 +120,7 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     this.componentRef = this.target.createComponent(childComponent);
     const indexContoCorrente = this.target.length;
     // input
+    this.componentRef.instance.uuid = Utils.uuidv4();
     this.componentRef.instance.indexDatiContoCorrente = indexContoCorrente;
     this.componentRef.instance.funzione = this.funzione;
     let instanceContoCorrente: ContoCorrente;
@@ -132,19 +134,19 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
       this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
     }
     // output
-    this.componentRef.instance.onDeleteDatiContoCorrente.subscribe(index => {
-      const contoCorrente = this.mapContoCorrente.get(index);
+    this.componentRef.instance.onDeleteDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
+      const contoCorrente = this.mapContoCorrente.get(componenteDinamico.uuid);
       const isContoCorrenteDaModificare: boolean = contoCorrente != null;
       if (isContoCorrenteDaModificare) {
-        this.mapContoCorrente.delete(index);
-        this.mapControllo.delete(index);
+        this.mapContoCorrente.delete(componenteDinamico.uuid);
+        this.mapControllo.delete(componenteDinamico.uuid);
       }
-      this.target.remove(index - 1);
+      this.target.remove(componenteDinamico.index - 1);
       this.setListaContiCorrente();
     });
-    this.componentRef.instance.onChangeDatiContoCorrente.subscribe((currentContoCorrente: ContoCorrenteSingolo) => {
-      this.mapContoCorrente.set(currentContoCorrente.index, currentContoCorrente.contoCorrente);
-      this.mapControllo.set(currentContoCorrente.index, currentContoCorrente.isFormValid);
+    this.componentRef.instance.onChangeDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
+      this.mapContoCorrente.set(componenteDinamico.uuid, componenteDinamico.oggetto);
+      this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
       this.setListaContiCorrente();
     });
     this.componentRef.changeDetectorRef.detectChanges();

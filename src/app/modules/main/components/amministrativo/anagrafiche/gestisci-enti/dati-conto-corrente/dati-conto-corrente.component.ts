@@ -10,6 +10,7 @@ import {tipoColonna} from '../../../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../../../enums/TipoTabella.enum';
 import {Utils} from '../../../../../../../utils/Utils';
 import {EnteService} from '../../../../../../../services/ente.service';
+import {ComponenteDinamico} from "../../../../../model/ComponenteDinamico";
 
 @Component({
   selector: 'app-dati-conto-corrente',
@@ -23,16 +24,16 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   testoTooltipIconaElimina = 'Elimina dati conto corrente';
   ibanRegex = Utils.IBAN_ITALIA_REGEX;
 
+  @Input() uuid: string;
   @Input() indexDatiContoCorrente: number;
   @Input() datiContoCorrente: ContoCorrente;
   @Input() funzione: FunzioneGestioneEnum;
   @Input() listaContiCorrente: ContoCorrente[];
   @Output()
-  onChangeDatiContoCorrente: EventEmitter<ContoCorrenteSingolo> = new EventEmitter<ContoCorrenteSingolo>();
+  onChangeDatiContoCorrente: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
   @Output()
-  onDeleteDatiContoCorrente: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
-  isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
+  onDeleteDatiContoCorrente: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
+
 
   // calendar
   isCalendarOpen = false;
@@ -81,7 +82,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     } else {
       isFormValid = true;
     }
-    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo(isFormValid));
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(isFormValid));
   }
 
   private impostaTabellaContiCorrente() {
@@ -110,7 +111,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   onClickDeleteIcon(event) {
-    this.onDeleteDatiContoCorrente.emit(this.indexDatiContoCorrente);
+    this.onDeleteDatiContoCorrente.emit(this.setComponenteDinamico());
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -129,15 +130,14 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     if (campo.value == '') {
       this.datiContoCorrente[campo.name] = null;
     }
-    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo(this.controlloForm(form)));
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(this.controlloForm(form)));
   }
 
-  setContoCorrenteSingolo(isFormValid: boolean): ContoCorrenteSingolo {
-    const contoCorrenteSingolo: ContoCorrenteSingolo = new ContoCorrenteSingolo();
-    contoCorrenteSingolo.index = this.indexDatiContoCorrente;
-    contoCorrenteSingolo.contoCorrente = Object.assign({}, this.datiContoCorrente);
-    contoCorrenteSingolo.isFormValid = isFormValid;
-    return contoCorrenteSingolo;
+  setComponenteDinamico(isFormValid?: boolean): ComponenteDinamico {
+    const contoCorrente = JSON.parse(JSON.stringify(this.datiContoCorrente));
+    const componenteDinamico: ComponenteDinamico =
+      new ComponenteDinamico(this.uuid, this.indexDatiContoCorrente, contoCorrente, isFormValid);
+    return componenteDinamico;
   }
 
   controlloForm(form: NgForm): boolean {
@@ -170,7 +170,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     this.datiContoCorrente.intestazioneCCPostale = row.intestazioneCCPostale.value;
     this.datiContoCorrente.inizioValidita = row.attivazione.value;
     this.datiContoCorrente.fineValidita = row.scadenza.value;
-    this.onChangeDatiContoCorrente.emit(this.setContoCorrenteSingolo(true));
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(true));
     this.display = false;
   }
 }
