@@ -594,7 +594,7 @@
             Dati Bonifico
           </button>
         </div>
-        <div  id="datiBonifico" class="collapse show" role="tabpanel" aria-labelledby="idCollapseDatiBonifico">
+        <div id="datiBonifico" class="collapse show" role="tabpanel" aria-labelledby="idCollapseDatiBonifico">
           <div #datiContoCorrente></div>
 
 
@@ -626,6 +626,8 @@
           <div class="row" *ngIf="campoTipologiaServizioList">
             <ul class="legend">
               <li><span class="field-disabled"></span> Campo disabilitato</li>
+              <li><span class="field-input"></span> Campo input</li>
+              <li><span class="field-output"></span> Campo output</li>
               <li><span class="required"></span> Campo obbligatorio</li>
               <li><span class="key"></span> Campo chiave</li>
             </ul>
@@ -638,7 +640,7 @@
                 <div style="min-height: 5vh;"
                      [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
                'field-input': (item.campoInput && !item.disabilitato)}"
-                     >
+                >
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
                     <div (click)="showModal(item)" class="col-7 text-right">{{item.titolo}}</div>
@@ -658,7 +660,8 @@
                    [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
                 <div style="min-height: 5vh;"
                      [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
-               'field-input': (item.campoInput && !item.disabilitato)}"
+               'field-input': (item.campoInput && !item.disabilitato),
+               'field-output': (!item.campoInput && !item.disabilitato)}"
                      [cdkDragDisabled]="!item.draggable" cdkDrag>
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
@@ -757,7 +760,7 @@
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Server"
                          [placeholder]="getPlaceholderRequired('Server', rendicontazioneGiornaliera.ftpEnabled)"
-                         id="server" name="server" #server="ngModel"  [customvalidator]="validateServer()"
+                         id="server" name="server" #server="ngModel" [customvalidator]="validateServer()"
                          [(ngModel)]="rendicontazioneGiornaliera.server"
                          [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
                 </div>
@@ -833,7 +836,8 @@
                          [ngClass]="{'title':true}">Nuovo formato</label>
                 </div>
                 <div class="col-2">
-                  <it-toggle id="nuovoFormato" [(ngModel)]="rendicontazioneGiornaliera.nuovoFormato" name="nuovoFormato"></it-toggle>
+                  <it-toggle id="nuovoFormato" [(ngModel)]="rendicontazioneGiornaliera.nuovoFormato"
+                             name="nuovoFormato"></it-toggle>
                 </div>
               </div>
             </div>
@@ -912,7 +916,7 @@
                 <div class="col-12">
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneFlussoPA.ftpEnabled)"
-                         id="serverFlussoPA" name="serverFlussoPA"  [customvalidator]="validateServer()"
+                         id="serverFlussoPA" name="serverFlussoPA" [customvalidator]="validateServer()"
                          [(ngModel)]="rendicontazioneFlussoPA.server" #serverFlussoPA="ngModel"
                          [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
                 </div>

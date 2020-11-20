@@ -159,16 +159,19 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   initFormPage(snapshot: ActivatedRouteSnapshot) {
     this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoServizio) => {
       const campoFormIdx = this.campoTipologiaServizioList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
+      const campoFormIdx2 = this.campoServizioAddList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
 
       if (campoFormIdx != -1) {
         campoForm.campoTipologiaServizioId = campoForm.id;
         this.campoTipologiaServizioList[campoFormIdx] = campoForm;
+      } else if (campoFormIdx2 != -1) {
+        this.campoServizioAddList[campoFormIdx] = campoForm;
       } else {
         campoForm.uuid = uuidv4();
         campoForm.draggable = true;
         this.campoServizioAddList.push(campoForm);
-        this.cdr.detectChanges();
       }
+      this.cdr.detectChanges();
       this.overlayService.mostraModaleCampoEvent.emit(null);
     });
     this.refreshItemsEvent.subscribe((items) => {
@@ -212,7 +215,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
         if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
           this.campoTipologiaServizioList.forEach(campo => {
-            campo.id = null;
             campo.uuid = uuidv4();
             if (campo.dipendeDa) {
               campo.dipendeDa.id = null;
