@@ -13,7 +13,7 @@ export class ModaleAggiungiTipoCampoComponent implements OnInit {
 
   form: FormGroup;
   nome: string;
-  informazioni: string;
+  informazione: string;
   listaNomi: string[];
 
   @Input()
@@ -22,7 +22,7 @@ export class ModaleAggiungiTipoCampoComponent implements OnInit {
   constructor(private overlayService: OverlayService, private campoTipologiaServizioService: CampoTipologiaServizioService) {
     this.form = new FormGroup({
       nome: new FormControl(null, [Validators.required]),
-      informazioni: new FormControl(null, [Validators.required])
+      informazione: new FormControl(null, [Validators.required])
     });
 
     const listaTipiCampo: TipoCampo[] = JSON.parse(localStorage.getItem('listaTipiCampo'));
@@ -43,7 +43,7 @@ export class ModaleAggiungiTipoCampoComponent implements OnInit {
   }
 
   salvaTipoCampo() {
-    this.campoTipologiaServizioService.inserimentoTipoCampo({nome: this.nome, informazioni: this.informazioni}, this.idFunzione)
+    this.campoTipologiaServizioService.inserimentoTipoCampo({nome: this.nome, informazione: this.informazione}, this.idFunzione)
       .subscribe(() => {
         this.clickIndietro();
       });
