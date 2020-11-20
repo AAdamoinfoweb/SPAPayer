@@ -8,7 +8,7 @@ import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
 import {MenuService} from '../../../../../services/menu.service';
 import {ConfirmationService} from 'primeng/api';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Utils} from '../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
@@ -18,6 +18,7 @@ import {ParametriRicercaStatistiche} from '../../../model/statistica/ParametriRi
 import {SintesiAttivitaPianificata} from '../../../model/attivitapianificata/SintesiAttivitaPianificata';
 import {AttivitaPianificataService} from '../../../../../services/attivita-pianificata.service';
 import * as moment from 'moment';
+import {BannerService} from '../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestisci-attivita-pianificate',
@@ -65,7 +66,7 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
               private menuService: MenuService, private confirmationService: ConfirmationService,
-              private attivitaPianificataService: AttivitaPianificataService) {
+              private attivitaPianificataService: AttivitaPianificataService, private bannerService: BannerService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -159,8 +160,11 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
   eliminaAttivitaSelezionate(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.attivitaPianificataService.eliminaAttivitaPianificate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
-            this.popolaListaElementi();
+          this.attivitaPianificataService.eliminaAttivitaPianificate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+            }
           });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;

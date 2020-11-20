@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaStatistiche} from '../modules/main/model/statistica/ParametriRicercaStatistiche';
 import {AttivitaPianificata} from '../modules/main/model/attivitapianificata/AttivitaPianificata';
@@ -55,7 +55,7 @@ export class AttivitaPianificataService {
       }));
   }
 
-  eliminaAttivitaPianificate(listaAttivitaPianificateId: Array<number>, idFunzione: string): Observable<any> {
+  eliminaAttivitaPianificate(listaAttivitaPianificateId: Array<number>, idFunzione: string): Observable<any | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.eliminaAttivitaPianificateUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -66,7 +66,14 @@ export class AttivitaPianificataService {
         headers: h
       }).pipe(map((body: any) => {
       return body;
-    }));
+    }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(err);
+        } else {
+          return of(err);
+        }
+      }));
   }
 
   inserimentoAttivitaPianificata(attivitaPianificata: AttivitaPianificata, idFunzione: string): Observable<number> {
@@ -90,7 +97,7 @@ export class AttivitaPianificataService {
       }));
   }
 
-  modificaAttivitaPianificata(attivitaPianificata: AttivitaPianificata, idFunzione: string): Observable<number> {
+  modificaAttivitaPianificata(attivitaPianificata: AttivitaPianificata, idFunzione: string): Observable<number | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.attivitaPianificataBaseUrl + '/' + attivitaPianificata.id;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -104,9 +111,9 @@ export class AttivitaPianificataService {
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
-          return of(null);
+          return of(err);
         } else {
-          return of(null);
+          return of(err);
         }
       }));
   }
