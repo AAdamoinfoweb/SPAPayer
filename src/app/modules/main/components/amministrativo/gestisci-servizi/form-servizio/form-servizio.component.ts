@@ -20,7 +20,7 @@ import {CampoTipologiaServizioService} from '../../../../../../services/campo-ti
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {ParametriRicercaServizio} from '../../../../model/servizio/ParametriRicercaServizio';
 import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
-import {FormControl, NgForm, NgModel, ValidatorFn, Validators} from '@angular/forms';
+import {Form, FormControl, NgForm, NgModel, ValidatorFn, Validators} from '@angular/forms';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
 import {map} from 'rxjs/operators';
@@ -52,6 +52,7 @@ export class LivelloIntegrazioneServizio {
   tipoUfficio: string;
   codiceUfficio: string;
   urlWsBO: string;
+  portaleEsterno: number;
 }
 
 export class ImpositoreServizio {
@@ -126,6 +127,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   listaLivelloTerritoriale: FiltroConfiguraServizi[] = [];
   listaEnti: FiltroConfiguraServizi[] = [];
   listaEntiBenef: FiltroConfiguraServizi[] = [];
+  listaPortaleEsterno: FiltroConfiguraServizi[] = [];
   listaUfficio: FiltroUfficio[] = [];
 
   FunzioneGestioneEnum = FunzioneGestioneEnum;
@@ -164,6 +166,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   rendicontazioneGiornaliera: RendicontazioneGiornaliera = new RendicontazioneGiornaliera();
   rendicontazioneFlussoPA: RendicontazioneGiornaliera = new RendicontazioneGiornaliera();
   TipoCampoEnum = TipoCampoEnum;
+  invioNotifiche: any = {};
+  emailsControl: FormControl[] = [new FormControl()];
+  displayCc = false;
 
   constructor(private cdr: ChangeDetectorRef,
               private renderer: Renderer2,
@@ -191,6 +196,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     });
     this.societaService.ricercaSocieta(null, this.idFunzione)
       .pipe(map((value: Societa[]) => this.listaSocieta = value)).subscribe();
+
+    this.configuraServizioService.configuraServiziFiltroPortaleEsterno(this.idFunzione)
+      .pipe(map((value: FiltroConfiguraServizi[]) => this.listaPortaleEsterno = value)).subscribe();
 
     this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
@@ -326,11 +334,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     }
   }
 
-  isCampoInvalido(campo: NgModel) {
+  isCampoInvalido(campo: NgModel | FormControl) {
     return campo?.errors;
   }
 
-  setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum): string {
+  setPlaceholder(campo: NgModel | FormControl, tipoCampo: TipoCampoEnum): string {
     if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       return null;
     } else if (this.isCampoInvalido(campo)) {
@@ -470,9 +478,35 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     }) as ValidatorFn;
   }
 
+
+  validateEmail() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
+        if (!new RegExp(regex).test(control.value))
+          return {email: false};
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
   getPlaceholderRequired(label: string, required: boolean) {
     if (required)
       return label + ' *';
     return label;
+  }
+
+  addEmail() {
+    this.emailsControl.push(new FormControl());
+  }
+
+  removeEmail(index: number) {
+    this.emailsControl.splice(index, 1);
+  }
+
+  selezionaDaCC() {
+    this.displayCc = !this.displayCc;
   }
 }

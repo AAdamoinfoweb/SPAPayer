@@ -2,7 +2,7 @@ import {Directive, forwardRef, Input} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, Validator, ValidatorFn} from '@angular/forms';
 
 @Directive({
-  selector: '[customvalidator][ngModel],[customvalidator][ngFormControl]',
+  selector: '[customvalidator][ngModel],[customvalidator][ngFormControl],[customvalidator][formControl]',
   providers: [{
     multi: true,
     provide: NG_VALIDATORS,
