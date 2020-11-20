@@ -1,12 +1,9 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
 import 'jspdf-autotable';
-import {Breadcrumb} from '../../../../dto/Breadcrumb';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
-import {OverlayService} from '../../../../../../services/overlay.service';
-import {AmministrativoParentComponent} from '../../amministrativo-parent.component';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {LivelloTerritoriale} from '../../../../model/LivelloTerritoriale';
 import {LivelloTerritorialeService} from '../../../../../../services/livelloTerritoriale.service';
@@ -14,12 +11,13 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
-import {GestisciElementoComponent} from "../../gestisci-elemento.component";
+import {GestisciElementoComponent} from '../../gestisci-elemento.component';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {Observable} from 'rxjs';
+import {BannerService} from '../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestione-livelli-territoriali',
@@ -67,7 +65,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
               protected route: ActivatedRoute, protected http: HttpClient, protected amministrativoService: AmministrativoService,
               private renderer: Renderer2, private livelloTerritorialeService: LivelloTerritorialeService, private el: ElementRef,
               private menuService: MenuService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService, private bannerService: BannerService
   ) {
     super(router, route, http, amministrativoService);
   }
@@ -149,6 +147,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
       Utils.getModale(() => {
           this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;

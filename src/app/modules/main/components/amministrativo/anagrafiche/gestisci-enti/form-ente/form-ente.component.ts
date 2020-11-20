@@ -18,16 +18,16 @@ import {SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
 import {Beneficiario} from '../../../../../model/ente/Beneficiario';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {DatiBeneficiarioComponent} from '../dati-beneficiario/dati-beneficiario.component';
-import {BeneficiarioSingolo} from '../../../../../model/ente/BeneficiarioSingolo';
-import * as moment from "moment";
-import {Utils} from "../../../../../../../utils/Utils";
-import {EnteService} from "../../../../../../../services/ente.service";
-import {Observable} from "rxjs";
-import {Banner} from "../../../../../model/banner/Banner";
-import {getBannerType, LivelloBanner} from "../../../../../../../enums/livelloBanner.enum";
-import {BannerService} from "../../../../../../../services/banner.service";
+import * as moment from 'moment';
+import {Utils} from '../../../../../../../utils/Utils';
+import {EnteService} from '../../../../../../../services/ente.service';
+import {Banner} from '../../../../../model/banner/Banner';
+import {getBannerType, LivelloBanner} from '../../../../../../../enums/livelloBanner.enum';
+import {BannerService} from '../../../../../../../services/banner.service';
+import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
+import {Util} from 'design-angular-kit/lib/util/util';
 
 @Component({
   selector: 'app-form-ente',
@@ -47,15 +47,16 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   datiBeneficiario: Beneficiario;
   datiContoCorrente: ContoCorrente;
   listaContiCorrente: ContoCorrente[];
-  mapBeneficiario: Map<number, Beneficiario> = new Map();
-  mapControllo: Map<number, boolean> = new Map();
+  mapBeneficiario: Map<string, Beneficiario> = new Map();
+  mapControllo: Map<string, boolean> = new Map();
+  esito;
 
   // form valid
   isFormDatiEnteValido = false;
   @ViewChild('datiBeneficiario', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
 
   private componentRef: ComponentRef<any>;
-  getListFromMap = (map: Map<number, any>) => Array.from(map, ([name, value]) => value);
+  getListFromMap = (map: Map<string, any>) => Array.from(map, ([name, value]) => value);
 
 
   constructor(router: Router,
@@ -80,15 +81,13 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     } else {
       // inizializzazione form inserimento
     }
-    this.controlloEsito();
   }
 
   private controlloEsito() {
-    const esito = history.state.esito;
-    if (esito != null) {
+    if (this.esito != null) {
       const banner: Banner = {
         titolo: 'ATTENZIONE',
-        testo: esito,
+        testo: this.esito,
         tipo: getBannerType(LivelloBanner.WARNING)
       };
       this.bannerService.bannerEvent.emit([banner]);
@@ -143,6 +142,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.componentRef = this.target.createComponent(childComponent);
     const indexBeneficiario = this.target.length;
     // input
+    this.componentRef.instance.uuid = Utils.uuidv4();
     this.componentRef.instance.indexDatiBeneficiario = indexBeneficiario;
     this.componentRef.instance.funzione = this.funzione;
     this.componentRef.instance.idFunzione = this.idFunzione;
@@ -157,18 +157,25 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
     }
     // output
-    this.componentRef.instance.onDeleteDatiBeneficiario.subscribe(index => {
-      const beneficiario = this.mapBeneficiario.get(index);
+    this.componentRef.instance.onDeleteDatiBeneficiario.subscribe((componenteDinamico: ComponenteDinamico) => {
+      const beneficiario = this.mapBeneficiario.get(componenteDinamico.uuid);
       const isBeneficiarioDaModificare: boolean = beneficiario != null;
       if (isBeneficiarioDaModificare) {
-        this.mapBeneficiario.delete(index);
-        this.mapControllo.delete(index);
+        this.mapBeneficiario.delete(componenteDinamico.uuid);
+        this.mapControllo.delete(componenteDinamico.uuid);
       }
-      this.target.remove(index - 1);
+      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
+      const zeroBasedIndex = componenteDinamico.index - 1;
+      const viewRef = this.target.get(zeroBasedIndex);
+      if (viewRef == null && this.target.length === 1) {
+        this.target.clear();
+      } else {
+        this.target.remove(zeroBasedIndex);
+      }
     });
-    this.componentRef.instance.onChangeDatiBeneficiario.subscribe((currentBeneficiario: BeneficiarioSingolo) => {
-      this.mapBeneficiario.set(currentBeneficiario.index, currentBeneficiario.beneficiario);
-      this.mapControllo.set(currentBeneficiario.index, currentBeneficiario.isFormValid);
+    this.componentRef.instance.onChangeDatiBeneficiario.subscribe((componenteDinamico: ComponenteDinamico) => {
+      this.mapBeneficiario.set(componenteDinamico.uuid, componenteDinamico.oggetto);
+      this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
     });
     this.componentRef.changeDetectorRef.detectChanges();
     return indexBeneficiario;
@@ -203,7 +210,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   recuperoContiCorrente(idEnte) {
-    return this.enteService.recuperaContiCorrenti(idEnte, this.idFunzione)
+    return this.enteService.recuperaContiCorrenti(idEnte, this.idFunzione);
   }
 
   disabilitaBottone(): boolean {
@@ -224,30 +231,35 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   private inserimentoEnte(): void {
-    this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione).subscribe(esitoInserimentoModificaEnte => {
-      let state = null
-      if (esitoInserimentoModificaEnte.esito) {
-        state = {esito: esitoInserimentoModificaEnte.esito};
-      }
-      this.configuraRouterAndNavigate('/aggiungiEnte', state);
-    });
+    this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione).subscribe(
+      (response) => {
+        if (!(response instanceof HttpErrorResponse)) {
+          this.esito = response.esito;
+          this.pulisciEnte();
+        }
+
+      });
+  }
+
+  private pulisciEnte() {
+    this.controlloEsito();
+    this.datiEnte = new EnteCompleto();
+    this.inizializzaDatiEnte();
+    if (this.esito == null) {
+      this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+    }
   }
 
   private modificaEnte() {
-    this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((esitoInserimentoModificaEnte) => {
-      let state = null
-      if (esitoInserimentoModificaEnte.esito) {
-        state = {esito: esitoInserimentoModificaEnte.esito};
+    this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((response) => {
+      if (!(response instanceof HttpErrorResponse)) {
+        this.esito = response.esito;
+        this.controlloEsito();
+        if (this.esito == null) {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+        }
       }
-      this.configuraRouterAndNavigate('/modificaEnte/' + esitoInserimentoModificaEnte.idEnte, state);
     });
-  }
-
-  private configuraRouterAndNavigate(pathFunzione: string, state) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    // this.router.navigateByUrl(this.basePath + pathFunzione);
-    this.router.navigate([this.basePath + pathFunzione], {state: state});
   }
 
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {

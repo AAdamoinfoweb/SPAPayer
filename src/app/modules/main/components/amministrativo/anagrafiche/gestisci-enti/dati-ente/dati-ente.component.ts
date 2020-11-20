@@ -50,18 +50,21 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.letturaComuni();
-    this.letturaProvince();
-    this.letturaSocieta();
-    this.letturaLivelloTerritoriale();
   }
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.funzione && this.funzione === FunzioneGestioneEnum.MODIFICA) {
-      this.inizializzaFormModifica();
+    if (changes.funzione) {
+      if (this.funzione != null) {
+        this.letturaComuni();
+        this.letturaProvince();
+        this.letturaSocieta();
+        this.letturaLivelloTerritoriale();
+      }
+      if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
+        this.inizializzaFormModifica();
+      }
     }
-
     if (changes.datiEnte) {
       if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
         this.caricaImmagine();

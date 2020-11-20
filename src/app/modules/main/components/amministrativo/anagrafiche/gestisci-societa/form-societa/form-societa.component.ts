@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
-import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
+import {SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {Societa} from '../../../../../model/Societa';
 import {SocietaService} from '../../../../../../../services/societa.service';
-import {FormElementoParentComponent} from "../../../form-elemento-parent.component";
+import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
-import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {BannerService} from '../../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-dettaglio-societa',
@@ -36,7 +36,8 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
     protected amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
     private societaService: SocietaService,
-    confirmationService: ConfirmationService
+    confirmationService: ConfirmationService,
+    private bannerService: BannerService
   ) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
@@ -87,10 +88,14 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
       case FunzioneGestioneEnum.AGGIUNGI:
         this.societaService.aggiuntaSocieta(this.societa, this.idFunzione).subscribe((societa) => {
           this.societa = new Societa();
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.societaService.modificaSocieta(this.societa, this.idFunzione).subscribe(() => {
+        this.societaService.modificaSocieta(this.societa, this.idFunzione).subscribe((response) => {
+          if (!(response instanceof HttpErrorResponse)) {
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
         });
         break;
     }

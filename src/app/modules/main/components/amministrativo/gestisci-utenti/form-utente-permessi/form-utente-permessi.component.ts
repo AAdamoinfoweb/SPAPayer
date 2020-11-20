@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
@@ -18,7 +17,6 @@ import {AsyncSubject} from 'rxjs';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../utils/Utils';
 import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
-import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {PermessoService} from '../../../../../../services/permesso.service';
 import {PermessoFunzione} from '../../../../model/permesso/PermessoFunzione';
@@ -26,12 +24,14 @@ import {OverlayService} from '../../../../../../services/overlay.service';
 import {BannerService} from '../../../../../../services/banner.service';
 import {Banner} from '../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
-import {FormElementoParentComponent} from "../../form-elemento-parent.component";
+import {FormElementoParentComponent} from '../../form-elemento-parent.component';
 import {ConfirmationService} from 'primeng/api';
-import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
-import {HttpClient} from "@angular/common/http";
-import {ParametriRicercaUtente} from "../../../../model/utente/ParametriRicercaUtente";
-import {map} from "rxjs/operators";
+import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
+import {HttpClient} from '@angular/common/http';
+import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaUtente';
+import {map} from 'rxjs/operators';
+import {OperazioneEsitoEnum} from '../../../../../../enums/operazioneEsito.enum';
+import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -41,7 +41,7 @@ import {map} from "rxjs/operators";
 export class FormUtentePermessiComponent extends FormElementoParentComponent implements OnInit {
   // enums consts
   FunzioneGestioneEnum = FunzioneGestioneEnum;
-
+  messaggioUtentePresente = 'Il codice fiscale dell’utente è già presente nel sistema';
   breadcrumbList = [];
 
   tooltipTitle;
@@ -53,14 +53,14 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
   datiPermesso: PermessoCompleto;
   asyncSubject: AsyncSubject<string> = new AsyncSubject<string>();
-  mapPermessi: Map<number, PermessoCompleto> = new Map();
+  mapPermessi: Map<string, PermessoCompleto> = new Map();
   isFormDatiUtenteValido = false;
   funzione: FunzioneGestioneEnum;
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
 
-  getListaPermessi = (mapPermessi: Map<number, PermessoCompleto>) => Array.from(mapPermessi, ([name, value]) => value);
+  getListaPermessi = (mapPermessi: Map<string, PermessoCompleto>) => Array.from(mapPermessi, ([name, value]) => value);
 
 
   constructor(private utenteService: UtenteService, protected router: Router,
@@ -77,6 +77,9 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
       this.codiceFiscale = codiceFiscale;
     });
+  }
+
+  ngOnInit(): void {
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
@@ -98,6 +101,14 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       this.codiceFiscale = null;
       this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
     }
+    this.controlloEsitoOperazione();
+  }
+
+  private controlloEsitoOperazione() {
+    const esito = history.state.esito;
+    if (esito === OperazioneEsitoEnum.SUCCESSO) {
+      this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+    }
   }
 
   controllaTipoFunzione(snapshot: ActivatedRouteSnapshot) {
@@ -117,7 +128,8 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   inizializzaTitoloPagina() {
     this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Utenti/Permessi';
-    this.tooltipTitle = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di un utente e i suoi permessi';
+    this.tooltipTitle = 'In questa pagina puoi ' +
+      this.getTestoFunzione(this.funzione, false) + ' i dettagli di un utente e i suoi permessi';
   }
 
   inizializzaBreadcrumbs(): void {
@@ -125,9 +137,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     breadcrumbs.push(new SintesiBreadcrumb('Gestisci Utenti', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Utente/Permessi', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
-  }
-
-  ngOnInit(): void {
   }
 
   ricercaUtente(parametriRicerca: ParametriRicercaUtente): void {
@@ -148,33 +157,42 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.datiUtente = datiUtente;
   }
 
-  aggiungiSezionePermesso(datiPermesso?: PermessoCompleto): number {
+  aggiungiSezionePermesso(datiPermesso?: PermessoCompleto): string {
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiPermessoComponent);
     this.componentRef = this.target.createComponent(childComponent);
     const indexPermesso = this.target.length;
     this.componentRef.instance.indexSezionePermesso = indexPermesso;
-    this.componentRef.instance.onDeletePermesso.subscribe(index => {
-      const permessoCompleto = this.mapPermessi.get(index);
+    const uuidComponente = Utils.uuidv4();
+    this.componentRef.instance.uuid = uuidComponente;
+    this.componentRef.instance.onDeletePermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
+      const permessoCompleto = this.mapPermessi.get(componenteDinamico.uuid);
       const isPermessoDaModificare: boolean = permessoCompleto.listaFunzioni
         .some((permessoFunzione) => permessoFunzione.permessoId != null);
       if (!isPermessoDaModificare) {
-        this.mapPermessi.delete(index);
+        this.mapPermessi.delete(componenteDinamico.uuid);
       }
-      this.target.remove(index - 1);
+      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
+      const zeroBasedIndex = componenteDinamico.index - 1;
+      const viewRef = this.target.get(zeroBasedIndex);
+      if (viewRef == null && this.target.length === 1) {
+        this.target.clear();
+      } else {
+        this.target.remove(zeroBasedIndex);
+      }
     });
-    this.componentRef.instance.onChangeDatiPermesso.subscribe((currentPermesso: PermessoSingolo) => {
-      if (this.mapPermessi.has(currentPermesso.index)) {
-        const permessoCompleto: PermessoCompleto = this.mapPermessi.get(currentPermesso.index);
+    this.componentRef.instance.onChangeDatiPermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
+      if (this.mapPermessi.has(componenteDinamico.uuid)) {
+        const permessoCompleto: PermessoCompleto = this.mapPermessi.get(componenteDinamico.uuid);
         if (permessoCompleto.enteId == null && permessoCompleto.listaFunzioni.length > 0) {
           // da amministrativo a gestionale
-          if (currentPermesso.permessoCompleto.enteId != null) {
+          if (componenteDinamico.oggetto.enteId != null) {
             // elimina logicamente permesso amministrativo precedente
             permessoCompleto.listaFunzioni[0].permessoCancellato = true;
             this.mapPermessi.set(Utils.uuidv4(), permessoCompleto);
           }
         } else if (permessoCompleto.enteId != null && permessoCompleto.listaFunzioni.length > 0) {
           // da gestionale ad amministrativo
-          if (currentPermesso.permessoCompleto.enteId == null) {
+          if (componenteDinamico.oggetto.enteId == null) {
             // elimina logicamente permessi gestionali precedenti
             const listaFunzioniAggiornata = permessoCompleto.listaFunzioni.map((permessoFunzione) => {
               permessoFunzione.permessoCancellato = true;
@@ -185,7 +203,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
           }
         }
       }
-      this.mapPermessi.set(currentPermesso.index, currentPermesso.permessoCompleto);
+      this.mapPermessi.set(componenteDinamico.uuid, componenteDinamico.oggetto);
     });
     if (datiPermesso) {
       this.datiPermesso = datiPermesso;
@@ -194,7 +212,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.componentRef.instance.funzione = this.funzione;
     this.componentRef.instance.idFunzione = this.idFunzione;
     this.componentRef.changeDetectorRef.detectChanges();
-    return indexPermesso;
+    return uuidComponente;
   }
 
   letturaPermessi(codiceFiscale) {
@@ -204,8 +222,8 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
           moment(permesso.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
         permesso.dataFineValidita = permesso.dataFineValidita ?
           moment(permesso.dataFineValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
-        const indexPermesso = this.aggiungiSezionePermesso(permesso);
-        this.mapPermessi.set(indexPermesso, permesso);
+        const uuidComponente = this.aggiungiSezionePermesso(permesso);
+        this.mapPermessi.set(uuidComponente, permesso);
       });
     });
   }
@@ -215,46 +233,14 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       controlloCodiceFiscale = this.codiceFiscale == null || this.codiceFiscale === '';
     }
-    return controlloCodiceFiscale || !this.isFormDatiUtenteValido || this.controlloDate() || this.controlloDatiPermesso();
+    return controlloCodiceFiscale || !this.isFormDatiUtenteValido;
   }
 
-  controlloDate(): boolean {
-    const dataAttivazione = this.datiUtente.attivazione;
-    const dataScadenza = this.datiUtente.scadenza;
-    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
-    const datePermesso = listaPermessi && listaPermessi.length > 0
-      ? listaPermessi.filter((permesso: PermessoCompleto) =>
-        !permesso.listaFunzioni.some((permessoFunzione) => permessoFunzione.permessoId != null) &&
-        (Utils.isBefore(permesso.dataInizioValidita, dataSistema) ||
-          Utils.isBefore(permesso.dataFineValidita, dataSistema))) : [];
-    const isDataAttivazioneBeforeDataSistema = this.funzione === FunzioneGestioneEnum.MODIFICA ? false : Utils.isBefore(dataAttivazione, dataSistema);
-    const isDataScadenzaBeforeDataSistema = this.datiUtente.scadenza ? Utils.isBefore(dataScadenza, dataSistema) : false;
-    const ret = this.funzione === FunzioneGestioneEnum.DETTAGLIO ? false : (isDataAttivazioneBeforeDataSistema || isDataScadenzaBeforeDataSistema || datePermesso.length > 0);
-    return ret;
-  }
-
-  controlloDatiPermesso(): boolean {
-    let ret = false;
-    const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
-    listaPermessi.forEach(permesso => {
-      if (permesso.enteId !== null) {
-        if (permesso.servizioId == null) {
-          ret = true;
-        } else {
-          if (permesso.listaFunzioni.length === 0) {
-            ret = true;
-          }
-        }
-      }
-    });
-    return ret;
-  }
 
   onClickSalva(): void {
     // inserimento utente
     let utente = new InserimentoModificaUtente();
-    utente = {...this.datiUtente};
+    utente = JSON.parse(JSON.stringify(this.datiUtente));
     utente.scadenza = utente.scadenza ?
       moment(utente.scadenza, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     utente.attivazione = utente.attivazione ?
@@ -268,7 +254,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
         if (iscodiceFiscaleEsistente) {
           const banner: Banner = {
             titolo: 'ATTENZIONE',
-            testo: 'Utente già presente',
+            testo: this.messaggioUtentePresente,
             tipo: getBannerType(LivelloBanner.ERROR)
           };
           this.bannerService.bannerEvent.emit([banner]);
@@ -289,7 +275,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   private configuraRouterAndNavigate(cf: string) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
-    this.router.navigateByUrl(this.basePath + '/modificaUtentePermessi/' + cf);
+    this.router.navigate([this.basePath + '/modificaUtentePermessi/' + cf], {state: {esito: OperazioneEsitoEnum.SUCCESSO}});
   }
 
   private inserimentoAggiornamentoUtente(codiceFiscale: string, utente: InserimentoModificaUtente) {
@@ -327,9 +313,11 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     });
     // chiamata be inserimento modifica permessi
     this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessiDaInserire, this.idFunzione)
-      .subscribe(() => {
-        this.asyncSubject.next(codiceFiscale);
-        this.asyncSubject.complete();
+      .subscribe((error) => {
+        if (error == null) {
+          this.asyncSubject.next(codiceFiscale);
+          this.asyncSubject.complete();
+        }
       });
   }
 

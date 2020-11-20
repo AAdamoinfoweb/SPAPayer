@@ -9,7 +9,6 @@ import {FunzioneService} from '../../../../../../services/funzione.service';
 import {map} from 'rxjs/operators';
 import {GruppoEnum} from '../../../../../../enums/gruppo.enum';
 import {Utils} from '../../../../../../utils/Utils';
-import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
 import {CheckboxChange} from 'design-angular-kit';
 import {Funzione} from '../../../../model/Funzione';
 import {PermessoFunzione} from '../../../../model/permesso/PermessoFunzione';
@@ -21,6 +20,7 @@ import {Ente} from '../../../../model/Ente';
 import {FiltroServizio} from '../../../../model/FiltroServizio';
 import {AsyncSubject} from 'rxjs';
 import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
+import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
 
 @Component({
   selector: 'app-dati-permesso',
@@ -36,6 +36,7 @@ export class DatiPermessoComponent implements OnInit {
 
   @Input() indexSezionePermesso: number;
   @Input() codiceFiscale: string;
+  @Input() uuid: string;
 
   isCalendarOpen = false;
   readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
@@ -55,10 +56,10 @@ export class DatiPermessoComponent implements OnInit {
   asyncSubject: AsyncSubject<Array<any>> = new AsyncSubject<Array<any>>();
 
   @Output()
-  onChangeDatiPermesso: EventEmitter<PermessoSingolo> = new EventEmitter<PermessoSingolo>();
+  onChangeDatiPermesso: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
 
   @Output()
-  onDeletePermesso: EventEmitter<any> = new EventEmitter<any>();
+  onDeletePermesso: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
 
   @ViewChild('datiPermessoForm') datiPermessoForm: NgForm;
 
@@ -92,12 +93,10 @@ export class DatiPermessoComponent implements OnInit {
               }
               this.listaFunzioni.push(funzione);
             });
-            const permesso: PermessoSingolo = this.setPermessoSingolo();
-            this.onChangeDatiPermesso.emit(permesso);
+            this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
           });
         } else {
-          const permesso: PermessoSingolo = this.setPermessoSingolo();
-          this.onChangeDatiPermesso.emit(permesso);
+          this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
         }
       });
     }
@@ -195,18 +194,7 @@ export class DatiPermessoComponent implements OnInit {
   }
 
   isCampoInvalido(campo: NgModel) {
-    if (campo?.name === 'attivazione' || campo?.name === 'scadenza') {
-      return this.controlloDate(campo, campo.model);
-    }
     return campo?.errors;
-  }
-
-  controlloDate(campo: NgModel, value: string): boolean {
-    const dataDaControllare = value;
-    const dataSistema = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    const ret = Utils.isBefore(dataDaControllare, dataSistema) ||
-      campo?.errors != null;
-    return this.funzione === FunzioneGestioneEnum.AGGIUNGI ? ret : false;
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
@@ -226,7 +214,7 @@ export class DatiPermessoComponent implements OnInit {
 
   onClickDeleteIcon(event) {
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
-      this.onDeletePermesso.emit(this.indexSezionePermesso);
+      this.onDeletePermesso.emit(this.setComponenteDinamico());
     } else {
       let mapPermessoFunzione: Map<number, PermessoFunzione> = new Map<number, PermessoFunzione>();
       this.mapPermessoFunzione.forEach((permessoFunzione: PermessoFunzione, key: number) => {
@@ -234,9 +222,8 @@ export class DatiPermessoComponent implements OnInit {
         mapPermessoFunzione.set(key, permessoFunzione);
       });
       this.mapPermessoFunzione = mapPermessoFunzione;
-      const permesso: PermessoSingolo = this.setPermessoSingolo();
-      this.onChangeDatiPermesso.emit(permesso);
-      this.onDeletePermesso.emit(this.indexSezionePermesso);
+      this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
+      this.onDeletePermesso.emit(this.setComponenteDinamico());
     }
   }
 
@@ -251,8 +238,7 @@ export class DatiPermessoComponent implements OnInit {
       this.datiPermesso.servizioId = null;
       this.letturaServizi();
     }
-    const permesso: PermessoSingolo = this.setPermessoSingolo();
-    this.onChangeDatiPermesso.emit(permesso);
+    this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
   }
 
   onChangeCheckBox($event: CheckboxChange, funzione: Funzione) {
@@ -287,18 +273,14 @@ export class DatiPermessoComponent implements OnInit {
       }
     }
 
-    const permesso: PermessoSingolo = this.setPermessoSingolo();
-    this.onChangeDatiPermesso.emit(permesso);
+    this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
   }
 
-  private setPermessoSingolo(): PermessoSingolo {
-    const permesso = new PermessoSingolo();
-    permesso.index = this.indexSezionePermesso;
+  private setComponenteDinamico(): ComponenteDinamico {
     this.listaPermessoFunzione = Array.from(this.mapPermessoFunzione, ([name, value]) => value);
     let permessoCompleto = new PermessoCompleto();
-    permessoCompleto = {...this.datiPermesso};
+    permessoCompleto = JSON.parse(JSON.stringify(this.datiPermesso));
     permessoCompleto.listaFunzioni = this.listaPermessoFunzione;
-    permesso.permessoCompleto = permessoCompleto;
-    return permesso;
+    return new ComponenteDinamico(this.uuid, this.indexSezionePermesso, permessoCompleto);
   }
 }

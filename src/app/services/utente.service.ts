@@ -109,7 +109,7 @@ export class UtenteService {
         if (err.status == 401 || err.status == 400) {
           return of(err);
         } else {
-           return of(null);
+           return of(err);
         }
       }));
   }

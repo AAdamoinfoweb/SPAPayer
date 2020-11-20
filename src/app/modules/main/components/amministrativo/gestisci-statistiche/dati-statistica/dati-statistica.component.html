@@ -1,0 +1,149 @@
+<div class="ml-3">
+  <form #datiForm="ngForm">
+    <!--    inizio Titolo, Attiva -->
+    <div class="row mt-4 mb-0">
+      <!--    inizio Titolo -->
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="titolo" class="title " [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+              Titolo</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="titolo" name="titolo" #titolo="ngModel"
+                   [(ngModel)]="datiStatistica.titolo" [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   class="pt-0" autocomplete="off" aria-describedby="nomeHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   (ngModelChange)="onChangeModel(datiForm, titolo)">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(titolo)">Inserisci titolo statistica</p>
+            <p *ngIf="isCampoInvalido(titolo)" class="text-invalid">{{getMessaggioErrore(titolo)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--      fine Titolo -->
+      <!--        inizio Attiva -->
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="abilitato" class="title">Attiva</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <it-toggle id="abilitato" [(ngModel)]="datiStatistica.abilitato" name="abilitato"
+                       [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO" #abilitato="ngModel"
+                       (ngModelChange)="onChangeModel(datiForm, abilitato)"></it-toggle>
+          </div>
+        </div>
+      </div>
+      <!--        fine Attiva -->
+    </div>
+    <!--    fine Titolo, Attiva -->
+    <!--    inizio Descrizione, QuerySQL -->
+    <div class="row mt-4 mb-0">
+      <!--    inizio Descrizione -->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="descrizione" class="title ">
+              Descrizione</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+             <textarea
+               id="descrizione"
+               type="text"
+               name="descrizione"
+               autocomplete="off"
+               #descrizione="ngModel"
+               [(ngModel)]="datiStatistica.descrizione"
+               (ngModelChange)="onChangeModel(datiForm, descrizione)"
+               maxlength="255"
+               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+               class="textArea"
+             ></textarea>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(descrizione)">Inserisci descrizione statistica</p>
+            <p *ngIf="isCampoInvalido(descrizione)" class="text-invalid">{{getMessaggioErrore(descrizione)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--      fine Descrizione -->
+      <!--    inizio Query SQL -->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="query" class="title " [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+              Query SQL</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+             <textarea
+               id="query"
+               type="text"
+               name="query"
+               autocomplete="off"
+               #query="ngModel"
+               [(ngModel)]="datiStatistica.query"
+               (ngModelChange)="onChangeModel(datiForm, query)"
+               maxlength="4000"
+               [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+               class="textArea"
+             ></textarea>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(query)">Inserisci query SQL</p>
+            <p *ngIf="isCampoInvalido(query)" class="text-invalid">{{getMessaggioErrore(query)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--      fine Query SQL -->
+    </div>
+    <!--    fine Decrizione, QuerySQL -->
+    <!--    inizio Destinatari, Schedulazione -->
+    <div class="row mt-4 mb-0">
+      <!--    inizio Destinatari -->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col-auto pr-1">
+            <label for="destinatari" class="title ">
+              Destinatari (indirizzi E-mail)</label>
+          </div>
+          <div class="col-auto" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <span ngbTooltip="Aggiungi destinatario" placement="bottom" [ngStyle]="{fill: '#403d39'}" >
+            <svg class="bg-light icon icon-sm filled"
+                 (click)="aggiungiDestinatario()">
+              <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+            </svg>
+              </span>
+          </div>
+        </div>
+        <div id="destinatari">
+          <div #destinatario></div>
+        </div>
+      </div>
+      <!--      fine Destinatari -->
+      <!--    inizio Schedulazione -->
+      <div class="col-md-6 pb-2">
+        <app-schedulazione [funzione]="funzione" (isFormValid)="schedulazioneFormValid(datiForm, $event)"
+        [schedulazione]="datiStatistica.schedulazione"></app-schedulazione>
+      </div>
+      <!--      fine Schedulazione -->
+    </div>
+  </form>
+</div>
+

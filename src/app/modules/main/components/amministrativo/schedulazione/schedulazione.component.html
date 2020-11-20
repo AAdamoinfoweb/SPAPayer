@@ -1,0 +1,428 @@
+<div class="collapse-header" id="heading">
+  <button data-toggle="collapse" data-target="#contenutoSchedulazione" aria-expanded="true"
+          aria-controls="contenutoSchedulazione">
+    Schedulazione
+  </button>
+</div>
+<div id="contenutoSchedulazione" class="collapse show" role="tabpanel" aria-labelledby="heading">
+  <div class="collapse-body">
+    <form #schedulazioneForm="ngForm">
+      <!--        inizio Date -->
+      <div class="row pt-4">
+        <!--          inizio Inizio schedulazione -->
+        <div class="col-6">
+          <div class="row">
+            <div class="col">
+              <label for="inizio" class="title ">
+                Inizio schedulazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerInizioSchedulazione)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="inizio"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYYYY,
+              max: setMaxDate(datePickerFineSchedulazione),
+              returnedValueType: tipoData
+	          }"
+                #inizio="ngModel"
+                [(ngModel)]="schedulazione.inizio"
+                name="inizioSchedulazione"
+                [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
+                #datePickerInizioSchedulazione
+                (click)="isCalendarOpen = false"
+                (ngModelChange)="onChangeModel(schedulazioneForm, inizio)"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(inizio)">Inserisci data inizio schedulazione</p>
+              <p *ngIf="isCampoInvalido(inizio)"
+                 class="text-invalid">{{getMessaggioErrore(inizio)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Inizio schedulazione-->
+        <!--          inizio Fine schedulazione -->
+        <div class="col-6">
+          <div class="row">
+            <div class="col">
+              <label for="fine" class="title ">
+                Fine schedulazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerFineSchedulazione)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="fine"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: setMinDate(datePickerInizioSchedulazione),
+              returnedValueType: tipoData
+	          }"
+                #fine="ngModel"
+                [(ngModel)]="schedulazione.fine"
+                name="fineSchedulazione"
+                #datePickerFineSchedulazione
+                [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
+                (click)="isCalendarOpen = false"
+                (ngModelChange)="onChangeModel(schedulazioneForm, fine)"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(fine)">Inserisci data fine schedulazione</p>
+              <p *ngIf="isCampoInvalido(fine)"
+                 class="text-invalid">{{getMessaggioErrore(fine)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Fine schedulazione-->
+      </div>
+      <!--        fine Date-->
+      <!--        inizio Schedulazione Principale -->
+      <div class="row mt-2">
+        <!-- Sottotitolo Schedulazione principale-->
+        <div class="col">
+          <div class="collapse-header" id="heading1">
+            <button data-toggle="collapse" data-target="#contenutoSchedulazionePrincipale" aria-expanded="true"
+                    aria-controls="contenutoSchedulazionePrincipale">
+              Schedulazione principale
+            </button>
+          </div>
+          <div id="contenutoSchedulazionePrincipale" class="collapse show" role="tabpanel"
+               aria-labelledby="heading1">
+            <div class="collapse-body">
+              <!--                inizio Ora, Minuti, Secondi -->
+              <div class="row mt-2">
+                <!--    inizio Ora -->
+                <div class="col-md-4 pb-2">
+                  <div class="row">
+                    <div class="col">
+                      <label for="hour" class="title ">
+                        Ora</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" id="hour" name="hour" #hour="ngModel"
+                             [(ngModel)]="schedulazione.hour"
+                             class="pt-0" autocomplete="off" aria-describedby="oraHelpDescription"
+                             [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                             (ngModelChange)="onChangeModel(schedulazioneForm, hour)">
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                    <div class="col">
+                      <p *ngIf="!isCampoInvalido(hour)">Inserisci ora</p>
+                      <p *ngIf="isCampoInvalido(hour)" class="text-invalid">{{getMessaggioErrore(hour)}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!--      fine Ora -->
+                <!--    inizio Minuti -->
+                <div class="col-md-4 pb-2">
+                  <div class="row">
+                    <div class="col">
+                      <label for="minute" class="title ">
+                        Minuti</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" id="minute" name="minute" #minute="ngModel"
+                             [(ngModel)]="schedulazione.minute"
+                             class="pt-0" autocomplete="off" aria-describedby="minutiHelpDescription"
+                             [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                             (ngModelChange)="onChangeModel(schedulazioneForm, minute)">
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                    <div class="col">
+                      <p *ngIf="!isCampoInvalido(minute)">Inserisci minuti</p>
+                      <p *ngIf="isCampoInvalido(minute)" class="text-invalid">{{getMessaggioErrore(minute)}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!--      fine Minuti -->
+                <!--    inizio Secondi -->
+                <div class="col-md-4 pb-2">
+                  <div class="row">
+                    <div class="col">
+                      <label for="second" class="title ">
+                        Secondi</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" id="second" name="second" #second="ngModel"
+                             [(ngModel)]="schedulazione.second"
+                             class="pt-0" autocomplete="off" aria-describedby="secondiHelpDescription"
+                             [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                             (ngModelChange)="onChangeModel(schedulazioneForm, second)">
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                    <div class="col">
+                      <p *ngIf="!isCampoInvalido(second)">Inserisci secondi</p>
+                      <p *ngIf="isCampoInvalido(second)" class="text-invalid">{{getMessaggioErrore(second)}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!--      fine Secondi -->
+              </div>
+              <!--                fine Ora, Minuti, Secondi -->
+              <!--                inizio Giorno, Mese, Giorno settimana -->
+              <div class="row mt-2">
+                <!--    inizio Giorno -->
+                <div class="col-md-4 pb-2">
+                  <div class="row">
+                    <div class="col">
+                      <label for="day" class="title ">
+                        Giorno</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" id="day" name="day" #day="ngModel"
+                             [(ngModel)]="schedulazione.day"
+                             class="pt-0" autocomplete="off" aria-describedby="giornoHelpDescription"
+                             [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                             (ngModelChange)="onChangeModel(schedulazioneForm, day)">
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                    <div class="col">
+                      <p *ngIf="!isCampoInvalido(day)">Inserisci giorno</p>
+                      <p *ngIf="isCampoInvalido(day)" class="text-invalid">{{getMessaggioErrore(day)}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!--      fine Giorno -->
+                <!--    inizio Mese -->
+                <div class="col-md-4 pb-2">
+                  <div class="row">
+                    <div class="col">
+                      <label for="month" class="title ">
+                        Mese</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" id="month" name="month" #month="ngModel"
+                             [(ngModel)]="schedulazione.month"
+                             class="pt-0" autocomplete="off" aria-describedby="meseHelpDescription"
+                             [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                             (ngModelChange)="onChangeModel(schedulazioneForm, month)">
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                    <div class="col">
+                      <p *ngIf="!isCampoInvalido(month)">Inserisci mese</p>
+                      <p *ngIf="isCampoInvalido(month)" class="text-invalid">{{getMessaggioErrore(month)}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!--      fine Mese -->
+                <!--    inizio Giorno settimana -->
+                <div class="col-md-4 pb-2">
+                  <div class="row">
+                    <div class="col">
+                      <label for="weekDay" class="title ">
+                        Giorno della settimana</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" id="weekDay" name="weekDay" #weekDay="ngModel"
+                             [(ngModel)]="schedulazione.weekDay"
+                             class="pt-0" autocomplete="off" aria-describedby="giornoSettimanaHelpDescription"
+                             [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                             (ngModelChange)="onChangeModel(schedulazioneForm, weekDay)">
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                    <div class="col">
+                      <p *ngIf="!isCampoInvalido(weekDay)">Inserisci giorno della settimana</p>
+                      <p *ngIf="isCampoInvalido(weekDay)"
+                         class="text-invalid">{{getMessaggioErrore(weekDay)}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!--      fine Giorno settimana-->
+              </div>
+              <!--                fine Giorno, Mese, Giorno settimana -->
+              <!--                inizio Anno, TimeZone -->
+              <div class="row mt-2">
+                <!--    inizio Anno -->
+                <div class="col-md-4 pb-2">
+                  <div class="row">
+                    <div class="col">
+                      <label for="year" class="title ">
+                        Anno</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" id="year" name="year" #year="ngModel"
+                             [(ngModel)]="schedulazione.year"
+                             class="pt-0" autocomplete="off" aria-describedby="annoHelpDescription"
+                             [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                             (ngModelChange)="onChangeModel(schedulazioneForm, year)">
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                    <div class="col">
+                      <p *ngIf="!isCampoInvalido(year)">Inserisci anno</p>
+                      <p *ngIf="isCampoInvalido(year)" class="text-invalid">{{getMessaggioErrore(year)}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!--      fine Anno -->
+                <!--    inizio Time Zone -->
+                <div class="col-md-5 pb-2">
+                  <div class="row">
+                    <div class="col">
+                      <label for="timeZone" class="title ">
+                        Time zone</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <select
+                        id="timeZone"
+                        name="timeZone"
+                        #timeZone="ngModel"
+                        [(ngModel)]="schedulazione.timeZone"
+                        [disabled]="true"
+                        (ngModelChange)="onChangeModel(schedulazioneForm, timeZone)"
+                      >
+                        <option [ngValue]="null" selected>Seleziona</option>
+                        <option *ngFor="let item of opzioniTimeZone"
+                                [ngValue]="item.value">{{item.label}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                    <div class="col">
+                      <p *ngIf="!isCampoInvalido(timeZone)">Seleziona time zone</p>
+                      <p *ngIf="isCampoInvalido(timeZone)"
+                         class="text-invalid">{{getMessaggioErrore(timeZone)}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!--      fine Time Zone -->
+              </div>
+              <!--                fine Anno, Time zone -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--        fine Schedulazione Principale -->
+      <!--        inizio Schedulazione extra -->
+      <div class="row pt-4">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <label for="extraSchedules" class="title ">
+                Schedulazione extra</label>
+              <span it-tooltip="{{tooltipSchedulazioniExtra}}">
+                      <svg class="bg-light icon icon-padded">
+                        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+                      </svg>
+                    </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                    <textarea
+                      id="extraSchedules"
+                      type="text"
+                      name="extraSchedules"
+                      autocomplete="off"
+                      #extraSchedules="ngModel"
+                      [(ngModel)]="schedulazione.extraSchedules"
+                      (ngModelChange)="onChangeModel(schedulazioneForm, extraSchedules)"
+                      maxlength="255"
+                      [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                      class="textArea"
+                    ></textarea>
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(extraSchedules)">Inserisci schedulazione extra</p>
+              <p *ngIf="isCampoInvalido(extraSchedules)"
+                 class="text-invalid">{{getMessaggioErrore(extraSchedules)}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--        fine Schedulazione extra -->
+      <!--        inizio Festività -->
+      <div class="row">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <label for="holidays" class="title ">
+                Festività</label>
+              <span it-tooltip="{{tooltipFestivita}}">
+                      <svg class="bg-light icon icon-padded">
+                        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+                      </svg>
+                    </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                    <textarea
+                      id="holidays"
+                      type="text"
+                      name="holidays"
+                      autocomplete="off"
+                      #holidays="ngModel"
+                      [(ngModel)]="schedulazione.holidays"
+                      (ngModelChange)="onChangeModel(schedulazioneForm, holidays)"
+                      maxlength="255"
+                      [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                      class="textArea"
+                    ></textarea>
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(holidays)">Inserisci festività</p>
+              <p *ngIf="isCampoInvalido(holidays)"
+                 class="text-invalid">{{getMessaggioErrore(holidays)}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--        fine Festività -->
+    </form>
+  </div>
+</div>

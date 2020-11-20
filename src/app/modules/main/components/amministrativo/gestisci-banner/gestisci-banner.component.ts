@@ -2,7 +2,6 @@ import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
 import {ParametriRicercaBanner} from '../../../model/banner/ParametriRicercaBanner';
 import {ToolEnum} from '../../../../../enums/Tool.enum';
 import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
@@ -149,9 +148,10 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   eliminaBannerSelezionati(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.bannerService.eliminaBanner(this.getListaIdElementiSelezionati(), this.idFunzione).pipe(map(() => {
+          this.bannerService.eliminaBanner(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-          })).subscribe();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;
           this.toolbarIcons[this.indiceIconaElimina].disabled = true;

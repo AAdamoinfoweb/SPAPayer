@@ -12,14 +12,12 @@ import {
 } from '@angular/core';
 import {Beneficiario} from '../../../../../model/ente/Beneficiario';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {BeneficiarioSingolo} from '../../../../../model/ente/BeneficiarioSingolo';
 import {NgForm, NgModel} from '@angular/forms';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
-import {ContoCorrenteSingolo} from '../../../../../model/ente/ContoCorrenteSingolo';
 import {DatiContoCorrenteComponent} from '../dati-conto-corrente/dati-conto-corrente.component';
-import * as moment from 'moment';
 import {Utils} from '../../../../../../../utils/Utils';
 import {EnteService} from '../../../../../../../services/ente.service';
+import {ComponenteDinamico} from "../../../../../model/ComponenteDinamico";
 
 @Component({
   selector: 'app-dati-beneficiario',
@@ -36,14 +34,15 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   testoTooltipIconaElimina = 'Elimina dati beneficiario';
 
+  @Input() uuid: string;
   @Input() indexDatiBeneficiario: number;
   @Input() datiBeneficiario: Beneficiario;
   @Input() funzione: FunzioneGestioneEnum;
   @Input() listaContiCorrente: ContoCorrente[];
   @Output()
-  onChangeDatiBeneficiario: EventEmitter<BeneficiarioSingolo> = new EventEmitter<BeneficiarioSingolo>();
+  onChangeDatiBeneficiario: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
   @Output()
-  onDeleteDatiBeneficiario: EventEmitter<any> = new EventEmitter<any>();
+  onDeleteDatiBeneficiario: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
 
   @ViewChild('datiContoCorrente', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
@@ -51,10 +50,10 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   @ViewChild('datiBeneficiarioForm', {static: false, read: NgForm})
   formDatiBeneficiario: NgForm;
 
-  mapContoCorrente: Map<number, ContoCorrente> = new Map<number, ContoCorrente>();
-  mapControllo: Map<number, boolean> = new Map<number, boolean>();
-  getListaContiCorrente = (mapContoCorrente: Map<number, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
-  getListaControllo = (mapControllo: Map<number, boolean>) => Array.from(mapControllo, ([name, value]) => value);
+  mapContoCorrente: Map<string, ContoCorrente> = new Map<string, ContoCorrente>();
+  mapControllo: Map<string, boolean> = new Map<string, boolean>();
+  getListaContiCorrente = (mapContoCorrente: Map<string, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
+  getListaControllo = (mapControllo: Map<string, boolean>) => Array.from(mapControllo, ([name, value]) => value);
 
   ngOnInit(): void {
   }
@@ -68,15 +67,15 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
         this.datiBeneficiario.listaContiCorrenti.forEach((contoCorrente) => {
           this.aggiungiContoCorrente(contoCorrente);
         });
-        this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(true));
+        this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(true));
       } else {
-        this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(false));
+        this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(false));
       }
     }
   }
 
   onClickDeleteIcon(event) {
-    this.onDeleteDatiBeneficiario.emit(this.indexDatiBeneficiario);
+    this.onDeleteDatiBeneficiario.emit(this.setComponenteDinamico());
   }
 
   getMessaggioErrore(campo: NgModel): string {
@@ -91,12 +90,10 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     return campo?.errors != null;
   }
 
-  setBeneficiarioSingolo(isFormValid: boolean): BeneficiarioSingolo {
-    const beneficiarioSingolo: BeneficiarioSingolo = new BeneficiarioSingolo();
-    beneficiarioSingolo.index = this.indexDatiBeneficiario;
-    beneficiarioSingolo.beneficiario = this.datiBeneficiario;
-    beneficiarioSingolo.isFormValid = isFormValid;
-    return beneficiarioSingolo;
+  setComponenteDinamico(isFormValid?: boolean): ComponenteDinamico {
+    const componenteDinamico: ComponenteDinamico =
+      new ComponenteDinamico(this.uuid, this.indexDatiBeneficiario, this.datiBeneficiario, isFormValid);
+    return componenteDinamico;
   }
 
   controlloForm(form?: NgForm): boolean {
@@ -110,7 +107,7 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     if (campo.value == '') {
       this.datiBeneficiario[campo.name] = null;
     }
-    this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm(this.formDatiBeneficiario)));
+    this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(this.controlloForm(this.formDatiBeneficiario)));
   }
 
   aggiungiContoCorrente(datiContoCorrente?: ContoCorrente): number {
@@ -119,6 +116,7 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     this.componentRef = this.target.createComponent(childComponent);
     const indexContoCorrente = this.target.length;
     // input
+    this.componentRef.instance.uuid = Utils.uuidv4();
     this.componentRef.instance.indexDatiContoCorrente = indexContoCorrente;
     this.componentRef.instance.funzione = this.funzione;
     let instanceContoCorrente: ContoCorrente;
@@ -132,19 +130,26 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
       this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
     }
     // output
-    this.componentRef.instance.onDeleteDatiContoCorrente.subscribe(index => {
-      const contoCorrente = this.mapContoCorrente.get(index);
+    this.componentRef.instance.onDeleteDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
+      const contoCorrente = this.mapContoCorrente.get(componenteDinamico.uuid);
       const isContoCorrenteDaModificare: boolean = contoCorrente != null;
       if (isContoCorrenteDaModificare) {
-        this.mapContoCorrente.delete(index);
-        this.mapControllo.delete(index);
+        this.mapContoCorrente.delete(componenteDinamico.uuid);
+        this.mapControllo.delete(componenteDinamico.uuid);
       }
-      this.target.remove(index - 1);
+      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
+      const zeroBasedIndex = componenteDinamico.index - 1;
+      const viewRef = this.target.get(zeroBasedIndex);
+      if (viewRef == null && this.target.length === 1) {
+        this.target.clear();
+      } else {
+        this.target.remove(zeroBasedIndex);
+      }
       this.setListaContiCorrente();
     });
-    this.componentRef.instance.onChangeDatiContoCorrente.subscribe((currentContoCorrente: ContoCorrenteSingolo) => {
-      this.mapContoCorrente.set(currentContoCorrente.index, currentContoCorrente.contoCorrente);
-      this.mapControllo.set(currentContoCorrente.index, currentContoCorrente.isFormValid);
+    this.componentRef.instance.onChangeDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
+      this.mapContoCorrente.set(componenteDinamico.uuid, componenteDinamico.oggetto);
+      this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
       this.setListaContiCorrente();
     });
     this.componentRef.changeDetectorRef.detectChanges();
@@ -154,7 +159,7 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   private setListaContiCorrente() {
     const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
     this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
-    this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm()));
+    this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(this.controlloForm()));
   }
 
   disabilitaBottone(): boolean {

@@ -8,5 +8,5 @@ export class Banner {
   fine?: string = null;
   attivo?: boolean = false;
   tipo?: BannerType;
-  classe?: string[];
+  classe?: string;
 }

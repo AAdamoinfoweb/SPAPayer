@@ -54,6 +54,22 @@ import {DatiEnteComponent} from './anagrafiche/gestisci-enti/dati-ente/dati-ente
 import {FormEnteComponent} from './anagrafiche/gestisci-enti/form-ente/form-ente.component';
 import {DatiRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/dati-raggruppamento-tipologie/dati-raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
+import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestisci-campo-tipologia-servizio/gestisci-campo-tipologia-servizio.component';
+import {DatiBeneficiarioComponent} from "./anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component";
+import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
+import {DialogModule} from "primeng/dialog";
+import {GestisciStatisticheComponent} from './gestisci-statistiche/gestisci-statistiche.component';
+import {FiltroGestisciStatisticheComponent} from './gestisci-statistiche/filtro-gestisci-statistiche/filtro-gestisci-statistiche.component';
+import {DatiStatisticaComponent} from './gestisci-statistiche/dati-statistica/dati-statistica.component';
+import {FormStatisticaComponent} from './gestisci-statistiche/form-statistica/form-statistica.component';
+import {GestisciAttivitaPianificateComponent} from './gestisci-attivita-pianificate/gestisci-attivita-pianificate.component';
+import {FiltroGestioneAttivitaPianificateComponent} from './gestisci-attivita-pianificate/filtro-gestione-attivita-pianificate/filtro-gestione-attivita-pianificate.component';
+import {DatiAttivitaPianificateComponent} from './gestisci-attivita-pianificate/dati-attivita-pianificate/dati-attivita-pianificate.component';
+import {FormAttivitaPianificateComponent} from './gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component';
+import {SchedulazioneComponent} from "./schedulazione/schedulazione.component";
+import { DatiParametroComponent } from './gestisci-attivita-pianificate/dati-parametri/dati-parametro.component';
+import { DatiDestinatarioComponent } from './gestisci-statistiche/dati-destinatario/dati-destinatario.component';
+import { SelezionaContoCorrenteComponent } from './anagrafiche/gestisci-enti/dati-conto-corrente/seleziona-conto-corrente/seleziona-conto-corrente.component';
 import {FormTipologiaServizioComponent} from './gestisci-servizi/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component';
 import {DatiBeneficiarioComponent} from './anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component';
 import {DatiContoCorrenteComponent} from './anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component';
@@ -99,6 +115,19 @@ import {DialogModule} from 'primeng/dialog';
     DatiRaggruppamentoTipologieComponent,
     FormRaggruppamentoTipologieComponent,
     DatiBeneficiarioComponent,
+    DatiContoCorrenteComponent,
+    GestisciStatisticheComponent,
+    FiltroGestisciStatisticheComponent,
+    DatiStatisticaComponent,
+    FormStatisticaComponent,
+    GestisciAttivitaPianificateComponent,
+    FiltroGestioneAttivitaPianificateComponent,
+    DatiAttivitaPianificateComponent,
+    SchedulazioneComponent,
+    FormAttivitaPianificateComponent,
+    DatiParametroComponent,
+    DatiDestinatarioComponent,
+    SelezionaContoCorrenteComponent
     DatiContoCorrenteComponent,
 
     FormUtentePermessiComponent,

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {Societa} from '../modules/main/model/Societa';
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
@@ -88,7 +88,7 @@ export class SocietaService {
       }));
   }
 
-  modificaSocieta(societa: Societa, idFunzione: string): Observable<any> {
+  modificaSocieta(societa: Societa, idFunzione: string): Observable<any | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.societaBaseUrl + '/' + societa.id;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -102,9 +102,9 @@ export class SocietaService {
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
-          return of(null);
+          return of(err);
         } else {
-          return of(null);
+          return of(err);
         }
       }));
   }

@@ -9,8 +9,14 @@ import {TipoModaleEnum} from '../enums/tipoModale.enum';
 import {Breadcrumb, SintesiBreadcrumb} from "../modules/main/dto/Breadcrumb";
 import {Colonna} from '../modules/main/model/tabella/Colonna';
 import {OpzioneSelect} from '../modules/main/model/OpzioneSelect';
+import {Banner} from "../modules/main/model/banner/Banner";
+import {getBannerType, LivelloBanner} from "../enums/livelloBanner.enum";
+import {ToolEnum} from "../enums/Tool.enum";
 
 export class Utils {
+
+  constructor() {
+  }
 
   static FORMAT_LOCAL_DATE_TIME = 'YYYY-MM-DD[T]00:00:00';
   static FORMAT_LOCAL_DATE_TIME_ISO = 'YYYY-MM-DD[T]hh:mm:ss';
@@ -19,6 +25,7 @@ export class Utils {
   static ACCEPTED_FORMAT_DATES = [
     Utils.FORMAT_DATE_CALENDAR, Utils.FORMAT_LOCAL_DATE_TIME, moment.ISO_8601
   ];
+  static TIME_ZONE = 'Europe/Rome (GMT+01:00)';
 
   static readonly EMAIL_REGEX = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   static readonly TELEFONO_REGEX = '^\\+?\\d{8,12}';
@@ -144,15 +151,17 @@ export class Utils {
     const filePdf = new jsPDF.default('l', 'pt', 'a4');
     filePdf.setProperties({title: titoloFile});
     // @ts-ignore
-    filePdf.autoTable(headerColonne, righePdf, {didDrawCell: data => {
-      immagini.forEach(immagine => {
-        if (data.section === 'body' && data.column.index === immagine.indiceColonna && data.row.raw[immagine.indiceColonna] != null) {
-          const icona = new Image();
-          icona.src = immagine.srcIcona;
-          filePdf.addImage(icona, 'PNG', data.cell.x + immagine.posizioneX, data.cell.y + immagine.posizioneY, immagine.larghezza, immagine.altezza);
-        }
-      });
-    }});
+    filePdf.autoTable(headerColonne, righePdf, {
+      didDrawCell: data => {
+        immagini.forEach(immagine => {
+          if (data.section === 'body' && data.column.index === immagine.indiceColonna && data.row.raw[immagine.indiceColonna] != null) {
+            const icona = new Image();
+            icona.src = immagine.srcIcona;
+            filePdf.addImage(icona, 'PNG', data.cell.x + immagine.posizioneX, data.cell.y + immagine.posizioneY, immagine.larghezza, immagine.altezza);
+          }
+        });
+      }
+    });
     const blob = filePdf.output('blob');
     window.open(URL.createObjectURL(blob));
   }
@@ -162,7 +171,7 @@ export class Utils {
     worksheet = XLSX.utils.sheet_add_aoa(worksheet, [headers]);
     workbook.Sheets[sheet] = worksheet;
     workbook.SheetNames = sheetNames;
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const excelBuffer: any = XLSX.write(workbook, {bookType: 'xlsx', type: 'array'});
 
     this.salvaComeFileExcel(excelBuffer, fileName);
   }
@@ -193,14 +202,14 @@ export class Utils {
    */
   static uuidv4() {
     // @ts-ignore
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
       // tslint:disable-next-line:no-bitwise
       (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
   }
 
 
-  static isBefore(date: string, otherDate: string){
+  static isBefore(date: string, otherDate: string) {
     const momentDate = moment(date, Utils.FORMAT_DATE_CALENDAR)
     const momentOtherDate = moment(otherDate, Utils.FORMAT_DATE_CALENDAR);
     return moment(momentDate).isBefore(momentOtherDate);
@@ -235,5 +244,27 @@ export class Utils {
 
     const blob = new Blob(byteArrays, {type: contentType});
     return blob;
+  }
+
+  /** recupera la posizione di una azione nella toolbar */
+  static getMapToolbarIndex(toolbarIcons): Map<ToolEnum, number> {
+    const mappaIndexToolbar: Map<ToolEnum, number> = new Map<ToolEnum, number>();
+    const toolbarType = toolbarIcons.map(el => el.type);
+
+    mappaIndexToolbar.set(ToolEnum.INSERT, toolbarType.indexOf(ToolEnum.INSERT));
+    mappaIndexToolbar.set(ToolEnum.UPDATE, toolbarType.indexOf(ToolEnum.UPDATE));
+    mappaIndexToolbar.set(ToolEnum.DELETE, toolbarType.indexOf(ToolEnum.DELETE));
+    mappaIndexToolbar.set(ToolEnum.EXPORT_PDF, toolbarType.indexOf(ToolEnum.EXPORT_PDF));
+    mappaIndexToolbar.set(ToolEnum.EXPORT_XLS, toolbarType.indexOf(ToolEnum.EXPORT_XLS));
+    return mappaIndexToolbar;
+  }
+
+  static bannerOperazioneSuccesso(): Banner {
+    const banner: Banner = {
+      titolo: 'SUCCESSO',
+      testo: 'Operazione eseguita correttamente',
+      tipo: getBannerType(LivelloBanner.SUCCESS)
+    };
+    return banner;
   }
 }

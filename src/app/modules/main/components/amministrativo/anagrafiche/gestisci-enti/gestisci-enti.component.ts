@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
 import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
@@ -128,7 +128,8 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     return this.enteService.ricercaEnti(this.filtriRicerca, this.idFunzione);
   }
 
-  callbackPopolaLista() {}
+  callbackPopolaLista() {
+  }
 
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
@@ -181,19 +182,24 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   private eliminaEntiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((esitoEnte) => {
-            this.popolaListaElementi();
-            if(esitoEnte.esito != null){
-                const banner: Banner = {
+          this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              let banner: Banner;
+              if (response.esito != null) {
+                  banner = {
                   titolo: 'ATTENZIONE',
-                  testo: esitoEnte.esito,
+                  testo: response.esito,
                   tipo: getBannerType(LivelloBanner.WARNING)
                 };
-                this.bannerService.bannerEvent.emit([banner]);
+              } else {
+                banner = Utils.bannerOperazioneSuccesso();
+              }
+              this.bannerService.bannerEvent.emit([banner]);
             }
           });
           this.righeSelezionate = [];
-          const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
+          const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
           this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
           this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
         },
@@ -209,22 +215,11 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   selezionaRigaTabella(rows: any[]) {
     this.righeSelezionate = rows;
 
-    const mapToolbarIndex = this.getMapToolbarIndex(this.toolbarIcons);
+    const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
     this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = this.righeSelezionate.length !== 1;
     this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = this.righeSelezionate.length === 0;
   }
 
-  getMapToolbarIndex(toolbarIcons): Map<ToolEnum, number> {
-    const mappaIndexToolbar: Map<ToolEnum, number> =  new Map<ToolEnum, number>();
-    const toolbarType = toolbarIcons.map(el => el.type);
-
-    mappaIndexToolbar.set(ToolEnum.INSERT, toolbarType.indexOf(ToolEnum.INSERT));
-    mappaIndexToolbar.set(ToolEnum.UPDATE, toolbarType.indexOf(ToolEnum.UPDATE));
-    mappaIndexToolbar.set(ToolEnum.DELETE, toolbarType.indexOf(ToolEnum.DELETE));
-    mappaIndexToolbar.set(ToolEnum.EXPORT_PDF, toolbarType.indexOf(ToolEnum.EXPORT_PDF));
-    mappaIndexToolbar.set(ToolEnum.EXPORT_XLS, toolbarType.indexOf(ToolEnum.EXPORT_XLS));
-    return mappaIndexToolbar;
-  }
 
   dettaglioEnte(row) {
     this.mostraDettaglioElemento('/dettaglioEnte', row.id.value);

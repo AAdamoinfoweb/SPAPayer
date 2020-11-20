@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
-import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
+import {SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {OverlayService} from '../../../../../../../services/overlay.service';
 import {LivelloTerritoriale} from '../../../../../model/LivelloTerritoriale';
 import {LivelloTerritorialeService} from '../../../../../../../services/livelloTerritoriale.service';
-import {FormElementoParentComponent} from "../../../form-elemento-parent.component";
+import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
-import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {BannerService} from '../../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-dettaglio-livello-territoriale',
@@ -38,7 +38,7 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
     private overlayService: OverlayService,
     private livelloTerritorialeService: LivelloTerritorialeService,
     confirmationService: ConfirmationService,
-    protected http: HttpClient
+    protected http: HttpClient, private bannerService: BannerService
   ) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
@@ -89,10 +89,14 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
       case FunzioneGestioneEnum.AGGIUNGI:
         this.livelloTerritorialeService.aggiuntaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe((livelloTerritoriale) => {
           this.livelloTerritoriale = new LivelloTerritoriale();
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe(() => {
+        this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe((response) => {
+          if (!(response instanceof HttpErrorResponse)) {
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
         });
         break;
     }
