@@ -138,14 +138,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     let obs = of(null);
     if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       this.tipologiaServizioId = parseInt(this.activatedRoute.snapshot.paramMap.get('tipologiaServizioId'));
-
-      this.campoTipologiaServizioService.recuperaDettaglioTipologiaServizio(this.tipologiaServizioId, this.idFunzione).subscribe(tipologiaServizio => {
-        this.filtro = new ParametriRicercaTipologiaServizio();
-        this.filtro.raggruppamentoId = tipologiaServizio.raggruppamentoId;
-
-        this.codiceTipologia = tipologiaServizio.codice;
-        this.nomeTipologia = tipologiaServizio.descrizione;
-      });
+      this.impostaDettaglioTipologia();
 
       obs = this.caricaCampi(this.tipologiaServizioId);
     }
@@ -165,6 +158,16 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
       })).pipe(flatMap(() => obs));
     observable.subscribe();
+  }
+
+  impostaDettaglioTipologia(): void {
+    this.campoTipologiaServizioService.recuperaDettaglioTipologiaServizio(this.tipologiaServizioId, this.idFunzione).subscribe(tipologiaServizio => {
+      this.filtro = new ParametriRicercaTipologiaServizio();
+      this.filtro.raggruppamentoId = tipologiaServizio.raggruppamentoId;
+
+      this.codiceTipologia = tipologiaServizio.codice;
+      this.nomeTipologia = tipologiaServizio.descrizione;
+    });
   }
 
   caricaCampi(tipologiaServizioId: number): Observable<any> {
@@ -218,14 +221,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       modificaTipologiaServizio.listaCampiTipologiaServizio = this.items;
       this.campoTipologiaServizioService.modificaTipologiaServizio(this.tipologiaServizioId, modificaTipologiaServizio, this.idFunzione)
         .subscribe(() => {
-          this.campoTipologiaServizioService.recuperaDettaglioTipologiaServizio(this.tipologiaServizioId, this.idFunzione)
-            .subscribe(tipologiaServizio => {
-              this.filtro = new ParametriRicercaTipologiaServizio();
-              this.filtro.raggruppamentoId = tipologiaServizio.raggruppamentoId;
-
-              this.codiceTipologia = tipologiaServizio.codice;
-              this.nomeTipologia = tipologiaServizio.descrizione;
-            });
+          this.impostaDettaglioTipologia();
 
           let obs = this.caricaCampi(this.tipologiaServizioId);
           let observable: Observable<number> = this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
