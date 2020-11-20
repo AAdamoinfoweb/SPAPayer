@@ -8,9 +8,11 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Output, QueryList,
+  Output,
+  QueryList,
   Renderer2,
-  ViewChild, ViewChildren,
+  ViewChild,
+  ViewChildren,
   ViewContainerRef
 } from '@angular/core';
 import {FormElementoParentComponent} from '../../form-elemento-parent.component';
@@ -62,6 +64,7 @@ import {FlussiNotifiche} from "../../../../model/servizio/FlussiNotifiche";
   styleUrls: ['./form-servizio.component.scss']
 })
 export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
+  private firstAdd = false;
 
   constructor(private cdr: ChangeDetectorRef,
               private renderer: Renderer2,
@@ -156,8 +159,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   public ngAfterViewInit() {
-    this.datiBeneficiarioFormQuery.changes.subscribe( ql => {
-      this.aggiungiContoCorrente();
+    this.datiBeneficiarioFormQuery.changes.subscribe(ql => {
+      if (!this.firstAdd) {
+        this.firstAdd = true;
+        this.aggiungiContoCorrente();
+      }
     });
   }
 
@@ -289,11 +295,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   onChangeFiltri(event: ParametriRicercaServizio) {
     this.filtri = event;
-    // this.aggiungiContoCorrente();
   }
 
   cambiaLivelloIntegrazione(event: any) {
     if (event !== LivelloIntegrazioneEnum.LV1) {
+      this.campoServizioAddList = [];
       this.caricaCampi(this.filtri.tipologiaServizio.id).subscribe();
     } else {
       this.campoTipologiaServizioOriginal = null;
@@ -302,7 +308,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   disabilitaCampi() {
-    return false;
+    return this.funzione == FunzioneGestioneEnum.DETTAGLIO;
   }
 
   onChangeSocietaImpositore(societaInput: NgModel) {

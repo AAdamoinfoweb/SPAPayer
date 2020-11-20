@@ -841,6 +841,15 @@
                   </div>
                 </div>
               </div>
+              <div class="row">
+                <div class="col">
+                  <label for="nuovoFormato"
+                         [ngClass]="{'title':true}">Nuovo formato</label>
+                </div>
+                <div class="col-2">
+                  <it-toggle id="nuovoFormato" [(ngModel)]="rendicontazioneGiornaliera.nuovoFormato" name="nuovoFormato"></it-toggle>
+                </div>
+              </div>
             </div>
           </div>
         </div>
