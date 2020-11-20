@@ -129,6 +129,7 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
     this.attivitaPianificataService.inserimentoAttivitaPianificata(attivitaPianificata, this.idFunzione).subscribe((attivitaPianificataId) => {
       if (attivitaPianificataId != null) {
         this.datiAttivitaPianificata = new AttivitaPianificata();
+        this.inizializzaDatiAttivitaPianificata();
         this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
       }
     });

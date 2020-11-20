@@ -132,6 +132,7 @@ export class FormStatisticaComponent extends FormElementoParentComponent impleme
     this.statisticaService.inserimentoStatistica(statistica, this.idFunzione).subscribe((statisticaId) => {
       if (statisticaId != null) {
         this.datiStatistica = new Statistica();
+        this.inizializzaDatiStatistica();
         this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
       }
     });
