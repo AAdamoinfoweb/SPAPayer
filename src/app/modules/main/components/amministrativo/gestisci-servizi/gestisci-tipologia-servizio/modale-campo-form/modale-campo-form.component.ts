@@ -11,6 +11,7 @@ import {ConfigurazioneJsonPath} from '../../../../../model/campo/ConfigurazioneJ
 import {ConfigurazioneTipologica} from '../../../../../model/campo/ConfigurazioneTipologica';
 import {ControlloLogico} from '../../../../../model/ControlloLogico';
 import {ConfigurazioneCampoDettaglioTransazione} from '../../../../../model/campo/ConfigurazioneCampoDettaglioTransazione';
+import {Utils} from '../../../../../../../utils/Utils';
 
 export interface DatiModaleCampo {
   listaDipendeDa: any[];
@@ -46,10 +47,15 @@ export class ModaleCampoFormComponent implements OnInit {
 
   constructor(private overlayService: OverlayService, private amministrativoService: AmministrativoService) {
     this.listaCampiDettaglioTransazione = JSON.parse(localStorage.getItem('listaCampiDettaglioTransazione'));
+    Utils.ordinaArrayDiOggetti(this.listaCampiDettaglioTransazione, 'nome');
     this.listaControlliLogici = JSON.parse(localStorage.getItem('listaControlliLogici'));
+    Utils.ordinaArrayDiOggetti(this.listaControlliLogici, 'nome');
     this.listaTipologiche = JSON.parse(localStorage.getItem('listaTipologiche'));
+    Utils.ordinaArrayDiOggetti(this.listaTipologiche, 'nome');
     this.listaJsonPath = JSON.parse(localStorage.getItem('listaJsonPath'));
+    Utils.ordinaArrayDiOggetti(this.listaJsonPath, 'nome_attributo');
     this.listaTipiCampo = JSON.parse(localStorage.getItem('listaTipiCampo'));
+    Utils.ordinaArrayDiOggetti(this.listaTipiCampo, 'nome');
 
     this.form = new FormGroup({
       titolo: new FormControl(null, [Validators.required]),
