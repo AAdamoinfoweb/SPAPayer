@@ -54,6 +54,7 @@ import {FlussoRiversamentoPagoPA} from '../../../../model/servizio/FlussoRiversa
 import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
 import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
 import {Utils} from "../../../../../../utils/Utils";
+import {TipoModaleEnum} from "../../../../../../enums/tipoModale.enum";
 
 @Component({
   selector: 'app-form-servizio',
@@ -395,7 +396,30 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   removeItem(item: CampoServizio) {
+    if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
+      this.confirmationService.confirm(
+        Utils.getModale(() => {
+            this.campoServizioAddList.splice(this.campoServizioAddList.findIndex((v) => v.id === item.id), 1);
+            this.refreshItemsEvent.emit(this.campoServizioAddList);
+          },
+          TipoModaleEnum.ELIMINA,
+        )
+      );
+    }
+  }
 
+  undo(item: CampoServizio) {
+    //todo UNDO
+    if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
+      this.confirmationService.confirm(
+        Utils.getModale(() => {
+            item = this.campoTipologiaServizioOriginal.find((value => value.id = item.id));
+            this.refreshItemsEvent.emit(this.campoTipologiaServizioList);
+          },
+          TipoModaleEnum.ELIMINA,
+        )
+      );
+    }
   }
 
   calcolaDimensioneCampo(campo: CampoTipologiaServizio): string {

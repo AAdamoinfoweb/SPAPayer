@@ -639,8 +639,8 @@
                    [cdkDropListData]="{item:item, index:i}">
                 <div style="min-height: 5vh;"
                      [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
-               'field-input': (item.campoInput && !item.disabilitato)}"
-                >
+               'field-input': (item.campoInput && !item.disabilitato),
+               'field-output': (!item.campoInput && !item.disabilitato)}">
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
                     <div (click)="showModal(item)" class="col-7 text-right">{{item.titolo}}</div>
@@ -648,7 +648,7 @@
                     </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
                     <div class="col-3 text-right">
-                      <span class="close" (click)="removeItem(item)"></span>
+                      <span class="close" (click)="undo(item)"></span>
                     </div>
                   </div>
                 </div>
@@ -710,7 +710,7 @@
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.emailEnabled)"
                          #emailGiornalieraId="ngModel"
-                         id="emailGiornalieraId"
+                         id="emailGiornalieraId"  [customvalidator]="validateEmail()"
                          name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
                          [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
                 </div>
@@ -759,7 +759,7 @@
               <div class="row">
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Server"
-                         [placeholder]="getPlaceholderRequired('Server', rendicontazioneGiornaliera.ftpEnabled)"
+                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneGiornaliera.ftpEnabled)"
                          id="server" name="server" #server="ngModel" [customvalidator]="validateServer()"
                          [(ngModel)]="rendicontazioneGiornaliera.server"
                          [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
@@ -866,7 +866,7 @@
                 <div class="col-12">
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Email', rendicontazioneFlussoPA.emailEnabled)"
-                         id="emailFlussoPAId"
+                         id="emailFlussoPAId" [customvalidator]="validateEmail()"
                          name="emailFlussoPAId" [(ngModel)]="rendicontazioneFlussoPA.email"
                          #emailFlussoPAId="ngModel"
                          [disabled]="!rendicontazioneFlussoPA.emailEnabled ? true : null">
