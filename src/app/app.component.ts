@@ -10,6 +10,7 @@ import {OverlayService} from './services/overlay.service';
 import {DatiPagamento} from './modules/main/model/bollettino/DatiPagamento';
 import {EsitoEnum} from './enums/esito.enum';
 import {of} from "rxjs";
+import {DatiModaleCampo} from './modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,7 @@ export class AppComponent implements OnInit {
   title = '';
   mostraModale = false;
   datiPagamento: DatiPagamento = null;
-  tipologiaServizio: any;
+  datiModaleCampo: DatiModaleCampo = null;
   idFunzione: string;
 
   constructor(private menuService: MenuService,
@@ -50,17 +51,15 @@ export class AppComponent implements OnInit {
 
     this.overlayService.mostraModaleCampoEvent
       .subscribe(datiModaleCampo => {
-        this.tipologiaServizio = datiModaleCampo;
+        this.datiModaleCampo = datiModaleCampo;
         this.mostraModale = datiModaleCampo != null;
         this.cdr.detectChanges();
       });
 
     this.overlayService.mostraModaleTipoCampoEvent
-      .subscribe(value => {
-        if (value?.idFunzione) {
-          this.idFunzione = value.idFunzione;
-        }
-        this.mostraModale = !!value;
+      .subscribe(idFunzione => {
+        this.idFunzione = idFunzione;
+        // Non imposto mostraModale false se idFunzione null in quando mostraModale gestisce la comparsa delle modali di primo livello (non innestate)
         this.cdr.detectChanges();
       });
 

@@ -9,7 +9,7 @@
       <div class="row">
         <input id="titolo"
                [formControl]="form.controls['titolo']"
-               [(ngModel)]="tipologiaServizio.campoForm.titolo"
+               [(ngModel)]="datiModaleCampo.campoForm.titolo"
                type="text"
                autocomplete="off"
         />
@@ -25,7 +25,7 @@
         <select
           id="tipoCampo"
           [formControl]="form.controls['tipoCampo']"
-          [(ngModel)]="tipologiaServizio.campoForm.tipoCampoId">
+          [(ngModel)]="datiModaleCampo.campoForm.tipoCampoId">
           <option [ngValue]="null"></option>
           <option *ngFor="let item of listaTipiCampo" [ngValue]="item.id">{{item.nome}} - {{item.informazioni}}</option>
         </select>
@@ -34,7 +34,7 @@
 
     <div class="col-sm-12 col-md-4 form-elem-container">
       <div id="containerBottoneAggiungiTipoCampo">
-        <button class="btn" [disabled]="tipologiaServizio.funzione == FunzioneGestioneEnum.DETTAGLIO" (click)="addTipoCampo()">Aggiungi Tipo campo</button>
+        <button class="btn" [disabled]="datiModaleCampo.funzione == FunzioneGestioneEnum.DETTAGLIO" (click)="addTipoCampo()">Aggiungi Tipo campo</button>
       </div>
     </div>
 
@@ -47,7 +47,7 @@
         <input id="obbligatorio"
                type="checkbox"
                [formControl]="form.controls['obbligatorio']"
-               [(ngModel)]="tipologiaServizio.campoForm.obbligatorio"
+               [(ngModel)]="datiModaleCampo.campoForm.obbligatorio"
                type="checkbox"
                autocomplete="off"
         />
@@ -63,7 +63,7 @@
         <input id="chiave"
                type="checkbox"
                [formControl]="form.controls['chiave']"
-               [(ngModel)]="tipologiaServizio.campoForm.chiave"
+               [(ngModel)]="datiModaleCampo.campoForm.chiave"
                (click)="clickChiave($event)"
                type="checkbox"
                autocomplete="off"
@@ -79,7 +79,7 @@
       <div class="row">
         <input id="lunghezzaVariabile"
                [formControl]="form.controls['lunghezzaVariabile']"
-               [(ngModel)]="tipologiaServizio.campoForm.lunghezzaVariabile"
+               [(ngModel)]="datiModaleCampo.campoForm.lunghezzaVariabile"
                type="checkbox"
                autocomplete="off"
         />
@@ -94,7 +94,7 @@
       <div class="row">
         <input id="lunghezza"
                [formControl]="form.controls['lunghezza']"
-               [(ngModel)]="tipologiaServizio.campoForm.lunghezza"
+               [(ngModel)]="datiModaleCampo.campoForm.lunghezza"
                type="text"
                autocomplete="off"
         />
@@ -109,7 +109,7 @@
       <div class="row">
         <input id="campoFisso"
                [formControl]="form.controls['campoFisso']"
-               [(ngModel)]="tipologiaServizio.campoForm.campoFisso"
+               [(ngModel)]="datiModaleCampo.campoForm.campoFisso"
                type="checkbox"
                autocomplete="off"
         />
@@ -125,7 +125,7 @@
         <input id="disabilitato"
                type="checkbox"
                [formControl]="form.controls['disabilitato']"
-               [(ngModel)]="tipologiaServizio.campoForm.disabilitato"
+               [(ngModel)]="datiModaleCampo.campoForm.disabilitato"
                type="checkbox"
                autocomplete="off"
         />
@@ -141,7 +141,7 @@
         <select
           id="tipologica"
           [formControl]="form.controls['tipologica']"
-          [(ngModel)]="tipologiaServizio.campoForm.tipologica">
+          [(ngModel)]="datiModaleCampo.campoForm.tipologica">
           <option [ngValue]="null"></option>
           <option *ngFor="let item of listaTipologiche" [ngValue]="item.nome">{{item.nome}}</option>
         </select>
@@ -158,9 +158,9 @@
           [attr.disabled]="dipendeDaIsDisabled()"
           id="dipendeDa"
           [formControl]="form.controls['dipendeDa']"
-          [(ngModel)]="tipologiaServizio.campoForm.dipendeDa">
+          [(ngModel)]="datiModaleCampo.campoForm.dipendeDa">
           <option [ngValue]="null"></option>
-          <option *ngFor="let item of tipologiaServizio.listaDipendeDa"
+          <option *ngFor="let item of datiModaleCampo.listaDipendeDa"
                   [ngValue]="item">{{item.titolo}}</option>
         </select>
       </div>
@@ -175,7 +175,7 @@
         <select
           id="controllo_logico"
           [formControl]="form.controls['controllo_logico']"
-          [(ngModel)]="tipologiaServizio.campoForm.controlloLogicoId">
+          [(ngModel)]="datiModaleCampo.campoForm.controlloLogicoId">
           <option [ngValue]="null"></option>
           <option *ngFor="let item of listaControlliLogici" [ngValue]="item.nome">{{item.nome}}</option>
         </select>
@@ -191,7 +191,7 @@
         <select
           id="campoDettaglioTransazione"
           [formControl]="form.controls['campoDettaglioTransazione']"
-          [(ngModel)]="tipologiaServizio.campoForm.campoDettaglioTransazione">
+          [(ngModel)]="datiModaleCampo.campoForm.campoDettaglioTransazione">
           <option [ngValue]="null"></option>
           <option *ngFor="let item of listaCampiDettaglioTransazione"
                   [ngValue]="item.nome">{{item.nome}}</option>
@@ -204,11 +204,11 @@
 
         <div class="col-2">
           <button type="button" id="bottoneIndietro" class="btn btn-secondary"
-                  (click)="clickIndietro()">{{tipologiaServizio.funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}
+                  (click)="clickIndietro()">{{datiModaleCampo.funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}
           </button>
         </div>
 
-        <div class="col-10 text-right" *ngIf="tipologiaServizio.funzione !== FunzioneGestioneEnum.DETTAGLIO">
+        <div class="col-10 text-right" *ngIf="datiModaleCampo.funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <button (click)="salvaCampoForm()" type="button" class="btn"
                   [disabled]="form.invalid">
             Salva
