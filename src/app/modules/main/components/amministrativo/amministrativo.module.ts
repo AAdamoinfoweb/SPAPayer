@@ -58,6 +58,7 @@ import {GestisciCampoTipologiaServizioComponent} from './gestisci-servizi/gestis
 import {DatiBeneficiarioComponent} from "./anagrafiche/gestisci-enti/dati-beneficiario/dati-beneficiario.component";
 import {DatiContoCorrenteComponent} from "./anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component";
 import {DialogModule} from "primeng/dialog";
+import { SelezionaContoCorrenteComponent } from './anagrafiche/gestisci-enti/dati-conto-corrente/seleziona-conto-corrente/seleziona-conto-corrente.component';
 
 
 @NgModule({
@@ -96,7 +97,8 @@ import {DialogModule} from "primeng/dialog";
     FormRaggruppamentoTipologieComponent,
     GestisciCampoTipologiaServizioComponent,
     DatiBeneficiarioComponent,
-    DatiContoCorrenteComponent
+    DatiContoCorrenteComponent,
+    SelezionaContoCorrenteComponent
   ],
   imports: [
     HttpClientModule,

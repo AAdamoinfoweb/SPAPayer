@@ -1,16 +1,11 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {ContoCorrenteSingolo} from '../../../../../model/ente/ContoCorrenteSingolo';
 import {NgForm, NgModel} from '@angular/forms';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
-import {Tabella} from '../../../../../model/tabella/Tabella';
-import {tipoColonna} from '../../../../../../../enums/TipoColonna.enum';
-import {tipoTabella} from '../../../../../../../enums/TipoTabella.enum';
 import {Utils} from '../../../../../../../utils/Utils';
-import {EnteService} from '../../../../../../../services/ente.service';
-import {ComponenteDinamico} from "../../../../../model/ComponenteDinamico";
+import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
 
 @Component({
   selector: 'app-dati-conto-corrente',
@@ -41,25 +36,8 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
   readonly tipoData = ECalendarValue.String;
 
-  // modal
-  display = false;
 
-  // table
-  tableData: Tabella = {
-    rows: [],
-    cols: [
-      {field: 'iban', header: 'Iban', type: tipoColonna.TESTO},
-      {field: 'intestazione', header: 'Intestazione', type: tipoColonna.TESTO},
-      {field: 'ibanCCPostale', header: 'Iban cc postale', type: tipoColonna.TESTO},
-      {field: 'intestazioneCCPostale', header: 'Intestazione cc postale', type: tipoColonna.TESTO},
-      {field: 'attivazione', header: 'Attivazione', type: tipoColonna.TESTO},
-      {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO}
-    ],
-    dataKey: 'id.value',
-    tipoTabella: tipoTabella.TEMPLATING
-  };
-
-  constructor(private enteService: EnteService) {
+  constructor() {
   }
 
   ngOnInit(): void {
@@ -73,9 +51,6 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   private inizializzaDatiContoCorrente() {
-    if (this.listaContiCorrente != null) {
-      this.impostaTabellaContiCorrente();
-    }
     let isFormValid: boolean;
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       isFormValid = false;
@@ -83,31 +58,6 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
       isFormValid = true;
     }
     this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(isFormValid));
-  }
-
-  private impostaTabellaContiCorrente() {
-    const rows = [];
-    this.listaContiCorrente.forEach((contoCorrente) => {
-      const row = {
-        id: {value: contoCorrente.id},
-        iban: {value: contoCorrente.iban},
-        intestazione: {value: contoCorrente.intestazione},
-        ibanCCPostale: {value: contoCorrente.ibanCCPostale},
-        intestazioneCCPostale: {value: contoCorrente.intestazioneCCPostale},
-        attivazione: {
-          value: contoCorrente.inizioValidita != null ?
-            moment(contoCorrente.inizioValidita, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
-              .format(Utils.FORMAT_DATE_CALENDAR) : null
-        },
-        scadenza: {
-          value: contoCorrente.fineValidita != null ?
-            moment(contoCorrente.fineValidita, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
-              .format(Utils.FORMAT_DATE_CALENDAR) : null
-        },
-      };
-      rows.push(row);
-    });
-    this.tableData.rows = rows;
   }
 
   onClickDeleteIcon(event) {
@@ -159,18 +109,13 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
       ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
   }
 
-  showDialog() {
-    this.display = !this.display;
-  }
-
-  onClickRow(row: any) {
-    this.datiContoCorrente.iban = row.iban.value;
-    this.datiContoCorrente.intestazione = row.intestazione.value;
-    this.datiContoCorrente.ibanCCPostale = row.ibanCCPostale.value;
-    this.datiContoCorrente.intestazioneCCPostale = row.intestazioneCCPostale.value;
-    this.datiContoCorrente.inizioValidita = row.attivazione.value;
-    this.datiContoCorrente.fineValidita = row.scadenza.value;
+  onClickRow(contoCorrente: ContoCorrente) {
+    this.datiContoCorrente.iban = contoCorrente.iban;
+    this.datiContoCorrente.intestazione = contoCorrente.intestazione;
+    this.datiContoCorrente.ibanCCPostale = contoCorrente.ibanCCPostale;
+    this.datiContoCorrente.intestazioneCCPostale = contoCorrente.intestazioneCCPostale;
+    this.datiContoCorrente.inizioValidita = contoCorrente.inizioValidita;
+    this.datiContoCorrente.fineValidita = contoCorrente.fineValidita;
     this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(true));
-    this.display = false;
   }
 }
