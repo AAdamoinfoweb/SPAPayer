@@ -143,6 +143,7 @@
           <select
             id="livelloIntegrazione"
             [disabled]="true"
+            [attr.disabled]="true"
             [formControl]="form.controls['livelloIntegrazione']"
             [(ngModel)]="datiModaleCampo.livelloIntegrazione"
             (ngModelChange)="cambiaLivelloIntegrazione(datiModaleCampo.campoForm, $event)">

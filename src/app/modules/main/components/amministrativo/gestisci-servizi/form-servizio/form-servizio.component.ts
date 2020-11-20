@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
@@ -7,9 +8,9 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Output,
+  Output, QueryList,
   Renderer2,
-  ViewChild,
+  ViewChild, ViewChildren,
   ViewContainerRef
 } from '@angular/core';
 import {FormElementoParentComponent} from '../../form-elemento-parent.component';
@@ -45,7 +46,7 @@ import {BeneficiarioSingolo} from '../../../../model/ente/BeneficiarioSingolo';
 import {ConfiguraServizioService} from '../../../../../../services/configura-servizio.service';
 import {RendicontazioneGiornaliera} from "../../../../model/servizio/RendicontazioneGiornaliera";
 import {CampoServizio} from "../../../../model/servizio/CampoServizio";
-import {FiltroConfiguraServizi} from "../../../../model/servizio/FiltroConfiguraServizi";
+import {FiltroSelect} from "../../../../model/servizio/FiltroSelect";
 import {ImpositoreServizio} from "../../../../model/servizio/ImpositoreServizio";
 import {LivelloIntegrazioneServizio} from "../../../../model/servizio/LivelloIntegrazioneServizio";
 import {BeneficiarioServizio} from "../../../../model/servizio/BeneficiarioServizio";
@@ -60,7 +61,7 @@ import {FlussiNotifiche} from "../../../../model/servizio/FlussiNotifiche";
   templateUrl: './form-servizio.component.html',
   styleUrls: ['./form-servizio.component.scss']
 })
-export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy {
+export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private cdr: ChangeDetectorRef,
               private renderer: Renderer2,
@@ -102,10 +103,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   beneficiario: BeneficiarioServizio = new BeneficiarioServizio();
 
   listaSocieta: Societa[] = [];
-  listaLivelloTerritoriale: FiltroConfiguraServizi[] = [];
-  listaEnti: FiltroConfiguraServizi[] = [];
-  listaEntiBenef: FiltroConfiguraServizi[] = [];
-  listaPortaleEsterno: FiltroConfiguraServizi[] = [];
+  listaLivelloTerritoriale: FiltroSelect[] = [];
+  listaEnti: FiltroSelect[] = [];
+  listaEntiBenef: FiltroSelect[] = [];
+  listaPortaleEsterno: FiltroSelect[] = [];
   listaUfficio: FiltroUfficio[] = [];
 
   FunzioneGestioneEnum = FunzioneGestioneEnum;
@@ -114,6 +115,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   campoTipologiaServizioOriginal: CampoServizio[];
   campoTipologiaServizioList: CampoServizio[];
+  campoServizioAddList: CampoServizio[];
 
   private tipoCampoIdSelect: number;
 
@@ -126,6 +128,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   onChangeDatiBeneficiario: EventEmitter<BeneficiarioSingolo> = new EventEmitter<BeneficiarioSingolo>();
   @Output()
   onDeleteDatiBeneficiario: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChildren('datiBeneficiarioForm')
+  private datiBeneficiarioFormQuery: QueryList<any>;
 
   @ViewChild('datiContoCorrente', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
@@ -150,16 +155,23 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   ngOnInit(): void {
   }
 
+  public ngAfterViewInit() {
+    this.datiBeneficiarioFormQuery.changes.subscribe( ql => {
+      this.aggiungiContoCorrente();
+    });
+  }
+
   initFormPage(snapshot: ActivatedRouteSnapshot) {
     this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoServizio) => {
       const campoFormIdx = this.campoTipologiaServizioList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
 
       if (campoFormIdx != -1) {
+        campoForm.campoTipologiaServizioId = campoForm.id;
         this.campoTipologiaServizioList[campoFormIdx] = campoForm;
       } else {
         campoForm.uuid = uuidv4();
         campoForm.draggable = true;
-        this.campoTipologiaServizioList.push(campoForm);
+        this.campoServizioAddList.push(campoForm);
         this.cdr.detectChanges();
       }
       this.overlayService.mostraModaleCampoEvent.emit(null);
@@ -171,7 +183,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       .pipe(map((value: Societa[]) => this.listaSocieta = value)).subscribe();
 
     this.configuraServizioService.configuraServiziFiltroPortaleEsterno(this.idFunzione)
-      .pipe(map((value: FiltroConfiguraServizi[]) => this.listaPortaleEsterno = value)).subscribe();
+      .pipe(map((value: FiltroSelect[]) => this.listaPortaleEsterno = value)).subscribe();
 
     this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
@@ -250,7 +262,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         emails.push(control.value);
     });
 
-    let campoServizios: CampoServizio[] = this.campoTipologiaServizioList.filter((value => !value.id || value.campoTipologiaServizioId));
+    let campoServizios: CampoServizio[] = this.campoServizioAddList
+      .filter((value => !value.id || value.campoTipologiaServizioId))
+      .map(value => value.id = null);
 
     let flussiNotifiche = new FlussiNotifiche();
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
@@ -271,8 +285,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.beneficiario = this.beneficiario;
     this.servizio.listaContiCorrenti = this.listaContiCorrente;
     this.servizio.listaCampiServizio = campoServizios;
-
-
   }
 
   onChangeFiltri(event: ParametriRicercaServizio) {
@@ -465,7 +477,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   private setListaContiCorrente() {
     const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
-    this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
+    //this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
     // this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm()));
   }
 
