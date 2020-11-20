@@ -9,7 +9,6 @@ import {FunzioneService} from '../../../../../../services/funzione.service';
 import {map} from 'rxjs/operators';
 import {GruppoEnum} from '../../../../../../enums/gruppo.enum';
 import {Utils} from '../../../../../../utils/Utils';
-import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
 import {CheckboxChange} from 'design-angular-kit';
 import {Funzione} from '../../../../model/Funzione';
 import {PermessoFunzione} from '../../../../model/permesso/PermessoFunzione';

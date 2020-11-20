@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForm, NgModel} from "@angular/forms";
 import {ParametroAttivitaPianificata} from "../../../../model/attivitapianificata/ParametroAttivitaPianificata";
-import {Utils} from "../../../../../../utils/Utils";
 import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
-import {ContoCorrenteSingolo} from "../../../../model/ente/ContoCorrenteSingolo";
 import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
 
 @Component({

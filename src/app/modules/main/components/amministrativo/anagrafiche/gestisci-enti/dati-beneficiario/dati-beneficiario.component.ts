@@ -12,12 +12,9 @@ import {
 } from '@angular/core';
 import {Beneficiario} from '../../../../../model/ente/Beneficiario';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {BeneficiarioSingolo} from '../../../../../model/ente/BeneficiarioSingolo';
 import {NgForm, NgModel} from '@angular/forms';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
-import {ContoCorrenteSingolo} from '../../../../../model/ente/ContoCorrenteSingolo';
 import {DatiContoCorrenteComponent} from '../dati-conto-corrente/dati-conto-corrente.component';
-import * as moment from 'moment';
 import {Utils} from '../../../../../../../utils/Utils';
 import {EnteService} from '../../../../../../../services/ente.service';
 import {ComponenteDinamico} from "../../../../../model/ComponenteDinamico";
