@@ -3,6 +3,7 @@ import {NgForm, NgModel} from "@angular/forms";
 import {Destinatario} from "../../../../model/statistica/Destinatario";
 import {Utils} from "../../../../../../utils/Utils";
 import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
+import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
 
 @Component({
   selector: 'app-dati-destinatario',
@@ -18,19 +19,21 @@ export class DatiDestinatarioComponent implements OnInit {
   emailRegex: string = Utils.EMAIL_REGEX;
 
   @Input()
+  uuid: string;
+  @Input()
   index;
   @Input()
   funzione: FunzioneGestioneEnum;
   @Input()
   destinatario: Destinatario;
   @Output()
-  onChangeDatiDestinatario: EventEmitter<any> = new EventEmitter<any>();
+  onChangeDatiDestinatario: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
   @Output()
-  onDeleteDatiDestinatario: EventEmitter<any> = new EventEmitter<any>();
+  onDeleteDatiDestinatario: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
 
 
   ngOnInit(): void {
-    this.onChangeDatiDestinatario.emit({destinatario: this.destinatario, index: this.index, isFormValid: true});
+    this.onChangeDatiDestinatario.emit(this.setComponenteDinamico(true));
   }
 
   isCampoInvalido(campo: NgModel) {
@@ -46,11 +49,16 @@ export class DatiDestinatarioComponent implements OnInit {
   }
 
   onChangeModel(form: NgForm, campo: NgModel) {
-    this.onChangeDatiDestinatario.emit({destinatario: this.destinatario, index: this.index, isFormValid: form.valid});
+    this.onChangeDatiDestinatario.emit(this.setComponenteDinamico(form.valid));
   }
 
   onClickDeleteIcon() {
-    this.onDeleteDatiDestinatario.emit(this.index);
+    this.onDeleteDatiDestinatario.emit(this.setComponenteDinamico());
+  }
+
+  setComponenteDinamico(isFormValid?: boolean): ComponenteDinamico {
+    const componenteDinamico: ComponenteDinamico = new ComponenteDinamico(this.uuid, this.index, this.destinatario, isFormValid);
+    return componenteDinamico;
   }
 
 }

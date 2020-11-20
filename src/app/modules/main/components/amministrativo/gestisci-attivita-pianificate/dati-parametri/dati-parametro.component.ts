@@ -4,6 +4,7 @@ import {ParametroAttivitaPianificata} from "../../../../model/attivitapianificat
 import {Utils} from "../../../../../../utils/Utils";
 import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
 import {ContoCorrenteSingolo} from "../../../../model/ente/ContoCorrenteSingolo";
+import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
 
 @Component({
   selector: 'app-dati-parametro',
@@ -17,21 +18,22 @@ export class DatiParametroComponent implements OnInit {
   // enums e consts
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   @Input()
+  uuid;
+  @Input()
   index;
   @Input()
   funzione: FunzioneGestioneEnum;
   @Input()
   parametro: ParametroAttivitaPianificata;
   @Output()
-  onChangeDatiParametro: EventEmitter<any> = new EventEmitter<any>();
+  onChangeDatiParametro: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
   @Output()
-  onDeleteDatiParametro: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
-  isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
+  onDeleteDatiParametro: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
+
 
 
   ngOnInit(): void {
-    this.onChangeDatiParametro.emit({parametro: this.parametro, index: this.index, isFormValid: this.parametro.chiave != null});
+    this.onChangeDatiParametro.emit(this.setComponenteDinamico(this.parametro.chiave != null));
   }
 
   isCampoInvalido(campo: NgModel) {
@@ -47,10 +49,15 @@ export class DatiParametroComponent implements OnInit {
   }
 
   onChangeModel(form: NgForm, campo: NgModel) {
-    this.onChangeDatiParametro.emit({parametro: this.parametro, index: this.index, isFormValid: form.valid});
+    this.onChangeDatiParametro.emit(this.setComponenteDinamico(form.valid));
   }
 
   onClickDeleteIcon() {
-    this.onDeleteDatiParametro.emit(this.index);
+    this.onDeleteDatiParametro.emit(this.setComponenteDinamico());
+  }
+
+  setComponenteDinamico(isFormValid?: boolean): ComponenteDinamico {
+    const componenteDinamico: ComponenteDinamico = new ComponenteDinamico(this.uuid, this.index, this.parametro, isFormValid);
+    return componenteDinamico;
   }
 }
