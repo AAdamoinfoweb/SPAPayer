@@ -10,16 +10,26 @@
   z-index: 4;
 }
 
-#component-modal-wrapper {
+.modal-wrapper {
   position: fixed;
-  width: 80vw;
-  height: 80vh;
-  left: 10vw;
-  top: 10vh;
 
   background-color: #f6f6f6;
   border: 2px solid #E3E3E3;
   overflow: scroll;
 
   z-index: 4;
+}
+
+.big-modal-wrapper {
+  width: 80vw;
+  height: 80vh;
+  left: 10vw;
+  top: 10vh;
+}
+
+.small-modal-wrapper {
+  width: 40vw;
+  height: 40vh;
+  left: 30vw;
+  top: 30vh;
 }

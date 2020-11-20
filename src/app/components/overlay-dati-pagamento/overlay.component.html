@@ -1,6 +1,6 @@
 <div>
   <div class="background"></div>
-  <div id="component-modal-wrapper">
+  <div class="modal-wrapper" [ngClass]="{'big-modal-wrapper': isModaleGrande, 'small-modal-wrapper': !isModaleGrande}">
     <ng-container [ngTemplateOutlet]="template"></ng-container>
   </div>
 </div>
