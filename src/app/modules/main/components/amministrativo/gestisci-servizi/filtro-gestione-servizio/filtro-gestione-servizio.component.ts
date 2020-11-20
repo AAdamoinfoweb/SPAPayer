@@ -12,6 +12,7 @@ import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enu
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {TipologiaServizio} from '../../../../model/tipologiaServizio/TipologiaServizio';
 import {ConfiguraServizioService} from "../../../../../../services/configura-servizio.service";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-filtro-gestione-servizio',
