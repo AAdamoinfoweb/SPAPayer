@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <app-overlay *ngIf="mostraModale">
+  <app-overlay *ngIf="mostraModale" [isModaleGrande]="true">
     <ng-template>
       <ng-container *ngIf="datiPagamento">
         <app-nuovo-pagamento [filtroPagamento]="false" [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
@@ -7,7 +7,7 @@
       <ng-container *ngIf="datiModaleCampo">
         <app-modale-campo-form [datiModaleCampo]="datiModaleCampo"></app-modale-campo-form>
         <ng-container *ngIf="idFunzione">
-          <app-overlay>
+          <app-overlay [isModaleGrande]="false">
             <ng-template>
               <app-modale-aggiungi-tipo-campo [idFunzione]="idFunzione"></app-modale-aggiungi-tipo-campo>
             </ng-template>

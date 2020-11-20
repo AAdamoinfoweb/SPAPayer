@@ -1,55 +1,109 @@
-<div class="container">
+<form [formGroup]="form" class="modal-wrapper">
   <div class="row">
-    <form [formGroup]="form">
-      <div id="sezioneDati" class="collapse show">
-        <div class="page-section">
-          <div class="row">
-          </div>
-          <div class="row">
-            <div class="col-4">
-              <div class="row">
-                <label [htmlFor]="'nome'" class="title form-elem-title"
-                >Nome</label>
-              </div>
-              <div class="row">
-                <input id="nome"
-                       [formControl]="form.controls['nome']"
-                       [(ngModel)]="nome"
-                       type="text"
-                       autocomplete="off"
-                />
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="row">
-                <label [htmlFor]="'informazioni'" class="title form-elem-title"
-                >Informazioni</label>
-              </div>
-              <div class="row">
-                <input id="informazioni"
-                       [formControl]="form.controls['informazioni']"
-                       [(ngModel)]="informazioni"
-                       type="text"
-                       autocomplete="off"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-2">
-              <button type="button" id="bottoneIndietro" class="btn btn-secondary"
-                      (click)="clickIndietro()">Annulla
-              </button>
-            </div>
-            <div class="col-10 text-right button-space">
-              <button (click)="salvaTipoCampo()" type="button" class="btn"
-                      [disabled]="form.invalid">
-                Salva
-              </button>
-            </div>
-          </div>
-        </div>
+    <div class="offset-md-1 col-md-4">
+      <div class="row">
+        <label [htmlFor]="'nome'" class="title form-elem-title"
+        >Nome</label>
       </div>
-    </form>
+      <div class="row">
+        <input id="nome"
+               [formControl]="form.controls['nome']"
+               [(ngModel)]="nome"
+               type="text"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+    <div class="offset-md-2 col-md-4">
+      <div class="row">
+        <label [htmlFor]="'informazioni'" class="title form-elem-title"
+        >Informazioni</label>
+      </div>
+      <div class="row">
+        <input id="informazioni"
+               [formControl]="form.controls['informazioni']"
+               [(ngModel)]="informazioni"
+               type="text"
+               autocomplete="off"
+        />
+      </div>
+    </div>
   </div>
-</div>
+  <div class="row">
+    <div class="col-2">
+      <button type="button" id="bottoneIndietro" class="btn btn-secondary"
+              (click)="clickIndietro()">Annulla
+      </button>
+    </div>
+    <div class="col-10 text-right button-space">
+      <button (click)="salvaTipoCampo()" type="button" class="btn"
+              [disabled]="form.invalid">
+        Salva
+      </button>
+    </div>
+  </div>
+</form>
+
+
+
+
+
+
+
+
+
+<!--<div class="container">-->
+<!--  <div class="row">-->
+<!--    <form [formGroup]="form">-->
+<!--      <div id="sezioneDati" class="collapse show">-->
+<!--        <div class="page-section">-->
+<!--          <div class="row">-->
+<!--          </div>-->
+<!--          <div class="row">-->
+<!--            <div class="col-4">-->
+<!--              <div class="row">-->
+<!--                <label [htmlFor]="'nome'" class="title form-elem-title"-->
+<!--                >Nome</label>-->
+<!--              </div>-->
+<!--              <div class="row">-->
+<!--                <input id="nome"-->
+<!--                       [formControl]="form.controls['nome']"-->
+<!--                       [(ngModel)]="nome"-->
+<!--                       type="text"-->
+<!--                       autocomplete="off"-->
+<!--                />-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="col-4">-->
+<!--              <div class="row">-->
+<!--                <label [htmlFor]="'informazioni'" class="title form-elem-title"-->
+<!--                >Informazioni</label>-->
+<!--              </div>-->
+<!--              <div class="row">-->
+<!--                <input id="informazioni"-->
+<!--                       [formControl]="form.controls['informazioni']"-->
+<!--                       [(ngModel)]="informazioni"-->
+<!--                       type="text"-->
+<!--                       autocomplete="off"-->
+<!--                />-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="row">-->
+<!--            <div class="col-2">-->
+<!--              <button type="button" id="bottoneIndietro" class="btn btn-secondary"-->
+<!--                      (click)="clickIndietro()">Annulla-->
+<!--              </button>-->
+<!--            </div>-->
+<!--            <div class="col-10 text-right button-space">-->
+<!--              <button (click)="salvaTipoCampo()" type="button" class="btn"-->
+<!--                      [disabled]="form.invalid">-->
+<!--                Salva-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--  </div>-->
+<!--</div>-->

@@ -9,6 +9,9 @@ import {DatiPagamento} from '../../modules/main/model/bollettino/DatiPagamento';
 })
 export class OverlayComponent implements OnInit {
 
+  @Input()
+  isModaleGrande: boolean;
+
   @ContentChild(TemplateRef) template: TemplateRef<any>;
 
   constructor() { }
