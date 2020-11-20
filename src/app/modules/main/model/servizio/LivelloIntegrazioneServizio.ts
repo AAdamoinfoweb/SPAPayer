@@ -1,9 +1,10 @@
+import {FiltroUfficio} from "./FiltroUfficio";
+
 export class LivelloIntegrazioneServizio {
   livelloIntegrazioneId: number = null;
 
-  codiceEnte: number;
-  tipoUfficio: string;
-  codiceUfficio: string;
+  ufficio: FiltroUfficio = new FiltroUfficio();
+
   codiceIdServizio: number = null;
   numeroTentativiNotifica = 0;
   notificaUtente = false;

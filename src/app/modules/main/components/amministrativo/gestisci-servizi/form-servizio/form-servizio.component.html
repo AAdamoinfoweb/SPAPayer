@@ -225,7 +225,7 @@
                 <div class="col">
                   <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
                          [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
-                         #codiceEnte="ngModel" [(ngModel)]="integrazione.codiceEnte"
+                         #codiceEnte="ngModel" [(ngModel)]="integrazione.ufficio.codiceEnte"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -240,7 +240,7 @@
               <div class="row">
                 <div class="col">
                   <input id="tipoUfficio" name="tipoUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                         #tipoUfficio="ngModel" [(ngModel)]="integrazione.tipoUfficio"
+                         #tipoUfficio="ngModel" [(ngModel)]="integrazione.ufficio.tipoUfficio"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -255,7 +255,7 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceUfficio" name="codiceUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                         #codiceUfficio="ngModel" [(ngModel)]="integrazione.codiceUfficio"
+                         #codiceUfficio="ngModel" [(ngModel)]="integrazione.ufficio.codiceUfficio"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>

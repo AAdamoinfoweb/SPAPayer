@@ -34,7 +34,9 @@
 
     <div class="col-sm-12 col-md-4 form-elem-container">
       <div id="containerBottoneAggiungiTipoCampo">
-        <button class="btn" [disabled]="datiModaleCampo.funzione == FunzioneGestioneEnum.DETTAGLIO" (click)="addTipoCampo()">Aggiungi Tipo campo</button>
+        <button class="btn" [disabled]="datiModaleCampo.funzione == FunzioneGestioneEnum.DETTAGLIO"
+                (click)="addTipoCampo()">Aggiungi Tipo campo
+        </button>
       </div>
     </div>
 
@@ -131,8 +133,8 @@
         />
       </div>
     </div>
-    <div class="row" *ngIf="datiModaleCampo.livelloIntegrazione">
-      <div class="col-3">
+    <ng-container *ngIf="datiModaleCampo.livelloIntegrazione">
+      <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
         <div class="row">
           <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
           >Livello di Integrazione</label>
@@ -149,7 +151,7 @@
           </select>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
         <div class="row">
           <label [htmlFor]="'campo_input'" class="title form-elem-title"
           >Campo input</label>
@@ -165,7 +167,7 @@
           />
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
         <div class="row">
           <label [htmlFor]="'jsonPath'" class="title form-elem-title"
           >Json path</label>
@@ -173,16 +175,17 @@
         <div class="row">
           <select
             id="jsonPath"
-            [attr.disabled]="tipologiaServizio.livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
+            [attr.disabled]="datiModaleCampo.livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
             [formControl]="form.controls['jsonPath']"
-            [(ngModel)]="tipologiaServizio.campoForm.jsonPath">
+            [(ngModel)]="datiModaleCampo.campoForm['jsonPathId']">
             <option [ngValue]="null"></option>
             <option *ngFor="let item of listaJsonPathFiltrata"
                     [ngValue]="item.json_path">{{item.nome_attributo}}</option>
           </select>
         </div>
       </div>
-    <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
+    </ng-container>
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
       <div class="row">
         <label [htmlFor]="'tipologica'" class="title form-elem-title"
         >Tipologica</label>

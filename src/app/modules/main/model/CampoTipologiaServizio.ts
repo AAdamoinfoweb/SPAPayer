@@ -12,7 +12,6 @@ export class CampoTipologiaServizio {
   posizione: number;
   chiave: boolean;
   campoInput: boolean;
-  jsonPathId: string;
   tipologica: string;
   dipendeDa: DipendeDa;
   controlloLogicoId: string;

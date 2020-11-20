@@ -53,6 +53,7 @@ import {FiltroUfficio} from "../../../../model/servizio/FiltroUfficio";
 import {Contatti} from "../../../../model/servizio/Contatti";
 import {Servizio} from "../../../../model/servizio/Servizio";
 import {FlussoRiversamentoPagoPA} from "../../../../model/servizio/FlussoRiversamentoPagoPA";
+import {FlussiNotifiche} from "../../../../model/servizio/FlussiNotifiche";
 
 @Component({
   selector: 'app-form-servizio',
@@ -243,12 +244,40 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onClickSalva(): void {
+    let emails: string[] = [];
+    this.emailsControl.forEach((control) => {
+      if (control.value)
+        emails.push(control.value);
+    });
+
+    let campoServizios: CampoServizio[] = this.campoTipologiaServizioList.filter((value => !value.id || value.campoTipologiaServizioId));
+
+    let flussiNotifiche = new FlussiNotifiche();
+    flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
+    flussiNotifiche.flussoRiversamentoPagoPa = this.rendicontazioneFlussoPA;
+    flussiNotifiche.notifichePagamento.email = emails.join(';');
+    this.servizio.flussiNotifiche = flussiNotifiche;
+
+    this.servizio.tipologiaServizioId = this.filtri.tipologiaServizio.id;
+    this.servizio.raggruppamentoId = this.filtri.raggruppamentoId;
+    this.servizio.nomeServizio = this.filtri.nomeServizio;
+    this.servizio.abilitaDa = this.filtri.abilitaDa;
+    this.servizio.abilitaA = this.filtri.abilitaA;
+    this.servizio.flagAttiva = this.filtri.attivo;
+
+    this.servizio.contatti  = this.contatti;
+    this.servizio.integrazione  = this.integrazione;
+    this.servizio.impositore  = this.impositore;
+    this.servizio.beneficiario  = this.beneficiario;
+    this.servizio.listaContiCorrenti = this.listaContiCorrente;
+    this.servizio.listaCampiServizio = campoServizios;
+
+
   }
 
   onChangeFiltri(event: ParametriRicercaServizio) {
     this.filtri = event;
     // this.aggiungiContoCorrente();
-
   }
 
   cambiaLivelloIntegrazione(event: any) {

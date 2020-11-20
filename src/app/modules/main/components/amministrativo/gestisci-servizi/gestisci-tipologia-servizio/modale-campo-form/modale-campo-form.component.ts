@@ -1,12 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {CampoForm} from "../../../../../model/CampoForm";
-import {OverlayService} from "../../../../../../../services/overlay.service";
-import {FunzioneGestioneEnum} from "../../../../../../../enums/funzioneGestione.enum";
-import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegrazione.enum";
-import {AmministrativoService} from "../../../../../../../services/amministrativo.service";
-import {CampoTipologiaServizio} from "../../../../../model/CampoTipologiaServizio";
-import {CampoServizio} from "../../../../../model/servizio/CampoServizio";
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {OverlayService} from '../../../../../../../services/overlay.service';
+import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
+import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
+import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
+import {CampoTipologiaServizio} from '../../../../../model/CampoTipologiaServizio';
+import {CampoServizio} from '../../../../../model/servizio/CampoServizio';
 
 export interface DatiModaleCampo {
   listaDipendeDa: any[];
@@ -77,17 +76,22 @@ export class ModaleCampoFormComponent implements OnInit {
       this.datiModaleCampo.listaDipendeDa.find((value => this.datiModaleCampo.campoForm.dipendeDa &&
         value.titolo == this.datiModaleCampo.campoForm.dipendeDa.titolo));
 
-    if (!this.datiModaleCampo.livelloIntegrazione)
+    if (!this.datiModaleCampo.livelloIntegrazione) {
       this.datiModaleCampo.livelloIntegrazione = LivelloIntegrazioneEnum.LV2;
+    }
 
-    if (this.datiModaleCampo.funzione === FunzioneGestioneEnum.DETTAGLIO)
+    if (this.datiModaleCampo.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       this.form.disable();
-    else
+    }
+    else {
       this.form.enable();
+    }
 
     if (this.datiModaleCampo.livelloIntegrazione === LivelloIntegrazioneEnum.LV2) {
       this.datiModaleCampo.campoForm.campoInput = true;
-      this.datiModaleCampo.campoForm.jsonPathId = null;
+      if (this.datiModaleCampo.campoForm instanceof CampoServizio) {
+        this.datiModaleCampo.campoForm.jsonPathId = null;
+      }
     }
   }
 
@@ -98,7 +102,9 @@ export class ModaleCampoFormComponent implements OnInit {
   cambiaLivelloIntegrazione(item: CampoTipologiaServizio, event: LivelloIntegrazioneEnum) {
     if (event === LivelloIntegrazioneEnum.LV2) {
       this.datiModaleCampo.campoForm.campoInput = true;
-      this.datiModaleCampo.campoForm.jsonPathId = null;
+      if (this.datiModaleCampo.campoForm instanceof CampoServizio) {
+        this.datiModaleCampo.campoForm.jsonPathId = null;
+      }
     }
     this.listaJsonPathFiltrata = this.listaJsonPath.filter(value => {
       return value.livello_integrazione_id === event && value.campo_input === item.campoInput;
@@ -114,7 +120,7 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   clickChiave(event: any) {
-    this.datiModaleCampo.campoForm.obbligatorio = event.target.value == "on";
+    this.datiModaleCampo.campoForm.obbligatorio = event.target.value == 'on';
   }
 
   addTipoCampo() {
