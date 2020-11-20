@@ -42,21 +42,21 @@ import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {ConfiguratoreCampiNuovoPagamento} from '../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 import {ContoCorrente} from '../../../../model/ente/ContoCorrente';
 import {DatiContoCorrenteComponent} from '../../anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component';
-import {ContoCorrenteSingolo} from '../../../../model/ente/ContoCorrenteSingolo';
+
 import {Beneficiario} from '../../../../model/ente/Beneficiario';
-import {BeneficiarioSingolo} from '../../../../model/ente/BeneficiarioSingolo';
 import {ConfiguraServizioService} from '../../../../../../services/configura-servizio.service';
-import {RendicontazioneGiornaliera} from "../../../../model/servizio/RendicontazioneGiornaliera";
-import {CampoServizio} from "../../../../model/servizio/CampoServizio";
-import {FiltroSelect} from "../../../../model/servizio/FiltroSelect";
-import {ImpositoreServizio} from "../../../../model/servizio/ImpositoreServizio";
-import {LivelloIntegrazioneServizio} from "../../../../model/servizio/LivelloIntegrazioneServizio";
-import {BeneficiarioServizio} from "../../../../model/servizio/BeneficiarioServizio";
-import {FiltroUfficio} from "../../../../model/servizio/FiltroUfficio";
-import {Contatti} from "../../../../model/servizio/Contatti";
-import {Servizio} from "../../../../model/servizio/Servizio";
-import {FlussoRiversamentoPagoPA} from "../../../../model/servizio/FlussoRiversamentoPagoPA";
-import {FlussiNotifiche} from "../../../../model/servizio/FlussiNotifiche";
+import {RendicontazioneGiornaliera} from '../../../../model/servizio/RendicontazioneGiornaliera';
+import {CampoServizio} from '../../../../model/servizio/CampoServizio';
+import {FiltroSelect} from '../../../../model/servizio/FiltroSelect';
+import {ImpositoreServizio} from '../../../../model/servizio/ImpositoreServizio';
+import {LivelloIntegrazioneServizio} from '../../../../model/servizio/LivelloIntegrazioneServizio';
+import {BeneficiarioServizio} from '../../../../model/servizio/BeneficiarioServizio';
+import {FiltroUfficio} from '../../../../model/servizio/FiltroUfficio';
+import {Contatti} from '../../../../model/servizio/Contatti';
+import {Servizio} from '../../../../model/servizio/Servizio';
+import {FlussoRiversamentoPagoPA} from '../../../../model/servizio/FlussoRiversamentoPagoPA';
+import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
+import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
 
 @Component({
   selector: 'app-form-servizio',
@@ -128,7 +128,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   @Input() datiBeneficiario: Beneficiario;
   @Input() listaContiCorrente: ContoCorrente[];
   @Output()
-  onChangeDatiBeneficiario: EventEmitter<BeneficiarioSingolo> = new EventEmitter<BeneficiarioSingolo>();
+  onChangeDatiBeneficiario: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   onDeleteDatiBeneficiario: EventEmitter<any> = new EventEmitter<any>();
 
@@ -262,17 +262,18 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onClickSalva(): void {
-    let emails: string[] = [];
+    const emails: string[] = [];
     this.emailsControl.forEach((control) => {
-      if (control.value)
+      if (control.value) {
         emails.push(control.value);
+      }
     });
 
-    let campoServizios: CampoServizio[] = this.campoServizioAddList
+    const campoServizios: CampoServizio[] = this.campoServizioAddList
       .filter((value => !value.id || value.campoTipologiaServizioId))
       .map(value => value.id = null);
 
-    let flussiNotifiche = new FlussiNotifiche();
+    const flussiNotifiche = new FlussiNotifiche();
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
     flussiNotifiche.flussoRiversamentoPagoPa = this.rendicontazioneFlussoPA;
     flussiNotifiche.notifichePagamento.email = emails.join(';');
@@ -472,18 +473,14 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.target.remove(index - 1);
       this.setListaContiCorrente();
     });
-    this.componentRef.instance.onChangeDatiContoCorrente.subscribe((currentContoCorrente: ContoCorrenteSingolo) => {
-      this.mapContoCorrente.set(currentContoCorrente.index, currentContoCorrente.contoCorrente);
-      this.mapControllo.set(currentContoCorrente.index, currentContoCorrente.isFormValid);
-      this.setListaContiCorrente();
-    });
+
     this.componentRef.changeDetectorRef.detectChanges();
     return indexContoCorrente;
   }
 
   private setListaContiCorrente() {
     const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
-    //this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
+    // this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
     // this.onChangeDatiBeneficiario.emit(this.setBeneficiarioSingolo(this.controlloForm()));
   }
 
