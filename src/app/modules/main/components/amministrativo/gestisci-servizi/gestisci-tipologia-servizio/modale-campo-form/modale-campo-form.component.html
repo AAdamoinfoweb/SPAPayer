@@ -131,7 +131,57 @@
         />
       </div>
     </div>
-
+    <div class="row" *ngIf="datiModaleCampo.livelloIntegrazione">
+      <div class="col-3">
+        <div class="row">
+          <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
+          >Livello di Integrazione</label>
+        </div>
+        <div class="row">
+          <select
+            id="livelloIntegrazione"
+            [formControl]="form.controls['livelloIntegrazione']"
+            [(ngModel)]="datiModaleCampo.livelloIntegrazione"
+            (ngModelChange)="cambiaLivelloIntegrazione(datiModaleCampo.campoForm, $event)">
+            <option [ngValue]="livelloIntegrazioneEnum.LV2">Livello 2</option>
+            <option [ngValue]="livelloIntegrazioneEnum.LV2_BACK_OFFICE">Livello 2 BO</option>
+            <option [ngValue]="livelloIntegrazioneEnum.LV3">Livello 3</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="row">
+          <label [htmlFor]="'campo_input'" class="title form-elem-title"
+          >Campo input</label>
+        </div>
+        <div class="row">
+          <input id="campo_input"
+                 [formControl]="form.controls['campo_input']"
+                 [(ngModel)]="datiModaleCampo.campoForm.campoInput"
+                 [attr.disabled]="datiModaleCampo.livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
+                 (ngModelChange)="cambiaLivelloIntegrazione(datiModaleCampo.campoForm, datiModaleCampo.livelloIntegrazione)"
+                 type="checkbox"
+                 autocomplete="off"
+          />
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="row">
+          <label [htmlFor]="'jsonPath'" class="title form-elem-title"
+          >Json path</label>
+        </div>
+        <div class="row">
+          <select
+            id="jsonPath"
+            [attr.disabled]="tipologiaServizio.livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
+            [formControl]="form.controls['jsonPath']"
+            [(ngModel)]="tipologiaServizio.campoForm.jsonPath">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let item of listaJsonPathFiltrata"
+                    [ngValue]="item.json_path">{{item.nome_attributo}}</option>
+          </select>
+        </div>
+      </div>
     <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
       <div class="row">
         <label [htmlFor]="'tipologica'" class="title form-elem-title"

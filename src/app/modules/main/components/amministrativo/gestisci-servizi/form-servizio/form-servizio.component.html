@@ -85,7 +85,7 @@
             <div class="row">
               <div class="col">
                 <input id="tel" name="tel" type="text" class="input-text pt-0" autocomplete="off"
-                       #tel="ngModel" [(ngModel)]="contatti.tel" [disabled]="disabilitaCampi()">
+                       #tel="ngModel" [(ngModel)]="contatti.telefono" [disabled]="disabilitaCampi()">
               </div>
             </div>
             <div class="row">
@@ -129,7 +129,7 @@
             <div class="row">
               <div class="col">
                 <input id="reperibile" name="reperibile" type="text" class="input-text pt-0" autocomplete="off"
-                       #reperibile="ngModel" [(ngModel)]="contatti.reperibile" [disabled]="disabilitaCampi()">
+                       #reperibile="ngModel" [(ngModel)]="contatti.reperibilita" [disabled]="disabilitaCampi()">
               </div>
             </div>
             <div class="row">
@@ -199,7 +199,7 @@
                   <input id="urlWsBO" name="urlWsBO" type="text" class="input-text pt-0" autocomplete="off"
                          [customvalidator]="validateUrl()"
                          [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE"
-                         #urlWsBO="ngModel" [(ngModel)]="integrazione.urlWsBO"
+                         #urlWsBO="ngModel" [(ngModel)]="integrazione.urlWebServiceBackoffice"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
@@ -337,7 +337,7 @@
               <div class="row">
                 <div class="col">
                   <select id="portaleEsterno" name="portaleEsterno"
-                          #portaleEsterno="ngModel" [(ngModel)]="integrazione.portaleEsterno"
+                          #portaleEsterno="ngModel" [(ngModel)]="integrazione.portaleEsternoId"
                           [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
                           [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
                     <option [ngValue]="null" [selected]="true">Seleziona</option>
@@ -652,7 +652,7 @@
                 <div style="min-height: 5vh;"
                      [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
                'field-input': (item.campoInput && !item.disabilitato)}"
-                     [cdkDragDisabled]="true" cdkDrag>
+                     [cdkDragDisabled]="!item.draggable" cdkDrag>
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
                     <div (click)="showModal(item)" class="col-7 text-right">{{item.titolo}}</div>

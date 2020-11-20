@@ -6,11 +6,12 @@ import {FunzioneGestioneEnum} from "../../../../../../../enums/funzioneGestione.
 import {LivelloIntegrazioneEnum} from "../../../../../../../enums/livelloIntegrazione.enum";
 import {AmministrativoService} from "../../../../../../../services/amministrativo.service";
 import {CampoTipologiaServizio} from "../../../../../model/CampoTipologiaServizio";
+import {CampoServizio} from "../../../../../model/servizio/CampoServizio";
 
 export interface DatiModaleCampo {
   listaDipendeDa: any[];
   livelloIntegrazione: LivelloIntegrazioneEnum;
-  campoForm: CampoTipologiaServizio;
+  campoForm: CampoTipologiaServizio | CampoServizio;
   funzione: FunzioneGestioneEnum;
   idFunzione: number;
 }
