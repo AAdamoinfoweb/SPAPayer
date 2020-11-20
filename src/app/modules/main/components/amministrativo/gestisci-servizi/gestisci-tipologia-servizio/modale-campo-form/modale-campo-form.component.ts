@@ -13,6 +13,7 @@ import {ControlloLogico} from '../../../../../model/ControlloLogico';
 import {ConfigurazioneCampoDettaglioTransazione} from '../../../../../model/campo/ConfigurazioneCampoDettaglioTransazione';
 import {Utils} from '../../../../../../../utils/Utils';
 import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
+import * as _ from 'lodash';
 
 export interface DatiModaleCampo {
   listaDipendeDa: any[];
@@ -85,8 +86,8 @@ export class ModaleCampoFormComponent implements OnInit {
     this.listaJsonPath = JSON.parse(localStorage.getItem('listaJsonPath'));
     Utils.ordinaArrayDiOggetti(this.listaJsonPath, 'nome_attributo');
     this.listaTipiCampo = JSON.parse(localStorage.getItem('listaTipiCampo'));
-    Utils.ordinaArrayDiOggetti(this.listaTipiCampo, 'nome');
-  };
+    this.listaTipiCampo = _.sortBy(this.listaTipiCampo, ['nome', 'informazioni']);
+  }
 
   ngOnInit(): void {
     this.datiModaleCampo.listaDipendeDa =
