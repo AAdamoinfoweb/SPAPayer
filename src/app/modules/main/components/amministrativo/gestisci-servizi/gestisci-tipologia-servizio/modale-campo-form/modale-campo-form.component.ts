@@ -12,6 +12,7 @@ import {ConfigurazioneTipologica} from '../../../../../model/campo/Configurazion
 import {ControlloLogico} from '../../../../../model/ControlloLogico';
 import {ConfigurazioneCampoDettaglioTransazione} from '../../../../../model/campo/ConfigurazioneCampoDettaglioTransazione';
 import {Utils} from '../../../../../../../utils/Utils';
+import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
 
 export interface DatiModaleCampo {
   listaDipendeDa: any[];
@@ -45,7 +46,7 @@ export class ModaleCampoFormComponent implements OnInit {
 
   livelloIntegrazioneEnum = LivelloIntegrazioneEnum;
 
-  constructor(private overlayService: OverlayService, private amministrativoService: AmministrativoService) {
+  constructor(private overlayService: OverlayService, private amministrativoService: AmministrativoService, private campoTipologiaServizioService: CampoTipologiaServizioService) {
     this.leggiConfigurazioneCampi();
 
     this.form = new FormGroup({
@@ -67,6 +68,10 @@ export class ModaleCampoFormComponent implements OnInit {
       campoDettaglioTransazione: new FormControl(null),
       dipendeDa: new FormControl(null),
       opzioni: new FormControl(null)
+    });
+
+    this.campoTipologiaServizioService.aggiornaConfigurazioneCampiEvent.subscribe(() => {
+      this.leggiConfigurazioneCampi();
     });
   }
 

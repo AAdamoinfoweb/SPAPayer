@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from "rxjs";
 import {CampoForm} from "../modules/main/model/CampoForm";
@@ -25,6 +25,8 @@ export class CampoTipologiaServizioService {
 
   constructor(private http: HttpClient) {
   }
+
+  aggiornaConfigurazioneCampiEvent = new EventEmitter();
 
   recuperaDettaglioTipologiaServizio(idTipologiaServizio: number, idFunzione): Observable<TipologiaServizio> {
     let h: HttpHeaders = new HttpHeaders();
