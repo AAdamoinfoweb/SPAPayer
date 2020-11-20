@@ -138,17 +138,25 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     let obs = of(null);
     if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       this.tipologiaServizioId = parseInt(this.activatedRoute.snapshot.paramMap.get('tipologiaServizioId'));
-
-      this.campoTipologiaServizioService.recuperaDettaglioTipologiaServizio(this.tipologiaServizioId, this.idFunzione).subscribe(tipologiaServizio => {
-        this.filtro = new ParametriRicercaTipologiaServizio();
-        this.filtro.raggruppamentoId = tipologiaServizio.raggruppamentoId;
-
-        this.codiceTipologia = tipologiaServizio.codice;
-        this.nomeTipologia = tipologiaServizio.descrizione;
-      });
+      this.impostaDettaglioTipologia();
 
       obs = this.caricaCampi(this.tipologiaServizioId);
     }
+
+    this.impostaConfigurazioneCampi(obs);
+  }
+
+  impostaDettaglioTipologia(): void {
+    this.campoTipologiaServizioService.recuperaDettaglioTipologiaServizio(this.tipologiaServizioId, this.idFunzione).subscribe(tipologiaServizio => {
+      this.filtro = new ParametriRicercaTipologiaServizio();
+      this.filtro.raggruppamentoId = tipologiaServizio.raggruppamentoId;
+
+      this.codiceTipologia = tipologiaServizio.codice;
+      this.nomeTipologia = tipologiaServizio.descrizione;
+    });
+  }
+
+  impostaConfigurazioneCampi(observableIniziale = of(null)): void {
     let observable: Observable<number> = this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
         localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
@@ -163,7 +171,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
           this.tipoCampoIdSelect = filter[0].id;
 
         localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
-      })).pipe(flatMap(() => obs));
+      })).pipe(flatMap(() => observableIniziale));
     observable.subscribe();
   }
 
@@ -218,32 +226,10 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       modificaTipologiaServizio.listaCampiTipologiaServizio = this.items;
       this.campoTipologiaServizioService.modificaTipologiaServizio(this.tipologiaServizioId, modificaTipologiaServizio, this.idFunzione)
         .subscribe(() => {
-          this.campoTipologiaServizioService.recuperaDettaglioTipologiaServizio(this.tipologiaServizioId, this.idFunzione)
-            .subscribe(tipologiaServizio => {
-              this.filtro = new ParametriRicercaTipologiaServizio();
-              this.filtro.raggruppamentoId = tipologiaServizio.raggruppamentoId;
-
-              this.codiceTipologia = tipologiaServizio.codice;
-              this.nomeTipologia = tipologiaServizio.descrizione;
-            });
+          this.impostaDettaglioTipologia();
 
           let obs = this.caricaCampi(this.tipologiaServizioId);
-          let observable: Observable<number> = this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
-            .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
-              localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
-              localStorage.setItem('listaControlliLogici', JSON.stringify(configuratore.listaControlliLogici));
-              localStorage.setItem('listaTipologiche', JSON.stringify(configuratore.listaTipologiche));
-              localStorage.setItem('listaJsonPath', JSON.stringify(configuratore.listaJsonPath));
-
-              this.listaTipiCampo = configuratore.listaTipiCampo;
-
-              let filter = configuratore.listaTipiCampo.filter((tc => tc.nome === TipoCampoEnum.SELECT));
-              if (filter && filter.length > 0)
-                this.tipoCampoIdSelect = filter[0].id;
-
-              localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
-            })).pipe(flatMap(() => obs));
-          observable.subscribe();
+          this.impostaConfigurazioneCampi(obs);
         });
     }
   }

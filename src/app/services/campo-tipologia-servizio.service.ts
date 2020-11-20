@@ -11,6 +11,7 @@ import {ConfiguratoreCampiNuovoPagamento} from '../modules/main/model/campo/Conf
 import {InserimentoTipologiaServizio} from "../modules/main/model/campo/InserimentoTipologiaServizio";
 import {ModificaTipologiaServizio} from "../modules/main/model/campo/ModificaTipologiaServizio";
 import {ParametriRicercaServizio} from '../modules/main/model/servizio/ParametriRicercaServizio';
+import {InserimentoTipoCampo} from '../modules/main/model/campo/InserimentoTipoCampo';
 
 @Injectable({
   providedIn: 'root'
@@ -158,11 +159,11 @@ export class CampoTipologiaServizioService {
       }));
   }
 
-  inserimentoTipoCampo(body, idFunzione) {
+  inserimentoTipoCampo(inserimentoTipoCampo: InserimentoTipoCampo, idFunzione) {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     return this.http.post(environment.bffBaseUrl + this.baseUrl +
-      this.inserimentoTipoCampoUrl, body, {
+      this.inserimentoTipoCampoUrl, inserimentoTipoCampo, {
       withCredentials: true,
       headers: h
     }).pipe(map(() => {
