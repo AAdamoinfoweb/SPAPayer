@@ -10,7 +10,6 @@ import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Utils} from '../../../../../../utils/Utils';
 import * as moment from 'moment';
 import {HttpClient} from '@angular/common/http';
-import {OperazioneEsitoEnum} from '../../../../../../enums/operazioneEsito.enum';
 
 @Component({
   selector: 'app-dettaglio-banner',
