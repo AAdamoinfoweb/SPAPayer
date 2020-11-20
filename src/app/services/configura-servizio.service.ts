@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {RaggruppamentoTipologiaServizio} from '../modules/main/model/RaggruppamentoTipologiaServizio';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaEnte} from "../modules/main/model/ente/ParametriRicercaEnte";
+import {FiltroSelect} from '../modules/main/model/servizio/FiltroSelect';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class ConfiguraServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
-          return body as RaggruppamentoTipologiaServizio[];
+          return body as FiltroSelect[];
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
@@ -53,7 +53,7 @@ export class ConfiguraServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
-          return body as RaggruppamentoTipologiaServizio[];
+          return body as FiltroSelect[];
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
@@ -93,7 +93,7 @@ export class ConfiguraServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
-          return body as RaggruppamentoTipologiaServizio[];
+          return body as FiltroSelect[];
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
@@ -117,7 +117,7 @@ export class ConfiguraServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
-          return body as RaggruppamentoTipologiaServizio[];
+          return body as FiltroSelect[];
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
@@ -137,7 +137,7 @@ export class ConfiguraServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
-          return body as RaggruppamentoTipologiaServizio[];
+          return body as FiltroSelect[];
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
