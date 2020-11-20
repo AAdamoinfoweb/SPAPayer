@@ -70,7 +70,7 @@ export class EnteService {
       }));
   }
 
-  eliminaEnti(listaEntiId: Array<number>, idFunzione: string): Observable<EsitoInserimentoModificaEnte> {
+  eliminaEnti(listaEntiId: Array<number>, idFunzione: string): Observable<EsitoInserimentoModificaEnte | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.eliminaEntiUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -81,7 +81,14 @@ export class EnteService {
         headers: h
       }).pipe(map((body: EsitoInserimentoModificaEnte) => {
       return body;
-    }));
+    }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(err);
+        } else {
+          return of(err);
+        }
+      }));
   }
 
   inserimentoEnte(ente: EnteCompleto, idFunzione: string): Observable<EsitoInserimentoModificaEnte | HttpErrorResponse> {
