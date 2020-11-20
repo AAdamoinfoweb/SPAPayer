@@ -17,7 +17,6 @@ import {AsyncSubject} from 'rxjs';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../utils/Utils';
 import {PermessoCompleto} from '../../../../model/permesso/PermessoCompleto';
-import {PermessoSingolo} from '../../../../model/permesso/PermessoSingolo';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {PermessoService} from '../../../../../../services/permesso.service';
 import {PermessoFunzione} from '../../../../model/permesso/PermessoFunzione';
@@ -31,8 +30,8 @@ import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enu
 import {HttpClient} from '@angular/common/http';
 import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaUtente';
 import {map} from 'rxjs/operators';
-import {OperazioneEsitoEnum} from "../../../../../../enums/operazioneEsito.enum";
-import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
+import {OperazioneEsitoEnum} from '../../../../../../enums/operazioneEsito.enum';
+import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
