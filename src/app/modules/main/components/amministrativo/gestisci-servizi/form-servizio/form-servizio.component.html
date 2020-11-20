@@ -326,6 +326,26 @@
                 </div>
               </div>
             </div>
+            <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label [htmlFor]="'portaleEsterno'" class="title form-elem-title"
+                         [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1 || funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+                  Portale esterno</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <select id="portaleEsterno" name="portaleEsterno"
+                          #portaleEsterno="ngModel" [(ngModel)]="integrazione.portaleEsterno"
+                          [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
+                          [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                    <option [ngValue]="null" [selected]="true">Seleziona</option>
+                    <option *ngFor="let item of listaPortaleEsterno" [ngValue]="item.id">{{item.nome}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </ng-container>
         </div>
       </div>
@@ -378,6 +398,7 @@
                   id="livelloTerritorialeId"
                   name="livelloTerritorialeId"
                   #livelloTerritorialeId="ngModel"
+                  [required]="true"
                   [(ngModel)]="impositore.livelloTerritorialeId"
                   [disabled]="!impositore.societaId"
                   (ngModelChange)="onChangeLivelloTerritorialeImpositore(societaInput, livelloTerritorialeId)"
@@ -672,7 +693,7 @@
               <div class="row">
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.ftpEnabled)"
+                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.emailEnabled)"
                          #emailGiornalieraId="ngModel"
                          id="emailGiornalieraId"
                          name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
@@ -941,6 +962,54 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="collapse-header" id="idCollapseNotifiche">
+          <button data-toggle="collapse" data-target="#notifiche" aria-expanded="true"
+                  aria-controls="notifiche">
+            Invio notifiche di pagamento
+          </button>
+        </div>
+        <div id="notifiche" class="collapse show" role="tabpanel" aria-labelledby="idCollapseNotifiche">
+          <div class="row mt-2 mb-0">
+            <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
+              <div class="row">
+                <div class="col">
+                  <label class="title">Email</label>
+                </div>
+              </div>
+              <div class="row" *ngFor="let item of emailsControl; let i = index">
+                  <div class="col-12">
+                    <input [formControl]="item" type="text" autocomplete="off" [customvalidator]="validateEmail()">
+                    <span *ngIf="i != emailsControl.length -1" class="pointer bottone-campo">
+                      <span ngbTooltip="rimuovi" placement="bottom"
+                            [ngStyle]="{fill: '#403d39'}">
+                        <svg (click)="removeEmail()" class="bg-light icon icon-sm filled">
+                          <use xlink:href="assets/img/sprite.svg#it-minus"></use>
+                        </svg>
+                      </span>
+                    </span>
+                    <span *ngIf="i == emailsControl.length -1" class="pointer bottone-campo">
+                      <span ngbTooltip="Aggiungi email" placement="bottom"
+                            [ngStyle]="{fill: '#403d39'}">
+                        <svg (click)="addEmail()" class="bg-light icon icon-sm filled">
+                          <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                         [ngClass]="{'text-muted': !isCampoInvalido(item),
+                       'text-invalid': isCampoInvalido(item)}">
+                        {{setPlaceholder(item, TipoCampoEnum.INPUT_TESTUALE)}}
+                      </p>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
