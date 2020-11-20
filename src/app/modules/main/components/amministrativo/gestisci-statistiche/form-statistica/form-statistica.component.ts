@@ -4,12 +4,10 @@ import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enu
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {ConfirmationService} from 'primeng/api';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Statistica} from '../../../../model/statistica/Statistica';
-import {Schedulazione} from '../../../../model/schedulazione/Schedulazione';
 import {StatisticaService} from '../../../../../../services/statistica.service';
-import {Tabella} from '../../../../model/tabella/Tabella';
 import {Utils} from '../../../../../../utils/Utils';
 import {Banner} from '../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
@@ -131,19 +129,20 @@ export class FormStatisticaComponent extends FormElementoParentComponent impleme
   }
 
   private inserimentoStatistica(statistica: Statistica) {
-    this.statisticaService.inserimentoStatistica(statistica, this.idFunzione).subscribe((statisticaId) =>
-      this.configuraRouterAndNavigate('/aggiungiStatistica/'));
+    this.statisticaService.inserimentoStatistica(statistica, this.idFunzione).subscribe((statisticaId) => {
+      if (statisticaId != null) {
+        this.datiStatistica = new Statistica();
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+      }
+    });
   }
 
   private modificaStatistica(statistica: Statistica) {
-    this.statisticaService.modificaStatistica(statistica, this.idFunzione).subscribe((statisticaId) =>
-      this.configuraRouterAndNavigate('/modificaStatistica/' + statisticaId));
-  }
-
-  private configuraRouterAndNavigate(pathFunzione: string) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate([this.basePath + pathFunzione]);
+    this.statisticaService.modificaStatistica(statistica, this.idFunzione).subscribe((response) => {
+      if (!(response instanceof HttpErrorResponse)) {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+      }
+    });
   }
 
   disabilitaBottone(): boolean {

@@ -4,17 +4,14 @@ import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enu
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {ConfirmationService} from 'primeng/api';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
-import {Statistica} from '../../../../model/statistica/Statistica';
-import {StatisticaService} from '../../../../../../services/statistica.service';
 import {Utils} from '../../../../../../utils/Utils';
 import {BannerService} from '../../../../../../services/banner.service';
 import * as moment from 'moment';
-import {AttivitaPianificata} from "../../../../model/attivitapianificata/AttivitaPianificata";
-import {AttivitaPianificataService} from "../../../../../../services/attivita-pianificata.service";
-import {ParametroAttivitaPianificata} from "../../../../model/attivitapianificata/ParametroAttivitaPianificata";
-import {parseArguments} from "@angular/cli/models/parser";
+import {AttivitaPianificata} from '../../../../model/attivitapianificata/AttivitaPianificata';
+import {AttivitaPianificataService} from '../../../../../../services/attivita-pianificata.service';
+import {ParametroAttivitaPianificata} from '../../../../model/attivitapianificata/ParametroAttivitaPianificata';
 
 @Component({
   selector: 'app-form-attivita-pianificate',
@@ -129,19 +126,20 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
   }
 
   private inserimentoAttivitaPianificata(attivitaPianificata: AttivitaPianificata) {
-    this.attivitaPianificataService.inserimentoAttivitaPianificata(attivitaPianificata, this.idFunzione).subscribe((attivitaPianificataId) =>
-      this.configuraRouterAndNavigate('/aggiungiAttivitaPianificata/'));
+    this.attivitaPianificataService.inserimentoAttivitaPianificata(attivitaPianificata, this.idFunzione).subscribe((attivitaPianificataId) => {
+      if (attivitaPianificataId != null) {
+        this.datiAttivitaPianificata = new AttivitaPianificata();
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+      }
+    });
   }
 
   private modificaAttivitaPianificata(attivitaPianificata: AttivitaPianificata) {
-    this.attivitaPianificataService.modificaAttivitaPianificata(attivitaPianificata, this.idFunzione).subscribe((attivitaPianificataId) =>
-      this.configuraRouterAndNavigate('/modificaAttivitaPianificata/' + attivitaPianificataId));
-  }
-
-  private configuraRouterAndNavigate(pathFunzione: string) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate([this.basePath + pathFunzione]);
+    this.attivitaPianificataService.modificaAttivitaPianificata(attivitaPianificata, this.idFunzione).subscribe((response) => {
+      if (!(response instanceof HttpErrorResponse)) {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+      }
+    });
   }
 
   disabilitaBottone(): boolean {
