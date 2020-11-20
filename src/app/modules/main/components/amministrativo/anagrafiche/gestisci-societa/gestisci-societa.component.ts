@@ -1,12 +1,9 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
 import 'jspdf-autotable';
-import {Breadcrumb} from '../../../../dto/Breadcrumb';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
-import {OverlayService} from '../../../../../../services/overlay.service';
-import {AmministrativoParentComponent} from '../../amministrativo-parent.component';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
@@ -14,12 +11,13 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {Utils} from '../../../../../../utils/Utils';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {MenuService} from '../../../../../../services/menu.service';
-import {GestisciElementoComponent} from "../../gestisci-elemento.component";
+import {GestisciElementoComponent} from '../../gestisci-elemento.component';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {Observable} from 'rxjs';
+import {BannerService} from '../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -71,7 +69,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private societaService: SocietaService, private el: ElementRef,
               private menuService: MenuService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService, private bannerService: BannerService
               ) {
     super(router, route, http, amministrativoService);
   }
@@ -156,6 +154,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
       Utils.getModale(() => {
           this.societaService.eliminazioneSocieta(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;
