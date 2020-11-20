@@ -28,9 +28,9 @@ import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazio
 import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
-import {map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {EnteService} from '../../../../../../services/ente.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte';
 import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
 import {v4 as uuidv4} from 'uuid';
@@ -370,6 +370,13 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (!enteInput.value) {
       this.beneficiario.ufficio = null;
     } else {
+      this.enteService.recuperaContiCorrenti(enteInput.value, this.idFunzione)
+        .subscribe((value) => {
+          this.componentRef.instance.listaContiCorrente = _.cloneDeep(value);
+        }, catchError(() => {
+          this.componentRef.instance.listaContiCorrente = [];
+          return of(null);
+        }));
       return this.configuraServizioService.configuraServiziFiltroUfficio(enteInput.value, this.idFunzione)
         .pipe(map((value) => this.listaUfficio = value)).subscribe();
     }
@@ -441,10 +448,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.componentRef.instance.uuid = Utils.uuidv4();
     this.componentRef.instance.indexDatiContoCorrente = indexContoCorrente;
     this.componentRef.instance.funzione = this.funzione;
-    this.enteService.recuperaContiCorrenti(this.beneficiario.enteId, this.idFunzione)
-      .subscribe((value) => {
-        this.componentRef.instance.listaContiCorrenti = value;
-      });
     let instanceContoCorrente: ContoCorrente;
     if (datiContoCorrente == null) {
       instanceContoCorrente = new ContoCorrente();
