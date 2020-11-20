@@ -29,6 +29,7 @@ import {Utils} from "../../../../../utils/Utils";
 import {TipoModaleEnum} from "../../../../../enums/tipoModale.enum";
 import {ConfirmationService} from "primeng/api";
 import * as moment from "moment";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -484,7 +485,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   impostaCampi(campi: Array<CampoForm>, isTipologiaServizio: boolean = null): void {
-    Utils.ordinaArrayDiOggetti(campi, 'posizione');
+    campi = _.sortBy(campi, ['posizione']);
 
     campi.forEach(campo => {
       const campoForm = new FormControl();
@@ -709,7 +710,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       }
 
       // Ordino le opzioni della select
-      Utils.ordinaArrayDiOggetti(campo.opzioni, 'label');
+      campo.opzioni = _.sortBy(campo.opzioni, ['label']);
     }
   }
 

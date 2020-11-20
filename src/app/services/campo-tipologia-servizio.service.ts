@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from "rxjs";
 import {CampoForm} from "../modules/main/model/CampoForm";
@@ -19,12 +19,15 @@ import {InserimentoTipoCampo} from '../modules/main/model/campo/InserimentoTipoC
 export class CampoTipologiaServizioService {
   private readonly baseUrl = '/gestisciTipologiaServizi';
   private readonly tipologiaServizioUrl = '/tipologiaServizi';
+  private readonly eliminaTipologiaServizioUrl = this.tipologiaServizioUrl + '/eliminaTipologiaServizi';
   private readonly campiTipologiaServizioUrl = '/campiTipologiaServizio';
   private configurazioneCampiNuovoPagamentoUrl = '/configurazioneCampiNuovoPagamento';
   private inserimentoTipoCampoUrl = '/tipoCampo';
 
   constructor(private http: HttpClient) {
   }
+
+  aggiornaConfigurazioneCampiEvent = new EventEmitter();
 
   recuperaDettaglioTipologiaServizio(idTipologiaServizio: number, idFunzione): Observable<TipologiaServizio> {
     let h: HttpHeaders = new HttpHeaders();
@@ -117,8 +120,17 @@ export class CampoTipologiaServizioService {
   }
 
   eliminaTipologieServizioSelezionate(listaIdTipologieDaEliminare: number[], idFunzione): Observable<any> {
-    // todo chiamare operation elimina
-    return null;
+    const url = environment.bffBaseUrl + this.baseUrl + this.eliminaTipologiaServizioUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.post(`${url}`, listaIdTipologieDaEliminare,
+      {
+        withCredentials: true,
+        headers: h
+      }).pipe(map((body: any) => {
+      return body;
+    }));
   }
 
   inserimentoTipologiaServizio(body: InserimentoTipologiaServizio, idFunzione): Observable<number> {

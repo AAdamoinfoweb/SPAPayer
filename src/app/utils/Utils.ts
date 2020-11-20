@@ -71,21 +71,6 @@ export class Utils {
     return {path, color, tooltip, display};
   }
 
-  // L'ordinamento avviene inplace (l'array in input viene modificato)
-  static ordinaArrayDiOggetti(array: any[], attributoSuCuiOrdinare: string, isOrdinamentoCrescente: boolean = true): void {
-    if (array) {
-      array.sort((item1, item2) => {
-        if (item1[attributoSuCuiOrdinare] > item2[attributoSuCuiOrdinare]) {
-          return isOrdinamentoCrescente ? 1 : -1;
-        } else if (item1[attributoSuCuiOrdinare] < item2[attributoSuCuiOrdinare]) {
-          return isOrdinamentoCrescente ? -1 : 1;
-        } else {
-          return 0;
-        }
-      });
-    }
-  }
-
   static getModale(confermaFn, tipoModale: TipoModaleEnum, titolo?, messaggio?) {
     let header;
     let message;

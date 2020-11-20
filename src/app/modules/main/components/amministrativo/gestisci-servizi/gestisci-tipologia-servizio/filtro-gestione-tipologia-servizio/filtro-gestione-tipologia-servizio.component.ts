@@ -8,9 +8,9 @@ import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
-import {Utils} from '../../../../../../../utils/Utils';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {TipologiaServizio} from '../../../../../model/tipologiaServizio/TipologiaServizio';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-filtro-gestione-tipologia-servizio',
@@ -83,7 +83,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
               label: raggruppamento.descrizione
             });
           });
-          Utils.ordinaArrayDiOggetti(this.opzioniRaggruppamento, 'label');
+          this.opzioniRaggruppamento = _.sortBy(this.opzioniRaggruppamento, ['label']);
         }
       });
   }
@@ -112,7 +112,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   caricaCodiciTipologia(): void {
     this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione).subscribe(listaTipologieServizio => {
       if (listaTipologieServizio) {
-        Utils.ordinaArrayDiOggetti(listaTipologieServizio, 'codice');
+        listaTipologieServizio = _.sortBy(listaTipologieServizio, ['codice']);
         this.listaTipologie = listaTipologieServizio;
       }
     });

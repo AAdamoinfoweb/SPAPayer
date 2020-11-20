@@ -112,6 +112,11 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.refreshItemsEvent.subscribe((items) => {
       this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
     });
+    this.overlayService.mostraModaleTipoCampoEvent.subscribe(mostraModale => {
+      if (!mostraModale) {
+        this.impostaConfigurazioneCampi(of(null), true);
+      }
+    });
   }
 
   controllaTipoFunzione() {
@@ -156,7 +161,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     });
   }
 
-  impostaConfigurazioneCampi(observableIniziale = of(null)): void {
+  impostaConfigurazioneCampi(observableIniziale = of(null), aggiornaModale = false): void {
     let observable: Observable<number> = this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
         localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
@@ -171,6 +176,10 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
           this.tipoCampoIdSelect = filter[0].id;
 
         localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
+
+        if (aggiornaModale) {
+          this.campoTipologiaServizioService.aggiornaConfigurazioneCampiEvent.emit();
+        }
       })).pipe(flatMap(() => observableIniziale));
     observable.subscribe();
   }
@@ -246,8 +255,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   onChangeFiltri(filtri: ParametriRicercaTipologiaServizio) {
-    // todo valutare se distruggere i campi attuali se viene deselezionato il raggruppamento e/o il codice
-
     this.filtro = filtri;
 
     if (this.filtro.tipologia?.codice) {
