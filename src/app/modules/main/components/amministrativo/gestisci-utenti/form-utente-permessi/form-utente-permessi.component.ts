@@ -173,7 +173,14 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       if (!isPermessoDaModificare) {
         this.mapPermessi.delete(componenteDinamico.uuid);
       }
-      this.target.remove(componenteDinamico.index - 1);
+      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
+      const zeroBasedIndex = componenteDinamico.index - 1;
+      const viewRef = this.target.get(zeroBasedIndex);
+      if (viewRef == null && this.target.length === 1) {
+        this.target.clear();
+      } else {
+        this.target.remove(zeroBasedIndex);
+      }
     });
     this.componentRef.instance.onChangeDatiPermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
       if (this.mapPermessi.has(componenteDinamico.uuid)) {
