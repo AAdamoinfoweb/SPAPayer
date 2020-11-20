@@ -91,7 +91,7 @@ const routes: Routes = [
   {path: 'gestisciTipologiaServizi/dettaglioTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
   {path: 'configuraServizi/aggiungiServizio', component: FormServizioComponent},
 
-  
+
   {path: 'gestisciStatistiche', component: GestisciStatisticheComponent},
   {path: 'gestisciStatistiche/aggiungiStatistica', component: FormStatisticaComponent},
   {path: 'gestisciStatistiche/modificaStatistica/:statisticaId', component: FormStatisticaComponent},
