@@ -80,8 +80,8 @@ export class EnteService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: EsitoInserimentoModificaEnte) => {
-        return body;
-      }));
+      return body;
+    }));
   }
 
   inserimentoEnte(ente: EnteCompleto, idFunzione: string): Observable<EsitoInserimentoModificaEnte> {
@@ -108,8 +108,9 @@ export class EnteService {
   modificaEnte(ente: EnteCompleto, idFunzione: string): Observable<EsitoInserimentoModificaEnte> {
     const url = environment.bffBaseUrl + this.entiBaseUrl + '/' + ente.id;
     let h: HttpHeaders = new HttpHeaders();
-    h = h.append('idFunzione', idFunzione);
-
+    if (idFunzione != null) {
+      h = h.append('idFunzione', idFunzione);
+    }
     return this.http.put(`${url}`, ente,
       {
         withCredentials: true,
@@ -150,7 +151,7 @@ export class EnteService {
   recuperaContiCorrenti(idEnte: number, idFunzione: string): Observable<ContoCorrente[]> {
     const url = environment.bffBaseUrl + this.gestisciEntiBasePath + this.contiCorrentiUrl;
     let h: HttpHeaders = new HttpHeaders();
-    if(idFunzione != null){
+    if (idFunzione != null) {
       h = h.append('idFunzione', idFunzione);
     }
 

@@ -28,6 +28,7 @@ import {Observable} from "rxjs";
 import {Banner} from "../../../../../model/banner/Banner";
 import {getBannerType, LivelloBanner} from "../../../../../../../enums/livelloBanner.enum";
 import {BannerService} from "../../../../../../../services/banner.service";
+import {ComponenteDinamico} from "../../../../../model/ComponenteDinamico";
 
 @Component({
   selector: 'app-form-ente',
@@ -48,15 +49,15 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   datiBeneficiario: Beneficiario;
   datiContoCorrente: ContoCorrente;
   listaContiCorrente: ContoCorrente[];
-  mapBeneficiario: Map<number, Beneficiario> = new Map();
-  mapControllo: Map<number, boolean> = new Map();
+  mapBeneficiario: Map<string, Beneficiario> = new Map();
+  mapControllo: Map<string, boolean> = new Map();
 
   // form valid
   isFormDatiEnteValido = false;
   @ViewChild('datiBeneficiario', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
 
   private componentRef: ComponentRef<any>;
-  getListFromMap = (map: Map<number, any>) => Array.from(map, ([name, value]) => value);
+  getListFromMap = (map: Map<string, any>) => Array.from(map, ([name, value]) => value);
 
 
   constructor(router: Router,
@@ -144,6 +145,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.componentRef = this.target.createComponent(childComponent);
     const indexBeneficiario = this.target.length;
     // input
+    this.componentRef.instance.uuid = Utils.uuidv4();
     this.componentRef.instance.indexDatiBeneficiario = indexBeneficiario;
     this.componentRef.instance.funzione = this.funzione;
     this.componentRef.instance.idFunzione = this.idFunzione;
@@ -158,25 +160,18 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
     }
     // output
-    this.componentRef.instance.onDeleteDatiBeneficiario.subscribe(index => {
-      const beneficiario = this.mapBeneficiario.get(index);
+    this.componentRef.instance.onDeleteDatiBeneficiario.subscribe((componenteDinamico: ComponenteDinamico) => {
+      const beneficiario = this.mapBeneficiario.get(componenteDinamico.uuid);
       const isBeneficiarioDaModificare: boolean = beneficiario != null;
       if (isBeneficiarioDaModificare) {
-        this.mapBeneficiario.delete(index);
-        this.mapControllo.delete(index);
+        this.mapBeneficiario.delete(componenteDinamico.uuid);
+        this.mapControllo.delete(componenteDinamico.uuid);
       }
-      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
-      const zeroBasedIndex = index - 1;
-      const viewRef = this.target.get(zeroBasedIndex);
-      if (viewRef == null && this.target.length === 1) {
-        this.target.clear();
-      } else {
-        this.target.remove(zeroBasedIndex);
-      }
+      this.target.remove(componenteDinamico.index - 1);
     });
-    this.componentRef.instance.onChangeDatiBeneficiario.subscribe((currentBeneficiario: BeneficiarioSingolo) => {
-      this.mapBeneficiario.set(currentBeneficiario.index, currentBeneficiario.beneficiario);
-      this.mapControllo.set(currentBeneficiario.index, currentBeneficiario.isFormValid);
+    this.componentRef.instance.onChangeDatiBeneficiario.subscribe((componenteDinamico: ComponenteDinamico) => {
+      this.mapBeneficiario.set(componenteDinamico.uuid, componenteDinamico.oggetto);
+      this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
     });
     this.componentRef.changeDetectorRef.detectChanges();
     return indexBeneficiario;
