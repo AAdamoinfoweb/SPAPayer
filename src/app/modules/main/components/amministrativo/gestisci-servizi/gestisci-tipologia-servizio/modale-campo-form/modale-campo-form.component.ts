@@ -6,6 +6,11 @@ import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegra
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {CampoTipologiaServizio} from '../../../../../model/CampoTipologiaServizio';
 import {CampoServizio} from '../../../../../model/servizio/CampoServizio';
+import {TipoCampo} from '../../../../../model/campo/TipoCampo';
+import {ConfigurazioneJsonPath} from '../../../../../model/campo/ConfigurazioneJsonPath';
+import {ConfigurazioneTipologica} from '../../../../../model/campo/ConfigurazioneTipologica';
+import {ControlloLogico} from '../../../../../model/ControlloLogico';
+import {ConfigurazioneCampoDettaglioTransazione} from '../../../../../model/campo/ConfigurazioneCampoDettaglioTransazione';
 
 export interface DatiModaleCampo {
   listaDipendeDa: any[];
@@ -29,13 +34,13 @@ export class ModaleCampoFormComponent implements OnInit {
 
   FunzioneGestioneEnum = FunzioneGestioneEnum;
 
-  listaCampiDettaglioTransazione: any[];
-  listaControlliLogici: any[];
-  listaTipologiche: any[];
-  listaJsonPath: any[];
-  listaTipiCampo: any[];
+  listaCampiDettaglioTransazione: ConfigurazioneCampoDettaglioTransazione[];
+  listaControlliLogici: ControlloLogico[];
+  listaTipologiche: ConfigurazioneTipologica[];
+  listaJsonPath: ConfigurazioneJsonPath[];
+  listaTipiCampo: TipoCampo[];
 
-  listaJsonPathFiltrata: any[];
+  listaJsonPathFiltrata: ConfigurazioneJsonPath[];
 
   livelloIntegrazioneEnum = LivelloIntegrazioneEnum;
 
