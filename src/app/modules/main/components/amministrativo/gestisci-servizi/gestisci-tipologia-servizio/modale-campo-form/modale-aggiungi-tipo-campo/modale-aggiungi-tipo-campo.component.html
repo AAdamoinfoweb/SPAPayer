@@ -27,6 +27,7 @@
                [formControl]="form.controls['informazione']"
                [(ngModel)]="informazione"
                [attr.disabled]="disabilitaCampoInformazioni()"
+               (ngModelChange)="inserisciInformazioni()"
                type="text"
                autocomplete="off"
         />

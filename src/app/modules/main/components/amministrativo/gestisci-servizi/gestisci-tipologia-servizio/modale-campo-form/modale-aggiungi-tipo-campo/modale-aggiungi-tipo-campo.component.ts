@@ -44,6 +44,12 @@ export class ModaleAggiungiTipoCampoComponent implements OnInit {
     }
   }
 
+  inserisciInformazioni(): void {
+    if (this.informazione === '') {
+      this.informazione = null;
+    }
+  }
+
   disabilitaCampoInformazioni(): boolean {
     return !this.nome ? true : null;
   }
