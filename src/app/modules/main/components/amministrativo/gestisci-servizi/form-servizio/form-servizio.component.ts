@@ -168,6 +168,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   TipoCampoEnum = TipoCampoEnum;
   invioNotifiche: any = {};
   emailsControl: FormControl[] = [new FormControl()];
+  displayCc = false;
 
   constructor(private cdr: ChangeDetectorRef,
               private renderer: Renderer2,
@@ -501,8 +502,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.emailsControl.push(new FormControl());
   }
 
-  removeEmail() {
-
+  removeEmail(index: number) {
+    this.emailsControl.splice(index, 1);
   }
 
+  selezionaDaCC() {
+    this.displayCc = !this.displayCc;
+  }
 }

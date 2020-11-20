@@ -331,7 +331,7 @@
                 <div class="col">
                   <label [htmlFor]="'portaleEsterno'" class="title form-elem-title"
                          [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1 || funzione !== FunzioneGestioneEnum.DETTAGLIO}">
-                  Portale esterno</label>
+                    Portale esterno</label>
                 </div>
               </div>
               <div class="row">
@@ -596,6 +596,11 @@
         </button>
       </div>
       <div id="datiBonifico" class="collapse show" role="tabpanel" aria-labelledby="idCollapseDatiBonifico">
+        <div class="row pt-2">
+          <div class="col text-center">
+            <a href="javascript:void(0)" (click)="selezionaDaCC()">Seleziona da un conto corrente esistente</a>
+          </div>
+        </div>
         <div class="row">
           <div #datiContoCorrente></div>
         </div>
@@ -733,7 +738,8 @@
             <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
               <div class="row">
                 <div class="col">
-                  <label for="ftpGiornaliera" class="title">Ftp</label>
+                  <label for="ftpGiornaliera"
+                         [ngClass]="{'required': rendicontazioneGiornaliera.ftpEnabled, 'title':true}">Ftp</label>
                 </div>
                 <div class="col-2">
                   <it-toggle id="ftpGiornaliera"
@@ -878,7 +884,7 @@
             <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
               <div class="row">
                 <div class="col">
-                  <label for="ftpFlussoPA" class="title">Ftp</label>
+                  <label for="ftpFlussoPA" [ngClass]="{'required': rendicontazioneFlussoPA.ftpEnabled, 'title':true}">Ftp</label>
                 </div>
                 <div class="col-2">
                   <it-toggle id="ftpFlussoPA"
@@ -982,17 +988,17 @@
                 </div>
               </div>
               <div class="row" *ngFor="let item of emailsControl; let i = index">
-                  <div class="col-12">
-                    <input [formControl]="item" type="text" autocomplete="off" [customvalidator]="validateEmail()">
-                    <span *ngIf="i != emailsControl.length -1" class="pointer bottone-campo">
+                <div class="col-12">
+                  <input [formControl]="item" type="text" autocomplete="off" [customvalidator]="validateEmail()">
+                  <span *ngIf="i != emailsControl.length -1" class="pointer bottone-campo">
                       <span ngbTooltip="rimuovi" placement="bottom"
                             [ngStyle]="{fill: '#403d39'}">
-                        <svg (click)="removeEmail()" class="bg-light icon icon-sm filled">
+                        <svg (click)="removeEmail(i)" class="bg-light icon icon-sm filled">
                           <use xlink:href="assets/img/sprite.svg#it-minus"></use>
                         </svg>
                       </span>
                     </span>
-                    <span *ngIf="i == emailsControl.length -1" class="pointer bottone-campo">
+                  <span *ngIf="i == emailsControl.length -1" class="pointer bottone-campo">
                       <span ngbTooltip="Aggiungi email" placement="bottom"
                             [ngStyle]="{fill: '#403d39'}">
                         <svg (click)="addEmail()" class="bg-light icon icon-sm filled">
@@ -1000,21 +1006,47 @@
                         </svg>
                       </span>
                     </span>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(item),
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                       [ngClass]="{'text-muted': !isCampoInvalido(item),
                        'text-invalid': isCampoInvalido(item)}">
-                        {{setPlaceholder(item, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
-                    </div>
+                      {{setPlaceholder(item, TipoCampoEnum.INPUT_TESTUALE)}}
+                    </p>
                   </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <hr/>
+
+      <div class="row">
+        <!-- Bottone sx -->
+        <div class="col-2">
+          <button id="buttonAnnulla" class="btn btn-secondary"
+                  (click)="onClickAnnulla(funzione)">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
+        </div>
+        <!-- Bottoni dx -->
+        <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <button id="buttonSalva" class="btn" [disabled]="datiForm.invalid" (click)="onClickSalva()">Salva</button>
+        </div>
+      </div>
     </form>
   </div>
 </div>
+<p-dialog header="Lista conti correnti" [(visible)]="displayCc">
+  <div class="row">
+    <div class="col">
+
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col text-center">
+      <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla"
+              (click)="selezionaDaCC()"></button>
+    </div>
+  </div>
+</p-dialog>
