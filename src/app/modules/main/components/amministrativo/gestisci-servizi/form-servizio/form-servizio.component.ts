@@ -409,14 +409,15 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   undo(item: CampoServizio) {
-    //todo UNDO
     if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
       this.confirmationService.confirm(
         Utils.getModale(() => {
             item = this.campoTipologiaServizioOriginal.find((value => value.id = item.id));
             this.refreshItemsEvent.emit(this.campoTipologiaServizioList);
           },
-          TipoModaleEnum.ELIMINA,
+          TipoModaleEnum.CUSTOM,
+          "Annullamento modifiche",
+          "Confermare l'annullamento delle modifiche?"
         )
       );
     }

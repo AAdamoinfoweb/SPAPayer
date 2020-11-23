@@ -16,6 +16,8 @@
     </span>
   </h3>
 
+  <app-avviso-campi-obbligatori></app-avviso-campi-obbligatori>
+
   <!-- dati -->
   <app-filtro-gestione-servizio
     *ngIf="idFunzione"
@@ -625,9 +627,7 @@
           </div>
           <div class="row" *ngIf="campoTipologiaServizioList">
             <ul class="legend">
-              <li><span class="field-disabled"></span> Campo disabilitato</li>
-              <li><span class="field-input"></span> Campo input</li>
-              <li><span class="field-output"></span> Campo output</li>
+              <li><span class="field-input"></span> Campo modificato</li>
               <li><span class="required"></span> Campo obbligatorio</li>
               <li><span class="key"></span> Campo chiave</li>
             </ul>
@@ -638,9 +638,8 @@
                    cdkDropListOrientation="horizontal"
                    [cdkDropListData]="{item:item, index:i}">
                 <div style="min-height: 5vh;"
-                     [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
-               'field-input': (item.campoInput && !item.disabilitato),
-               'field-output': (!item.campoInput && !item.disabilitato)}">
+                     [ngClass]="{'example-box':true, 'col-12': true, 'disabled': !item.campoTipologiaServizioId,
+               'field-input': (item.campoTipologiaServizioId)}">
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
                     <div (click)="showModal(item)" class="col-7 text-right">{{item.titolo}}</div>
@@ -648,7 +647,12 @@
                     </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
                     <div class="col-3 text-right">
-                      <span class="close" (click)="undo(item)"></span>
+                      <span [ngClass]="{'field-input': item.campoTipologiaServizioId}"
+                            *ngIf="item.campoTipologiaServizioId" (click)="undo(item)">
+                        <svg class="bg-light icon icon-lg icon-padded">
+                          <use xlink:href="assets/img/sprite.svg#it-restore"></use>
+                        </svg>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -710,7 +714,7 @@
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.emailEnabled)"
                          #emailGiornalieraId="ngModel"
-                         id="emailGiornalieraId"  [customvalidator]="validateEmail()"
+                         id="emailGiornalieraId" [customvalidator]="validateEmail()"
                          name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
                          [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
                 </div>

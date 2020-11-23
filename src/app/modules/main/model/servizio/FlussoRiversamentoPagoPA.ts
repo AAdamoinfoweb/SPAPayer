@@ -1,5 +1,3 @@
-import {RendicontazioneGiornaliera} from "./RendicontazioneGiornaliera";
-
 export class FlussoRiversamentoPagoPA {
   emailEnabled = false;
   ftpEnabled = false;
