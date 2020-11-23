@@ -7,13 +7,12 @@ import {ActivatedRoute} from '@angular/router';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
-import {NgForm, NgModel} from '@angular/forms';
+import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
-import {TipologiaServizio} from '../../../../model/tipologiaServizio/TipologiaServizio';
-import {ConfiguraServizioService} from "../../../../../../services/configura-servizio.service";
+import {ConfiguraServizioService} from '../../../../../../services/configura-servizio.service';
 import * as _ from 'lodash';
-import {FiltroSelect} from '../../../../model/servizio/FiltroSelect';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-filtro-gestione-servizio',
@@ -88,7 +87,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   selezionaRaggruppamento(): void {
-    this.filtriRicerca.tipologiaServizio = new TipologiaServizio();
+    this.filtriRicerca.tipologiaServizio = null;
     this.listaCodiciTipologia = [];
     this.listaCodiciTipologiaFiltrati = [];
 
@@ -180,11 +179,6 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
     return !this.filtriRicerca.raggruppamentoId && !this.filtriRicerca.tipologiaServizio ? true : null;
   }
 
-  disabilitaPulsanteCrea(): boolean {
-    return !this.filtriRicerca.raggruppamentoId || !this.filtriRicerca.tipologiaServizio
-      || !this.filtriRicerca.nomeServizio || !this.filtriRicerca.abilitaDa || !this.filtriRicerca.abilitaA || this.disabilitaFiltri;
-  }
-
   openDatepicker(datePickerComponent: DatePickerComponent): void {
     datePickerComponent.api.open();
     this.isCalendarOpen = !this.isCalendarOpen;
@@ -192,5 +186,22 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
 
   disabilitaCampi() {
     return this.disabilitaFiltri;
+  }
+
+  validateRange() {
+    let self = this;
+    return ((control: FormControl) => {
+
+      if (self.filtriRicerca.abilitaDa && self.filtriRicerca.abilitaA &&
+        moment(self.filtriRicerca.abilitaDa, 'DD/MM/YYYY').isAfter(moment(self.filtriRicerca.abilitaA, 'DD/MM/YYYY'))) {
+        return {date: false};
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+  isTipologiaServizio(event) {
+    return typeof event === 'string';
   }
 }

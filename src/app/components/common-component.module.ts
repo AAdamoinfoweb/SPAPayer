@@ -92,6 +92,7 @@ import { AvvisoCampiObbligatoriComponent } from './avviso-campi-obbligatori/avvi
     TableComponent,
     ToolbarComponent,
     TabViewComponent,
+    AvvisoCampiObbligatoriComponent,
     AvvisoCampiObbligatoriComponent
   ],
 })

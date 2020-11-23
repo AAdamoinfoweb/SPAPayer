@@ -23,6 +23,7 @@
             <div class="col">
               <select [ngClass]="{'text-disabled': !opzioniRaggruppamento.length}" id="selectRaggruppamento"
                       name="raggruppamento"
+                      [required]="true"
                       #filtroRaggruppamento="ngModel"
                       [(ngModel)]="filtriRicerca.raggruppamentoId"
                       (ngModelChange)="selezionaRaggruppamento()"
@@ -52,6 +53,7 @@
           <div class="row">
             <div class="col">
               <p-autoComplete id="inputCodice" class="pt-0" name="codice"
+                              [required]="true"
                               #filtroCodice="ngModel"
                               [(ngModel)]="filtriRicerca.tipologiaServizio"
                               [field]="labelOggettoTipologia"
@@ -80,6 +82,7 @@
           </div>
           <div class="row">
             <input id="servizio" name="servizio" type="text" class="input-text pt-0" autocomplete="off"
+                   [required]="true"
                    #filtroServizio="ngModel" [(ngModel)]="filtriRicerca.nomeServizio" [disabled]="disabilitaCampi()">
           </div>
           <div class="row">
@@ -103,6 +106,8 @@
                 <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
               </svg>
               <dp-date-picker
+                [required]="true"
+                [customvalidator]="validateRange()"
                 [disabled]="disabilitaCampi()"
                 class="col-12"
                 mode="day"
@@ -147,6 +152,8 @@
                 <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
               </svg>
               <dp-date-picker
+                [required]="true"
+                [customvalidator]="validateRange()"
                 [disabled]="disabilitaCampi()"
                 class="col-12"
                 mode="day"
@@ -191,7 +198,7 @@
           </div>
         </div>
         <div class="col-xs-6 col-md-3 col-lg-1 pb-2" id="containerBottoneCrea">
-          <button id="bottoneCrea" class="btn" [disabled]="disabilitaPulsanteCrea()"
+          <button id="bottoneCrea" class="btn" [disabled]="filtroForm.invalid || isTipologiaServizio(filtriRicerca.tipologiaServizio)"
                   (click)="creaTipologia()">Crea
           </button>
         </div>
