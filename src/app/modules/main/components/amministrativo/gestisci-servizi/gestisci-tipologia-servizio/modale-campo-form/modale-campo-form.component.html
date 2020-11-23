@@ -34,7 +34,7 @@
 
     <div class="col-sm-12 col-md-4 form-elem-container">
       <div id="containerBottoneAggiungiTipoCampo">
-        <button class="btn" [disabled]="datiModaleCampo.funzione == FunzioneGestioneEnum.DETTAGLIO"
+        <button class="btn" *ngIf="datiModaleCampo.funzione !== FunzioneGestioneEnum.DETTAGLIO"
                 (click)="addTipoCampo()">Aggiungi Tipo campo
         </button>
       </div>
