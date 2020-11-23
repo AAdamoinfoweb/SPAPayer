@@ -13,6 +13,7 @@ import {Utils} from '../../../../../../../utils/Utils';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {GestisciPortaleService} from '../../../../../../../services/gestisci-portale.service';
 import {map} from 'rxjs/operators';
+import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
 
 @Component({
   selector: 'app-filtro-rendicontazione',
@@ -40,7 +41,8 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
   listaTipoFlusso: Array<OpzioneSelect> = [];
 
   constructor(protected activatedRoute: ActivatedRoute, protected amministrativoService: AmministrativoService,
-              private gestisciPortaleService: GestisciPortaleService) {
+              private gestisciPortaleService: GestisciPortaleService,
+              private campoTipologiaServizioService: CampoTipologiaServizioService) {
     super(activatedRoute, amministrativoService);
   }
 
@@ -49,7 +51,7 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
     this.recuperaFiltroSocieta();
     this.recuperaFiltroLivelloTerritoriale();
     this.recuperaFiltroEnte();
-    // TODO this.recuperaFiltroTipologiaServizio
+    this.recuperaFiltroTipologiaServizio();
     this.recuperaFiltroServizio();
     this.recuperaFiltroIdentificativoTransazione();
     this.recuperaFiltroCanale();
@@ -108,6 +110,18 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
         });
       });
       this.listaEnte = _.sortBy(this.listaEnte, ['label']);
+    })).subscribe();
+  }
+
+  recuperaFiltroTipologiaServizio(): void {
+    this.campoTipologiaServizioService.recuperaTipologieServizio(null, this.idFunzione).pipe(map(listaTipologiaServizio => {
+      listaTipologiaServizio.forEach(tipologiaServizio => {
+        this.listaTipologiaServizio.push({
+          value: tipologiaServizio.id,
+          label: tipologiaServizio.descrizione
+        });
+      });
+      this.listaTipologiaServizio = _.sortBy(this.listaTipologiaServizio, ['label']);
     })).subscribe();
   }
 
