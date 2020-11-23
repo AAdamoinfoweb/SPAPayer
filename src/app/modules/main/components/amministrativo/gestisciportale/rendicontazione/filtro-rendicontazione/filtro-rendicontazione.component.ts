@@ -8,6 +8,7 @@ import {BottoneEnum} from '../../../../../../../enums/bottone.enum';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 import {Utils} from '../../../../../../../utils/Utils';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {GestisciPortaleService} from '../../../../../../../services/gestisci-portale.service';
@@ -19,8 +20,6 @@ import {map} from 'rxjs/operators';
   styleUrls: ['./filtro-rendicontazione.component.scss']
 })
 export class FiltroRendicontazioneComponent extends FiltroGestioneElementiComponent implements OnInit {
-
-  idFunzione;
 
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaRendicontazione> = new EventEmitter<ParametriRicercaRendicontazione>();
@@ -84,7 +83,7 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
           label: societa.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaSocieta);
+      this.listaSocieta = _.sortBy(this.listaSocieta, ['label']);
     })).subscribe();
   }
 
@@ -96,7 +95,7 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
           label: livelloTerritoriale.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaLivelloTerritoriale);
+      this.listaLivelloTerritoriale = _.sortBy(this.listaLivelloTerritoriale, ['label']);
     })).subscribe();
   }
 
@@ -108,7 +107,7 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
           label: ente.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaEnte);
+      this.listaEnte = _.sortBy(this.listaEnte, ['label']);
     })).subscribe();
   }
 
@@ -120,7 +119,7 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
           label: servizio.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaServizio);
+      this.listaServizio = _.sortBy(this.listaServizio, ['label']);
     })).subscribe();
   }
 
@@ -132,7 +131,7 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
           label: transazioneId.id.toString()
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaTransazioneId);
+      this.listaTransazioneId = _.sortBy(this.listaTransazioneId, ['label']);
     })).subscribe();
   }
 
@@ -144,7 +143,7 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
           label: canale.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaCanale);
+      this.listaCanale = _.sortBy(this.listaCanale, ['label']);
     })).subscribe();
   }
 
@@ -156,7 +155,7 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
           label: tipoFlusso.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaTipoFlusso);
+      this.listaTipoFlusso = _.sortBy(this.listaTipoFlusso, ['label']);
     })).subscribe();
   }
 

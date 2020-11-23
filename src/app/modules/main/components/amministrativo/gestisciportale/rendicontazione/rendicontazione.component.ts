@@ -24,8 +24,6 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
 
   readonly tooltipTitolo = 'In questa pagina puoi visualizzare la lista completa dei flussi di rendicontazione agli enti che utilizzano Payer e filtrarli';
 
-  idFunzione;
-
   breadcrumbList = [];
 
   listaElementi: Array<SintesiRendicontazione> = new Array<SintesiRendicontazione>();
