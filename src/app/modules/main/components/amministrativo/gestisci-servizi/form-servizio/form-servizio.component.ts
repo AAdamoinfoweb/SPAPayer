@@ -538,7 +538,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
       if (control.value) {
         const regex = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
-        if (!new RegExp(regex).test(control.value)) {
+        const regexIp = '^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$';
+        if (!new RegExp(regex).test(control.value) || !new RegExp(regexIp).test(control.value)) {
           return {url: false};
         }
       }
