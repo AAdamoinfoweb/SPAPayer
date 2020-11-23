@@ -41,9 +41,9 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
   abstract righeSelezionate: any[];
   waiting = true;
 
-  inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
+  inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[], flag?: boolean): Breadcrumb[] {
     const breadcrumbList: SintesiBreadcrumb[] = [];
-    breadcrumbList.push(new SintesiBreadcrumb('Amministra Portale', null));
+    breadcrumbList.push(new SintesiBreadcrumb(flag ? 'Gestisci Portale' : 'Amministra Portale', null));
     breadcrumbList.push(...breadcrumbs);
     return Utils.popolaListaBreadcrumb(breadcrumbList);
   }
