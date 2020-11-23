@@ -77,6 +77,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   nomeTipologia: string;
   private listaTipiCampo: any[];
 
+  private isSingleClick = true;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private overlayService: OverlayService,
@@ -330,5 +332,26 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       livelloIntegrazione: this.livelloIntegrazione,
       listaDipendeDa: this.listaDipendeDa
     });
+  }
+
+  showModalAtClick(item: CampoTipologiaServizio) {
+
+    this.isSingleClick = true;
+    setTimeout(() => {
+      if (this.isSingleClick) {
+        this.overlayService.mostraModaleCampoEvent.emit({
+          campoForm: _.cloneDeep(item),
+          funzione: this.funzione,
+          idFunzione: this.idFunzione,
+          livelloIntegrazione: this.livelloIntegrazione,
+          listaDipendeDa: this.listaDipendeDa
+        });
+      }
+    }, 250);
+  }
+
+  dblClick(item: CampoTipologiaServizio) {
+    this.isSingleClick = false;
+    this.showEditId = item.titolo;
   }
 }

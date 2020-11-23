@@ -266,6 +266,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       .filter((value => !value.id || value.campoTipologiaServizioId))
       .map(value => value.id = null);
 
+    //TODO calcolo posizione
+
     const flussiNotifiche = new FlussiNotifiche();
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
     flussiNotifiche.flussoRiversamentoPagoPa = this.rendicontazioneFlussoPA;
