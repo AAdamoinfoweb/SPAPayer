@@ -13,6 +13,7 @@ import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {TipologiaServizio} from '../../../../model/tipologiaServizio/TipologiaServizio';
 import {ConfiguraServizioService} from "../../../../../../services/configura-servizio.service";
 import * as _ from 'lodash';
+import {FiltroSelect} from '../../../../model/servizio/FiltroSelect';
 
 @Component({
   selector: 'app-filtro-gestione-servizio',
@@ -23,8 +24,6 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
 
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaServizio> = new EventEmitter<ParametriRicercaServizio>();
-
-  minCharsRecuperoValoriAutocomplete = 1;
 
   TipoCampoEnum = TipoCampoEnum;
 
@@ -43,8 +42,9 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   @Input()
   filtriIniziali: ParametriRicercaServizio;
 
-  listaCodiciTipologia: TipologiaServizio[] = [];
-  listaCodiciTipologiaFiltrati: TipologiaServizio[] = [];
+  listaCodiciTipologia = [];
+  listaCodiciTipologiaFiltrati = [];
+  labelOggettoTipologia: string;
 
   disabilitaFiltri = false;
 
@@ -107,10 +107,20 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   caricaCodiciTipologia(): void {
-    // todo caricare in modo condizionale dal controller di Servizio o TipologiaServizio a seconda che sia la pagina Gestione o Form
-    this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione).subscribe(listaTipologieServizio => {
+    let observable;
+
+    // Nella pagina Gestione carico solo le tipologie per cui sono abilitato, indipendentemente dal raggruppamento; Nella pagina Form carico tutti i filtri collegati ad un determinato raggruppamento
+    if (this.isPaginaGestione()) {
+      observable = this.configuraServizioService.configuraServiziFiltroTipologia(this.idFunzione);
+      this.labelOggettoTipologia = 'nome';
+    } else {
+      observable = this.campoTipologiaServizioService.recuperaTipologieServizio(this.filtriRicerca, this.idFunzione);
+      this.labelOggettoTipologia = 'codice';
+    }
+
+    observable.subscribe(listaTipologieServizio => {
       if (listaTipologieServizio) {
-        listaTipologieServizio = _.sortBy(listaTipologieServizio, ['codice']);
+        listaTipologieServizio = _.sortBy(listaTipologieServizio, [this.labelOggettoTipologia]);
         this.listaCodiciTipologia = listaTipologieServizio;
         this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia;
       }
@@ -119,7 +129,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
 
   filtraCodiciTipologia(event): void {
     const input = event.query;
-    this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia.filter(value => value.codice.toLowerCase().startsWith(input.toLowerCase()));
+    this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia.filter(value => value[this.labelOggettoTipologia].toLowerCase().startsWith(input.toLowerCase()));
   }
 
   setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum): string {

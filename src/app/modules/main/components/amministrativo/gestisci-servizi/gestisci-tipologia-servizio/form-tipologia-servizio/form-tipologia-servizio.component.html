@@ -16,6 +16,8 @@
     </span>
   </h3>
 
+  <span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
+
   <!-- dati -->
   <app-filtro-gestione-tipologia-servizio
     *ngIf="idFunzione"
@@ -30,7 +32,7 @@
       <div class="col-md-4 pb-2">
         <div class="row">
           <div class="col">
-            <label for="codice" class="title">Codice</label>
+            <label for="codice" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Codice</label>
           </div>
         </div>
         <div class="row">
@@ -55,7 +57,7 @@
       <div class="col-md-4 pb-2">
         <div class="row">
           <div class="col">
-            <label for="nome" class="title">Nome</label>
+            <label for="nome" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Nome</label>
           </div>
         </div>
         <div class="row">

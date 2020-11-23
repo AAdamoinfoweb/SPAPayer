@@ -13,6 +13,7 @@ export class ConfiguraServizioService {
 
   private readonly configuraServiziBasePath = '/configuraServizi';
   private filtroRaggruppamentoUrl = '/filtroRaggruppamento';
+  private filtroTipologiaUrl = '/filtroTipologiaServizio';
   private filtroUfficioUrl = '/filtroUfficio';
   private filtroPortaleEsternoUrl = '/filtroPortaleEsterno';
 
@@ -25,6 +26,26 @@ export class ConfiguraServizioService {
     h = h.append('idFunzione', idFunzione);
 
     return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.filtroRaggruppamentoUrl, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as FiltroSelect[];
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  configuraServiziFiltroTipologia(idFunzione: string) {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.filtroTipologiaUrl, {
       headers: h,
       withCredentials: true
     })

@@ -15,7 +15,7 @@
         <div class="col-md-4 pb-2">
           <div class="row">
             <div class="col">
-              <label for="selectRaggruppamento" class="title">Raggruppamento</label>
+              <label for="selectRaggruppamento" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Raggruppamento</label>
             </div>
           </div>
           <div class="row">

@@ -61,7 +61,7 @@ export class CampoTipologiaServizioService {
       if (filtri instanceof ParametriRicercaTipologiaServizio && filtri.tipologia?.codice) {
         params = params.set('codiceTipologia', filtri.tipologia.codice);
       }
-      if (filtri instanceof ParametriRicercaServizio && filtri.tipologiaServizio?.codice) {
+      if (filtri instanceof ParametriRicercaServizio && filtri.tipologiaServizio instanceof TipologiaServizio && filtri.tipologiaServizio?.codice) {
         params = params.set('codiceTipologia', filtri.tipologiaServizio.codice);
       }
     }
