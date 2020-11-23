@@ -36,6 +36,7 @@ import {PaginatorComponent} from "./table/paginator/paginator.component";
 import {CommonModule} from "@angular/common";
 import {TabViewComponent} from "./tab-view/tab-view.component";
 import {ToolbarComponent} from "./toolbar/toolbar.component";
+import { AvvisoCampiObbligatoriComponent } from './avviso-campi-obbligatori/avviso-campi-obbligatori.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
     PaginatorComponent,
     TabViewComponent,
     ToolbarComponent,
+    AvvisoCampiObbligatoriComponent,
   ],
   imports: [
     HttpClientModule,
@@ -89,7 +91,8 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
     FooterDirective,
     TableComponent,
     ToolbarComponent,
-    TabViewComponent
+    TabViewComponent,
+    AvvisoCampiObbligatoriComponent
   ],
 })
 export class CommonComponentModule {
