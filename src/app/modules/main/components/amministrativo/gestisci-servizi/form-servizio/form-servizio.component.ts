@@ -52,9 +52,9 @@ import {Contatti} from '../../../../model/servizio/Contatti';
 import {Servizio} from '../../../../model/servizio/Servizio';
 import {FlussoRiversamentoPagoPA} from '../../../../model/servizio/FlussoRiversamentoPagoPA';
 import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
-import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
-import {Utils} from "../../../../../../utils/Utils";
-import {TipoModaleEnum} from "../../../../../../enums/tipoModale.enum";
+import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
+import {Utils} from '../../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 
 @Component({
   selector: 'app-form-servizio',
@@ -174,6 +174,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       }
       this.cdr.detectChanges();
       this.overlayService.mostraModaleCampoEvent.emit(null);
+
+      const list = _.concat(this.campoTipologiaServizioList, this.campoServizioAddList);
+      this.refreshItemsEvent.emit(list);
     });
     this.refreshItemsEvent.subscribe((items) => {
       this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
@@ -416,8 +419,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
             this.refreshItemsEvent.emit(this.campoTipologiaServizioList);
           },
           TipoModaleEnum.CUSTOM,
-          "Annullamento modifiche",
-          "Confermare l'annullamento delle modifiche?"
+          'Annullamento modifiche',
+          'Confermare l\'annullamento delle modifiche?'
         )
       );
     }
@@ -539,7 +542,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       if (control.value) {
         const regex = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
         const regexIp = '^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$';
-        if (!new RegExp(regex).test(control.value) || !new RegExp(regexIp).test(control.value)) {
+        if (new RegExp(regex).test(control.value) || new RegExp(regexIp).test(control.value)) {
+          return null;
+        } else {
           return {url: false};
         }
       }

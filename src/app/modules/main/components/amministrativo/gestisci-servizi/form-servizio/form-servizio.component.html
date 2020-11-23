@@ -598,8 +598,15 @@
         </div>
         <div id="datiBonifico" class="collapse show" role="tabpanel" aria-labelledby="idCollapseDatiBonifico">
           <div #datiContoCorrente></div>
-
-
+          <div class="row">
+            <div class="col text-right">
+              <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiContoCorrente"
+                      class="btn btn-secondary"
+                      [disabled]="false" (click)="aggiungiContoCorrente()">
+                Aggiungi conto corrente
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="collapse-header" id="idCollapseCampiServizio">
@@ -940,8 +947,8 @@
                 <div class="col-12">
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Username', rendicontazioneFlussoPA.ftpEnabled)"
-                         id="usernameFlussoPA"
-                         name="usernameFlussoPA"
+                         id="usernameFlussoPA" name="usernameFlussoPA"
+                         #usernameFlussoPA="ngModel"
                          [(ngModel)]="rendicontazioneFlussoPA.username"
                          [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
                 </div>
@@ -949,9 +956,9 @@
                   <div class="row">
                     <div class="col">
                       <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(serverFlussoPA),
-                       'text-invalid': isCampoInvalido(serverFlussoPA)}">
-                        {{setPlaceholder(serverFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                         [ngClass]="{'text-muted': !isCampoInvalido(usernameFlussoPA),
+                       'text-invalid': isCampoInvalido(usernameFlussoPA)}">
+                        {{setPlaceholder(usernameFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
                       </p>
                     </div>
                   </div>
