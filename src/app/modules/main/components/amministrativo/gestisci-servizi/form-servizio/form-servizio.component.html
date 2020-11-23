@@ -1039,12 +1039,24 @@
               <div class="row">
                 <div class="col">
                   <label class="title">Email</label>
+                  <span class="pointer bottone-campo"
+                        *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
+                    <span ngbTooltip="Aggiungi email" placement="bottom"
+                          [ngStyle]="{fill: '#403d39'}">
+                      <svg (click)="addEmail()" class="bg-light icon icon-sm filled">
+                        <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+                      </svg>
+                    </span>
+                </span>
                 </div>
               </div>
-              <div class="row" *ngFor="let item of emailsControl; let i = index">
-                <div class="col-12">
-                  <input [formControl]="item" type="text" autocomplete="off" [customvalidator]="validateEmail()">
-                  <span *ngIf="i != emailsControl.length -1" class="pointer bottone-campo">
+              <ng-container *ngFor="let item of emailsControl; let i = index">
+                <div class="row">
+                  <div class="col-9">
+                    <input [formControl]="item" type="text" autocomplete="off" [customvalidator]="validateEmail()">
+                  </div>
+                  <div class="col-3 align-self-center">
+                    <span class="pointer bottone-campo">
                       <span ngbTooltip="rimuovi" placement="bottom"
                             [ngStyle]="{fill: '#403d39'}">
                         <svg (click)="removeEmail(i)" class="bg-light icon icon-sm filled">
@@ -1052,14 +1064,7 @@
                         </svg>
                       </span>
                     </span>
-                  <span *ngIf="i == emailsControl.length -1" class="pointer bottone-campo">
-                      <span ngbTooltip="Aggiungi email" placement="bottom"
-                            [ngStyle]="{fill: '#403d39'}">
-                        <svg (click)="addEmail()" class="bg-light icon icon-sm filled">
-                          <use xlink:href="assets/img/sprite.svg#it-plus"></use>
-                        </svg>
-                      </span>
-                    </span>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col">
@@ -1070,7 +1075,7 @@
                     </p>
                   </div>
                 </div>
-              </div>
+              </ng-container>
             </div>
           </div>
         </div>
@@ -1085,7 +1090,10 @@
         </div>
         <!-- Bottoni dx -->
         <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-          <button id="buttonSalva" class="btn" [disabled]="datiForm.invalid || getListaControllo(mapControllo).includes(false)" (click)="onClickSalva()">Salva</button>
+          <button id="buttonSalva" class="btn"
+                  [disabled]="datiForm.invalid || (mapControllo && getListaControllo(mapControllo).includes(false))"
+                  (click)="onClickSalva()">Salva
+          </button>
         </div>
       </div>
     </form>
