@@ -32,6 +32,7 @@ import {GestisciStatisticheComponent} from "./modules/main/components/amministra
 import {FormStatisticaComponent} from "./modules/main/components/amministrativo/gestisci-statistiche/form-statistica/form-statistica.component";
 import {GestisciAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/gestisci-attivita-pianificate.component';
 import {FormAttivitaPianificateComponent} from "./modules/main/components/amministrativo/gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component";
+import {RendicontazioneComponent} from './modules/main/components/amministrativo/gestisciportale/rendicontazione/rendicontazione.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -91,6 +92,7 @@ const routes: Routes = [
   {path: 'gestisciAttivitaPianificate/aggiungiAttivitaPianificata', component: FormAttivitaPianificateComponent},
   {path: 'gestisciAttivitaPianificate/modificaAttivitaPianificata/:attivitaId', component: FormAttivitaPianificateComponent},
   {path: 'gestisciAttivitaPianificate/dettaglioAttivitaPianificata/:attivitaId', component: FormAttivitaPianificateComponent},
+  {path: 'rendicontazione', component: RendicontazioneComponent}
 ];
 
 @NgModule({
