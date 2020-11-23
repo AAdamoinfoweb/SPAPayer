@@ -164,9 +164,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
       if (campoFormIdx != -1) {
         campoForm.campoTipologiaServizioId = campoForm.id;
-        this.campoTipologiaServizioList[campoFormIdx] = campoForm;
+        this.campoTipologiaServizioList[campoFormIdx] = _.cloneDeep(campoForm);
       } else if (campoFormIdx2 != -1) {
-        this.campoServizioAddList[campoFormIdx] = campoForm;
+        this.campoServizioAddList[campoFormIdx] = _.cloneDeep(campoForm);
       } else {
         campoForm.uuid = uuidv4();
         campoForm.draggable = true;
@@ -413,12 +413,12 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
       this.confirmationService.confirm(
         Utils.getModale(() => {
-            item = this.campoTipologiaServizioOriginal.find((value => value.id = item.id));
+            let finded = this.campoTipologiaServizioOriginal.find((value => value.id == item.id));
 
             let findIndex = this.campoTipologiaServizioList.findIndex((value) => value.id == item.id);
             if (findIndex != -1) {
-              item.uuid = this.campoTipologiaServizioList[findIndex].uuid;
-              this.campoTipologiaServizioList[findIndex] = item;
+              finded.uuid = this.campoTipologiaServizioList[findIndex].uuid;
+              this.campoTipologiaServizioList[findIndex] = _.cloneDeep(finded);
               this.refreshItemsDipendeDa();
             }
           },
