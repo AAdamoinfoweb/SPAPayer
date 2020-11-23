@@ -1,6 +1,21 @@
 <div class="wrapper">
-  <app-overlay *ngIf="caricamento" [caricamento]="caricamento"></app-overlay>
-  <app-overlay-dati-pagamento *ngIf="datiPagamento" [datiPagamento]="datiPagamento"></app-overlay-dati-pagamento>
+  <app-overlay *ngIf="mostraModale" [isModaleGrande]="true">
+    <ng-template>
+      <ng-container *ngIf="datiPagamento">
+        <app-nuovo-pagamento [filtroPagamento]="false" [datiPagamento]="datiPagamento"></app-nuovo-pagamento>
+      </ng-container>
+      <ng-container *ngIf="datiModaleCampo">
+        <app-modale-campo-form [datiModaleCampo]="datiModaleCampo"></app-modale-campo-form>
+        <ng-container *ngIf="idFunzione">
+          <app-overlay [isModaleGrande]="false">
+            <ng-template>
+              <app-modale-aggiungi-tipo-campo [idFunzione]="idFunzione"></app-modale-aggiungi-tipo-campo>
+            </ng-template>
+          </app-overlay>
+        </ng-container>
+      </ng-container>
+    </ng-template>
+  </app-overlay>
   <app-login-bar></app-login-bar>
   <app-sidebar></app-sidebar>
   <div class="header">

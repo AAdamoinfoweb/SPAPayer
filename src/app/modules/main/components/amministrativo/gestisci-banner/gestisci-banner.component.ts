@@ -27,8 +27,6 @@ import {Observable} from 'rxjs';
 export class GestisciBannerComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
   readonly tooltipTitolo = 'In questa pagina puoi visualizzare la lista completa dei banner presenti in Payer e filtrarli';
 
-  idFunzione;
-
   breadcrumbList = [];
 
   listaElementi: Array<Banner> = new Array<Banner>();

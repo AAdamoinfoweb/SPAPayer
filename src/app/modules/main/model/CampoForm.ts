@@ -1,6 +1,5 @@
 import {ControlloLogico} from './ControlloLogico';
 import {OpzioneSelect} from './OpzioneSelect';
-
 export class CampoForm {
   id: number;
   titolo: string;
@@ -14,10 +13,11 @@ export class CampoForm {
   posizione: number;
   chiave: boolean;
   controllo_logico: ControlloLogico;
-  campo_input: boolean;
+  campoInput: boolean;
   jsonPath: string;
   tipologica: string;
   campoDettaglioTransazione: string;
   dipendeDa: number;
   opzioni: Array<OpzioneSelect>;
+  isCampoTipologiaServizio: boolean; // variabile aggiunta per usarla in coppia con l'id per creare un identificativo univoco
 }

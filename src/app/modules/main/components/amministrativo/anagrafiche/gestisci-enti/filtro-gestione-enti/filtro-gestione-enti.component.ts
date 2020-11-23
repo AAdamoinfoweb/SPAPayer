@@ -13,8 +13,7 @@ import {Comune} from '../../../../../model/Comune';
 import {Provincia} from '../../../../../model/Provincia';
 import {EnteService} from '../../../../../../../services/ente.service';
 import {ActivatedRoute} from "@angular/router";
-import {Utils} from '../../../../../../../utils/Utils';
-import {LivelloTerritorialeService} from "../../../../../../../services/livelloTerritoriale.service";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-filtro-gestione-enti',
@@ -73,7 +72,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: s.nome
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroSocieta);
+    this.opzioniFiltroSocieta = _.sortBy(this.opzioniFiltroSocieta, ['label']);
   }
 
   letturaLivelloTerritoriale(): void {
@@ -90,7 +89,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: livello.nome
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroLivelliTerritoriale);
+    this.opzioniFiltroLivelliTerritoriale = _.sortBy(this.opzioniFiltroLivelliTerritoriale, ['label']);
 
     if (this.livelloTerritorialeId) {
       const isFiltroLivelloTerritorialeValido = this.opzioniFiltroLivelliTerritoriale.some(item => item.value === this.livelloTerritorialeId);
@@ -116,7 +115,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: comune.nome
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroComune);
+    this.opzioniFiltroComune = _.sortBy(this.opzioniFiltroComune, ['label']);
   }
 
   letturaProvince() {
@@ -132,7 +131,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: provincia.sigla
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroProvincia);
+    this.opzioniFiltroProvincia = _.sortBy(this.opzioniFiltroProvincia, ['label']);
   }
 
   isCampoInvalido(campo: NgModel) {

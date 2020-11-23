@@ -17,7 +17,6 @@ export class DettaglioAccessoComponent extends FormElementoParentComponent imple
 
   FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum = FunzioneGestioneEnum.DETTAGLIO;
-  idFunzione;
 
   accesso: Accesso = new Accesso();
   titoloPagina = 'Dettaglio Accesso';

@@ -22,7 +22,6 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
-  idFunzione;
 
   titoloPagina: string;
   tooltip: string;

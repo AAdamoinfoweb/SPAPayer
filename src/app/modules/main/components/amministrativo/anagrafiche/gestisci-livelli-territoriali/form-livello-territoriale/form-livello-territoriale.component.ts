@@ -21,7 +21,6 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum;
-  idFunzione;
 
   titoloPagina: string;
   tooltip: string;

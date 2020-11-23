@@ -1,0 +1,654 @@
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  ComponentRef,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  Renderer2,
+  ViewChild,
+  ViewChildren,
+  ViewContainerRef
+} from '@angular/core';
+import {FormElementoParentComponent} from '../../form-elemento-parent.component';
+import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {OverlayService} from '../../../../../../services/overlay.service';
+import {HttpClient} from '@angular/common/http';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {ViewportRuler} from '@angular/cdk/overlay';
+import {ConfirmationService} from 'primeng/api';
+import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
+import {ParametriRicercaServizio} from '../../../../model/servizio/ParametriRicercaServizio';
+import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
+import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
+import {Societa} from '../../../../model/Societa';
+import {SocietaService} from '../../../../../../services/societa.service';
+import {catchError, map} from 'rxjs/operators';
+import {EnteService} from '../../../../../../services/ente.service';
+import {Observable, of} from 'rxjs';
+import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte';
+import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
+import {v4 as uuidv4} from 'uuid';
+import * as _ from 'lodash';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
+import {ConfiguratoreCampiNuovoPagamento} from '../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
+import {ContoCorrente} from '../../../../model/ente/ContoCorrente';
+import {DatiContoCorrenteComponent} from '../../anagrafiche/gestisci-enti/dati-conto-corrente/dati-conto-corrente.component';
+import {ConfiguraServizioService} from '../../../../../../services/configura-servizio.service';
+import {RendicontazioneGiornaliera} from '../../../../model/servizio/RendicontazioneGiornaliera';
+import {CampoServizio} from '../../../../model/servizio/CampoServizio';
+import {FiltroSelect} from '../../../../model/servizio/FiltroSelect';
+import {ImpositoreServizio} from '../../../../model/servizio/ImpositoreServizio';
+import {LivelloIntegrazioneServizio} from '../../../../model/servizio/LivelloIntegrazioneServizio';
+import {BeneficiarioServizio} from '../../../../model/servizio/BeneficiarioServizio';
+import {FiltroUfficio} from '../../../../model/servizio/FiltroUfficio';
+import {Contatti} from '../../../../model/servizio/Contatti';
+import {Servizio} from '../../../../model/servizio/Servizio';
+import {FlussoRiversamentoPagoPA} from '../../../../model/servizio/FlussoRiversamentoPagoPA';
+import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
+import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
+import {Utils} from '../../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+
+@Component({
+  selector: 'app-form-servizio',
+  templateUrl: './form-servizio.component.html',
+  styleUrls: ['./form-servizio.component.scss']
+})
+export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
+  private firstAdd = false;
+  private isSingleClick: boolean;
+
+  constructor(private cdr: ChangeDetectorRef,
+              private renderer: Renderer2,
+              private configuraServizioService: ConfiguraServizioService,
+              private componentFactoryResolver: ComponentFactoryResolver,
+              private overlayService: OverlayService,
+              private societaService: SocietaService,
+              private enteService: EnteService,
+              protected activatedRoute: ActivatedRoute,
+              protected router: Router,
+              protected http: HttpClient,
+              protected amministrativoService: AmministrativoService,
+              private viewportRuler: ViewportRuler,
+              protected confirmationService: ConfirmationService,
+              private campoTipologiaServizioService: CampoTipologiaServizioService) {
+    super(confirmationService, activatedRoute, amministrativoService, http, router);
+  }
+
+  titoloPagina: string;
+  tooltip: string;
+
+  breadcrumbList: Breadcrumb[] = [];
+
+  readonly lunghezzaMaxCol1: number = 5;
+  readonly lunghezzaMaxCol2: number = 10;
+  readonly lunghezzaMaxCol3: number = 15;
+
+  funzione: FunzioneGestioneEnum;
+  filtro: ParametriRicercaServizio;
+
+  LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
+
+  private listaTipiCampo: any[];
+
+  servizio: Servizio = new Servizio();
+  contatti: Contatti = new Contatti();
+  impositore: ImpositoreServizio = new ImpositoreServizio();
+  integrazione: LivelloIntegrazioneServizio = new LivelloIntegrazioneServizio();
+  beneficiario: BeneficiarioServizio = new BeneficiarioServizio();
+
+  listaSocieta: Societa[] = [];
+  listaLivelloTerritoriale: FiltroSelect[] = [];
+  listaEnti: FiltroSelect[] = [];
+  listaEntiBenef: FiltroSelect[] = [];
+  listaPortaleEsterno: FiltroSelect[] = [];
+  listaUfficio: FiltroUfficio[] = [];
+
+  FunzioneGestioneEnum = FunzioneGestioneEnum;
+  filtri: ParametriRicercaServizio;
+
+
+  campoTipologiaServizioOriginal: CampoServizio[];
+  campoTipologiaServizioList: CampoServizio[];
+  campoServizioAddList: CampoServizio[];
+
+  private tipoCampoIdSelect: number;
+
+  testoTooltipIconaElimina = 'Elimina dati beneficiario';
+
+  listaContiCorrente: ContoCorrente[];
+
+  @ViewChildren('datiContoCorrente', {read: ViewContainerRef})
+  datiBeneficiarioFormQuery: QueryList<any>;
+
+  @ViewChild('datiContoCorrente', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
+  private componentRef: ComponentRef<any>;
+
+  private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
+  private listaDipendeDa: CampoTipologiaServizio[];
+  rendicontazioneGiornaliera: RendicontazioneGiornaliera = new RendicontazioneGiornaliera();
+  rendicontazioneFlussoPA: FlussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+  TipoCampoEnum = TipoCampoEnum;
+  invioNotifiche: any = {};
+  emailsControl: FormControl[] = [new FormControl()];
+  displayCc = false;
+
+  mapContoCorrente: Map<string, ContoCorrente> = new Map<string, ContoCorrente>();
+  mapControllo: Map<string, boolean> = new Map<string, boolean>();
+  getListaContiCorrente = (mapContoCorrente: Map<string, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
+  getListaControllo = (mapControllo: Map<string, boolean>) => Array.from(mapControllo, ([name, value]) => value);
+
+  showEditId: number;
+
+  ngOnInit(): void {
+  }
+
+  public ngAfterViewInit() {
+    this.datiBeneficiarioFormQuery.changes.subscribe(ql => {
+      if (!this.firstAdd) {
+        this.firstAdd = true;
+        this.aggiungiContoCorrente();
+      }
+    });
+  }
+
+  initFormPage(snapshot: ActivatedRouteSnapshot) {
+    this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoServizio) => {
+      const campoFormIdx = this.campoTipologiaServizioList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
+      const campoFormIdx2 = this.campoServizioAddList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
+
+      if (campoFormIdx != -1) {
+        campoForm.campoTipologiaServizioId = campoForm.id;
+        this.campoTipologiaServizioList[campoFormIdx] = _.cloneDeep(campoForm);
+      } else if (campoFormIdx2 != -1) {
+        this.campoServizioAddList[campoFormIdx] = _.cloneDeep(campoForm);
+      } else {
+        campoForm.uuid = uuidv4();
+        campoForm.draggable = true;
+        this.campoServizioAddList.push(campoForm);
+      }
+      this.cdr.detectChanges();
+      this.overlayService.mostraModaleCampoEvent.emit(null);
+
+      this.refreshItemsDipendeDa();
+    });
+    this.refreshItemsEvent.subscribe((items) => {
+      this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
+    });
+    this.societaService.ricercaSocieta(null, this.idFunzione)
+      .pipe(map((value: Societa[]) => this.listaSocieta = value)).subscribe();
+
+    this.configuraServizioService.configuraServiziFiltroPortaleEsterno(this.idFunzione)
+      .pipe(map((value: FiltroSelect[]) => this.listaPortaleEsterno = value)).subscribe();
+
+    this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
+      .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
+        localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
+        localStorage.setItem('listaControlliLogici', JSON.stringify(configuratore.listaControlliLogici));
+        localStorage.setItem('listaTipologiche', JSON.stringify(configuratore.listaTipologiche));
+        localStorage.setItem('listaJsonPath', JSON.stringify(configuratore.listaJsonPath));
+
+        this.listaTipiCampo = configuratore.listaTipiCampo;
+
+        const filter = configuratore.listaTipiCampo.filter((tc => tc.nome === TipoCampoEnum.SELECT));
+        if (filter && filter.length > 0) {
+          this.tipoCampoIdSelect = filter[0].id;
+        }
+
+        localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
+      })).subscribe();
+
+    this.controllaTipoFunzione();
+    this.inizializzaBreadcrumb();
+    this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Servizio';
+    this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una tipologia servizio';
+  }
+
+  caricaCampi(tipologiaServizioId: number): Observable<any> {
+    return this.campoTipologiaServizioService.campiTipologiaServizio(tipologiaServizioId, this.idFunzione)
+      .pipe(map(value => {
+        this.campoTipologiaServizioOriginal = _.sortBy(value, 'posizione');
+        this.campoTipologiaServizioList = _.cloneDeep(this.campoTipologiaServizioOriginal);
+
+        // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
+        if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+          this.campoTipologiaServizioList.forEach(campo => {
+            campo.uuid = uuidv4();
+            if (campo.dipendeDa) {
+              campo.dipendeDa.id = null;
+            }
+          });
+        }
+        this.refreshItemsDipendeDa();
+      }));
+  }
+
+  controllaTipoFunzione() {
+    const url = this.activatedRoute.snapshot.url[1].path;
+    switch (url) {
+      case 'dettaglioServizio':
+        this.funzione = FunzioneGestioneEnum.DETTAGLIO;
+        break;
+      case 'aggiungiServizio':
+        this.funzione = FunzioneGestioneEnum.AGGIUNGI;
+        break;
+      case 'modificaServizio':
+        this.funzione = FunzioneGestioneEnum.MODIFICA;
+        break;
+    }
+  }
+
+  inizializzaBreadcrumb(): void {
+    const breadcrumbs: SintesiBreadcrumb[] = [];
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Anagrafiche', null));
+    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Servizio', this.basePath));
+    breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Servizio', null));
+    this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
+  }
+
+  ngOnDestroy(): void {
+  }
+
+  onClickSalva(): void {
+    const emails: string[] = [];
+    this.emailsControl.forEach((control) => {
+      if (control.value) {
+        emails.push(control.value);
+      }
+    });
+
+    const campoServizios: CampoServizio[] = this.campoTipologiaServizioList
+      .filter((value => !value.id || value.campoTipologiaServizioId))
+      .map(value => value.id = null);
+
+    this.campoServizioAddList.forEach((value, index) => value.posizione = index);
+
+    const flussiNotifiche = new FlussiNotifiche();
+    flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
+    flussiNotifiche.flussoRiversamentoPagoPa = this.rendicontazioneFlussoPA;
+    flussiNotifiche.notifichePagamento.email = emails.join(';');
+    this.servizio.flussiNotifiche = flussiNotifiche;
+
+    this.servizio.tipologiaServizioId = this.filtri.tipologiaServizio.id;
+    this.servizio.raggruppamentoId = this.filtri.raggruppamentoId;
+    this.servizio.nomeServizio = this.filtri.nomeServizio;
+    this.servizio.abilitaDa = this.filtri.abilitaDa;
+    this.servizio.abilitaA = this.filtri.abilitaA;
+    this.servizio.flagAttiva = this.filtri.attivo;
+
+    this.servizio.contatti = this.contatti;
+    this.servizio.integrazione = this.integrazione;
+    this.servizio.impositore = this.impositore;
+    this.servizio.beneficiario = this.beneficiario;
+    this.servizio.listaContiCorrenti = this.listaContiCorrente;
+    this.servizio.listaCampiServizio = _.concat(campoServizios, this.campoServizioAddList);
+  }
+
+  onChangeFiltri(event: ParametriRicercaServizio) {
+    this.filtri = event;
+  }
+
+  cambiaLivelloIntegrazione(event: any) {
+    if (event !== LivelloIntegrazioneEnum.LV1) {
+      this.campoServizioAddList = [];
+      this.caricaCampi(this.filtri.tipologiaServizio.id).subscribe();
+    } else {
+      this.campoTipologiaServizioOriginal = null;
+      this.campoTipologiaServizioList = null;
+    }
+  }
+
+  disabilitaCampi() {
+    return this.funzione == FunzioneGestioneEnum.DETTAGLIO;
+  }
+
+  onChangeSocietaImpositore(societaInput: NgModel) {
+    if (!societaInput.value) {
+      this.impositore.livelloTerritorialeId = null;
+      this.impositore.enteId = null;
+    } else {
+      this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(societaInput.value, this.idFunzione)
+        .pipe(map((value) => this.listaLivelloTerritoriale = value)).subscribe();
+    }
+  }
+
+  onChangeSocietaBeneficiario(societaInput: NgModel) {
+    if (!societaInput.value) {
+      this.beneficiario.livelloTerritorialeId = null;
+      this.beneficiario.enteId = null;
+    } else {
+      this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(societaInput.value, this.idFunzione)
+        .pipe(map((value) => this.listaLivelloTerritoriale = value)).subscribe();
+    }
+  }
+
+  onChangeLivelloTerritorialeImpositore(societaInput: NgModel, livelloTerritorialeInput: NgModel) {
+    if (!livelloTerritorialeInput.value) {
+      this.impositore.enteId = null;
+    } else {
+      const params = new ParametriRicercaEnte();
+      params.societaId = societaInput.value;
+      params.livelloTerritorialeId = livelloTerritorialeInput.value;
+      return this.configuraServizioService.configuraServiziFiltroEnteImpositore(params, this.idFunzione)
+        .pipe(map((value) => this.listaEnti = value)).subscribe();
+    }
+  }
+
+  onChangeLivelloTerritorialeBeneficiario(societaInput: NgModel, livelloTerritorialeInput: NgModel) {
+    if (!livelloTerritorialeInput.value) {
+      this.beneficiario.enteId = null;
+    } else {
+      const params = new ParametriRicercaEnte();
+      params.societaId = societaInput.value;
+      params.livelloTerritorialeId = livelloTerritorialeInput.value;
+      return this.configuraServizioService.configuraServiziFiltroEnteBeneficiario(params, this.idFunzione)
+        .pipe(map((value) => this.listaEntiBenef = value)).subscribe();
+    }
+  }
+
+  isCampoInvalido(campo: NgModel | FormControl) {
+    return campo?.errors;
+  }
+
+  setPlaceholder(campo: NgModel | FormControl, tipoCampo: TipoCampoEnum): string {
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      return null;
+    } else if (this.isCampoInvalido(campo)) {
+      return 'campo non valido';
+    } else {
+      switch (tipoCampo) {
+        case TipoCampoEnum.SELECT:
+          return 'seleziona un elemento dalla lista';
+        case TipoCampoEnum.INPUT_TESTUALE:
+          return 'inserisci testo';
+        case TipoCampoEnum.DATEDDMMYY:
+          return 'inserisci data';
+      }
+    }
+  }
+
+  onChangeEnte(enteInput: NgModel) {
+    if (!enteInput.value) {
+      this.beneficiario.ufficio = null;
+    } else {
+      this.enteService.recuperaContiCorrenti(enteInput.value, this.idFunzione)
+        .subscribe((value) => {
+          this.componentRef.instance.listaContiCorrente = _.cloneDeep(value);
+        }, catchError(() => {
+          this.componentRef.instance.listaContiCorrente = [];
+          return of(null);
+        }));
+      return this.configuraServizioService.configuraServiziFiltroUfficio(enteInput.value, this.idFunzione)
+        .pipe(map((value) => this.listaUfficio = value)).subscribe();
+    }
+  }
+
+  showModal(item: CampoTipologiaServizio) {
+    this.overlayService.mostraModaleCampoEvent.emit({
+      campoForm: _.cloneDeep(item),
+      funzione: this.funzione,
+      idFunzione: this.idFunzione,
+      livelloIntegrazione: this.integrazione.livelloIntegrazioneId,
+      listaDipendeDa: this.listaDipendeDa
+    });
+  }
+
+  removeItem(item: CampoServizio) {
+    if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
+      this.confirmationService.confirm(
+        Utils.getModale(() => {
+            this.campoServizioAddList.splice(this.campoServizioAddList.findIndex((v) => v.id === item.id), 1);
+            this.refreshItemsDipendeDa();
+          },
+          TipoModaleEnum.ELIMINA,
+        )
+      );
+    }
+  }
+
+  undo(item: CampoServizio) {
+    if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
+      this.confirmationService.confirm(
+        Utils.getModale(() => {
+            let finded = this.campoTipologiaServizioOriginal.find((value => value.id == item.id));
+
+            let findIndex = this.campoTipologiaServizioList.findIndex((value) => value.id == item.id);
+            if (findIndex != -1) {
+              finded.uuid = this.campoTipologiaServizioList[findIndex].uuid;
+              this.campoTipologiaServizioList[findIndex] = _.cloneDeep(finded);
+              this.refreshItemsDipendeDa();
+            }
+          },
+          TipoModaleEnum.CUSTOM,
+          'Annullamento modifiche',
+          'Confermare l\'annullamento delle modifiche?'
+        )
+      );
+    }
+  }
+
+  private refreshItemsDipendeDa() {
+    const list = _.concat(this.campoTipologiaServizioList, this.campoServizioAddList);
+    this.refreshItemsEvent.emit(list);
+  }
+
+  calcolaDimensioneCampo(campo: CampoTipologiaServizio): string {
+    let classe;
+
+    if (this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.DATEDDMMYY ||
+      this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.DATEMMYY ||
+      this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.DATEYY) {
+      classe = 'col-lg-2 col-md-4 col-xs-6';
+    } else if (this.decodeTipoCampo(campo.tipoCampoId) === TipoCampoEnum.INPUT_PREZZO) {
+      classe = 'col-lg-2 col-md-4 col-xs-6';
+    } else {
+      if (campo.lunghezza <= this.lunghezzaMaxCol1) {
+        classe = 'col-lg-1 col-md-4 col-xs-6';
+      } else if (campo.lunghezza <= this.lunghezzaMaxCol2) {
+        classe = 'col-lg-3 col-md-4 col-xs-6';
+      } else if (campo.lunghezza <= this.lunghezzaMaxCol3) {
+        classe = 'col-lg-4 col-md-5 col-xs-6';
+      } else {
+        classe = 'col-lg-5 col-md-6 col-xs-6';
+      }
+    }
+    return classe;
+  }
+
+  private decodeTipoCampo(tipoCampoId: number): string {
+    const find = this.listaTipiCampo.find((value) => value.id = tipoCampoId);
+    if (find) {
+      return find.nome;
+    } else {
+      return '';
+    }
+  }
+
+  dropEvt(event: CdkDragDrop<{ item: CampoServizio; index: number }, any>) {
+    this.campoServizioAddList[event.previousContainer.data.index] = event.container.data.item;
+    this.campoServizioAddList[event.container.data.index] = event.previousContainer.data.item;
+  }
+
+  add() {
+    const campoForm = new CampoTipologiaServizio();
+    this.refreshItemsDipendeDa();
+    this.showModal(campoForm);
+  }
+
+  aggiungiContoCorrente(datiContoCorrente?: ContoCorrente): number {
+    // creazione Dati Conto Corrente Component
+    const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiContoCorrenteComponent);
+    this.componentRef = this.target.createComponent(childComponent);
+    const indexContoCorrente = this.target.length;
+    // input
+    this.componentRef.instance.uuid = Utils.uuidv4();
+    this.componentRef.instance.indexDatiContoCorrente = indexContoCorrente;
+    this.componentRef.instance.funzione = this.funzione;
+    let instanceContoCorrente: ContoCorrente;
+    if (datiContoCorrente == null) {
+      instanceContoCorrente = new ContoCorrente();
+    } else {
+      instanceContoCorrente = datiContoCorrente;
+    }
+    this.componentRef.instance.datiContoCorrente = instanceContoCorrente;
+    if (this.listaContiCorrente != null && FunzioneGestioneEnum.MODIFICA) {
+      this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
+    }
+    // output
+    this.componentRef.instance.onDeleteDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
+      const contoCorrente = this.mapContoCorrente.get(componenteDinamico.uuid);
+      const isContoCorrenteDaModificare: boolean = contoCorrente != null;
+      if (isContoCorrenteDaModificare) {
+        this.mapContoCorrente.delete(componenteDinamico.uuid);
+        this.mapControllo.delete(componenteDinamico.uuid);
+      }
+      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
+      const zeroBasedIndex = componenteDinamico.index - 1;
+      const viewRef = this.target.get(zeroBasedIndex);
+      if (viewRef == null && this.target.length === 1) {
+        this.target.clear();
+      } else {
+        this.target.remove(zeroBasedIndex);
+      }
+      this.setListaContiCorrente();
+    });
+    this.componentRef.instance.onChangeDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
+      this.mapContoCorrente.set(componenteDinamico.uuid, componenteDinamico.oggetto);
+      this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
+      this.setListaContiCorrente();
+    });
+    this.componentRef.changeDetectorRef.detectChanges();
+    return indexContoCorrente;
+  }
+
+
+  private setListaContiCorrente() {
+    const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
+    this.beneficiario.listaContiCorrenti = listaContiCorrente;
+  }
+
+  validateUrl() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '(http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
+        if (!new RegExp(regex).test(control.value)) {
+          return {url: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+
+  validateServer() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
+        const regexIp = '^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$';
+        if (new RegExp(regex).test(control.value) || new RegExp(regexIp).test(control.value)) {
+          return null;
+        } else {
+          return {url: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+  validateEmail() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
+        if (!new RegExp(regex).test(control.value)) {
+          return {email: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+  getPlaceholderRequired(label: string, required: boolean) {
+    if (required) {
+      return label + ' *';
+    }
+    return label;
+  }
+
+  addEmail() {
+    this.emailsControl.push(new FormControl());
+  }
+
+  removeEmail(index: number) {
+    this.emailsControl.splice(index, 1);
+  }
+
+  selezionaDaCC() {
+    this.displayCc = !this.displayCc;
+  }
+
+  changeEmailGiornaliera(event: boolean) {
+    if (!event) {
+      this.rendicontazioneGiornaliera.email = null;
+      this.rendicontazioneGiornaliera.emailCcn = null;
+    }
+  }
+
+  changeEmailFlussoPagoPA(event: boolean) {
+    if (!event) {
+      this.rendicontazioneFlussoPA.email = null;
+      this.rendicontazioneFlussoPA.emailCcn = null;
+    }
+  }
+
+  changeFtpFlussoPagoPA(event: boolean) {
+    if (!event) {
+      this.rendicontazioneFlussoPA.server = null;
+      this.rendicontazioneFlussoPA.username = null;
+      this.rendicontazioneFlussoPA.password = null;
+      this.rendicontazioneFlussoPA.directory = null;
+    }
+  }
+
+  changeFtpGiornaliera(event: boolean) {
+    if (!event) {
+      this.rendicontazioneGiornaliera.server = null;
+      this.rendicontazioneGiornaliera.username = null;
+      this.rendicontazioneGiornaliera.password = null;
+      this.rendicontazioneGiornaliera.directory = null;
+      this.rendicontazioneGiornaliera.nuovoFormato = null;
+    }
+  }
+
+  showModalAtClick(item: CampoTipologiaServizio) {
+    this.isSingleClick = true;
+    setTimeout(() => {
+      if (this.isSingleClick) {
+        this.overlayService.mostraModaleCampoEvent.emit({
+          campoForm: _.cloneDeep(item),
+          funzione: this.funzione,
+          idFunzione: this.idFunzione,
+          livelloIntegrazione: this.integrazione.livelloIntegrazioneId,
+          listaDipendeDa: this.listaDipendeDa
+        });
+      }
+    }, 250);
+  }
+
+  dblClick(item: CampoTipologiaServizio, index: number) {
+    this.isSingleClick = false;
+    this.showEditId = index;
+  }
+}

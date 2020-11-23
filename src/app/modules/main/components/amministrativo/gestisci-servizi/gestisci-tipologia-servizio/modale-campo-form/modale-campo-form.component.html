@@ -1,0 +1,277 @@
+<form [formGroup]="form" class="modal-wrapper">
+  <div class="row form-row">
+
+    <div class="col-sm-6 col-md-4 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'titolo'" class="title form-elem-title" [ngClass]="{'required': datiModaleCampo?.funzione !== FunzioneGestioneEnum.DETTAGLIO}"
+        >Titolo</label>
+      </div>
+      <div class="row">
+        <input id="titolo"
+               [formControl]="form.controls['titolo']"
+               [(ngModel)]="datiModaleCampo.campoForm.titolo"
+               type="text"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'tipoCampo'" class="title form-elem-title" [ngClass]="{'required': datiModaleCampo?.funzione !== FunzioneGestioneEnum.DETTAGLIO}"
+        >Tipo Campo</label>
+      </div>
+      <div class="row">
+        <select
+          id="tipoCampo"
+          [formControl]="form.controls['tipoCampo']"
+          [(ngModel)]="datiModaleCampo.campoForm.tipoCampoId">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of listaTipiCampo" [ngValue]="item.id">{{item.nome}} - {{item.informazioni}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 form-elem-container">
+      <div id="containerBottoneAggiungiTipoCampo">
+        <button class="btn" *ngIf="datiModaleCampo.funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                (click)="addTipoCampo()">Aggiungi Tipo campo
+        </button>
+      </div>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'obbligatorio'" class="title form-elem-title"
+        >Obbligatorio</label>
+      </div>
+      <div class="row">
+        <input id="obbligatorio"
+               type="checkbox"
+               [formControl]="form.controls['obbligatorio']"
+               [(ngModel)]="datiModaleCampo.campoForm.obbligatorio"
+               type="checkbox"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'chiave'" class="title form-elem-title"
+        >Chiave</label>
+      </div>
+      <div class="row">
+        <input id="chiave"
+               type="checkbox"
+               [formControl]="form.controls['chiave']"
+               [(ngModel)]="datiModaleCampo.campoForm.chiave"
+               (click)="clickChiave($event)"
+               type="checkbox"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'lunghezzaVariabile'" class="title form-elem-title"
+        >Lunghezza variabile</label>
+      </div>
+      <div class="row">
+        <input id="lunghezzaVariabile"
+               [formControl]="form.controls['lunghezzaVariabile']"
+               [(ngModel)]="datiModaleCampo.campoForm.lunghezzaVariabile"
+               type="checkbox"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'lunghezza'" class="title form-elem-title"
+        >Lunghezza</label>
+      </div>
+      <div class="row">
+        <input id="lunghezza"
+               [formControl]="form.controls['lunghezza']"
+               [(ngModel)]="datiModaleCampo.campoForm.lunghezza"
+               type="text"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'campoFisso'" class="title form-elem-title"
+        >Campo fisso</label>
+      </div>
+      <div class="row">
+        <input id="campoFisso"
+               [formControl]="form.controls['campoFisso']"
+               [(ngModel)]="datiModaleCampo.campoForm.campoFisso"
+               type="checkbox"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'disabilitato'" class="title form-elem-title"
+        >Disabilitato</label>
+      </div>
+      <div class="row">
+        <input id="disabilitato"
+               type="checkbox"
+               [formControl]="form.controls['disabilitato']"
+               [(ngModel)]="datiModaleCampo.campoForm.disabilitato"
+               type="checkbox"
+               autocomplete="off"
+        />
+      </div>
+    </div>
+    <ng-container *ngIf="datiModaleCampo.livelloIntegrazione">
+      <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+        <div class="row">
+          <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
+          >Livello di Integrazione</label>
+        </div>
+        <div class="row">
+          <select
+            id="livelloIntegrazione"
+            [disabled]="true"
+            [attr.disabled]="true"
+            [formControl]="form.controls['livelloIntegrazione']"
+            [(ngModel)]="datiModaleCampo.livelloIntegrazione"
+            (ngModelChange)="cambiaLivelloIntegrazione(datiModaleCampo.campoForm, $event)">
+            <option [ngValue]="livelloIntegrazioneEnum.LV2">Livello 2</option>
+            <option [ngValue]="livelloIntegrazioneEnum.LV2_BACK_OFFICE">Livello 2 BO</option>
+            <option [ngValue]="livelloIntegrazioneEnum.LV3">Livello 3</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+        <div class="row">
+          <label [htmlFor]="'campo_input'" class="title form-elem-title"
+          >Campo input</label>
+        </div>
+        <div class="row">
+          <input id="campo_input"
+                 [formControl]="form.controls['campo_input']"
+                 [(ngModel)]="datiModaleCampo.campoForm.campoInput"
+                 [attr.disabled]="datiModaleCampo.livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
+                 (ngModelChange)="cambiaLivelloIntegrazione(datiModaleCampo.campoForm, datiModaleCampo.livelloIntegrazione)"
+                 type="checkbox"
+                 autocomplete="off"
+          />
+        </div>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+        <div class="row">
+          <label [htmlFor]="'jsonPath'" class="title form-elem-title"
+          >Json path</label>
+        </div>
+        <div class="row">
+          <select
+            id="jsonPath"
+            [attr.disabled]="datiModaleCampo.livelloIntegrazione == livelloIntegrazioneEnum.LV2 ? true : null"
+            [formControl]="form.controls['jsonPath']"
+            [(ngModel)]="datiModaleCampo.campoForm['jsonPathId']">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let item of listaJsonPathFiltrata"
+                    [ngValue]="item.json_path">{{item.nome_attributo}}</option>
+          </select>
+        </div>
+      </div>
+    </ng-container>
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'tipologica'" class="title form-elem-title"
+        >Tipologica</label>
+      </div>
+      <div class="row">
+        <select
+          id="tipologica"
+          [formControl]="form.controls['tipologica']"
+          [(ngModel)]="datiModaleCampo.campoForm.tipologica">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of listaTipologiche" [ngValue]="item.nome">{{item.nome}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'dipendeDa'" class="title form-elem-title"
+        >Dipende da</label>
+      </div>
+      <div class="row">
+        <select
+          [attr.disabled]="dipendeDaIsDisabled()"
+          id="dipendeDa"
+          [formControl]="form.controls['dipendeDa']"
+          [(ngModel)]="datiModaleCampo.campoForm.dipendeDa">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of datiModaleCampo.listaDipendeDa"
+                  [ngValue]="item">{{item.titolo}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'controllo_logico'" class="title form-elem-title"
+        >Controllo logico</label>
+      </div>
+      <div class="row">
+        <select
+          id="controllo_logico"
+          [formControl]="form.controls['controllo_logico']"
+          [(ngModel)]="datiModaleCampo.campoForm.controlloLogicoId">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of listaControlliLogici" [ngValue]="item.nome">{{item.nome}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'campoDettaglioTransazione'" class="title form-elem-title"
+        >Campo dettaglio transazione</label>
+      </div>
+      <div class="row">
+        <select
+          id="campoDettaglioTransazione"
+          [formControl]="form.controls['campoDettaglioTransazione']"
+          [(ngModel)]="datiModaleCampo.campoForm.campoDettaglioTransazione">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of listaCampiDettaglioTransazione"
+                  [ngValue]="item.nome">{{item.nome}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="row buttons-row">
+
+        <div class="col-2">
+          <button type="button" id="bottoneIndietro" class="btn btn-secondary"
+                  (click)="clickIndietro()">{{datiModaleCampo.funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}
+          </button>
+        </div>
+
+        <div class="col-10 text-right" *ngIf="datiModaleCampo.funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <button (click)="salvaCampoForm()" type="button" class="btn"
+                  [disabled]="form.invalid">
+            Salva
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</form>

@@ -34,8 +34,6 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
 
   readonly funzioneGestioneUtenti = '/gestioneUtenti';
 
-  idFunzione;
-
   breadcrumbList = [];
 
   isMenuCarico = false;

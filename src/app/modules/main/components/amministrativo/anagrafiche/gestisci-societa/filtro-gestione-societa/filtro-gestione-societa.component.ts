@@ -5,7 +5,7 @@ import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {FiltroGestioneElementiComponent} from "../../../filtro-gestione-elementi.component";
 import {ActivatedRoute} from "@angular/router";
-import {Utils} from '../../../../../../../utils/Utils';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-filtro-gestione-societa',
@@ -22,8 +22,6 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   onChangeFiltri: EventEmitter<number> = new EventEmitter<number>();
 
   filtroSocieta: number = null;
-
-  idFunzione;
 
   constructor(protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
     super(route, amministrativoService);
@@ -47,7 +45,7 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
         label: societa.nome
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroSocieta);
+    this.opzioniFiltroSocieta = _.sortBy(this.opzioniFiltroSocieta, ['label']);
   }
 
   isCampoInvalido(campo: NgModel) {

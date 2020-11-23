@@ -3,7 +3,6 @@ import {FooterDirective} from "./footer/FooterDirective";
 import {IntegerNumberDirective} from "../utils/IntegerNumberDirective";
 import {DayInputDirective} from "../utils/DayInputDirective";
 import {MonthInputDirective} from "../utils/MonthInputDirective";
-import {OverlayComponent} from "./overlay/overlay.component";
 import {SpinnerOverlayComponent} from "./spinner-overlay/spinner-overlay.component";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {BrowserModule} from "@angular/platform-browser";
@@ -37,6 +36,7 @@ import {PaginatorComponent} from "./table/paginator/paginator.component";
 import {CommonModule} from "@angular/common";
 import {TabViewComponent} from "./tab-view/tab-view.component";
 import {ToolbarComponent} from "./toolbar/toolbar.component";
+import { AvvisoCampiObbligatoriComponent } from './avviso-campi-obbligatori/avviso-campi-obbligatori.component';
 
 @NgModule({
   declarations: [
@@ -45,11 +45,11 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
     IntegerNumberDirective,
     DayInputDirective,
     MonthInputDirective,
-    OverlayComponent,
     SpinnerOverlayComponent,
     PaginatorComponent,
     TabViewComponent,
     ToolbarComponent,
+    AvvisoCampiObbligatoriComponent,
   ],
   imports: [
     HttpClientModule,
@@ -89,10 +89,11 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
   ],
   exports: [
     FooterDirective,
-    OverlayComponent,
     TableComponent,
     ToolbarComponent,
-    TabViewComponent
+    TabViewComponent,
+    AvvisoCampiObbligatoriComponent,
+    AvvisoCampiObbligatoriComponent
   ],
 })
 export class CommonComponentModule {
