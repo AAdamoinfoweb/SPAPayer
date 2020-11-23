@@ -12,6 +12,11 @@
   margin-top: 3vh;
 }
 
+.required:after {
+  content: ' *';
+  color: red;
+}
+
 input[type=checkbox] {
   margin-top: 10px;
   margin-left: 10px;
