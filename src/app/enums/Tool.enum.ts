@@ -4,6 +4,7 @@ export enum ToolEnum {
   DELETE = 'delete',
   EXPORT_PDF = 'export_pdf',
   EXPORT_XLS = 'export_xls',
-  INSERT_CARRELLO = 'aggiungi_carrello'
+  INSERT_CARRELLO = 'aggiungi_carrello',
+  VISUALIZE_STATISTICS = 'visualizza statistiche'
 }
 

@@ -35,8 +35,9 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
 
   toolbarIcons = [
     {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
-    {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'}
-  ];  // TODO aggiungere icona azione Statistiche
+    {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'},
+    {type: ToolEnum.VISUALIZE_STATISTICS, tooltip: 'Statistiche'}
+  ];
 
   tableData: Tabella = {
     rows: [],
@@ -131,8 +132,15 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
       case ToolEnum.EXPORT_XLS:
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Attività');
         break;
-      // TODO aggiungere logica per icona azione Statistiche
+      case ToolEnum.VISUALIZE_STATISTICS:
+        this.visualizzaStatisticheRendicontazioniFiltrate(this.tableData);
+        break;
     }
+  }
+
+  visualizzaStatisticheRendicontazioniFiltrate(tabella: Tabella): void {
+    // TODO implementare logica per visualizzare le statistiche relative alle rendicontazioni filtrate
+    return null;
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
