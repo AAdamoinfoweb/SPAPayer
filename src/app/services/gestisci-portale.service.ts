@@ -173,7 +173,7 @@ export class  GestisciPortaleService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
-          return body as FiltroSelect;
+          return body as FiltroVersante;
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
