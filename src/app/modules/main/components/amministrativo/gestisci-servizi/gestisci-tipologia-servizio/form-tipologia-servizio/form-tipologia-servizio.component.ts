@@ -65,7 +65,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   readonly lunghezzaMaxCol2: number = 10;
   readonly lunghezzaMaxCol3: number = 15;
 
-  showEditId: string;
+  showEditId: string | number;
   filtro: ParametriRicercaTipologiaServizio;
   tipologiaServizioId: number;
   private livelloIntegrazione: LivelloIntegrazioneEnum;
@@ -335,7 +335,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   showModalAtClick(item: CampoTipologiaServizio) {
-
     this.isSingleClick = true;
     setTimeout(() => {
       if (this.isSingleClick) {
@@ -350,8 +349,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     }, 250);
   }
 
-  dblClick(item: CampoTipologiaServizio) {
+  dblClick(item: CampoTipologiaServizio, index: number) {
     this.isSingleClick = false;
-    this.showEditId = item.titolo;
+    this.showEditId = index;
   }
 }

@@ -118,9 +118,9 @@
                [cdkDragDisabled]="funzione == FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
             <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
             <div class="row" style="width: 100%">
-              <div (click)="showModalAtClick(item)" *ngIf="showEditId !== item.titolo" (dblclick)="dblClick(item)"
+              <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i" (dblclick)="dblClick(item, i)"
                    class="col-7 text-right">{{item.titolo}}</div>
-              <div *ngIf="showEditId == item.titolo" class="col-6 text-right">
+              <div *ngIf="showEditId == i" class="col-6 text-right">
                 <input autofocus
                        (keyup.enter)="showEditId = null"
                        [(ngModel)]="item.titolo"/>
