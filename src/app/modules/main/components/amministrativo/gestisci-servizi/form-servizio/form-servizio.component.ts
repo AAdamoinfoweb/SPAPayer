@@ -175,8 +175,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.cdr.detectChanges();
       this.overlayService.mostraModaleCampoEvent.emit(null);
 
-      const list = _.concat(this.campoTipologiaServizioList, this.campoServizioAddList);
-      this.refreshItemsEvent.emit(list);
+      this.refreshItemsDipendeDa();
     });
     this.refreshItemsEvent.subscribe((items) => {
       this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
@@ -225,8 +224,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
             }
           });
         }
-
-        this.refreshItemsEvent.emit(this.campoTipologiaServizioList);
+        this.refreshItemsDipendeDa();
       }));
   }
 
@@ -403,7 +401,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.confirmationService.confirm(
         Utils.getModale(() => {
             this.campoServizioAddList.splice(this.campoServizioAddList.findIndex((v) => v.id === item.id), 1);
-            this.refreshItemsEvent.emit(this.campoServizioAddList);
+            this.refreshItemsDipendeDa();
           },
           TipoModaleEnum.ELIMINA,
         )
@@ -416,7 +414,13 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.confirmationService.confirm(
         Utils.getModale(() => {
             item = this.campoTipologiaServizioOriginal.find((value => value.id = item.id));
-            this.refreshItemsEvent.emit(this.campoTipologiaServizioList);
+
+            let findIndex = this.campoTipologiaServizioList.findIndex((value) => value.id == item.id);
+            if (findIndex != -1) {
+              item.uuid = this.campoTipologiaServizioList[findIndex].uuid;
+              this.campoTipologiaServizioList[findIndex] = item;
+              this.refreshItemsDipendeDa();
+            }
           },
           TipoModaleEnum.CUSTOM,
           'Annullamento modifiche',
@@ -424,6 +428,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         )
       );
     }
+  }
+
+  private refreshItemsDipendeDa() {
+    const list = _.concat(this.campoTipologiaServizioList, this.campoServizioAddList);
+    this.refreshItemsEvent.emit(list);
   }
 
   calcolaDimensioneCampo(campo: CampoTipologiaServizio): string {
@@ -465,7 +474,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   add() {
     const campoForm = new CampoTipologiaServizio();
-    this.refreshItemsEvent.emit(this.campoTipologiaServizioList);
+    this.refreshItemsDipendeDa();
     this.showModal(campoForm);
   }
 

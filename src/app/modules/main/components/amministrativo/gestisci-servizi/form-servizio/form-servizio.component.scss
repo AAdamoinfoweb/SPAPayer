@@ -84,6 +84,10 @@ div.disabled {
   top: 30%;
 }
 
+.close {
+  cursor: pointer;
+}
+
 span.required::after {
   content: '\002A';
   color: red;

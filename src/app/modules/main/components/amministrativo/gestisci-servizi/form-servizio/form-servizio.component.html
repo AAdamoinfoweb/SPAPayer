@@ -656,7 +656,7 @@
                     <div class="col-3 text-right">
                       <span [ngClass]="{'field-input': item.campoTipologiaServizioId}"
                             *ngIf="item.campoTipologiaServizioId" (click)="undo(item)">
-                        <svg class="bg-light icon icon-lg icon-padded" (click)="undo(item)"
+                        <svg class="bg-light icon icon-lg icon-padded close" (click)="undo(item)"
                              [ngClass]="{'field-input': item.campoTipologiaServizioId}">
                           <use xlink:href="assets/img/sprite.svg#it-restore"></use>
                         </svg>
@@ -1072,7 +1072,6 @@
 <p-dialog header="Lista conti correnti" [(visible)]="displayCc">
   <div class="row">
     <div class="col">
-
     </div>
   </div>
   <div class="row pt-2">
@@ -1082,3 +1081,9 @@
     </div>
   </div>
 </p-dialog>
+<p-confirmDialog #cb icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
+    <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
+  </p-footer>
+</p-confirmDialog>
