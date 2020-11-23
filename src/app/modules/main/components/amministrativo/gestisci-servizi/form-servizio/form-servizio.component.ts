@@ -63,6 +63,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 })
 export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
   private firstAdd = false;
+  private isSingleClick: boolean;
 
   constructor(private cdr: ChangeDetectorRef,
               private renderer: Renderer2,
@@ -144,6 +145,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   getListaContiCorrente = (mapContoCorrente: Map<string, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
   getListaControllo = (mapControllo: Map<string, boolean>) => Array.from(mapControllo, ([name, value]) => value);
 
+  showEditId: number;
 
   ngOnInit(): void {
   }
@@ -262,11 +264,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       }
     });
 
-    const campoServizios: CampoServizio[] = this.campoServizioAddList
+    const campoServizios: CampoServizio[] = this.campoTipologiaServizioList
       .filter((value => !value.id || value.campoTipologiaServizioId))
       .map(value => value.id = null);
 
-    //TODO calcolo posizione
+    this.campoServizioAddList.forEach((value, index) => value.posizione = index);
 
     const flussiNotifiche = new FlussiNotifiche();
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
@@ -286,7 +288,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.impositore = this.impositore;
     this.servizio.beneficiario = this.beneficiario;
     this.servizio.listaContiCorrenti = this.listaContiCorrente;
-    this.servizio.listaCampiServizio = campoServizios;
+    this.servizio.listaCampiServizio = _.concat(campoServizios, this.campoServizioAddList);
   }
 
   onChangeFiltri(event: ParametriRicercaServizio) {
@@ -628,5 +630,25 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.rendicontazioneGiornaliera.directory = null;
       this.rendicontazioneGiornaliera.nuovoFormato = null;
     }
+  }
+
+  showModalAtClick(item: CampoTipologiaServizio) {
+    this.isSingleClick = true;
+    setTimeout(() => {
+      if (this.isSingleClick) {
+        this.overlayService.mostraModaleCampoEvent.emit({
+          campoForm: _.cloneDeep(item),
+          funzione: this.funzione,
+          idFunzione: this.idFunzione,
+          livelloIntegrazione: this.integrazione.livelloIntegrazioneId,
+          listaDipendeDa: this.listaDipendeDa
+        });
+      }
+    }, 250);
+  }
+
+  dblClick(item: CampoTipologiaServizio, index: number) {
+    this.isSingleClick = false;
+    this.showEditId = index;
   }
 }

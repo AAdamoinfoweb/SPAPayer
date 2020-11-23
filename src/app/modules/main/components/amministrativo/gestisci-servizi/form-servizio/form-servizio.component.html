@@ -649,7 +649,13 @@
                'field-input': (item.campoTipologiaServizioId)}">
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
-                    <div (click)="showModal(item)" class="col-7 text-right">{{item.titolo}}</div>
+                    <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i" (dblclick)="dblClick(item, i)"
+                         class="col-7 text-right">{{item.titolo}}</div>
+                    <div *ngIf="showEditId == i" class="col-6 text-right">
+                      <input autofocus formControlName="edit"
+                             (keyup.enter)="showEditId = null"
+                             [(ngModel)]="item.titolo"/>
+                    </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>
                     </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
@@ -728,7 +734,7 @@
                 <div class="col-12">
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.emailEnabled)"
-                         #emailGiornalieraId="ngModel"
+                         #emailGiornalieraId="ngModel" [required]="rendicontazioneGiornaliera.emailEnabled"
                          id="emailGiornalieraId" [customvalidator]="validateEmail()"
                          name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
                          [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
@@ -780,6 +786,7 @@
                   <input type="text" autocomplete="off" placeholder="Server"
                          [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneGiornaliera.ftpEnabled)"
                          id="server" name="server" #server="ngModel" [customvalidator]="validateServer()"
+                         [required]="rendicontazioneGiornaliera.ftpEnabled"
                          [(ngModel)]="rendicontazioneGiornaliera.server"
                          [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
                 </div>
@@ -798,6 +805,7 @@
                   <input type="text" autocomplete="off" placeholder="Username"
                          [placeholder]="getPlaceholderRequired('Username', rendicontazioneGiornaliera.ftpEnabled)"
                          id="username" name="username" #username="ngModel"
+                         [required]="rendicontazioneGiornaliera.ftpEnabled"
                          [(ngModel)]="rendicontazioneGiornaliera.username"
                          [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
                 </div>
@@ -816,6 +824,7 @@
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Password', rendicontazioneGiornaliera.ftpEnabled)"
                          id="password" name="password" #password="ngModel"
+                         [required]="rendicontazioneGiornaliera.ftpEnabled"
                          [(ngModel)]="rendicontazioneGiornaliera.password"
                          [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
                 </div>
@@ -834,6 +843,7 @@
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Directory', rendicontazioneGiornaliera.ftpEnabled)"
                          id="directory" name="directory" #directory="ngModel"
+                         [required]="rendicontazioneGiornaliera.ftpEnabled"
                          [(ngModel)]="rendicontazioneGiornaliera.directory"
                          [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
                 </div>
@@ -885,6 +895,7 @@
                 <div class="col-12">
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Email', rendicontazioneFlussoPA.emailEnabled)"
+                         [required]="rendicontazioneFlussoPA.emailEnabled"
                          id="emailFlussoPAId" [customvalidator]="validateEmail()"
                          name="emailFlussoPAId" [(ngModel)]="rendicontazioneFlussoPA.email"
                          #emailFlussoPAId="ngModel"
@@ -934,6 +945,7 @@
 
                 <div class="col-12">
                   <input type="text" autocomplete="off"
+                         [required]="rendicontazioneFlussoPA.ftpEnabled"
                          [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneFlussoPA.ftpEnabled)"
                          id="serverFlussoPA" name="serverFlussoPA" [customvalidator]="validateServer()"
                          [(ngModel)]="rendicontazioneFlussoPA.server" #serverFlussoPA="ngModel"
@@ -953,6 +965,7 @@
 
                 <div class="col-12">
                   <input type="text" autocomplete="off"
+                         [required]="rendicontazioneFlussoPA.ftpEnabled"
                          [placeholder]="getPlaceholderRequired('Username', rendicontazioneFlussoPA.ftpEnabled)"
                          id="usernameFlussoPA" name="usernameFlussoPA"
                          #usernameFlussoPA="ngModel"
@@ -972,6 +985,7 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off"
+                         [required]="rendicontazioneFlussoPA.ftpEnabled"
                          [placeholder]="getPlaceholderRequired('Password', rendicontazioneFlussoPA.ftpEnabled)"
                          id="passwordFlussoPA"
                          name="passwordFlussoPA" #passwordFlussoPA="ngModel"
@@ -991,6 +1005,7 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off" id="directoryFlussoPA"
+                         [required]="rendicontazioneFlussoPA.ftpEnabled"
                          [placeholder]="getPlaceholderRequired('Directory', rendicontazioneFlussoPA.ftpEnabled)"
                          name="directoryFlussoPA" #directoryFlussoPA="ngModel"
                          [(ngModel)]="rendicontazioneFlussoPA.directory"

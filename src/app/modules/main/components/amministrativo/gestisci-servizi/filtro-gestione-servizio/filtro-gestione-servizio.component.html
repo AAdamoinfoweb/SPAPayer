@@ -198,7 +198,7 @@
           </div>
         </div>
         <div class="col-xs-6 col-md-3 col-lg-1 pb-2" id="containerBottoneCrea">
-          <button id="bottoneCrea" class="btn" [disabled]="filtroForm.invalid || isTipologiaServizio(filtriRicerca.tipologiaServizio)"
+          <button id="bottoneCrea" class="btn" [disabled]="filtroForm.invalid || isTipologiaServizio(filtriRicerca.tipologiaServizio) || disabilitaFiltri"
                   (click)="creaTipologia()">Crea
           </button>
         </div>
