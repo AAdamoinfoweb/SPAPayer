@@ -1085,7 +1085,7 @@
         </div>
         <!-- Bottoni dx -->
         <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-          <button id="buttonSalva" class="btn" [disabled]="datiForm.invalid" (click)="onClickSalva()">Salva</button>
+          <button id="buttonSalva" class="btn" [disabled]="datiForm.invalid || getListaControllo(mapControllo).includes(false)" (click)="onClickSalva()">Salva</button>
         </div>
       </div>
     </form>
