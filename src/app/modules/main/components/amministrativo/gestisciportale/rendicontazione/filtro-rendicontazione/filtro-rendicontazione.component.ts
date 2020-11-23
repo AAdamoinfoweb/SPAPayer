@@ -28,10 +28,17 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
   filtroRicercaRendicontazione: ParametriRicercaRendicontazione;
 
   isCalendarOpen: boolean;
-  readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
+  readonly minDateDDMMYYYY = '01/01/1990';
   readonly tipoData = ECalendarValue.String;
 
   listaSocieta: Array<OpzioneSelect> = [];
+  listaLivelloTerritoriale: Array<OpzioneSelect> = [];
+  listaEnte: Array<OpzioneSelect> = [];
+  listaTipologiaServizio: Array<OpzioneSelect> = [];
+  listaServizio: Array<OpzioneSelect> = [];
+  listaTransazioneId: Array<OpzioneSelect> = [];
+  listaCanale: Array<OpzioneSelect> = [];
+  listaTipoFlusso: Array<OpzioneSelect> = [];
 
   constructor(protected activatedRoute: ActivatedRoute, protected amministrativoService: AmministrativoService,
               private gestisciPortaleService: GestisciPortaleService) {
@@ -40,7 +47,14 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
 
   ngOnInit(): void {
     this.inizializzaFiltri();
-    this.recuperoFiltroSocieta();
+    this.recuperaFiltroSocieta();
+    this.recuperaFiltroLivelloTerritoriale();
+    this.recuperaFiltroEnte();
+    // TODO this.recuperaFiltroTipologiaServizio
+    this.recuperaFiltroServizio();
+    this.recuperaFiltroIdentificativoTransazione();
+    this.recuperaFiltroCanale();
+    this.recuperaFiltroTipoFlusso();
   }
 
   inizializzaFiltri(): void {
@@ -62,7 +76,7 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
     this.filtroRicercaRendicontazione.tipoFlussoId = null;
   }
 
-  recuperoFiltroSocieta(): void {
+  recuperaFiltroSocieta(): void {
     this.gestisciPortaleService.gestisciPortaleFiltroSocieta(this.idFunzione).pipe(map(listaSocieta => {
       listaSocieta.forEach(societa => {
         this.listaSocieta.push({
@@ -71,6 +85,78 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
         });
       });
       Utils.ordinaOpzioniSelect(this.listaSocieta);
+    })).subscribe();
+  }
+
+  recuperaFiltroLivelloTerritoriale(): void {
+    this.gestisciPortaleService.gestisciPortaleFiltroLivelloTerritoriale(this.idFunzione).pipe(map(listaLivelloTerritoriale => {
+      listaLivelloTerritoriale.forEach(livelloTerritoriale => {
+        this.listaLivelloTerritoriale.push({
+          value: livelloTerritoriale.id,
+          label: livelloTerritoriale.nome
+        });
+      });
+      Utils.ordinaOpzioniSelect(this.listaLivelloTerritoriale);
+    })).subscribe();
+  }
+
+  recuperaFiltroEnte(): void {
+    this.gestisciPortaleService.gestisciPortaleFiltroEnte(this.idFunzione).pipe(map(listaEnte => {
+      listaEnte.forEach(ente => {
+        this.listaEnte.push({
+          value: ente.id,
+          label: ente.nome
+        });
+      });
+      Utils.ordinaOpzioniSelect(this.listaEnte);
+    })).subscribe();
+  }
+
+  recuperaFiltroServizio(): void {
+    this.gestisciPortaleService.gestisciPortaleFiltroServizio(this.idFunzione).pipe(map(listaServizio => {
+      listaServizio.forEach(servizio => {
+        this.listaServizio.push({
+          value: servizio.id,
+          label: servizio.nome
+        });
+      });
+      Utils.ordinaOpzioniSelect(this.listaServizio);
+    })).subscribe();
+  }
+
+  recuperaFiltroIdentificativoTransazione(): void {
+    this.gestisciPortaleService.gestisciPortaleFiltroTransazione(this.idFunzione).pipe(map(listaTransazioneId => {
+      listaTransazioneId.forEach(transazioneId => {
+        this.listaTransazioneId.push({
+          value: transazioneId.id,
+          label: transazioneId.id.toString()
+        });
+      });
+      Utils.ordinaOpzioniSelect(this.listaTransazioneId);
+    })).subscribe();
+  }
+
+  recuperaFiltroCanale(): void {
+    this.gestisciPortaleService.gestisciPortaleFiltroCanale(this.idFunzione).pipe(map(listaCanale => {
+      listaCanale.forEach(canale => {
+        this.listaCanale.push({
+          value: canale.id,
+          label: canale.nome
+        });
+      });
+      Utils.ordinaOpzioniSelect(this.listaCanale);
+    })).subscribe();
+  }
+
+  recuperaFiltroTipoFlusso(): void {
+    this.gestisciPortaleService.gestisciPortaleFiltroTipoFlusso(this.idFunzione).pipe(map(listaTipoFlusso => {
+      listaTipoFlusso.forEach(tipoFlusso => {
+        this.listaTipoFlusso.push({
+          value: tipoFlusso.id,
+          label: tipoFlusso.nome
+        });
+      });
+      Utils.ordinaOpzioniSelect(this.listaTipoFlusso);
     })).subscribe();
   }
 
