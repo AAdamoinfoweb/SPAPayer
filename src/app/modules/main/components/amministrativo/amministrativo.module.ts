@@ -66,10 +66,12 @@ import {GestisciAttivitaPianificateComponent} from './gestisci-attivita-pianific
 import {FiltroGestioneAttivitaPianificateComponent} from './gestisci-attivita-pianificate/filtro-gestione-attivita-pianificate/filtro-gestione-attivita-pianificate.component';
 import {DatiAttivitaPianificateComponent} from './gestisci-attivita-pianificate/dati-attivita-pianificate/dati-attivita-pianificate.component';
 import {FormAttivitaPianificateComponent} from './gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component';
-import {SchedulazioneComponent} from "./schedulazione/schedulazione.component";
+import {SchedulazioneComponent} from './schedulazione/schedulazione.component';
 import { DatiParametroComponent } from './gestisci-attivita-pianificate/dati-parametri/dati-parametro.component';
 import { DatiDestinatarioComponent } from './gestisci-statistiche/dati-destinatario/dati-destinatario.component';
 import { SelezionaContoCorrenteComponent } from './anagrafiche/gestisci-enti/dati-conto-corrente/seleziona-conto-corrente/seleziona-conto-corrente.component';
+import {RendicontazioneComponent} from './gestisciportale/rendicontazione/rendicontazione.component';
+import {FiltroRendicontazioneComponent} from './gestisciportale/rendicontazione/filtro-rendicontazione/filtro-rendicontazione.component';
 
 
 @NgModule({
@@ -120,7 +122,9 @@ import { SelezionaContoCorrenteComponent } from './anagrafiche/gestisci-enti/dat
     FormAttivitaPianificateComponent,
     DatiParametroComponent,
     DatiDestinatarioComponent,
-    SelezionaContoCorrenteComponent
+    SelezionaContoCorrenteComponent,
+    RendicontazioneComponent,
+    FiltroRendicontazioneComponent
   ],
   imports: [
     HttpClientModule,
