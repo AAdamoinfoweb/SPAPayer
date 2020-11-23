@@ -24,7 +24,7 @@ export class  GestisciPortaleService {
   constructor(private readonly http: HttpClient) {
   }
 
-  gestisciPortaleFiltroLivelloTerritoriale(idFunzione: string): Observable<FiltroSelect> {
+  gestisciPortaleFiltroLivelloTerritoriale(idFunzione: string): Observable<FiltroSelect[]> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -44,7 +44,7 @@ export class  GestisciPortaleService {
         }));
   }
 
-  gestisciPortaleFiltroSocieta(idFunzione: string): Observable<FiltroSelect> {
+  gestisciPortaleFiltroSocieta(idFunzione: string): Observable<FiltroSelect[]> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -64,7 +64,7 @@ export class  GestisciPortaleService {
         }));
   }
 
-  gestisciPortaleFiltroEnte(idFunzione: string): Observable<FiltroSelect> {
+  gestisciPortaleFiltroEnte(idFunzione: string): Observable<FiltroSelect[]> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -84,7 +84,7 @@ export class  GestisciPortaleService {
         }));
   }
 
-  gestisciPortaleFiltroServizio(idFunzione: string): Observable<FiltroSelect> {
+  gestisciPortaleFiltroServizio(idFunzione: string): Observable<FiltroSelect[]> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -104,7 +104,7 @@ export class  GestisciPortaleService {
         }));
   }
 
-  gestisciPortaleFiltroTransazione(idFunzione: string): Observable<FiltroSelect> {
+  gestisciPortaleFiltroTransazione(idFunzione: string): Observable<FiltroSelect[]> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -124,7 +124,7 @@ export class  GestisciPortaleService {
         }));
   }
 
-  gestisciPortaleFiltroCanale(idFunzione: string): Observable<FiltroSelect> {
+  gestisciPortaleFiltroCanale(idFunzione: string): Observable<FiltroSelect[]> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -144,7 +144,7 @@ export class  GestisciPortaleService {
         }));
   }
 
-  gestisciPortaleFiltroTipoFlusso(idFunzione: string): Observable<FiltroSelect> {
+  gestisciPortaleFiltroTipoFlusso(idFunzione: string): Observable<FiltroSelect[]> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -164,7 +164,7 @@ export class  GestisciPortaleService {
         }));
   }
 
-  gestisciPortaleFiltroVersante(idFunzione: string): Observable<FiltroVersante> {
+  gestisciPortaleFiltroVersante(idFunzione: string): Observable<FiltroVersante[]> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
