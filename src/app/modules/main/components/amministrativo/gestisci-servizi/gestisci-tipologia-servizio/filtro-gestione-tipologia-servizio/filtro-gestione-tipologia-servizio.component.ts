@@ -56,7 +56,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   ngOnChanges(sc: SimpleChanges) {
-    if (sc.filtriIniziali.currentValue) {
+    if (sc.filtriIniziali && sc.filtriIniziali.currentValue) {
       // Carico il filtro raggruppamento quando termina la GET del dettaglio tipologia
       if (this.funzione === FunzioneGestioneEnum.MODIFICA || FunzioneGestioneEnum.DETTAGLIO) {
         this.filtriRicerca = this.filtriIniziali;

@@ -493,6 +493,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   add() {
     const campoForm = new CampoTipologiaServizio();
+    if (this.integrazione.livelloIntegrazioneId !== this.LivelloIntegrazioneEnum.LV1)
+      campoForm.campoInput = true;
     this.refreshItemsDipendeDa();
     this.showModal(campoForm);
   }
