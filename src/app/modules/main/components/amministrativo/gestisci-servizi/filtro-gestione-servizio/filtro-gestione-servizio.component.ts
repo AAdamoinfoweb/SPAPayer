@@ -65,8 +65,12 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
 
   ngOnChanges(sc: SimpleChanges) {
     if (sc.filtriIniziali?.currentValue) {
+
       this.filtriRicerca = this.filtriIniziali;
       this.disabilitaFiltri = false;
+      if (sc.filtriIniziali?.currentValue.tipologiaServizioId) {
+        this.caricaCodiciTipologia();
+      }
     }
 
   }
@@ -122,6 +126,9 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
         listaTipologieServizio = _.sortBy(listaTipologieServizio, [this.labelOggettoTipologia]);
         this.listaCodiciTipologia = listaTipologieServizio;
         this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia;
+
+        if (this.filtriRicerca.tipologiaServizioId)
+          this.filtriRicerca.tipologiaServizio = this.listaCodiciTipologiaFiltrati.find(value => value.id == this.filtriRicerca.tipologiaServizioId);
       }
     });
   }
