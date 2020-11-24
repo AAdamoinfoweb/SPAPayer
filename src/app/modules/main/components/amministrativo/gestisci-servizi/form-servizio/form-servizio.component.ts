@@ -64,6 +64,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
   private firstAdd = false;
   private isSingleClick: boolean;
+  private servizioId: number;
 
   constructor(private cdr: ChangeDetectorRef,
               private renderer: Renderer2,
@@ -179,6 +180,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
       this.refreshItemsDipendeDa();
     });
+
     this.refreshItemsEvent.subscribe((items) => {
       this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
     });
@@ -209,6 +211,14 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.inizializzaBreadcrumb();
     this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Servizio';
     this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una tipologia servizio';
+
+    if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      this.servizioId = parseInt(snapshot.paramMap.get('servizioId'));
+      this.filtro = new ParametriRicercaServizio();
+      this.filtro.raggruppamentoId = 1;
+
+      this.filtri = this.filtro;
+    }
   }
 
   caricaCampi(tipologiaServizioId: number): Observable<any> {

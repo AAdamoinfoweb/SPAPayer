@@ -164,7 +164,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   disabilitaFiltroRaggruppamento(): boolean {
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI && this.disabilitaFiltri) {
       return true;
-    } else if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+    } else if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
       return true;
     } else {
       return null;
@@ -172,7 +172,8 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   disabilitaFiltroCodice(): boolean {
-    return !this.filtriRicerca.raggruppamentoId || this.disabilitaFiltri;
+    return !this.filtriRicerca.raggruppamentoId || this.disabilitaFiltri ||
+      this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA;
   }
 
   disabilitaBottonePulisci(): boolean {

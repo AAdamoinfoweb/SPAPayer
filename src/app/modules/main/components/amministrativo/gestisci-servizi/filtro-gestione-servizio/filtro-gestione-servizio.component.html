@@ -197,7 +197,7 @@
                        name="attivo"></it-toggle>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3 col-lg-1 pb-2" id="containerBottoneCrea">
+        <div class="col-xs-6 col-md-3 col-lg-1 pb-2" id="containerBottoneCrea" *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI">
           <button id="bottoneCrea" class="btn" [disabled]="filtroForm.invalid || isTipologiaServizio(filtriRicerca.tipologiaServizio) || disabilitaFiltri"
                   (click)="creaTipologia()">Crea
           </button>
