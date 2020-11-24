@@ -54,7 +54,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
       {field: 'importoNetto', header: 'Importo netto', type: tipoColonna.IMPORTO},
       {field: 'statoInvio', header: 'Stato invio', type: tipoColonna.ICONA}
     ],
-    dataKey: 'id.value',
+    dataKey: 'idFlussoRendicontazione.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
@@ -207,7 +207,6 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
   getRigheFileExcel(righe: any[]) {
     return righe.map(riga => {
       const rigaFormattata = riga;
-      delete rigaFormattata.id;
       rigaFormattata.ente = riga.ente.value;
       rigaFormattata.servizio = riga.servizio.value;
       rigaFormattata.canale = riga.canale.value;
