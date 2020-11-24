@@ -17,6 +17,7 @@ import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {RendicontazioneService} from '../../../../../../services/rendicontazione.service';
 import {Utils} from '../../../../../../utils/Utils';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-rendicontazione',
@@ -147,11 +148,13 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
     }
 
     return {
-      ente: Utils.creaLink(null, '/gestisciEnti', iconaGruppoUtenti),
+      ente: Utils.creaLink(rendicontazione.enteNome, '/gestisciEnti', iconaGruppoUtenti),
       servizio: {value: rendicontazione.servizioNome},
       canale: {value: rendicontazione.canale},
       tipoFlusso: {value: rendicontazione.tipoFlusso},
-      dataRendiconto: {value: rendicontazione.dataRendiconto},
+      dataRendiconto: {value: rendicontazione.dataRendiconto
+          ? moment(rendicontazione.dataRendiconto).format(Utils.FORMAT_DATE_CALENDAR)
+          : null},
       idFlussoRendicontazione: {value: rendicontazione.flussoRendicontazioneId},
       numeroPagamenti: {value: rendicontazione.numeroPagamenti},
       importoNetto: {value: rendicontazione.importoNetto},
@@ -168,10 +171,10 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
   eseguiAzioni(azioneTool) {
     switch (azioneTool) {
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tableData, 'Lista Attività');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista flussi di rendicontazione');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tableData, 'Lista Attività');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista flussi di rendicontazione');
         break;
       case ToolEnum.VISUALIZE_STATISTICS:
         this.visualizzaStatisticheRendicontazioniFiltrate(this.tableData);
@@ -198,13 +201,34 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    // TODO implementare logica creazione colonne file excel
-    return [];
+    return colonne.filter(col => col.field !== 'id');
   }
 
   getRigheFileExcel(righe: any[]) {
-    // TODO implementare logica creazione righe file excel
-    return null;
+    return righe.map(riga => {
+      const rigaFormattata = riga;
+      delete rigaFormattata.id;
+      rigaFormattata.ente = riga.ente.value;
+      rigaFormattata.servizio = riga.servizio.value;
+      rigaFormattata.canale = riga.canale.value;
+      rigaFormattata.tipoFlusso = riga.tipoFlusso.value;
+      rigaFormattata.dataRendiconto = riga.dataRendiconto.value;
+      rigaFormattata.idFlussoRendicontazione = riga.idFlussoRendicontazione.value;
+      rigaFormattata.numeroPagamenti = riga.numeroPagamenti.value;
+      rigaFormattata.importoNetto = riga.importoNetto.value;
+      if (riga.statoInvio.tooltip) {
+        if (riga.statoInvio.tooltip.includes('email')) {
+          rigaFormattata.statoInvio = 'Invio effettuato via email';
+        } else if (riga.statoInvio.tooltip.includes('FTP')) {
+          rigaFormattata.statoInvio = 'Invio effettuato via FTP';
+        } else {
+          rigaFormattata.statoInvio = null;
+        }
+      } else {
+        rigaFormattata.statoInvio = null;
+      }
+      return rigaFormattata;
+    });
   }
 
   getNumeroRecord(): string {
