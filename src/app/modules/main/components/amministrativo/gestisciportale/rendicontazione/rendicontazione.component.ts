@@ -11,13 +11,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {MenuService} from '../../../../../../services/menu.service';
-import {ConfirmationService} from 'primeng/api';
 import {Observable} from 'rxjs';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {RendicontazioneService} from '../../../../../../services/rendicontazione.service';
 import {Utils} from '../../../../../../utils/Utils';
 import * as moment from 'moment';
+import {StatisticaEnte} from '../../../../model/rendicontazione/StatisticaEnte';
 
 @Component({
   selector: 'app-rendicontazione',
@@ -58,11 +58,23 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
+  tableDataStatisticheRendicontazioni: Tabella = {
+    rows: [],
+    cols: [
+      {field: 'enteId', header: 'Ente', type: tipoColonna.TESTO},
+      {field: 'numeroTransazioni', header: 'Numero di transazioni', type: tipoColonna.TESTO},
+      {field: 'importi', header: 'Totale degli importi', type: tipoColonna.TESTO}
+    ],
+    dataKey: 'enteId.value',
+    tipoTabella: tipoTabella.TEMPLATING
+  };
+  displayModalWithTable: boolean = false;
+
   isMenuCarico = false;
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2,
-              private el: ElementRef, private menuService: MenuService, private confirmationService: ConfirmationService,
+              private el: ElementRef, private menuService: MenuService,
               private rendicontazioneService: RendicontazioneService) {
     super(router, route, http, amministrativoService);
   }
@@ -119,10 +131,28 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
         this.elemento.sintesiRendicontazioni = elemento.sintesiRendicontazioni;
         this.elemento.statisticheEnte = elemento.statisticheEnte;
         this.impostaTabella(this.elemento.sintesiRendicontazioni);
+        this.creaTabellaStisticheRendicontazione(this.elemento.statisticheEnte);
         this.callbackPopolaLista();
       }
       this.waiting = false;
     });
+  }
+
+  creaTabellaStisticheRendicontazione(listaStatisticheEnte: StatisticaEnte[]): void {
+    this.tableDataStatisticheRendicontazioni.rows = [];
+    if (listaStatisticheEnte) {
+      listaStatisticheEnte.forEach(statisticaEnte => {
+        this.tableDataStatisticheRendicontazioni.rows.push(this.creaRigaTabellaStatisticheRendicontazione(statisticaEnte));
+      });
+    }
+  }
+
+  creaRigaTabellaStatisticheRendicontazione(statisticaEnte: StatisticaEnte) {
+    return {
+      enteId: {value: this.elemento.sintesiRendicontazioni.filter(rendicontazione => rendicontazione.enteId === statisticaEnte.enteId)[0].enteNome},
+      numeroTransazioni: {value: statisticaEnte.numeroTransazioni},
+      importi: {value: statisticaEnte.importi}
+    };
   }
 
   ngAfterViewInit(): void {
@@ -177,14 +207,9 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
         this.esportaTabellaInFileExcel(this.tableData, 'Lista flussi di rendicontazione');
         break;
       case ToolEnum.VISUALIZE_STATISTICS:
-        this.visualizzaStatisticheRendicontazioniFiltrate(this.tableData);
+        this.displayModalWithTable = !this.displayModalWithTable;
         break;
     }
-  }
-
-  visualizzaStatisticheRendicontazioniFiltrate(tabella: Tabella): void {
-    // TODO implementare logica per visualizzare le statistiche relative alle rendicontazioni filtrate
-    return null;
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
