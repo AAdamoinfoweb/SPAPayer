@@ -210,7 +210,7 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
     const now = moment();
     const momentInzio = statistica.avvioSchedulazione ? moment(statistica.avvioSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
     const momentFine = statistica.fineSchedulazione ? moment(statistica.fineSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
-    return statistica.abilitato && momentInzio.isSameOrBefore(now) && momentFine.isSameOrAfter(now);
+    return statistica.abilitato && momentInzio.isSameOrBefore(now) && (momentFine == null || momentFine.isSameOrAfter(now));
   }
 
   private inizializzaFiltriRicerca() {
