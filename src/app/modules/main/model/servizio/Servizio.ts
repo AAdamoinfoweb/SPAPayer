@@ -7,6 +7,10 @@ import {BeneficiarioServizio} from "./BeneficiarioServizio";
 import {ImpositoreServizio} from "./ImpositoreServizio";
 
 export class Servizio {
+  flagPresenzaDettaglioTransazione: boolean;
+  flagPresenzaRendicontazione: boolean;
+  flagPresenzaDatiBonifico: boolean;
+
   flussiNotifiche: FlussiNotifiche;
   listaCampiServizio: CampoServizio[];
   listaContiCorrenti: ContoCorrente[];
