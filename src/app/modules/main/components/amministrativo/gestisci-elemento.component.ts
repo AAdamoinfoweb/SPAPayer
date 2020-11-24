@@ -35,7 +35,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract tableData: Tabella;
 
-  abstract listaElementi: any[];
+  listaElementi: any[];
   abstract filtriRicerca: any;
 
   abstract righeSelezionate: any[];
@@ -94,7 +94,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     }
   }
 
-  abstract getObservableFunzioneRicerca(): Observable<any[]>;
+  abstract getObservableFunzioneRicerca(): Observable<any[] | any>;
 
   mostraDettaglioElemento(linkFunzioneDettaglio: string, id: number) {
     this.righeSelezionate = [];

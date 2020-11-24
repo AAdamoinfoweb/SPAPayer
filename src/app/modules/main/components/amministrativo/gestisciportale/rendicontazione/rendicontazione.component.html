@@ -1,5 +1,4 @@
-<!--<div class="ml-5" *ngIf="!waiting">-->
-<div class="ml-5">
+<div class="ml-5" *ngIf="!waiting">
   <!-- breadcrumb -->
   <it-breadcrumb [dark]="false" [separator]="'/'">
     <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
@@ -18,7 +17,7 @@
   </h3>
 
   <!-- Sottosezione Filtri -->
-  <app-filtro-rendicontazione (onChangeFiltri)="onChangeFiltri($event)"></app-filtro-rendicontazione>
+  <app-filtro-rendicontazione (onChangeFiltri)="onChangeFiltriRendicontazione($event)"></app-filtro-rendicontazione>
 
   <!-- Sottosezione Lista Flussi di Rendicontazione -->
   <div class="collapse-header" id="idCollapseListaRendicontazione">

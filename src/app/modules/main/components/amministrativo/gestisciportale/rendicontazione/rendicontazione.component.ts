@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {GestisciElementoComponent} from '../../gestisci-elemento.component';
 import {SintesiRendicontazione} from '../../../../model/rendicontazione/SintesiRendicontazione';
+import {RicercaRendicontazione} from '../../../../model/rendicontazione/RicercaRendicontazione';
 import {ParametriRicercaRendicontazione} from '../../../../model/rendicontazione/ParametriRicercaRendicontazione';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
 import {Tabella} from '../../../../model/tabella/Tabella';
@@ -14,6 +15,8 @@ import {ConfirmationService} from 'primeng/api';
 import {Observable} from 'rxjs';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
+import {RendicontazioneService} from '../../../../../../services/rendicontazione.service';
+import {Utils} from '../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-rendicontazione',
@@ -26,7 +29,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
 
   breadcrumbList = [];
 
-  listaElementi: Array<SintesiRendicontazione> = new Array<SintesiRendicontazione>();
+  elemento: RicercaRendicontazione = new RicercaRendicontazione();
   filtriRicerca: ParametriRicercaRendicontazione = null;
 
   righeSelezionate: any[];
@@ -58,7 +61,8 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2,
-              private el: ElementRef, private menuService: MenuService, private confirmationService: ConfirmationService) {
+              private el: ElementRef, private menuService: MenuService, private confirmationService: ConfirmationService,
+              private rendicontazioneService: RendicontazioneService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -83,7 +87,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
       {label: 'Rendicontazione', link: null}
     ], true);
     this.inizializzaFiltriRicerca();
-    this.popolaListaElementi();
+    this.popolaElemento();
   }
 
   private inizializzaFiltriRicerca(): void {
@@ -105,6 +109,21 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
     this.filtriRicerca.tipoFlussoId = null;
   }
 
+  popolaElemento(): void {
+    this.elemento.sintesiRendicontazioni = [];
+    this.elemento.statisticheEnte = [];
+    this.tableData.rows = [];
+    this.getObservableFunzioneRicerca().subscribe(elemento => {
+      if (elemento != null) {
+        this.elemento.sintesiRendicontazioni = elemento.sintesiRendicontazioni;
+        this.elemento.statisticheEnte = elemento.statisticheEnte;
+        this.impostaTabella(this.elemento.sintesiRendicontazioni);
+        this.callbackPopolaLista();
+      }
+      this.waiting = false;
+    });
+  }
+
   ngAfterViewInit(): void {
     if (!this.waiting) {
       this.renderer.addClass(this.el.nativeElement.querySelector('#breadcrumb-item-1 > li'), 'active');
@@ -112,12 +131,36 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
   }
 
   creaRigaTabella(rendicontazione: SintesiRendicontazione) {
-    // TODO implementare logica creazione riga tabella
+    const iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
+
+    let coloreIcona = null;
+    let tooltipIcona = null;
+    let displayIcona = 'none';
+    if (rendicontazione.statoInvioEmail) {
+      coloreIcona = '#008758';
+      tooltipIcona = 'Invio effettuato via email';
+      displayIcona = 'inline';
+    } else if (rendicontazione.statoInvioFtp) {
+      coloreIcona = '#D9364F';
+      tooltipIcona = 'Invio effettuato via FTP';
+      displayIcona = 'inline';
+    }
+
+    return {
+      ente: Utils.creaLink(null, '/gestisciEnti', iconaGruppoUtenti),
+      servizio: {value: rendicontazione.servizioNome},
+      canale: {value: rendicontazione.canale},
+      tipoFlusso: {value: rendicontazione.tipoFlusso},
+      dataRendiconto: {value: rendicontazione.dataRendiconto},
+      idFlussoRendicontazione: {value: rendicontazione.flussoRendicontazioneId},
+      numeroPagamenti: {value: rendicontazione.numeroPagamenti},
+      importoNetto: {value: rendicontazione.importoNetto},
+      statoInvio: Utils.creaIcona('#it-mail', coloreIcona, tooltipIcona, displayIcona)
+    };
   }
 
-  getObservableFunzioneRicerca(): Observable<SintesiRendicontazione[]> {
-    // TODO invocare operation ricercaRendicontazioni
-    return null;
+  getObservableFunzioneRicerca(): Observable<RicercaRendicontazione> {
+    return this.rendicontazioneService.ricercaRendicontazioni(this.filtriRicerca, this.idFunzione);
   }
 
   callbackPopolaLista() {}
@@ -175,6 +218,11 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
 
   mostraDettaglioRendicontazione(rigaCliccata: any) {
     // TODO this.mostraDettaglioElemento('/dettaglioRendicontazione', rigaCliccata.id.value);
+  }
+
+  onChangeFiltriRendicontazione(filtri: ParametriRicercaRendicontazione): void {
+    this.filtriRicerca = filtri;
+    this.popolaElemento();
   }
 
 }
