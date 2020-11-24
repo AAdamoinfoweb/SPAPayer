@@ -186,7 +186,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   disabilitaCampi() {
-    return this.disabilitaFiltri;
+    return this.disabilitaFiltri || this.funzione == FunzioneGestioneEnum.DETTAGLIO;
   }
 
   validateRange() {

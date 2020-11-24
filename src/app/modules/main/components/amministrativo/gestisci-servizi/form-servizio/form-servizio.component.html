@@ -170,6 +170,7 @@
                   [(ngModel)]="integrazione.livelloIntegrazioneId"
                   #livelloIntegrazione="ngModel"
                   [required]="true"
+                  [disabled]="disabilitaCampi()"
                   (ngModelChange)="cambiaLivelloIntegrazione($event)">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option [ngValue]="LivelloIntegrazioneEnum.LV1">Livello 1</option>
@@ -475,7 +476,7 @@
                         [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
                         #societaBenefInput="ngModel" [(ngModel)]="beneficiario.societaId"
                         (ngModelChange)="onChangeSocietaBeneficiario(societaBenefInput)"
-                        [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                        [disabled]="disabilitaCampi()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
@@ -1069,7 +1070,7 @@
                            [customvalidator]="validateEmail()">
                   </div>
                   <div class="col-3 align-self-center">
-                    <span class="pointer bottone-campo">
+                    <span *ngIf="!disabilitaCampi()" class="pointer bottone-campo">
                       <span ngbTooltip="rimuovi" placement="bottom"
                             [ngStyle]="{fill: '#403d39'}">
                         <svg (click)="removeEmail(i)" class="bg-light icon icon-sm filled">
