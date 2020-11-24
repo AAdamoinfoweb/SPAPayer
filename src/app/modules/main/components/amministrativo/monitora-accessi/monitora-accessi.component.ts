@@ -48,7 +48,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
       {field: 'funzioniVisitate', header: 'Gruppo Funzioni Visitate', type: tipoColonna.TESTO},
       {field: 'inizioSessione', header: 'Inizio Sessione', type: tipoColonna.TESTO},
       {field: 'fineSessione', header: 'Fine Sessione', type: tipoColonna.TESTO},
-      {field: 'durataSessione', header: 'Durata', type: tipoColonna.TESTO}
+      {field: 'durataSessione', header: 'Durata sessione', type: tipoColonna.TESTO}
     ],
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
