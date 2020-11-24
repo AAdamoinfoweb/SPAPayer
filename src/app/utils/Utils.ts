@@ -27,7 +27,7 @@ export class Utils {
   ];
   static TIME_ZONE = 'Europe/Rome (GMT+01:00)';
 
-  static readonly EMAIL_REGEX = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  static readonly EMAIL_REGEX = '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$';
   static readonly TELEFONO_REGEX = '^\\+?\\d{8,12}';
   static readonly IBAN_ITALIA_REGEX = '[IT]{2}\\d{2} ?[A-Z]\\d{3} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{3}';
   static readonly CODICE_FISCALE_REGEX = '^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
