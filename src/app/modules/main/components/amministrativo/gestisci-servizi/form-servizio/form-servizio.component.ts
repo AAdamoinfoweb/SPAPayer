@@ -245,6 +245,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
             strings.forEach(email => {
               let formControl = new FormControl();
               formControl.setValue(email);
+              if (this.funzione == FunzioneGestioneEnum.DETTAGLIO)
+                formControl.disable();
               this.emailsControl.push(formControl);
             });
           }
@@ -711,6 +713,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   dblClick(item: CampoTipologiaServizio, index: number) {
+    if (this.funzione == FunzioneGestioneEnum.DETTAGLIO)
+      return;
     this.isSingleClick = false;
     this.showEditId = index;
   }
