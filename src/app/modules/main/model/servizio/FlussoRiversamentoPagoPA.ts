@@ -1,6 +1,6 @@
 export class FlussoRiversamentoPagoPA {
-  emailEnabled = false;
-  ftpEnabled = false;
+  flagNotificaEmail = false;
+  flagNotificaFtp = false;
   email: string;
   emailCcn: string;
   server: string;

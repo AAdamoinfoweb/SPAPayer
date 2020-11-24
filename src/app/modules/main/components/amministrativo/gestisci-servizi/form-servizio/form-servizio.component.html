@@ -170,7 +170,7 @@
                   [(ngModel)]="integrazione.livelloIntegrazioneId"
                   #livelloIntegrazione="ngModel"
                   [required]="true"
-                  [disabled]="disabilitaCampi()"
+                  [disabled]="funzione == FunzioneGestioneEnum.DETTAGLIO || funzione == FunzioneGestioneEnum.MODIFICA"
                   (ngModelChange)="cambiaLivelloIntegrazione($event)">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option [ngValue]="LivelloIntegrazioneEnum.LV1">Livello 1</option>
@@ -734,17 +734,17 @@
                 <div class="col-2">
                   <it-toggle id="emailGiornaliera" (ngModelChange)="changeEmailGiornaliera($event)"
                              [disabled]="disabilitaCampi()"
-                             [(ngModel)]="rendicontazioneGiornaliera.emailEnabled" name="emailGiornaliera"></it-toggle>
+                             [(ngModel)]="rendicontazioneGiornaliera.flagNotificaEmail" name="emailGiornaliera"></it-toggle>
                 </div>
               </div>
               <div class="row">
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.emailEnabled)"
-                         #emailGiornalieraId="ngModel" [required]="rendicontazioneGiornaliera.emailEnabled"
+                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.flagNotificaEmail)"
+                         #emailGiornalieraId="ngModel" [required]="rendicontazioneGiornaliera.flagNotificaEmail"
                          id="emailGiornalieraId" [customvalidator]="validateEmail()"
                          name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
-                         [disabled]="!rendicontazioneGiornaliera.emailEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -762,7 +762,7 @@
                          #emailGiornalieraCcn="ngModel"
                          id="emailGiornalieraCcn" [customvalidator]="validateEmail()"
                          name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.emailCcn"
-                         [disabled]="!rendicontazioneGiornaliera.emailEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -781,22 +781,22 @@
               <div class="row">
                 <div class="col">
                   <label for="ftpGiornaliera"
-                         [ngClass]="{'required': rendicontazioneGiornaliera.ftpEnabled, 'title':true}">Ftp</label>
+                         [ngClass]="{'required': rendicontazioneGiornaliera.flagNotificaFtp, 'title':true}">Ftp</label>
                 </div>
                 <div class="col-2">
                   <it-toggle id="ftpGiornaliera" (ngModelChange)="changeFtpGiornaliera($event)"
                              [disabled]="disabilitaCampi()"
-                             [(ngModel)]="rendicontazioneGiornaliera.ftpEnabled" name="ftpGiornaliera"></it-toggle>
+                             [(ngModel)]="rendicontazioneGiornaliera.flagNotificaFtp" name="ftpGiornaliera"></it-toggle>
                 </div>
               </div>
               <div class="row">
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Server"
-                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneGiornaliera.ftpEnabled)"
+                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneGiornaliera.flagNotificaFtp)"
                          id="server" name="server" #server="ngModel" [customvalidator]="validateServer()"
-                         [required]="rendicontazioneGiornaliera.ftpEnabled"
+                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
                          [(ngModel)]="rendicontazioneGiornaliera.server"
-                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -811,11 +811,11 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Username"
-                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneGiornaliera.ftpEnabled)"
+                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneGiornaliera.flagNotificaFtp)"
                          id="username" name="username" #username="ngModel"
-                         [required]="rendicontazioneGiornaliera.ftpEnabled"
+                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
                          [(ngModel)]="rendicontazioneGiornaliera.username"
-                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -830,11 +830,11 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneGiornaliera.ftpEnabled)"
+                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneGiornaliera.flagNotificaFtp)"
                          id="password" name="password" #password="ngModel"
-                         [required]="rendicontazioneGiornaliera.ftpEnabled"
+                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
                          [(ngModel)]="rendicontazioneGiornaliera.password"
-                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -849,11 +849,11 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneGiornaliera.ftpEnabled)"
+                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneGiornaliera.flagNotificaFtp)"
                          id="directory" name="directory" #directory="ngModel"
-                         [required]="rendicontazioneGiornaliera.ftpEnabled"
+                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
                          [(ngModel)]="rendicontazioneGiornaliera.directory"
-                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -898,18 +898,18 @@
                 <div class="col-2">
                   <it-toggle id="emailFlussoPA" (ngModelChange)="changeEmailFlussoPagoPA($event)"
                              [disabled]="disabilitaCampi()"
-                             [(ngModel)]="rendicontazioneFlussoPA.emailEnabled" name="emailFlussoPA"></it-toggle>
+                             [(ngModel)]="rendicontazioneFlussoPA.flagNotificaEmail" name="emailFlussoPA"></it-toggle>
                 </div>
               </div>
               <div class="row">
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneFlussoPA.emailEnabled)"
-                         [required]="rendicontazioneFlussoPA.emailEnabled"
+                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneFlussoPA.flagNotificaEmail)"
+                         [required]="rendicontazioneFlussoPA.flagNotificaEmail"
                          id="emailFlussoPAId" [customvalidator]="validateEmail()"
                          name="emailFlussoPAId" [(ngModel)]="rendicontazioneFlussoPA.email"
                          #emailFlussoPAId="ngModel"
-                         [disabled]="!rendicontazioneFlussoPA.emailEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -926,7 +926,7 @@
                   <input type="text" autocomplete="off" placeholder="Ccn" id="emailFlussoPACcn"
                          name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.emailCcn"
                          #emailFlussoPACcn="ngModel" [customvalidator]="validateEmail()"
-                         [disabled]="!rendicontazioneFlussoPA.emailEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -944,23 +944,23 @@
             <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
               <div class="row">
                 <div class="col">
-                  <label for="ftpFlussoPA" [ngClass]="{'required': rendicontazioneFlussoPA.ftpEnabled, 'title':true}">Ftp</label>
+                  <label for="ftpFlussoPA" [ngClass]="{'required': rendicontazioneFlussoPA.flagNotificaFtp, 'title':true}">Ftp</label>
                 </div>
                 <div class="col-2">
                   <it-toggle id="ftpFlussoPA" (ngModelChange)="changeFtpFlussoPagoPA($event)"
                              [disabled]="disabilitaCampi()"
-                             [(ngModel)]="rendicontazioneFlussoPA.ftpEnabled" name="ftpFlussoPA"></it-toggle>
+                             [(ngModel)]="rendicontazioneFlussoPA.flagNotificaFtp" name="ftpFlussoPA"></it-toggle>
                 </div>
               </div>
               <div class="row">
 
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [required]="rendicontazioneFlussoPA.ftpEnabled"
-                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneFlussoPA.ftpEnabled)"
+                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneFlussoPA.flagNotificaFtp)"
                          id="serverFlussoPA" name="serverFlussoPA" [customvalidator]="validateServer()"
                          [(ngModel)]="rendicontazioneFlussoPA.server" #serverFlussoPA="ngModel"
-                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -976,12 +976,12 @@
 
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [required]="rendicontazioneFlussoPA.ftpEnabled"
-                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneFlussoPA.ftpEnabled)"
+                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneFlussoPA.flagNotificaFtp)"
                          id="usernameFlussoPA" name="usernameFlussoPA"
                          #usernameFlussoPA="ngModel"
                          [(ngModel)]="rendicontazioneFlussoPA.username"
-                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -996,12 +996,12 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [required]="rendicontazioneFlussoPA.ftpEnabled"
-                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneFlussoPA.ftpEnabled)"
+                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneFlussoPA.flagNotificaFtp)"
                          id="passwordFlussoPA"
                          name="passwordFlussoPA" #passwordFlussoPA="ngModel"
                          [(ngModel)]="rendicontazioneFlussoPA.password"
-                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -1016,11 +1016,11 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off" id="directoryFlussoPA"
-                         [required]="rendicontazioneFlussoPA.ftpEnabled"
-                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneFlussoPA.ftpEnabled)"
+                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneFlussoPA.flagNotificaFtp)"
                          name="directoryFlussoPA" #directoryFlussoPA="ngModel"
                          [(ngModel)]="rendicontazioneFlussoPA.directory"
-                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled || disabilitaCampi() ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
