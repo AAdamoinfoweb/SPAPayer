@@ -204,7 +204,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   getNumeroRecord(): string {
-    return 'Totale: ' + this.tableData.rows.length;
+    return 'Totale: ' + this.tableData.rows.length + ' banner';
   }
 
   selezionaRigaTabella(rowsChecked): void {
