@@ -1,4 +1,5 @@
 export class SintesiRendicontazione {
+  flussoRendicontazioneId: number;
   enteNome: string;
   enteId: number;
   servizioNome: string;
@@ -6,8 +7,8 @@ export class SintesiRendicontazione {
   canale: string;
   tipoFlusso: string;
   dataRendiconto: string;
-  flussoRendicontazione: number;
   numeroPagamenti: number;
   importoNetto: number;
-  statoInvio: string;
+  statoInvioEmail: boolean;
+  statoInvioFtp: boolean;
 }
