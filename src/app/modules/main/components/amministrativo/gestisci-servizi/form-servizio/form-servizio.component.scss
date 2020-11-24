@@ -97,6 +97,13 @@ span.key::after {
   content: '\1F511';
 }
 
+input[type=checkbox] {
+  margin-top: 10px;
+  margin-left: 10px;
+  height: 20px !important;
+  width: 20px;
+}
+
 .example-box2 {
   font-size: 1.2em;
   border: solid 1px #ccc;

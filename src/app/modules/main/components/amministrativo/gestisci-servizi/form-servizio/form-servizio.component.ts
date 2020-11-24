@@ -264,16 +264,20 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       }
     });
 
-    const campoServizios: CampoServizio[] = this.campoTipologiaServizioList
-      .filter((value => !value.id || value.campoTipologiaServizioId))
-      .map(value => value.id = null);
+    if (this.integrazione.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV1) {
+      const campoServizios: CampoServizio[] = this.campoTipologiaServizioList
+        .filter((value => !value.id || value.campoTipologiaServizioId))
+        .map(value => value.id = null);
 
-    this.campoServizioAddList.forEach((value, index) => value.posizione = index);
+      this.campoServizioAddList.forEach((value, index) => value.posizione = index);
+      this.servizio.listaCampiServizio = _.concat(campoServizios, this.campoServizioAddList);
+    }
 
     const flussiNotifiche = new FlussiNotifiche();
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
     flussiNotifiche.flussoRiversamentoPagoPa = this.rendicontazioneFlussoPA;
-    flussiNotifiche.notifichePagamento.email = emails.join(';');
+    if (emails && emails.length > 0)
+      flussiNotifiche.notifichePagamento.email = emails.join(';');
     this.servizio.flussiNotifiche = flussiNotifiche;
 
     this.servizio.tipologiaServizioId = this.filtri.tipologiaServizio.id;
@@ -288,7 +292,18 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.impositore = this.impositore;
     this.servizio.beneficiario = this.beneficiario;
     this.servizio.listaContiCorrenti = this.listaContiCorrente;
-    this.servizio.listaCampiServizio = _.concat(campoServizios, this.campoServizioAddList);
+
+    this.resetPagina();
+  }
+
+  private resetPagina() {
+    this.filtri = new ParametriRicercaServizio();
+    this.filtri = new ParametriRicercaServizio();
+    this.servizio = new Servizio();
+    this.contatti = new Contatti();
+    this.impositore = new ImpositoreServizio();
+    this.integrazione = new LivelloIntegrazioneServizio();
+    this.beneficiario = new BeneficiarioServizio();
   }
 
   onChangeFiltri(event: ParametriRicercaServizio) {

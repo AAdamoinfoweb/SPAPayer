@@ -226,9 +226,13 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
-                         [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
                          #codiceEnte="ngModel" [(ngModel)]="integrazione.ufficio.codiceEnte"
                          [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                <div class="col">
+                  <p *ngIf="!isCampoInvalido(codiceEnte)">Inserisci testo</p>
                 </div>
               </div>
             </div>
@@ -345,6 +349,11 @@
                     <option [ngValue]="null" [selected]="true">Seleziona</option>
                     <option *ngFor="let item of listaPortaleEsterno" [ngValue]="item.id">{{item.nome}}</option>
                   </select>
+                </div>
+              </div>
+              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                <div class="col">
+                  <p *ngIf="!isCampoInvalido(portaleEsterno)">Seleziona portale esterno</p>
                 </div>
               </div>
             </div>
@@ -571,7 +580,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <p *ngIf="!isCampoInvalido(enteBenefInput)">Seleziona Ufficio</p>
+                <p *ngIf="!isCampoInvalido(ufficioBenefInput)">Seleziona Ufficio</p>
               </div>
             </div>
           </div>
@@ -585,6 +594,7 @@
               <div class="col">
                 <input id="descrUfficio" name="descrUfficio" type="text" class="input-text pt-0" autocomplete="off"
                        #descrUfficio="ngModel" [ngModel]="beneficiario.ufficio?.descrizioneUfficio"
+                       [required]="false"
                        [disabled]="true">
               </div>
             </div>
@@ -1091,7 +1101,7 @@
         <!-- Bottoni dx -->
         <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <button id="buttonSalva" class="btn"
-                  [disabled]="datiForm.invalid || (mapControllo && getListaControllo(mapControllo).includes(false))"
+                  [disabled]="(datiForm && datiForm.invalid) || (mapControllo && getListaControllo(mapControllo).includes(false))"
                   (click)="onClickSalva()">Salva
           </button>
         </div>
