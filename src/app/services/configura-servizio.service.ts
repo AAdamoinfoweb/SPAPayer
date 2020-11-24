@@ -5,6 +5,16 @@ import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaEnte} from "../modules/main/model/ente/ParametriRicercaEnte";
 import {FiltroSelect} from '../modules/main/model/servizio/FiltroSelect';
+import {Servizio} from "../modules/main/model/servizio/Servizio";
+import {LivelloIntegrazioneServizio} from "../modules/main/model/servizio/LivelloIntegrazioneServizio";
+import {FlussiNotifiche} from "../modules/main/model/servizio/FlussiNotifiche";
+import {Contatti} from "../modules/main/model/servizio/Contatti";
+import {LivelloIntegrazioneEnum} from "../enums/livelloIntegrazione.enum";
+import {BeneficiarioServizio} from "../modules/main/model/servizio/BeneficiarioServizio";
+import {ImpositoreServizio} from "../modules/main/model/servizio/ImpositoreServizio";
+import {FlussoRiversamentoPagoPA} from "../modules/main/model/servizio/FlussoRiversamentoPagoPA";
+import {RendicontazioneGiornaliera} from "../modules/main/model/servizio/RendicontazioneGiornaliera";
+import {NotifichePagamento} from "../modules/main/model/servizio/NotifichePagamento";
 
 @Injectable({
   providedIn: 'root'
@@ -167,5 +177,25 @@ export class ConfiguraServizioService {
             return of(null);
           }
         }));
+  }
+
+  getById(servizioId: number): Observable<Servizio> {
+    let s = new Servizio();
+    s.raggruppamentoId = 1;
+    s.nomeServizio = "a";
+    s.abilitaDa = new Date();
+    s.abilitaA = new Date();
+    s.contatti = new Contatti();
+    s.impositore = new ImpositoreServizio();
+    s.beneficiario = new BeneficiarioServizio();
+    s.integrazione = new LivelloIntegrazioneServizio();
+    s.integrazione.livelloIntegrazioneId = LivelloIntegrazioneEnum.LV2;
+    s.flussiNotifiche = new FlussiNotifiche();
+    s.flussiNotifiche.rendicontazioneGiornaliera = new RendicontazioneGiornaliera();
+    s.flussiNotifiche.flussoRiversamentoPagoPa = new FlussoRiversamentoPagoPA();
+    s.flussiNotifiche.notifichePagamento = new NotifichePagamento();
+    s.flussiNotifiche.notifichePagamento.email = "s.sante@hotmail.it;s.sante@dxc.com";
+
+    return of(s);
   }
 }

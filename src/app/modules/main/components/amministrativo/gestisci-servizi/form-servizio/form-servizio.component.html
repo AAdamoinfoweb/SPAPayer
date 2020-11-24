@@ -686,10 +686,16 @@
                      [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
                'field-input': (item.campoInput && !item.disabilitato),
                'field-output': (!item.campoInput && !item.disabilitato)}"
-                     [cdkDragDisabled]="!item.draggable" cdkDrag>
+                     [cdkDragDisabled]="!item.draggable || this.funzione === FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
-                    <div (click)="showModal(item)" class="col-7 text-right">{{item.titolo}}</div>
+                    <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i" (dblclick)="dblClick(item, i)"
+                         class="col-7 text-right">{{item.titolo}}</div>
+                    <div *ngIf="showEditId == i" class="col-6 text-right">
+                      <input autofocus #edit="ngModel" name="edit"
+                             (keyup.enter)="applyEdit(item)"
+                             [(ngModel)]="item.titolo"/>
+                    </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>
                     </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>

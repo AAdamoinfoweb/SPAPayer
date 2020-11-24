@@ -28,7 +28,7 @@ import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazio
 import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, subscribeOn} from 'rxjs/operators';
 import {EnteService} from '../../../../../../services/ente.service';
 import {Observable, of} from 'rxjs';
 import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte';
@@ -214,10 +214,35 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
     if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       this.servizioId = parseInt(snapshot.paramMap.get('servizioId'));
-      this.filtro = new ParametriRicercaServizio();
-      this.filtro.raggruppamentoId = 1;
 
-      this.filtri = this.filtro;
+      this.configuraServizioService.getById(this.servizioId).pipe(map((value: Servizio) => {
+        this.filtro = new ParametriRicercaServizio();
+        this.filtro.raggruppamentoId = value.raggruppamentoId;
+        this.filtro.nomeServizio = value.nomeServizio;
+        //this.filtro.tipologiaServizio = value.tipologiaServizioId;
+        this.filtro.abilitaDa = value.abilitaDa;
+        this.filtro.abilitaA = value.abilitaA;
+        this.filtro.attivo = value.flagAttiva;
+        this.contatti = value.contatti;
+        this.integrazione = value.integrazione;
+        this.impositore = value.impositore;
+        this.beneficiario = value.beneficiario;
+        this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera;
+        this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPa;
+        if (value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.email) {
+          let strings = value.flussiNotifiche.notifichePagamento.email.split(";");
+          if (strings && strings.length > 0) {
+            this.emailsControl = [];
+            strings.forEach(email => {
+              let formControl = new FormControl();
+              formControl.setValue(email);
+              this.emailsControl.push(formControl);
+            });
+          }
+        }
+
+        this.filtri = this.filtro;
+      })).subscribe();
     }
   }
 
