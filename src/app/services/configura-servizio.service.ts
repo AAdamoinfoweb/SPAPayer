@@ -15,6 +15,9 @@ import {ImpositoreServizio} from "../modules/main/model/servizio/ImpositoreServi
 import {FlussoRiversamentoPagoPA} from "../modules/main/model/servizio/FlussoRiversamentoPagoPA";
 import {RendicontazioneGiornaliera} from "../modules/main/model/servizio/RendicontazioneGiornaliera";
 import {NotifichePagamento} from "../modules/main/model/servizio/NotifichePagamento";
+import {Utils} from "../utils/Utils";
+import * as moment from "moment";
+import {ContoCorrente} from "../modules/main/model/ente/ContoCorrente";
 
 @Injectable({
   providedIn: 'root'
@@ -182,14 +185,20 @@ export class ConfiguraServizioService {
   getById(servizioId: number): Observable<Servizio> {
     let s = new Servizio();
     s.raggruppamentoId = 1;
+    s.tipologiaServizioId = 13;
     s.nomeServizio = "a";
-    s.abilitaDa = new Date();
-    s.abilitaA = new Date();
+    s.abilitaDa = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    s.abilitaA = moment().format(Utils.FORMAT_DATE_CALENDAR);
     s.contatti = new Contatti();
     s.impositore = new ImpositoreServizio();
     s.beneficiario = new BeneficiarioServizio();
     s.integrazione = new LivelloIntegrazioneServizio();
     s.integrazione.livelloIntegrazioneId = LivelloIntegrazioneEnum.LV2;
+    s.listaContiCorrenti = [];
+    let cc = new ContoCorrente();
+    cc.iban = "IT60X0542811101000000123456";
+    cc.inizioValidita = moment().format(Utils.FORMAT_DATE_CALENDAR);
+    s.listaContiCorrenti.push(cc);
     s.flussiNotifiche = new FlussiNotifiche();
     s.flussiNotifiche.rendicontazioneGiornaliera = new RendicontazioneGiornaliera();
     s.flussiNotifiche.flussoRiversamentoPagoPa = new FlussoRiversamentoPagoPA();

@@ -17,8 +17,8 @@ export class Servizio {
   tipologiaServizioId: number;
   raggruppamentoId: number;
   nomeServizio: string;
-  abilitaDa: Date;
-  abilitaA: Date;
+  abilitaDa: string;
+  abilitaA: string;
   flagAttiva: boolean;
 
 }

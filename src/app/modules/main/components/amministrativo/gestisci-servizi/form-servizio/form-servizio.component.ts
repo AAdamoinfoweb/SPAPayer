@@ -25,10 +25,10 @@ import {CampoTipologiaServizioService} from '../../../../../../services/campo-ti
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {ParametriRicercaServizio} from '../../../../model/servizio/ParametriRicercaServizio';
 import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
-import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
+import {FormControl, NgModel, ValidatorFn} from '@angular/forms';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
-import {catchError, map, subscribeOn} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {EnteService} from '../../../../../../services/ente.service';
 import {Observable, of} from 'rxjs';
 import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte';
@@ -153,10 +153,16 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   public ngAfterViewInit() {
     this.datiBeneficiarioFormQuery.changes.subscribe(ql => {
-      if (!this.firstAdd) {
+      if (!this.firstAdd && this.funzione == FunzioneGestioneEnum.AGGIUNGI) {
         this.firstAdd = true;
         this.aggiungiContoCorrente();
       }
+      if (this.funzione != FunzioneGestioneEnum.AGGIUNGI) {
+        this.servizio.listaContiCorrenti.forEach(value1 => {
+          this.aggiungiContoCorrente(value1);
+        });
+      }
+
     });
   }
 
@@ -182,7 +188,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     });
 
     this.refreshItemsEvent.subscribe((items) => {
-      this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
+      this.listaDipendeDa = items.filter((value => value && value.tipoCampoId === this.tipoCampoIdSelect));
     });
     this.societaService.ricercaSocieta(null, this.idFunzione)
       .pipe(map((value: Societa[]) => this.listaSocieta = value)).subscribe();
@@ -216,10 +222,12 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.servizioId = parseInt(snapshot.paramMap.get('servizioId'));
 
       this.configuraServizioService.getById(this.servizioId).pipe(map((value: Servizio) => {
+        this.servizio = value;
         this.filtro = new ParametriRicercaServizio();
         this.filtro.raggruppamentoId = value.raggruppamentoId;
         this.filtro.nomeServizio = value.nomeServizio;
-        //this.filtro.tipologiaServizio = value.tipologiaServizioId;
+        this.filtro.tipologiaServizioId = value.tipologiaServizioId;
+        this.caricaCampi(value.tipologiaServizioId).subscribe();
         this.filtro.abilitaDa = value.abilitaDa;
         this.filtro.abilitaA = value.abilitaA;
         this.filtro.attivo = value.flagAttiva;
@@ -227,6 +235,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.integrazione = value.integrazione;
         this.impositore = value.impositore;
         this.beneficiario = value.beneficiario;
+
         this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera;
         this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPa;
         if (value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.email) {
