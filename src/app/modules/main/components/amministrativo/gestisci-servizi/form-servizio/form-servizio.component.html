@@ -652,8 +652,8 @@
                     <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i" (dblclick)="dblClick(item, i)"
                          class="col-7 text-right">{{item.titolo}}</div>
                     <div *ngIf="showEditId == i" class="col-6 text-right">
-                      <input autofocus formControlName="edit"
-                             (keyup.enter)="showEditId = null"
+                      <input autofocus #edit="ngModel" name="edit"
+                             (keyup.enter)="applyEdit(item)"
                              [(ngModel)]="item.titolo"/>
                     </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>

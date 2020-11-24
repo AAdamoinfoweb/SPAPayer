@@ -651,4 +651,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.isSingleClick = false;
     this.showEditId = index;
   }
+
+  applyEdit(item: CampoServizio) {
+    if (!this.campoTipologiaServizioOriginal.find((value) => value.id == item.id && value.titolo == item.titolo))
+      this.amministrativoService.salvaCampoFormEvent.emit(item);
+    this.showEditId = null;
+  }
 }
