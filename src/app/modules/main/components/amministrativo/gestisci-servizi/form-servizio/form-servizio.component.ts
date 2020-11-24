@@ -411,6 +411,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       funzione: this.funzione,
       idFunzione: this.idFunzione,
       livelloIntegrazione: this.integrazione.livelloIntegrazioneId,
+      mostraLivelloIntegrazione: true,
       listaDipendeDa: this.listaDipendeDa
     });
   }
@@ -658,6 +659,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           funzione: this.funzione,
           idFunzione: this.idFunzione,
           livelloIntegrazione: this.integrazione.livelloIntegrazioneId,
+          mostraLivelloIntegrazione: true,
           listaDipendeDa: this.listaDipendeDa
         });
       }

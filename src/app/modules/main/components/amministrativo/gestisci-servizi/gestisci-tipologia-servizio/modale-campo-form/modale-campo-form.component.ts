@@ -20,6 +20,7 @@ export interface DatiModaleCampo {
   campoForm: CampoTipologiaServizio | CampoServizio;
   funzione: FunzioneGestioneEnum;
   idFunzione: number;
+  mostraLivelloIntegrazione: boolean;
 }
 
 @Component({
