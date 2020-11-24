@@ -100,25 +100,21 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   creaRigaTabella(banner: Banner): object {
-    const dataSistema = moment();
-    const isBannerAttivo = banner.attivo && (banner.inizio ? moment(banner.inizio) <= dataSistema : false)
-      && (banner.fine ? moment(banner.fine) >= dataSistema : false);
-    let row;
-
-    row = {
+    return {
       id: {value: banner.id},
-      iconaBanner: Utils.creaIcona('#it-check', '#008758', null, 'none'),
+      iconaBanner: Utils.creaIcona('#it-check', '#008758', null, this.isBannerAttivo(banner) ? 'inline' : 'none'),
       titolo: {value: banner.titolo},
       testo: {value: banner.testo},
       inizio: {value: banner.inizio ? moment(banner.inizio).format(Utils.FORMAT_DATE_CALENDAR) : null},
       fine: {value: banner.fine ? moment(banner.fine).format(Utils.FORMAT_DATE_CALENDAR) : null}
     };
+  }
 
-    if (isBannerAttivo) {
-      row.iconaBanner = Utils.creaIcona('#it-check', '#008758', null, 'inline');
-    }
-
-    return row;
+  isBannerAttivo(banner: Banner): boolean {
+    const dataSistema = moment();
+    const momentInizio = banner.inizio ? moment(banner.inizio, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    const momentFine = banner.fine ? moment(banner.fine, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    return banner.attivo && momentInizio.isSameOrBefore(dataSistema) && (momentFine == null || momentFine.isSameOrAfter(dataSistema));
   }
 
   getObservableFunzioneRicerca(): Observable<Banner[]> {
