@@ -208,8 +208,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
   }
 
   getNumeroRecord(): string {
-    // TODO numero record tabella
-    return null;
+    return `Totale: ${this.elemento.sintesiRendicontazioni.length}`;
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
