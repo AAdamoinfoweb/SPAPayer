@@ -318,7 +318,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (this.integrazione.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV1) {
       const campoServizios: CampoServizio[] = this.campoTipologiaServizioList
         .filter((value => !value.id || value.campoTipologiaServizioId))
-        .map(value => value.id = null);
+        .map(value => {
+          value.id = null;
+          return value;
+        });
 
       this.campoServizioAddList.forEach((value, index) => value.posizione = index);
       this.servizio.listaCampiServizio = _.concat(campoServizios, this.campoServizioAddList);
@@ -352,7 +355,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
     this.configuraServizioService.inserimentoServizio(this.servizio, this.idFunzione)
       .subscribe((id) => {
-        this.resetPagina();
+        if (id)
+          this.resetPagina();
       });
   }
 
