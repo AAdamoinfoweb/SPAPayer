@@ -2,7 +2,6 @@ import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormUtentePermessiComponent} from './gestisci-utenti/form-utente-permessi/form-utente-permessi.component';
 import {GestisciUtentiComponent} from './gestisci-utenti/gestisci-utenti.component';
 import {FiltroGestioneUtentiComponent} from './gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
-
 import {DatiUtenteComponent} from './gestisci-utenti/dati-utente/dati-utente.component';
 import {DatiPermessoComponent} from './gestisci-utenti/dati-permesso/dati-permesso.component';
 import {AmministrativoParentComponent} from './amministrativo-parent.component';
@@ -79,6 +78,7 @@ import {FormServizioComponent} from './gestisci-servizi/form-servizio/form-servi
 import {FiltroGestioneServizioComponent} from './gestisci-servizi/filtro-gestione-servizio/filtro-gestione-servizio.component';
 import {RendicontazioneComponent} from './gestisciportale/rendicontazione/rendicontazione.component';
 import {FiltroRendicontazioneComponent} from './gestisciportale/rendicontazione/filtro-rendicontazione/filtro-rendicontazione.component';
+import {DettaglioRendicontazioneComponent} from './gestisciportale/rendicontazione/dettaglio-rendicontazione/dettaglio-rendicontazione.component';
 
 
 @NgModule({
@@ -136,7 +136,8 @@ import {FiltroRendicontazioneComponent} from './gestisciportale/rendicontazione/
     FormServizioComponent,
     FiltroGestioneServizioComponent,
     RendicontazioneComponent,
-    FiltroRendicontazioneComponent
+    FiltroRendicontazioneComponent,
+    DettaglioRendicontazioneComponent
   ],
   imports: [
     HttpClientModule,
