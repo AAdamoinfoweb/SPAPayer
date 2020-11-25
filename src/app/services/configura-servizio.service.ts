@@ -183,7 +183,25 @@ export class ConfiguraServizioService {
         }));
   }
 
-  getById(servizioId: number): Observable<Servizio> {
+  dettaglioServizio(servizioId: number, idFunzione: string): Observable<Servizio> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.serviziUrl + '/' + servizioId, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as Servizio;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+    /*
     let s = new Servizio();
     s.raggruppamentoId = 1;
     s.tipologiaServizioId = 13;
@@ -206,7 +224,7 @@ export class ConfiguraServizioService {
     s.flussiNotifiche.notificheDiPagamento = new NotifichePagamento();
     s.flussiNotifiche.notificheDiPagamento.email = "s.sante@hotmail.it;s.sante@dxc.com";
 
-    return of(s);
+    return of(s);*/
   }
 
   inserimentoServizio(servizio: Servizio, idFunzione: string): Observable<number> {

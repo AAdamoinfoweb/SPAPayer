@@ -226,7 +226,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       this.servizioId = parseInt(snapshot.paramMap.get('servizioId'));
 
-      this.configuraServizioService.getById(this.servizioId).pipe(map((value: Servizio) => {
+      this.configuraServizioService.dettaglioServizio(this.servizioId, this.idFunzione).pipe(map((value: Servizio) => {
         this.servizio = value;
         this.filtro = new ParametriRicercaServizio();
         this.filtro.raggruppamentoId = value.raggruppamentoId;
