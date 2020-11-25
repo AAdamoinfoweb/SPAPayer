@@ -4,14 +4,12 @@ import * as FILESAVER from 'file-saver';
 import * as jsPDF from 'jspdf';
 import {tipoColonna} from '../enums/TipoColonna.enum';
 import {ImmaginePdf} from '../modules/main/model/tabella/ImmaginePdf';
-import {Tabella} from '../modules/main/model/tabella/Tabella';
 import {TipoModaleEnum} from '../enums/tipoModale.enum';
-import {Breadcrumb, SintesiBreadcrumb} from "../modules/main/dto/Breadcrumb";
+import {Breadcrumb, SintesiBreadcrumb} from '../modules/main/dto/Breadcrumb';
 import {Colonna} from '../modules/main/model/tabella/Colonna';
-import {OpzioneSelect} from '../modules/main/model/OpzioneSelect';
-import {Banner} from "../modules/main/model/banner/Banner";
-import {getBannerType, LivelloBanner} from "../enums/livelloBanner.enum";
-import {ToolEnum} from "../enums/Tool.enum";
+import {Banner} from '../modules/main/model/banner/Banner';
+import {getBannerType, LivelloBanner} from '../enums/livelloBanner.enum';
+import {ToolEnum} from '../enums/Tool.enum';
 
 export class Utils {
 
@@ -117,9 +115,12 @@ export class Utils {
               elementoRigaPdf = riga[elemento]?.display === 'inline' ? '' : null;
               break;
             case tipoColonna.LINK:
-              elementoRigaPdf = riga[elemento]?.testo || null;
+              elementoRigaPdf = riga[elemento]?.value || null;
               break;
             case tipoColonna.TESTO:
+              elementoRigaPdf = riga[elemento]?.value || null;
+              break;
+            case tipoColonna.IMPORTO:
               elementoRigaPdf = riga[elemento]?.value || null;
               break;
             default:

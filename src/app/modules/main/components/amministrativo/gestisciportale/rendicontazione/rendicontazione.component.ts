@@ -224,8 +224,17 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
   }
 
   getImmaginiFilePdf(): ImmaginePdf[] {
-    // TODO settare posizione icone nelle righe della tabella sul file pdf
-    return [];
+    const iconaGruppoUtenti = new ImmaginePdf();
+    iconaGruppoUtenti.indiceColonna = 0;
+    iconaGruppoUtenti.srcIcona = 'assets/img/users-solid-pdf-img.png';
+    iconaGruppoUtenti.posizioneX = 60;
+    iconaGruppoUtenti.posizioneY = 8;
+    iconaGruppoUtenti.larghezza = 18;
+    iconaGruppoUtenti.altezza = 15;
+
+    // TODO aggiungere immagine dinamica stato invio rendicontazione
+
+    return [iconaGruppoUtenti];
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
