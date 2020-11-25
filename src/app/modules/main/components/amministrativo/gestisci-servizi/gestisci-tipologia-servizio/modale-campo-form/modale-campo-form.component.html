@@ -182,7 +182,7 @@
             [(ngModel)]="datiModaleCampo.campoForm['jsonPathId']">
             <option [ngValue]="null"></option>
             <option *ngFor="let item of listaJsonPathFiltrata"
-                    [ngValue]="item.json_path">{{item.nome_attributo}}</option>
+                    [ngValue]="item.id">{{item.nome_attributo}}</option>
           </select>
         </div>
       </div>

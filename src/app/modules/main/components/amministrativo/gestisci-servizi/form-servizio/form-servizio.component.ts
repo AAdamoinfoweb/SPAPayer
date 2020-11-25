@@ -323,7 +323,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           return value;
         });
 
-      this.campoServizioAddList.forEach((value, index) => value.posizione = index);
+      this.campoServizioAddList.forEach((value, index) => value.posizione = index + 1);
       this.servizio.listaCampiServizio = _.concat(campoServizios, this.campoServizioAddList);
     }
 
