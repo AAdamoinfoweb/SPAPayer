@@ -285,7 +285,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
   }
 
   getNumeroRecord(): string {
-    return `Totale: ${this.elemento.sintesiRendicontazioni.length}`;
+    return `Totale: ${this.elemento.sintesiRendicontazioni.length} rendicontazioni`;
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
