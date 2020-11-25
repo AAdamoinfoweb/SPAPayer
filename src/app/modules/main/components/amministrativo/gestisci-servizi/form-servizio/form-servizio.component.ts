@@ -127,8 +127,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   testoTooltipIconaElimina = 'Elimina dati beneficiario';
 
   listaContiCorrente: ContoCorrente[];
-  // utilizzata per i conto correnti presenti nella lista di seleziona conto corrente
-  selezionaListaContiCorrente: ContoCorrente[];
 
   @ViewChildren('datiContoCorrente', {read: ViewContainerRef})
   datiBeneficiarioFormQuery: QueryList<any>;
