@@ -79,6 +79,7 @@ import {FiltroGestioneServizioComponent} from './gestisci-servizi/filtro-gestion
 import {RendicontazioneComponent} from './gestisciportale/rendicontazione/rendicontazione.component';
 import {FiltroRendicontazioneComponent} from './gestisciportale/rendicontazione/filtro-rendicontazione/filtro-rendicontazione.component';
 import {DettaglioRendicontazioneComponent} from './gestisciportale/rendicontazione/dettaglio-rendicontazione/dettaglio-rendicontazione.component';
+import {DatiRendicontazioneComponent} from './gestisciportale/rendicontazione/dati-rendicontazione/dati-rendicontazione.component';
 
 
 @NgModule({
@@ -137,7 +138,8 @@ import {DettaglioRendicontazioneComponent} from './gestisciportale/rendicontazio
     FiltroGestioneServizioComponent,
     RendicontazioneComponent,
     FiltroRendicontazioneComponent,
-    DettaglioRendicontazioneComponent
+    DettaglioRendicontazioneComponent,
+    DatiRendicontazioneComponent
   ],
   imports: [
     HttpClientModule,
