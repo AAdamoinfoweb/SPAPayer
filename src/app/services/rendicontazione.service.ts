@@ -5,13 +5,14 @@ import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaRendicontazione} from '../modules/main/model/rendicontazione/ParametriRicercaRendicontazione';
 import {RicercaRendicontazione} from '../modules/main/model/rendicontazione/RicercaRendicontazione';
+import {Rendicontazione} from '../modules/main/model/rendicontazione/Rendicontazione';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RendicontazioneService {
 
-  private readonly rendicontazioneBseUrl = '/rendicontazioni';
+  private readonly rendicontazioneBaseUrl = '/rendicontazione';
 
   constructor(private readonly http: HttpClient) {
   }
@@ -69,13 +70,34 @@ export class RendicontazioneService {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
-    return this.http.get(environment.bffBaseUrl + this.rendicontazioneBseUrl, {
+    return this.http.get(environment.bffBaseUrl + this.rendicontazioneBaseUrl, {
       params: params,
       headers: h,
       withCredentials: true
     })
       .pipe(map((body: any) => {
           return body as RicercaRendicontazione;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  dettaglioRendicontazione(id: number, idFunzione: string): Observable<Rendicontazione> {
+    const url = environment.bffBaseUrl + this.rendicontazioneBaseUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}/${id}`, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as Rendicontazione;
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {

@@ -49,9 +49,9 @@ export abstract class FormElementoParentComponent {
     });
   }
 
-  inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]) {
+  inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[], flag?: boolean) {
     const breadcrumbList: SintesiBreadcrumb[] = [];
-    breadcrumbList.push(new SintesiBreadcrumb('Amministra Portale', null));
+    breadcrumbList.push(new SintesiBreadcrumb(flag ? 'Gestisci Portale' : 'Amministra Portale', null));
     breadcrumbList.push(...breadcrumbs);
     return Utils.popolaListaBreadcrumb(breadcrumbList);
   }
