@@ -223,7 +223,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
     return righe;
   }
 
-  getImmaginiFilePdf(): ImmaginePdf[] {
+  getImmaginiFilePdf(righe: any[]): any[] {
     const iconaGruppoUtenti = new ImmaginePdf();
     iconaGruppoUtenti.indiceColonna = 0;
     iconaGruppoUtenti.srcIcona = 'assets/img/users-solid-pdf-img.png';
@@ -232,9 +232,26 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
     iconaGruppoUtenti.larghezza = 18;
     iconaGruppoUtenti.altezza = 15;
 
-    // TODO aggiungere immagine dinamica stato invio rendicontazione
+    const iconaStatoInvioRendicontazione = [];
+    righe.forEach((riga, index) => {
+      if (riga.statoInvio.tooltip) {
+        const iconaStato = new ImmaginePdf();
+        iconaStato.indiceColonna = 8;
+        iconaStato.indiceRiga = index;
+        if (riga.statoInvio.tooltip.includes('email')) {
+          iconaStato.srcIcona = 'assets/img/rendicontazione-stato-invio-via-mail.png';
+        } else if (riga.statoInvio.tooltip.includes('FTP')) {
+          iconaStato.srcIcona = 'assets/img/rendicontazione-stato-invio-via-FTP.png';
+        }
+        iconaStato.posizioneX = 3;
+        iconaStato.posizioneY = 1;
+        iconaStato.larghezza = 18;
+        iconaStato.altezza = 19;
+        iconaStatoInvioRendicontazione.push(iconaStato);
+      }
+    });
 
-    return [iconaGruppoUtenti];
+    return [iconaGruppoUtenti, iconaStatoInvioRendicontazione];
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {

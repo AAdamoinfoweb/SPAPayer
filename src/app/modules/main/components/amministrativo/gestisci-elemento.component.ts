@@ -125,7 +125,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     const copiaTabella = JSON.parse(JSON.stringify(tabella));
     const colonne = this.getColonneFilePdf(copiaTabella.cols);
     const righe = this.getRigheFilePdf(copiaTabella.rows);
-    let immagini = this.getImmaginiFilePdf();
+    let immagini = this.getImmaginiFilePdf(righe);
     if (!immagini) {
       immagini = [];
     }
@@ -136,7 +136,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract getRigheFilePdf(righe: any[]): any[];
 
-  abstract getImmaginiFilePdf(): ImmaginePdf[];
+  abstract getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] | any[];
 
   abstract selezionaRigaTabella(righeSelezionate: any[]): void;
 

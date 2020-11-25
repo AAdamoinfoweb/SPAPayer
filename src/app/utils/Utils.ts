@@ -140,16 +140,29 @@ export class Utils {
     filePdf.autoTable(headerColonne, righePdf, {
       didDrawCell: data => {
         immagini.forEach(immagine => {
-          if (data.section === 'body' && data.column.index === immagine.indiceColonna && data.row.raw[immagine.indiceColonna] != null) {
-            const icona = new Image();
-            icona.src = immagine.srcIcona;
-            filePdf.addImage(icona, 'PNG', data.cell.x + immagine.posizioneX, data.cell.y + immagine.posizioneY, immagine.larghezza, immagine.altezza);
+          if (Array.isArray(immagine)) {
+            immagine.forEach(img => {
+              this.inserisciImmagine(data, img, filePdf);
+            });
+          } else {
+            this.inserisciImmagine(data, immagine, filePdf);
           }
         });
       }
     });
     const blob = filePdf.output('blob');
     window.open(URL.createObjectURL(blob));
+  }
+
+  static inserisciImmagine(data: any, immagine: ImmaginePdf, filePdf: jsPDF.default) {
+    if (data.section === 'body' && data.column.index === immagine.indiceColonna
+      && (immagine.indiceRiga === null || data.row.index === immagine.indiceRiga)
+      && data.row.raw[immagine.indiceColonna] != null) {
+      const icona = new Image();
+      icona.src = immagine.srcIcona;
+      filePdf.addImage(icona, 'PNG', data.cell.x + immagine.posizioneX, data.cell.y + immagine.posizioneY,
+        immagine.larghezza, immagine.altezza);
+    }
   }
 
   static creaFileExcel(rows: any, headers: string[], sheet: any, sheetNames: any, workbook: any, fileName: string): void {
