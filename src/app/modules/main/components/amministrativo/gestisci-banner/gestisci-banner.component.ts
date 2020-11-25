@@ -171,9 +171,9 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
 
   getImmaginiFilePdf(): ImmaginePdf[] {
     const iconaBannerAttivo = new ImmaginePdf();
-    iconaBannerAttivo.indiceColonna = 0;
+    iconaBannerAttivo.indiceColonna = 4;
     iconaBannerAttivo.srcIcona = 'assets/img/active-banner.png';
-    iconaBannerAttivo.posizioneX = 2;
+    iconaBannerAttivo.posizioneX = 20;
     iconaBannerAttivo.posizioneY = 2;
     iconaBannerAttivo.larghezza = 9;
     iconaBannerAttivo.altezza = 17;
