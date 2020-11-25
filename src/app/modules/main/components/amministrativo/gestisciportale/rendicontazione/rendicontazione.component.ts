@@ -255,7 +255,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    return colonne.filter(col => col.field !== 'id');
+    return colonne;
   }
 
   getRigheFileExcel(righe: any[]) {
