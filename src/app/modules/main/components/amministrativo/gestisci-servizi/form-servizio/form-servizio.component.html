@@ -346,7 +346,7 @@
                   <select id="portaleEsterno" name="portaleEsterno"
                           #portaleEsterno="ngModel" [(ngModel)]="integrazione.portaleEsternoId"
                           [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
-                          [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                          [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || !isPresenteInDettaglioAndRendicontazione()">
                     <option [ngValue]="null" [selected]="true">Seleziona</option>
                     <option *ngFor="let item of listaPortaleEsterno" [ngValue]="item.id">{{item.nome}}</option>
                   </select>

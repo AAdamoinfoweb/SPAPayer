@@ -724,4 +724,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.amministrativoService.salvaCampoFormEvent.emit(item);
     this.showEditId = null;
   }
+
+  isPresenteInDettaglioAndRendicontazione() {
+    return !this.servizio.flagPresenzaDettaglioTransazione && !this.servizio.flagPresenzaRendicontazione;
+  }
 }
