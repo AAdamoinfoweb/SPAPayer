@@ -235,9 +235,13 @@
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
-              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+              <div class="row">
                 <div class="col">
-                  <p *ngIf="!isCampoInvalido(codiceEnte)">Inserisci testo</p>
+                  <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                     [ngClass]="{'text-muted': !isCampoInvalido(codiceEnte),
+                       'text-invalid': isCampoInvalido(codiceEnte)}">
+                    {{setPlaceholder(codiceEnte, TipoCampoEnum.INPUT_TESTUALE)}}
+                  </p>
                 </div>
               </div>
             </div>
@@ -1077,7 +1081,7 @@
                       <span ngbTooltip="rimuovi" placement="bottom"
                             [ngStyle]="{fill: '#403d39'}">
                         <svg (click)="removeEmail(i)" class="bg-light icon icon-sm filled">
-                          <use xlink:href="assets/img/sprite.svg#it-minus"></use>
+                          <use xlink:href="assets/img/sprite.svg#it-close"></use>
                         </svg>
                       </span>
                     </span>

@@ -430,6 +430,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   setPlaceholder(campo: NgModel | FormControl, tipoCampo: TipoCampoEnum): string {
     if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       return null;
+    } else if (campo instanceof NgModel && campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
     } else if (this.isCampoInvalido(campo)) {
       return 'campo non valido';
     } else {
