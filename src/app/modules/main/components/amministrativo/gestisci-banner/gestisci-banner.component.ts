@@ -48,11 +48,11 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   tableData: Tabella = {
     rows: [],
     cols: [
-      {field: 'iconaBanner', header: '', type: tipoColonna.ICONA},
       {field: 'titolo', header: 'Titolo', type: tipoColonna.TESTO},
       {field: 'testo', header: 'Testo', type: tipoColonna.TESTO},
       {field: 'inizio', header: 'Inizio', type: tipoColonna.TESTO},
       {field: 'fine', header: 'Fine', type: tipoColonna.TESTO},
+      {field: 'iconaBanner', header: 'Attivo', type: tipoColonna.ICONA}
     ],
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
@@ -98,25 +98,21 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   }
 
   creaRigaTabella(banner: Banner): object {
-    const dataSistema = moment();
-    const isBannerAttivo = banner.attivo && (banner.inizio ? moment(banner.inizio) <= dataSistema : false)
-      && (banner.fine ? moment(banner.fine) >= dataSistema : false);
-    let row;
-
-    row = {
+    return {
       id: {value: banner.id},
-      iconaBanner: Utils.creaIcona('#it-check', '#008758', null, 'none'),
       titolo: {value: banner.titolo},
       testo: {value: banner.testo},
       inizio: {value: banner.inizio ? moment(banner.inizio).format(Utils.FORMAT_DATE_CALENDAR) : null},
-      fine: {value: banner.fine ? moment(banner.fine).format(Utils.FORMAT_DATE_CALENDAR) : null}
+      fine: {value: banner.fine ? moment(banner.fine).format(Utils.FORMAT_DATE_CALENDAR) : null},
+      iconaBanner: Utils.creaIcona('#it-check', '#008758', null, this.isBannerAttivo(banner) ? 'inline' : 'none')
     };
+  }
 
-    if (isBannerAttivo) {
-      row.iconaBanner = Utils.creaIcona('#it-check', '#008758', null, 'inline');
-    }
-
-    return row;
+  isBannerAttivo(banner: Banner): boolean {
+    const dataSistema = moment();
+    const momentInizio = banner.inizio ? moment(banner.inizio, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    const momentFine = banner.fine ? moment(banner.fine, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    return banner.attivo && momentInizio.isSameOrBefore(dataSistema) && (momentFine == null || momentFine.isSameOrAfter(dataSistema));
   }
 
   getObservableFunzioneRicerca(): Observable<Banner[]> {
@@ -140,7 +136,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.esportaTabellaInFilePdf(this.tableData, 'Lista Banner');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tableData, 'Lista Banner');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista_Banner');
         break;
     }
   }
@@ -192,17 +188,17 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     return righe.map(riga => {
       const rigaFormattata = riga;
       delete rigaFormattata.id;
-      rigaFormattata.iconaBanner = riga.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
       rigaFormattata.titolo = riga.titolo.value;
       rigaFormattata.testo = riga.testo.value;
       rigaFormattata.inizio = riga.inizio.value;
       rigaFormattata.fine = riga.fine.value;
+      rigaFormattata.iconaBanner = riga.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
       return rigaFormattata;
     });
   }
 
   getNumeroRecord(): string {
-    return 'Totale: ' + this.tableData.rows.length;
+    return 'Totale: ' + this.tableData.rows.length + ' banner';
   }
 
   selezionaRigaTabella(rowsChecked): void {

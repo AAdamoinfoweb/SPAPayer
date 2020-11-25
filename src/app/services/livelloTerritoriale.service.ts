@@ -58,7 +58,7 @@ export class LivelloTerritorialeService {
       }));
   }
 
-  aggiuntaLivelloTerritoriale(livelloTerritoriale: LivelloTerritoriale, idFunzione: string): Observable<any> {
+  aggiuntaLivelloTerritoriale(livelloTerritoriale: LivelloTerritoriale, idFunzione: string): Observable<any | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.livelloTerritorialeBaseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -72,9 +72,9 @@ export class LivelloTerritorialeService {
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
-          return of(null);
+          return of(err);
         } else {
-          return of(null);
+          return of(err);
         }
       }));
   }

@@ -87,9 +87,11 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
   onClickSalva(): void {
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        this.livelloTerritorialeService.aggiuntaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe((livelloTerritoriale) => {
-          this.livelloTerritoriale = new LivelloTerritoriale();
-          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+        this.livelloTerritorialeService.aggiuntaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe((response) => {
+          if (!(response instanceof HttpErrorResponse)) {
+            this.livelloTerritoriale = new LivelloTerritoriale();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:

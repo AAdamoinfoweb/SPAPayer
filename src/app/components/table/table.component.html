@@ -9,7 +9,7 @@
         <p-tableHeaderCheckbox class="icon-box"></p-tableHeaderCheckbox>
       </th>
       <th *ngFor="let col of columns" pSortableColumn="{{col.field}}"
-      [ngStyle]="{width: (col.type == tipoColonnaEnum.ICONA) ? '2rem' : ''}">
+      [ngStyle]="{width: (col.type == tipoColonnaEnum.ICONA) ? '3rem' : ''}">
         {{col.header.toUpperCase()}}
         <p-sortIcon field="{{col.field}}" *ngIf="col.type != tipoColonnaEnum.ICONA"></p-sortIcon>
       </th>

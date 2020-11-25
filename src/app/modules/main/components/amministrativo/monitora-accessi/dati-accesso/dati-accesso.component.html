@@ -117,5 +117,13 @@
 
     </div>
 
+    <div class="row mt-4 mb-0">
+      <div *ngFor="let funzione of listaFunzioni; let i = index" class="col-3">
+        <it-checkbox [id]="i" [label]="funzione.label"
+                     [checked]="isChecked(funzione)"
+                     [disabled]="funzione.disabled"></it-checkbox>
+      </div>
+    </div>
+
   </form>
 </div>
