@@ -104,18 +104,25 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    // TODO implementare logica colonne excel
-    return null;
+    return colonne;
   }
 
   getRigheFileExcel(righe: any[]): any[] {
-    // TODO implementare logica righe excel
-   return null;
+    return righe.map(riga => {
+      const rigaFormattata = riga;
+      rigaFormattata.dataTransazione = riga.dataTransazione.value;
+      rigaFormattata.idTransazione = riga.idTransazione.value;
+      rigaFormattata.pagatore = riga.pagatore.value;
+      rigaFormattata.iuv = riga.iuv.value;
+      rigaFormattata.importoNetto = riga.importoNetto.value;
+      return rigaFormattata;
+    });
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
     return colonne;
   }
+
   getRigheFilePdf(righe: any[]): any[] {
     return righe;
   }
