@@ -12,7 +12,7 @@ import {Rendicontazione} from '../modules/main/model/rendicontazione/Rendicontaz
 })
 export class RendicontazioneService {
 
-  private readonly rendicontazioneBaseUrl = '/rendicontazioni';
+  private readonly rendicontazioneBaseUrl = '/rendicontazione';
 
   constructor(private readonly http: HttpClient) {
   }
