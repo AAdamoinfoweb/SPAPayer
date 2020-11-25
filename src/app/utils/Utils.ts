@@ -67,8 +67,8 @@ export class Utils {
     return numeroPositivo < 10 ? '0' + numeroPositivo : '' + numeroPositivo;
   }
 
-  static creaIcona = (path, color, tooltip, display) => {
-    return {path, color, tooltip, display};
+  static creaIcona = (path, color, tooltip, display, placement?) => {
+    return placement ? {path, color, tooltip, display, placement} : {path, color, tooltip, display, placement: 'right'};
   }
 
   static getModale(confermaFn, tipoModale: TipoModaleEnum, titolo?, messaggio?) {

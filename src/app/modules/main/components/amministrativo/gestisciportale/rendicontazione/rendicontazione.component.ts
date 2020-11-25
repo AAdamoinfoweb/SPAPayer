@@ -167,13 +167,16 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
     let coloreIcona = null;
     let tooltipIcona = null;
     let displayIcona = 'none';
+    let placementIcona = '';
     if (rendicontazione.statoInvioEmail) {
       coloreIcona = '#008758';
       tooltipIcona = 'Invio effettuato via email';
+      placementIcona = 'top';
       displayIcona = 'inline';
     } else if (rendicontazione.statoInvioFtp) {
       coloreIcona = '#D9364F';
       tooltipIcona = 'Invio effettuato via FTP';
+      placementIcona = 'top';
       displayIcona = 'inline';
     }
 
@@ -188,7 +191,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
       idFlussoRendicontazione: {value: rendicontazione.flussoRendicontazioneId},
       numeroPagamenti: {value: rendicontazione.numeroPagamenti},
       importoNetto: {value: rendicontazione.importoNetto},
-      statoInvio: Utils.creaIcona('#it-mail', coloreIcona, tooltipIcona, displayIcona)
+      statoInvio: Utils.creaIcona('#it-mail', coloreIcona, tooltipIcona, displayIcona, placementIcona)
     };
   }
 
