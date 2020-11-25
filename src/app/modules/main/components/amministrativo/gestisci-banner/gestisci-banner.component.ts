@@ -50,11 +50,11 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   tableData: Tabella = {
     rows: [],
     cols: [
-      {field: 'iconaBanner', header: '', type: tipoColonna.ICONA},
       {field: 'titolo', header: 'Titolo', type: tipoColonna.TESTO},
       {field: 'testo', header: 'Testo', type: tipoColonna.TESTO},
       {field: 'inizio', header: 'Inizio', type: tipoColonna.TESTO},
       {field: 'fine', header: 'Fine', type: tipoColonna.TESTO},
+      {field: 'iconaBanner', header: 'Attivo', type: tipoColonna.ICONA}
     ],
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
@@ -102,11 +102,11 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   creaRigaTabella(banner: Banner): object {
     return {
       id: {value: banner.id},
-      iconaBanner: Utils.creaIcona('#it-check', '#008758', null, this.isBannerAttivo(banner) ? 'inline' : 'none'),
       titolo: {value: banner.titolo},
       testo: {value: banner.testo},
       inizio: {value: banner.inizio ? moment(banner.inizio).format(Utils.FORMAT_DATE_CALENDAR) : null},
-      fine: {value: banner.fine ? moment(banner.fine).format(Utils.FORMAT_DATE_CALENDAR) : null}
+      fine: {value: banner.fine ? moment(banner.fine).format(Utils.FORMAT_DATE_CALENDAR) : null},
+      iconaBanner: Utils.creaIcona('#it-check', '#008758', null, this.isBannerAttivo(banner) ? 'inline' : 'none')
     };
   }
 
@@ -190,11 +190,11 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     return righe.map(riga => {
       const rigaFormattata = riga;
       delete rigaFormattata.id;
-      rigaFormattata.iconaBanner = riga.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
       rigaFormattata.titolo = riga.titolo.value;
       rigaFormattata.testo = riga.testo.value;
       rigaFormattata.inizio = riga.inizio.value;
       rigaFormattata.fine = riga.fine.value;
+      rigaFormattata.iconaBanner = riga.iconaBanner.display === 'none' ? 'DISABILITATO' : 'ATTIVO';
       return rigaFormattata;
     });
   }
