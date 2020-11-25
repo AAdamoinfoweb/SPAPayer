@@ -75,7 +75,9 @@
                    [cols]="tableData.cols"
                    [rows]="tableData.rows"
                    [tipoTabella]="tableData.tipoTabella"
-                   [textLeft]="getNumeroRecord()">
+                   [textLeft]="getNumeroRecord()"
+                   (onSelection)="selezionaRigaTabella($event)"
+                   [selection]="righeSelezionate">
         </app-table>
       </div>
     </div>

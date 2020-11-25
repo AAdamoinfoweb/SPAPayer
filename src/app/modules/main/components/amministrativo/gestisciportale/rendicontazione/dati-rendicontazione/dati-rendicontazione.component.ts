@@ -49,7 +49,7 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
       {field: 'importoNetto', header: 'Importo netto', type: tipoColonna.IMPORTO}
     ],
     dataKey: 'idTransazione.value',
-    tipoTabella: tipoTabella.TEMPLATING
+    tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
@@ -132,6 +132,7 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
+    this.righeSelezionate = righeSelezionate;
   }
 
   getNumeroRecord(): string {
