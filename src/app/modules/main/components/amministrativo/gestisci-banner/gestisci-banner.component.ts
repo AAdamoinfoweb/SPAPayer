@@ -138,7 +138,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
         this.esportaTabellaInFilePdf(this.tableData, 'Lista Banner');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tableData, 'Lista Banner');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista_Banner');
         break;
     }
   }
