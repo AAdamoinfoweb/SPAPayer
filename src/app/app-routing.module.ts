@@ -35,6 +35,7 @@ import {FormStatisticaComponent} from './modules/main/components/amministrativo/
 import {GestisciAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/gestisci-attivita-pianificate.component';
 import {FormAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component';
 import {RendicontazioneComponent} from './modules/main/components/amministrativo/gestisciportale/rendicontazione/rendicontazione.component';
+import {DettaglioRendicontazioneComponent} from './modules/main/components/amministrativo/gestisciportale/rendicontazione/dettaglio-rendicontazione/dettaglio-rendicontazione.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -90,8 +91,6 @@ const routes: Routes = [
   {path: 'gestisciTipologiaServizi/modificaTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
   {path: 'gestisciTipologiaServizi/dettaglioTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
   {path: 'configuraServizi/aggiungiServizio', component: FormServizioComponent},
-
-
   {path: 'gestisciStatistiche', component: GestisciStatisticheComponent},
   {path: 'gestisciStatistiche/aggiungiStatistica', component: FormStatisticaComponent},
   {path: 'gestisciStatistiche/modificaStatistica/:statisticaId', component: FormStatisticaComponent},
@@ -100,7 +99,8 @@ const routes: Routes = [
   {path: 'gestisciAttivitaPianificate/aggiungiAttivitaPianificata', component: FormAttivitaPianificateComponent},
   {path: 'gestisciAttivitaPianificate/modificaAttivitaPianificata/:attivitaId', component: FormAttivitaPianificateComponent},
   {path: 'gestisciAttivitaPianificate/dettaglioAttivitaPianificata/:attivitaId', component: FormAttivitaPianificateComponent},
-  {path: 'rendicontazione', component: RendicontazioneComponent}
+  {path: 'rendicontazione', component: RendicontazioneComponent},
+  {path: 'rendicontazione/dettaglioRendicontazione/:rendicontazioneId', component: DettaglioRendicontazioneComponent}
 ];
 
 @NgModule({

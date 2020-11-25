@@ -293,7 +293,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
   }
 
   mostraDettaglioRendicontazione(rigaCliccata: any) {
-    // TODO this.mostraDettaglioElemento('/dettaglioRendicontazione', rigaCliccata.id.value);
+    this.mostraDettaglioElemento('/dettaglioRendicontazione', rigaCliccata.idFlussoRendicontazione.value);
   }
 
   onChangeFiltriRendicontazione(filtri: ParametriRicercaRendicontazione): void {
