@@ -110,6 +110,7 @@
             <div class="row">
               <div class="col">
                 <input id="email" name="email" type="text" class="input-text pt-0" autocomplete="off"
+                       [customvalidator]="validateEmail()"
                        #email="ngModel" [(ngModel)]="contatti.email" [disabled]="disabilitaCampi()">
               </div>
             </div>
@@ -194,6 +195,7 @@
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'urlWsBO'" class="title form-elem-title"
+                         [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE}"
                   >Url del web service di Back Office</label>
                 </div>
               </div>
@@ -221,19 +223,25 @@
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'codiceEnte'" class="title form-elem-title"
+                         [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1}"
                   >Codice Ente</label>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
                   <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
+                         [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
                          #codiceEnte="ngModel" [(ngModel)]="integrazione.ufficio.codiceEnte"
                          [disabled]="disabilitaCampi()">
                 </div>
               </div>
-              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+              <div class="row">
                 <div class="col">
-                  <p *ngIf="!isCampoInvalido(codiceEnte)">Inserisci testo</p>
+                  <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                     [ngClass]="{'text-muted': !isCampoInvalido(codiceEnte),
+                       'text-invalid': isCampoInvalido(codiceEnte)}">
+                    {{setPlaceholder(codiceEnte, TipoCampoEnum.INPUT_TESTUALE)}}
+                  </p>
                 </div>
               </div>
             </div>
@@ -1073,7 +1081,7 @@
                       <span ngbTooltip="rimuovi" placement="bottom"
                             [ngStyle]="{fill: '#403d39'}">
                         <svg (click)="removeEmail(i)" class="bg-light icon icon-sm filled">
-                          <use xlink:href="assets/img/sprite.svg#it-minus"></use>
+                          <use xlink:href="assets/img/sprite.svg#it-close"></use>
                         </svg>
                       </span>
                     </span>

@@ -29,6 +29,7 @@ export class ConfiguraServizioService {
   private filtroTipologiaUrl = '/filtroTipologiaServizio';
   private filtroUfficioUrl = '/filtroUfficio';
   private filtroPortaleEsternoUrl = '/filtroPortaleEsterno';
+  private serviziUrl = '/servizi';
 
   constructor(private http: HttpClient) {
   }
@@ -201,10 +202,30 @@ export class ConfiguraServizioService {
     s.listaContiCorrenti.push(cc);
     s.flussiNotifiche = new FlussiNotifiche();
     s.flussiNotifiche.rendicontazioneGiornaliera = new RendicontazioneGiornaliera();
-    s.flussiNotifiche.flussoRiversamentoPagoPa = new FlussoRiversamentoPagoPA();
-    s.flussiNotifiche.notifichePagamento = new NotifichePagamento();
-    s.flussiNotifiche.notifichePagamento.email = "s.sante@hotmail.it;s.sante@dxc.com";
+    s.flussiNotifiche.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+    s.flussiNotifiche.notificheDiPagamento = new NotifichePagamento();
+    s.flussiNotifiche.notificheDiPagamento.email = "s.sante@hotmail.it;s.sante@dxc.com";
 
     return of(s);
+  }
+
+  inserimentoServizio(servizio: Servizio, idFunzione: string): Observable<number> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.post(environment.bffBaseUrl + this.configuraServiziBasePath + this.serviziUrl, servizio, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as number;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
   }
 }
