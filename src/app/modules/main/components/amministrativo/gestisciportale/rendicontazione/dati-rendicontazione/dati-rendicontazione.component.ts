@@ -128,7 +128,7 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
   }
 
   getNumeroRecord(): string {
-    return `Totale ${this.listaTransazioniFlusso.length} transazioni`;
+    return 'Totale: ' + this.tableData.rows.length + ' transazioni';
   }
 
 }
