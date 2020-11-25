@@ -1,0 +1,586 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="heading1">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true"
+          aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroForm="ngForm" (ngSubmit)="filtroForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="heading1">
+    <div class="collapse-body">
+      <!-- inizio Societa, Livello Territoriale, Ente, Tipologia Servizio -->
+      <div class="row mt-2 mb-0">
+        <!--        inizio Societa -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="societaId" class="title">Società</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="societaId"
+                name="societaId"
+                #societaId="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.societaId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroSocieta" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(societaId)">Seleziona società</p>
+              <p *ngIf="isCampoInvalido(societaId)"
+                 class="text-invalid">{{getMessaggioErrore(societaId)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Societa-->
+        <!--        inizio Livello Territoriale -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="livelloTerritorialeId" class="title">Livello Territoriale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="livelloTerritorialeId"
+                name="livelloTerritorialeId"
+                #livelloTerritorialeId="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.livelloTerritorialeId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroLivelliTerritoriale"
+                        [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(livelloTerritorialeId)">Seleziona livello territoriale</p>
+              <p *ngIf="isCampoInvalido(livelloTerritorialeId)"
+                 class="text-invalid">{{getMessaggioErrore(livelloTerritorialeId)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Livello Territoriale -->
+        <!--        inizio Ente -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="enteId" class="title">Ente</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="enteId"
+                name="enteId"
+                #enteId="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.enteId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroEnte"
+                        [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(enteId)">Seleziona ente</p>
+              <p *ngIf="isCampoInvalido(enteId)" class="text-invalid">{{getMessaggioErrore(enteId)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Ente -->
+        <!--        inizio Tipologia Servizio -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="tipologiaServizioId" class="title">Tipologia Servizio</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="tipologiaServizioId"
+                name="tipologiaServizioId"
+                #tipologiaServizioId="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.tipologiaServizioId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroTipologiaServizio"
+                        [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(tipologiaServizioId)">Seleziona tipologia servizio</p>
+              <p *ngIf="isCampoInvalido(tipologiaServizioId)"
+                 class="text-invalid">{{getMessaggioErrore(tipologiaServizioId)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Tipologia Servizio -->
+      </div>
+      <!-- fine Societa, Livello Territoriale, Ente, Tipologia Servizio -->
+      <!-- inizio Servizio, Identificativo transazione, Canale, Codice IUV -->
+      <div class="row mt-2 mb-0">
+        <!--        inizio Servizio -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="servizioId" class="title">Servizio</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="servizioId"
+                name="servizioId"
+                #servizioId="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.servizioId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroServizio" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(servizioId)">Seleziona servizio</p>
+              <p *ngIf="isCampoInvalido(servizioId)"
+                 class="text-invalid">{{getMessaggioErrore(servizioId)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Servizio-->
+        <!--        inizio Identificativo transazione -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="transazioneId" class="title">Identificativo Transazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="transazioneId"
+                name="transazioneId"
+                #transazioneId="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.transazioneId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroIdentificativoTransazione"
+                        [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(transazioneId)">Seleziona identificativo transazione</p>
+              <p *ngIf="isCampoInvalido(transazioneId)" class="text-invalid">{{getMessaggioErrore(transazioneId)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Identificativo transazione -->
+        <!--        inizio Canale -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="canaleId" class="title">Canale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="canaleId"
+                name="canaleId"
+                #canaleId="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.canaleId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroCanale"
+                        [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(canaleId)">Seleziona canale</p>
+              <p *ngIf="isCampoInvalido(canaleId)" class="text-invalid">{{getMessaggioErrore(canaleId)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Canale -->
+        <!--        inizio Codice IUV -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="iuv" class="title">Codice IUV</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="input-text pt-0"
+                     name="iuv"
+                     id="iuv"
+                     autocomplete="off"
+                     #iuv="ngModel"
+                     [(ngModel)]="filtroRicercaTransazioni.iuv">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(iuv)">Inserisci codice iuv</p>
+              <p *ngIf="isCampoInvalido(iuv)" class="text-invalid">{{getMessaggioErrore(iuv)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Codice IUV -->
+      </div>
+      <!-- fine Servizio, Identificativo transazione, Canale, Codice IUV -->
+      <!-- inizio Versante(Indirizzo IP), Email notifica, Data transazione da – a, Stato transazione -->
+      <div class="row mt-2 mb-0">
+        <!--        inizio Versante(Indirizzo IP) -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="versanteIndirizzoIP" class="title">Versante(Indirizzo IP)</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="versanteIndirizzoIP"
+                name="versanteIndirizzoIP"
+                #versanteIndirizzoIP="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.versanteIndirizzoIP"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroVersanteIndirizzoIP"
+                        [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(versanteIndirizzoIP)">Seleziona indirizzo ip del versante</p>
+              <p *ngIf="isCampoInvalido(versanteIndirizzoIP)"
+                 class="text-invalid">{{getMessaggioErrore(versanteIndirizzoIP)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Versante(Indirizzo IP)-->
+        <!--        inizio Email notifica -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="emailNotifica" class="title">Email di notifica</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="input-text pt-0"
+                     name="emailNotifica"
+                     id="emailNotifica"
+                     autocomplete="off"
+                     #emailNotifica="ngModel"
+                     [(ngModel)]="filtroRicercaTransazioni.emailNotifica">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(emailNotifica)">Inserisci email di notifica</p>
+              <p *ngIf="isCampoInvalido(emailNotifica)" class="text-invalid">{{getMessaggioErrore(emailNotifica)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Email notifica -->
+        <!--        inizio Data transazione da -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="dataTransazioneDa" class="title">Data transazione da</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerDataTransazioneDa)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="dataTransazioneDa"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYYYY,
+              returnedValueType: tipoData
+	          }"
+                #dataTransazioneDa="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.dataTransazioneDa"
+                name="dataTransazioneDa"
+                #datePickerDataTransazioneDa
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(dataTransazioneDa)">Inserisci data transazione da</p>
+              <p *ngIf="isCampoInvalido(dataTransazioneDa)"
+                 class="text-invalid">{{getMessaggioErrore(dataTransazioneDa)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Data transazione da -->
+        <!--        inizio  Data transazione a -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="dataTransazioneA" class="title">Data transazione A</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col calendar-wrapper">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerDataTransazioneA)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="dataTransazioneA"
+                theme="dp-material"
+                [config]="{
+              locale: 'it',
+              format: 'DD/MM/YYYY',
+              firstDayOfWeek: 'mo',
+              showGoToCurrent: false,
+              openOnClick: isCalendarOpen,
+              openOnFocus: false,
+              min: minDateDDMMYYYY,
+              returnedValueType: tipoData
+	          }"
+                #dataTransazioneA="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.dataTransazioneA"
+                name="dataTransazioneA"
+                #datePickerDataTransazioneA
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(dataTransazioneA)">Inserisci data transazione a</p>
+              <p *ngIf="isCampoInvalido(dataTransazioneA)"
+                 class="text-invalid">{{getMessaggioErrore(dataTransazioneA)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine  Data transazione a -->
+        <!--        inizio  Stato transazione -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="statoTransazione" class="title">Stato transazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="statoTransazione"
+                name="statoTransazione"
+                #statoTransazione="ngModel"
+                [(ngModel)]="filtroRicercaTransazioni.statoTransazione"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroStatoTransazione"
+                        [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(statoTransazione)">Seleziona stato transazione</p>
+              <p *ngIf="isCampoInvalido(statoTransazione)"
+                 class="text-invalid">{{getMessaggioErrore(statoTransazione)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine  Stato transazione -->
+      </div>
+      <!-- fine Versante(Indirizzo IP), Email notifica, Data transazione da – a, Stato transazione -->
+      <!-- inizio Importo transazione da-a, Pagatore (cod.fiscale), Flusso Quadratura, Flusso Rendicontazione -->
+      <div class="row mt-2 mb-0">
+        <!--        inizio Importo transazione da -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="importoTransazioneDa" class="title">Importo transazione da</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input
+                class="price-input"
+                id="importoTransazioneDa"
+                [(ngModel)]="filtroRicercaTransazioni.importoTransazioneDa"
+                #importoTransazioneDa="ngModel"
+                type="tel"
+                name="importoTransazioneDa"
+                currencyMask
+                [options]="{allowNegative: false, prefix: '', precision: 2, decimal: ',', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(importoTransazioneDa)">Inserisci importo transazione da</p>
+              <p *ngIf="isCampoInvalido(importoTransazioneDa)"
+                 class="text-invalid">{{getMessaggioErrore(importoTransazioneDa)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Importo transazione da-->
+        <!--        inizio Importo transazione a -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="importoTransazioneA" class="title">Importo transazione a</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input
+                class="price-input"
+                id="importoTransazioneA"
+                [(ngModel)]="filtroRicercaTransazioni.importoTransazioneA"
+                #importoTransazioneA="ngModel"
+                type="tel"
+                name="importoTransazioneA"
+                currencyMask
+                [options]="{allowNegative: false, prefix: '', precision: 2, decimal: ',', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(importoTransazioneA)">Inserisci importo transazione a</p>
+              <p *ngIf="isCampoInvalido(importoTransazioneA)"
+                 class="text-invalid">{{getMessaggioErrore(importoTransazioneA)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Importo transazione a -->
+        <!--        inizio Pagatore (cod.fiscale) -->
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="pagatore" class="title">Pagatore (cod. fiscale)</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="input-text pt-0"
+                     name="pagatore"
+                     id="pagatore"
+                     autocomplete="off"
+                     #pagatore="ngModel"
+                     [(ngModel)]="filtroRicercaTransazioni.pagatore">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(pagatore)">Inserisci codice fiscale pagatore</p>
+              <p *ngIf="isCampoInvalido(pagatore)" class="text-invalid">{{getMessaggioErrore(pagatore)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine Pagatore (cod.fiscale) -->
+        <!--        inizio  Flusso Quadratura -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="flussoQuadratura" class="title">Flusso Quadratura</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="input-text pt-0"
+                     name="flussoQuadratura"
+                     id="flussoQuadratura"
+                     autocomplete="off"
+                     #flussoQuadratura="ngModel"
+                     [(ngModel)]="filtroRicercaTransazioni.flussoQuadratura">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(flussoQuadratura)">Inserisci identificativo flusso rendicontazione</p>
+              <p *ngIf="isCampoInvalido(flussoQuadratura)"
+                 class="text-invalid">{{getMessaggioErrore(flussoQuadratura)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine  Flusso Quadratura -->
+        <!--        inizio  Flusso Rendicontazione -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="flussoRendicontazione" class="title">Flusso Rendicontazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="input-text pt-0"
+                     name="flussoRendicontazione"
+                     id="flussoRendicontazione"
+                     autocomplete="off"
+                     #flussoRendicontazione="ngModel"
+                     [(ngModel)]="filtroRicercaTransazioni.flussoRendicontazione">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(flussoRendicontazione)">Inserisci identificativo flusso rendicontazione</p>
+              <p *ngIf="isCampoInvalido(flussoRendicontazione)"
+                 class="text-invalid">{{getMessaggioErrore(flussoRendicontazione)}}</p>
+            </div>
+          </div>
+        </div>
+        <!--        fine  Flusso Rendicontazione -->
+      </div>
+      <!-- fine Importo transazione da-a, Pagatore (cod.fiscale), Flusso Quadratura, Flusso Rendicontazione -->
+      <!-- inizio Pulisci e Cerca -->
+      <div class="row align-content-around">
+        <div class="col-6">
+          <button id="bottonePulisci" class="btn btn-secondary"
+                  (click)="pulisciFiltri(filtroForm)">Pulisci
+          </button>
+        </div>
+        <div class="col-6 text-right">
+          <button id="bottoneCerca" class="btn"
+                  (click)="cercaElementi()">Cerca
+          </button>
+        </div>
+      </div>
+      <!-- fine Pulisci e Cerca -->
+    </div>
+  </div>
+</form>
+
