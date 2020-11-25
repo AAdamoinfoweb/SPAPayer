@@ -202,9 +202,9 @@ export class ConfiguraServizioService {
     s.listaContiCorrenti.push(cc);
     s.flussiNotifiche = new FlussiNotifiche();
     s.flussiNotifiche.rendicontazioneGiornaliera = new RendicontazioneGiornaliera();
-    s.flussiNotifiche.flussoRiversamentoPagoPa = new FlussoRiversamentoPagoPA();
-    s.flussiNotifiche.notifichePagamento = new NotifichePagamento();
-    s.flussiNotifiche.notifichePagamento.email = "s.sante@hotmail.it;s.sante@dxc.com";
+    s.flussiNotifiche.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+    s.flussiNotifiche.notificheDiPagamento = new NotifichePagamento();
+    s.flussiNotifiche.notificheDiPagamento.email = "s.sante@hotmail.it;s.sante@dxc.com";
 
     return of(s);
   }
