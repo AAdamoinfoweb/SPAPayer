@@ -195,6 +195,7 @@
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'urlWsBO'" class="title form-elem-title"
+                         [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE}"
                   >Url del web service di Back Office</label>
                 </div>
               </div>
@@ -222,6 +223,7 @@
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'codiceEnte'" class="title form-elem-title"
+                         [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1}"
                   >Codice Ente</label>
                 </div>
               </div>

@@ -343,7 +343,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.listaContiCorrenti = this.getListaContiCorrente(this.mapContoCorrente);
     this.servizio.listaContiCorrenti.forEach(value => {
       value.inizioValidita = moment(value.inizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
-      value.fineValidita = moment(value.fineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
+      if (value.fineValidita)
+        value.fineValidita = moment(value.fineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
     });
 
     this.configuraServizioService.inserimentoServizio(this.servizio, this.idFunzione)
@@ -381,10 +382,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onChangeSocietaImpositore(societaInput: NgModel) {
-    if (!societaInput.value) {
-      this.impositore.livelloTerritorialeId = null;
-      this.impositore.enteId = null;
-    } else {
+    this.impositore.livelloTerritorialeId = null;
+    this.impositore.enteId = null;
+    if (societaInput.value) {
       this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(societaInput.value, this.idFunzione)
         .pipe(map((value) => this.listaLivelloTerritoriale = value)).subscribe();
     }
@@ -401,9 +401,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onChangeLivelloTerritorialeImpositore(societaInput: NgModel, livelloTerritorialeInput: NgModel) {
-    if (!livelloTerritorialeInput.value) {
-      this.impositore.enteId = null;
-    } else {
+    this.impositore.enteId = null;
+    if (livelloTerritorialeInput.value) {
       const params = new ParametriRicercaEnte();
       params.societaId = societaInput.value;
       params.livelloTerritorialeId = livelloTerritorialeInput.value;
