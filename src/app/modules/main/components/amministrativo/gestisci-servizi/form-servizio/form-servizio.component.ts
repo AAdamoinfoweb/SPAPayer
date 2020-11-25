@@ -55,6 +55,8 @@ import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 import {Utils} from '../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {NotifichePagamento} from "../../../../model/servizio/NotifichePagamento";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-form-servizio',
@@ -322,6 +324,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     const flussiNotifiche = new FlussiNotifiche();
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
     flussiNotifiche.flussoRiversamentoPagoPa = this.rendicontazioneFlussoPA;
+    flussiNotifiche.notifichePagamento = new NotifichePagamento();
     if (emails && emails.length > 0)
       flussiNotifiche.notifichePagamento.email = emails.join(';');
     this.servizio.flussiNotifiche = flussiNotifiche;
@@ -329,17 +332,24 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.tipologiaServizioId = this.filtri.tipologiaServizio.id;
     this.servizio.raggruppamentoId = this.filtri.raggruppamentoId;
     this.servizio.nomeServizio = this.filtri.nomeServizio;
-    this.servizio.abilitaDa = this.filtri.abilitaDa;
-    this.servizio.abilitaA = this.filtri.abilitaA;
+    this.servizio.abilitaDa = moment(this.filtri.abilitaDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
+    this.servizio.abilitaA = moment(this.filtri.abilitaA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
     this.servizio.flagAttiva = this.filtri.attivo;
 
     this.servizio.contatti = this.contatti;
     this.servizio.integrazione = this.integrazione;
     this.servizio.impositore = this.impositore;
     this.servizio.beneficiario = this.beneficiario;
-    this.servizio.listaContiCorrenti = this.listaContiCorrente;
+    this.servizio.listaContiCorrenti = this.getListaContiCorrente(this.mapContoCorrente);
+    this.servizio.listaContiCorrenti.forEach(value => {
+      value.inizioValidita = moment(value.inizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
+      value.fineValidita = moment(value.fineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
+    });
 
-    this.resetPagina();
+    this.configuraServizioService.inserimentoServizio(this.servizio, this.idFunzione)
+      .subscribe((id) => {
+        this.resetPagina();
+      });
   }
 
   private resetPagina() {

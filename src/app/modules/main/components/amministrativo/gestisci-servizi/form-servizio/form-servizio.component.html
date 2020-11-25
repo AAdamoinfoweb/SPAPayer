@@ -110,6 +110,7 @@
             <div class="row">
               <div class="col">
                 <input id="email" name="email" type="text" class="input-text pt-0" autocomplete="off"
+                       [customvalidator]="validateEmail()"
                        #email="ngModel" [(ngModel)]="contatti.email" [disabled]="disabilitaCampi()">
               </div>
             </div>
@@ -227,6 +228,7 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
+                         [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
                          #codiceEnte="ngModel" [(ngModel)]="integrazione.ufficio.codiceEnte"
                          [disabled]="disabilitaCampi()">
                 </div>
