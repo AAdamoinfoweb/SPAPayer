@@ -10,7 +10,7 @@
 <form #filtroForm="ngForm" (ngSubmit)="filtroForm">
   <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="heading1">
     <div class="collapse-body">
-      <!-- inizio Società, Livello Territoriale, Comune, Provincia -->
+      <!-- inizio Società, Livello Territoriale, Ente -->
       <div class="row mt-2 mb-0">
         <!--       inizio select società -->
         <div class="col-md-3 pb-2">
@@ -76,6 +76,42 @@
           </div>
         </div>
         <!--        fine select territoriali -->
+        <!--       inizio select ente -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectEnte" class="title">Ente</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectEnte"
+                name="enteId"
+                #enteInput="ngModel"
+                [(ngModel)]="filtroRicercaEnte.enteId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroEnte" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput),
+                 'text-disabled': !opzioniFiltroEnte.length}">
+                {{setPlaceholder(enteInput)}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--        fine select ente -->
+      </div>
+      <!-- fine Società, Livello Territoriale, Ente -->
+
+      <!-- inizio Comune, Provincia -->
+      <div class="row mt-2 mb-0">
         <!--       inizio select comuni -->
         <div class="col-md-3 pb-2">
           <div class="row">
@@ -143,12 +179,14 @@
         </div>
         <!--        fine select province -->
       </div>
-      <!-- fine Società, Livello Territoriale, Comune, Provincia -->
+      <!-- fine Comune, Provincia -->
+
       <!-- inizio Pulisci e Cerca -->
       <div class="row align-content-around">
         <div class="col-6">
           <button id="bottonePulisci" class="btn btn-secondary"
-                  (click)="pulisciFiltri(filtroForm)">Pulisci
+                  (click)="pulisciFiltri(filtroForm)"
+                  [disabled]="disabilitaBottone(filtroForm, 'Pulisci')">Pulisci
           </button>
         </div>
         <div class="col-6 text-right">

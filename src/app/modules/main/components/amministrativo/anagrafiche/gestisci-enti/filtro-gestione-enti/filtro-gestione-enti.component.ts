@@ -12,7 +12,9 @@ import {ParametriRicercaEnte} from '../../../../../model/ente/ParametriRicercaEn
 import {Comune} from '../../../../../model/Comune';
 import {Provincia} from '../../../../../model/Provincia';
 import {EnteService} from '../../../../../../../services/ente.service';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute} from '@angular/router';
+import {Utils} from '../../../../../../../utils/Utils';
+import {SintesiEnte} from "../../../../../model/ente/SintesiEnte";
 import * as _ from 'lodash';
 
 @Component({
@@ -28,6 +30,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   opzioniFiltroLivelliTerritoriale: OpzioneSelect[] = [];
   opzioniFiltroComune: OpzioneSelect[] = [];
   opzioniFiltroProvincia: OpzioneSelect[] = [];
+  opzioniFiltroEnte: OpzioneSelect[] = [];
 
   idFunzione;
 
@@ -37,7 +40,8 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   onChangeFiltri: EventEmitter<ParametriRicercaEnte> = new EventEmitter<ParametriRicercaEnte>();
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
-              private enteService: EnteService, protected amministrativoService: AmministrativoService, protected route: ActivatedRoute) {
+              private enteService: EnteService, protected amministrativoService: AmministrativoService,
+              protected route: ActivatedRoute) {
     super(route, amministrativoService);
   }
 
@@ -46,12 +50,14 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
 
     this.letturaSocieta();
     this.letturaLivelloTerritoriale();
+    this.letturaEnte();
     this.letturaComuni();
     this.letturaProvince();
   }
 
   private inizializzaFiltroRicercaEnte() {
     this.filtroRicercaEnte = new ParametriRicercaEnte();
+    this.filtroRicercaEnte.enteId = null;
     this.filtroRicercaEnte.societaId = null;
     this.filtroRicercaEnte.livelloTerritorialeId = null;
     this.filtroRicercaEnte.comune = null;
@@ -100,6 +106,22 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         window.open('/nonautorizzato', '_self');
       }
     }
+  }
+
+  letturaEnte(): void {
+    this.enteService.ricercaEnti(null, this.idFunzione).subscribe(sintesiEnte => {
+      this.popolaOpzioniFiltroEnte(sintesiEnte);
+    });
+  }
+
+  popolaOpzioniFiltroEnte(sintesiEnte: SintesiEnte[]): void {
+    sintesiEnte.forEach(ente => {
+      this.opzioniFiltroEnte.push({
+        value: ente.id,
+        label: ente.nomeEnte
+      });
+    });
+    this.opzioniFiltroEnte = _.sortBy(this.opzioniFiltroEnte, ['label']);
   }
 
   letturaComuni() {
