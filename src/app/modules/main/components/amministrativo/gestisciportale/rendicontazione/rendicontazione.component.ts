@@ -163,6 +163,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
 
   creaRigaTabella(rendicontazione: SintesiRendicontazione) {
     const iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
+    const linkRendicontazione = '/gestisciEnti?enteId=' + rendicontazione.enteId;
 
     let coloreIcona = null;
     let tooltipIcona = null;
@@ -181,7 +182,7 @@ export class RendicontazioneComponent extends GestisciElementoComponent implemen
     }
 
     return {
-      ente: Utils.creaLink(rendicontazione.enteNome, '/gestisciEnti', iconaGruppoUtenti),
+      ente: Utils.creaLink(rendicontazione.enteNome, linkRendicontazione, iconaGruppoUtenti),
       servizio: {value: rendicontazione.servizioNome},
       canale: {value: rendicontazione.canale},
       tipoFlusso: {value: rendicontazione.tipoFlusso},
