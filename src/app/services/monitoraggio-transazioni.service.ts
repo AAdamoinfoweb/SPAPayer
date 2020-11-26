@@ -3,9 +3,11 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
-import {RicercaRendicontazione} from '../modules/main/model/rendicontazione/RicercaRendicontazione';
-import {ParametriRicercaTransazioni} from "../modules/main/model/transazione/ParametriRicercaTransazioni";
-import {SintesiTransazione} from "../modules/main/model/transazione/SintesiTransazione";
+import {ParametriRicercaTransazioni} from '../modules/main/model/transazione/ParametriRicercaTransazioni';
+import {SintesiTransazione} from '../modules/main/model/transazione/SintesiTransazione';
+import {Transazione} from '../modules/main/model/transazione/Transazione';
+import {DettaglioPendenza} from '../modules/main/model/transazione/DettaglioPendenza';
+import {EsitoNotifica} from "../modules/main/model/transazione/EsitoNotifica";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ import {SintesiTransazione} from "../modules/main/model/transazione/SintesiTrans
 export class MonitoraggioTransazioniService {
 
   private readonly monitoraggioTransazioniBaseUrl = '/monitoraggioTransazioni';
+  private readonly dettaglioPendenzaUrl = this.monitoraggioTransazioniBaseUrl + '/dettaglioTransazioni';
 
   constructor(private readonly http: HttpClient) {
   }
@@ -86,6 +89,71 @@ export class MonitoraggioTransazioniService {
     })
       .pipe(map((body: SintesiTransazione[]) => {
           return body;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  dettaglioTransazione(id: number, idFunzione: string): Observable<Transazione> {
+    const url = environment.bffBaseUrl + this.monitoraggioTransazioniBaseUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}/${id}`, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as Transazione;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  dettaglioPendenza(id: number, idFunzione: string): Observable<DettaglioPendenza> {
+    const url = environment.bffBaseUrl + this.dettaglioPendenzaUrl;
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}/${id}`, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as DettaglioPendenza;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  dettaglioEsitoNotifica(id: number, idFunzione: string): Observable<EsitoNotifica> {
+    const url = environment.bffBaseUrl + this.monitoraggioTransazioniBaseUrl;
+    const esitoNotificaPath = '/esitoNotifiche';
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}/${id}/${esitoNotificaPath}`, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as EsitoNotifica;
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {

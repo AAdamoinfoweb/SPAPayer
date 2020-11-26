@@ -20,7 +20,15 @@ export class  GestisciPortaleService {
   private readonly gestisciPortaleFiltroCanaleUrl = this.gestisciPortaleBasePath + '/filtroCanale';
   private readonly gestisciPortaleFiltroTipoFlussoUrl = this.gestisciPortaleBasePath + '/filtroTipoFlusso';
   private readonly gestisciPortaleFiltroVersanteUrl = this.gestisciPortaleBasePath + '/filtroVersante';
+
   private readonly stampaRTUrl = this.gestisciPortaleBasePath + '/stampaRT';
+  private readonly stampaRPTUrl = this.gestisciPortaleBasePath + '/stampaRPT';
+  private readonly stampaPRUrl = this.gestisciPortaleBasePath + '/stampaPR';
+  private readonly stampaPDUrl = this.gestisciPortaleBasePath + '/stampaPD';
+  private readonly stampaCommitMsgUrl = this.gestisciPortaleBasePath + '/stampaCommitMsg';
+
+  private readonly inviaNotificaEnteUrl = this.gestisciPortaleBasePath + '/inviaNotificaEnte';
+  private readonly inviaNotificaCittadinoUrl = this.gestisciPortaleBasePath + '/inviaNotificaCittadino';
 
   constructor(private readonly http: HttpClient) {
   }
@@ -204,6 +212,162 @@ export class  GestisciPortaleService {
     })
       .pipe(map((body: any) => {
           return body as Array<string>;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  stampaRPT(listaDettaglioTransazioneId: Array<number>, idFunzione: string): Observable<Array<string>> {
+    let params = new HttpParams();
+    if (listaDettaglioTransazioneId) {
+      params = params.set('listaDettaglioTransazioneId', listaDettaglioTransazioneId.join(', '));
+    }
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.stampaRPTUrl, {
+      params: params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as Array<string>;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  stampaPR(listaTransazioneId: Array<number>, idFunzione: string): Observable<Array<string>> {
+    let params = new HttpParams();
+    if (listaTransazioneId) {
+      params = params.set('listaTransazioneId', listaTransazioneId.join(', '));
+    }
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.stampaPRUrl, {
+      params: params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as Array<string>;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  stampaPD(listaTransazioneId: Array<number>, idFunzione: string): Observable<Array<string>> {
+    let params = new HttpParams();
+    if (listaTransazioneId) {
+      params = params.set('listaTransazioneId', listaTransazioneId.join(', '));
+    }
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.stampaPDUrl, {
+      params: params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as Array<string>;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  stampaCommitMsg(transazioneId: number, idFunzione: string): Observable<Array<string>> {
+    let params = new HttpParams();
+    if (transazioneId) {
+      params = params.set('transazioneId', String(transazioneId));
+    }
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.stampaCommitMsgUrl, {
+      params: params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as Array<string>;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  inviaNotificaEnte(transazioneId: number, idFunzione: string): Observable<any> {
+    let params = new HttpParams();
+    if (transazioneId) {
+      params = params.set('transazioneId', String(transazioneId));
+    }
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.inviaNotificaEnteUrl, {
+      params: params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  inviaNotificaCittadino(transazioneId: number, idFunzione: string): Observable<any> {
+    let params = new HttpParams();
+    if (transazioneId) {
+      params = params.set('transazioneId', String(transazioneId));
+    }
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.inviaNotificaCittadinoUrl, {
+      params: params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body;
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
