@@ -230,8 +230,16 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.filtro.raggruppamentoId = value.raggruppamentoId;
         this.filtro.nomeServizio = value.nomeServizio;
         this.filtro.tipologiaServizioId = value.tipologiaServizioId;
-        this.caricaCampi(value.tipologiaServizioId).subscribe();
-        //value.listaCampiServizio;
+        this.caricaCampi(value.tipologiaServizioId).subscribe(() => {
+          this.campoServizioAddList = value.listaCampiServizio.filter((obj) => {
+            return !obj.campoTipologiaServizioId;
+          });
+
+          this.campoTipologiaServizioList = this.campoTipologiaServizioList.map((obj) => {
+            let campoServizio = value.listaCampiServizio.find((value1 => value1.campoTipologiaServizioId == obj.id));
+            return campoServizio ? campoServizio : obj;
+          });
+        });
         this.filtro.abilitaDa = moment(value.abilitaDa, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR);
         this.filtro.abilitaA = moment(value.abilitaA, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR);
         this.filtro.attivo = value.flagAttiva;

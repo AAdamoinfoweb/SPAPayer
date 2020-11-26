@@ -658,7 +658,8 @@
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
                     <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i" (dblclick)="dblClick(item, i)"
-                         class="col-7 text-right">{{item.titolo}}</div>
+                         [ngClass]="{'text-right':true, 'col-7': !item.campoTipologiaServizioId, 'col-6': item.campoTipologiaServizioId}"
+                    >{{item.titolo}}</div>
                     <div *ngIf="showEditId == i" class="col-6 text-right">
                       <input autofocus #edit="ngModel" name="edit"
                              (keyup.enter)="applyEdit(item)"
@@ -667,7 +668,8 @@
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>
                     </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
-                    <div class="col-3 text-right">
+                    <div
+                      [ngClass]="{'text-right':true, 'col-3': !item.campoTipologiaServizioId, 'col-4': item.campoTipologiaServizioId}">
                       <span [ngClass]="{'field-input': item.campoTipologiaServizioId}"
                             *ngIf="item.campoTipologiaServizioId" (click)="undo(item)">
                         <svg class="bg-light icon icon-lg icon-padded close" (click)="undo(item)"
@@ -742,7 +744,8 @@
                 <div class="col-2">
                   <it-toggle id="emailGiornaliera" (ngModelChange)="changeEmailGiornaliera($event)"
                              [disabled]="disabilitaCampi()"
-                             [(ngModel)]="rendicontazioneGiornaliera.flagNotificaEmail" name="emailGiornaliera"></it-toggle>
+                             [(ngModel)]="rendicontazioneGiornaliera.flagNotificaEmail"
+                             name="emailGiornaliera"></it-toggle>
                 </div>
               </div>
               <div class="row">
@@ -952,7 +955,8 @@
             <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
               <div class="row">
                 <div class="col">
-                  <label for="ftpFlussoPA" [ngClass]="{'required': rendicontazioneFlussoPA.flagNotificaFtp, 'title':true}">Ftp</label>
+                  <label for="ftpFlussoPA"
+                         [ngClass]="{'required': rendicontazioneFlussoPA.flagNotificaFtp, 'title':true}">Ftp</label>
                 </div>
                 <div class="col-2">
                   <it-toggle id="ftpFlussoPA" (ngModelChange)="changeFtpFlussoPagoPA($event)"
