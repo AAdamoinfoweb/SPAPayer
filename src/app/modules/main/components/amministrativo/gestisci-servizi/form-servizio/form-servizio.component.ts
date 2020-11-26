@@ -383,8 +383,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   private resetPagina() {
-    this.filtri = new ParametriRicercaServizio();
-    this.filtri = new ParametriRicercaServizio();
+    this.filtro = new ParametriRicercaServizio();
+    this.filtri = null;
     this.servizio = new Servizio();
     this.contatti = new Contatti();
     this.impositore = new ImpositoreServizio();
