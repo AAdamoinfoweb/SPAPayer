@@ -420,7 +420,7 @@
                   #livelloTerritorialeId="ngModel"
                   [required]="true"
                   [(ngModel)]="impositore.livelloTerritorialeId"
-                  [disabled]="!impositore.societaId"
+                  [disabled]="!impositore.societaId || disabilitaCampi()"
                   (ngModelChange)="onChangeLivelloTerritorialeImpositore(societaInput, livelloTerritorialeId)"
                 >
                   <option [ngValue]="null" selected>Seleziona</option>
@@ -447,7 +447,7 @@
                 <select [ngClass]="{'input-disabled': !listaEnti.length}"
                         id="selectEnte" name="enteId"
                         #enteInput="ngModel" [(ngModel)]="impositore.enteId"
-                        [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId">
+                        [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId || disabilitaCampi()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
@@ -514,7 +514,7 @@
                   name="livelloTerritorialeIdBenef"
                   #livelloTerritorialeIdBenef="ngModel"
                   [(ngModel)]="beneficiario.livelloTerritorialeId"
-                  [disabled]="!beneficiario.societaId"
+                  [disabled]="!beneficiario.societaId || disabilitaCampi()"
                   [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
                   (ngModelChange)="onChangeLivelloTerritorialeBeneficiario(societaBenefInput, livelloTerritorialeIdBenef)"
                 >
@@ -544,7 +544,7 @@
                         #enteBenefInput="ngModel" [(ngModel)]="beneficiario.enteId"
                         (ngModelChange)="onChangeEnte(enteBenefInput)"
                         [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
-                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId">
+                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || disabilitaCampi()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaEntiBenef" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
@@ -569,7 +569,7 @@
                         id="selectEnteUfficio" name="selectEnteUfficio"
                         #ufficioBenefInput="ngModel" [(ngModel)]="beneficiario.ufficio"
                         [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
-                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || !beneficiario.enteId">
+                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || !beneficiario.enteId || disabilitaCampi()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaUfficio"
                           [ngValue]="item">{{item.codiceEnte}} {{item.tipoUfficio}} {{item.codiceUfficio}}</option>

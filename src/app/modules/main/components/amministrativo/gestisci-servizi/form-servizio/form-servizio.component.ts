@@ -161,7 +161,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.firstAdd = true;
         this.aggiungiContoCorrente();
       }
-      if (this.funzione != FunzioneGestioneEnum.AGGIUNGI) {
+      if (this.funzione != FunzioneGestioneEnum.AGGIUNGI && this.servizio.listaContiCorrenti) {
         this.servizio.listaContiCorrenti.forEach(value1 => {
           this.aggiungiContoCorrente(value1);
         });
@@ -233,27 +233,37 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.filtro.nomeServizio = value.nomeServizio;
         this.filtro.tipologiaServizioId = value.tipologiaServizioId;
         this.caricaCampi(value.tipologiaServizioId).subscribe();
-        this.filtro.abilitaDa = value.abilitaDa;
-        this.filtro.abilitaA = value.abilitaA;
+        //value.listaCampiServizio;
+        this.filtro.abilitaDa = moment(value.abilitaDa, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR);
+        this.filtro.abilitaA = moment(value.abilitaA, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR);
         this.filtro.attivo = value.flagAttiva;
         this.contatti = value.contatti;
         this.integrazione = value.integrazione;
-        this.impositore = value.impositore;
-        this.beneficiario = value.beneficiario;
+        if (value.impositore && value.impositore.societaId) {
+          this.impositore = value.impositore;
+          this._onChangeSocietaImpositore(value.impositore.societaId);
+        }
 
-        this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera;
-        this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA;
-        if (value.flussiNotifiche.notificheDiPagamento && value.flussiNotifiche.notificheDiPagamento.email) {
-          let strings = value.flussiNotifiche.notificheDiPagamento.email.split(";");
-          if (strings && strings.length > 0) {
-            this.emailsControl = [];
-            strings.forEach(email => {
-              let formControl = new FormControl();
-              formControl.setValue(email);
-              if (this.funzione == FunzioneGestioneEnum.DETTAGLIO)
-                formControl.disable();
-              this.emailsControl.push(formControl);
-            });
+        if (value.beneficiario && value.beneficiario.livelloTerritorialeId) {
+          this.beneficiario = value.beneficiario;
+          this._onChangeLivelloTerritorialeBeneficiario(this.beneficiario.livelloTerritorialeId);
+        }
+
+        this.emailsControl = [];
+        if (value.flussiNotifiche) {
+          this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera;
+          this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA;
+          if (value.flussiNotifiche.notificheDiPagamento && value.flussiNotifiche.notificheDiPagamento.email) {
+            let strings = value.flussiNotifiche.notificheDiPagamento.email.split(";");
+            if (strings && strings.length > 0) {
+              strings.forEach(email => {
+                let formControl = new FormControl();
+                formControl.setValue(email);
+                if (this.funzione == FunzioneGestioneEnum.DETTAGLIO)
+                  formControl.disable();
+                this.emailsControl.push(formControl);
+              });
+            }
           }
         }
 
@@ -391,9 +401,17 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   onChangeSocietaImpositore(societaInput: NgModel) {
     this.impositore.livelloTerritorialeId = null;
     this.impositore.enteId = null;
-    if (societaInput.value) {
-      this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(societaInput.value, this.idFunzione)
-        .pipe(map((value) => this.listaLivelloTerritoriale = value)).subscribe();
+    this._onChangeSocietaImpositore(societaInput.value);
+  }
+
+  private _onChangeSocietaImpositore(entity: any) {
+    if (entity) {
+      this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(entity, this.idFunzione)
+        .pipe(map((value) => {
+          this.listaLivelloTerritoriale = value;
+          if (this.impositore.livelloTerritorialeId)
+            this._onChangeLivelloTerritorialeImpositore(this.impositore.livelloTerritorialeId);
+        })).subscribe();
     }
   }
 
@@ -409,12 +427,19 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   onChangeLivelloTerritorialeImpositore(societaInput: NgModel, livelloTerritorialeInput: NgModel) {
     this.impositore.enteId = null;
-    if (livelloTerritorialeInput.value) {
+    return this._onChangeLivelloTerritorialeImpositore(livelloTerritorialeInput.value);
+  }
+
+  private _onChangeLivelloTerritorialeImpositore(livelloTerritorialeId: any) {
+    if (livelloTerritorialeId) {
       const params = new ParametriRicercaEnte();
-      params.societaId = societaInput.value;
-      params.livelloTerritorialeId = livelloTerritorialeInput.value;
+      params.societaId = this.impositore.societaId;
+      params.livelloTerritorialeId = livelloTerritorialeId;
       return this.configuraServizioService.configuraServiziFiltroEnteImpositore(params, this.idFunzione)
-        .pipe(map((value) => this.listaEnti = value)).subscribe();
+        .pipe(map((value) => {
+          this.listaEnti = value;
+
+        })).subscribe();
     }
   }
 
@@ -422,12 +447,16 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (!livelloTerritorialeInput.value) {
       this.beneficiario.enteId = null;
     } else {
-      const params = new ParametriRicercaEnte();
-      params.societaId = societaInput.value;
-      params.livelloTerritorialeId = livelloTerritorialeInput.value;
-      return this.configuraServizioService.configuraServiziFiltroEnteBeneficiario(params, this.idFunzione)
-        .pipe(map((value) => this.listaEntiBenef = value)).subscribe();
+      this._onChangeLivelloTerritorialeBeneficiario(livelloTerritorialeInput.value);
     }
+  }
+
+  private _onChangeLivelloTerritorialeBeneficiario(livelloTerritorialeId: any) {
+    const params = new ParametriRicercaEnte();
+    params.societaId = this.beneficiario.societaId;
+    params.livelloTerritorialeId = livelloTerritorialeId;
+    this.configuraServizioService.configuraServiziFiltroEnteBeneficiario(params, this.idFunzione)
+      .pipe(map((value) => this.listaEntiBenef = value)).subscribe();
   }
 
   isCampoInvalido(campo: NgModel | FormControl) {
