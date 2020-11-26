@@ -181,6 +181,10 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
         return 'inserisci testo';
       } else if (TipoCampoEnum.DATEDDMMYY === tipo) {
         return 'inserisci data';
+      } else if (TipoCampoEnum.SELECT === tipo) {
+        return 'seleziona un elemento dalla lista';
+      } else if (TipoCampoEnum.INPUT_NUMERICO === tipo) {
+        return 'inserisci id flusso rendicontazione';
       }
     }
   }
