@@ -772,7 +772,7 @@
                   <input type="text" autocomplete="off" placeholder="Ccn"
                          #emailGiornalieraCcn="ngModel"
                          id="emailGiornalieraCcn" [customvalidator]="validateEmail()"
-                         name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.emailCcn"
+                         name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.ccn"
                          [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
@@ -935,7 +935,7 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Ccn" id="emailFlussoPACcn"
-                         name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.emailCcn"
+                         name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.ccn"
                          #emailFlussoPACcn="ngModel" [customvalidator]="validateEmail()"
                          [disabled]="!rendicontazioneFlussoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>

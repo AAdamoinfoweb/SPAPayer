@@ -768,14 +768,14 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   changeEmailGiornaliera(event: boolean) {
     if (!event) {
       this.rendicontazioneGiornaliera.email = null;
-      this.rendicontazioneGiornaliera.emailCcn = null;
+      this.rendicontazioneGiornaliera.ccn = null;
     }
   }
 
   changeEmailFlussoPagoPA(event: boolean) {
     if (!event) {
       this.rendicontazioneFlussoPA.email = null;
-      this.rendicontazioneFlussoPA.emailCcn = null;
+      this.rendicontazioneFlussoPA.ccn = null;
     }
   }
 
