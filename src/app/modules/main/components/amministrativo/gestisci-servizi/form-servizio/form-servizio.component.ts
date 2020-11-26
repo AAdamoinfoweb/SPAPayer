@@ -153,6 +153,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   showEditId: number;
 
   ngOnInit(): void {
+    this.overlayService.mostraModaleTipoCampoEvent.subscribe(mostraModale => {
+      if (!mostraModale) {
+        this.impostaConfigurazioneCampi();
+      }
+    });
   }
 
   public ngAfterViewInit() {
