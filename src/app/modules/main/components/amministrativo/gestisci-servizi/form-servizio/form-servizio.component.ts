@@ -804,4 +804,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   isPresenteInDettaglioAndRendicontazione() {
     return !this.servizio.flagPresenzaDettaglioTransazione && !this.servizio.flagPresenzaRendicontazione;
   }
+
+  isPresenteInDettaglio() {
+    return !this.servizio.flagPresenzaDettaglioTransazione;
+  }
 }

@@ -389,7 +389,7 @@
                 <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
                         #societaInput="ngModel" [(ngModel)]="impositore.societaId"
                         (ngModelChange)="onChangeSocietaImpositore(societaInput)"
-                        [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                        [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || !isPresenteInDettaglioAndRendicontazione()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
@@ -420,7 +420,7 @@
                   #livelloTerritorialeId="ngModel"
                   [required]="true"
                   [(ngModel)]="impositore.livelloTerritorialeId"
-                  [disabled]="!impositore.societaId || disabilitaCampi()"
+                  [disabled]="!impositore.societaId || !isPresenteInDettaglioAndRendicontazione() || disabilitaCampi()"
                   (ngModelChange)="onChangeLivelloTerritorialeImpositore(societaInput, livelloTerritorialeId)"
                 >
                   <option [ngValue]="null" selected>Seleziona</option>
@@ -447,7 +447,7 @@
                 <select [ngClass]="{'input-disabled': !listaEnti.length}"
                         id="selectEnte" name="enteId"
                         #enteInput="ngModel" [(ngModel)]="impositore.enteId"
-                        [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId || disabilitaCampi()">
+                        [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId || !isPresenteInDettaglioAndRendicontazione() || disabilitaCampi()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
