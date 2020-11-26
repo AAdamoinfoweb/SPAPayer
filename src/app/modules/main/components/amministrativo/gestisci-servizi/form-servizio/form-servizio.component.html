@@ -671,7 +671,8 @@
                     <div
                       [ngClass]="{'text-right':true, 'col-3': !item.campoTipologiaServizioId, 'col-4': item.campoTipologiaServizioId}">
                       <span [ngClass]="{'field-input': item.campoTipologiaServizioId}"
-                            *ngIf="item.campoTipologiaServizioId && funzione != FunzioneGestioneEnum.DETTAGLIO" (click)="undo(item)">
+                            *ngIf="item.campoTipologiaServizioId && funzione != FunzioneGestioneEnum.DETTAGLIO"
+                            (click)="undo(item)">
                         <svg class="bg-light icon icon-lg icon-padded close" (click)="undo(item)"
                              [ngClass]="{'field-input': item.campoTipologiaServizioId}">
                           <use xlink:href="assets/img/sprite.svg#it-restore"></use>
@@ -695,7 +696,7 @@
                    [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
                 <div style="min-height: 5vh;"
                      [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
-               'field-input': (item.campoInput && !item.disabilitato)}"
+               'field-input': true}"
                      [cdkDragDisabled]="!item.draggable || this.funzione === FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
@@ -710,7 +711,8 @@
                     </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
                     <div class="col-3 text-right">
-                      <span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO" class="close" (click)="removeItem(item)"></span>
+                      <span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO" class="close"
+                            (click)="removeItem(item)"></span>
                     </div>
                   </div>
                 </div>
