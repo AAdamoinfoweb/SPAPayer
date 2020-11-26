@@ -64,11 +64,18 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     if (collapseButton != null) {
       collapseButton.dataset.target = '#collapse' + this.indexDatiBeneficiario;
       if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
-        this.datiBeneficiario.listaContiCorrenti.forEach((contoCorrente) => {
-          this.aggiungiContoCorrente(contoCorrente);
-        });
-        this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(true));
+        if (this.datiBeneficiario.listaContiCorrenti == null ||
+          this.datiBeneficiario.listaContiCorrenti.length === 0) {
+          this.aggiungiContoCorrente();
+          this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(false));
+        } else {
+          this.datiBeneficiario.listaContiCorrenti.forEach((contoCorrente) => {
+            this.aggiungiContoCorrente(contoCorrente);
+          });
+          this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(true));
+        }
       } else {
+        this.aggiungiContoCorrente();
         this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(false));
       }
     }
@@ -159,7 +166,7 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
   private setListaContiCorrente() {
     const listaContiCorrente: ContoCorrente[] = this.getListaContiCorrente(this.mapContoCorrente);
     this.datiBeneficiario.listaContiCorrenti = listaContiCorrente;
-    this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(this.controlloForm()));
+    this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(this.controlloForm(this.formDatiBeneficiario)));
   }
 
   disabilitaBottone(): boolean {
