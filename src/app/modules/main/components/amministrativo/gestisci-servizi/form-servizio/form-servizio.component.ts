@@ -345,6 +345,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     }
 
     const flussiNotifiche = new FlussiNotifiche();
+    flussiNotifiche.notifichePagamento = [];
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
     flussiNotifiche.flussoRiversamentoPagoPA = this.rendicontazioneFlussoPA;
     if (emails && emails.length > 0) {
