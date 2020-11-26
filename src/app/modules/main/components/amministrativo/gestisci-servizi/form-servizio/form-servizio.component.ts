@@ -161,15 +161,13 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.firstAdd = true;
         this.aggiungiContoCorrente();
       }
-      if (this.funzione != FunzioneGestioneEnum.AGGIUNGI && this.servizio.listaContiCorrenti) {
-        this.servizio.listaContiCorrenti.forEach(value1 => {
+      if (this.funzione != FunzioneGestioneEnum.AGGIUNGI && this.servizio.beneficiario.listaContiCorrenti) {
+        this.servizio.beneficiario.listaContiCorrenti.forEach(value1 => {
           this.aggiungiContoCorrente(value1);
         });
       }
-
     });
   }
-
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
     this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoServizio) => {
@@ -456,7 +454,18 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     params.societaId = this.beneficiario.societaId;
     params.livelloTerritorialeId = livelloTerritorialeId;
     this.configuraServizioService.configuraServiziFiltroEnteBeneficiario(params, this.idFunzione)
-      .pipe(map((value) => this.listaEntiBenef = value)).subscribe();
+      .pipe(map((value) => {
+        this.listaEntiBenef = value;
+        if (this.beneficiario.ufficio) {
+          this.configuraServizioService.configuraServiziFiltroUfficio(this.beneficiario.enteId, this.idFunzione)
+            .pipe(map((list) => {
+              this.listaUfficio = list;
+              this.beneficiario.ufficio = this.listaUfficio.find((item) =>
+                item.enteId == this.beneficiario.enteId && item.codiceUfficio == this.beneficiario.ufficio.codiceUfficio &&
+                item.tipoUfficio == this.beneficiario.ufficio.tipoUfficio);
+            })).subscribe();
+        }
+      })).subscribe();
   }
 
   isCampoInvalido(campo: NgModel | FormControl) {
@@ -496,7 +505,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           return of(null);
         }));
       return this.configuraServizioService.configuraServiziFiltroUfficio(enteInput.value, this.idFunzione)
-        .pipe(map((value) => this.listaUfficio = value)).subscribe();
+        .pipe(map((value) => {
+          this.listaUfficio = value;
+
+        })).subscribe();
     }
   }
 
