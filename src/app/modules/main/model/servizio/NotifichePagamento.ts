@@ -1,3 +1,3 @@
 export class NotifichePagamento {
-  email: string[];
+  email: string;
 }

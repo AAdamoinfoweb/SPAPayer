@@ -259,12 +259,13 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         if (value.flussiNotifiche) {
           this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera;
           this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA;
-          if (value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.email) {
-            let strings = value.flussiNotifiche.notifichePagamento.email;
+          if (value.flussiNotifiche.notifichePagamento &&
+            value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.length > 0) {
+            let strings = value.flussiNotifiche.notifichePagamento;
             if (strings && strings.length > 0) {
-              strings.forEach(email => {
+              strings.forEach(obj => {
                 let formControl = new FormControl();
-                formControl.setValue(email);
+                formControl.setValue(obj.email);
                 if (this.funzione == FunzioneGestioneEnum.DETTAGLIO)
                   formControl.disable();
                 this.emailsControl.push(formControl);
@@ -346,9 +347,13 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     const flussiNotifiche = new FlussiNotifiche();
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
     flussiNotifiche.flussoRiversamentoPagoPA = this.rendicontazioneFlussoPA;
-    flussiNotifiche.notifichePagamento = new NotifichePagamento();
-    if (emails && emails.length > 0)
-      flussiNotifiche.notifichePagamento.email = emails;
+    if (emails && emails.length > 0) {
+      emails.forEach(email => {
+        let notifichePagamento: NotifichePagamento = new NotifichePagamento();
+        notifichePagamento.email = email;
+        flussiNotifiche.notifichePagamento.push(notifichePagamento);
+      });
+    }
     this.servizio.flussiNotifiche = flussiNotifiche;
 
     this.servizio.tipologiaServizioId = this.filtri.tipologiaServizio.id;
