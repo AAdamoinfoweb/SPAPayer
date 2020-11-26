@@ -36,7 +36,8 @@ import {GestisciAttivitaPianificateComponent} from './modules/main/components/am
 import {FormAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component';
 import {RendicontazioneComponent} from './modules/main/components/amministrativo/gestisciportale/rendicontazione/rendicontazione.component';
 import {DettaglioRendicontazioneComponent} from './modules/main/components/amministrativo/gestisciportale/rendicontazione/dettaglio-rendicontazione/dettaglio-rendicontazione.component';
-import {MonitoraggioTransazioniComponent} from "./modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/monitoraggio-transazioni.component";
+import {MonitoraggioTransazioniComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/monitoraggio-transazioni.component';
+import {DettaglioTransazioneComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-transazione.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -103,6 +104,7 @@ const routes: Routes = [
   {path: 'rendicontazione', component: RendicontazioneComponent},
   {path: 'rendicontazione/dettaglioRendicontazione/:rendicontazioneId', component: DettaglioRendicontazioneComponent},
   {path: 'monitoraggioTransazioni', component: MonitoraggioTransazioniComponent},
+  {path: 'monitoraggioTransazioni/dettaglioTransazione/:transazioneId', component: DettaglioTransazioneComponent}
 ];
 
 @NgModule({

@@ -147,6 +147,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   selezionaRigaTabella(righeSelezionate: any[]): void {
   }
 
-  dettaglioTransazione($event: any) {
+  dettaglioTransazione(rigaCliccata: any) {
+    this.mostraDettaglioElemento('/dettaglioTransazione', rigaCliccata.id.value);
   }
 }
