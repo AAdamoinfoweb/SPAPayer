@@ -141,6 +141,8 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum): string {
     if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       return null;
+    } else if (campo instanceof NgModel && campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
     } else if (this.isCampoInvalido(campo)) {
       return 'campo non valido';
     } else {
