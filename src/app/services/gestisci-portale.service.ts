@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
@@ -20,6 +20,7 @@ export class  GestisciPortaleService {
   private readonly gestisciPortaleFiltroCanaleUrl = this.gestisciPortaleBasePath + '/filtroCanale';
   private readonly gestisciPortaleFiltroTipoFlussoUrl = this.gestisciPortaleBasePath + '/filtroTipoFlusso';
   private readonly gestisciPortaleFiltroVersanteUrl = this.gestisciPortaleBasePath + '/filtroVersante';
+  private readonly stampaRTUrl = this.gestisciPortaleBasePath + '/stampaRT';
 
   constructor(private readonly http: HttpClient) {
   }
@@ -174,6 +175,35 @@ export class  GestisciPortaleService {
     })
       .pipe(map((body: any) => {
           return body as FiltroVersante;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  stampaRT(listaDettaglioTransazioneId: Array<number>, listaTransazioneId: Array<number>, idFunzione: string): Observable<Array<string>> {
+    let params = new HttpParams();
+    if (listaDettaglioTransazioneId) {
+      params = params.set('listaDettaglioTransazioneId', listaDettaglioTransazioneId.join(', '));
+    }
+    if (listaTransazioneId) {
+      params = params.set('listaTransazioneId', listaTransazioneId.join(', '));
+    }
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.stampaRTUrl, {
+      params: params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as Array<string>;
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {

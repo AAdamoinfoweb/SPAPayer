@@ -14,6 +14,7 @@ import {AmministrativoService} from '../../../../../../../services/amministrativ
 import {Observable} from 'rxjs';
 import {Colonna} from '../../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../../model/tabella/ImmaginePdf';
+import {GestisciPortaleService} from '../../../../../../../services/gestisci-portale.service';
 
 @Component({
   selector: 'app-dati-rendicontazione',
@@ -43,17 +44,18 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
     rows: [],
     cols: [
       {field: 'dataTransazione', header: 'Data transazione', type: tipoColonna.TESTO},
-      {field: 'idTransazione', header: 'ID transazione', type: tipoColonna.TESTO},
+      {field: 'id', header: 'ID transazione', type: tipoColonna.TESTO},
       {field: 'pagatore', header: 'Pagatore (Cod. Fiscale)', type: tipoColonna.TESTO},
       {field: 'iuv', header: 'IUV', type: tipoColonna.TESTO},
       {field: 'importoNetto', header: 'Importo netto', type: tipoColonna.IMPORTO}
     ],
-    dataKey: 'idTransazione.value',
+    dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
-              protected amministrativoService: AmministrativoService) {
+              protected amministrativoService: AmministrativoService,
+              private gestisciPortaleService: GestisciPortaleService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -75,7 +77,7 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
     return {
       dataTransazione: {value: transazioneFlusso.dataTransazione
           ? moment(transazioneFlusso.dataTransazione).format(Utils.FORMAT_DATE_CALENDAR) : null},
-      idTransazione: {value: transazioneFlusso.idTransazione.toString()},
+      id: {value: transazioneFlusso.idTransazione.toString()},
       pagatore: {value: transazioneFlusso.pagatore},
       iuv: {value: transazioneFlusso.iuv},
       importoNetto: {value: transazioneFlusso.importoNetto}
@@ -94,7 +96,7 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Transazioni');
         break;
       case ToolEnum.PRINT_RT:
-        // TODO implementare logica per stampare ricevuta telematica
+        this.stampaRicevutaTelematicaInTxtFile(this.getListaIdElementiSelezionati());
         break;
     }
   }
@@ -111,7 +113,7 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
     return righe.map(riga => {
       const rigaFormattata = riga;
       rigaFormattata.dataTransazione = riga.dataTransazione.value;
-      rigaFormattata.idTransazione = riga.idTransazione.value;
+      rigaFormattata.id = riga.id.value;
       rigaFormattata.pagatore = riga.pagatore.value;
       rigaFormattata.iuv = riga.iuv.value;
       rigaFormattata.importoNetto = riga.importoNetto.value;
@@ -129,6 +131,13 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
 
   getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] {
     return [];
+  }
+
+  stampaRicevutaTelematicaInTxtFile(listaTransazioneId: Array<number>): void {
+    this.gestisciPortaleService.stampaRT(null, listaTransazioneId, this.idFunzione).subscribe(listaRT => {
+      console.log(listaRT);
+      // TODO salvataggio RT in file di testo
+    });
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
