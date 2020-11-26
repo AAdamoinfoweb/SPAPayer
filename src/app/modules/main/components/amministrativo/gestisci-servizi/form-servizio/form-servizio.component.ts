@@ -199,22 +199,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.configuraServizioService.configuraServiziFiltroPortaleEsterno(this.idFunzione)
       .pipe(map((value: FiltroSelect[]) => this.listaPortaleEsterno = value)).subscribe();
 
-    this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
-      .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
-        localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
-        localStorage.setItem('listaControlliLogici', JSON.stringify(configuratore.listaControlliLogici));
-        localStorage.setItem('listaTipologiche', JSON.stringify(configuratore.listaTipologiche));
-        localStorage.setItem('listaJsonPath', JSON.stringify(configuratore.listaJsonPath));
-
-        this.listaTipiCampo = configuratore.listaTipiCampo;
-
-        const filter = configuratore.listaTipiCampo.filter((tc => tc.nome === TipoCampoEnum.SELECT));
-        if (filter && filter.length > 0) {
-          this.tipoCampoIdSelect = filter[0].id;
-        }
-
-        localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
-      })).subscribe();
+    this.impostaConfigurazioneCampi();
 
     this.controllaTipoFunzione();
     this.inizializzaBreadcrumb();
@@ -277,6 +262,25 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.filtri = this.filtro;
       })).subscribe();
     }
+  }
+
+  impostaConfigurazioneCampi(): void {
+    this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
+      .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
+        localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
+        localStorage.setItem('listaControlliLogici', JSON.stringify(configuratore.listaControlliLogici));
+        localStorage.setItem('listaTipologiche', JSON.stringify(configuratore.listaTipologiche));
+        localStorage.setItem('listaJsonPath', JSON.stringify(configuratore.listaJsonPath));
+
+        this.listaTipiCampo = configuratore.listaTipiCampo;
+
+        const filter = configuratore.listaTipiCampo.filter((tc => tc.nome === TipoCampoEnum.SELECT));
+        if (filter && filter.length > 0) {
+          this.tipoCampoIdSelect = filter[0].id;
+        }
+
+        localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
+      })).subscribe();
   }
 
   caricaCampi(tipologiaServizioId: number): Observable<any> {
