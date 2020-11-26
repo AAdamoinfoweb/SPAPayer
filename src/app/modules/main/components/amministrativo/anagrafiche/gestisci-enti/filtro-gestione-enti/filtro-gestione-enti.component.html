@@ -126,7 +126,6 @@
                 name="comune"
                 #comuneInput="ngModel"
                 [(ngModel)]="filtroRicercaEnte.comune"
-                (ngModelChange)="selezionaComune()"
               >
                 <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of opzioniFiltroComune" [ngValue]="item.value">{{item.label}}</option>
@@ -159,7 +158,6 @@
                 name="provincia"
                 #provinciaInput="ngModel"
                 [(ngModel)]="filtroRicercaEnte.provincia"
-                (ngModelChange)="selezionaProvincia()"
               >
                 <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of opzioniFiltroProvincia" [ngValue]="item.value">{{item.label}}</option>

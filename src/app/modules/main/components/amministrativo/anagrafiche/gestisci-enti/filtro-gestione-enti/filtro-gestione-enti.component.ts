@@ -84,7 +84,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   }
 
   letturaLivelloTerritoriale(): void {
-    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale(false, true)
+    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale(false)
       .subscribe(livelliTerritoriali => {
         this.popolaOpzioniFiltroLivelloTerritoriale(livelliTerritoriali);
       });
@@ -198,16 +198,6 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
       return !isAtLeastOneFieldValued;
     } else if (nomeBottone === BottoneEnum.CERCA) {
       return !filtroForm.valid || !isAtLeastOneFieldValued;
-    }
-  }
-
-  selezionaComune() {
-    this.filtroRicercaEnte.provincia = this.filtroRicercaEnte.comune.substring(0, 3);
-  }
-
-  selezionaProvincia() {
-    if (!(this.filtroRicercaEnte.comune.includes(this.filtroRicercaEnte.provincia))) {
-      this.filtroRicercaEnte.comune = null;
     }
   }
 }

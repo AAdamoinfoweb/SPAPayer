@@ -56,6 +56,8 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   @ViewChild('datiBeneficiario', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
 
   private componentRef: ComponentRef<any>;
+
+  private componentRefs: ComponentRef<any>[] = [];
   getListFromMap = (map: Map<string, any>) => Array.from(map, ([name, value]) => value);
 
 
@@ -130,6 +132,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.datiEnte.livelloTerritorialeId = null;
     this.datiEnte.comune = null;
     this.datiEnte.provincia = null;
+    this.datiEnte.logo = null;
   }
 
   onChangeDatiEnte(datiEnte: EnteCompleto): void {
@@ -139,22 +142,56 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   aggiungiBeneficiario(datiBeneficiario?: Beneficiario): number {
     // creazione Dati Beneficiario Component
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiBeneficiarioComponent);
-    this.componentRef = this.target.createComponent(childComponent);
     const indexBeneficiario = this.target.length;
     // input
-    this.componentRef.instance.uuid = Utils.uuidv4();
-    this.componentRef.instance.indexDatiBeneficiario = indexBeneficiario;
-    this.componentRef.instance.funzione = this.funzione;
-    this.componentRef.instance.idFunzione = this.idFunzione;
+    const uuid = Utils.uuidv4();
+    const funzione = this.funzione;
+    const idFunzione = this.idFunzione;
     let instanceDatiBeneficiario: Beneficiario;
     if (datiBeneficiario == null) {
       instanceDatiBeneficiario = new Beneficiario();
     } else {
       instanceDatiBeneficiario = datiBeneficiario;
     }
-    this.componentRef.instance.datiBeneficiario = instanceDatiBeneficiario;
+    let listaContiCorrente = null;
     if (this.funzione === FunzioneGestioneEnum.MODIFICA && this.listaContiCorrente != null) {
-      this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
+      listaContiCorrente = this.listaContiCorrente;
+    }
+    this.inizializzaComponentRefInstance(childComponent, uuid, indexBeneficiario, funzione, idFunzione,
+      instanceDatiBeneficiario, listaContiCorrente);
+    return indexBeneficiario;
+  }
+
+  aggiornaListaContiCorrenti() {
+    let i = 0;
+    const targetLength = this.target.length;
+    const components = this.componentRefs;
+    this.componentRefs = [];
+    this.target.clear();
+    while (i < targetLength) {
+      const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiBeneficiarioComponent);
+      const uuid = components[i].instance.uuid;
+      const indexDatiContoCorrente = components[i].instance.indexDatiBeneficiario;
+      const funzione = components[i].instance.funzione;
+      const datibeneficiario = components[i].instance.datiBeneficiario;
+      const listaContiCorrente = this.listaContiCorrente;
+      const idFunzione = components[i].instance.idFunzione;
+      this.inizializzaComponentRefInstance(childComponent, uuid, indexDatiContoCorrente, funzione, idFunzione, datibeneficiario, listaContiCorrente);
+      i++;
+    }
+  }
+
+  inizializzaComponentRefInstance(childComponent, uuid, index, funzione, idFunzione, datiBeneficiario, listaContiCorrente){
+    // creazione Dati Beneficiario Component
+    this.componentRef = this.target.createComponent(childComponent);
+    // input
+    this.componentRef.instance.uuid = uuid;
+    this.componentRef.instance.indexDatiBeneficiario = index;
+    this.componentRef.instance.funzione = funzione;
+    this.componentRef.instance.idFunzione = idFunzione;
+    this.componentRef.instance.datiBeneficiario = datiBeneficiario;
+    if (funzione === FunzioneGestioneEnum.MODIFICA && listaContiCorrente != null) {
+      this.componentRef.instance.listaContiCorrente = listaContiCorrente;
     }
     // output
     this.componentRef.instance.onDeleteDatiBeneficiario.subscribe((componenteDinamico: ComponenteDinamico) => {
@@ -178,7 +215,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
     });
     this.componentRef.changeDetectorRef.detectChanges();
-    return indexBeneficiario;
+    this.componentRefs.push(this.componentRef);
   }
 
   letturaEnte(idEnte) {
@@ -256,6 +293,10 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
         this.esito = response.esito;
         this.controlloEsito();
         if (this.esito == null) {
+          this.recuperoContiCorrente(this.datiEnte.id).subscribe((contiCorrente) => {
+            this.listaContiCorrente = contiCorrente;
+            this.aggiornaListaContiCorrenti();
+          });
           this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         }
       }
