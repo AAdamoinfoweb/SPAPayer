@@ -17,7 +17,7 @@ export function getBannerType(bannerType: LivelloBanner): BannerType {
     case BannerType.ERROR:
       return {livello: 2, classe: 'alert alert-danger'};
     case BannerType.WARNING:
-      return {livello: 3, classe: 'alert-warning'};
+      return {livello: 3, classe: 'alert alert-warning'};
     case BannerType.INFO:
       return {livello: 4, classe: 'alert alert-info'};
   }
