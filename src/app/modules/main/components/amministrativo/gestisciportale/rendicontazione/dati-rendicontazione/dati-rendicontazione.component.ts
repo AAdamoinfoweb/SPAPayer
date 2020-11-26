@@ -134,9 +134,14 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
   }
 
   stampaRicevutaTelematicaInTxtFile(listaTransazioneId: Array<number>): void {
+    if (listaTransazioneId.length === 0) {
+      const tableTemp = JSON.parse(JSON.stringify(this.tableData));
+      listaTransazioneId = tableTemp.rows.map(riga => riga.id.value);
+    }
     this.gestisciPortaleService.stampaRT(null, listaTransazioneId, this.idFunzione).subscribe(listaRT => {
-      console.log(listaRT);
-      // TODO salvataggio RT in file di testo
+      listaRT.forEach((rt, index) => {
+        Utils.downloadBase64ToTxtFile(rt, 'rt' + index);
+      });
     });
   }
 

@@ -197,6 +197,20 @@ export class Utils {
   }
 
   /**
+   * salvataggio di un file txt
+   * @param stream  Lo stream del file in base64 da convertire in testo
+   * @param fileName  Il nome da assegnare al file
+   */
+  static downloadBase64ToTxtFile(stream, fileName) {
+    // Converto il Base64 nella rispettiva string (DECODIFICA)
+    const text = atob(stream);
+    // Blob per il salvataggio
+    const file = new Blob([text], {type: 'text/plain'});
+    // Richiamo la funzione saveAs di Blob per salvare il file in formato txt
+    FILESAVER.saveAs(file, fileName);
+  }
+
+  /**
    * creazione uuidv4
    */
   static uuidv4() {
