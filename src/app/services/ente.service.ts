@@ -39,6 +39,9 @@ export class EnteService {
     // set params
     let params = new HttpParams();
     if (parametriRicercaEnte) {
+      if (parametriRicercaEnte.enteId != null) {
+        params = params.set('enteId', String(parametriRicercaEnte.enteId));
+      }
       if (parametriRicercaEnte.societaId != null) {
         params = params.set('societaId', String(parametriRicercaEnte.societaId));
       }
