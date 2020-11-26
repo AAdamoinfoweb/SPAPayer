@@ -259,8 +259,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         if (value.flussiNotifiche) {
           this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera;
           this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA;
-          if (value.flussiNotifiche.notificheDiPagamento && value.flussiNotifiche.notificheDiPagamento.email) {
-            let strings = value.flussiNotifiche.notificheDiPagamento.email.split(";");
+          if (value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.email) {
+            let strings = value.flussiNotifiche.notifichePagamento.email;
             if (strings && strings.length > 0) {
               strings.forEach(email => {
                 let formControl = new FormControl();
@@ -346,9 +346,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     const flussiNotifiche = new FlussiNotifiche();
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
     flussiNotifiche.flussoRiversamentoPagoPA = this.rendicontazioneFlussoPA;
-    flussiNotifiche.notificheDiPagamento = new NotifichePagamento();
+    flussiNotifiche.notifichePagamento = new NotifichePagamento();
     if (emails && emails.length > 0)
-      flussiNotifiche.notificheDiPagamento.email = emails.join(';');
+      flussiNotifiche.notifichePagamento.email = emails;
     this.servizio.flussiNotifiche = flussiNotifiche;
 
     this.servizio.tipologiaServizioId = this.filtri.tipologiaServizio.id;
