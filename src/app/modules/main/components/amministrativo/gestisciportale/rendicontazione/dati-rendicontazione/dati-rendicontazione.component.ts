@@ -139,4 +139,6 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
     return 'Totale: ' + this.tableData.rows.length + ' transazioni';
   }
 
+  // TODO collegare link Monitoraggio Transazioni alla componente ancora in fase di sviluppo
+
 }
