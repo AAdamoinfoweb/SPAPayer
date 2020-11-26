@@ -356,8 +356,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.integrazione = this.integrazione;
     this.servizio.impositore = this.impositore;
     this.servizio.beneficiario = this.beneficiario;
-    this.servizio.listaContiCorrenti = this.getListaContiCorrente(this.mapContoCorrente);
-    this.servizio.listaContiCorrenti.forEach(value => {
+    this.servizio.beneficiario.listaContiCorrenti = this.getListaContiCorrente(this.mapContoCorrente);
+    this.servizio.beneficiario.listaContiCorrenti.forEach(value => {
       value.inizioValidita = moment(value.inizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
       if (value.fineValidita)
         value.fineValidita = moment(value.fineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
