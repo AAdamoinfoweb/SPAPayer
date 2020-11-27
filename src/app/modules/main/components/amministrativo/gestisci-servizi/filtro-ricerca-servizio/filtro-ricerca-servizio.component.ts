@@ -114,11 +114,11 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
 
   private caricaEnteBeneficiario() {
     this.configuraServizioService.configuraServiziFiltroEnteBeneficiario(null, this.idFunzione)
-      .pipe(map((value) => this.listaEntiBeneficiario = value));
+      .pipe(map((value) => this.listaEntiBeneficiario = value)).subscribe();
   }
 
   private caricaEnteImpositore() {
     this.configuraServizioService.configuraServiziFiltroEnteImpositore(null, this.idFunzione)
-      .pipe(map((value) => this.listaEntiImpositore = value));
+      .pipe(map((value) => this.listaEntiImpositore = value)).subscribe();
   }
 }
