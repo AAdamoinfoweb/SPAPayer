@@ -8,6 +8,8 @@ import {FiltroSelect} from '../modules/main/model/servizio/FiltroSelect';
 import {Servizio} from "../modules/main/model/servizio/Servizio";
 import {ParametriRicercaServizio} from "../modules/main/model/servizio/ParametriRicercaServizio";
 import {SintesiServizio} from "../modules/main/model/servizio/SintesiServizio";
+import * as moment from "moment";
+import {Utils} from "../utils/Utils";
 
 @Injectable({
   providedIn: 'root'
@@ -241,10 +243,10 @@ export class ConfiguraServizioService {
         params = params.set('enteBeneficiarioId', String(filtri.enteBeneficiarioId));
       }
       if (filtri.abilitaDa) {
-        params = params.set('scadenzaAbilitazioneDa', filtri.abilitaDa);
+        params = params.set('scadenzaAbilitazioneDa', moment(filtri.abilitaDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME));
       }
       if (filtri.abilitaA) {
-        params = params.set('scadenzaAbilitazioneA', filtri.abilitaA);
+        params = params.set('scadenzaAbilitazioneA', moment(filtri.abilitaA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO));
       }
       if (filtri.attivo != null) {
         params = params.set('flagAttivo', String(filtri.attivo));
