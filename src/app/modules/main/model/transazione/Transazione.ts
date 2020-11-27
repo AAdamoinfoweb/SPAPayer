@@ -2,7 +2,8 @@ import {DettaglioTransazione} from './DettaglioTransazione';
 
 export class Transazione {
   id: number;
-  integrazione: string;
+  integrazioneId: number;
+  integrazioneNome: string;
   stato: string;
   data: string;
   versanteCodiceFiscale: string;
