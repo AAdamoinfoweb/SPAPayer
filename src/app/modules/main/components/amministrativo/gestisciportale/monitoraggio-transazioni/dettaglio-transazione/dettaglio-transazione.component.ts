@@ -15,6 +15,7 @@ import {ImmaginePdf} from '../../../../../model/tabella/ImmaginePdf';
 import {Observable} from 'rxjs';
 import {MonitoraggioTransazioniService} from '../../../../../../../services/monitoraggio-transazioni.service';
 import {Utils} from '../../../../../../../utils/Utils';
+import {GestisciPortaleService} from '../../../../../../../services/gestisci-portale.service';
 
 @Component({
   selector: 'app-dettaglio-transazione',
@@ -62,7 +63,8 @@ export class DettaglioTransazioneComponent extends GestisciElementoComponent imp
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService,
-              private monitoraggioTransazioniService: MonitoraggioTransazioniService) {
+              private monitoraggioTransazioniService: MonitoraggioTransazioniService,
+              private gestisciPortaleService: GestisciPortaleService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -122,10 +124,10 @@ export class DettaglioTransazioneComponent extends GestisciElementoComponent imp
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Pendenze');
         break;
       case ToolEnum.PRINT_RPT:
-        // TODO this.stampaRicevutaPagamentoTelematicaInTxtFile(this.getListaIdElementiSelezionati());
+        this.stampaRicevutaPagamentoTelematicaInTxtFile(this.getListaIdElementiSelezionati());
         break;
       case ToolEnum.PRINT_RT:
-        // TODO this.stampaRicevutaTelematicaInTxtFile(this.getListaIdElementiSelezionati());
+        this.stampaRicevutaTelematicaInTxtFile(this.getListaIdElementiSelezionati());
         break;
     }
   }
@@ -169,6 +171,33 @@ export class DettaglioTransazioneComponent extends GestisciElementoComponent imp
     });
   }
 
+  stampaRicevutaPagamentoTelematicaInTxtFile(listaDettaglioTransazioneId: Array<number>): void {
+    if (listaDettaglioTransazioneId.length === 0) {
+      listaDettaglioTransazioneId = this.recuperaTuttiDettaglioTransazioneId();
+    }
+    this.gestisciPortaleService.stampaRPT(listaDettaglioTransazioneId, this.idFunzione).subscribe(listaRPT => {
+      listaRPT.forEach((rpt, index) => {
+        Utils.downloadBase64ToTxtFile(rpt, 'rpt' + index);
+      });
+    });
+  }
+
+  stampaRicevutaTelematicaInTxtFile(listaDettaglioTransazioneId: Array<number>): void {
+    if (listaDettaglioTransazioneId.length === 0) {
+      listaDettaglioTransazioneId = this.recuperaTuttiDettaglioTransazioneId();
+    }
+    this.gestisciPortaleService.stampaRT(listaDettaglioTransazioneId, null, this.idFunzione).subscribe(listaRT => {
+      listaRT.forEach((rt, index) => {
+        Utils.downloadBase64ToTxtFile(rt, 'rt' + index);
+      });
+    });
+  }
+
+  recuperaTuttiDettaglioTransazioneId(): number[] {
+    const tableTemp = JSON.parse(JSON.stringify(this.tableData));
+    return tableTemp.rows.map(riga => riga.id.value);
+  }
+
   getNumeroRecord(): string {
     return 'Totale ' + this.tableData.rows.length + ' pendenze';
   }
@@ -178,7 +207,7 @@ export class DettaglioTransazioneComponent extends GestisciElementoComponent imp
   }
 
   mostraDettaglioPendenza(rigaCliccata: any): void {
-    this.mostraDettaglioElemento(this.route.snapshot.url[1].path + '/dettaglioPendenza', rigaCliccata.id.value);
+    // TODO this.mostraDettaglioElemento(this.route.snapshot.url[1].path + '/dettaglioPendenza', rigaCliccata.id.value);
   }
 
   onClickAnnulla(): void {
