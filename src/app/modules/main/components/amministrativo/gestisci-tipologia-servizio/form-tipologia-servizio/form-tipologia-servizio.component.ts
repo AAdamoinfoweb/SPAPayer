@@ -10,28 +10,28 @@ import {
 } from '@angular/core';
 import {CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
-import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
-import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
-import {CampoTipologiaServizio} from '../../../../../model/CampoTipologiaServizio';
-import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
+import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
+import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import * as _ from 'lodash';
-import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
+import {FormElementoParentComponent} from '../../form-elemento-parent.component';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {ConfirmationService} from 'primeng/api';
-import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {Utils} from '../../../../../../../utils/Utils';
-import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
-import {OverlayService} from '../../../../../../../services/overlay.service';
-import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
-import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
-import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
+import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
+import {Utils} from '../../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {OverlayService} from '../../../../../../services/overlay.service';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
+import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
+import {ParametriRicercaTipologiaServizio} from '../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 import {flatMap, map} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
-import {ConfiguratoreCampiNuovoPagamento} from '../../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
+import {ConfiguratoreCampiNuovoPagamento} from '../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 import {v4 as uuidv4} from 'uuid';
-import {InserimentoTipologiaServizio} from "../../../../../model/campo/InserimentoTipologiaServizio";
-import {ModificaTipologiaServizio} from "../../../../../model/campo/ModificaTipologiaServizio";
+import {InserimentoTipologiaServizio} from "../../../../model/campo/InserimentoTipologiaServizio";
+import {ModificaTipologiaServizio} from "../../../../model/campo/ModificaTipologiaServizio";
 
 @Component({
   selector: 'app-form-tipologia-servizio',

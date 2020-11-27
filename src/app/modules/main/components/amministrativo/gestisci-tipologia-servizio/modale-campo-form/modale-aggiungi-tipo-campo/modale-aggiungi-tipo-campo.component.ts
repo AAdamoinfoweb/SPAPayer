@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {OverlayService} from "../../../../../../../../services/overlay.service";
-import {CampoTipologiaServizioService} from "../../../../../../../../services/campo-tipologia-servizio.service";
-import {TipoCampo} from '../../../../../../model/campo/TipoCampo';
+import {OverlayService} from "../../../../../../../services/overlay.service";
+import {CampoTipologiaServizioService} from "../../../../../../../services/campo-tipologia-servizio.service";
+import {TipoCampo} from '../../../../../model/campo/TipoCampo';
 
 @Component({
   selector: 'app-modale-aggiungi-tipo-campo',

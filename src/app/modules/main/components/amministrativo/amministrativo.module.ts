@@ -69,12 +69,12 @@ import {SchedulazioneComponent} from './schedulazione/schedulazione.component';
 import {DatiParametroComponent} from './gestisci-attivita-pianificate/dati-parametri/dati-parametro.component';
 import {DatiDestinatarioComponent} from './gestisci-statistiche/dati-destinatario/dati-destinatario.component';
 import {SelezionaContoCorrenteComponent} from './anagrafiche/gestisci-enti/dati-conto-corrente/seleziona-conto-corrente/seleziona-conto-corrente.component';
-import {FormTipologiaServizioComponent} from './gestisci-servizi/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component';
+import {FormTipologiaServizioComponent} from './gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import {GestisciTipologiaServizioComponent} from './gestisci-servizi/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
-import {FiltroGestioneTipologiaServizioComponent} from './gestisci-servizi/gestisci-tipologia-servizio/filtro-gestione-tipologia-servizio/filtro-gestione-tipologia-servizio.component';
-import {ModaleCampoFormComponent} from './gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
-import {ModaleAggiungiTipoCampoComponent} from './gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
+import {GestisciTipologiaServizioComponent} from './gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
+import {FiltroGestioneTipologiaServizioComponent} from './gestisci-tipologia-servizio/filtro-gestione-tipologia-servizio/filtro-gestione-tipologia-servizio.component';
+import {ModaleCampoFormComponent} from './gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
+import {ModaleAggiungiTipoCampoComponent} from './gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
 import {FormServizioComponent} from './gestisci-servizi/form-servizio/form-servizio.component';
 import {FiltroGestioneServizioComponent} from './gestisci-servizi/filtro-gestione-servizio/filtro-gestione-servizio.component';
 

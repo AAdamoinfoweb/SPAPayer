@@ -27,8 +27,8 @@ import {PresaincaricopagamentoL1Component} from './modules/main/components/presa
 import {FormEnteComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component';
 import {RaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
-import {FormTipologiaServizioComponent} from './modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component';
-import {GestisciTipologiaServizioComponent} from './modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
+import {FormTipologiaServizioComponent} from './modules/main/components/amministrativo/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component';
+import {GestisciTipologiaServizioComponent} from './modules/main/components/amministrativo/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
 import {FormServizioComponent} from './modules/main/components/amministrativo/gestisci-servizi/form-servizio/form-servizio.component';
 import {GestisciStatisticheComponent} from './modules/main/components/amministrativo/gestisci-statistiche/gestisci-statistiche.component';
 import {FormStatisticaComponent} from './modules/main/components/amministrativo/gestisci-statistiche/form-statistica/form-statistica.component';

@@ -1,15 +1,15 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {FiltroGestioneElementiComponent} from '../../../filtro-gestione-elementi.component';
-import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
+import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.component';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {ActivatedRoute} from '@angular/router';
 import {NgForm, NgModel} from '@angular/forms';
-import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
-import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
-import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
-import {RaggruppamentoTipologiaServizioService} from '../../../../../../../services/RaggruppamentoTipologiaServizio.service';
-import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
-import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {TipologiaServizio} from '../../../../../model/tipologiaServizio/TipologiaServizio';
+import {ParametriRicercaTipologiaServizio} from '../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
+import {OpzioneSelect} from '../../../../model/OpzioneSelect';
+import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
+import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
+import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
+import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
+import {TipologiaServizio} from '../../../../model/tipologiaServizio/TipologiaServizio';
 import * as _ from 'lodash';
 
 @Component({

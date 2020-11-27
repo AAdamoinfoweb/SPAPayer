@@ -1,23 +1,23 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {GestisciElementoComponent} from '../../gestisci-elemento.component';
+import {GestisciElementoComponent} from '../gestisci-elemento.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {MenuService} from '../../../../../../services/menu.service';
+import {AmministrativoService} from '../../../../../services/amministrativo.service';
+import {MenuService} from '../../../../../services/menu.service';
 import {ConfirmationService} from 'primeng/api';
-import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
-import {Tabella} from '../../../../model/tabella/Tabella';
-import {ToolEnum} from '../../../../../../enums/Tool.enum';
-import {Colonna} from '../../../../model/tabella/Colonna';
-import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
+import {CampoTipologiaServizioService} from '../../../../../services/campo-tipologia-servizio.service';
+import {Tabella} from '../../../model/tabella/Tabella';
+import {ToolEnum} from '../../../../../enums/Tool.enum';
+import {Colonna} from '../../../model/tabella/Colonna';
+import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import {Observable} from 'rxjs';
-import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
-import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
-import {TipologiaServizio} from '../../../../model/tipologiaServizio/TipologiaServizio';
-import {Utils} from '../../../../../../utils/Utils';
-import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
-import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
-import {ParametriRicercaTipologiaServizio} from '../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
+import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
+import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
+import {TipologiaServizio} from '../../../model/tipologiaServizio/TipologiaServizio';
+import {Utils} from '../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../dto/Breadcrumb';
+import {ParametriRicercaTipologiaServizio} from '../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 
 @Component({
   selector: 'app-gestisci-tipologia-servizio',

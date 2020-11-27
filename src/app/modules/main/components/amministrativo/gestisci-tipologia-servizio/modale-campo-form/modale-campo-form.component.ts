@@ -1,17 +1,17 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {OverlayService} from '../../../../../../../services/overlay.service';
-import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
-import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
-import {CampoTipologiaServizio} from '../../../../../model/CampoTipologiaServizio';
-import {CampoServizio} from '../../../../../model/servizio/CampoServizio';
-import {TipoCampo} from '../../../../../model/campo/TipoCampo';
-import {ConfigurazioneJsonPath} from '../../../../../model/campo/ConfigurazioneJsonPath';
-import {ConfigurazioneTipologica} from '../../../../../model/campo/ConfigurazioneTipologica';
-import {ControlloLogico} from '../../../../../model/ControlloLogico';
-import {ConfigurazioneCampoDettaglioTransazione} from '../../../../../model/campo/ConfigurazioneCampoDettaglioTransazione';
-import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
+import {OverlayService} from '../../../../../../services/overlay.service';
+import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
+import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
+import {CampoServizio} from '../../../../model/servizio/CampoServizio';
+import {TipoCampo} from '../../../../model/campo/TipoCampo';
+import {ConfigurazioneJsonPath} from '../../../../model/campo/ConfigurazioneJsonPath';
+import {ConfigurazioneTipologica} from '../../../../model/campo/ConfigurazioneTipologica';
+import {ControlloLogico} from '../../../../model/ControlloLogico';
+import {ConfigurazioneCampoDettaglioTransazione} from '../../../../model/campo/ConfigurazioneCampoDettaglioTransazione';
+import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
 import * as _ from 'lodash';
 
 export interface DatiModaleCampo {

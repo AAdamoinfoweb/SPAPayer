@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import {DatiPagamento} from '../modules/main/model/bollettino/DatiPagamento';
 import {Router} from "@angular/router";
-import {DatiModaleCampo} from '../modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
+import {DatiModaleCampo} from '../modules/main/components/amministrativo/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
 
 @Injectable({
   providedIn: 'root'
