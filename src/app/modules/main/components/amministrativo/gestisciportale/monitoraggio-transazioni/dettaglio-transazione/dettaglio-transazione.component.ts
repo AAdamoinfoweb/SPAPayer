@@ -213,7 +213,8 @@ export class DettaglioTransazioneComponent extends DettaglioElementoComponent im
   }
 
   mostraDettaglioPendenza(rigaCliccata: any): void {
-    this.router.navigateByUrl(this.basePath + '/' + this.activatedRoute.snapshot.url[1].path + '/dettaglioPendenza', rigaCliccata.id.value);
+    this.router.navigateByUrl(this.basePath + '/' + this.activatedRoute.snapshot.url[1].path
+      + '/dettaglioPendenza/' + rigaCliccata.id.value);
   }
 
   onClickAnnulla(): void {
