@@ -10,6 +10,8 @@ import * as moment from 'moment';
 import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.component';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {ActivatedRoute} from '@angular/router';
+import {map} from "rxjs/operators";
+import {FiltroSelect} from "../../../../model/servizio/FiltroSelect";
 
 @Component({
   selector: 'app-filtro-ricerca-servizio',
@@ -32,6 +34,9 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaServizio> = new EventEmitter<ParametriRicercaServizio>();
 
+  listaEntiBeneficiario: FiltroSelect[] = [];
+  listaEntiImpositore: FiltroSelect[] = [];
+
   constructor(
     protected amministrativoService: AmministrativoService, protected route: ActivatedRoute,
     private raggruppamentoTipologiaServizioService: RaggruppamentoTipologiaServizioService,
@@ -42,6 +47,8 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
   ngOnInit(): void {
     this.inizializzaOpzioniRaggruppamento();
     this.caricaCodiciTipologia();
+    this.caricaEnteImpositore();
+    this.caricaEnteBeneficiario();
   }
 
   inizializzaOpzioniRaggruppamento(): void {
@@ -99,4 +106,13 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
     this.isCalendarOpen = !this.isCalendarOpen;
   }
 
+  private caricaEnteBeneficiario() {
+    this.configuraServizioService.configuraServiziFiltroEnteBeneficiario(null, this.idFunzione)
+      .pipe(map((value) => this.listaEntiBeneficiario = value));
+  }
+
+  private caricaEnteImpositore() {
+    this.configuraServizioService.configuraServiziFiltroEnteImpositore(null, this.idFunzione)
+      .pipe(map((value) => this.listaEntiImpositore = value));
+  }
 }

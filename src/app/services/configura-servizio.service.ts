@@ -6,22 +6,8 @@ import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaEnte} from "../modules/main/model/ente/ParametriRicercaEnte";
 import {FiltroSelect} from '../modules/main/model/servizio/FiltroSelect';
 import {Servizio} from "../modules/main/model/servizio/Servizio";
-import {LivelloIntegrazioneServizio} from "../modules/main/model/servizio/LivelloIntegrazioneServizio";
-import {FlussiNotifiche} from "../modules/main/model/servizio/FlussiNotifiche";
-import {Contatti} from "../modules/main/model/servizio/Contatti";
-import {LivelloIntegrazioneEnum} from "../enums/livelloIntegrazione.enum";
-import {BeneficiarioServizio} from "../modules/main/model/servizio/BeneficiarioServizio";
-import {ImpositoreServizio} from "../modules/main/model/servizio/ImpositoreServizio";
-import {FlussoRiversamentoPagoPA} from "../modules/main/model/servizio/FlussoRiversamentoPagoPA";
-import {RendicontazioneGiornaliera} from "../modules/main/model/servizio/RendicontazioneGiornaliera";
-import {NotifichePagamento} from "../modules/main/model/servizio/NotifichePagamento";
-import {Utils} from "../utils/Utils";
-import * as moment from "moment";
-import {ContoCorrente} from "../modules/main/model/ente/ContoCorrente";
 import {ParametriRicercaServizio} from "../modules/main/model/servizio/ParametriRicercaServizio";
 import {SintesiServizio} from "../modules/main/model/servizio/SintesiServizio";
-import {ParametriRicercaTipologiaServizio} from "../modules/main/model/tipologiaServizio/ParametriRicercaTipologiaServizio";
-import {TipologiaServizio} from "../modules/main/model/tipologiaServizio/TipologiaServizio";
 
 @Injectable({
   providedIn: 'root'
@@ -107,9 +93,12 @@ export class ConfiguraServizioService {
     return this.getListaEnti('/filtroEnteImpositore', params, idFunzione);
   }
 
-
   configuraServiziFiltroEnteBeneficiario(params: ParametriRicercaEnte, idFunzione: any) {
     return this.getListaEnti('/filtroEnteBeneficiario', params, idFunzione);
+  }
+
+  filtroServizio(params: ParametriRicercaEnte, idFunzione: any) {
+    return this.getListaEnti('/filtroServizio', params, idFunzione);
   }
 
   private getListaEnti(serviceName: string, parametriRicercaEnte: ParametriRicercaEnte, idFunzione: string) {
@@ -233,13 +222,24 @@ export class ConfiguraServizioService {
 
     let params = new HttpParams();
     if (filtri) {
+      if (filtri.servizioId) {
+        params = params.set('servizioId', String(filtri.servizioId));
+      }
       if (filtri.raggruppamentoId) {
         params = params.set('raggruppamentoId', String(filtri.raggruppamentoId));
       }
       if (filtri.tipologiaServizio) {
         params = params.set('tipologiaServizioId', String(filtri.tipologiaServizio.id));
       }
-
+      if (filtri.livelloIntegrazioneId) {
+        params = params.set('livelloIntegrazioneId', String(filtri.livelloIntegrazioneId));
+      }
+      if (filtri.enteImpositoreId) {
+        params = params.set('enteImpositoreId', String(filtri.enteImpositoreId));
+      }
+      if (filtri.enteBeneficiarioId) {
+        params = params.set('enteBeneficiarioId', String(filtri.enteBeneficiarioId));
+      }
       if (filtri.abilitaDa) {
         params = params.set('scadenzaAbilitazioneDa', filtri.abilitaDa);
       }
@@ -249,10 +249,6 @@ export class ConfiguraServizioService {
       if (filtri.attivo) {
         params = params.set('flagAttivo', String(filtri.attivo));
       }
-      /*if (filtri.livelloIntegrazioneId) {
-        params = params.set('livelloIntegrazioneId', String(filtri.livelloIntegrazioneId));
-      }*/
-
     }
 
     return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.serviziUrl, {
