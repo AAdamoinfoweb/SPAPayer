@@ -2,7 +2,7 @@
   <!-- Link notifica ente, Link esito notifica ente -->
   <div class="row mt-4 mb-0" *ngIf="datiTransazione.integrazioneId === livelloIntegrazioneEnum.LV1">
     <div class="col-6 pb-2">
-      <a (click)="inviaNotificaEnte(datiTransazione.id)">Invio notifica all'ente</a>
+      <span (click)="inviaNotificaEnte(datiTransazione.id)">Invio notifica all'ente</span>
     </div>
     <div class="col-6 pb-2">
       Aggiungere Link A Pagina Dettaglio Esito Notifica
