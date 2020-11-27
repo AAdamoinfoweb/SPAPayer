@@ -99,7 +99,7 @@ export class DettaglioTransazioneComponent extends GestisciElementoComponent imp
 
   creaRigaTabella(dettaglioTransazione: DettaglioTransazione) {
     const iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
-    const linkGestisciEnti = '/gestisciEnti';  // TODO manca l'id ente in dettaglio transazione
+    const linkGestisciEnti = '/gestisciEnti?enteId=' + dettaglioTransazione.enteId;
 
     return {
       id: {value: dettaglioTransazione.dettaglioTransazioneId},
