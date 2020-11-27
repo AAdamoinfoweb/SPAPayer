@@ -22,7 +22,6 @@ import {SintesiServizio} from '../../../model/servizio/SintesiServizio';
 import {TipoUtenteEnum} from '../../../../../enums/TipoUtente.enum';
 import * as moment from 'moment';
 import {SpinnerOverlayService} from '../../../../../services/spinner-overlay.service';
-import {SintesiAttivitaPianificata} from "../../../model/attivitapianificata/SintesiAttivitaPianificata";
 
 @Component({
   selector: 'app-gestisci-servizi',
@@ -205,9 +204,14 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
   getRigheFileExcel(righe: any[]): any[] {
     return righe.map(riga => {
       delete riga.id;
-      riga.codice = riga.codice.value;
-      riga.raggruppamento = riga.raggruppamento.value;
+      //riga.servizioAttivo = riga.servizioAttivo.value;
       riga.nome = riga.nome.value;
+      riga.tipologiaServizioDescrizione = riga.tipologiaServizioDescrizione.value;
+      riga.livelloIntegrazioneNome = riga.livelloIntegrazioneNome.value;
+      riga.enteImpositoreNome = riga.enteImpositoreNome.value;
+      riga.enteBeneficiarioNome = riga.enteBeneficiarioNome.value;
+      riga.inizioAbilitazione = riga.inizioAbilitazione.value;
+      riga.fineAbilitazione = riga.fineAbilitazione.value;
       return riga;
     });
   }
