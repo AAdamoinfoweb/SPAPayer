@@ -84,6 +84,8 @@ import { FiltroMonitoraggioTransazioniComponent } from './gestisciportale/monito
 import {DatiRendicontazioneComponent} from './gestisciportale/rendicontazione/dati-rendicontazione/dati-rendicontazione.component';
 import {DettaglioTransazioneComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-transazione.component';
 import {DatiTransazioneComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dati-transazione/dati-transazione.component';
+import {DettaglioPendenzaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-pendenza/dettaglio-pendenza.component';
+import {DatiPendenzaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-pendenza/dati-pendenza/dati-pendenza.component';
 
 
 @NgModule({
@@ -147,7 +149,9 @@ import {DatiTransazioneComponent} from './gestisciportale/monitoraggio-transazio
     FiltroMonitoraggioTransazioniComponent,
     DatiRendicontazioneComponent,
     DettaglioTransazioneComponent,
-    DatiTransazioneComponent
+    DatiTransazioneComponent,
+    DettaglioPendenzaComponent,
+    DatiPendenzaComponent
   ],
   imports: [
     HttpClientModule,
