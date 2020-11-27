@@ -75,6 +75,7 @@ export class DatiRendicontazioneComponent extends DettaglioElementoComponent imp
       this.listaTransazioniFlusso = this.datiRendicontazione.listaTransazioniFlusso;
       this.impostaTabella(this.listaTransazioniFlusso);
     }
+    window.scrollTo(0, 0);
   }
 
   creaRigaTabella(transazioneFlusso: TransazioneFlusso) {
