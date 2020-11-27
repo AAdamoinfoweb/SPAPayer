@@ -1,1 +1,156 @@
-<p>dati-transazione works!</p>
+<div class="ml-3">
+  <!-- Link notifica ente, Link esito notifica ente -->
+  <div class="row mt-4 mb-0">
+    <div class="col-6 pb-2">
+      Aggiungere Link Notifica ente
+    </div>
+    <div class="col-6 pb-2">
+      Aggiungere Link A Pagina Dettaglio Esito Notifica
+    </div>
+  </div>
+
+  <!-- Id Transazione, Integrazione, Stato -->
+  <div class="row mt-4 mb-0">
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="idTransazione" class="title">Id Transazione</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            disabled
+            id="idTransazione" name="id"
+            [(ngModel)]="id"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="livelloIntegrazione" class="title">Integrazione</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            disabled
+            [(ngModel)]="integrazione"
+            id="livelloIntegrazione" name="integrazione"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="stato" class="title">Stato</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            id="stato" name="stato"
+            type="text"
+            disabled
+            [(ngModel)]="stato"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data, Codice fiscale versante, IP versante -->
+  <div class="row mt-4 mb-0">
+    <div class="col-md-3 pb-2">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <label for="data" class="title">Data</label>
+          </div>
+        </div>
+        <div class="row">
+          <div [ngClass]="{'col calendar-wrapper': true}">
+            <svg class="bg-light icon img-calendar disabled">
+              <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+            </svg>
+            <dp-date-picker
+              mode="day"
+              id="data"
+              theme="dp-material"
+              [config]="{
+                locale: 'it',
+                format: 'DD/MM/YYYY',
+                firstDayOfWeek: 'mo',
+                showGoToCurrent: false,
+                returnedValueType: tipoData
+			        }"
+              [(ngModel)]="data"
+              name="data"
+              class="disabled"
+            ></dp-date-picker>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="codiceFiscaleVersante" class="title">Codice fiscale del versante</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            disabled
+            [(ngModel)]="versanteCodiceFiscale"
+            id="codiceFiscaleVersante" name="versanteCodiceFiscale"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="ipVersante" class="title">IP Versante</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            id="ipVersante" name="versanteIndirizzoIP"
+            type="text"
+            disabled
+            [(ngModel)]="versanteIndirizzoIP"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Versante -->
+  <div class="row mt-4 mb-0">
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="emailVersante" class="title">Email Versante</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            id="emailVersante" name="versanteEmail"
+            type="text"
+            disabled
+            [(ngModel)]="versanteEmail"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
