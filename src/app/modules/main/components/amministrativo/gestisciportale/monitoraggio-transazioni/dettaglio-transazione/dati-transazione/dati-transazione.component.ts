@@ -16,7 +16,8 @@ export class DatiTransazioneComponent implements OnInit, OnChanges {
   tipoData: ECalendarValue.String;
 
   id = null;
-  integrazione = null;
+  integrazioneId = null;
+  integrazioneNome = null;
   stato = null;
   data = null;
   versanteCodiceFiscale = null;
@@ -31,7 +32,8 @@ export class DatiTransazioneComponent implements OnInit, OnChanges {
   ngOnChanges(sc: SimpleChanges) {
     if (sc.datiTransazione) {
       this.id = this.datiTransazione.id;
-      this.integrazione = this.datiTransazione.integrazione;
+      this.integrazioneId = this.datiTransazione.integrazioneId;
+      this.integrazioneNome = this.datiTransazione.integrazioneNome;
       this.stato = this.datiTransazione.stato;
       this.data = this.datiTransazione.data ? moment(this.datiTransazione.data).format(Utils.FORMAT_DATE_CALENDAR) : null;
       this.versanteCodiceFiscale = this.datiTransazione.versanteCodiceFiscale;
