@@ -116,10 +116,10 @@ export class DettaglioTransazioneComponent extends GestisciElementoComponent imp
   eseguiAzioni(azioneTool: ToolEnum): void {
     switch (azioneTool) {
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tableData, 'Lista Transazioni');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Pendenze');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tableData, 'Lista Transazioni');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Pendenze');
         break;
       case ToolEnum.PRINT_RPT:
         // TODO this.stampaRicevutaPagamentoTelematicaInTxtFile(this.getListaIdElementiSelezionati());
