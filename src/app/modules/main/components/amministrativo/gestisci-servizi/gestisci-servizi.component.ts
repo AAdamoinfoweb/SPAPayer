@@ -121,7 +121,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
   creaRigaTabella(servizio: SintesiServizio) {
     const riga = {
       id: {value: servizio.id},
-      servizioAttivo: Utils.creaIcona('#it-user', '#ef8157', '', !servizio.servizioAttivo ? 'inline' : 'none'),
+      servizioAttivo: Utils.creaIcona('#it-ban', '#ef8157', 'Servizio non attivo', !servizio.servizioAttivo ? 'inline' : 'none'),
       nome: {value: servizio.nome},
       tipologiaServizioDescrizione: {value: servizio.tipologiaServizioDescrizione},
       livelloIntegrazioneNome: {value: servizio.livelloIntegrazioneNome},
