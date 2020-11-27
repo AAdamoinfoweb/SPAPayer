@@ -10,8 +10,9 @@ import * as moment from 'moment';
 import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.component';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {ActivatedRoute} from '@angular/router';
-import {map} from "rxjs/operators";
-import {FiltroSelect} from "../../../../model/servizio/FiltroSelect";
+import {map} from 'rxjs/operators';
+import {FiltroSelect} from '../../../../model/servizio/FiltroSelect';
+import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
 
 @Component({
   selector: 'app-filtro-ricerca-servizio',
@@ -27,6 +28,7 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
   isCalendarOpen = false;
   readonly minDateDDMMYY = '01/01/1900';
   readonly tipoData = ECalendarValue.String;
+  readonly LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
 
   filtriRicerca: ParametriRicercaServizio = new ParametriRicercaServizio();
   opzioniRaggruppamento: OpzioneSelect[] = [];
@@ -94,10 +96,14 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
 
   pulisciFiltri(form: NgForm): void {
     form.reset();
+    if (!this.filtriRicerca.attivo)
+      this.filtriRicerca.attivo = null;
     this.onChangeFiltri.emit(null);
   }
 
   cercaElementi(): void {
+    if (!this.filtriRicerca.attivo)
+      this.filtriRicerca.attivo = false;
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
 

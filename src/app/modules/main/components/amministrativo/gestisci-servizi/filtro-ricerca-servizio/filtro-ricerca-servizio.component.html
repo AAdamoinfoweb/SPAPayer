@@ -1,6 +1,7 @@
 <!-- Sottotitolo -->
 <div class="collapse-header" id="idCollapseFiltri">
-  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true" aria-controls="contenutoSezioneFiltri">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true"
+          aria-controls="contenutoSezioneFiltri">
     Filtri
   </button>
 </div>
@@ -11,7 +12,17 @@
     <div class="collapse-body">
       <!-- Filtri -->
       <div class="row mt-2 mb-0">
-
+        <div class="col-xs-6 col-md-4 col-lg-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="servizio" class="title">Servizio</label>
+            </div>
+          </div>
+          <div class="row">
+            <input id="servizio" name="servizio" type="text" class="input-text pt-0" autocomplete="off"
+                   #filtroServizio="ngModel" [(ngModel)]="filtriRicerca.nomeServizio">
+          </div>
+        </div>
         <div class="col-md-4 pb-2">
           <div class="row">
             <div class="col">
@@ -29,10 +40,42 @@
             </div>
           </div>
         </div>
+        <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectEnteImpositore" class="title">Ente Beneficiario</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectEnteImpositore" name="selectEnteImpositore"
+                      #enteImpositoreInput="ngModel" [(ngModel)]="filtriRicerca.enteImpositoreId">
+                <option [ngValue]="null" [selected]="true">Tutti</option>
+                <option *ngFor="let item of listaEntiImpositore" [ngValue]="item.id">{{item.nome}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectEnteBenef" class="title">Ente Beneficiario</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectEnteBenef" name="enteIdBenef"
+                      #enteBenefInput="ngModel" [(ngModel)]="filtriRicerca.enteBeneficiarioId">
+                <option [ngValue]="null" [selected]="true">Tutti</option>
+                <option *ngFor="let item of listaEntiBeneficiario" [ngValue]="item.id">{{item.nome}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
         <div class="col-md-4 pb-2">
           <div class="row">
             <div class="col">
-              <label for="inputCodice" class="title">Codice</label>
+              <label for="inputCodice" class="title">Tipologia Servizio</label>
             </div>
           </div>
           <div class="row">
@@ -49,15 +92,27 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-6 col-md-4 col-lg-3 pb-2">
+        <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
           <div class="row">
             <div class="col">
-              <label for="servizio" class="title">Servizio</label>
+              <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
+              >Livello di Integrazione</label>
             </div>
           </div>
           <div class="row">
-            <input id="servizio" name="servizio" type="text" class="input-text pt-0" autocomplete="off"
-                   #filtroServizio="ngModel" [(ngModel)]="filtriRicerca.nomeServizio">
+            <div class="col">
+              <select
+                id="livelloIntegrazione"
+                name="livelloIntegrazione"
+                [(ngModel)]="filtriRicerca.livelloIntegrazioneId"
+                #livelloIntegrazione="ngModel">
+                <option [ngValue]="null" [selected]="true">Tutti</option>
+                <option [ngValue]="LivelloIntegrazioneEnum.LV1">Livello 1</option>
+                <option [ngValue]="LivelloIntegrazioneEnum.LV2">Livello 2</option>
+                <option [ngValue]="LivelloIntegrazioneEnum.LV2_BACK_OFFICE">Livello 2 BO</option>
+                <option [ngValue]="LivelloIntegrazioneEnum.LV3">Livello 3</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="col-xs-6 col-md-3 col-lg-3 pb-2">
@@ -146,11 +201,13 @@
       <div class="row">
         <div class="col-6">
           <button id="bottonePulisci" class="btn btn-secondary"
-                  (click)="pulisciFiltri(filtroForm)">Pulisci</button>
+                  (click)="pulisciFiltri(filtroForm)">Pulisci
+          </button>
         </div>
         <div class="col-6 btn-find">
           <button id="bottoneCerca" class="btn"
-                  (click)="cercaElementi()">Cerca</button>
+                  (click)="cercaElementi()">Cerca
+          </button>
         </div>
       </div>
     </div>

@@ -246,7 +246,7 @@ export class ConfiguraServizioService {
       if (filtri.abilitaA) {
         params = params.set('scadenzaAbilitazioneA', filtri.abilitaA);
       }
-      if (filtri.attivo) {
+      if (filtri.attivo != null) {
         params = params.set('flagAttivo', String(filtri.attivo));
       }
     }

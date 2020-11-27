@@ -7,10 +7,10 @@ export class ParametriRicercaServizio {
   nomeServizio: string = null;
   abilitaDa: string = null;
   abilitaA: string = null;
-  attivo: boolean = false;
+  attivo: boolean = null;
   tipologiaServizio: TipologiaServizio | FiltroSelect;
-  tipologiaServizioId: number;
-  enteImpositoreId: number;
-  enteBeneficiarioId: number;
-  livelloIntegrazioneId: number;
+  tipologiaServizioId: number = null;
+  enteImpositoreId: number = null;
+  enteBeneficiarioId: number = null;
+  livelloIntegrazioneId: number = null;
 }
