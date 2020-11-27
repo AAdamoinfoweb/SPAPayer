@@ -135,8 +135,8 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
   }
 
   private isServizioAbilitato(servizio: SintesiServizio) {
-    const momentInizio = servizio.inizioAbilitazione ? moment(servizio.inizioAbilitazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
-    const momentFine = servizio.fineAbilitazione ? moment(servizio.fineAbilitazione).endOf("day") : null;
+    const momentInizio = servizio.inizioAbilitazione ? moment(servizio.inizioAbilitazione, Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    const momentFine = servizio.fineAbilitazione ? moment(servizio.fineAbilitazione, Utils.FORMAT_LOCAL_DATE_TIME_TO).set({hour: 23, minute: 59, second: 59}) : null;
 
     const now = moment();
     const attivo = now.isSameOrAfter(momentInizio) && (momentFine == null || now.isSameOrBefore(momentFine));
