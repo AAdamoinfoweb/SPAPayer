@@ -38,6 +38,7 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
 
   listaEntiBeneficiario: FiltroSelect[] = [];
   listaEntiImpositore: FiltroSelect[] = [];
+  listaServizi: FiltroSelect[] = [];
 
   constructor(
     protected amministrativoService: AmministrativoService, protected route: ActivatedRoute,
@@ -51,6 +52,7 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
     this.caricaCodiciTipologia();
     this.caricaEnteImpositore();
     this.caricaEnteBeneficiario();
+    this.caricaServizi();
   }
 
   inizializzaOpzioniRaggruppamento(): void {
@@ -120,5 +122,10 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
   private caricaEnteImpositore() {
     this.configuraServizioService.configuraServiziFiltroEnteImpositore(null, this.idFunzione)
       .pipe(map((value) => this.listaEntiImpositore = value)).subscribe();
+  }
+
+  private caricaServizi() {
+    this.configuraServizioService.filtroServizio(null, this.idFunzione)
+      .pipe(map((value) => this.listaServizi = value)).subscribe();
   }
 }

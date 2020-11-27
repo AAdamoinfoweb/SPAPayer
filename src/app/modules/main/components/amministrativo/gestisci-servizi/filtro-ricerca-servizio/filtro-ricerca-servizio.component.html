@@ -19,8 +19,11 @@
             </div>
           </div>
           <div class="row">
-            <input id="servizio" name="servizio" type="text" class="input-text pt-0" autocomplete="off"
-                   #filtroServizio="ngModel" [(ngModel)]="filtriRicerca.nomeServizio">
+            <select id="servizio" name="servizio"
+                    #servizio="ngModel" [(ngModel)]="filtriRicerca.servizioId">
+              <option [ngValue]="null" [selected]="true">Tutti</option>
+              <option *ngFor="let item of listaServizi" [ngValue]="item.id">{{item.nome}}</option>
+            </select>
           </div>
         </div>
         <div class="col-md-4 pb-2">
