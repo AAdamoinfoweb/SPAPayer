@@ -19,6 +19,8 @@ import {Observable} from 'rxjs';
 import {ConfiguraServizioService} from '../../../../../services/configura-servizio.service';
 import {ParametriRicercaServizio} from '../../../model/servizio/ParametriRicercaServizio';
 import {SintesiServizio} from '../../../model/servizio/SintesiServizio';
+import {TipoUtenteEnum} from "../../../../../enums/TipoUtente.enum";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-gestisci-servizi',
@@ -41,6 +43,14 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
   breadcrumbList: Breadcrumb[] = [];
   isMenuCarico: boolean;
 
+  tabs = [
+    {value: TipoUtenteEnum.TUTTI},
+    {value: TipoUtenteEnum.ATTIVI},
+    {value: TipoUtenteEnum.DISABILITATI}
+  ];
+
+  nomeTabCorrente: TipoUtenteEnum = TipoUtenteEnum.TUTTI;
+
   filtriRicerca: ParametriRicercaServizio;
   listaElementi: any[];
   righeSelezionate: any[];
@@ -56,7 +66,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
       {field: 'inizioAbilitazione', header: 'Inizio', type: tipoColonna.TESTO},
       {field: 'fineAbilitazione', header: 'Fine', type: tipoColonna.TESTO}
     ],
-    dataKey: 'id',
+    dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
@@ -110,7 +120,15 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
 
   creaRigaTabella(servizio: SintesiServizio) {
     const riga = {
-      id: {value: servizio.id}
+      id: {value: servizio.id},
+      servizioAttivo: Utils.creaIcona('#it-user', '#ef8157', '', !servizio.servizioAttivo ? 'inline' : 'none'),
+      nome: {value: servizio.nome},
+      tipologiaServizioDescrizione: {value: servizio.tipologiaServizioDescrizione},
+      livelloIntegrazioneNome: {value: servizio.livelloIntegrazioneNome},
+      enteImpositoreNome: {value: servizio.enteImpositoreNome},
+      enteBeneficiarioNome: {value: servizio.enteBeneficiarioNome},
+      inizioAbilitazione: {value: servizio.inizioAbilitazione ? moment(servizio.inizioAbilitazione).format('DD/MM/YYYY') : null},
+      fineAbilitazione: {value: servizio.fineAbilitazione ? moment(servizio.fineAbilitazione).format('DD/MM/YYYY') : null},
     };
     return riga;
   }
@@ -167,7 +185,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
   }
 
   getNumeroRecord(): string {
-    return 'Totale: ' + this.listaElementi.length + ' servizio';
+    return 'Totale: ' + this.listaElementi.length + ' servizio/i';
   }
 
   getObservableFunzioneRicerca(): Observable<any[]> {
