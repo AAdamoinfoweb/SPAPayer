@@ -99,16 +99,4 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
     this.isCalendarOpen = !this.isCalendarOpen;
   }
 
-  validateRange() {
-    let self = this;
-    return ((control: FormControl) => {
-
-      if (self.filtriRicerca.abilitaDa && self.filtriRicerca.abilitaA &&
-        moment(self.filtriRicerca.abilitaDa, 'DD/MM/YYYY').isAfter(moment(self.filtriRicerca.abilitaA, 'DD/MM/YYYY'))) {
-        return {date: false};
-      }
-
-      return null;
-    }) as ValidatorFn;
-  }
 }

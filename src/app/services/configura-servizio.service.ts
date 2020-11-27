@@ -20,6 +20,8 @@ import * as moment from "moment";
 import {ContoCorrente} from "../modules/main/model/ente/ContoCorrente";
 import {ParametriRicercaServizio} from "../modules/main/model/servizio/ParametriRicercaServizio";
 import {SintesiServizio} from "../modules/main/model/servizio/SintesiServizio";
+import {ParametriRicercaTipologiaServizio} from "../modules/main/model/tipologiaServizio/ParametriRicercaTipologiaServizio";
+import {TipologiaServizio} from "../modules/main/model/tipologiaServizio/TipologiaServizio";
 
 @Injectable({
   providedIn: 'root'
@@ -225,11 +227,36 @@ export class ConfiguraServizioService {
         }));
   }
 
-  recuperaServizio(filtriRicerca: ParametriRicercaServizio, idFunzione: any) {
+  recuperaServizio(filtri: ParametriRicercaServizio, idFunzione: any) {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
+    let params = new HttpParams();
+    if (filtri) {
+      if (filtri.raggruppamentoId) {
+        params = params.set('raggruppamentoId', String(filtri.raggruppamentoId));
+      }
+      if (filtri.tipologiaServizio) {
+        params = params.set('tipologiaServizioId', String(filtri.tipologiaServizio.id));
+      }
+
+      if (filtri.abilitaDa) {
+        params = params.set('scadenzaAbilitazioneDa', filtri.abilitaDa);
+      }
+      if (filtri.abilitaA) {
+        params = params.set('scadenzaAbilitazioneA', filtri.abilitaA);
+      }
+      if (filtri.attivo) {
+        params = params.set('flagAttivo', String(filtri.attivo));
+      }
+      /*if (filtri.livelloIntegrazioneId) {
+        params = params.set('livelloIntegrazioneId', String(filtri.livelloIntegrazioneId));
+      }*/
+
+    }
+
     return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.serviziUrl, {
+      params,
       headers: h,
       withCredentials: true
     })
