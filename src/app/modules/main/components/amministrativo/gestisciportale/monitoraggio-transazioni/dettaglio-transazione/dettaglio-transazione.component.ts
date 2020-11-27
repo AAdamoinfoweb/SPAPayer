@@ -207,7 +207,7 @@ export class DettaglioTransazioneComponent extends GestisciElementoComponent imp
   }
 
   mostraDettaglioPendenza(rigaCliccata: any): void {
-    // TODO this.mostraDettaglioElemento(this.route.snapshot.url[1].path + '/dettaglioPendenza', rigaCliccata.id.value);
+    this.mostraDettaglioElemento('/' + this.route.snapshot.url[1].path + '/dettaglioPendenza', rigaCliccata.id.value);
   }
 
   onClickAnnulla(): void {
