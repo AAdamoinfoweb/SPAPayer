@@ -7,23 +7,24 @@ import {TransazioneFlusso} from '../../../../../model/transazione/TransazioneFlu
 import * as moment from 'moment';
 import {Utils} from '../../../../../../../utils/Utils';
 import {ToolEnum} from '../../../../../../../enums/Tool.enum';
-import {GestisciElementoComponent} from '../../../gestisci-elemento.component';
-import {ActivatedRoute, Router} from '@angular/router';
+import {DettaglioElementoComponent} from '../../../dettaglio-elemento.component';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {Observable} from 'rxjs';
 import {Colonna} from '../../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../../model/tabella/ImmaginePdf';
 import {GestisciPortaleService} from '../../../../../../../services/gestisci-portale.service';
+import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 
 @Component({
   selector: 'app-dati-rendicontazione',
   templateUrl: './dati-rendicontazione.component.html',
   styleUrls: ['./dati-rendicontazione.component.scss']
 })
-export class DatiRendicontazioneComponent extends GestisciElementoComponent implements OnInit, OnChanges {
+export class DatiRendicontazioneComponent extends DettaglioElementoComponent implements OnInit, OnChanges {
 
-  filtriRicerca: any;
+  funzione: FunzioneGestioneEnum;
   righeSelezionate: any[];
 
   @Input() datiRendicontazione: Rendicontazione;
@@ -53,10 +54,13 @@ export class DatiRendicontazioneComponent extends GestisciElementoComponent impl
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
-              protected amministrativoService: AmministrativoService,
+  constructor(protected activatedRoute: ActivatedRoute, protected amministrativoService: AmministrativoService,
+              protected http: HttpClient, protected router: Router,
               private gestisciPortaleService: GestisciPortaleService) {
-    super(router, route, http, amministrativoService);
+    super(activatedRoute, amministrativoService, http, router);
+  }
+
+  initFormPage(snapshot: ActivatedRouteSnapshot) {
   }
 
   ngOnInit(): void {
