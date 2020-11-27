@@ -26,6 +26,7 @@
     <div class="collapse-body">
       <div class="row align-items-baseline align-content-lg-around">
         <div class="col-lg pb-2 pb-sm-2 pb-lg-0">
+          <app-tab-view [tabs]="tabs" (onChange)="onChangeTab($event)"></app-tab-view>
         </div>
         <!-- azioni -->
         <div class="col-auto">

@@ -19,8 +19,9 @@ import {Observable} from 'rxjs';
 import {ConfiguraServizioService} from '../../../../../services/configura-servizio.service';
 import {ParametriRicercaServizio} from '../../../model/servizio/ParametriRicercaServizio';
 import {SintesiServizio} from '../../../model/servizio/SintesiServizio';
-import {TipoUtenteEnum} from "../../../../../enums/TipoUtente.enum";
-import * as moment from "moment";
+import {TipoUtenteEnum} from '../../../../../enums/TipoUtente.enum';
+import * as moment from 'moment';
+import {SpinnerOverlayService} from '../../../../../services/spinner-overlay.service';
 
 @Component({
   selector: 'app-gestisci-servizi',
@@ -75,7 +76,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
               private renderer: Renderer2,
               private configuraServizioService: ConfiguraServizioService,
               private campoTipologiaServizioService: CampoTipologiaServizioService, private el: ElementRef,
-              private menuService: MenuService,
+              private menuService: MenuService, private spinnerOverlayService: SpinnerOverlayService,
               private confirmationService: ConfirmationService
   ) {
     super(router, route, http, amministrativoService);
@@ -121,7 +122,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
   creaRigaTabella(servizio: SintesiServizio) {
     const riga = {
       id: {value: servizio.id},
-      servizioAttivo: Utils.creaIcona('#it-ban', '#ef8157', 'Servizio non attivo', !servizio.servizioAttivo ? 'inline' : 'none'),
+      servizioAttivo: Utils.creaIcona('#it-ban', '#ef8157', 'Servizio non attivo', !this.isServizioAbilitato(servizio) ? 'inline' : 'none'),
       nome: {value: servizio.nome},
       tipologiaServizioDescrizione: {value: servizio.tipologiaServizioDescrizione},
       livelloIntegrazioneNome: {value: servizio.livelloIntegrazioneNome},
@@ -131,6 +132,14 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
       fineAbilitazione: {value: servizio.fineAbilitazione ? moment(servizio.fineAbilitazione).format('DD/MM/YYYY') : null},
     };
     return riga;
+  }
+
+  private isServizioAbilitato(servizio: SintesiServizio) {
+    const momentInizio = servizio.inizioAbilitazione ? moment(servizio.inizioAbilitazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    const momentFine = servizio.fineAbilitazione ? moment(servizio.fineAbilitazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
+    const now = moment();
+    const attivo = now.isSameOrAfter(momentInizio) && (momentFine == null || now.isSameOrBefore(momentFine));
+    return attivo && servizio.servizioAttivo;
   }
 
   eseguiAzioni(azioneTool) {
@@ -204,6 +213,27 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
       riga.nome = riga.nome.value;
       return riga;
     });
+  }
+
+  onChangeTab(value: TipoUtenteEnum) {
+    const subscription = this.spinnerOverlayService.spinner$.subscribe();
+    this.nomeTabCorrente = value;
+    let tabRows = null;
+
+    switch (value) {
+      case TipoUtenteEnum.TUTTI:
+        tabRows = this.listaElementi;
+        break;
+      case TipoUtenteEnum.ATTIVI:
+        tabRows = this.listaElementi.filter(servizio => this.isServizioAbilitato(servizio));
+        break;
+      case TipoUtenteEnum.DISABILITATI:
+        tabRows = this.listaElementi.filter(servizio => !this.isServizioAbilitato(servizio));
+        break;
+    }
+
+    this.impostaTabella(tabRows);
+    setTimeout(() => subscription.unsubscribe(), 500);
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
