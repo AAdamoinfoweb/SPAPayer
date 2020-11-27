@@ -139,7 +139,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
     const momentFine = servizio.fineAbilitazione ? moment(servizio.fineAbilitazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
     const now = moment();
     const attivo = now.isSameOrAfter(momentInizio) && (momentFine == null || now.isSameOrBefore(momentFine));
-    return attivo && servizio.servizioAttivo;
+    return attivo || servizio.servizioAttivo;
   }
 
   eseguiAzioni(azioneTool) {

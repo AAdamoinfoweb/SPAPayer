@@ -97,6 +97,10 @@ span.key::after {
   content: '\1F511';
 }
 
+span.edited::after {
+  content: '\2713';
+}
+
 input[type=checkbox] {
   margin-top: 10px;
   margin-left: 10px;
