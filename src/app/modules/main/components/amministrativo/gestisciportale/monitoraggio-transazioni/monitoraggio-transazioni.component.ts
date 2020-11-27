@@ -90,7 +90,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   private inizializzaBreadcrumbs() {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Monitoraggio Transazioni', link: null}
-    ]);
+    ], true);
   }
 
   private inizializzaFiltriRicerca() {
