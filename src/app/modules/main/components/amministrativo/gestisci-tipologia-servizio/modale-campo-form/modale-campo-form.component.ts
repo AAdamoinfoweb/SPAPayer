@@ -90,14 +90,14 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.datiModaleCampo.listaDipendeDa)
+    if (this.datiModaleCampo.listaDipendeDa) {
       this.datiModaleCampo.listaDipendeDa =
         this.datiModaleCampo.listaDipendeDa.filter((value => value.titolo !== this.datiModaleCampo.campoForm.titolo));
 
-    this.datiModaleCampo.campoForm.dipendeDa =
-      this.datiModaleCampo.listaDipendeDa.find((value => this.datiModaleCampo.campoForm.dipendeDa &&
-        value.titolo == this.datiModaleCampo.campoForm.dipendeDa.titolo));
-
+      this.datiModaleCampo.campoForm.dipendeDa =
+        this.datiModaleCampo.listaDipendeDa.find((value => this.datiModaleCampo.campoForm.dipendeDa &&
+          value.titolo == this.datiModaleCampo.campoForm.dipendeDa.titolo));
+    }
     if (!this.datiModaleCampo.livelloIntegrazione) {
       this.datiModaleCampo.livelloIntegrazione = LivelloIntegrazioneEnum.LV2;
     }
