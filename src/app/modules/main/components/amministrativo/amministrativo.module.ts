@@ -77,6 +77,7 @@ import {ModaleCampoFormComponent} from './gestisci-tipologia-servizio/modale-cam
 import {ModaleAggiungiTipoCampoComponent} from './gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
 import {FormServizioComponent} from './gestisci-servizi/form-servizio/form-servizio.component';
 import {FiltroGestioneServizioComponent} from './gestisci-servizi/filtro-gestione-servizio/filtro-gestione-servizio.component';
+import { GestisciServiziComponent } from './gestisci-servizi/gestisci-servizi.component';
 
 
 @NgModule({
@@ -134,7 +135,8 @@ import {FiltroGestioneServizioComponent} from './gestisci-servizi/filtro-gestion
     ModaleCampoFormComponent,
     ModaleAggiungiTipoCampoComponent,
     FormServizioComponent,
-    FiltroGestioneServizioComponent
+    FiltroGestioneServizioComponent,
+    GestisciServiziComponent
   ],
   imports: [
     HttpClientModule,
