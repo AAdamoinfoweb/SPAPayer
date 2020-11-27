@@ -4,6 +4,7 @@ import {Utils} from '../../../../../../../../utils/Utils';
 import * as moment from 'moment';
 import {ECalendarValue} from 'ng2-date-picker';
 import {LivelloIntegrazioneEnum} from '../../../../../../../../enums/livelloIntegrazione.enum';
+import {GestisciPortaleService} from '../../../../../../../../services/gestisci-portale.service';
 
 @Component({
   selector: 'app-dati-transazione',
@@ -13,6 +14,7 @@ import {LivelloIntegrazioneEnum} from '../../../../../../../../enums/livelloInte
 export class DatiTransazioneComponent implements OnInit, OnChanges {
 
   @Input() datiTransazione: Transazione;
+  @Input() idFunzione: string;
 
   tipoData: ECalendarValue.String;
   readonly livelloIntegrazioneEnum = LivelloIntegrazioneEnum;
@@ -26,7 +28,8 @@ export class DatiTransazioneComponent implements OnInit, OnChanges {
   versanteIndirizzoIP = null;
   versanteEmail = null;
 
-  constructor() { }
+  constructor(private gestisciPortaleService: GestisciPortaleService) {
+  }
 
   ngOnInit(): void {
   }
@@ -43,6 +46,10 @@ export class DatiTransazioneComponent implements OnInit, OnChanges {
       this.versanteEmail = this.datiTransazione.versanteEmail;
     }
     window.scrollTo(0, 0);
+  }
+
+  inviaNotificaEnte(transazioneId: number): void {
+    this.gestisciPortaleService.inviaNotificaEnte(transazioneId, this.idFunzione).subscribe();
   }
 
 }
