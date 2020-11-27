@@ -148,6 +148,6 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   }
 
   dettaglioTransazione(rigaCliccata: any) {
-    this.mostraDettaglioElemento('/dettaglioTransazione', rigaCliccata.id.value);
+    this.mostraDettaglioElemento('/dettaglioTransazioni', rigaCliccata.id.value);
   }
 }

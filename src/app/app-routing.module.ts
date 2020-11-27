@@ -104,7 +104,7 @@ const routes: Routes = [
   {path: 'rendicontazione', component: RendicontazioneComponent},
   {path: 'rendicontazione/dettaglioRendicontazione/:rendicontazioneId', component: DettaglioRendicontazioneComponent},
   {path: 'monitoraggioTransazioni', component: MonitoraggioTransazioniComponent},
-  {path: 'monitoraggioTransazioni/dettaglioTransazione/:transazioneId', component: DettaglioTransazioneComponent}
+  {path: 'monitoraggioTransazioni/dettaglioTransazioni/:transazioneId', component: DettaglioTransazioneComponent}
 ];
 
 @NgModule({
