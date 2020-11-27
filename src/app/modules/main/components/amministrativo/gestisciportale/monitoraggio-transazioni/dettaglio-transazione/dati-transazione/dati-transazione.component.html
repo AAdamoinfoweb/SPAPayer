@@ -4,7 +4,7 @@
     <div class="col-6 pb-2">
       Aggiungere Link Notifica ente
     </div>
-    <div class="col-6 pb-2">
+    <div class="col-6 pb-2" *ngIf="datiTransazione.integrazioneId === livelloIntegrazioneEnum.LV1">
       Aggiungere Link A Pagina Dettaglio Esito Notifica
     </div>
   </div>

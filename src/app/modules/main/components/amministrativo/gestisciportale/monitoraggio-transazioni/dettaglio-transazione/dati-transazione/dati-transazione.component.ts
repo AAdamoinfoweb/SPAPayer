@@ -3,6 +3,7 @@ import {Transazione} from '../../../../../../model/transazione/Transazione';
 import {Utils} from '../../../../../../../../utils/Utils';
 import * as moment from 'moment';
 import {ECalendarValue} from 'ng2-date-picker';
+import {LivelloIntegrazioneEnum} from '../../../../../../../../enums/livelloIntegrazione.enum';
 
 @Component({
   selector: 'app-dati-transazione',
@@ -14,6 +15,7 @@ export class DatiTransazioneComponent implements OnInit, OnChanges {
   @Input() datiTransazione: Transazione;
 
   tipoData: ECalendarValue.String;
+  readonly livelloIntegrazioneEnum = LivelloIntegrazioneEnum;
 
   id = null;
   integrazioneId = null;
