@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {GestisciElementoComponent} from '../../../gestisci-elemento.component';
+import {DettaglioElementoComponent} from '../../../dettaglio-elemento.component';
 import {Transazione} from '../../../../../model/transazione/Transazione';
 import {DettaglioTransazione} from '../../../../../model/transazione/DettaglioTransazione';
 import {ToolEnum} from '../../../../../../../enums/Tool.enum';
 import {Tabella} from '../../../../../model/tabella/Tabella';
 import {tipoColonna} from '../../../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../../../enums/TipoTabella.enum';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
 import {Colonna} from '../../../../../model/tabella/Colonna';
@@ -22,7 +22,7 @@ import {GestisciPortaleService} from '../../../../../../../services/gestisci-por
   templateUrl: './dettaglio-transazione.component.html',
   styleUrls: ['./dettaglio-transazione.component.scss']
 })
-export class DettaglioTransazioneComponent extends GestisciElementoComponent implements OnInit {
+export class DettaglioTransazioneComponent extends DettaglioElementoComponent implements OnInit {
 
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   funzione: FunzioneGestioneEnum = FunzioneGestioneEnum.DETTAGLIO;
@@ -61,20 +61,26 @@ export class DettaglioTransazioneComponent extends GestisciElementoComponent imp
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
-              protected amministrativoService: AmministrativoService,
+  constructor(protected activatedRoute: ActivatedRoute, protected amministrativoService: AmministrativoService,
+              protected http: HttpClient, protected router: Router,
               private monitoraggioTransazioniService: MonitoraggioTransazioniService,
               private gestisciPortaleService: GestisciPortaleService) {
-    super(router, route, http, amministrativoService);
+    super(activatedRoute, amministrativoService, http, router);
+  }
+
+  initFormPage(snapshot: ActivatedRouteSnapshot) {
+    this.activatedRoute.params.subscribe(() => {
+      this.breadcrumbList = this.inizializzaBreadcrumbList([
+        {label: 'Monitoraggio Transazioni', link: this.basePath},
+        {label: 'Dettaglio Transazione', link: null}
+      ], true);
+
+      this.popolaTransazione();
+      window.scrollTo(0, 0);
+    });
   }
 
   ngOnInit(): void {
-    this.breadcrumbList = this.inizializzaBreadcrumbList([
-      {label: 'Monitoraggio Transazioni', link: this.basePath},
-      {label: 'Dettaglio Transazione', link: null}
-    ], true);
-
-    this.popolaTransazione();
   }
 
   popolaTransazione(): void {
@@ -95,7 +101,7 @@ export class DettaglioTransazioneComponent extends GestisciElementoComponent imp
   }
 
   getObservableFunzioneRicerca(): Observable<Transazione> {
-    const idSelezionato = parseInt(this.route.snapshot.paramMap.get('transazioneId'));
+    const idSelezionato = parseInt(this.activatedRoute.snapshot.paramMap.get('transazioneId'));
     return this.monitoraggioTransazioniService.dettaglioTransazione(idSelezionato, this.idFunzione);
   }
 
@@ -207,11 +213,11 @@ export class DettaglioTransazioneComponent extends GestisciElementoComponent imp
   }
 
   mostraDettaglioPendenza(rigaCliccata: any): void {
-    this.mostraDettaglioElemento('/' + this.route.snapshot.url[1].path + '/dettaglioPendenza', rigaCliccata.id.value);
+    this.router.navigateByUrl(this.basePath + '/' + this.activatedRoute.snapshot.url[1].path + '/dettaglioPendenza', rigaCliccata.id.value);
   }
 
   onClickAnnulla(): void {
-    this.router.navigateByUrl(this.route.snapshot.url[0].path);
+    this.router.navigateByUrl(this.activatedRoute.snapshot.url[0].path);
   }
 
 }

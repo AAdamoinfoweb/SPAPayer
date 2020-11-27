@@ -45,7 +45,6 @@ export class DatiTransazioneComponent implements OnInit, OnChanges {
       this.versanteIndirizzoIP = this.datiTransazione.versanteIndirizzoIP;
       this.versanteEmail = this.datiTransazione.versanteEmail;
     }
-    window.scrollTo(0, 0);
   }
 
   inviaNotificaEnte(transazioneId: number): void {
