@@ -22,6 +22,7 @@ import {SintesiServizio} from '../../../model/servizio/SintesiServizio';
 import {TipoUtenteEnum} from '../../../../../enums/TipoUtente.enum';
 import * as moment from 'moment';
 import {SpinnerOverlayService} from '../../../../../services/spinner-overlay.service';
+import {SintesiAttivitaPianificata} from "../../../model/attivitapianificata/SintesiAttivitaPianificata";
 
 @Component({
   selector: 'app-gestisci-servizi',
@@ -193,10 +194,6 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
     return [];
   }
 
-  getNumeroRecord(): string {
-    return 'Totale: ' + this.listaElementi.length + ' servizio/i';
-  }
-
   getObservableFunzioneRicerca(): Observable<any[]> {
     return this.configuraServizioService.recuperaServizio(this.filtriRicerca, this.idFunzione);
   }
@@ -240,5 +237,19 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
     this.righeSelezionate = righeSelezionate;
     this.toolbarIcons[this.indiceIconaModifica].disabled = this.righeSelezionate.length !== 1;
     this.toolbarIcons[this.indiceIconaElimina].disabled = this.righeSelezionate.length === 0;
+  }
+
+  getNumeroRecord(): string {
+    const map: Map<string, number> = this.calcolaNumeroAttivitaAttiveDisabilitate();
+    return `Totale: ${this.listaElementi.length} \b, di cui ${map.get('attive')} abilitati \b, di cui ${map.get('disabilitate')} disabilitati`;
+  }
+
+  private calcolaNumeroAttivitaAttiveDisabilitate(): Map<string, number> {
+    const map: Map<string, number> = new Map<string, number>();
+    const attive = this.listaElementi.filter((servizio) => this.isServizioAbilitato(servizio));
+    const disabilitate = this.listaElementi.filter((servizio) => !(this.isServizioAbilitato((servizio))));
+    map.set('attive', attive.length);
+    map.set('disabilitate', disabilitate.length);
+    return map;
   }
 }
