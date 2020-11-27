@@ -18,6 +18,8 @@ import {NotifichePagamento} from "../modules/main/model/servizio/NotifichePagame
 import {Utils} from "../utils/Utils";
 import * as moment from "moment";
 import {ContoCorrente} from "../modules/main/model/ente/ContoCorrente";
+import {ParametriRicercaServizio} from "../modules/main/model/servizio/ParametriRicercaServizio";
+import {SintesiServizio} from "../modules/main/model/servizio/SintesiServizio";
 
 @Injectable({
   providedIn: 'root'
@@ -201,30 +203,6 @@ export class ConfiguraServizioService {
             return of(null);
           }
         }));
-    /*
-    let s = new Servizio();
-    s.raggruppamentoId = 1;
-    s.tipologiaServizioId = 13;
-    s.nomeServizio = "a";
-    s.abilitaDa = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    s.abilitaA = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    s.contatti = new Contatti();
-    s.impositore = new ImpositoreServizio();
-    s.beneficiario = new BeneficiarioServizio();
-    s.integrazione = new LivelloIntegrazioneServizio();
-    s.integrazione.livelloIntegrazioneId = LivelloIntegrazioneEnum.LV2;
-    s.listaContiCorrenti = [];
-    let cc = new ContoCorrente();
-    cc.iban = "IT60X0542811101000000123456";
-    cc.inizioValidita = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    s.listaContiCorrenti.push(cc);
-    s.flussiNotifiche = new FlussiNotifiche();
-    s.flussiNotifiche.rendicontazioneGiornaliera = new RendicontazioneGiornaliera();
-    s.flussiNotifiche.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
-    s.flussiNotifiche.notificheDiPagamento = new NotifichePagamento();
-    s.flussiNotifiche.notificheDiPagamento.email = "s.sante@hotmail.it;s.sante@dxc.com";
-
-    return of(s);*/
   }
 
   inserimentoServizio(servizio: Servizio, idFunzione: string): Observable<number> {
@@ -245,5 +223,29 @@ export class ConfiguraServizioService {
             return of(null);
           }
         }));
+  }
+
+  recuperaServizio(filtriRicerca: ParametriRicercaServizio, idFunzione: any) {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.serviziUrl, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as SintesiServizio[];
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
+  eliminaServizioSelezionati(listaIdElementiSelezionati: number[], idFunzione: any) {
+    return of(null);
   }
 }

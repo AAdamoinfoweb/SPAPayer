@@ -1,1 +1,61 @@
-<p>gestisci-servizi works!</p>
+<div class="ml-5" *ngIf="!waiting">
+  <!-- breadcrumb -->
+  <it-breadcrumb [dark]="false" [separator]="'/'">
+    <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
+                        [link]="item.link">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
+
+  <!-- titolo -->
+  <h3 class="mb-2 page-title"><strong>Configura Servizi</strong>
+    <span it-tooltip="{{tooltipTitolo}}">
+      <svg class="bg-light icon icon-lg icon-padded">
+        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+      </svg>
+    </span>
+  </h3>
+
+  <!-- Sottosezione Lista -->
+  <div class="collapse-header" id="idCollapseLista">
+    <button data-toggle="collapse" data-target="#contenutoSezioneLista" aria-expanded="true" aria-controls="contenutoSezioneLista">
+      Lista Servizi
+    </button>
+  </div>
+  <div id="contenutoSezioneLista" class="collapse show" role="tabpanel" aria-labelledby="idCollapseLista">
+    <div class="collapse-body">
+      <div class="row align-items-baseline align-content-lg-around">
+        <div class="col-lg pb-2 pb-sm-2 pb-lg-0">
+        </div>
+        <!-- azioni -->
+        <div class="col-auto">
+          <app-toolbar [toolbarIcons]="toolbarIcons" (onClick)="eseguiAzioni($event)"></app-toolbar>
+        </div>
+      </div>
+      <!-- table -->
+      <div class="row">
+        <div class="col">
+          <app-table [dataKey]="tableData.dataKey"
+                     [cols]="tableData.cols"
+                     [rows]="tableData.rows"
+                     [tipoTabella]="tableData.tipoTabella"
+                     [textLeft]="getNumeroRecord()"
+                     (onSelection)="selezionaRigaTabella($event)"
+                     [selectedRows]="true"
+                     (onClickRow)="mostraDettaglioTipologiaServizio($event)"
+                     [selection]="righeSelezionate"
+          >
+          </app-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modale -->
+<p-confirmDialog #cb icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
+    <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
+  </p-footer>
+</p-confirmDialog>

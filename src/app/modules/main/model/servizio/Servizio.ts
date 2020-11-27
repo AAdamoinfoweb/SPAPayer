@@ -6,6 +6,9 @@ import {BeneficiarioServizio} from "./BeneficiarioServizio";
 import {ImpositoreServizio} from "./ImpositoreServizio";
 
 export class Servizio {
+
+  id: number;
+
   flagPresenzaDettaglioTransazione: boolean;
   flagPresenzaRendicontazione: boolean;
   flagPresenzaDatiBonifico: boolean;

@@ -34,6 +34,7 @@ import {GestisciStatisticheComponent} from './modules/main/components/amministra
 import {FormStatisticaComponent} from './modules/main/components/amministrativo/gestisci-statistiche/form-statistica/form-statistica.component';
 import {GestisciAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/gestisci-attivita-pianificate.component';
 import {FormAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component';
+import {GestisciServiziComponent} from "./modules/main/components/amministrativo/gestisci-servizi/gestisci-servizi.component";
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -88,6 +89,8 @@ const routes: Routes = [
   {path: 'gestisciTipologiaServizi/aggiungiTipologia', component: FormTipologiaServizioComponent},
   {path: 'gestisciTipologiaServizi/modificaTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
   {path: 'gestisciTipologiaServizi/dettaglioTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
+
+  {path: 'configuraServizi', component: GestisciServiziComponent},
   {path: 'configuraServizi/aggiungiServizio', component: FormServizioComponent},
   {path: 'configuraServizi/modificaServizio/:servizioId', component: FormServizioComponent},
   {path: 'configuraServizi/dettaglioServizio/:servizioId', component: FormServizioComponent},

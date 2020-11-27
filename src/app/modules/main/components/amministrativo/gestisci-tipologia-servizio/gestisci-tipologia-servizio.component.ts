@@ -84,7 +84,7 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
   init() {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Gestisci Anagrafiche', link: null},
-      {label: 'Gestisci Tipologie Servizio', link: null}
+      {label: 'Gestisci Tipologia Servizio', link: null}
     ]);
     this.popolaListaElementi();
   }
