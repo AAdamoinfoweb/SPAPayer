@@ -81,7 +81,6 @@ export class SelezionaContoCorrenteComponent implements OnInit, AfterViewInit {
 
   onClickRow(row: any) {
     const contoCorrente: ContoCorrente = new ContoCorrente();
-    contoCorrente.id = row.id.value;
     contoCorrente.iban = row.iban.value;
     contoCorrente.intestazione = row.intestazione.value;
     contoCorrente.ibanCCPostale = row.ibanCCPostale.value;

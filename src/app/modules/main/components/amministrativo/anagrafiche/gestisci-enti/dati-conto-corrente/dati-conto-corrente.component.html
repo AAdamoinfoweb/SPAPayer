@@ -1,7 +1,7 @@
 <div class="ml-3">
   <!--  inizio Header -->
   <div class="collapse-header" id="idCollapseDatiBeneficiario">
-    <button data-toggle="collapse" [id]="'buttonCCCollapse' + uuid" aria-expanded="true"
+    <button data-toggle="collapse" [id]="'buttonCCCollapse' + indexDatiContoCorrente" aria-expanded="true"
             aria-controls="contenutoSezioneDatiBeneficiario">
       <div class="row">
         <div class="col">
@@ -23,7 +23,7 @@
     </button>
   </div>
   <!--  fine Header -->
-  <div [id]="'collapseCC'+uuid" class="collapse show" role="tabpanel"
+  <div [id]="'collapseCC'+indexDatiContoCorrente" class="collapse show" role="tabpanel"
        aria-labelledby="idCollapseDatiBeneficiario">
     <div class="collapse-body">
       <form #datiContoCorrenteForm="ngForm">
@@ -50,7 +50,7 @@
                        [(ngModel)]="datiContoCorrente.iban"
                        class="pt-0" autocomplete="off" aria-describedby="ibanHelpDescription"
                        [pattern]="ibanRegex"
-                       [disabled]="campiDisabiitati(iban)"
+                       [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                        [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                        (ngModelChange)="onChangeModel(datiContoCorrenteForm, iban)">
               </div>
@@ -106,7 +106,7 @@
                        [(ngModel)]="datiContoCorrente.ibanCCPostale"
                        [pattern]="ibanRegex"
                        class="pt-0" autocomplete="off" aria-describedby="ibanCCPostaleHelpDescription"
-                       [disabled]="campiDisabiitati(ibanCCPostale)"
+                       [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                        (ngModelChange)="onChangeModel(datiContoCorrenteForm, ibanCCPostale)">
               </div>
             </div>
@@ -185,7 +185,7 @@
                   #datePickerAttivazione
                   (click)="isCalendarOpen = false"
                   (ngModelChange)="onChangeModel(datiContoCorrenteForm, inizioValidita)"
-                  [ngClass]="{'disabled': campiDisabiitati(inizioValidita)}"
+                  [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
                   [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                 ></dp-date-picker>
               </div>

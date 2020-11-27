@@ -2,9 +2,9 @@ import {
   Component,
   ComponentFactoryResolver,
   ComponentRef,
-  ElementRef, OnChanges,
+  ElementRef,
   OnInit,
-  Renderer2, SimpleChanges,
+  Renderer2,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -27,14 +27,14 @@ import {Banner} from '../../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../../enums/livelloBanner.enum';
 import {BannerService} from '../../../../../../../services/banner.service';
 import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
-import {EsitoInserimentoModificaEnte} from "../../../../../model/ente/EsitoInserimentoModificaEnte";
+import {Util} from 'design-angular-kit/lib/util/util';
 
 @Component({
   selector: 'app-form-ente',
   templateUrl: './form-ente.component.html',
   styleUrls: ['./form-ente.component.scss']
 })
-export class FormEnteComponent extends FormElementoParentComponent implements OnInit, OnChanges {
+export class FormEnteComponent extends FormElementoParentComponent implements OnInit {
   // enums e consts class
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
   idFunzione;
@@ -69,12 +69,6 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
               private overlayService: OverlayService, http: HttpClient,
               confirmationService: ConfirmationService, private enteService: EnteService, private bannerService: BannerService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.listaContiCorrente) {
-      this.aggiornaListaContiCorrenti();
-    }
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
@@ -188,7 +182,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     }
   }
 
-  inizializzaComponentRefInstance(childComponent, uuid, index, funzione, idFunzione, datiBeneficiario, listaContiCorrente) {
+  inizializzaComponentRefInstance(childComponent, uuid, index, funzione, idFunzione, datiBeneficiario, listaContiCorrente){
     // creazione Dati Beneficiario Component
     this.componentRef = this.target.createComponent(childComponent);
     // input
@@ -235,10 +229,6 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
         this.recuperoContiCorrente(this.datiEnte.id).subscribe((contiCorrente) => {
           this.listaContiCorrente = contiCorrente;
           this.setListaBeneficiari();
-          const banner = history.state.banner;
-          if(banner){
-            this.bannerService.bannerEvent.emit([banner]);
-          }
         });
       } else {
         this.setListaBeneficiari();
@@ -299,22 +289,19 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   private modificaEnte() {
-    this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((response: EsitoInserimentoModificaEnte) => {
+    this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((response) => {
       if (!(response instanceof HttpErrorResponse)) {
         this.esito = response.esito;
         this.controlloEsito();
         if (this.esito == null) {
-          this.configuraRouterAndNavigate('/modificaEnte/' + response.idEnte, {banner: Utils.bannerOperazioneSuccesso()});
+          this.recuperoContiCorrente(this.datiEnte.id).subscribe((contiCorrente) => {
+            this.listaContiCorrente = contiCorrente;
+            this.aggiornaListaContiCorrenti();
+          });
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         }
       }
     });
-  }
-
-  private configuraRouterAndNavigate(pathFunzione: string, state) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    // this.router.navigateByUrl(this.basePath + pathFunzione);
-    this.router.navigate([this.basePath + pathFunzione], {state});
   }
 
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {
