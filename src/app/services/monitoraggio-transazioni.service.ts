@@ -143,7 +143,7 @@ export class MonitoraggioTransazioniService {
 
   dettaglioEsitoNotifica(id: number, idFunzione: string): Observable<EsitoNotifica> {
     const url = environment.bffBaseUrl + this.monitoraggioTransazioniBaseUrl;
-    const esitoNotificaPath = '/esitoNotifiche';
+    const esitoNotificaPath = 'esitoNotifiche';
 
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
