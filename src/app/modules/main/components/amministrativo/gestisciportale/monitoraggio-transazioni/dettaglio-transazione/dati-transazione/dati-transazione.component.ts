@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import {ECalendarValue} from 'ng2-date-picker';
 import {LivelloIntegrazioneEnum} from '../../../../../../../../enums/livelloIntegrazione.enum';
 import {GestisciPortaleService} from '../../../../../../../../services/gestisci-portale.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-dati-transazione',
@@ -28,7 +29,8 @@ export class DatiTransazioneComponent implements OnInit, OnChanges {
   versanteIndirizzoIP = null;
   versanteEmail = null;
 
-  constructor(private gestisciPortaleService: GestisciPortaleService) {
+  constructor(private gestisciPortaleService: GestisciPortaleService, private router: Router,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -49,6 +51,13 @@ export class DatiTransazioneComponent implements OnInit, OnChanges {
 
   inviaNotificaEnte(transazioneId: number): void {
     this.gestisciPortaleService.inviaNotificaEnte(transazioneId, this.idFunzione).subscribe();
+  }
+
+  redirectToLinkDettaglioEsitoNotifica(): void {
+    const urlPaths = this.activatedRoute.snapshot.url;
+    const urlDettaglioEsitoNotifica = urlPaths[0] + '/' + urlPaths[2] + '/esitoNotifiche';
+
+    this.router.navigateByUrl(urlDettaglioEsitoNotifica);
   }
 
 }
