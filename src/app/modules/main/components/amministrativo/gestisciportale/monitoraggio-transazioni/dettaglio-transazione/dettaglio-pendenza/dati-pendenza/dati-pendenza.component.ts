@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {DettaglioPendenza} from '../../../../../../../model/transazione/DettaglioPendenza';
+import {LivelloIntegrazioneEnum} from '../../../../../../../../../enums/livelloIntegrazione.enum';
 
 @Component({
   selector: 'app-dati-pendenza',
@@ -10,7 +11,10 @@ export class DatiPendenzaComponent implements OnInit, OnChanges {
 
   @Input() datiPendenza: DettaglioPendenza;
 
+  readonly livelloIntegrazioneEnum = LivelloIntegrazioneEnum;
+
   id = null;
+  livelloIntegrazioneId = null;
   enteImpositore = null;
   servizioNome = null;
   enteBeneficiario = null;
@@ -18,7 +22,7 @@ export class DatiPendenzaComponent implements OnInit, OnChanges {
   annoDocumento = null;
   causale = null;
   importo = null;
-  listaCampoDettaglioTransazioni = null;
+  listaCampoDettaglioTransazioni = [];
 
   constructor() { }
 
@@ -28,6 +32,7 @@ export class DatiPendenzaComponent implements OnInit, OnChanges {
   ngOnChanges(sc: SimpleChanges) {
     if (sc.datiPendenza) {
       this.id = this.datiPendenza.id;
+      this.livelloIntegrazioneId = this.datiPendenza.livelloIntegrazioneId;
       this.enteImpositore = this.datiPendenza.enteImpositore;
       this.servizioNome = this.datiPendenza.servizioNome;
       this.enteBeneficiario = this.datiPendenza.enteBeneficiario;

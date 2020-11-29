@@ -1,10 +1,10 @@
 <div class="ml-3">
   <!-- Ente impositore, Servizio, Ente beneficiario -->
   <div class="row mt-4 mb-0">
-    <div class="col-md-3 pb-2">
+    <div class="col-md-4 pb-2">
       <div class="row">
         <div class="col">
-          <label for="enteImpositore" class="title">Ente impositore</label>
+          <label for="enteImpositore" class="title">Ente Impositore</label>
         </div>
       </div>
       <div class="row">
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3 pb-2">
+    <div class="col-md-4 pb-2">
       <div class="row">
         <div class="col">
           <label for="servizio" class="title">Servizio</label>
@@ -35,10 +35,10 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3 pb-2">
+    <div class="col-md-4 pb-2">
       <div class="row">
         <div class="col">
-          <label for="enteBeneficiario" class="title">Ente beneficiario</label>
+          <label for="enteBeneficiario" class="title">Ente Beneficiario</label>
         </div>
       </div>
       <div class="row">
@@ -48,6 +48,105 @@
             type="text"
             disabled
             [(ngModel)]="enteBeneficiario"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Se il bollettino è di Livello 1, allora mostro i campi della tabella DETTAGLIO_TRANSAZIONE -->
+  <!-- Numero Documento, Anno Documento, Causale, Importo -->
+  <div class="row mt-4 mb-0" *ngIf="livelloIntegrazioneId === livelloIntegrazioneEnum.LV1">
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="numeroDocumento" class="title">Numero Documento</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            disabled
+            id="numeroDocumento" name="numeroDocumento"
+            [(ngModel)]="numeroDocumento"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="annoDocumento" class="title">Anno Documento</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            disabled
+            id="annoDocumento" name="annoDocumento"
+            [(ngModel)]="annoDocumento"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="causale" class="title">Causale</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            disabled
+            id="causale" name="causale"
+            [(ngModel)]="causale"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="importo" class="title">Importo</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            class="price-input"
+            id="importo"
+            name="importo"
+            [(ngModel)]="importo"
+            type="tel"
+            currencyMask
+            [options]="{allowNegative: false, prefix: '', precision: 2, decimal: ',', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
+            disabled
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Se il bollettino è di Livello 2 o Livello 2 Back Office o Livello 3, allora mostro i campi
+       della tabella CAMPO_DETTAGLIO_TRANSAZIONE (titolo - valore) -->
+  <div class="row mt-4 mb-0" *ngIf="livelloIntegrazioneId !== livelloIntegrazioneEnum.LV1">
+    <div class="col-md-4 pb-2" *ngFor="let campoDettaglioTransazione of listaCampoDettaglioTransazioni; let i = index">
+      <div class="row">
+        <div class="col">
+          <label class="title">{{campoDettaglioTransazione['titolo']}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            disabled
+            name="valore"
+            [(ngModel)]="campoDettaglioTransazione['valore']"
           />
         </div>
       </div>
