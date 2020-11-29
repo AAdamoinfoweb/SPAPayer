@@ -39,6 +39,7 @@ import {DettaglioRendicontazioneComponent} from './modules/main/components/ammin
 import {MonitoraggioTransazioniComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/monitoraggio-transazioni.component';
 import {DettaglioTransazioneComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-transazione.component';
 import {DettaglioPendenzaComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-pendenza/dettaglio-pendenza.component';
+import {DettaglioEsitoNotificaComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dettaglio-esito-notifica.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -106,7 +107,8 @@ const routes: Routes = [
   {path: 'rendicontazione/dettaglioRendicontazione/:rendicontazioneId', component: DettaglioRendicontazioneComponent},
   {path: 'monitoraggioTransazioni', component: MonitoraggioTransazioniComponent},
   {path: 'monitoraggioTransazioni/dettaglioTransazioni/:transazioneId', component: DettaglioTransazioneComponent},
-  {path: 'monitoraggioTransazioni/dettaglioTransazioni/dettaglioPendenza/:dettaglioTransazioneId', component: DettaglioPendenzaComponent}
+  {path: 'monitoraggioTransazioni/dettaglioTransazioni/dettaglioPendenza/:dettaglioTransazioneId', component: DettaglioPendenzaComponent},
+  {path: 'monitoraggioTransazioni/:transazioneId/esitoNotifiche', component: DettaglioEsitoNotificaComponent}
 ];
 
 @NgModule({
