@@ -67,7 +67,7 @@ export class SocietaService {
       }));
   }
 
-  aggiuntaSocieta(societa: Societa, idFunzione: string): Observable<any> {
+  aggiuntaSocieta(societa: Societa, idFunzione: string): Observable<any | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.societaBaseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -81,9 +81,9 @@ export class SocietaService {
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
-          return of(null);
+          return of(err);
         } else {
-          return of(null);
+          return of(err);
         }
       }));
   }

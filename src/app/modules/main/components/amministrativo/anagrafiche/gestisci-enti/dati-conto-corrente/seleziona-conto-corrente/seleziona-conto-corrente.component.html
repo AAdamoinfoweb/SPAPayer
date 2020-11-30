@@ -1,6 +1,6 @@
 <!--      inizio modale cc -->
 <div class="row mt-4 mb-0" *ngIf="((funzione === FunzioneGestioneEnum.AGGIUNGI) && (listaContiCorrente && listaContiCorrente.length > 0)) ||
-(funzione == FunzioneGestioneEnum.MODIFICA)">
+((funzione == FunzioneGestioneEnum.MODIFICA) && (listaContiCorrente && listaContiCorrente.length > 0))">
   <div class="col-md pb-2">
     <p-dialog header="Lista conti correnti" [(visible)]="display">
       <div class="row">

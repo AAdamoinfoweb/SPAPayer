@@ -17,6 +17,7 @@ export abstract class FormElementoParentComponent {
                         protected amministrativoService: AmministrativoService,
                         protected http: HttpClient,
                         protected router: Router) {
+    window.scroll(0, 0);
     this.amministrativoService.asyncAmministrativoSubject.subscribe((isAmministrativo) => {
       if(isAmministrativo) {
         activatedRoute.url.subscribe((url) => {

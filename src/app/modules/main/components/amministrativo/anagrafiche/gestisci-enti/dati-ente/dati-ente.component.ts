@@ -68,9 +68,22 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     if (changes.datiEnte) {
       if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
         this.caricaImmagine();
+      } else {
+        if (this.datiEnte.logo == null || this.datiEnte.logo.contenuto == null) {
+          this.pulisciImmagine();
+        }
       }
     }
 
+  }
+
+  private pulisciImmagine() {
+    // @ts-ignore
+    const canvas: HTMLCanvasElement = document.getElementById('canvas');
+    if (canvas != null) {
+      const context = canvas.getContext('2d');
+      context.clearRect(0, 0, canvas.width, canvas.height);
+    }
   }
 
   private inizializzaFormModifica() {

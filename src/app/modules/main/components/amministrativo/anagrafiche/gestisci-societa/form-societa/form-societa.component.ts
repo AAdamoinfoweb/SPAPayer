@@ -86,9 +86,11 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
   onClickSalva(): void {
     switch (this.funzione) {
       case FunzioneGestioneEnum.AGGIUNGI:
-        this.societaService.aggiuntaSocieta(this.societa, this.idFunzione).subscribe((societa) => {
-          this.societa = new Societa();
-          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+        this.societaService.aggiuntaSocieta(this.societa, this.idFunzione).subscribe((response) => {
+          if (!(response instanceof HttpErrorResponse)) {
+            this.societa = new Societa();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:

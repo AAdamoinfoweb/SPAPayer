@@ -6,7 +6,7 @@ import {
   OnInit,
   Renderer2,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef, ViewRef
 } from '@angular/core';
 import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
@@ -28,6 +28,7 @@ import {getBannerType, LivelloBanner} from '../../../../../../../enums/livelloBa
 import {BannerService} from '../../../../../../../services/banner.service';
 import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
 import {Util} from 'design-angular-kit/lib/util/util';
+import {RoutingService} from "../../../../../../../services/routing.service";
 
 @Component({
   selector: 'app-form-ente',
@@ -54,8 +55,11 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   // form valid
   isFormDatiEnteValido = false;
   @ViewChild('datiBeneficiario', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
+  targetMap: Map<string, ViewRef> = new Map<string, ViewRef>();
 
   private componentRef: ComponentRef<any>;
+
+  private componentRefs: ComponentRef<any>[] = [];
   getListFromMap = (map: Map<string, any>) => Array.from(map, ([name, value]) => value);
 
 
@@ -64,7 +68,8 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, amministrativoService: AmministrativoService,
               private overlayService: OverlayService, http: HttpClient,
-              confirmationService: ConfirmationService, private enteService: EnteService, private bannerService: BannerService) {
+              confirmationService: ConfirmationService, private enteService: EnteService, private bannerService: BannerService,
+              private routingService: RoutingService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
@@ -130,6 +135,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.datiEnte.livelloTerritorialeId = null;
     this.datiEnte.comune = null;
     this.datiEnte.provincia = null;
+    this.datiEnte.logo = null;
   }
 
   onChangeDatiEnte(datiEnte: EnteCompleto): void {
@@ -139,22 +145,38 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   aggiungiBeneficiario(datiBeneficiario?: Beneficiario): number {
     // creazione Dati Beneficiario Component
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiBeneficiarioComponent);
-    this.componentRef = this.target.createComponent(childComponent);
     const indexBeneficiario = this.target.length;
     // input
-    this.componentRef.instance.uuid = Utils.uuidv4();
-    this.componentRef.instance.indexDatiBeneficiario = indexBeneficiario;
-    this.componentRef.instance.funzione = this.funzione;
-    this.componentRef.instance.idFunzione = this.idFunzione;
+    const uuid = Utils.uuidv4();
+    const funzione = this.funzione;
+    const idFunzione = this.idFunzione;
     let instanceDatiBeneficiario: Beneficiario;
     if (datiBeneficiario == null) {
       instanceDatiBeneficiario = new Beneficiario();
     } else {
       instanceDatiBeneficiario = datiBeneficiario;
     }
-    this.componentRef.instance.datiBeneficiario = instanceDatiBeneficiario;
+    let listaContiCorrente = null;
     if (this.funzione === FunzioneGestioneEnum.MODIFICA && this.listaContiCorrente != null) {
-      this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
+      listaContiCorrente = this.listaContiCorrente;
+    }
+    this.inizializzaComponentRefInstance(childComponent, uuid, indexBeneficiario, funzione, idFunzione,
+      instanceDatiBeneficiario, listaContiCorrente);
+    return indexBeneficiario;
+  }
+
+  inizializzaComponentRefInstance(childComponent, uuid, index, funzione, idFunzione, datiBeneficiario, listaContiCorrente) {
+    // creazione Dati Beneficiario Component
+    this.componentRef = this.target.createComponent(childComponent);
+    // input
+    this.componentRef.instance.uuid = uuid;
+    this.targetMap.set(uuid, this.componentRef.hostView);
+    this.componentRef.instance.indexDatiBeneficiario = index;
+    this.componentRef.instance.funzione = funzione;
+    this.componentRef.instance.idFunzione = idFunzione;
+    this.componentRef.instance.datiBeneficiario = datiBeneficiario;
+    if (funzione === FunzioneGestioneEnum.MODIFICA && listaContiCorrente != null) {
+      this.componentRef.instance.listaContiCorrente = listaContiCorrente;
     }
     // output
     this.componentRef.instance.onDeleteDatiBeneficiario.subscribe((componenteDinamico: ComponenteDinamico) => {
@@ -165,12 +187,14 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
         this.mapControllo.delete(componenteDinamico.uuid);
       }
       // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
-      const zeroBasedIndex = componenteDinamico.index - 1;
-      const viewRef = this.target.get(zeroBasedIndex);
-      if (viewRef == null && this.target.length === 1) {
+      const viewRef = this.targetMap.get(componenteDinamico.uuid);
+      const indexViewRef = this.target.indexOf(viewRef);
+      if (this.target.length === 1) {
         this.target.clear();
+        this.targetMap.clear();
       } else {
-        this.target.remove(zeroBasedIndex);
+        this.target.remove(indexViewRef);
+        this.targetMap.delete(componenteDinamico.uuid);
       }
     });
     this.componentRef.instance.onChangeDatiBeneficiario.subscribe((componenteDinamico: ComponenteDinamico) => {
@@ -178,7 +202,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
     });
     this.componentRef.changeDetectorRef.detectChanges();
-    return indexBeneficiario;
+    this.componentRefs.push(this.componentRef);
   }
 
   letturaEnte(idEnte) {
@@ -237,7 +261,6 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
           this.esito = response.esito;
           this.pulisciEnte();
         }
-
       });
   }
 
@@ -245,6 +268,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.controlloEsito();
     this.datiEnte = new EnteCompleto();
     this.inizializzaDatiEnte();
+    this.target.clear();
     if (this.esito == null) {
       this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
     }
@@ -255,6 +279,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       if (!(response instanceof HttpErrorResponse)) {
         this.esito = response.esito;
         this.controlloEsito();
+        this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaEnte/' + this.datiEnte.id, null);
         if (this.esito == null) {
           this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         }
@@ -262,11 +287,14 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     });
   }
 
+
+
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {
     listaBeneficiari = listaBeneficiari.map((beneficiario) => {
-      const contiCorrenti = beneficiario.listaContiCorrenti;
+      const beneficiarioCopy = JSON.parse(JSON.stringify(beneficiario));
+      const contiCorrenti = beneficiarioCopy.listaContiCorrenti;
       if (contiCorrenti != null && contiCorrenti.length > 0) {
-        beneficiario.listaContiCorrenti = contiCorrenti.map((contoCorrente) => {
+        beneficiarioCopy.listaContiCorrenti = contiCorrenti.map((contoCorrente) => {
           contoCorrente.iban = contoCorrente.iban.replace(/\s+/g, '');
           const ibanCCPostale = contoCorrente.ibanCCPostale;
           if (ibanCCPostale != null) {
@@ -283,7 +311,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
           return contoCorrente;
         });
       }
-      return beneficiario;
+      return beneficiarioCopy;
     });
     return listaBeneficiari;
   }

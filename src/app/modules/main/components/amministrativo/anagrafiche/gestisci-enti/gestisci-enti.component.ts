@@ -18,9 +18,9 @@ import {SintesiEnte} from '../../../../model/ente/SintesiEnte';
 import {EnteService} from '../../../../../../services/ente.service';
 import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte';
 import {Observable} from 'rxjs';
-import {Banner} from "../../../../model/banner/Banner";
-import {getBannerType, LivelloBanner} from "../../../../../../enums/livelloBanner.enum";
-import {BannerService} from "../../../../../../services/banner.service";
+import {Banner} from '../../../../model/banner/Banner';
+import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
+import {BannerService} from '../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestisci-enti',

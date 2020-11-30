@@ -8,7 +8,7 @@ import {
   OnInit,
   Output, SimpleChanges,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef, ViewRef
 } from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
 import {NgForm, NgModel} from '@angular/forms';
@@ -42,6 +42,8 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
   @ViewChild('parametro', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
 
+  targetMap: Map<string, ViewRef> = new Map<string, ViewRef>();
+
   @ViewChild('datiForm', {static: false, read: NgForm})
   datiForm: NgForm;
 
@@ -56,16 +58,21 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.datiAttivitaPianificata) {
       this.inizializzazioneChiaveValore();
-    }
   }
 
   private inizializzazioneChiaveValore() {
-    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI && this.datiAttivitaPianificata.parametri != null && this.datiAttivitaPianificata.parametri.length > 0) {
-      this.datiAttivitaPianificata.parametri.forEach(parametro => this.aggiungiChiaveValore(parametro));
+    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
+      if (this.datiAttivitaPianificata.parametri != null && this.datiAttivitaPianificata.parametri.length > 0) {
+        this.datiAttivitaPianificata.parametri.forEach(parametro => this.aggiungiChiaveValore(parametro));
+      } else {
+        this.aggiungiChiaveValore();
+      }
     } else {
-      this.aggiungiChiaveValore();
+      if (this.datiAttivitaPianificata.parametri == null || this.datiAttivitaPianificata.parametri.length === 0) {
+        this.target.clear();
+        this.aggiungiChiaveValore();
+      }
     }
   }
 
@@ -109,7 +116,9 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
     this.componentRef = this.target.createComponent(childComponent);
     const index = this.target.length;
     // input
-    this.componentRef.instance.uuid = Utils.uuidv4();
+    const uuid = Utils.uuidv4();
+    this.componentRef.instance.uuid = uuid;
+    this.targetMap.set(uuid, this.componentRef.hostView);
     this.componentRef.instance.index = index;
     this.componentRef.instance.funzione = this.funzione;
     let instance: ParametroAttivitaPianificata;
@@ -128,12 +137,14 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
       }
 
       // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
-      const zeroBasedIndex = componenteDinamico.index - 1;
-      const viewRef = this.target.get(zeroBasedIndex);
-      if (viewRef == null && this.target.length === 1) {
+      const viewRef = this.targetMap.get(componenteDinamico.uuid);
+      const indexViewRef = this.target.indexOf(viewRef);
+      if (this.target.length === 1) {
         this.target.clear();
+        this.targetMap.clear();
       } else {
-        this.target.remove(zeroBasedIndex);
+        this.target.remove(indexViewRef);
+        this.targetMap.delete(componenteDinamico.uuid);
       }
       this.setListaParametri();
     });

@@ -64,7 +64,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
       listaFunzioni.forEach(funzione => {
         this.listaFunzioniAbilitate.push({
           value: funzione.id,
-          label: funzione.nome
+          label: funzione.descrizione
         });
       });
       this.listaFunzioniAbilitate = _.sortBy(this.listaFunzioniAbilitate, ['label']);

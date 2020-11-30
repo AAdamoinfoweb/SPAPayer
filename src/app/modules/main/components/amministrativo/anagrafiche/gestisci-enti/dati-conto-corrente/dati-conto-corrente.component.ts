@@ -36,6 +36,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
   readonly tipoData = ECalendarValue.String;
 
+  contoSelezionato = false;
 
   constructor() {
   }
@@ -45,8 +46,8 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // bind button collapse to new section beneficiario
-    const collapseButton = document.getElementById('buttonCCCollapse' + this.indexDatiContoCorrente.toString());
-    collapseButton.dataset.target = '#collapseCC' + this.indexDatiContoCorrente;
+    const collapseButton = document.getElementById('buttonCCCollapse' + this.uuid.toString());
+    collapseButton.dataset.target = '#collapseCC' + this.uuid;
     this.inizializzaDatiContoCorrente();
   }
 
@@ -84,7 +85,9 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   setComponenteDinamico(isFormValid?: boolean): ComponenteDinamico {
-    const contoCorrente = JSON.parse(JSON.stringify(this.datiContoCorrente));
+    const replacer = (key, value) =>
+      typeof value === 'undefined' ? null : value;
+    const contoCorrente = JSON.parse(JSON.stringify(this.datiContoCorrente, replacer));
     const componenteDinamico: ComponenteDinamico =
       new ComponenteDinamico(this.uuid, this.indexDatiContoCorrente, contoCorrente, isFormValid);
     return componenteDinamico;
@@ -110,12 +113,23 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   onClickRow(contoCorrente: ContoCorrente) {
+    this.datiContoCorrente.id = contoCorrente.id;
     this.datiContoCorrente.iban = contoCorrente.iban;
     this.datiContoCorrente.intestazione = contoCorrente.intestazione;
     this.datiContoCorrente.ibanCCPostale = contoCorrente.ibanCCPostale;
     this.datiContoCorrente.intestazioneCCPostale = contoCorrente.intestazioneCCPostale;
     this.datiContoCorrente.inizioValidita = contoCorrente.inizioValidita;
     this.datiContoCorrente.fineValidita = contoCorrente.fineValidita;
+    this.contoSelezionato = true;
     this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(true));
+  }
+
+  campiDisabiitati(campo: NgModel) {
+    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI && campo?.value != null &&
+      this.datiContoCorrente.id && !this.contoSelezionato) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
