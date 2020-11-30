@@ -1,1 +1,65 @@
-<p>dati-notifica works!</p>
+<div class="ml-3">
+  <!-- Ente impositore, Esito notifica -->
+  <div class="row mt-4 mb-0">
+    <div class="col-md-4 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="enteImpositore" class="title">Ente impositore</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            disabled
+            id="enteImpositore" name="enteImpositore"
+            [(ngModel)]="enteImpositore"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="esitoNotifica" class="title">Esito notifica</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            disabled
+            id="esitoNotifica" name="esitoNotifica"
+            [(ngModel)]="esitoNotifica"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabella Esiti della transazione -->
+  <div class="row mt-5 ml-0">
+    <label class="title">Lista Esiti Transazione</label>
+  </div>
+  <div class="card-body">
+    <div class="row align-items-baseline align-content-lg-around">
+      <div class="col-lg pb-2 pb-sm-2 pb-lg-0"></div>
+      <!-- azioni -->
+      <div class="col-auto">
+        <app-toolbar [toolbarIcons]="toolbarIcons" (onClick)="eseguiAzioni($event)"></app-toolbar>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <app-table [dataKey]="tableData.dataKey"
+                   [cols]="tableData.cols"
+                   [rows]="tableData.rows"
+                   [tipoTabella]="tableData.tipoTabella"
+                   [textLeft]="getNumeroRecord()"
+                   (onSelection)="selezionaRigaTabella($event)"
+                   [selection]="righeSelezionate">
+        </app-table>
+      </div>
+    </div>
+  </div>
+</div>

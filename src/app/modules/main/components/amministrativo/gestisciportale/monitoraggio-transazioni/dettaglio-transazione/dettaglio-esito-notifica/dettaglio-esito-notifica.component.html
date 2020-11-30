@@ -1,1 +1,30 @@
-<p>dettaglio-esito-notifica works!</p>
+<div class="container-fluid">
+  <!-- breadcrumb -->
+  <it-breadcrumb [dark]="false" [separator]="'/'">
+    <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
+                        [link]="'javascript:void(0)'" (click)="redirect(i, item.link)">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
+
+  <!-- titolo -->
+  <h3 class="mb-2 page-title"><strong>{{titoloPagina}}</strong>
+    <span it-tooltip="{{tooltip}}">
+      <svg class="bg-light icon icon-lg icon-padded">
+        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+      </svg>
+    </span>
+  </h3>
+
+  <!-- dati -->
+  <app-dati-notifica
+    [datiNotifica]="datiNotifica"
+  ></app-dati-notifica>
+
+  <hr/>
+
+  <!-- Bottoni -->
+  <div class="row pt-4">
+    <button type="button" id="buttonIndietro" class="btn btn-secondary btn-indietro" (click)="tornaIndietro()">Indietro</button>
+  </div>
+</div>
