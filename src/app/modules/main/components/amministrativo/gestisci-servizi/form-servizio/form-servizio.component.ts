@@ -329,7 +329,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
     breadcrumbs.push(new SintesiBreadcrumb('Gestisci Anagrafiche', null));
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Servizio', this.basePath));
+    breadcrumbs.push(new SintesiBreadcrumb('Configura Servizi', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Servizio', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
