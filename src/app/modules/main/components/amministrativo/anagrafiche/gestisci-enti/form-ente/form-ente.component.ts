@@ -182,7 +182,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     }
   }
 
-  inizializzaComponentRefInstance(childComponent, uuid, index, funzione, idFunzione, datiBeneficiario, listaContiCorrente){
+  inizializzaComponentRefInstance(childComponent, uuid, index, funzione, idFunzione, datiBeneficiario, listaContiCorrente) {
     // creazione Dati Beneficiario Component
     this.componentRef = this.target.createComponent(childComponent);
     // input
@@ -293,16 +293,22 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       if (!(response instanceof HttpErrorResponse)) {
         this.esito = response.esito;
         this.controlloEsito();
+        this.configuraRouterAndNavigate('/modificaEnte/' + this.datiEnte.id, null);
         if (this.esito == null) {
-          this.recuperoContiCorrente(this.datiEnte.id).subscribe((contiCorrente) => {
-            this.listaContiCorrente = contiCorrente;
-            this.aggiornaListaContiCorrenti();
-          });
           this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         }
       }
+
     });
   }
+
+  private configuraRouterAndNavigate(pathFunzione: string, state) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    // this.router.navigateByUrl(this.basePath + pathFunzione);
+    this.router.navigate([this.basePath + pathFunzione], {state});
+  }
+
 
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {
     listaBeneficiari = listaBeneficiari.map((beneficiario) => {

@@ -60,9 +60,9 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // bind button collapse to new section beneficiario
-    const collapseButton = document.getElementById('buttonCollapse' + this.indexDatiBeneficiario.toString());
+    const collapseButton = document.getElementById('buttonCollapse' + this.uuid.toString());
     if (collapseButton != null) {
-      collapseButton.dataset.target = '#collapse' + this.indexDatiBeneficiario;
+      collapseButton.dataset.target = '#collapse' + this.uuid;
       if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
         if (this.datiBeneficiario.listaContiCorrenti == null ||
           this.datiBeneficiario.listaContiCorrenti.length === 0) {
