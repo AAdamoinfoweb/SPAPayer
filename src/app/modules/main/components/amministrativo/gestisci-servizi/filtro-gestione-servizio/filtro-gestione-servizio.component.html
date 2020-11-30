@@ -47,7 +47,7 @@
           <div class="row">
             <div class="col">
               <label for="inputCodice" class="title"
-                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Codice</label>
+                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Tipologia di Servizio</label>
             </div>
           </div>
           <div class="row">
@@ -142,8 +142,7 @@
         <div class="col-xs-6 col-md-3 col-lg-3 pb-2">
           <div class="row">
             <div class="col">
-              <label for="scadenzaDataA" class="title"
-                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Abilita A</label>
+              <label for="scadenzaDataA" class="title">Abilita A</label>
             </div>
           </div>
           <div class="row">
@@ -152,7 +151,6 @@
                 <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
               </svg>
               <dp-date-picker
-                [required]="true"
                 [customvalidator]="validateRange()"
                 [disabled]="disabilitaCampi()"
                 class="col-12"

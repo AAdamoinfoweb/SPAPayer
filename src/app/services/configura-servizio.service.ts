@@ -3,13 +3,13 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
-import {ParametriRicercaEnte} from "../modules/main/model/ente/ParametriRicercaEnte";
+import {ParametriRicercaEnte} from '../modules/main/model/ente/ParametriRicercaEnte';
 import {FiltroSelect} from '../modules/main/model/servizio/FiltroSelect';
-import {Servizio} from "../modules/main/model/servizio/Servizio";
-import {ParametriRicercaServizio} from "../modules/main/model/servizio/ParametriRicercaServizio";
-import {SintesiServizio} from "../modules/main/model/servizio/SintesiServizio";
-import * as moment from "moment";
-import {Utils} from "../utils/Utils";
+import {Servizio} from '../modules/main/model/servizio/Servizio';
+import {ParametriRicercaServizio} from '../modules/main/model/servizio/ParametriRicercaServizio';
+import {SintesiServizio} from '../modules/main/model/servizio/SintesiServizio';
+import * as moment from 'moment';
+import {Utils} from '../utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,7 @@ import {Utils} from "../utils/Utils";
 export class ConfiguraServizioService {
 
   private readonly configuraServiziBasePath = '/configuraServizi';
+  private filtroLivelloTerritorialeUrl = '/filtroLivelloTerritoriale';
   private filtroRaggruppamentoUrl = '/filtroRaggruppamento';
   private filtroTipologiaUrl = '/filtroTipologiaServizio';
   private filtroUfficioUrl = '/filtroUfficio';
@@ -74,7 +75,7 @@ export class ConfiguraServizioService {
     let params = new HttpParams();
     params = params.set('societaId', String(societaId));
 
-    return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.filtroRaggruppamentoUrl, {
+    return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.filtroLivelloTerritorialeUrl, {
       params,
       headers: h,
       withCredentials: true
