@@ -35,3 +35,12 @@
     margin-top: 25px;
   }
 }
+
+.btn-find {
+  text-align: right;
+  margin-left: -6%;
+}
+
+:host ::ng-deep .p-autocomplete.p-component {
+  width: 100%;
+}

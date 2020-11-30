@@ -15,9 +15,7 @@
       </svg>
     </span>
   </h3>
-
   <app-avviso-campi-obbligatori></app-avviso-campi-obbligatori>
-
   <!-- dati -->
   <app-filtro-gestione-servizio
     *ngIf="idFunzione"
@@ -704,9 +702,9 @@
                      [cdkDragDisabled]="!item.draggable || this.funzione === FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
-                    <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i" (dblclick)="dblClick(item, i)"
+                    <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i + campoTipologiaServizioList.length" (dblclick)="dblClick(item, (i + campoTipologiaServizioList.length))"
                          class="col-7 text-right">{{item.titolo}}</div>
-                    <div *ngIf="showEditId == i" class="col-6 text-right">
+                    <div *ngIf="showEditId == i + campoTipologiaServizioList.length" class="col-6 text-right">
                       <input autofocus #edit="ngModel" name="edit"
                              (keyup.enter)="applyEdit(item)"
                              [(ngModel)]="item.titolo"/>

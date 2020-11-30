@@ -56,8 +56,8 @@ import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 import {Utils} from '../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
-import {NotifichePagamento} from "../../../../model/servizio/NotifichePagamento";
-import * as moment from "moment";
+import {NotifichePagamento} from '../../../../model/servizio/NotifichePagamento';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-form-servizio',
@@ -65,9 +65,6 @@ import * as moment from "moment";
   styleUrls: ['./form-servizio.component.scss']
 })
 export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
-  private firstAdd = false;
-  private isSingleClick: boolean;
-  private servizioId: number;
 
   constructor(private cdr: ChangeDetectorRef,
               private renderer: Renderer2,
@@ -85,6 +82,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
               private campoTipologiaServizioService: CampoTipologiaServizioService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
+  private firstAdd = false;
+  private isSingleClick: boolean;
+  private servizioId: number;
 
   titoloPagina: string;
   tooltip: string;
@@ -148,10 +148,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   mapContoCorrente: Map<string, ContoCorrente> = new Map<string, ContoCorrente>();
   mapControllo: Map<string, boolean> = new Map<string, boolean>();
-  getListaContiCorrente = (mapContoCorrente: Map<string, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
-  getListaControllo = (mapControllo: Map<string, boolean>) => Array.from(mapControllo, ([name, value]) => value);
 
   showEditId: number;
+  getListaContiCorrente = (mapContoCorrente: Map<string, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
+  getListaControllo = (mapControllo: Map<string, boolean>) => Array.from(mapControllo, ([name, value]) => value);
 
   ngOnInit(): void {
     this.overlayService.mostraModaleTipoCampoEvent.subscribe(mostraModale => {
@@ -227,7 +227,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           });
 
           this.campoTipologiaServizioList = this.campoTipologiaServizioList.map((obj) => {
-            let campoServizio = value.listaCampiServizio.find((value1 => value1.campoTipologiaServizioId == obj.id));
+            const campoServizio = value.listaCampiServizio.find((value1 => value1.campoTipologiaServizioId == obj.id));
             return campoServizio ? campoServizio : obj;
           });
         });
@@ -252,13 +252,14 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA;
           if (value.flussiNotifiche.notifichePagamento &&
             value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.length > 0) {
-            let strings = value.flussiNotifiche.notifichePagamento;
+            const strings = value.flussiNotifiche.notifichePagamento;
             if (strings && strings.length > 0) {
               strings.forEach(obj => {
-                let formControl = new FormControl();
+                const formControl = new FormControl();
                 formControl.setValue(obj.email);
-                if (this.funzione == FunzioneGestioneEnum.DETTAGLIO)
+                if (this.funzione == FunzioneGestioneEnum.DETTAGLIO) {
                   formControl.disable();
+                }
                 this.emailsControl.push(formControl);
               });
             }
@@ -360,7 +361,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     flussiNotifiche.flussoRiversamentoPagoPA = this.rendicontazioneFlussoPA;
     if (emails && emails.length > 0) {
       emails.forEach(email => {
-        let notifichePagamento: NotifichePagamento = new NotifichePagamento();
+        const notifichePagamento: NotifichePagamento = new NotifichePagamento();
         notifichePagamento.email = email;
         flussiNotifiche.notifichePagamento.push(notifichePagamento);
       });
@@ -381,14 +382,16 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.beneficiario.listaContiCorrenti = this.getListaContiCorrente(this.mapContoCorrente);
     this.servizio.beneficiario.listaContiCorrenti.forEach(value => {
       value.inizioValidita = moment(value.inizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
-      if (value.fineValidita)
+      if (value.fineValidita) {
         value.fineValidita = moment(value.fineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
+      }
     });
 
     this.configuraServizioService.inserimentoServizio(this.servizio, this.idFunzione)
       .subscribe((id) => {
-        if (id)
+        if (id) {
           this.resetPagina();
+        }
       });
   }
 
@@ -432,8 +435,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(entity, this.idFunzione)
         .pipe(map((value) => {
           this.listaLivelloTerritoriale = value;
-          if (this.impositore.livelloTerritorialeId)
+          if (this.impositore.livelloTerritorialeId) {
             this._onChangeLivelloTerritorialeImpositore(this.impositore.livelloTerritorialeId);
+          }
         })).subscribe();
     }
   }
@@ -621,9 +625,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
       this.confirmationService.confirm(
         Utils.getModale(() => {
-            let finded = this.campoTipologiaServizioOriginal.find((value => value.id == item.id));
+            const finded = this.campoTipologiaServizioOriginal.find((value => value.id == item.id));
 
-            let findIndex = this.campoTipologiaServizioList.findIndex((value) => value.id == item.id);
+            const findIndex = this.campoTipologiaServizioList.findIndex((value) => value.id == item.id);
             if (findIndex != -1) {
               finded.uuid = this.campoTipologiaServizioList[findIndex].uuid;
               this.campoTipologiaServizioList[findIndex] = _.cloneDeep(finded);
@@ -682,8 +686,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   add() {
     const campoForm = new CampoTipologiaServizio();
-    if (this.integrazione.livelloIntegrazioneId !== this.LivelloIntegrazioneEnum.LV1)
+    if (this.integrazione.livelloIntegrazioneId !== this.LivelloIntegrazioneEnum.LV1) {
       campoForm.campoInput = true;
+    }
     this.refreshItemsDipendeDa();
     this.showModal(campoForm);
   }
@@ -702,7 +707,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       instanceContoCorrente = datiContoCorrente;
     }
     const listaContiCorrente = this.listaContiCorrente;
-    this.inizializzaComponentRefInstance(childComponent, uuid, indexContoCorrente, funzione, instanceContoCorrente, listaContiCorrente)
+    this.inizializzaComponentRefInstance(childComponent, uuid, indexContoCorrente, funzione, instanceContoCorrente, listaContiCorrente);
     return indexContoCorrente;
   }
 
@@ -826,17 +831,21 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     }, 250);
   }
 
-  dblClick(item: CampoTipologiaServizio, index: number) {
-    if (this.funzione == FunzioneGestioneEnum.DETTAGLIO)
+  dblClick(item: CampoServizio, index: number) {
+    if (this.funzione == FunzioneGestioneEnum.DETTAGLIO) {
       return;
+    }
     this.isSingleClick = false;
     this.showEditId = index;
   }
 
   applyEdit(item: CampoServizio) {
-    if (!this.campoTipologiaServizioOriginal.find((value) => value.id == item.id && value.titolo == item.titolo))
-      this.amministrativoService.salvaCampoFormEvent.emit(item);
-    this.showEditId = null;
+    if (item) {
+      if (!this.campoTipologiaServizioOriginal.find((value) => value.id == item.id && value.titolo == item.titolo)) {
+        this.amministrativoService.salvaCampoFormEvent.emit(item);
+      }
+      this.showEditId = null;
+    }
   }
 
   isPresenteInDettaglioAndRendicontazione() {
