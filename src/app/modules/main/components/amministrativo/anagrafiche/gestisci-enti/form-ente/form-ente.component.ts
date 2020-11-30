@@ -6,7 +6,7 @@ import {
   OnInit,
   Renderer2,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef, ViewRef
 } from '@angular/core';
 import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
@@ -55,6 +55,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   // form valid
   isFormDatiEnteValido = false;
   @ViewChild('datiBeneficiario', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
+  targetMap: Map<string, ViewRef> = new Map<string, ViewRef>();
 
   private componentRef: ComponentRef<any>;
 
@@ -187,6 +188,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.componentRef = this.target.createComponent(childComponent);
     // input
     this.componentRef.instance.uuid = uuid;
+    this.targetMap.set(uuid, this.componentRef.hostView);
     this.componentRef.instance.indexDatiBeneficiario = index;
     this.componentRef.instance.funzione = funzione;
     this.componentRef.instance.idFunzione = idFunzione;
@@ -203,12 +205,14 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
         this.mapControllo.delete(componenteDinamico.uuid);
       }
       // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
-      const zeroBasedIndex = componenteDinamico.index - 1;
-      const viewRef = this.target.get(zeroBasedIndex);
-      if (viewRef == null && this.target.length === 1) {
+      const viewRef = this.targetMap.get(componenteDinamico.uuid);
+      const indexViewRef = this.target.indexOf(viewRef);
+      if (this.target.length === 1) {
         this.target.clear();
+        this.targetMap.clear();
       } else {
-        this.target.remove(zeroBasedIndex);
+        this.target.remove(indexViewRef);
+        this.targetMap.delete(componenteDinamico.uuid);
       }
     });
     this.componentRef.instance.onChangeDatiBeneficiario.subscribe((componenteDinamico: ComponenteDinamico) => {

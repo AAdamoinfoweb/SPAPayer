@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef, ViewRef
 } from '@angular/core';
 import {Beneficiario} from '../../../../../model/ente/Beneficiario';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
@@ -46,6 +46,7 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
 
   @ViewChild('datiContoCorrente', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
+  targetMap: Map<string, ViewRef> = new Map<string, ViewRef>();
 
   @ViewChild('datiBeneficiarioForm', {static: false, read: NgForm})
   formDatiBeneficiario: NgForm;
@@ -123,7 +124,9 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
     this.componentRef = this.target.createComponent(childComponent);
     const indexContoCorrente = this.target.length;
     // input
-    this.componentRef.instance.uuid = Utils.uuidv4();
+    const uuid = Utils.uuidv4()
+    this.componentRef.instance.uuid = uuid;
+    this.targetMap.set(uuid, this.componentRef.hostView);
     this.componentRef.instance.indexDatiContoCorrente = indexContoCorrente;
     this.componentRef.instance.funzione = this.funzione;
     let instanceContoCorrente: ContoCorrente;
@@ -145,12 +148,14 @@ export class DatiBeneficiarioComponent implements OnInit, AfterViewInit {
         this.mapControllo.delete(componenteDinamico.uuid);
       }
       // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
-      const zeroBasedIndex = componenteDinamico.index - 1;
-      const viewRef = this.target.get(zeroBasedIndex);
-      if (viewRef == null && this.target.length === 1) {
+      const viewRef = this.targetMap.get(componenteDinamico.uuid);
+      const indexViewRef = this.target.indexOf(viewRef);
+      if (this.target.length === 1) {
         this.target.clear();
+        this.targetMap.clear();
       } else {
-        this.target.remove(zeroBasedIndex);
+        this.target.remove(indexViewRef);
+        this.targetMap.delete(componenteDinamico.uuid);
       }
       this.setListaContiCorrente();
     });
