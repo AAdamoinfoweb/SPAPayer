@@ -6,7 +6,7 @@ import {
   OnInit,
   Renderer2,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef, ViewRef
 } from '@angular/core';
 import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
@@ -28,6 +28,7 @@ import {getBannerType, LivelloBanner} from '../../../../../../../enums/livelloBa
 import {BannerService} from '../../../../../../../services/banner.service';
 import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
 import {Util} from 'design-angular-kit/lib/util/util';
+import {RoutingService} from "../../../../../../../services/routing.service";
 
 @Component({
   selector: 'app-form-ente',
@@ -54,6 +55,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   // form valid
   isFormDatiEnteValido = false;
   @ViewChild('datiBeneficiario', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
+  targetMap: Map<string, ViewRef> = new Map<string, ViewRef>();
 
   private componentRef: ComponentRef<any>;
 
@@ -66,7 +68,8 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, amministrativoService: AmministrativoService,
               private overlayService: OverlayService, http: HttpClient,
-              confirmationService: ConfirmationService, private enteService: EnteService, private bannerService: BannerService) {
+              confirmationService: ConfirmationService, private enteService: EnteService, private bannerService: BannerService,
+              private routingService: RoutingService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
@@ -162,30 +165,12 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     return indexBeneficiario;
   }
 
-  aggiornaListaContiCorrenti() {
-    let i = 0;
-    const targetLength = this.target.length;
-    const components = this.componentRefs;
-    this.componentRefs = [];
-    this.target.clear();
-    while (i < targetLength) {
-      const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiBeneficiarioComponent);
-      const uuid = components[i].instance.uuid;
-      const indexDatiContoCorrente = components[i].instance.indexDatiBeneficiario;
-      const funzione = components[i].instance.funzione;
-      const datibeneficiario = components[i].instance.datiBeneficiario;
-      const listaContiCorrente = this.listaContiCorrente;
-      const idFunzione = components[i].instance.idFunzione;
-      this.inizializzaComponentRefInstance(childComponent, uuid, indexDatiContoCorrente, funzione, idFunzione, datibeneficiario, listaContiCorrente);
-      i++;
-    }
-  }
-
-  inizializzaComponentRefInstance(childComponent, uuid, index, funzione, idFunzione, datiBeneficiario, listaContiCorrente){
+  inizializzaComponentRefInstance(childComponent, uuid, index, funzione, idFunzione, datiBeneficiario, listaContiCorrente) {
     // creazione Dati Beneficiario Component
     this.componentRef = this.target.createComponent(childComponent);
     // input
     this.componentRef.instance.uuid = uuid;
+    this.targetMap.set(uuid, this.componentRef.hostView);
     this.componentRef.instance.indexDatiBeneficiario = index;
     this.componentRef.instance.funzione = funzione;
     this.componentRef.instance.idFunzione = idFunzione;
@@ -202,12 +187,14 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
         this.mapControllo.delete(componenteDinamico.uuid);
       }
       // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
-      const zeroBasedIndex = componenteDinamico.index - 1;
-      const viewRef = this.target.get(zeroBasedIndex);
-      if (viewRef == null && this.target.length === 1) {
+      const viewRef = this.targetMap.get(componenteDinamico.uuid);
+      const indexViewRef = this.target.indexOf(viewRef);
+      if (this.target.length === 1) {
         this.target.clear();
+        this.targetMap.clear();
       } else {
-        this.target.remove(zeroBasedIndex);
+        this.target.remove(indexViewRef);
+        this.targetMap.delete(componenteDinamico.uuid);
       }
     });
     this.componentRef.instance.onChangeDatiBeneficiario.subscribe((componenteDinamico: ComponenteDinamico) => {
@@ -292,11 +279,8 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       if (!(response instanceof HttpErrorResponse)) {
         this.esito = response.esito;
         this.controlloEsito();
+        this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaEnte/' + this.datiEnte.id, null);
         if (this.esito == null) {
-          this.recuperoContiCorrente(this.datiEnte.id).subscribe((contiCorrente) => {
-            this.listaContiCorrente = contiCorrente;
-            this.aggiornaListaContiCorrenti();
-          });
           this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         }
       }

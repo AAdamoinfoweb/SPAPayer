@@ -1,7 +1,7 @@
 <div class="ml-3">
   <!--  inizio Header -->
   <div class="collapse-header" id="idCollapseDatiBeneficiario">
-    <button data-toggle="collapse" [id]="'buttonCollapse' + indexDatiBeneficiario" aria-expanded="true"
+    <button data-toggle="collapse" [id]="'buttonCollapse' + uuid" aria-expanded="true"
             aria-controls="contenutoSezioneDatiBeneficiario">
       <div class="row">
         <div class="col">
@@ -23,7 +23,7 @@
     </button>
   </div>
   <!--  fine Header -->
-  <div [id]="'collapse'+indexDatiBeneficiario" class="collapse show" role="tabpanel"
+  <div [id]="'collapse'+uuid" class="collapse show" role="tabpanel"
        aria-labelledby="idCollapseDatiBeneficiario">
     <div class="collapse-body">
       <form #datiBeneficiarioForm="ngForm">
