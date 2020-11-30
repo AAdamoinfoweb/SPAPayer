@@ -23,6 +23,7 @@ export class ConfiguraServizioService {
   private filtroUfficioUrl = '/filtroUfficio';
   private filtroPortaleEsternoUrl = '/filtroPortaleEsterno';
   private serviziUrl = '/servizi';
+  private eliminaServiziUrl = '/eliminaServizi';
 
   constructor(private http: HttpClient) {
   }
@@ -206,6 +207,26 @@ export class ConfiguraServizioService {
         }));
   }
 
+  eliminaServizioSelezionati(serviziId: number[], idFunzione: string): Observable<any> {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.post(environment.bffBaseUrl + this.configuraServiziBasePath + this.eliminaServiziUrl, serviziId, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return null;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
   recuperaServizio(filtri: ParametriRicercaServizio, idFunzione: any) {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -260,10 +281,6 @@ export class ConfiguraServizioService {
             return of(null);
           }
         }));
-  }
-
-  eliminaServizioSelezionati(listaIdElementiSelezionati: number[], idFunzione: any) {
-    return of(null);
   }
 
   modificaServizio(servizio: Servizio, idFunzione: any) {

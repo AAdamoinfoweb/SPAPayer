@@ -148,7 +148,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
         this.modificaElementoSelezionato('/modificaServizio', this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.DELETE:
-        this.eliminaTipologieServizioSelezionate();
+        this.eliminaServiziSelezionate();
         break;
       case ToolEnum.EXPORT_PDF:
         this.esportaTabellaInFilePdf(this.tableData, 'Lista Servizio');
@@ -163,13 +163,14 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
     super.mostraDettaglioElemento('/dettaglioServizio', rigaTabella.id.value);
   }
 
-  eliminaTipologieServizioSelezionate(): void {
+  eliminaServiziSelezionate(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.configuraServizioService.eliminaServizioSelezionati(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
-            this.popolaListaElementi();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-          });
+          this.configuraServizioService.eliminaServizioSelezionati(this.getListaIdElementiSelezionati(), this.idFunzione)
+            .subscribe(() => {
+              this.popolaListaElementi();
+              this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+            });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;
           this.toolbarIcons[this.indiceIconaElimina].disabled = true;
