@@ -58,6 +58,7 @@ import {Utils} from '../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {NotifichePagamento} from '../../../../model/servizio/NotifichePagamento';
 import * as moment from 'moment';
+import {BannerService} from "../../../../../../services/banner.service";
 
 @Component({
   selector: 'app-form-servizio',
@@ -66,7 +67,7 @@ import * as moment from 'moment';
 })
 export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  constructor(private cdr: ChangeDetectorRef,
+  constructor(private cdr: ChangeDetectorRef, private bannerService: BannerService,
               private renderer: Renderer2,
               private configuraServizioService: ConfiguraServizioService,
               private componentFactoryResolver: ComponentFactoryResolver,
@@ -391,6 +392,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       .subscribe((id) => {
         if (id) {
           this.resetPagina();
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         }
       });
   }
