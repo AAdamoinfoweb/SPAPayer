@@ -13,6 +13,7 @@ import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
 import {MenuService} from '../../../../../../services/menu.service';
 import {MonitoraggioTransazioniService} from '../../../../../../services/monitoraggio-transazioni.service';
 import {SintesiTransazione} from '../../../../model/transazione/SintesiTransazione';
+import {ParametriRicercaTransazioni} from '../../../../model/transazione/ParametriRicercaTransazioni';
 
 @Component({
   selector: 'app-monitoraggio-transazioni',
@@ -28,10 +29,11 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
     super(router, activatedRoute, http, amministrativoService);
   }
 
-  filtriRicerca: any;
-  idFunzione;
-  listaElementi: any[];
+  listaElementi: Array<SintesiTransazione> = new Array<SintesiTransazione>();
+  filtriRicerca: ParametriRicercaTransazioni = null;
+
   righeSelezionate: any[];
+
   tableData: Tabella = {
     rows: [],
     cols: [
@@ -94,6 +96,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   }
 
   private inizializzaFiltriRicerca() {
+    this.filtriRicerca = new ParametriRicercaTransazioni();
   }
 
   callbackPopolaLista() {

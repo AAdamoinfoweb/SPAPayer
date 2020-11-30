@@ -1,4 +1,4 @@
-export class SintesiTransazione{
+export class SintesiTransazione {
   id: number;
   dataCreazione: string;
   societaId: number;
