@@ -300,10 +300,13 @@ export class  GestisciPortaleService {
         }));
   }
 
-  stampaCommitMsg(transazioneId: number, idFunzione: string): Observable<Array<string>> {
+  stampaCommitMsg(transazioneId: number, listaNotificaId: Array<number>, idFunzione: string): Observable<Array<string>> {
     let params = new HttpParams();
     if (transazioneId) {
       params = params.set('transazioneId', String(transazioneId));
+    }
+    if (listaNotificaId) {
+      params = params.set('listaNotificaId', listaNotificaId.join(', '));
     }
 
     let h: HttpHeaders = new HttpHeaders();
