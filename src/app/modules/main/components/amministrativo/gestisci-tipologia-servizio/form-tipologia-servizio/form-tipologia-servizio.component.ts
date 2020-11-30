@@ -32,6 +32,7 @@ import {ConfiguratoreCampiNuovoPagamento} from '../../../../model/campo/Configur
 import {v4 as uuidv4} from 'uuid';
 import {InserimentoTipologiaServizio} from "../../../../model/campo/InserimentoTipologiaServizio";
 import {ModificaTipologiaServizio} from "../../../../model/campo/ModificaTipologiaServizio";
+import {BannerService} from "../../../../../../services/banner.service";
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -80,6 +81,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   private isSingleClick = true;
 
   constructor(
+    private bannerService: BannerService,
     private cdr: ChangeDetectorRef,
     private overlayService: OverlayService,
     protected activatedRoute: ActivatedRoute,
@@ -226,8 +228,10 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       inserimento.listaCampiTipologiaServizio = this.items;
       this.campoTipologiaServizioService.inserimentoTipologiaServizio(inserimento, this.idFunzione)
         .subscribe((id) => {
-          if (id)
+          if (id) {
             this.resettaFiltri();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
         });
     } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
       this.items.forEach((value, index) => value.posizione = index + 1);
@@ -238,6 +242,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       modificaTipologiaServizio.listaCampiTipologiaServizio = this.items;
       this.campoTipologiaServizioService.modificaTipologiaServizio(this.tipologiaServizioId, modificaTipologiaServizio, this.idFunzione)
         .subscribe(() => {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           this.impostaDettaglioTipologia();
 
           let obs = this.caricaCampi(this.tipologiaServizioId);
