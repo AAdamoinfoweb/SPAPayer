@@ -1,8 +1,8 @@
 <div class="ml-3">
   <!--  inizio Header -->
-  <div class="collapse-header" id="idCollapseDatiBeneficiario">
+  <div class="collapse-header" id="idCollapseContoCorrente">
     <button data-toggle="collapse" [id]="'buttonCCCollapse' + uuid" aria-expanded="true"
-            aria-controls="contenutoSezioneDatiBeneficiario">
+            aria-controls="contenutoSezioneDatiContoCorrente">
       <div class="row">
         <div class="col">
           Dati Conto Corrente
@@ -24,7 +24,7 @@
   </div>
   <!--  fine Header -->
   <div [id]="'collapseCC'+uuid" class="collapse show" role="tabpanel"
-       aria-labelledby="idCollapseDatiBeneficiario">
+       aria-labelledby="idCollapseContoCorrente">
     <div class="collapse-body">
       <form #datiContoCorrenteForm="ngForm">
         <!--      inizio modale cc -->
