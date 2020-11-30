@@ -93,7 +93,9 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-md-2 col-lg-2 pb-2">
           <div class="row">
             <div class="col">
               <label for="scadenzaDataDa" class="title"
@@ -109,7 +111,6 @@
                 [required]="true"
                 [customvalidator]="validateRange()"
                 [disabled]="disabilitaCampi()"
-                class="col-12"
                 mode="day"
                 id="scadenzaDataDa"
                 theme="dp-material"
@@ -139,7 +140,7 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-6 col-md-4 col-lg-4 pb-2">
+        <div class="col-xs-6 col-md-2 col-lg-2 pb-2">
           <div class="row">
             <div class="col">
               <label for="scadenzaDataA" class="title">Abilita A</label>
@@ -153,7 +154,6 @@
               <dp-date-picker
                 [customvalidator]="validateRange()"
                 [disabled]="disabilitaCampi()"
-                class="col-12"
                 mode="day"
                 id="scadenzaDataA"
                 theme="dp-material"
@@ -195,13 +195,14 @@
                        name="attivo"></it-toggle>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3 col-lg-1 pb-2" id="containerBottoneCrea" *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI">
-          <button id="bottoneCrea" class="btn" [disabled]="filtroForm.invalid || isTipologiaServizio(filtriRicerca.tipologiaServizio) || disabilitaFiltri"
+        <div class="col-xs-6 col-md-3 col-lg-1 pb-2" id="containerBottoneCrea"
+             *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI">
+          <button id="bottoneCrea" class="btn"
+                  [disabled]="filtroForm.invalid || isTipologiaServizio(filtriRicerca.tipologiaServizio) || disabilitaFiltri"
                   (click)="creaTipologia()">Crea
           </button>
         </div>
       </div>
-
       <!-- Bottoni-->
       <div class="row" *ngIf="isPaginaGestione()">
         <div class="col-6">

@@ -71,6 +71,18 @@ export class Utils {
     return {path, color, tooltip, display};
   }
 
+  static ordinaOpzioniSelect(opzioni: OpzioneSelect[]) {
+    opzioni.sort((opzione1, opzione2) => {
+      if (opzione1.label > opzione2.label) {
+        return 1;
+      } else if (opzione1.label < opzione2.label) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+  }
+
   static getModale(confermaFn, tipoModale: TipoModaleEnum, titolo?, messaggio?) {
     let header;
     let message;
