@@ -13,6 +13,7 @@ import {GestisciPortaleService} from '../../../../../../../services/gestisci-por
 import {map} from 'rxjs/operators';
 import * as _ from 'lodash';
 import {StatoTransazioneEnum} from '../../../../../../../enums/statoTransazione.enum';
+import {BottoneEnum} from '../../../../../../../enums/bottone.enum';
 
 @Component({
   selector: 'app-filtro-monitoraggio-transazioni',
@@ -201,6 +202,15 @@ export class FiltroMonitoraggioTransazioniComponent extends FiltroGestioneElemen
       return 'Il campo è obbligatorio';
     } else {
       return 'Campo non valido';
+    }
+  }
+
+  disabilitaBottone(filtroForm: NgForm, nomeBottone: string): boolean {
+    const isAtLeastOneFieldValued = Object.keys(filtroForm.value).some(key => filtroForm.value[key]);
+    if (nomeBottone === BottoneEnum.PULISCI) {
+      return !isAtLeastOneFieldValued;
+    } else if (nomeBottone === BottoneEnum.CERCA) {
+      return !filtroForm.valid;
     }
   }
 

@@ -570,11 +570,13 @@
       <div class="row align-content-around">
         <div class="col-6">
           <button id="bottonePulisci" class="btn btn-secondary"
+                  [disabled]="disabilitaBottone(filtroForm, 'Pulisci')"
                   (click)="pulisciFiltri(filtroForm)">Pulisci
           </button>
         </div>
         <div class="col-6 text-right">
           <button id="bottoneCerca" class="btn"
+                  [disabled]="disabilitaBottone(filtroForm, 'Cerca')"
                   (click)="cercaElementi()">Cerca
           </button>
         </div>
