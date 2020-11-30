@@ -94,7 +94,9 @@ export class DatiNotificaComponent implements OnInit, OnChanges {
     const transazioneId = parseInt(this.activatedRoute.snapshot.paramMap.get('transazioneId'));
     this.gestisciPortaleService.stampaCommitMsg(transazioneId, listaNotificaIdSelezionati, this.idFunzione).subscribe(listaCommitMsg => {
       listaCommitMsg.forEach((commitMsg, index) => {
-        Utils.downloadBase64ToTxtFile(commitMsg, 'commit_msg' + index);
+        if (commitMsg) {
+          Utils.downloadBase64ToTxtFile(commitMsg, 'commit_msg' + index);
+        }
       });
     });
   }

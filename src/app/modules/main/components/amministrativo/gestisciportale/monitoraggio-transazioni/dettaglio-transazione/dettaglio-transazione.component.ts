@@ -183,7 +183,9 @@ export class DettaglioTransazioneComponent extends DettaglioElementoComponent im
     }
     this.gestisciPortaleService.stampaRPT(listaDettaglioTransazioneId, this.idFunzione).subscribe(listaRPT => {
       listaRPT.forEach((rpt, index) => {
-        Utils.downloadBase64ToTxtFile(rpt, 'rpt' + index);
+        if (rpt) {
+          Utils.downloadBase64ToTxtFile(rpt, 'rpt' + index);
+        }
       });
     });
   }
@@ -194,7 +196,9 @@ export class DettaglioTransazioneComponent extends DettaglioElementoComponent im
     }
     this.gestisciPortaleService.stampaRT(listaDettaglioTransazioneId, null, this.idFunzione).subscribe(listaRT => {
       listaRT.forEach((rt, index) => {
-        Utils.downloadBase64ToTxtFile(rt, 'rt' + index);
+        if (rt) {
+          Utils.downloadBase64ToTxtFile(rt, 'rt' + index);
+        }
       });
     });
   }

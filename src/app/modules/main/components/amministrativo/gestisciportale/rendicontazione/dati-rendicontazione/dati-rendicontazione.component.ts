@@ -145,7 +145,9 @@ export class DatiRendicontazioneComponent extends DettaglioElementoComponent imp
     }
     this.gestisciPortaleService.stampaRT(null, listaTransazioneId, this.idFunzione).subscribe(listaRT => {
       listaRT.forEach((rt, index) => {
-        Utils.downloadBase64ToTxtFile(rt, 'rt' + index);
+        if (rt) {
+          Utils.downloadBase64ToTxtFile(rt, 'rt' + index);
+        }
       });
     });
   }
