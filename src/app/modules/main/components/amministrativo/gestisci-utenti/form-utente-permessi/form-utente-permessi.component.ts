@@ -6,7 +6,7 @@ import {
   OnInit,
   Renderer2,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef, ViewRef
 } from '@angular/core';
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
@@ -32,6 +32,7 @@ import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaU
 import {map} from 'rxjs/operators';
 import {OperazioneEsitoEnum} from '../../../../../../enums/operazioneEsito.enum';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
+import {RoutingService} from "../../../../../../services/routing.service";
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -60,6 +61,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
+  targetMap: Map<string, ViewRef> = new Map<string, ViewRef>();
 
   getListaPermessi = (mapPermessi: Map<string, PermessoCompleto>) => Array.from(mapPermessi, ([name, value]) => value);
 
@@ -72,7 +74,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
               private permessoService: PermessoService,
               private overlayService: OverlayService,
               confirmationService: ConfirmationService,
-              private bannerService: BannerService) {
+              private bannerService: BannerService, private routingService: RoutingService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
     // codice fiscale del form da utente service
     this.utenteService.codiceFiscaleEvent.subscribe(codiceFiscale => {
@@ -101,14 +103,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       // inizializza form inserimento
       this.codiceFiscale = null;
       this.datiUtente.attivazione = moment().format(Utils.FORMAT_DATE_CALENDAR);
-    }
-    this.controlloEsitoOperazione();
-  }
-
-  private controlloEsitoOperazione() {
-    const esito = history.state.esito;
-    if (esito === OperazioneEsitoEnum.SUCCESSO) {
-      this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
     }
   }
 
@@ -165,6 +159,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     this.componentRef.instance.indexSezionePermesso = indexPermesso;
     const uuidComponente = Utils.uuidv4();
     this.componentRef.instance.uuid = uuidComponente;
+    this.targetMap.set(uuidComponente, this.componentRef.hostView);
     this.componentRef.instance.onDeletePermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
       const permessoCompleto = this.mapPermessi.get(componenteDinamico.uuid);
       const isPermessoDaModificare: boolean = permessoCompleto.listaFunzioni
@@ -173,12 +168,14 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
         this.mapPermessi.delete(componenteDinamico.uuid);
       }
       // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
-      const zeroBasedIndex = componenteDinamico.index - 1;
-      const viewRef = this.target.get(zeroBasedIndex);
-      if (viewRef == null && this.target.length === 1) {
+      const viewRef = this.targetMap.get(componenteDinamico.uuid);
+      const indexViewRef = this.target.indexOf(viewRef);
+      if (this.target.length === 1) {
         this.target.clear();
+        this.targetMap.clear();
       } else {
-        this.target.remove(zeroBasedIndex);
+        this.target.remove(indexViewRef);
+        this.targetMap.delete(componenteDinamico.uuid);
       }
     });
     this.componentRef.instance.onChangeDatiPermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
@@ -269,15 +266,13 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     }
     this.asyncSubject.subscribe(cf => {
       this.codiceFiscaleRecuperato = cf;
-      this.configuraRouterAndNavigate(cf);
+      this.routingService
+        .configuraRouterAndNavigate(this.basePath + '/modificaUtentePermessi/' + cf,
+          {state: {esito: OperazioneEsitoEnum.SUCCESSO}});
+      this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
     });
   }
 
-  private configuraRouterAndNavigate(cf: string) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate([this.basePath + '/modificaUtentePermessi/' + cf], {state: {esito: OperazioneEsitoEnum.SUCCESSO}});
-  }
 
   private inserimentoAggiornamentoUtente(codiceFiscale: string, utente: InserimentoModificaUtente) {
     this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.idFunzione).subscribe((err) => {

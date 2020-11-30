@@ -28,6 +28,7 @@ import {getBannerType, LivelloBanner} from '../../../../../../../enums/livelloBa
 import {BannerService} from '../../../../../../../services/banner.service';
 import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
 import {Util} from 'design-angular-kit/lib/util/util';
+import {RoutingService} from "../../../../../../../services/routing.service";
 
 @Component({
   selector: 'app-form-ente',
@@ -68,7 +69,8 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, amministrativoService: AmministrativoService,
               private overlayService: OverlayService, http: HttpClient,
-              confirmationService: ConfirmationService, private enteService: EnteService, private bannerService: BannerService) {
+              confirmationService: ConfirmationService, private enteService: EnteService, private bannerService: BannerService,
+              private routingService: RoutingService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
@@ -162,25 +164,6 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.inizializzaComponentRefInstance(childComponent, uuid, indexBeneficiario, funzione, idFunzione,
       instanceDatiBeneficiario, listaContiCorrente);
     return indexBeneficiario;
-  }
-
-  aggiornaListaContiCorrenti() {
-    let i = 0;
-    const targetLength = this.target.length;
-    const components = this.componentRefs;
-    this.componentRefs = [];
-    this.target.clear();
-    while (i < targetLength) {
-      const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiBeneficiarioComponent);
-      const uuid = components[i].instance.uuid;
-      const indexDatiContoCorrente = components[i].instance.indexDatiBeneficiario;
-      const funzione = components[i].instance.funzione;
-      const datibeneficiario = components[i].instance.datiBeneficiario;
-      const listaContiCorrente = this.listaContiCorrente;
-      const idFunzione = components[i].instance.idFunzione;
-      this.inizializzaComponentRefInstance(childComponent, uuid, indexDatiContoCorrente, funzione, idFunzione, datibeneficiario, listaContiCorrente);
-      i++;
-    }
   }
 
   inizializzaComponentRefInstance(childComponent, uuid, index, funzione, idFunzione, datiBeneficiario, listaContiCorrente) {
@@ -297,21 +280,14 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       if (!(response instanceof HttpErrorResponse)) {
         this.esito = response.esito;
         this.controlloEsito();
-        this.configuraRouterAndNavigate('/modificaEnte/' + this.datiEnte.id, null);
+        this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaEnte/' + this.datiEnte.id, null);
         if (this.esito == null) {
           this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         }
       }
-
     });
   }
 
-  private configuraRouterAndNavigate(pathFunzione: string, state) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    // this.router.navigateByUrl(this.basePath + pathFunzione);
-    this.router.navigate([this.basePath + pathFunzione], {state});
-  }
 
 
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {
