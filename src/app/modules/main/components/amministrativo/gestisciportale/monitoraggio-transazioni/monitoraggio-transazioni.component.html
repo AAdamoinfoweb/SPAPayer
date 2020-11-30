@@ -17,7 +17,9 @@
   </h3>
 
   <!-- Sottosezione Filtri -->
-  <app-filtro-monitoraggio-transazioni (onChangeFiltri)="onChangeFiltri($event)">
+  <app-filtro-monitoraggio-transazioni
+    [flussoRendicontazione]="flussoRendicontazione"
+    (onChangeFiltri)="onChangeFiltri($event)">
   </app-filtro-monitoraggio-transazioni>
 
   <!-- Sottosezione Lista -->

@@ -27,10 +27,18 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
               protected amministrativoService: AmministrativoService,
               private menuService: MenuService, private monitoraggioTransazioniService: MonitoraggioTransazioniService) {
     super(router, activatedRoute, http, amministrativoService);
+
+    this.route.queryParams.subscribe(params => {
+      if (params.flussoRendicontazione) {
+        this.flussoRendicontazione = parseInt(params.flussoRendicontazione);
+      }
+    });
   }
 
   listaElementi: Array<SintesiTransazione> = new Array<SintesiTransazione>();
   filtriRicerca: ParametriRicercaTransazioni = null;
+
+  flussoRendicontazione = null;
 
   righeSelezionate: any[];
 

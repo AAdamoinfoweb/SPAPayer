@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FiltroGestioneElementiComponent} from '../../../filtro-gestione-elementi.component';
 import {NgForm, NgModel} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
@@ -28,6 +28,8 @@ export class FiltroMonitoraggioTransazioniComponent extends FiltroGestioneElemen
     super(activatedRoute, amministrativoService);
   }
 
+  @Input() flussoRendicontazione = null;
+
   @Output()
   onChangeFiltri: EventEmitter<any> = new EventEmitter<any>();
 
@@ -51,6 +53,13 @@ export class FiltroMonitoraggioTransazioniComponent extends FiltroGestioneElemen
 
   ngOnInit(): void {
     this.filtroRicercaTransazioni = new ParametriRicercaTransazioni();
+    if (this.flussoRendicontazione) {
+      this.filtroRicercaTransazioni.flussoRendicontazione = this.flussoRendicontazione;
+      const parametriRicercaTransazioni = new ParametriRicercaTransazioni();
+      parametriRicercaTransazioni.flussoRendicontazione = this.flussoRendicontazione;
+      this.onChangeFiltri.emit(parametriRicercaTransazioni);
+    }
+
     this.recuperaFiltroSocieta();
     this.recuperaFiltroLivelloTerritoriale();
     this.recuperaFiltroEnte();

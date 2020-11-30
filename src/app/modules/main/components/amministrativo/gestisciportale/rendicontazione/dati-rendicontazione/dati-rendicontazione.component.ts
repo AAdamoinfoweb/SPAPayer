@@ -160,6 +160,10 @@ export class DatiRendicontazioneComponent extends DettaglioElementoComponent imp
     return 'Totale: ' + this.tableData.rows.length + ' transazioni';
   }
 
-  // TODO collegare link Monitoraggio Transazioni alla componente ancora in fase di sviluppo
+  redirectToMonitoraggioTransazioni(): void {
+    const rendicontazioneId = parseInt(this.activatedRoute.snapshot.paramMap.get('rendicontazioneId'));
+    const urlMonitoraggioTransazione = '/monitoraggioTransazioni?flussoRendicontazione=' + rendicontazioneId;
+    this.router.navigateByUrl(urlMonitoraggioTransazione);
+  }
 
 }
