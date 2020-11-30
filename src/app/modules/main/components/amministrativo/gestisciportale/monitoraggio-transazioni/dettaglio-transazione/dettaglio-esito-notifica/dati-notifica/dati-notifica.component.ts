@@ -6,6 +6,9 @@ import {tipoColonna} from '../../../../../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../../../../../enums/TipoTabella.enum';
 import {EsitoTransazione} from '../../../../../../../model/transazione/EsitoTransazione';
 import * as moment from 'moment';
+import {GestisciPortaleService} from '../../../../../../../../../services/gestisci-portale.service';
+import {ActivatedRoute} from '@angular/router';
+import {Utils} from '../../../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-dati-notifica',
@@ -15,6 +18,8 @@ import * as moment from 'moment';
 export class DatiNotificaComponent implements OnInit, OnChanges {
 
   @Input() datiNotifica: EsitoNotifica;
+
+  @Input() idFunzione: string;
 
   enteImpositore = null;
   esitoNotifica = null;
@@ -31,13 +36,14 @@ export class DatiNotificaComponent implements OnInit, OnChanges {
       {field: 'data', header: 'Data ora', type: tipoColonna.TESTO},
       {field: 'esito', header: 'Esito', type: tipoColonna.TESTO}
     ],
-    dataKey: 'id.value',
+    dataKey: 'notificaId.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
   righeSelezionate: any[];
 
-  constructor() { }
+  constructor(private activatedRoute: ActivatedRoute, private gestisciPortaleService: GestisciPortaleService) {
+  }
 
   ngOnInit(): void {
   }
@@ -62,6 +68,7 @@ export class DatiNotificaComponent implements OnInit, OnChanges {
 
   creaRigaTabella(esitoTransazione: EsitoTransazione): any {
     return {
+      notificaId: {value: esitoTransazione.notificaId},
       numeroTentativi: {value: esitoTransazione.numeroTentativi},
       data: {value: esitoTransazione.data ? moment(esitoTransazione.data).format('DD/MM/YYYY HH:mm:ss') : null},
       esito: {value: esitoTransazione.esitoNome}
@@ -69,7 +76,27 @@ export class DatiNotificaComponent implements OnInit, OnChanges {
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
-    // TODO implementare logica per stampa COMMIT MSG
+    if (azioneTool === ToolEnum.PRINT_COMMIT_MSG) {
+      let listaNotificaIdSelezionati = [];
+      if (this.righeSelezionate) {
+        if (this.righeSelezionate.length === 0) {
+          const tableTemp = JSON.parse(JSON.stringify(this.tableData));
+          listaNotificaIdSelezionati = tableTemp.rows.map(riga => riga.notificaId.value);
+        } else {
+          listaNotificaIdSelezionati = this.righeSelezionate.map(riga => riga.notificaId.value);
+        }
+      }
+      this.stampaCommitMsgInTxtFile(listaNotificaIdSelezionati);
+    }
+  }
+
+  stampaCommitMsgInTxtFile(listaNotificaIdSelezionati: Array<number>): void {
+    const transazioneId = parseInt(this.activatedRoute.snapshot.paramMap.get('transazioneId'));
+    this.gestisciPortaleService.stampaCommitMsg(transazioneId, listaNotificaIdSelezionati, this.idFunzione).subscribe(listaCommitMsg => {
+      listaCommitMsg.forEach((commitMsg, index) => {
+        Utils.downloadBase64ToTxtFile(commitMsg, 'commit_msg' + index);
+      });
+    });
   }
 
   getNumeroRecord(): string {
