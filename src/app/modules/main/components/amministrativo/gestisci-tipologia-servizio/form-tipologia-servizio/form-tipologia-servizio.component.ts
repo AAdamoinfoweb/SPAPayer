@@ -226,7 +226,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       inserimento.listaCampiTipologiaServizio = this.items;
       this.campoTipologiaServizioService.inserimentoTipologiaServizio(inserimento, this.idFunzione)
         .subscribe((id) => {
-          this.resettaFiltri();
+          if (id)
+            this.resettaFiltri();
         });
     } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
       this.items.forEach((value, index) => value.posizione = index + 1);
