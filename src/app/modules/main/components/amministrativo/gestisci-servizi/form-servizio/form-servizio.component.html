@@ -605,7 +605,9 @@
           </button>
         </div>
         <div id="datiBonifico" class="collapse show" role="tabpanel" aria-labelledby="idCollapseDatiBonifico">
-          <div #datiContoCorrente></div>
+          <div class="row">
+            <div #datiContoCorrente></div>
+          </div>
           <div class="row">
             <div class="col text-right">
               <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiContoCorrente"
@@ -1125,6 +1127,14 @@
         </div>
       </div>
     </form>
+  </div>
+
+  <div class="row" *ngIf="!filtri">
+    <!-- Bottone sx -->
+    <div class="col-2">
+      <button id="buttonIndietro" class="btn btn-secondary"
+              (click)="onClickAnnulla(funzione)">{{'Indietro'}}</button>
+    </div>
   </div>
 </div>
 <p-dialog header="Lista conti correnti" [(visible)]="displayCc">
