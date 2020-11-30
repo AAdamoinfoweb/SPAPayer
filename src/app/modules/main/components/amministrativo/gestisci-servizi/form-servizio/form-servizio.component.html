@@ -672,6 +672,7 @@
                     <div
                       [ngClass]="{'text-right':true, 'col-3': !item.campoTipologiaServizioId, 'col-4': item.campoTipologiaServizioId}">
                       <span [ngClass]="{'field-input': item.campoTipologiaServizioId}"
+                            it-tooltip="Ripristina al valore iniziale" placement="top"
                             *ngIf="item.campoTipologiaServizioId && funzione != FunzioneGestioneEnum.DETTAGLIO"
                             (click)="undo(item)">
                         <svg class="bg-light icon icon-lg icon-padded close" (click)="undo(item)"

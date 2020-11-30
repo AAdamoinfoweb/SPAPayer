@@ -370,7 +370,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.raggruppamentoId = this.filtri.raggruppamentoId;
     this.servizio.nomeServizio = this.filtri.nomeServizio;
     this.servizio.abilitaDa = moment(this.filtri.abilitaDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
-    this.servizio.abilitaA = moment(this.filtri.abilitaA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
+    this.servizio.abilitaA = this.servizio.abilitaA ? moment(this.filtri.abilitaA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     this.servizio.flagAttiva = this.filtri.attivo;
 
     this.servizio.contatti = this.contatti;
@@ -412,6 +412,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     } else {
       this.campoTipologiaServizioOriginal = null;
       this.campoTipologiaServizioList = null;
+      this.campoServizioAddList = null;
     }
   }
 
