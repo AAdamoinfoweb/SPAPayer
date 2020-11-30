@@ -5,6 +5,7 @@ import {Tabella} from '../../../../../../../model/tabella/Tabella';
 import {tipoColonna} from '../../../../../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../../../../../enums/TipoTabella.enum';
 import {EsitoTransazione} from '../../../../../../../model/transazione/EsitoTransazione';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dati-notifica',
@@ -62,7 +63,7 @@ export class DatiNotificaComponent implements OnInit, OnChanges {
   creaRigaTabella(esitoTransazione: EsitoTransazione): any {
     return {
       numeroTentativi: {value: esitoTransazione.numeroTentativi},
-      data: {value: esitoTransazione.data},
+      data: {value: esitoTransazione.data ? moment(esitoTransazione.data).format('DD/MM/YYYY HH:mm:ss') : null},
       esito: {value: esitoTransazione.esitoNome}
     };
   }
