@@ -1,12 +1,10 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormControl, NgForm, ValidatorFn} from '@angular/forms';
+import {NgForm} from '@angular/forms';
 import {ParametriRicercaServizio} from '../../../../model/servizio/ParametriRicercaServizio';
-import {OpzioneSelect} from '../../../../model/OpzioneSelect';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {RaggruppamentoTipologiaServizioService} from '../../../../../../services/RaggruppamentoTipologiaServizio.service';
 import {ConfiguraServizioService} from '../../../../../../services/configura-servizio.service';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.component';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {ActivatedRoute} from '@angular/router';
@@ -31,11 +29,12 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
   readonly LivelloIntegrazioneEnum = LivelloIntegrazioneEnum;
 
   filtriRicerca: ParametriRicercaServizio = new ParametriRicercaServizio();
-  opzioniRaggruppamento: OpzioneSelect[] = [];
+  opzioniRaggruppamento: FiltroSelect[] = [];
 
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaServizio> = new EventEmitter<ParametriRicercaServizio>();
 
+  listaLivelloIntegrazione: FiltroSelect[] = [];
   listaEntiBeneficiario: FiltroSelect[] = [];
   listaEntiImpositore: FiltroSelect[] = [];
   listaServizi: FiltroSelect[] = [];
@@ -49,6 +48,7 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
 
   ngOnInit(): void {
     this.inizializzaOpzioniRaggruppamento();
+    this.caricaLivelliIntegrazione();
     this.caricaCodiciTipologia();
     this.caricaEnteImpositore();
     this.caricaEnteBeneficiario();
@@ -56,17 +56,9 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
   }
 
   inizializzaOpzioniRaggruppamento(): void {
-    this.raggruppamentoTipologiaServizioService.ricercaRaggruppamentoTipologiaServizio(null, this.idFunzione)
+    this.configuraServizioService.configuraServiziFiltroRaggruppamento(null, this.idFunzione)
       .subscribe(listaRaggruppamenti => {
-        if (listaRaggruppamenti) {
-          listaRaggruppamenti.forEach(raggruppamento => {
-            this.opzioniRaggruppamento.push({
-              value: raggruppamento.id,
-              label: raggruppamento.descrizione
-            });
-          });
-          this.opzioniRaggruppamento = _.sortBy(this.opzioniRaggruppamento, ['label']);
-        }
+        this.opzioniRaggruppamento = listaRaggruppamenti;
       });
   }
 
@@ -127,5 +119,10 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
   private caricaServizi() {
     this.configuraServizioService.filtroServizio(null, this.idFunzione)
       .pipe(map((value) => this.listaServizi = value)).subscribe();
+  }
+
+  private caricaLivelliIntegrazione() {
+    this.configuraServizioService.filtroLivelliIntegrazione(null, this.idFunzione)
+      .pipe(map((value) => this.listaLivelloIntegrazione = value)).subscribe();
   }
 }

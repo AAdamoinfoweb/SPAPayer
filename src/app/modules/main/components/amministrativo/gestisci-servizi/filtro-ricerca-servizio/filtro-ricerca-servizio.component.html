@@ -38,7 +38,7 @@
                       #filtroRaggruppamento="ngModel"
                       [(ngModel)]="filtriRicerca.raggruppamentoId">
                 <option [ngValue]="null" selected>Tutti</option>
-                <option *ngFor="let item of opzioniRaggruppamento" [ngValue]="item.value">{{item.label}}</option>
+                <option *ngFor="let item of opzioniRaggruppamento" [ngValue]="item.id">{{item.nome}}</option>
               </select>
             </div>
           </div>
@@ -110,10 +110,7 @@
                 [(ngModel)]="filtriRicerca.livelloIntegrazioneId"
                 #livelloIntegrazione="ngModel">
                 <option [ngValue]="null" [selected]="true">Tutti</option>
-                <option [ngValue]="LivelloIntegrazioneEnum.LV1">Livello 1</option>
-                <option [ngValue]="LivelloIntegrazioneEnum.LV2">Livello 2</option>
-                <option [ngValue]="LivelloIntegrazioneEnum.LV2_BACK_OFFICE">Livello 2 BO</option>
-                <option [ngValue]="LivelloIntegrazioneEnum.LV3">Livello 3</option>
+                <option *ngFor="let item of listaLivelloIntegrazione" [ngValue]="item.id">{{item.nome}}</option>
               </select>
             </div>
           </div>

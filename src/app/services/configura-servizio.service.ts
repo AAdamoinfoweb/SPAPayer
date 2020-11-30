@@ -10,7 +10,6 @@ import {ParametriRicercaServizio} from '../modules/main/model/servizio/Parametri
 import {SintesiServizio} from '../modules/main/model/servizio/SintesiServizio';
 import * as moment from 'moment';
 import {Utils} from '../utils/Utils';
-import {TipologiaServizio} from "../modules/main/model/tipologiaServizio/TipologiaServizio";
 
 @Injectable({
   providedIn: 'root'
@@ -26,27 +25,6 @@ export class ConfiguraServizioService {
   private serviziUrl = '/servizi';
 
   constructor(private http: HttpClient) {
-  }
-
-
-  configuraServiziFiltroRaggruppamento(idFunzione: string) {
-    let h: HttpHeaders = new HttpHeaders();
-    h = h.append('idFunzione', idFunzione);
-
-    return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + this.filtroRaggruppamentoUrl, {
-      headers: h,
-      withCredentials: true
-    })
-      .pipe(map((body: any) => {
-          return body as FiltroSelect[];
-        }),
-        catchError((err, caught) => {
-          if (err.status == 401 || err.status == 400) {
-            return of(null);
-          } else {
-            return of(null);
-          }
-        }));
   }
 
   configuraServiziFiltroTipologia(idFunzione: string) {
@@ -93,6 +71,10 @@ export class ConfiguraServizioService {
         }));
   }
 
+  configuraServiziFiltroRaggruppamento(params: ParametriRicercaEnte, idFunzione: any) {
+    return this.getListaEnti('/filtroRaggruppamento', params, idFunzione);
+  }
+
   configuraServiziFiltroEnteImpositore(params: ParametriRicercaEnte, idFunzione: any) {
     return this.getListaEnti('/filtroEnteImpositore', params, idFunzione);
   }
@@ -103,6 +85,10 @@ export class ConfiguraServizioService {
 
   filtroServizio(params: ParametriRicercaEnte, idFunzione: any) {
     return this.getListaEnti('/filtroServizio', params, idFunzione);
+  }
+
+  filtroLivelliIntegrazione(params: ParametriRicercaEnte, idFunzione: any) {
+    return this.getListaEnti('/filtroLivelloIntegrazione', params, idFunzione);
   }
 
   private getListaEnti(serviceName: string, parametriRicercaEnte: ParametriRicercaEnte, idFunzione: string) {
@@ -279,4 +265,5 @@ export class ConfiguraServizioService {
   eliminaServizioSelezionati(listaIdElementiSelezionati: number[], idFunzione: any) {
     return of(null);
   }
+
 }
