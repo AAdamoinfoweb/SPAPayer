@@ -10,6 +10,7 @@ import {ParametriRicercaServizio} from '../modules/main/model/servizio/Parametri
 import {SintesiServizio} from '../modules/main/model/servizio/SintesiServizio';
 import * as moment from 'moment';
 import {Utils} from '../utils/Utils';
+import {TipologiaServizio} from "../modules/main/model/tipologiaServizio/TipologiaServizio";
 
 @Injectable({
   providedIn: 'root'
@@ -232,7 +233,11 @@ export class ConfiguraServizioService {
         params = params.set('raggruppamentoId', String(filtri.raggruppamentoId));
       }
       if (filtri.tipologiaServizio) {
-        params = params.set('tipologiaServizioId', String(filtri.tipologiaServizio.id));
+        if (filtri.tipologiaServizio.id) {
+          params = params.set('tipologiaServizioId', String(filtri.tipologiaServizio.id));
+        } else {
+          params = params.set('tipologiaServizioId', String(0));
+        }
       }
       if (filtri.livelloIntegrazioneId) {
         params = params.set('livelloIntegrazioneId', String(filtri.livelloIntegrazioneId));

@@ -1,7 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from "rxjs";
-import {CampoForm} from "../modules/main/model/CampoForm";
 import {catchError, map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 import {ParametriRicercaTipologiaServizio} from '../modules/main/model/tipologiaServizio/ParametriRicercaTipologiaServizio';
@@ -58,10 +57,11 @@ export class CampoTipologiaServizioService {
       if (filtri.raggruppamentoId) {
         params = params.set('raggruppamentoId', String(filtri.raggruppamentoId));
       }
-      if (filtri instanceof ParametriRicercaTipologiaServizio && filtri.tipologia?.codice) {
+      if (filtri instanceof ParametriRicercaTipologiaServizio && typeof filtri.tipologia === 'string') {
+        params = params.set('codiceTipologia', filtri.tipologia);
+      } else if (filtri instanceof ParametriRicercaTipologiaServizio && filtri.tipologia?.codice) {
         params = params.set('codiceTipologia', filtri.tipologia.codice);
-      }
-      if (filtri instanceof ParametriRicercaServizio && filtri.tipologiaServizio instanceof TipologiaServizio && filtri.tipologiaServizio?.codice) {
+      } else if (filtri instanceof ParametriRicercaServizio && filtri.tipologiaServizio instanceof TipologiaServizio && filtri.tipologiaServizio?.codice) {
         params = params.set('codiceTipologia', filtri.tipologiaServizio.codice);
       }
     }
