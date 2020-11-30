@@ -18,6 +18,8 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
   listaElementi: Array<Societa> = new Array<Societa>();
   opzioniFiltroSocieta: Array<OpzioneSelect> = new Array<OpzioneSelect>();
 
+  @Input() societaId = null;
+
   @Output()
   onChangeFiltri: EventEmitter<number> = new EventEmitter<number>();
 
@@ -46,6 +48,16 @@ export class FiltroGestioneSocietaComponent extends FiltroGestioneElementiCompon
       });
     });
     this.opzioniFiltroSocieta = _.sortBy(this.opzioniFiltroSocieta, ['label']);
+
+    if (this.societaId) {
+      const isSocietaValida = this.opzioniFiltroSocieta.some(item => item.value === this.societaId);
+      if (isSocietaValida) {
+        this.filtroSocieta = this.societaId;
+        this.onChangeFiltri.emit(this.societaId);
+      } else {
+        window.open('/nonautorizzato', '_self');
+      }
+    }
   }
 
   isCampoInvalido(campo: NgModel) {
