@@ -22,6 +22,7 @@ import {SintesiServizio} from '../../../model/servizio/SintesiServizio';
 import {TipoUtenteEnum} from '../../../../../enums/TipoUtente.enum';
 import * as moment from 'moment';
 import {SpinnerOverlayService} from '../../../../../services/spinner-overlay.service';
+import {BannerService} from "../../../../../services/banner.service";
 
 @Component({
   selector: 'app-gestisci-servizi',
@@ -71,7 +72,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  constructor(router: Router,
+  constructor(router: Router, private bannerService: BannerService,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2,
               private configuraServizioService: ConfiguraServizioService,
@@ -167,6 +168,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
       Utils.getModale(() => {
           this.configuraServizioService.eliminaServizioSelezionati(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;

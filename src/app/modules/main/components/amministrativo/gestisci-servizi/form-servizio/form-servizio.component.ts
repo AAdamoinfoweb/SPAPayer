@@ -83,6 +83,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
               private campoTipologiaServizioService: CampoTipologiaServizioService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
+
   private firstAdd = false;
   private isSingleClick: boolean;
   private servizioId: number;
@@ -388,13 +389,22 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       }
     });
 
-    this.configuraServizioService.inserimentoServizio(this.servizio, this.idFunzione)
-      .subscribe((id) => {
-        if (id) {
-          this.resetPagina();
-          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-        }
-      });
+    if (this.funzione == FunzioneGestioneEnum.AGGIUNGI) {
+      this.configuraServizioService.inserimentoServizio(this.servizio, this.idFunzione)
+        .subscribe((id) => {
+          if (id) {
+            this.resetPagina();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
+        });
+    } else if (this.funzione == FunzioneGestioneEnum.MODIFICA) {
+      this.configuraServizioService.modificaServizio(this.servizio, this.idFunzione)
+        .subscribe((id) => {
+          if (id) {
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
+        });
+    }
   }
 
   private resetPagina() {

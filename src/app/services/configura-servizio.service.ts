@@ -266,4 +266,23 @@ export class ConfiguraServizioService {
     return of(null);
   }
 
+  modificaServizio(servizio: Servizio, idFunzione: any) {
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.put(environment.bffBaseUrl + this.configuraServiziBasePath + this.serviziUrl + '/' + servizio.id, servizio, {
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as number;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
 }
