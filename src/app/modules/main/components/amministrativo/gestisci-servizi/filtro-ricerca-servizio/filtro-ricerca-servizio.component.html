@@ -84,7 +84,7 @@
           <div class="row">
             <div class="col">
               <p-autoComplete id="inputCodice" class="pt-0" name="codice"
-                              #filtroCodice="ngModel"
+                              #filtroCodice="ngModel" [size]="100"
                               [(ngModel)]="filtriRicerca.tipologiaServizio"
                               [field]="labelOggettoTipologia"
                               [suggestions]="listaCodiciTipologiaFiltrati"
