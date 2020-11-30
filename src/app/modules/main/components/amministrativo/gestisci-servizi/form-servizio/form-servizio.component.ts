@@ -1,14 +1,15 @@
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  Component, ComponentFactory,
+  Component,
+  ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
-  EventEmitter, OnChanges,
+  EventEmitter,
   OnDestroy,
   OnInit,
   QueryList,
-  Renderer2, SimpleChanges,
+  Renderer2,
   ViewChild,
   ViewChildren,
   ViewContainerRef
@@ -370,7 +371,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.raggruppamentoId = this.filtri.raggruppamentoId;
     this.servizio.nomeServizio = this.filtri.nomeServizio;
     this.servizio.abilitaDa = moment(this.filtri.abilitaDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
-    this.servizio.abilitaA = this.servizio.abilitaA ? moment(this.filtri.abilitaA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    this.servizio.abilitaA = this.filtri.abilitaA ? moment(this.filtri.abilitaA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
     this.servizio.flagAttiva = this.filtri.attivo;
 
     this.servizio.contatti = this.contatti;
@@ -558,6 +559,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   private inizializzaComponentRefInstance(childComponent: ComponentFactory<any>, uuid, index,
                                           funzione, datiContoCorrente, listaContiCorrente) {
     this.componentRef = this.target.createComponent(childComponent);
+    this.renderer.addClass(this.componentRef.location.nativeElement, 'w-100');
     // input
     this.componentRef.instance.uuid = uuid;
     this.componentRef.instance.indexDatiContoCorrente = index;

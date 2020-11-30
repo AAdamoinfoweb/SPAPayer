@@ -106,6 +106,8 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
 
   creaTipologia(): void {
     this.disabilitaFiltri = true;
+    if (!this.filtriRicerca.attivo)
+      this.filtriRicerca.attivo = false;
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
 
