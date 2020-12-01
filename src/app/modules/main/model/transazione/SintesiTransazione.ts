@@ -8,5 +8,7 @@ export class SintesiTransazione {
   importoTotale: number;
   statoTransazione: string;
   livelloIntegrazioneId: number;
+  numeroPendenze: number;
   quadrata: boolean;
+  rendicontata: boolean;
 }

@@ -8,4 +8,5 @@ export class DettaglioTransazione {
   importo: number;
   rendicontazioneId: number;
   quadraturaId: number;
+  quadrata: boolean;
 }
