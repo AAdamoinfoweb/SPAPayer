@@ -75,14 +75,13 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
     {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'},
     {type: ToolEnum.PRINT_PR, disabled: true, tooltip: 'Stampa PR (Payment Request)'},
     {type: ToolEnum.PRINT_PD, disabled: true, tooltip: 'Stampa PD (Payment Data)'},
-    {type: ToolEnum.VISUALIZE_STATISTICS, tooltip: 'Statistiche'},
     {type: ToolEnum.SEND_NOTIFICATION_TO_CITIZEN, disabled: true, tooltip: 'Invia notifica al cittadino'},
-    {type: ToolEnum.SEND_NOTIFICATION_TO_ENTE, disabled: true, tooltip: 'Invia notifica all\'ente'},
+    {type: ToolEnum.SEND_NOTIFICATION_TO_ENTE, disabled: true, tooltip: 'Invia notifica all\'ente'}
   ];
   indiceIconaStampaPR = 2;
   indiceIconaStampaPD = 3;
-  indiceIconaInviaNotificaACittadino = 5;
-  indiceIconaInviaNotificaAEnte = 6;
+  indiceIconaInviaNotificaACittadino = 4;
+  indiceIconaInviaNotificaAEnte = 5;
 
   readonly tabs = [
     {value: TipoTransazioneEnum.TUTTI},
@@ -206,9 +205,6 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
       case ToolEnum.PRINT_PD:
         this.stampaPaymentDataInTxtFile(this.getListaIdElementiSelezionati());
         break;
-      case ToolEnum.VISUALIZE_STATISTICS:
-        // TODO logica visualize_statistics
-        break;
       case ToolEnum.SEND_NOTIFICATION_TO_CITIZEN:
         this.inviaNotificaACittadino(this.getListaIdElementiSelezionati()[0]);
         break;
@@ -250,6 +246,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   }
 
   getNumeroRecord(): string {
+    // TODO aggiungere label numero record
     return '';
   }
 
