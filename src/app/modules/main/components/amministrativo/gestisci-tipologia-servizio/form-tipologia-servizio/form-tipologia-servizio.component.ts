@@ -195,11 +195,11 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         this.items = _.sortBy(value, 'posizione');
 
         // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
-        if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+        if (this.funzione !== FunzioneGestioneEnum.DETTAGLIO) {
           this.items.forEach(campo => {
             campo.id = null;
             campo.uuid = uuidv4();
-            if (campo.dipendeDa)
+            if (campo.dipendeDa && this.funzione === FunzioneGestioneEnum.AGGIUNGI)
               campo.dipendeDa.id = null;
           });
         }
