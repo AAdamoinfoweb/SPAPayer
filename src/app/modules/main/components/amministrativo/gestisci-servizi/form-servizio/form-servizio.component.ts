@@ -12,7 +12,7 @@ import {
   Renderer2,
   ViewChild,
   ViewChildren,
-  ViewContainerRef
+  ViewContainerRef, ViewRef
 } from '@angular/core';
 import {FormElementoParentComponent} from '../../form-elemento-parent.component';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
@@ -140,6 +140,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   private componentRef: ComponentRef<any>;
 
   private componentRefs: ComponentRef<any>[] = [];
+  targetMap: Map<string, ViewRef> = new Map<string, ViewRef>();
 
   private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
   private listaDipendeDa: CampoTipologiaServizio[];
@@ -395,13 +396,15 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.integrazione = this.integrazione;
     this.servizio.impositore = this.impositore;
     this.servizio.beneficiario = this.beneficiario;
-    this.servizio.beneficiario.listaContiCorrenti = this.getListaContiCorrente(this.mapContoCorrente);
-    this.servizio.beneficiario.listaContiCorrenti.forEach(value => {
+    const listaContiCorrenti = this.getListaContiCorrente(this.mapContoCorrente);
+    const listaContiCorrentiPerBe = listaContiCorrenti.map(value => {
       value.inizioValidita = moment(value.inizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
       if (value.fineValidita) {
-        value.fineValidita = moment(value.fineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
+        value.fineValidita = moment(value.fineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO);
       }
+      return value;
     });
+    this.servizio.beneficiario.listaContiCorrenti = listaContiCorrentiPerBe;
 
     if (this.funzione == FunzioneGestioneEnum.AGGIUNGI) {
       this.configuraServizioService.inserimentoServizio(this.servizio, this.idFunzione)
@@ -592,6 +595,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.renderer.addClass(this.componentRef.location.nativeElement, 'w-100');
     // input
     this.componentRef.instance.uuid = uuid;
+    this.targetMap.set(uuid, this.componentRef.hostView);
     this.componentRef.instance.indexDatiContoCorrente = index;
     this.componentRef.instance.funzione = funzione;
     this.componentRef.instance.datiContoCorrente = datiContoCorrente;
@@ -605,12 +609,14 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.mapControllo.delete(componenteDinamico.uuid);
       }
       // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
-      const zeroBasedIndex = componenteDinamico.index - 1;
-      const viewRef = this.target.get(zeroBasedIndex);
-      if (viewRef == null && this.target.length === 1) {
+      const viewRef = this.targetMap.get(componenteDinamico.uuid);
+      const indexViewRef = this.target.indexOf(viewRef);
+      if (this.target.length === 1) {
         this.target.clear();
+        this.targetMap.clear();
       } else {
-        this.target.remove(zeroBasedIndex);
+        this.target.remove(indexViewRef);
+        this.targetMap.delete(componenteDinamico.uuid);
       }
       this.setListaContiCorrente();
     });
