@@ -30,7 +30,7 @@
         <!--      inizio modale cc -->
         <app-seleziona-conto-corrente [funzione]="funzione"
                                       [listaContiCorrente]="listaContiCorrente"
-                                      (onClick)="onClickRow($event)">
+                                      (onClick)="onClickRow($event)" *ngIf="!disabilitaSelezionaCC()">
         </app-seleziona-conto-corrente>
         <!--      fine modale cc -->
         <!--    inizio Iban, Intestazione -->
