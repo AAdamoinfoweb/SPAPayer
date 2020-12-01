@@ -239,7 +239,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           });
         });
         this.filtro.abilitaDa = moment(value.abilitaDa, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR);
-        this.filtro.abilitaA = moment(value.abilitaA, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR);
+        this.filtro.abilitaA = value.abilitaA ? moment(value.abilitaA, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
         this.filtro.attivo = value.flagAttiva;
         this.contatti = value.contatti;
         this.integrazione = value.integrazione;
