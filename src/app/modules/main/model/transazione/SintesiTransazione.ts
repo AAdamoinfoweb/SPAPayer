@@ -7,4 +7,6 @@ export class SintesiTransazione {
   emailNotifica: string;
   importoTotale: number;
   statoTransazione: string;
+  livelloIntegrazioneId: number;
+  quadrata: boolean;
 }
