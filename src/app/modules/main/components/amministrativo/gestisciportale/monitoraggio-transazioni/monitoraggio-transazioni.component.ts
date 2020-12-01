@@ -266,11 +266,17 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
       this.toolbarIcons[this.indiceIconaStampaPR].disabled = true;
     }
 
-    this.toolbarIcons[this.indiceIconaInviaNotificaACittadino].disabled = righeSelezionate.length !== 1
-      && righeSelezionate[0].stato.value !== getStatoTransazioneValue(StatoTransazioneEnum.COMPLETATA_CON_SUCCESSO);
-
-    this.toolbarIcons[this.indiceIconaInviaNotificaAEnte].disabled = righeSelezionate.length !== 1
-      && righeSelezionate[0].livelloIntegrazioneId.value !== LivelloIntegrazioneEnum.LV1;
+    if (righeSelezionate.length === 1) {
+      if (righeSelezionate[0].stato.value === getStatoTransazioneValue(StatoTransazioneEnum.COMPLETATA_CON_SUCCESSO)) {
+        this.toolbarIcons[this.indiceIconaInviaNotificaACittadino].disabled = false;
+      }
+      if (righeSelezionate[0].livelloIntegrazioneId.value === LivelloIntegrazioneEnum.LV1) {
+        this.toolbarIcons[this.indiceIconaInviaNotificaAEnte].disabled = false;
+      }
+    } else {
+      this.toolbarIcons[this.indiceIconaInviaNotificaACittadino].disabled = true;
+      this.toolbarIcons[this.indiceIconaInviaNotificaAEnte].disabled = true;
+    }
   }
 
   stampaPaymentRequestInTxtFile(listaTransazioniId: Array<number>): void {
