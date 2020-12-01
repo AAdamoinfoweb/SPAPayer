@@ -165,14 +165,15 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   public ngAfterViewInit() {
     this.datiBeneficiarioFormQuery.changes.subscribe(ql => {
-      if (!this.firstAdd && this.funzione == FunzioneGestioneEnum.AGGIUNGI) {
+      if (!this.firstAdd) {
         this.firstAdd = true;
-        this.aggiungiContoCorrente();
-      }
-      if (this.funzione != FunzioneGestioneEnum.AGGIUNGI && this.servizio.beneficiario.listaContiCorrenti) {
-        this.servizio.beneficiario.listaContiCorrenti.forEach(value1 => {
-          this.aggiungiContoCorrente(value1);
-        });
+        if (this.funzione == FunzioneGestioneEnum.AGGIUNGI) {
+          this.aggiungiContoCorrente();
+        } else if (this.servizio.beneficiario.listaContiCorrenti) {
+          this.servizio.beneficiario.listaContiCorrenti.forEach(value1 => {
+            this.aggiungiContoCorrente(value1);
+          });
+        }
       }
     });
   }
