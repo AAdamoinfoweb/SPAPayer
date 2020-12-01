@@ -19,6 +19,8 @@ import * as moment from 'moment';
 import {TipoTransazioneEnum} from '../../../../../../enums/tipoTransazione.enum';
 import {SpinnerOverlayService} from '../../../../../../services/spinner-overlay.service';
 import {getStatoTransazioneValue, StatoTransazioneEnum} from '../../../../../../enums/statoTransazione.enum';
+import {GestisciPortaleService} from '../../../../../../services/gestisci-portale.service';
+import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
 
 @Component({
   selector: 'app-monitoraggio-transazioni',
@@ -31,7 +33,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
               protected activatedRoute: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService,
               private menuService: MenuService, private monitoraggioTransazioniService: MonitoraggioTransazioniService,
-              private spinnerOverlayService: SpinnerOverlayService) {
+              private spinnerOverlayService: SpinnerOverlayService, private gestisciPortaleService: GestisciPortaleService) {
     super(router, activatedRoute, http, amministrativoService);
 
     this.route.queryParams.subscribe(params => {
@@ -71,11 +73,11 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   readonly toolbarIcons = [
     {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
     {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'},
-    {type: ToolEnum.PRINT_PR, tooltip: 'Stampa PR (Payment Request)'},
-    {type: ToolEnum.PRINT_PD, tooltip: 'Stampa PD (Payment Data)'},
+    {type: ToolEnum.PRINT_PR, disabled: true, tooltip: 'Stampa PR (Payment Request)'},
+    {type: ToolEnum.PRINT_PD, disabled: true, tooltip: 'Stampa PD (Payment Data)'},
     {type: ToolEnum.VISUALIZE_STATISTICS, tooltip: 'Statistiche'},
-    {type: ToolEnum.SEND_NOTIFICATION_TO_CITIZEN, tooltip: 'Invia notifica al cittadino'},
-    {type: ToolEnum.SEND_NOTIFICATION_TO_ENTE, tooltip: 'Invia notifica all\'ente'},
+    {type: ToolEnum.SEND_NOTIFICATION_TO_CITIZEN, disabled: true, tooltip: 'Invia notifica al cittadino'},
+    {type: ToolEnum.SEND_NOTIFICATION_TO_ENTE, disabled: true, tooltip: 'Invia notifica all\'ente'},
   ];
   indiceIconaStampaPR = 2;
   indiceIconaStampaPD = 3;
@@ -149,6 +151,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
       numeroPagamenti: {value: transazione.id},
       importo: {value: transazione.importoTotale},
       stato: {value: transazione.statoTransazione},
+      livelloIntegrazioneId: {value: transazione.livelloIntegrazioneId}
     };
   }
 
@@ -198,19 +201,19 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Transazioni');
         break;
       case ToolEnum.PRINT_PR:
-        // TODO logica print_pr
+        this.stampaPaymentRequestInTxtFile(this.getListaIdElementiSelezionati());
         break;
       case ToolEnum.PRINT_PD:
-        // TODO logica print_pd
+        this.stampaPaymentDataInTxtFile(this.getListaIdElementiSelezionati());
         break;
       case ToolEnum.VISUALIZE_STATISTICS:
         // TODO logica visualize_statistics
         break;
       case ToolEnum.SEND_NOTIFICATION_TO_CITIZEN:
-        // TODO logica send_notification_to_citizen
+        this.inviaNotificaACittadino(this.getListaIdElementiSelezionati()[0]);
         break;
       case ToolEnum.SEND_NOTIFICATION_TO_ENTE:
-        // TODO logica send_notification_to_ente
+        this.inviaNotificaAEnte(this.getListaIdElementiSelezionati()[0]);
         break;
     }
   }
@@ -234,6 +237,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   getRigheFileExcel(righe: any[]): any[] {
     return righe.map(riga => {
       const rigaFormattata = riga;
+      delete riga.livelloIntegrazioneId;
       rigaFormattata.id = riga.id.value;
       rigaFormattata.data = riga.data.value;
       rigaFormattata.societa = riga.societa.value;
@@ -255,6 +259,49 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
     this.righeSelezionate = righeSelezionate;
+
+    if (righeSelezionate.length !== 0
+      && righeSelezionate.every(riga => riga.livelloIntegrazioneId.value === LivelloIntegrazioneEnum.LV1)) {
+      this.toolbarIcons[this.indiceIconaStampaPD].disabled = false;
+      this.toolbarIcons[this.indiceIconaStampaPR].disabled = false;
+    } else {
+      this.toolbarIcons[this.indiceIconaStampaPD].disabled = true;
+      this.toolbarIcons[this.indiceIconaStampaPR].disabled = true;
+    }
+
+    this.toolbarIcons[this.indiceIconaInviaNotificaACittadino].disabled = righeSelezionate.length !== 1
+      && righeSelezionate[0].statoTransazione.value !== getStatoTransazioneValue(StatoTransazioneEnum.COMPLETATA_CON_SUCCESSO);
+
+    this.toolbarIcons[this.indiceIconaInviaNotificaAEnte].disabled = righeSelezionate.length !== 1
+      && righeSelezionate[0].livelloIntegrazioneId.value !== LivelloIntegrazioneEnum.LV1;
+  }
+
+  stampaPaymentRequestInTxtFile(listaTransazioniId: Array<number>): void {
+    this.gestisciPortaleService.stampaPR(listaTransazioniId, this.idFunzione).subscribe(listaPR => {
+      listaPR.forEach((pr, index) => {
+        if (pr) {
+          Utils.downloadBase64ToTxtFile(pr, 'pr_' + index);
+        }
+      });
+    });
+  }
+
+  stampaPaymentDataInTxtFile(listaTransazioniId: Array<number>): void {
+    this.gestisciPortaleService.stampaPD(listaTransazioniId, this.idFunzione).subscribe(listaPD => {
+      listaPD.forEach((pd, index) => {
+        if (pd) {
+          Utils.downloadBase64ToTxtFile(pd, 'pd_' + index);
+        }
+      });
+    });
+  }
+
+  inviaNotificaACittadino(transazioneId: number): void {
+    this.gestisciPortaleService.inviaNotificaCittadino(transazioneId, this.idFunzione).subscribe();
+  }
+
+  inviaNotificaAEnte(transazioneId: number): void {
+    this.gestisciPortaleService.inviaNotificaEnte(transazioneId, this.idFunzione).subscribe();
   }
 
   dettaglioTransazione(rigaCliccata: any) {

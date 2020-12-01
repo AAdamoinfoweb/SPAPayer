@@ -86,6 +86,34 @@
           <use xlink:href="assets/img/sprite.svg#it-file"></use>
         </svg>
       </div>
+      <!-- Stampa Payment Request -->
+      <div *ngIf="toolbarIcon.type == toolEnum.PRINT_PR" id="print_payment_request"
+           (click)="onClickTool(toolEnum.PRINT_PR, toolbarIcon?.disabled)" class="pointer">
+        <svg class="bg-light icon icon-sm" [ngClass]="{'img-not-active': toolbarIcon?.disabled}">
+          <use xlink:href="assets/img/sprite.svg#it-file"></use>
+        </svg>
+      </div>
+      <!-- Stampa Payment Data -->
+      <div *ngIf="toolbarIcon.type == toolEnum.PRINT_PD" id="print_payment_data"
+           (click)="onClickTool(toolEnum.PRINT_PD, toolbarIcon?.disabled)" class="pointer">
+        <svg class="bg-light icon icon-sm" [ngClass]="{'img-not-active': toolbarIcon?.disabled}">
+          <use xlink:href="assets/img/sprite.svg#it-file"></use>
+        </svg>
+      </div>
+      <!-- Invia notifica a cittadino -->
+      <div *ngIf="toolbarIcon.type == toolEnum.SEND_NOTIFICATION_TO_CITIZEN" id="invia_notifica_a_cittadino"
+           (click)="onClickTool(toolEnum.SEND_NOTIFICATION_TO_CITIZEN, toolbarIcon?.disabled)" class="pointer">
+        <svg class="bg-light icon icon-sm" [ngClass]="{'img-not-active': toolbarIcon?.disabled}">
+          <use xlink:href="assets/img/sprite.svg#it-email"></use>
+        </svg>
+      </div>
+      <!-- Invia notifica a ente -->
+      <div *ngIf="toolbarIcon.type == toolEnum.SEND_NOTIFICATION_TO_ENTE" id="invia_notifica_a_ente"
+           (click)="onClickTool(toolEnum.SEND_NOTIFICATION_TO_ENTE, toolbarIcon?.disabled)" class="pointer">
+        <svg class="bg-light icon icon-sm" [ngClass]="{'img-not-active': toolbarIcon?.disabled}">
+          <use xlink:href="assets/img/sprite.svg#it-email"></use>
+        </svg>
+      </div>
     </span>
   </div>
   <!-- right -->
