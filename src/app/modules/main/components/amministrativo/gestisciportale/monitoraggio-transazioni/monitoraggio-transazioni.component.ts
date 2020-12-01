@@ -172,16 +172,16 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
             || transazione.statoTransazione === getStatoTransazioneValue(StatoTransazioneEnum.FALLITA));
         break;
       case TipoTransazioneEnum.RENDICONTATE:
-        // TODO aggiungere logica tab RENDICONTATE
+        tabRows = this.listaElementi.filter(transazione => transazione.rendicontata === true);
         break;
       case TipoTransazioneEnum.NON_RENDICONTATE:
-        // TODO aggiungere logica tab NON RENDICONTATE
+        tabRows = this.listaElementi.filter(transazione => transazione.rendicontata === false);
         break;
       case TipoTransazioneEnum.QUADRATE:
-        // TODO aggiungere logica tab QUADRATE
+        tabRows = this.listaElementi.filter(transazione => transazione.quadrata === true);
         break;
       case TipoTransazioneEnum.NON_QUADRATE:
-        // TODO aggiungere logica NON QUADRATE
+        tabRows = this.listaElementi.filter(transazione => transazione.quadrata === false);
         break;
     }
 
