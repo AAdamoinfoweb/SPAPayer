@@ -226,7 +226,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.caricaCampi(value.tipologiaServizioId).subscribe(() => {
           this.campoServizioAddList = value.listaCampiServizio.filter((obj) => {
             return !obj.campoTipologiaServizioId;
-          });
+          }).map(value1 => value1.uuid = uuidv4());
+
 
           this.campoTipologiaServizioList = this.campoTipologiaServizioList.map((obj) => {
             const campoServizio = value.listaCampiServizio.find((value1 => value1.campoTipologiaServizioId == obj.id));
@@ -245,7 +246,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
         if (value.beneficiario && value.beneficiario.livelloTerritorialeId) {
           this.beneficiario = value.beneficiario;
-          //TODO load bonifici
+          this.beneficiario.listaContiCorrenti.forEach(cc => {
+            cc.inizioValidita = moment(cc.inizioValidita).format(Utils.FORMAT_DATE_CALENDAR);
+            if (cc.fineValidita)
+              cc.fineValidita = moment(cc.fineValidita).format(Utils.FORMAT_DATE_CALENDAR);
+          });
           this._onChangeLivelloTerritorialeBeneficiario(this.beneficiario.livelloTerritorialeId);
         }
 
