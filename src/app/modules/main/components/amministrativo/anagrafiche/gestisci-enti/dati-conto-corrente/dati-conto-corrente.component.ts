@@ -124,12 +124,21 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(true));
   }
 
-  campiDisabiitati(campo: NgModel) {
+  campiDisabiitati(campo?: NgModel) {
     if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI && campo?.value != null &&
       this.datiContoCorrente.id && !this.contoSelezionato) {
       return true;
     } else {
       return false;
+    }
+  }
+
+  disabilitaSelezionaCC() {
+    if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI &&
+      this.datiContoCorrente.id) {
+      return false;
+    } else {
+      return true;
     }
   }
 }
