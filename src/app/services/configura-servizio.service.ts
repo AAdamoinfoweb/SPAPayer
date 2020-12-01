@@ -10,6 +10,7 @@ import {ParametriRicercaServizio} from '../modules/main/model/servizio/Parametri
 import {SintesiServizio} from '../modules/main/model/servizio/SintesiServizio';
 import * as moment from 'moment';
 import {Utils} from '../utils/Utils';
+import {base64} from "ngx-custom-validators/src/app/base64/validator";
 
 @Injectable({
   providedIn: 'root'
@@ -83,7 +84,7 @@ export class ConfiguraServizioService {
   filtroEnti(parametriRicercaEnte: ParametriRicercaEnte) {
     let params = new HttpParams();
     if (parametriRicercaEnte) {
-      params = params.set('filtroPagamento', 'false');
+      params = params.set('filtroRicerca ', 'true');
       if (parametriRicercaEnte.societaId != null) {
         params = params.set('societaId', String(parametriRicercaEnte.societaId));
       }
@@ -92,7 +93,7 @@ export class ConfiguraServizioService {
       }
     }
 
-    return this.http.get(environment.bffBaseUrl + '/filtroEnti', {
+    return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + '/filtroEnteImpositore', {
       params,
       withCredentials: true
     })
