@@ -81,7 +81,11 @@ export class ConfiguraServizioService {
     return this.getListaEnti('/filtroEnteImpositore', params, idFunzione);
   }
 
-  filtroEnti(parametriRicercaEnte: ParametriRicercaEnte) {
+  filtroEnti(parametriRicercaEnte: ParametriRicercaEnte, idFunzione: any) {
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
     let params = new HttpParams();
     if (parametriRicercaEnte) {
       params = params.set('filtroRicerca ', 'true');
@@ -95,6 +99,7 @@ export class ConfiguraServizioService {
 
     return this.http.get(environment.bffBaseUrl + this.configuraServiziBasePath + '/filtroEnteImpositore', {
       params,
+      headers: h,
       withCredentials: true
     })
       .pipe(map((body: any) => {
