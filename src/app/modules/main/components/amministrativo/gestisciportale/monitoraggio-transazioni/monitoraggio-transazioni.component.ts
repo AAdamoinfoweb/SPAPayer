@@ -18,6 +18,7 @@ import {Utils} from '../../../../../../utils/Utils';
 import * as moment from 'moment';
 import {TipoTransazioneEnum} from '../../../../../../enums/tipoTransazione.enum';
 import {SpinnerOverlayService} from '../../../../../../services/spinner-overlay.service';
+import {getStatoTransazioneValue, StatoTransazioneEnum} from '../../../../../../enums/statoTransazione.enum';
 
 @Component({
   selector: 'app-monitoraggio-transazioni',
@@ -70,11 +71,16 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   readonly toolbarIcons = [
     {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
     {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'},
-    {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa PR'},
-    {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa PD'},
-    {type: ToolEnum.EXPORT_PDF, tooltip: 'Invia notifica al cittadino'},
-    {type: ToolEnum.EXPORT_PDF, tooltip: 'Invia notifica all\'ente'},
+    {type: ToolEnum.PRINT_PR, tooltip: 'Stampa PR (Payment Request)'},
+    {type: ToolEnum.PRINT_PD, tooltip: 'Stampa PD (Payment Data)'},
+    {type: ToolEnum.VISUALIZE_STATISTICS, tooltip: 'Statistiche'},
+    {type: ToolEnum.SEND_NOTIFICATION_TO_CITIZEN, tooltip: 'Invia notifica al cittadino'},
+    {type: ToolEnum.SEND_NOTIFICATION_TO_ENTE, tooltip: 'Invia notifica all\'ente'},
   ];
+  indiceIconaStampaPR = 2;
+  indiceIconaStampaPD = 3;
+  indiceIconaInviaNotificaACittadino = 5;
+  indiceIconaInviaNotificaAEnte = 6;
 
   readonly tabs = [
     {value: TipoTransazioneEnum.TUTTI},
@@ -156,10 +162,14 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
         tabRows = this.listaElementi;
         break;
       case TipoTransazioneEnum.ESEGUITE:
-        // TODO aggiungere logica tab ESEGUITE
+        tabRows = this.listaElementi
+          .filter(transazione => transazione.statoTransazione === getStatoTransazioneValue(StatoTransazioneEnum.COMPLETATA_CON_SUCCESSO));
         break;
       case TipoTransazioneEnum.NON_ESEGUITE:
-        // TODO aggiungere logica tab NON ESEGUITE
+        tabRows = this.listaElementi
+          .filter(transazione => transazione.statoTransazione === getStatoTransazioneValue(StatoTransazioneEnum.CREATA)
+            || transazione.statoTransazione === getStatoTransazioneValue(StatoTransazioneEnum.PENDING)
+            || transazione.statoTransazione === getStatoTransazioneValue(StatoTransazioneEnum.FALLITA));
         break;
       case TipoTransazioneEnum.RENDICONTATE:
         // TODO aggiungere logica tab RENDICONTATE
@@ -180,19 +190,59 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
-    // TODO logica icone azione
-  }
-
-  getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    return colonne;
+    switch (azioneTool) {
+      case ToolEnum.EXPORT_PDF:
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Transazioni');
+        break;
+      case ToolEnum.EXPORT_XLS:
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Transazioni');
+        break;
+      case ToolEnum.PRINT_PR:
+        // TODO logica print_pr
+        break;
+      case ToolEnum.PRINT_PD:
+        // TODO logica print_pd
+        break;
+      case ToolEnum.VISUALIZE_STATISTICS:
+        // TODO logica visualize_statistics
+        break;
+      case ToolEnum.SEND_NOTIFICATION_TO_CITIZEN:
+        // TODO logica send_notification_to_citizen
+        break;
+      case ToolEnum.SEND_NOTIFICATION_TO_ENTE:
+        // TODO logica send_notification_to_ente
+        break;
+    }
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
     return colonne;
   }
 
-  getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] | any[] {
-    return undefined;
+  getRigheFilePdf(righe: any[]): any[] {
+    return righe;
+  }
+
+  getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] {
+    return [];
+  }
+
+  getColonneFileExcel(colonne: Colonna[]): Colonna[] {
+    return colonne;
+  }
+
+  getRigheFileExcel(righe: any[]): any[] {
+    return righe.map(riga => {
+      const rigaFormattata = riga;
+      rigaFormattata.id = riga.id.value;
+      rigaFormattata.data = riga.data.value;
+      rigaFormattata.societa = riga.societa.value;
+      rigaFormattata.versante = riga.versante.value;
+      rigaFormattata.numeroPagamenti = riga.numeroPagamenti.value;
+      rigaFormattata.importo = riga.importo.value;
+      rigaFormattata.stato = riga.stato.value;
+      return rigaFormattata;
+    });
   }
 
   getNumeroRecord(): string {
@@ -201,14 +251,6 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
 
   getObservableFunzioneRicerca(): Observable<any[] | any> {
     return this.monitoraggioTransazioniService.ricercaTransazioni(this.filtriRicerca, this.idFunzione);
-  }
-
-  getRigheFileExcel(righe: any[]): any[] {
-    return righe;
-  }
-
-  getRigheFilePdf(righe: any[]): any[] {
-    return righe;
   }
 
   selezionaRigaTabella(righeSelezionate: any[]): void {
