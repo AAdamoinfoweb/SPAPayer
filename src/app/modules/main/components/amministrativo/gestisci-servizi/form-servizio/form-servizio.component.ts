@@ -304,10 +304,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.campoTipologiaServizioList = _.cloneDeep(this.campoTipologiaServizioOriginal);
 
         // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
-        if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+        if (this.funzione !== FunzioneGestioneEnum.DETTAGLIO) {
           this.campoTipologiaServizioList.forEach(campo => {
             campo.uuid = uuidv4();
-            if (campo.dipendeDa) {
+            if (campo.dipendeDa && this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
               campo.dipendeDa.id = null;
             }
           });
