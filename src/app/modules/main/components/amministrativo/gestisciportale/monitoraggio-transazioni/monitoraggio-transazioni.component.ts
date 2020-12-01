@@ -244,8 +244,20 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   }
 
   getNumeroRecord(): string {
-    // TODO aggiungere label numero record
-    return '';
+    const numeroTransazioniEseguite = this.listaElementi
+      .filter(transazione => transazione.statoTransazione === getStatoTransazioneValue(StatoTransazioneEnum.COMPLETATA_CON_SUCCESSO)).length;
+    const numeroTransazioniNonEseguite = this.listaElementi
+      .filter(transazione => transazione.statoTransazione === getStatoTransazioneValue(StatoTransazioneEnum.CREATA)
+        || transazione.statoTransazione === getStatoTransazioneValue(StatoTransazioneEnum.PENDING)
+        || transazione.statoTransazione === getStatoTransazioneValue(StatoTransazioneEnum.FALLITA)).length;
+    const numeroTransazioniRendicontate = this.listaElementi.filter(transazione => transazione.rendicontata === true).length;
+    const numeroTransazioniNonRendicontate = this.listaElementi.filter(transazione => transazione.rendicontata === false).length;
+    const numeroTransazioniQuadrate = this.listaElementi.filter(transazione => transazione.quadrata === true).length;
+    const numeroTransazioniNonQuadrate = this.listaElementi.filter(transazione => transazione.quadrata === false).length;
+    return 'Totale ' + this.listaElementi.length + ' transazioni' + '\b\bDi cui eseguite: ' + numeroTransazioniEseguite
+      + '\b\bDi cui non eseguite: ' + numeroTransazioniNonEseguite + '\nDi cui rendicontate: ' + numeroTransazioniRendicontate
+      + '\b\bDi cui non rendicontate: ' + numeroTransazioniNonRendicontate + '\nDi cui quadrate: ' + numeroTransazioniQuadrate
+      + '\b\bDi cui non quadrate: ' + numeroTransazioniNonQuadrate;
   }
 
   getObservableFunzioneRicerca(): Observable<any[] | any> {

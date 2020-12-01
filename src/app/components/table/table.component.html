@@ -65,7 +65,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="paginatorleft">
-    {{textLeft}}
+    <span style="white-space: pre-line;">{{textLeft}}</span>
   </ng-template>
   <ng-template pTemplate="paginatorright">
     <app-paginator (onChangePageSize)="onChangePageSize($event)" pageSize="{{rowsPerPageOption[0]}}"
