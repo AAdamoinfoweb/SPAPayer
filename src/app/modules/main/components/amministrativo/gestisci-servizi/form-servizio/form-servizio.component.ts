@@ -245,6 +245,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
         if (value.beneficiario && value.beneficiario.livelloTerritorialeId) {
           this.beneficiario = value.beneficiario;
+          //TODO load bonifici
           this._onChangeLivelloTerritorialeBeneficiario(this.beneficiario.livelloTerritorialeId);
         }
 

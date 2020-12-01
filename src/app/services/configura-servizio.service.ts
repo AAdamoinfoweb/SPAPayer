@@ -248,9 +248,9 @@ export class ConfiguraServizioService {
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
-            return of(null);
+            return of('error');
           } else {
-            return of(null);
+            return of('error');
           }
         }));
   }

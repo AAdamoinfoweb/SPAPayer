@@ -167,9 +167,11 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
     this.confirmationService.confirm(
       Utils.getModale(() => {
           this.configuraServizioService.eliminaServizioSelezionati(this.getListaIdElementiSelezionati(), this.idFunzione)
-            .subscribe(() => {
-              this.popolaListaElementi();
-              this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+            .subscribe((value) => {
+              if (!value) {
+                this.popolaListaElementi();
+                this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+              }
             });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;
