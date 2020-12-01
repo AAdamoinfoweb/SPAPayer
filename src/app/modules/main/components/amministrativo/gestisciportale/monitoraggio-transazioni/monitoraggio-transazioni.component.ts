@@ -139,15 +139,13 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
     const iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
     const linkGestisciSocieta = '/gestisciSocieta?societaId=' + transazione.societaId;
 
-    // TODO valorizzare campo numeroPagamenti con numeroPendenza (numero di dettagli transazione) per transazioneId
-
     return {
       id: {value: transazione.id},
       data: {value: transazione.dataCreazione ? moment(transazione.dataCreazione).format('DD/MM/YYYY HH:mm:ss') : null},
       societa: Utils.creaLink(transazione.societaNome, linkGestisciSocieta, iconaGruppoUtenti),
       versante: {value: (transazione.versanteIndirizzoIP != null ? transazione.versanteIndirizzoIP + ' ' : null)
           + transazione.emailNotifica != null ? transazione.emailNotifica : null},
-      numeroPagamenti: {value: transazione.id},
+      numeroPagamenti: {value: transazione.numeroPendenze},
       importo: {value: transazione.importoTotale},
       stato: {value: transazione.statoTransazione},
       livelloIntegrazioneId: {value: transazione.livelloIntegrazioneId}
