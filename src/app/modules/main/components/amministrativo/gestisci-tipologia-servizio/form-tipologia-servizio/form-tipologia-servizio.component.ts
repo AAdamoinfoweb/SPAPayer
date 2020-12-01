@@ -33,6 +33,7 @@ import {v4 as uuidv4} from 'uuid';
 import {InserimentoTipologiaServizio} from "../../../../model/campo/InserimentoTipologiaServizio";
 import {ModificaTipologiaServizio} from "../../../../model/campo/ModificaTipologiaServizio";
 import {BannerService} from "../../../../../../services/banner.service";
+import {aggiornaConfigurazioneCampiEvent} from '../modale-campo-form/modale-campo-form.component';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -182,7 +183,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
 
         if (aggiornaModale) {
-          this.campoTipologiaServizioService.aggiornaConfigurazioneCampiEvent.emit();
+          aggiornaConfigurazioneCampiEvent.emit();
         }
       })).pipe(flatMap(() => observableIniziale));
     observable.subscribe();

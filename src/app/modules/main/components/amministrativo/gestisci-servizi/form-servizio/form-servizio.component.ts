@@ -59,6 +59,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {NotifichePagamento} from '../../../../model/servizio/NotifichePagamento';
 import * as moment from 'moment';
 import {BannerService} from "../../../../../../services/banner.service";
+import {aggiornaConfigurazioneCampiEvent} from '../../gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
 
 @Component({
   selector: 'app-form-servizio',
@@ -158,7 +159,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   ngOnInit(): void {
     this.overlayService.mostraModaleTipoCampoEvent.subscribe(mostraModale => {
       if (!mostraModale) {
-        this.impostaConfigurazioneCampi();
+        this.impostaConfigurazioneCampi(true);
       }
     });
   }
@@ -273,7 +274,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     }
   }
 
-  impostaConfigurazioneCampi(): void {
+  impostaConfigurazioneCampi(aggiornaModale = false): void {
     this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
         localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
@@ -289,6 +290,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         }
 
         localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
+
+        if (aggiornaModale) {
+          aggiornaConfigurazioneCampiEvent.emit();
+        }
       })).subscribe();
   }
 

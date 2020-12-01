@@ -26,8 +26,6 @@ export class CampoTipologiaServizioService {
   constructor(private http: HttpClient) {
   }
 
-  aggiornaConfigurazioneCampiEvent = new EventEmitter();
-
   recuperaDettaglioTipologiaServizio(idTipologiaServizio: number, idFunzione): Observable<TipologiaServizio> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
