@@ -16,6 +16,8 @@ import {SintesiTransazione} from '../../../../model/transazione/SintesiTransazio
 import {ParametriRicercaTransazioni} from '../../../../model/transazione/ParametriRicercaTransazioni';
 import {Utils} from '../../../../../../utils/Utils';
 import * as moment from 'moment';
+import {TipoTransazioneEnum} from '../../../../../../enums/tipoTransazione.enum';
+import {SpinnerOverlayService} from '../../../../../../services/spinner-overlay.service';
 
 @Component({
   selector: 'app-monitoraggio-transazioni',
@@ -27,7 +29,8 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   constructor(protected router: Router,
               protected activatedRoute: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService,
-              private menuService: MenuService, private monitoraggioTransazioniService: MonitoraggioTransazioniService) {
+              private menuService: MenuService, private monitoraggioTransazioniService: MonitoraggioTransazioniService,
+              private spinnerOverlayService: SpinnerOverlayService) {
     super(router, activatedRoute, http, amministrativoService);
 
     this.route.queryParams.subscribe(params => {
@@ -73,7 +76,16 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
     {type: ToolEnum.EXPORT_PDF, tooltip: 'Invia notifica all\'ente'},
   ];
 
-  // TODO aggiungere i 7 TAB
+  readonly tabs = [
+    {value: TipoTransazioneEnum.TUTTI},
+    {value: TipoTransazioneEnum.ESEGUITE},
+    {value: TipoTransazioneEnum.NON_ESEGUITE},
+    {value: TipoTransazioneEnum.RENDICONTATE},
+    {value: TipoTransazioneEnum.NON_RENDICONTATE},
+    {value: TipoTransazioneEnum.QUADRATE},
+    {value: TipoTransazioneEnum.NON_QUADRATE}
+  ];
+  nomeTabCorrente: TipoTransazioneEnum = TipoTransazioneEnum.TUTTI;
 
   ngOnInit(): void {
     this.controlloCaricamentoMenu();
@@ -113,6 +125,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   }
 
   callbackPopolaLista() {
+    this.onChangeTab(this.nomeTabCorrente);
   }
 
   creaRigaTabella(transazione: SintesiTransazione) {
@@ -133,7 +146,41 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
     };
   }
 
+  onChangeTab(value: TipoTransazioneEnum) {
+    const subscription = this.spinnerOverlayService.spinner$.subscribe();
+    this.nomeTabCorrente = value;
+    let tabRows = null;
+
+    switch (value) {
+      case TipoTransazioneEnum.TUTTI:
+        tabRows = this.listaElementi;
+        break;
+      case TipoTransazioneEnum.ESEGUITE:
+        // TODO aggiungere logica tab ESEGUITE
+        break;
+      case TipoTransazioneEnum.NON_ESEGUITE:
+        // TODO aggiungere logica tab NON ESEGUITE
+        break;
+      case TipoTransazioneEnum.RENDICONTATE:
+        // TODO aggiungere logica tab RENDICONTATE
+        break;
+      case TipoTransazioneEnum.NON_RENDICONTATE:
+        // TODO aggiungere logica tab NON RENDICONTATE
+        break;
+      case TipoTransazioneEnum.QUADRATE:
+        // TODO aggiungere logica tab QUADRATE
+        break;
+      case TipoTransazioneEnum.NON_QUADRATE:
+        // TODO aggiungere logica NON QUADRATE
+        break;
+    }
+
+    this.impostaTabella(tabRows);
+    setTimeout(() => subscription.unsubscribe(), 500);
+  }
+
   eseguiAzioni(azioneTool: ToolEnum): void {
+    // TODO logica icone azione
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
