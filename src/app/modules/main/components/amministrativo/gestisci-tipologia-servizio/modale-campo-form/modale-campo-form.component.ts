@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {OverlayService} from '../../../../../../services/overlay.service';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
@@ -22,6 +22,8 @@ export interface DatiModaleCampo {
   idFunzione: number;
   mostraLivelloIntegrazione: boolean;
 }
+
+export const aggiornaConfigurazioneCampiEvent = new EventEmitter();
 
 @Component({
   selector: 'app-modale-campo-form',
@@ -71,7 +73,7 @@ export class ModaleCampoFormComponent implements OnInit {
       opzioni: new FormControl(null)
     });
 
-    this.campoTipologiaServizioService.aggiornaConfigurazioneCampiEvent.subscribe(() => {
+    aggiornaConfigurazioneCampiEvent.subscribe(() => {
       this.leggiConfigurazioneCampi();
     });
   }

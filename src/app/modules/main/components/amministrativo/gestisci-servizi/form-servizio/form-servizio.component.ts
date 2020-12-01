@@ -59,6 +59,7 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {NotifichePagamento} from '../../../../model/servizio/NotifichePagamento';
 import * as moment from 'moment';
 import {BannerService} from "../../../../../../services/banner.service";
+import {aggiornaConfigurazioneCampiEvent} from '../../gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
 
 @Component({
   selector: 'app-form-servizio',
@@ -291,7 +292,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
 
         if (aggiornaModale) {
-          this.campoTipologiaServizioService.aggiornaConfigurazioneCampiEvent.emit();
+          aggiornaConfigurazioneCampiEvent.emit();
         }
       })).subscribe();
   }
