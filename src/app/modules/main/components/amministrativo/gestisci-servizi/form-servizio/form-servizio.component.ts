@@ -226,7 +226,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.caricaCampi(value.tipologiaServizioId).subscribe(() => {
           this.campoServizioAddList = value.listaCampiServizio.filter((obj) => {
             return !obj.campoTipologiaServizioId;
-          }).map(value1 => value1.uuid = uuidv4());
+          }).map(value1 => {
+            value1.uuid = uuidv4();
+            return value1;
+          });
 
 
           this.campoTipologiaServizioList = this.campoTipologiaServizioList.map((obj) => {
