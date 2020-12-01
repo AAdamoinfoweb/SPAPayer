@@ -94,11 +94,11 @@ export class EnteService {
       }));
   }
 
-  inserimentoEnte(ente: EnteCompleto, idFunzione: string): Observable<EsitoInserimentoModificaEnte | HttpErrorResponse> {
+  inserimentoEnte(ente: EnteCompleto, idFunzione: string, idSocieta): Observable<EsitoInserimentoModificaEnte | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.entiBaseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
-
+    h = h.append('idSocieta', String(idSocieta));
     return this.http.post(`${url}`, ente,
       {
         withCredentials: true,
@@ -115,12 +115,13 @@ export class EnteService {
       }));
   }
 
-  modificaEnte(ente: EnteCompleto, idFunzione: string): Observable<EsitoInserimentoModificaEnte> {
+  modificaEnte(ente: EnteCompleto, idFunzione: string, idSocieta): Observable<EsitoInserimentoModificaEnte> {
     const url = environment.bffBaseUrl + this.entiBaseUrl + '/' + ente.id;
     let h: HttpHeaders = new HttpHeaders();
     if (idFunzione != null) {
       h = h.append('idFunzione', idFunzione);
     }
+    h = h.append('idSocieta', String(idSocieta));
     return this.http.put(`${url}`, ente,
       {
         withCredentials: true,

@@ -255,7 +255,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   private inserimentoEnte(): void {
-    this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione).subscribe(
+    this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione, this.datiEnte.societaId).subscribe(
       (response) => {
         if (!(response instanceof HttpErrorResponse)) {
           this.esito = response.esito;
@@ -275,7 +275,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   private modificaEnte() {
-    this.enteService.modificaEnte(this.datiEnte, this.idFunzione).subscribe((response) => {
+    this.enteService.modificaEnte(this.datiEnte, this.idFunzione, this.datiEnte.societaId).subscribe((response) => {
       if (!(response instanceof HttpErrorResponse)) {
         this.esito = response.esito;
         this.controlloEsito();
