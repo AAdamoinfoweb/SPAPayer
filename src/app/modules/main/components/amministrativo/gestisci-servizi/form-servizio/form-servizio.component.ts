@@ -455,10 +455,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onChangeSocietaBeneficiario(societaInput: NgModel) {
-    if (!societaInput.value) {
-      this.beneficiario.livelloTerritorialeId = null;
-      this.beneficiario.enteId = null;
-    } else {
+    this.beneficiario.enteId = null;
+    this.beneficiario.ufficio = null;
+    this.beneficiario.livelloTerritorialeId = null;
+    if (societaInput.value) {
       this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(societaInput.value, this.idFunzione)
         .pipe(map((value) => this.listaLivelloTerritoriale = value)).subscribe();
     }
@@ -474,7 +474,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       const params = new ParametriRicercaEnte();
       params.societaId = this.impositore.societaId;
       params.livelloTerritorialeId = livelloTerritorialeId;
-      return this.configuraServizioService.configuraServiziFiltroEnteImpositore(params, this.idFunzione)
+      return this.configuraServizioService.filtroEnti(params)
         .pipe(map((value) => {
           this.listaEnti = value;
 

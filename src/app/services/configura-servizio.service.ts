@@ -80,6 +80,34 @@ export class ConfiguraServizioService {
     return this.getListaEnti('/filtroEnteImpositore', params, idFunzione);
   }
 
+  filtroEnti(parametriRicercaEnte: ParametriRicercaEnte) {
+    let params = new HttpParams();
+    if (parametriRicercaEnte) {
+      params = params.set('filtroPagamento', 'false');
+      if (parametriRicercaEnte.societaId != null) {
+        params = params.set('societaId', String(parametriRicercaEnte.societaId));
+      }
+      if (parametriRicercaEnte.livelloTerritorialeId != null) {
+        params = params.set('livelloTerritorialeId', String(parametriRicercaEnte.livelloTerritorialeId));
+      }
+    }
+
+    return this.http.get(environment.bffBaseUrl + '/filtroEnti', {
+      params,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as FiltroSelect[];
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
+  }
+
   configuraServiziFiltroEnteBeneficiario(params: ParametriRicercaEnte, idFunzione: any) {
     return this.getListaEnti('/filtroEnteBeneficiario', params, idFunzione);
   }
