@@ -23,7 +23,7 @@ export interface DatiModaleCampo {
   mostraLivelloIntegrazione: boolean;
 }
 
-export const aggiornaConfigurazioneCampiEvent = new EventEmitter();
+export const aggiornaTipoCampoEvent: EventEmitter<number> = new EventEmitter<number>();
 
 @Component({
   selector: 'app-modale-campo-form',
@@ -73,8 +73,9 @@ export class ModaleCampoFormComponent implements OnInit {
       opzioni: new FormControl(null)
     });
 
-    aggiornaConfigurazioneCampiEvent.subscribe(() => {
+    aggiornaTipoCampoEvent.subscribe((idTipoCampo) => {
       this.leggiConfigurazioneCampi();
+      this.datiModaleCampo.campoForm.tipoCampoId = idTipoCampo;
     });
   }
 

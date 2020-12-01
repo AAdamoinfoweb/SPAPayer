@@ -33,7 +33,8 @@ import {v4 as uuidv4} from 'uuid';
 import {InserimentoTipologiaServizio} from "../../../../model/campo/InserimentoTipologiaServizio";
 import {ModificaTipologiaServizio} from "../../../../model/campo/ModificaTipologiaServizio";
 import {BannerService} from "../../../../../../services/banner.service";
-import {aggiornaConfigurazioneCampiEvent} from '../modale-campo-form/modale-campo-form.component';
+import {aggiornaTipoCampoEvent} from '../modale-campo-form/modale-campo-form.component';
+import {aggiungiTipoCampoEvent} from '../modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -117,10 +118,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.refreshItemsEvent.subscribe((items) => {
       this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
     });
-    this.overlayService.mostraModaleTipoCampoEvent.subscribe(mostraModale => {
-      if (!mostraModale) {
-        this.impostaConfigurazioneCampi(of(null), true);
-      }
+    aggiungiTipoCampoEvent.subscribe(idTipoCampo => {
+      this.impostaConfigurazioneCampi(of(null), idTipoCampo);
     });
   }
 
@@ -166,7 +165,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     });
   }
 
-  impostaConfigurazioneCampi(observableIniziale = of(null), aggiornaModale = false): void {
+  impostaConfigurazioneCampi(observableIniziale = of(null), idTipoCampo: number = null): void {
     let observable: Observable<number> = this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
         localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
@@ -182,8 +181,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
         localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
 
-        if (aggiornaModale) {
-          aggiornaConfigurazioneCampiEvent.emit();
+        if (idTipoCampo) {
+          aggiornaTipoCampoEvent.emit(idTipoCampo);
         }
       })).pipe(flatMap(() => observableIniziale));
     observable.subscribe();

@@ -169,15 +169,15 @@ export class CampoTipologiaServizioService {
       }));
   }
 
-  inserimentoTipoCampo(inserimentoTipoCampo: InserimentoTipoCampo, idFunzione) {
+  inserimentoTipoCampo(inserimentoTipoCampo: InserimentoTipoCampo, idFunzione): Observable<number> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     return this.http.post(environment.bffBaseUrl + this.baseUrl +
       this.inserimentoTipoCampoUrl, inserimentoTipoCampo, {
       withCredentials: true,
       headers: h
-    }).pipe(map(() => {
-        return null;
+    }).pipe(map((idTipoCampo: number) => {
+        return idTipoCampo;
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
