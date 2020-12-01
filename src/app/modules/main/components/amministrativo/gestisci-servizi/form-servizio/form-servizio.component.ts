@@ -158,7 +158,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   ngOnInit(): void {
     this.overlayService.mostraModaleTipoCampoEvent.subscribe(mostraModale => {
       if (!mostraModale) {
-        this.impostaConfigurazioneCampi();
+        this.impostaConfigurazioneCampi(true);
       }
     });
   }
@@ -273,7 +273,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     }
   }
 
-  impostaConfigurazioneCampi(): void {
+  impostaConfigurazioneCampi(aggiornaModale = false): void {
     this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
         localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
@@ -289,6 +289,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         }
 
         localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
+
+        if (aggiornaModale) {
+          this.campoTipologiaServizioService.aggiornaConfigurazioneCampiEvent.emit();
+        }
       })).subscribe();
   }
 
