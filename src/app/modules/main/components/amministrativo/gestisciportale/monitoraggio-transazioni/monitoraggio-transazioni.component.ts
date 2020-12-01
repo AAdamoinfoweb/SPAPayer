@@ -270,7 +270,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
     }
 
     this.toolbarIcons[this.indiceIconaInviaNotificaACittadino].disabled = righeSelezionate.length !== 1
-      && righeSelezionate[0].statoTransazione.value !== getStatoTransazioneValue(StatoTransazioneEnum.COMPLETATA_CON_SUCCESSO);
+      && righeSelezionate[0].stato.value !== getStatoTransazioneValue(StatoTransazioneEnum.COMPLETATA_CON_SUCCESSO);
 
     this.toolbarIcons[this.indiceIconaInviaNotificaAEnte].disabled = righeSelezionate.length !== 1
       && righeSelezionate[0].livelloIntegrazioneId.value !== LivelloIntegrazioneEnum.LV1;
