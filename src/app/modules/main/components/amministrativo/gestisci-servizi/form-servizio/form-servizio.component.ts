@@ -232,9 +232,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
             return value1;
           });
 
-
           this.campoTipologiaServizioList = this.campoTipologiaServizioList.map((obj) => {
             const campoServizio = value.listaCampiServizio.find((value1 => value1.campoTipologiaServizioId == obj.id));
+            if (campoServizio)
+              campoServizio.uuid = uuidv4();
             return campoServizio ? campoServizio : obj;
           });
         });
@@ -651,7 +652,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
       this.confirmationService.confirm(
         Utils.getModale(() => {
-            const finded = this.campoTipologiaServizioOriginal.find((value => value.id == item.id));
+            const finded = this.campoTipologiaServizioOriginal.find((value => value.id == item.campoTipologiaServizioId));
 
             const findIndex = this.campoTipologiaServizioList.findIndex((value) => value.id == item.id);
             if (findIndex != -1) {
