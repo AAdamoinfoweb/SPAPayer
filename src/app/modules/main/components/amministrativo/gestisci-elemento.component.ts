@@ -30,7 +30,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     });
   }
 
-  abstract idFunzione;
+  idFunzione;
   basePath;
 
   abstract tableData: Tabella;
@@ -61,7 +61,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     return listaId;
   }
 
-  abstract creaRigaTabella(oggetto: any);
+  abstract creaRigaTabella(elemento: any);
 
   abstract eseguiAzioni(azioneTool: ToolEnum): void;
 
@@ -119,7 +119,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract getColonneFileExcel(colonne: Colonna[]): Colonna[];
 
-  abstract getRigheFileExcel(righe: any[]);
+  abstract getRigheFileExcel(righe: any[]): any[];
 
   esportaTabellaInFilePdf(tabella: Tabella, nomeFile: string): void {
     const copiaTabella = JSON.parse(JSON.stringify(tabella));
@@ -134,7 +134,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract getColonneFilePdf(colonne: Colonna[]): Colonna[];
 
-  abstract getRigheFilePdf(righe: any[]);
+  abstract getRigheFilePdf(righe: any[]): any[];
 
   abstract getImmaginiFilePdf(): ImmaginePdf[];
 

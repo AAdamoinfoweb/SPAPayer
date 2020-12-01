@@ -27,8 +27,6 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
 
   isMenuCarico = false;
 
-  idFunzione;
-
   breadcrumbList = [];
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa degli accessi alle funzionalità amministrative e filtrarli';
   listaElementi = [];
@@ -84,7 +82,9 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
     this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Monitora Accessi', link: null}
     ]);
-    this.popolaListaElementi();
+
+    // Non effettuo onInit il popolaLista, aspetto che il componente figlio lanci l'evento onChangeFiltri con i filtri data preimpostati
+    this.waiting = false;
   }
 
   creaRigaTabella(accesso: Accesso) {

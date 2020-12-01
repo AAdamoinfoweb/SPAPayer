@@ -29,6 +29,7 @@ import {Utils} from "../../../../../utils/Utils";
 import {TipoModaleEnum} from "../../../../../enums/tipoModale.enum";
 import {ConfirmationService} from "primeng/api";
 import * as moment from "moment";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-dati-nuovo-pagamento',
@@ -201,7 +202,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.isFaseVerificaPagamento = false;
     this.rimuoviCampoImporto();
 
-    const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+    const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campoInput);
     campiOutput.forEach(campo => {
       delete this.model[this.getNomeCampoForm(campo)];
     });
@@ -212,7 +213,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     // Mapping valori dei campi input da usare per la precompilazione
     const valoriPerPrecompilazione = {};
     this.listaCampiDinamici.forEach(campo => {
-      if (campo.campo_input && campo.jsonPath) {
+      if (campo.campoInput && campo.jsonPath) {
         valoriPerPrecompilazione[campo.jsonPath] = this.model[this.getNomeCampoForm(campo)];
       }
     });
@@ -230,7 +231,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   impostaValoriCampiOutput(valoriCampiPrecompilati): void {
-    const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campo_input);
+    const campiOutput = this.listaCampiDinamici.filter(campo => !campo.campoInput);
     campiOutput.forEach(campo => {
       this.model[this.getNomeCampoForm(campo)] = JSONPath({
         path: campo.jsonPath,
@@ -249,7 +250,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     let classe;
 
     if (this.isBollettinoPrecompilato
-      && !campo.campo_input
+      && !campo.campoInput
       && !this.isFaseVerificaPagamento) {
       classe = 'hide';
     } else if (campo.tipoCampo === TipoCampoEnum.DATEDDMMYY || campo.tipoCampo === TipoCampoEnum.DATEMMYY || campo.tipoCampo === TipoCampoEnum.DATEYY) {
@@ -404,8 +405,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
         return of(null);
       } else {
         return this.nuovoPagamentoService.recuperaCampiSezioneDati(this.servizio.id).pipe(map(campiNuovoPagamento => {
-          this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio);
-          this.impostaCampi(campiNuovoPagamento.campiServizio);
+          this.impostaCampi(campiNuovoPagamento.campiTipologiaServizio, true);
+          this.impostaCampi(campiNuovoPagamento.campiServizio, false);
 
           this.restoreParziale();
 
@@ -423,27 +424,30 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     const campiPagamentoLV1: CampoForm[] = [];
 
     const campoAnno = new CampoForm();
+    campoAnno.id = 1;
     campoAnno.titolo = this.nomeCampoAnnoBollettinoLV1;
     campoAnno.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     campoAnno.posizione = 1;
     campoAnno.chiave = false;
-    campoAnno.campo_input = true;
+    campoAnno.campoInput = true;
     campiPagamentoLV1.push(campoAnno);
 
     const causale = new CampoForm();
+    causale.id = 2;
     causale.titolo = this.nomeCampoCausaleBollettinoLV1;
     causale.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     causale.posizione = 2;
     campoAnno.chiave = false;
-    causale.campo_input = true;
+    causale.campoInput = true;
     campiPagamentoLV1.push(causale);
 
     const documento = new CampoForm();
+    documento.id = 3;
     documento.titolo = this.nomeCampoDocumentoBollettinoLV1;
     documento.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
     documento.posizione = 3;
     campoAnno.chiave = true;
-    documento.campo_input = true;
+    documento.campoInput = true;
     campiPagamentoLV1.push(documento);
 
     return campiPagamentoLV1;
@@ -454,11 +458,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     if (listaCampoDettaglioTransazione) {
       listaCampoDettaglioTransazione.forEach((dettaglio, index) => {
         const campo = new CampoForm();
+        campo.id = index;
         campo.titolo = dettaglio.titolo;
         campo.tipoCampo = TipoCampoEnum.INPUT_TESTUALE;
         campo.posizione = index;
         campo.chiave = false;
-        campo.campo_input = true;
+        campo.campoInput = true;
         campi.push(campo);
       });
     }
@@ -479,18 +484,12 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.salvaParziale(this.model[nomeCampo], campo);
   }
 
-  ordinaPerPosizione(campi: Array<CampoForm>): void {
-    campi.sort((campo1: CampoForm, campo2: CampoForm) => {
-      return campo1.posizione > campo2.posizione ? 1 : (campo1.posizione < campo2.posizione ? -1 : 0);
-    });
-  }
-
-  impostaCampi(campi: Array<CampoForm>): void {
-    this.ordinaPerPosizione(campi);
+  impostaCampi(campi: Array<CampoForm>, isTipologiaServizio: boolean = null): void {
+    campi = _.sortBy(campi, ['posizione']);
 
     campi.forEach(campo => {
       const campoForm = new FormControl();
-      if (campo.disabilitato || !campo.campo_input || this.datiPagamento) {
+      if (campo.disabilitato || !campo.campoInput || this.datiPagamento) {
         campoForm.disable();
       }
 
@@ -533,14 +532,15 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
 
       campoForm.setValidators(validatori);
 
+      campo.isCampoTipologiaServizio = isTipologiaServizio;
       this.model[this.getNomeCampoForm(campo)] = null;
       this.form.addControl(this.getNomeCampoForm(campo), campoForm);
       this.listaCampiDinamici.push(campo);
     });
   }
 
-  getCampoDettaglioTransazione(nomeCampo: string) {
-    const campoForms: CampoForm[] = this.listaCampiDinamici.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == nomeCampo.toLocaleLowerCase());
+  getCampoDettaglioTransazione(campoDettaglioTransazione: string) {
+    const campoForms: CampoForm[] = this.listaCampiDinamici.filter((value: CampoForm) => value.campoDettaglioTransazione && value.campoDettaglioTransazione.toLowerCase() == campoDettaglioTransazione.toLocaleLowerCase());
     if (campoForms.length > 0) {
       return this.getNomeCampoForm(campoForms[0]);
     } else {
@@ -548,8 +548,17 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     }
   }
 
+  /*
+    Metodo usato per astrarre il formato della chiave con cui leggere/scrivere sul model il valore di un oggetto CampoForm.
+    Da non confondere con il metodo getTitoloCampo che restituisce l'attributo titolo di un oggetto CampoForm.
+  */
   getNomeCampoForm(campo: CampoForm): string {
-    return campo.titolo;
+    if (campo.isCampoTipologiaServizio === null) {
+      // Per i casi in cui i campi sono generati manualmente invece di chiamare la GET, usiamo l'id generato manualmente
+      return '' + campo.id;
+    } else {
+      return campo.isCampoTipologiaServizio ? 'TS' + campo.id : 'S' + campo.id;
+    }
   }
 
   getTitoloCampo(campo: CampoForm): string {
@@ -665,62 +674,64 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
   }
 
   impostaOpzioniSelect(campo: CampoForm): void {
-    const opzioniSelect: Array<OpzioneSelect> = [];
+    campo.opzioni = [];
 
-    let valoriSelect = JSON.parse(localStorage.getItem(campo.tipologica));
+    const valoriTipologica = JSON.parse(localStorage.getItem(campo.tipologica));
 
-    if (valoriSelect) {
+    if (valoriTipologica) {
 
-      // Se la select dipende da un'altra select, filtro i valori da inserire nelle opzioni
-      if (campo.dipendeDa) {
-        const selectPadre = this.listaCampiDinamici.find(item => item.id === campo.dipendeDa);
-        const valoreSelectPadre = this.model[this.getNomeCampoForm(selectPadre)];
+      // Converto i valori in oggetti OpzioneSelect
+      valoriTipologica.forEach(valore => {
+        switch (campo.tipologica) {
+          // Inserire qui logica per l'impostazione delle opzioni di nuove tipologiche di select
 
-        // Se la select da cui si dipende è avvalorata, filtro i valori della select dipendente; Altrimenti, la select dipendente resta senza valori
-        if (valoreSelectPadre) {
-          const idSelectPadre = selectPadre.opzioni.find(opzione => opzione.value === valoreSelectPadre)?.id;
-          switch (campo.tipologica) {
-            // Inserire qui logica per i vari campi select dipendenti da altre select
-
-            case TipologicaSelectEnum.COMUNI:
-              // Filtro i comuni il cui codice istat inizia con le 3 cifre della provincia selezionata
-              valoriSelect = valoriSelect.filter(valore => {
-                return valore.codiceIstat?.substring(0, 3) === idSelectPadre;
-              });
-              break;
-          }
-        } else {
-          valoriSelect = [];
+          case TipologicaSelectEnum.PROVINCE:
+            campo.opzioni.push({
+              id: valore.codice,
+              value: valore.nome,
+              label: valore.nome
+            });
+            break;
+          case TipologicaSelectEnum.COMUNI:
+            campo.opzioni.push({
+              id: valore.codiceIstat,
+              value: valore.nome,
+              label: valore.nome
+            });
+            break;
         }
+      });
+
+      // Se la select dipende da un'altra select, filtro le opzioni
+      if (campo.dipendeDa) {
+        const campoPadre = this.listaCampiDinamici.find(item => item.id === campo.dipendeDa);
+        const valoreCampoPadre = this.model[this.getNomeCampoForm(campoPadre)];
+        this.filtraOpzioniSelectDipendente(campo, campoPadre, valoreCampoPadre);
+      }
+
+      // Ordino le opzioni della select
+      campo.opzioni = _.sortBy(campo.opzioni, ['label']);
+    }
+  }
+
+  filtraOpzioniSelectDipendente(campo: CampoForm, campoPadre: CampoForm, valoreCampoPadre: any) {
+    /*
+        Inserire qui altre regole di dipendenza custom fra le tipologiche.
+        In mancanza di una regola custom, la select dipendente avrà tutte le opzioni se la select padre è selezionata, e nessuna opzione se la select padre NON è selezionata
+     */
+
+    if (campoPadre.tipoCampo === TipoCampoEnum.SELECT && valoreCampoPadre) {
+      if (campo.tipologica === TipologicaSelectEnum.COMUNI && campoPadre.tipologica === TipologicaSelectEnum.PROVINCE) {
+        const idOpzioneSelezionataCampoPadre = campoPadre.opzioni.find(opzione => opzione.value === valoreCampoPadre)?.id;
+        // inserisco nelle opzioni solo i comuni che hanno l'id (codiceIstat) che inizia con le 3 cifre dell'id (codice) della provincia
+        campo.opzioni = campo.opzioni.filter(opzione => opzione.id?.substring(0, 3) === idOpzioneSelezionataCampoPadre);
+      } else {
+        // Le opzioni non vengono filtrate
+        campo.opzioni = campo.opzioni;
       }
     } else {
-      valoriSelect = [];
+      campo.opzioni = [];
     }
-    
-    valoriSelect.forEach(valore => {
-      switch (campo.tipologica) {
-        // Inserire qui logica per l'impostazione delle opzioni dei vari tipi di select
-
-        case TipologicaSelectEnum.PROVINCE:
-          opzioniSelect.push({
-            id: valore.codice,
-            value: valore.nome,
-            label: valore.nome
-          });
-          break;
-        case TipologicaSelectEnum.COMUNI:
-          opzioniSelect.push({
-            id: valore.codiceIstat,
-            value: valore.nome,
-            label: valore.nome
-          });
-          break;
-      }
-    });
-
-    Utils.ordinaOpzioniSelect(opzioniSelect);
-
-    campo.opzioni = opzioniSelect;
   }
 
   creaListaBollettini(): Bollettino[] {
@@ -751,7 +762,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     this.listaCampiDinamici.forEach(campo => {
       const nomeCampo = this.getNomeCampoForm(campo);
       const field: CampoDettaglioTransazione = new CampoDettaglioTransazione();
-      field.titolo = nomeCampo;
+      field.titolo = this.getTitoloCampo(campo);
       field.valore = this.model[nomeCampo];
       bollettino.listaCampoDettaglioTransazione.push(field);
     });

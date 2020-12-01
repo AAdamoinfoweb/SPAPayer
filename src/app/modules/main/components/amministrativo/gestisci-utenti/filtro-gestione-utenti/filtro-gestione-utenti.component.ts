@@ -17,6 +17,7 @@ import {AmministrativoService} from "../../../../../../services/amministrativo.s
 import {FiltroGestioneElementiComponent} from "../../filtro-gestione-elementi.component";
 import {Utils} from '../../../../../../utils/Utils';
 import {ActivatedRoute} from "@angular/router";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-filtro-gestione-utenti',
@@ -44,8 +45,6 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
 
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaUtente> = new EventEmitter<ParametriRicercaUtente>();
-
-  idFunzione;
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private funzioneService: FunzioneService, private utenteService: UtenteService, private overlayService: OverlayService,
@@ -80,7 +79,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
         });
       });
 
-      Utils.ordinaOpzioniSelect(this.listaSocieta);
+      this.listaSocieta = _.sortBy(this.listaSocieta, ['label']);
 
       if (this.filtroSocieta) {
         const isFiltroSocietaValido = this.listaSocieta.some(item => item.value === this.filtroSocieta);
@@ -104,7 +103,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: livello.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaLivelliTerritoriali);
+      this.listaLivelliTerritoriali = _.sortBy(this.listaLivelliTerritoriali, ['label']);
     })).subscribe();
   }
 
@@ -123,7 +122,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: ente.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaEnti);
+      this.listaEnti = _.sortBy(this.listaEnti, ['label']);
     })).subscribe();
   }
 
@@ -142,7 +141,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: servizio.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaServizi);
+      this.listaServizi = _.sortBy(this.listaServizi, ['label']);
     })).subscribe();
   }
 
@@ -154,7 +153,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
           label: funzione.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaFunzioniAbilitate);
+      this.listaFunzioniAbilitate = _.sortBy(this.listaFunzioniAbilitate, ['label']);
     })).subscribe();
   }
 

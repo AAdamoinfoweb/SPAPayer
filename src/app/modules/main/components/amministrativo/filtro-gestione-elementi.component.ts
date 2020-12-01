@@ -18,7 +18,7 @@ export abstract class FiltroGestioneElementiComponent {
     });
   }
 
-  abstract idFunzione;
+  idFunzione;
   basePath;
 
   abstract onChangeFiltri: EventEmitter<any>;

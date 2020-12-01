@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../../enums/funzioneGestione.enum';
 import {Tabella} from '../../../../../../model/tabella/Tabella';
 import {tipoColonna} from '../../../../../../../../enums/TipoColonna.enum';
@@ -13,9 +13,10 @@ import {Utils} from '../../../../../../../../utils/Utils';
   templateUrl: './seleziona-conto-corrente.component.html',
   styleUrls: ['./seleziona-conto-corrente.component.scss']
 })
-export class SelezionaContoCorrenteComponent implements OnInit, AfterViewInit {
+export class SelezionaContoCorrenteComponent implements OnInit, AfterViewInit, OnChanges {
 
-  constructor() { }
+  constructor() {
+  }
 
   // enums consts
   FunzioneGestioneEnum = FunzioneGestioneEnum;
@@ -90,5 +91,11 @@ export class SelezionaContoCorrenteComponent implements OnInit, AfterViewInit {
     contoCorrente.fineValidita = row.scadenza.value;
     this.onClick.emit(contoCorrente);
     this.display = false;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.listaContiCorrente != null) {
+      this.impostaTabellaContiCorrente();
+    }
   }
 }

@@ -259,7 +259,7 @@ export class Utils {
   static bannerOperazioneSuccesso(): Banner {
     const banner: Banner = {
       titolo: 'SUCCESSO',
-      testo: 'Operazione eseguita correttamente',
+      testo: 'Operazione conclusa con successo',
       tipo: getBannerType(LivelloBanner.SUCCESS)
     };
     return banner;

@@ -1,0 +1,46 @@
+/*prime ng font component*/
+:host ::ng-deep .p-component{
+  font-family: "Titillium Web", Geneva,Tahoma,sans-serif;
+  font-size: 12px;
+}
+
+/*prime ng link*/
+:host ::ng-deep .p-link:focus {
+  box-shadow: none;
+}
+
+.text-muted {
+  color: #77777B;
+}
+
+.text-invalid {
+  color: #FF0000;
+}
+
+:host ::ng-deep .p-autocomplete.p-component {
+  width: 100%;
+}
+
+:host ::ng-deep .required:after {
+  content: ' *';
+  color: red;
+}
+
+:host ::ng-deep .text-invalid {
+  color: #FF0000;
+}
+
+@media screen and (min-width: 768px) {
+  #containerBottoneCrea {
+    margin-top: 25px;
+  }
+}
+
+.btn-find {
+  text-align: right;
+  margin-left: -6%;
+}
+
+:host ::ng-deep .p-autocomplete.p-component {
+  width: 100%;
+}

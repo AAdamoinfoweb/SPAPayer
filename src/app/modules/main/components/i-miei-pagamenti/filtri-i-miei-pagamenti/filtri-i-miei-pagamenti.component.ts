@@ -16,6 +16,7 @@ import {Utils} from "../../../../../utils/Utils";
 import {Banner} from "../../../model/banner/Banner";
 import {BannerService} from "../../../../../services/banner.service";
 import {getBannerType, LivelloBanner} from "../../../../../enums/livelloBanner.enum";
+import * as _ from 'lodash';
 
 
 @Component({
@@ -73,7 +74,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           label: livello.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaLivelliTerritoriali);
+      this.listaLivelliTerritoriali = _.sortBy(this.listaLivelliTerritoriali, ['label']);
     })).subscribe();
   }
 
@@ -85,7 +86,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           label: ente.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaEnti);
+      this.listaEnti = _.sortBy(this.listaEnti, ['label']);
     })).subscribe();
   }
 
@@ -97,7 +98,7 @@ export class FiltriIMieiPagamentiComponent implements OnInit {
           label: servizio.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaServizi);
+      this.listaServizi = _.sortBy(this.listaServizi, ['label']);
     })).subscribe();
   }
 

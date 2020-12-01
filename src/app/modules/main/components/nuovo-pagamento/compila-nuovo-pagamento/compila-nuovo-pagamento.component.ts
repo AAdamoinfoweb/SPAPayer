@@ -8,7 +8,7 @@ import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {OverlayService} from '../../../../../services/overlay.service';
 import {MenuService} from "../../../../../services/menu.service";
 import {DatiPagamento} from '../../../model/bollettino/DatiPagamento';
-import {Utils} from '../../../../../utils/Utils';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-compila-nuovo-pagamento',
@@ -57,7 +57,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: livello.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaLivelliTerritoriali);
+      this.listaLivelliTerritoriali = _.sortBy(this.listaLivelliTerritoriali, ['label']);
 
       if (this.datiPagamento) {
         this.nuovoPagamentoService.recuperaFiltroEnti(null, null, this.filtroPagamento).pipe(map(enti => {
@@ -128,7 +128,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
           label: ente.nome
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaEnti);
+      this.listaEnti = _.sortBy(this.listaEnti, ['label']);
 
       if (this.datiPagamento) {
         const ente = this.listaEnti.find(item => item.value.id === this.datiPagamento.enteId)?.value;
@@ -160,7 +160,7 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
             label: servizio.nome
           });
         });
-        Utils.ordinaOpzioniSelect(this.listaServizi);
+        this.listaServizi = _.sortBy(this.listaServizi, ['label']);
 
         if (this.datiPagamento) {
           const servizio = this.listaServizi.find(item => item.value.id === this.datiPagamento.servizioId)?.value;

@@ -29,8 +29,6 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   readonly tooltipGestisciUtentiTitle = 'In questa pagina puoi consultare la lista completa degli utenti e filtrarli';
 
-  idFunzione;
-
   breadcrumbList = [];
 
   codiceFiscaleUtenteDaModificare: string;

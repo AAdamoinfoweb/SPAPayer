@@ -13,6 +13,7 @@ import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../utils/Utils';
 import {ActivatedRoute} from "@angular/router";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-filtro-monitoraggio-accessi',
@@ -28,15 +29,14 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
   readonly formatoData = Utils.FORMAT_DATE_CALENDAR;
 
   listaFunzioniAbilitate: Array<OpzioneSelect> = [];
+
   funzioneSelezionata: number = null;
 
   listaIdUtenti = [];
   idUtenteSelezionato: string = null;
   indirizzoIPSelezionato: string = null;
-  dataDaSelezionata: string = null;
-  dataASelezionata: string = null;
-
-  idFunzione;
+  dataDaSelezionata: string = moment().subtract(1, 'months').format(this.formatoData);
+  dataASelezionata: string = moment().format(this.formatoData);
 
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaAccesso> = new EventEmitter<ParametriRicercaAccesso>();
@@ -53,6 +53,9 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
   ngOnInit(): void {
     this.popolaFiltroFunzioni();
+
+    // Carico gli accessi con i filtri già impostati
+    this.onChangeFiltri.emit(this.getParametriRicerca());
   }
 
   popolaFiltroFunzioni() {
@@ -64,7 +67,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
           label: funzione.descrizione
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaFunzioniAbilitate);
+      this.listaFunzioniAbilitate = _.sortBy(this.listaFunzioniAbilitate, ['label']);
     });
   }
 

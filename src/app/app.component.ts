@@ -10,6 +10,7 @@ import {OverlayService} from './services/overlay.service';
 import {DatiPagamento} from './modules/main/model/bollettino/DatiPagamento';
 import {EsitoEnum} from './enums/esito.enum';
 import {of} from "rxjs";
+import {DatiModaleCampo} from './modules/main/components/amministrativo/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +20,10 @@ import {of} from "rxjs";
 export class AppComponent implements OnInit {
 
   title = '';
-  caricamento = false;
-  datiPagamento = null;
+  mostraModale = false;
+  datiPagamento: DatiPagamento = null;
+  datiModaleCampo: DatiModaleCampo = null;
+  idFunzione: string;
 
   constructor(private menuService: MenuService,
               private router: Router,
@@ -33,22 +36,38 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-      this.idleService.startWatching();
-      this.idleService.onTimerStart().subscribe(count => console.log(count));
-      this.idleService.onTimeout().subscribe(() => {
-        this.logout();
-      });
+    this.idleService.startWatching();
+    this.idleService.onTimerStart().subscribe(count => console.log(count));
+    this.idleService.onTimeout().subscribe(() => {
+      this.logout();
+    });
 
-      this.overlayService.mostraModaleDettaglioPagamentoEvent.subscribe(datiPagamento => {
+    this.overlayService.mostraModaleDettaglioPagamentoEvent
+      .subscribe(datiPagamento => {
         this.datiPagamento = datiPagamento;
+        this.mostraModale = datiPagamento != null;
         this.cdr.detectChanges();
       });
 
-      this.menuService.getInfoUtente().subscribe((info) => {
-        this.menuService.infoUtenteEmitter.emit(info);
-      }, catchError((err, caught) => of(null)));
+    this.overlayService.mostraModaleCampoEvent
+      .subscribe(datiModaleCampo => {
+        this.datiModaleCampo = datiModaleCampo;
+        this.mostraModale = datiModaleCampo != null;
+        this.cdr.detectChanges();
+      });
 
-      this.letturatipologicheSelect();
+    this.overlayService.mostraModaleTipoCampoEvent
+      .subscribe(idFunzione => {
+        this.idFunzione = idFunzione;
+        // Non imposto mostraModale false se idFunzione null in quando mostraModale gestisce la comparsa delle modali di primo livello (non innestate)
+        this.cdr.detectChanges();
+      });
+
+    this.menuService.getInfoUtente().subscribe((info) => {
+      this.menuService.infoUtenteEmitter.emit(info);
+    }, catchError((err, caught) => of(null)));
+
+    this.letturatipologicheSelect();
   }
 
   // @HostListener('window:beforeunload')
@@ -63,12 +82,16 @@ export class AppComponent implements OnInit {
   }
 
   letturatipologicheSelect(): void {
-    this.toponomasticaService.recuperaProvince().pipe(map(res => {
-      localStorage.setItem(TipologicaSelectEnum.PROVINCE, JSON.stringify(res));
-    })).subscribe();
+    if (!localStorage.getItem(TipologicaSelectEnum.PROVINCE)) {
+      this.toponomasticaService.recuperaProvince().pipe(map(res => {
+        localStorage.setItem(TipologicaSelectEnum.PROVINCE, JSON.stringify(res));
+      })).subscribe();
+    }
 
-    this.toponomasticaService.recuperaComuni().pipe(map(res => {
-      localStorage.setItem(TipologicaSelectEnum.COMUNI, JSON.stringify(res));
-    })).subscribe();
+    if (!localStorage.getItem(TipologicaSelectEnum.COMUNI)) {
+      this.toponomasticaService.recuperaComuni().pipe(map(res => {
+        localStorage.setItem(TipologicaSelectEnum.COMUNI, JSON.stringify(res));
+      })).subscribe();
+    }
   }
 }

@@ -57,7 +57,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   mapPermessi: Map<string, PermessoCompleto> = new Map();
   isFormDatiUtenteValido = false;
   funzione: FunzioneGestioneEnum;
-  idFunzione;
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;

@@ -31,8 +31,6 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
 
   readonly funzioneGestisciEnti = '/gestisciEnti';
 
-  idFunzione;
-
   breadcrumbList = [];
 
   isMenuCarico = false;

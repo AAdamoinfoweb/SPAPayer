@@ -1,0 +1,168 @@
+<div class="container-fluid">
+  <!-- breadcrumb -->
+  <it-breadcrumb [dark]="false" [separator]="'/'">
+    <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
+                        [link]="item.link">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
+
+  <!-- titolo -->
+  <h3 class="mb-2 page-title"><strong>{{titoloPagina}}</strong>
+    <span it-tooltip="{{tooltip}}">
+      <svg class="bg-light icon icon-lg icon-padded">
+        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+      </svg>
+    </span>
+  </h3>
+
+  <span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
+
+  <!-- dati -->
+  <app-filtro-gestione-tipologia-servizio
+    *ngIf="idFunzione"
+    [filtriIniziali]="filtro"
+    [funzione]="funzione"
+    (onChangeFiltri)="onChangeFiltri($event)"
+  ></app-filtro-gestione-tipologia-servizio>
+
+  <div *ngIf="filtro?.raggruppamentoId" class="ml-4">
+
+    <div class="row">
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="codice" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Codice</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input id="codice"
+                   type="text"
+                   [disabled]="this.funzione != FunzioneGestioneEnum.AGGIUNGI"
+                   [(ngModel)]="codiceTipologia"
+            />
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>
+
+            </p>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-4 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="nome" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Nome</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input id="nome"
+                   type="text"
+                   [(ngModel)]="nomeTipologia"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+            />
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>
+
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <label class="title">Lista campi tipologia servizio</label>
+        <span class="pointer bottone-campo"
+             *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
+        <span ngbTooltip="Crea nuovo campo" placement="bottom"
+              [ngStyle]="{fill: '#403d39'}">
+          <svg (click)="add()" class="bg-light icon icon-sm filled">
+            <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+          </svg>
+        </span>
+        </span>
+      </div>
+    </div>
+    <div class="row" *ngIf="items.length > 0">
+      <ul class="legend">
+        <li><span class="field-disabled"></span> Campo disabilitato</li>
+        <li><span class="required"></span> Campo obbligatorio</li>
+        <li><span class="key"></span> Campo chiave</li>
+      </ul>
+    </div>
+
+    <div *ngIf="!waiting" class="row" cdkDropListGroup>
+      <ng-container *ngFor="let item of items;let i=index">
+        <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
+             cdkDropListOrientation="horizontal"
+             [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
+          <div style="min-height: 5vh;"
+               [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
+               'field-input': (item.campoInput && !item.disabilitato)}"
+               [cdkDragDisabled]="funzione == FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
+            <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
+            <div class="row" style="width: 100%">
+              <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i" (dblclick)="dblClick(item, i)"
+                   class="col-7 text-right">{{item.titolo}}</div>
+              <div *ngIf="showEditId == i" class="col-6 text-right">
+                <input autofocus
+                       (keyup.enter)="showEditId = null"
+                       [(ngModel)]="item.titolo"/>
+              </div>
+              <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span></div>
+              <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
+              <div class="col-3 text-right">
+                <span class="close" (click)="removeItem(item)"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+      <!-- Bottone sx -->
+      <div class="col-2">
+        <button id="buttonAnnulla" class="btn btn-secondary"
+                (click)="onClickAnnulla(funzione)">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
+      </div>
+      <!-- Bottoni dx -->
+      <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+        <button id="buttonSalva" class="btn" [disabled]="!abilitaSalva()" (click)="onClickSalva()">Salva</button>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="!filtro">
+    <!-- Bottone sx -->
+    <div class="col-2">
+      <button id="buttonIndietro" class="btn btn-secondary"
+              (click)="onClickAnnulla(funzione)">{{'Indietro'}}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modale -->
+<p-confirmDialog #cb icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button type="button" class="undoButton" pButton icon="pi pi-times" label="Annulla" (click)="cb.reject()"></button>
+    <button type="button" class="okButton" pButton icon="pi pi-check" label="Conferma" (click)="cb.accept()"></button>
+  </p-footer>
+</p-confirmDialog>

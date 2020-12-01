@@ -1,0 +1,66 @@
+.modal-wrapper {
+  height: 100%;
+  margin-top: 2vh;
+}
+
+.form-elem-container {
+  padding-left: 2vw;
+  padding-right: 2vw;
+}
+
+.buttons-row {
+  margin-top: 3vh;
+}
+
+.required:after {
+  content: ' *';
+  color: red;
+}
+
+input[type=checkbox] {
+  margin-top: 10px;
+  margin-left: 10px;
+  height: 20px !important;
+  width: 20px;
+}
+
+// risoluzione >= col-md
+@media screen and (min-width: 576px) {
+  .form-elem-container {
+    margin-top: 3vh;
+  }
+
+  #containerBottoneAggiungiTipoCampo {
+    margin-top: 25px;
+  }
+
+  .modal-wrapper {
+    margin-left: 2vw;
+    margin-right: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .form-row {
+    height: 80%;
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+// risoluzione < col-sm
+@media screen and (max-width: 575px) {
+  .form-elem-container {
+    margin-top: 1vh;
+  }
+
+  #containerBottoneAggiungiTipoCampo {
+    padding-left: 0px;
+  }
+
+  .modal-wrapper {
+    margin-left: 4vw;
+    margin-right: 4vw;
+  }
+}
