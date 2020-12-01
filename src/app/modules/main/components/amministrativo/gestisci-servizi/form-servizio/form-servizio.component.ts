@@ -61,6 +61,7 @@ import * as moment from 'moment';
 import {BannerService} from "../../../../../../services/banner.service";
 import {aggiornaTipoCampoEvent} from '../../gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
 import {aggiungiTipoCampoEvent} from '../../gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
+import {RoutingService} from "../../../../../../services/routing.service";
 
 @Component({
   selector: 'app-form-servizio',
@@ -82,7 +83,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
               protected amministrativoService: AmministrativoService,
               private viewportRuler: ViewportRuler,
               protected confirmationService: ConfirmationService,
-              private campoTipologiaServizioService: CampoTipologiaServizioService) {
+              private campoTipologiaServizioService: CampoTipologiaServizioService,
+              private routingService: RoutingService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
@@ -170,10 +172,12 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.firstAdd = true;
         if (this.funzione == FunzioneGestioneEnum.AGGIUNGI) {
           this.aggiungiContoCorrente();
-        } else if (this.servizio.beneficiario.listaContiCorrenti) {
-          this.servizio.beneficiario.listaContiCorrenti.forEach(value1 => {
-            this.aggiungiContoCorrente(value1);
-          });
+        } else {
+          if (this.servizio.beneficiario.listaContiCorrenti) {
+            this.servizio.beneficiario.listaContiCorrenti.forEach(value1 => {
+              this.aggiungiContoCorrente(value1);
+            });
+          }
         }
       }
     });
@@ -258,6 +262,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
               cc.fineValidita = moment(cc.fineValidita).format(Utils.FORMAT_DATE_CALENDAR);
           });
           this._onChangeLivelloTerritorialeBeneficiario(this.beneficiario.livelloTerritorialeId);
+          this.enteService.recuperaContiCorrenti(this.beneficiario.enteId, this.idFunzione).subscribe(contiCorrenti  => {
+            this.listaContiCorrente = contiCorrenti;
+          });
         }
 
         this.emailsControl = [];
@@ -419,6 +426,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.configuraServizioService.modificaServizio(this.servizio, this.idFunzione)
         .subscribe((id) => {
           if (id) {
+            this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaServizio/' + this.servizio.id, null);
             this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
