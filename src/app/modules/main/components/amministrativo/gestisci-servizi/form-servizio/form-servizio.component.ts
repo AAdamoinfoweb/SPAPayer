@@ -492,7 +492,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       const params = new ParametriRicercaEnte();
       params.societaId = this.impositore.societaId;
       params.livelloTerritorialeId = livelloTerritorialeId;
-      return this.configuraServizioService.filtroEnti(params)
+      return this.configuraServizioService.filtroEnti(params, this.idFunzione)
         .pipe(map((value) => {
           this.listaEnti = value;
 
