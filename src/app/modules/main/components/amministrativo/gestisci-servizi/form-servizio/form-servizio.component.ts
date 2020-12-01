@@ -186,7 +186,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         campoForm.campoTipologiaServizioId = campoForm.id;
         this.campoTipologiaServizioList[campoFormIdx] = _.cloneDeep(campoForm);
       } else if (campoFormIdx2 != -1) {
-        this.campoServizioAddList[campoFormIdx] = _.cloneDeep(campoForm);
+        this.campoServizioAddList[campoFormIdx2] = _.cloneDeep(campoForm);
       } else {
         campoForm.uuid = uuidv4();
         campoForm.draggable = true;
