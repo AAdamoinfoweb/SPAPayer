@@ -205,7 +205,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
   getRigheFileExcel(righe: any[]): any[] {
     return righe.map(riga => {
       delete riga.id;
-      //riga.servizioAttivo = riga.servizioAttivo.value;
+      riga.servizioAttivo = riga.servizioAttivo.value;
       riga.nome = riga.nome.value;
       riga.tipologiaServizioDescrizione = riga.tipologiaServizioDescrizione.value;
       riga.livelloIntegrazioneNome = riga.livelloIntegrazioneNome.value;

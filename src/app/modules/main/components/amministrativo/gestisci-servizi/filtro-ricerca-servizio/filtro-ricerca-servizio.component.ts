@@ -57,8 +57,8 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
 
   inizializzaOpzioniRaggruppamento(): void {
     this.configuraServizioService.configuraServiziFiltroRaggruppamento(null, this.idFunzione)
-      .subscribe(listaRaggruppamenti => {
-        this.opzioniRaggruppamento = listaRaggruppamenti;
+      .subscribe(value => {
+        this.opzioniRaggruppamento = _.orderBy(value,  [s => s.nome.toLowerCase()]);
       });
   }
 
@@ -108,17 +108,19 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
 
   private caricaEnteBeneficiario() {
     this.configuraServizioService.configuraServiziFiltroEnteBeneficiario(null, this.idFunzione)
-      .pipe(map((value) => this.listaEntiBeneficiario = value)).subscribe();
+      .pipe(map((value) => this.listaEntiBeneficiario = _.orderBy(value,  [s => s.nome.toLowerCase()]))).subscribe();
   }
 
   private caricaEnteImpositore() {
     this.configuraServizioService.configuraServiziFiltroEnteImpositore(null, this.idFunzione)
-      .pipe(map((value) => this.listaEntiImpositore = value)).subscribe();
+      .pipe(map((value) => this.listaEntiImpositore = _.orderBy(value,  [s => s.nome.toLowerCase()]))).subscribe();
   }
 
   private caricaServizi() {
     this.configuraServizioService.filtroServizio(null, this.idFunzione)
-      .pipe(map((value) => this.listaServizi = value)).subscribe();
+      .pipe(map((value) => {
+        this.listaServizi = _.orderBy(value,  [s => s.nome.toLowerCase()]);
+      })).subscribe();
   }
 
   private caricaLivelliIntegrazione() {
