@@ -57,9 +57,9 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     rows: [],
     cols: [
       {field: 'iconaUtente', header: '', type: tipoColonna.ICONA},
-      {field: 'id', header: 'User ID (Cod. Fisc.)', type: tipoColonna.TESTO},
+      {field: 'id', header: 'User ID (Codice fiscale)', type: tipoColonna.TESTO},
       {field: 'nome', header: 'Cognome e Nome', type: tipoColonna.TESTO},
-      {field: 'gruppoAbilitazioni', header: 'Gruppi Abilitazioni', type: tipoColonna.TESTO},
+      {field: 'gruppoAbilitazioni', header: 'Gruppi Abilitazione', type: tipoColonna.TESTO},
       {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
       {field: 'ultimoAccesso', header: 'Ultimo accesso', type: tipoColonna.LINK}
     ],
@@ -225,7 +225,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   getNumeroRecord(): string {
     const numeroUtentiAttivi = this.listaElementi.filter(row => this.isUtenteAttivo(row)).length;
     const numeroUtentiDisabilitati = this.listaElementi.filter(row => !this.isUtenteAttivo(row)).length;
-    return 'Totale: ' + this.listaElementi.length + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
+    return 'Totale: ' + this.listaElementi.length + ' utenti' + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
   }
 
   selezionaRigaTabella(rowsChecked): void {

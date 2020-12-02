@@ -1,13 +1,4 @@
-import {
-  Component,
-  ComponentFactoryResolver,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
 import {Schedulazione} from '../../../model/schedulazione/Schedulazione';
@@ -66,7 +57,12 @@ export class SchedulazioneComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.idFunzione) {
       if (this.idFunzione) {
-        this.recuperaRegexSchedulazione();
+        // const regex = localStorage.getItem('regexSchedulazione');
+        // if (regex) {
+        //   this.regexSchedulazione = JSON.parse(regex);
+        // } else {
+          this.recuperaRegexSchedulazione();
+        // }
       }
     }
   }
@@ -117,6 +113,8 @@ export class SchedulazioneComponent implements OnInit, OnChanges {
     this.schedulazioneService.regexSchedulazione(this.idFunzione).subscribe((response) => {
       if (!(response instanceof HttpErrorResponse)) {
         this.regexSchedulazione = response;
+        const regex = JSON.stringify(this.regexSchedulazione);
+        localStorage.setItem('regexSchedulazione', regex);
       }
     });
   }
