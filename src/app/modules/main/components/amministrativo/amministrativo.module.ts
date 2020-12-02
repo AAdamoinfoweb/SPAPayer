@@ -2,7 +2,6 @@ import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormUtentePermessiComponent} from './gestisci-utenti/form-utente-permessi/form-utente-permessi.component';
 import {GestisciUtentiComponent} from './gestisci-utenti/gestisci-utenti.component';
 import {FiltroGestioneUtentiComponent} from './gestisci-utenti/filtro-gestione-utenti/filtro-gestione-utenti.component';
-
 import {DatiUtenteComponent} from './gestisci-utenti/dati-utente/dati-utente.component';
 import {DatiPermessoComponent} from './gestisci-utenti/dati-permesso/dati-permesso.component';
 import {AmministrativoParentComponent} from './amministrativo-parent.component';
@@ -79,6 +78,18 @@ import {FormServizioComponent} from './gestisci-servizi/form-servizio/form-servi
 import {FiltroGestioneServizioComponent} from './gestisci-servizi/filtro-gestione-servizio/filtro-gestione-servizio.component';
 import { GestisciServiziComponent } from './gestisci-servizi/gestisci-servizi.component';
 import { FiltroRicercaServizioComponent } from './gestisci-servizi/filtro-ricerca-servizio/filtro-ricerca-servizio.component';
+import {RendicontazioneComponent} from './gestisciportale/rendicontazione/rendicontazione.component';
+import {FiltroRendicontazioneComponent} from './gestisciportale/rendicontazione/filtro-rendicontazione/filtro-rendicontazione.component';
+import {DettaglioRendicontazioneComponent} from './gestisciportale/rendicontazione/dettaglio-rendicontazione/dettaglio-rendicontazione.component';
+import { MonitoraggioTransazioniComponent } from './gestisciportale/monitoraggio-transazioni/monitoraggio-transazioni.component';
+import { FiltroMonitoraggioTransazioniComponent } from './gestisciportale/monitoraggio-transazioni/filtro-monitoraggio-transazioni/filtro-monitoraggio-transazioni.component';
+import {DatiRendicontazioneComponent} from './gestisciportale/rendicontazione/dati-rendicontazione/dati-rendicontazione.component';
+import {DettaglioTransazioneComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-transazione.component';
+import {DatiTransazioneComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dati-transazione/dati-transazione.component';
+import {DettaglioPendenzaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-pendenza/dettaglio-pendenza.component';
+import {DatiPendenzaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-pendenza/dati-pendenza/dati-pendenza.component';
+import {DettaglioEsitoNotificaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dettaglio-esito-notifica.component';
+import {DatiNotificaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dati-notifica/dati-notifica.component';
 
 
 @NgModule({
@@ -126,10 +137,8 @@ import { FiltroRicercaServizioComponent } from './gestisci-servizi/filtro-ricerc
     DatiParametroComponent,
     DatiDestinatarioComponent,
     SelezionaContoCorrenteComponent,
-
     FormUtentePermessiComponent,
     GestisciUtentiComponent,
-
     FormTipologiaServizioComponent,
     GestisciTipologiaServizioComponent,
     FiltroGestioneTipologiaServizioComponent,
@@ -138,7 +147,19 @@ import { FiltroRicercaServizioComponent } from './gestisci-servizi/filtro-ricerc
     FormServizioComponent,
     FiltroGestioneServizioComponent,
     GestisciServiziComponent,
-    FiltroRicercaServizioComponent
+    FiltroRicercaServizioComponent,
+    RendicontazioneComponent,
+    FiltroRendicontazioneComponent,
+    DettaglioRendicontazioneComponent,
+    MonitoraggioTransazioniComponent,
+    FiltroMonitoraggioTransazioniComponent,
+    DatiRendicontazioneComponent,
+    DettaglioTransazioneComponent,
+    DatiTransazioneComponent,
+    DettaglioPendenzaComponent,
+    DatiPendenzaComponent,
+    DettaglioEsitoNotificaComponent,
+    DatiNotificaComponent
   ],
   imports: [
     HttpClientModule,

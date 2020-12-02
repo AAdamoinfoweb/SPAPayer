@@ -63,6 +63,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
   listaElementi: SintesiEnte[] = [];
   filtriRicerca: ParametriRicercaEnte = null;
 
+  enteId = null;
   livelloTerritorialeId = null;
 
   constructor(router: Router,
@@ -76,6 +77,9 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     super(router, route, http, amministrativoService);
 
     this.route.queryParams.subscribe(params => {
+      if (params.enteId) {
+        this.enteId = parseInt(params.enteId);
+      }
       if (params.livelloTerritorialeId) {
         this.livelloTerritorialeId = parseInt(params.livelloTerritorialeId);
       }

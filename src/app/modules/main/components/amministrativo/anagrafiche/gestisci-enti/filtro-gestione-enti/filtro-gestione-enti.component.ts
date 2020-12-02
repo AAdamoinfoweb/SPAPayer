@@ -34,6 +34,8 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
 
   idFunzione;
 
+  @Input() enteId = null;
+
   @Input() livelloTerritorialeId = null;
 
   @Output()
@@ -121,7 +123,19 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
         label: ente.nomeEnte
       });
     });
-    Utils.ordinaOpzioniSelect(this.opzioniFiltroEnte);
+    this.opzioniFiltroEnte = _.sortBy(this.opzioniFiltroEnte, ['label']);
+
+    if (this.enteId) {
+      const isEnteIdValido = this.opzioniFiltroEnte.some(item => item.value === this.enteId);
+      if (isEnteIdValido) {
+        this.filtroRicercaEnte.enteId = this.enteId;
+        const parametriRicercaEnte = new ParametriRicercaEnte();
+        parametriRicercaEnte.enteId = this.enteId;
+        this.onChangeFiltri.emit(parametriRicercaEnte);
+      } else {
+        window.open('/nonautorizzato', '_self');
+      }
+    }
   }
 
   letturaComuni() {

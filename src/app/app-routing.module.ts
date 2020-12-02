@@ -35,6 +35,12 @@ import {FormStatisticaComponent} from './modules/main/components/amministrativo/
 import {GestisciAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/gestisci-attivita-pianificate.component';
 import {FormAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component';
 import {GestisciServiziComponent} from "./modules/main/components/amministrativo/gestisci-servizi/gestisci-servizi.component";
+import {RendicontazioneComponent} from './modules/main/components/amministrativo/gestisciportale/rendicontazione/rendicontazione.component';
+import {DettaglioRendicontazioneComponent} from './modules/main/components/amministrativo/gestisciportale/rendicontazione/dettaglio-rendicontazione/dettaglio-rendicontazione.component';
+import {MonitoraggioTransazioniComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/monitoraggio-transazioni.component';
+import {DettaglioTransazioneComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-transazione.component';
+import {DettaglioPendenzaComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-pendenza/dettaglio-pendenza.component';
+import {DettaglioEsitoNotificaComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dettaglio-esito-notifica.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -104,6 +110,12 @@ const routes: Routes = [
   {path: 'gestisciAttivitaPianificate/aggiungiAttivitaPianificata', component: FormAttivitaPianificateComponent},
   {path: 'gestisciAttivitaPianificate/modificaAttivitaPianificata/:attivitaId', component: FormAttivitaPianificateComponent},
   {path: 'gestisciAttivitaPianificate/dettaglioAttivitaPianificata/:attivitaId', component: FormAttivitaPianificateComponent},
+  {path: 'rendicontazione', component: RendicontazioneComponent},
+  {path: 'rendicontazione/dettaglioRendicontazione/:rendicontazioneId', component: DettaglioRendicontazioneComponent},
+  {path: 'monitoraggioTransazioni', component: MonitoraggioTransazioniComponent},
+  {path: 'monitoraggioTransazioni/dettaglioTransazioni/:transazioneId', component: DettaglioTransazioneComponent},
+  {path: 'monitoraggioTransazioni/dettaglioTransazioni/dettaglioPendenza/:dettaglioTransazioneId', component: DettaglioPendenzaComponent},
+  {path: 'monitoraggioTransazioni/:transazioneId/esitoNotifiche', component: DettaglioEsitoNotificaComponent}
 ];
 
 @NgModule({

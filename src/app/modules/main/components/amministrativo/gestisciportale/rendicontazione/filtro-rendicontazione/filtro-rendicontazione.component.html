@@ -1,0 +1,466 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="idCollapseFiltriRendicontazione">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true" aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroRendicontazioneForm="ngForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltriRendicontazione">
+    <div class="collapse-body">
+      <!-- Società, Livello territoriale, Ente -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectSocieta" class="title">Società</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectSocieta" name="societaId" #societaInput = "ngModel"
+                      [(ngModel)]="filtroRicercaRendicontazione.societaId">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput)}">
+                {{setPlaceholder(societaInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectLivelloTerritoriale" class="title">Livello territoriale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectLivelloTerritoriale" name="livelloTerritorialeId" #livelloTerritorialeInput = "ngModel"
+                      [(ngModel)]="filtroRicercaRendicontazione.livelloTerritorialeId">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of listaLivelloTerritoriale" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(livelloTerritorialeInput), 'text-invalid': isCampoInvalido(livelloTerritorialeInput)}">
+                {{setPlaceholder(livelloTerritorialeInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectEnte" class="title">Ente</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectEnte" name="enteId" #enteInput = "ngModel"
+                      [(ngModel)]="filtroRicercaRendicontazione.enteId">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of listaEnte" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput)}">
+                {{setPlaceholder(enteInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tipologia di servizio, Servizio, Identificativo transazione -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectTipologiaServizio" class="title">Tipologia di servizio</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectTipologiaServizio" name="tipologiaServizioId" #tipologiaServizioInput = "ngModel"
+                      [(ngModel)]="filtroRicercaRendicontazione.tipologiaServizioId">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of listaTipologiaServizio" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(tipologiaServizioInput), 'text-invalid': isCampoInvalido(tipologiaServizioInput)}">
+                {{setPlaceholder(tipologiaServizioInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectServizio" class="title">Servizio</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectServizio" name="servizioId" #servizioInput = "ngModel"
+                      [(ngModel)]="filtroRicercaRendicontazione.servizioId">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of listaServizio" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(servizioInput), 'text-invalid': isCampoInvalido(servizioInput)}">
+                {{setPlaceholder(servizioInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectIdentificativoTransazione" class="title">Identificativo transazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectIdentificativoTransazione" name="transazioneId" #idTransazioneInput = "ngModel"
+                      [(ngModel)]="filtroRicercaRendicontazione.transazioneId">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of listaTransazioneId" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(idTransazioneInput), 'text-invalid': isCampoInvalido(idTransazioneInput)}">
+                {{setPlaceholder(idTransazioneInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canale, Data Pagamento da/a, Importo transazione da/a -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectCanale" class="title">Canale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectCanale" name="canaleId" #canaleInput = "ngModel"
+                      [(ngModel)]="filtroRicercaRendicontazione.canaleId">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of listaCanale" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(canaleInput), 'text-invalid': isCampoInvalido(canaleInput)}">
+                {{setPlaceholder(canaleInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="dataPagamentoDa" class="title">Data pagamento da</label>
+            </div>
+          </div>
+          <div class="row">
+            <div [ngClass]="{'col calendar-wrapper': true}">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerDataPagamentoDa)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="dataPagamentoDa"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #dataPagamentoDaInput = "ngModel"
+                [(ngModel)]="filtroRicercaRendicontazione.dataPagamentoDa"
+                name="dataPagamentoDa"
+                #datePickerDataPagamentoDa
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(dataPagamentoDaInput), 'text-invalid': isCampoInvalido(dataPagamentoDaInput)}">
+                {{setPlaceholder(dataPagamentoDaInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="dataPagamentoA" class="title">Data pagamento a</label>
+            </div>
+          </div>
+          <div class="row">
+            <div [ngClass]="{'col calendar-wrapper': true}">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerDataPagamentoA)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="dataPagamentoA"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #dataPagamentoAInput = "ngModel"
+                [(ngModel)]="filtroRicercaRendicontazione.dataPagamentoA"
+                name="dataPagamentoA"
+                #datePickerDataPagamentoA
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(dataPagamentoAInput), 'text-invalid': isCampoInvalido(dataPagamentoAInput)}">
+                {{setPlaceholder(dataPagamentoAInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 pb-2">
+          <div class="row">
+            <label for="importoTransazioneDa" class="title">Importo transazione da</label>
+          </div>
+          <div class="row">
+            <input
+              class="price-input"
+              id="importoTransazioneDa"
+              name="importoTransazioneDa"
+              [(ngModel)]="filtroRicercaRendicontazione.importoTransazioneDa"
+              #importoTransazioneDaInput = "ngModel"
+              type="tel"
+              currencyMask
+              [options]="{allowNegative: false, prefix: '', precision: 2, decimal: ',', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
+              autocomplete="off"
+            />
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(importoTransazioneDaInput), 'text-invalid': isCampoInvalido(importoTransazioneDaInput)}">
+                {{setPlaceholder(importoTransazioneDaInput, 'string')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 pb-2 ml-1">
+          <div class="row">
+            <label for="importoTransazioneA" class="title">Importo transazione a</label>
+          </div>
+          <div class="row">
+            <input
+              class="price-input"
+              id="importoTransazioneA"
+              name="importoTransazioneA"
+              [(ngModel)]="filtroRicercaRendicontazione.importoTransazioneA"
+              #importoTransazioneAInput = "ngModel"
+              type="tel"
+              currencyMask
+              [options]="{allowNegative: false, prefix: '', precision: 2, decimal: ',', thousands: '', nullable: true, inputMode: 'FINANCIAL'}"
+              autocomplete="off"
+            />
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(importoTransazioneAInput), 'text-invalid': isCampoInvalido(importoTransazioneAInput)}">
+                {{setPlaceholder(importoTransazioneAInput, 'string')}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ID Flusso Rendicontazione, Data creazione rendiconto da/a, Tipo flusso -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="idFlussoRendicontazione" class="title">ID Flusso Rendicontazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="number" id="idFlussoRendicontazione" name="flussoRendicontazioneId" #idFlussoRendicontazioneInput="ngModel"
+                     [(ngModel)]="filtroRicercaRendicontazione.flussoRendicontazioneId" class="pt-0" autocomplete="off"
+                     aria-describedby="idFlussoRendicontazioneHelpDescription">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(idFlussoRendicontazioneInput), 'text-invalid': isCampoInvalido(idFlussoRendicontazioneInput)}">
+                {{setPlaceholder(idFlussoRendicontazioneInput, 'number')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="dataCreazioneRendicontoDa" class="title">Data creazione rendiconto da</label>
+            </div>
+          </div>
+          <div class="row">
+            <div [ngClass]="{'col calendar-wrapper': true}">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerDataCreazioneRendicontoDa)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="dataCreazioneRendicontoDa"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #dataCreazioneRendicontoDaInput = "ngModel"
+                [(ngModel)]="filtroRicercaRendicontazione.dataCreazioneRendicontoDa"
+                name="dataCreazioneRendicontoDa"
+                #datePickerDataCreazioneRendicontoDa
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(dataCreazioneRendicontoDaInput), 'text-invalid': isCampoInvalido(dataCreazioneRendicontoDaInput)}">
+                {{setPlaceholder(dataCreazioneRendicontoDaInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="dataCreazioneRendicontoA" class="title">Data creazione rendiconto a</label>
+            </div>
+          </div>
+          <div class="row">
+            <div [ngClass]="{'col calendar-wrapper': true}">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerDataCreazioneRendicontoA)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="dataCreazioneRendicontoA"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #dataCreazioneRendicontoAInput = "ngModel"
+                [(ngModel)]="filtroRicercaRendicontazione.dataCreazioneRendicontoA"
+                name="dataCreazioneRendicontoA"
+                #datePickerDataCreazioneRendicontoA
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(dataCreazioneRendicontoAInput), 'text-invalid': isCampoInvalido(dataCreazioneRendicontoAInput)}">
+                {{setPlaceholder(dataCreazioneRendicontoAInput, 'date')}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectTipoFlusso" class="title">Tipo flusso</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectTipoFlusso" name="tipoFlussoId" #tipoFlussoInput = "ngModel"
+                      [(ngModel)]="filtroRicercaRendicontazione.tipoFlussoId">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of listaTipoFlusso" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(tipoFlussoInput), 'text-invalid': isCampoInvalido(tipoFlussoInput)}">
+                {{setPlaceholder(tipoFlussoInput, 'select')}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottoni Pulisci e Cerca -->
+      <div class="row">
+        <div class="col-6">
+          <button type="button" id="bottonePulisci" class="btn btn-secondary"
+                  [disabled]="disabilitaBottone(filtroRendicontazioneForm, 'Pulisci')"
+                  (click)="pulisciFiltri(filtroRendicontazioneForm)">Pulisci</button>
+        </div>
+        <div class="col-6 text-right">
+          <button type="button" id="bottoneCerca" class="btn"
+                  [disabled]="disabilitaBottone(filtroRendicontazioneForm, 'Cerca')"
+                  (click)="cercaElementi()">Cerca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

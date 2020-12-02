@@ -287,8 +287,6 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     });
   }
 
-
-
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {
     listaBeneficiari = listaBeneficiari.map((beneficiario) => {
       const beneficiarioCopy = JSON.parse(JSON.stringify(beneficiario));

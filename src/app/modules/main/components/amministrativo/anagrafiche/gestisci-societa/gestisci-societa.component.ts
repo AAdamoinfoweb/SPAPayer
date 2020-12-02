@@ -38,7 +38,9 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   listaElementi: Array<Societa> = new Array<Societa>();
   filtriRicerca: number = null;
 
-   righeSelezionate: any[];
+  righeSelezionate: any[];
+
+  societaId = null;
 
   readonly toolbarIcons = [
     {type: ToolEnum.INSERT, tooltip: 'Aggiungi Società'},
@@ -70,6 +72,12 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
               private confirmationService: ConfirmationService, private bannerService: BannerService
               ) {
     super(router, route, http, amministrativoService);
+
+    this.route.queryParams.subscribe(params => {
+      if (params.societaId) {
+        this.societaId = parseInt(params.societaId);
+      }
+    });
   }
 
   ngOnInit(): void {
