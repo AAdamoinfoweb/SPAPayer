@@ -96,7 +96,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
   }
 
   recuperaFiltroLivelloTerritoriale(): void {
-    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale().pipe(map(livelliTerritoriali => {
+    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale(null, true).pipe(map(livelliTerritoriali => {
       livelliTerritoriali.forEach(livello => {
         this.listaLivelliTerritoriali.push({
           value: livello.id,
@@ -115,7 +115,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
   }
 
   recuperaFiltroEnti(idLivelloTerritoriale): void {
-    this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale, null, null).pipe(map(enti => {
+    this.nuovoPagamentoService.recuperaFiltroEnti(idLivelloTerritoriale, null, null, true).pipe(map(enti => {
       enti.forEach(ente => {
         this.listaEnti.push({
           value: ente.id,
@@ -134,7 +134,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
   }
 
   recuperaFiltroServizi(idEnte): void {
-    this.nuovoPagamentoService.recuperaFiltroServizi(idEnte).pipe(map(servizi => {
+    this.nuovoPagamentoService.recuperaFiltroServizi(idEnte, null, true).pipe(map(servizi => {
       servizi.forEach(servizio => {
         this.listaServizi.push({
           value: servizio.id,
