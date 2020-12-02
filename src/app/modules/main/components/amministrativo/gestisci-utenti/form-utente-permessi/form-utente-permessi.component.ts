@@ -6,7 +6,8 @@ import {
   OnInit,
   Renderer2,
   ViewChild,
-  ViewContainerRef, ViewRef
+  ViewContainerRef,
+  ViewRef
 } from '@angular/core';
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {InserimentoModificaUtente} from '../../../../model/utente/InserimentoModificaUtente';
@@ -30,7 +31,6 @@ import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enu
 import {HttpClient} from '@angular/common/http';
 import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaUtente';
 import {map} from 'rxjs/operators';
-import {OperazioneEsitoEnum} from '../../../../../../enums/operazioneEsito.enum';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 import {RoutingService} from "../../../../../../services/routing.service";
 
@@ -267,7 +267,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       this.codiceFiscaleRecuperato = cf;
       this.routingService
         .configuraRouterAndNavigate(this.basePath + '/modificaUtentePermessi/' + cf,
-          {state: {esito: OperazioneEsitoEnum.SUCCESSO}});
+          null);
       this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
     });
   }

@@ -225,7 +225,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   getNumeroRecord(): string {
     const numeroUtentiAttivi = this.listaElementi.filter(row => this.isUtenteAttivo(row)).length;
     const numeroUtentiDisabilitati = this.listaElementi.filter(row => !this.isUtenteAttivo(row)).length;
-    return 'Totale: ' + this.listaElementi.length + ' utenti' + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
+    return 'Totale: ' + this.listaElementi.length + '\b Di cui attivi: ' + numeroUtentiAttivi + '\b\b Di cui disabilitati: ' + numeroUtentiDisabilitati;
   }
 
   selezionaRigaTabella(rowsChecked): void {
