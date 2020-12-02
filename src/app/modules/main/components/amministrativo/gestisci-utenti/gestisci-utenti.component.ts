@@ -56,8 +56,8 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
   tableData: Tabella = {
     rows: [],
     cols: [
-      {field: 'iconaUtente', header: '', type: tipoColonna.ICONA},
       {field: 'id', header: 'User ID (Codice fiscale)', type: tipoColonna.TESTO},
+      {field: 'iconaUtente', header: 'User', type: tipoColonna.ICONA},
       {field: 'nome', header: 'Cognome e Nome', type: tipoColonna.TESTO},
       {field: 'gruppoAbilitazioni', header: 'Gruppi Abilitazione', type: tipoColonna.TESTO},
       {field: 'scadenza', header: 'Scadenza', type: tipoColonna.TESTO},
@@ -118,8 +118,8 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
     let row;
 
     row = {
-      iconaUtente: Utils.creaIcona('#it-user', '#ef8157', nomeUtente, this.isUtenteAttivo(utente) ? 'inline' : 'none'),
       id: {value: utente.codiceFiscale.toUpperCase()},
+      iconaUtente: Utils.creaIcona('#it-user', '#ef8157', nomeUtente, this.isUtenteAttivo(utente) ? 'inline' : 'none'),
       nome: {value: nomeUtente},
       gruppoAbilitazioni: {value: utente.gruppo},
       scadenza: {value: utente.dataFineValidita ? moment(utente.dataFineValidita).format('DD/MM/YYYY') : null},
