@@ -228,6 +228,7 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
+                         [size]="5" [maxLength]="5"
                          [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
                          #codiceEnte="ngModel" [(ngModel)]="integrazione.ufficio.codiceEnte"
                          [disabled]="disabilitaCampi()">
@@ -253,6 +254,7 @@
               <div class="row">
                 <div class="col">
                   <input id="tipoUfficio" name="tipoUfficio" type="text" class="input-text pt-0" autocomplete="off"
+                         [size]="1" [maxLength]="1"
                          #tipoUfficio="ngModel" [(ngModel)]="integrazione.ufficio.tipoUfficio"
                          [disabled]="disabilitaCampi()">
                 </div>
@@ -268,6 +270,7 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceUfficio" name="codiceUfficio" type="text" class="input-text pt-0" autocomplete="off"
+                         [size]="6" [maxLength]="6"
                          #codiceUfficio="ngModel" [(ngModel)]="integrazione.ufficio.codiceUfficio"
                          [disabled]="disabilitaCampi()">
                 </div>
@@ -283,7 +286,7 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceIDServizio" name="codiceIDServizio" type="text" class="input-text pt-0"
-                         autocomplete="off"
+                         autocomplete="off" [size]="11" [maxLength]="11"
                          #codiceIDServizio="ngModel" [(ngModel)]="integrazione.codiceIdServizio"
                          [disabled]="disabilitaCampi()">
                 </div>
@@ -589,7 +592,7 @@
             <div class="row">
               <div class="col">
                 <input id="descrUfficio" name="descrUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                       #descrUfficio="ngModel" [(ngModel)]="descrizioneUfficio"
+                       #descrUfficio="ngModel" [ngModel]="beneficiario.ufficio?.descrizione"
                        [required]="false"
                        [disabled]="true">
               </div>

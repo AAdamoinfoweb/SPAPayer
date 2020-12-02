@@ -173,7 +173,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         if (this.funzione == FunzioneGestioneEnum.AGGIUNGI) {
           this.aggiungiContoCorrente();
         } else {
-          if (this.servizio.beneficiario.listaContiCorrenti) {
+          if (this.servizio.beneficiario && this.servizio.beneficiario.listaContiCorrenti) {
             this.servizio.beneficiario.listaContiCorrenti.forEach(value1 => {
               this.aggiungiContoCorrente(value1);
             });
@@ -270,8 +270,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
         this.emailsControl = [];
         if (value.flussiNotifiche) {
-          this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera;
-          this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA;
+          this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera != null ?
+            value.flussiNotifiche.rendicontazioneGiornaliera : new RendicontazioneGiornaliera();
+          this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA != null ?
+            value.flussiNotifiche.flussoRiversamentoPagoPA : new FlussoRiversamentoPagoPA();
           if (value.flussiNotifiche.notifichePagamento &&
             value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.length > 0) {
             const strings = value.flussiNotifiche.notifichePagamento;
@@ -898,17 +900,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   isPresenteInDettaglio() {
     return !this.servizio.flagPresenzaDettaglioTransazione;
-  }
-
-  get descrizioneUfficio() {
-    if (this.beneficiario.ufficio)
-      return this.beneficiario.ufficio.descrizione;
-    return null;
-  }
-
-  set descrizioneUfficio(event: any) {
-    if (this.beneficiario.ufficio)
-      this.beneficiario.ufficio.descrizione = event;
   }
 }
 
