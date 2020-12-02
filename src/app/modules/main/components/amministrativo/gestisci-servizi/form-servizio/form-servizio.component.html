@@ -172,10 +172,7 @@
                   [disabled]="funzione == FunzioneGestioneEnum.DETTAGLIO || funzione == FunzioneGestioneEnum.MODIFICA"
                   (ngModelChange)="cambiaLivelloIntegrazione($event)">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
-                  <option [ngValue]="LivelloIntegrazioneEnum.LV1">Livello 1</option>
-                  <option [ngValue]="LivelloIntegrazioneEnum.LV2">Livello 2</option>
-                  <option [ngValue]="LivelloIntegrazioneEnum.LV2_BACK_OFFICE">Livello 2 BO</option>
-                  <option [ngValue]="LivelloIntegrazioneEnum.LV3">Livello 3</option>
+                  <option *ngFor="let item of listaLivelloIntegrazione" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
               </div>
             </div>

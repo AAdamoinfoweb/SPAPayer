@@ -115,6 +115,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   beneficiario: BeneficiarioServizio = new BeneficiarioServizio();
 
   listaSocieta: Societa[] = [];
+  listaLivelloIntegrazione: FiltroSelect[] = [];
   listaLivelloTerritoriale: FiltroSelect[] = [];
   listaEnti: FiltroSelect[] = [];
   listaEntiBenef: FiltroSelect[] = [];
@@ -183,6 +184,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     });
   }
 
+  private caricaLivelliIntegrazione() {
+    this.configuraServizioService.filtroLivelliIntegrazione(null, this.idFunzione)
+      .pipe(map((value) => this.listaLivelloIntegrazione = value)).subscribe();
+  }
+
   initFormPage(snapshot: ActivatedRouteSnapshot) {
     this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoServizio) => {
       const campoFormIdx = this.campoTipologiaServizioList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
@@ -215,6 +221,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
     this.impostaConfigurazioneCampi();
 
+    this.caricaLivelliIntegrazione();
     this.controllaTipoFunzione();
     this.inizializzaBreadcrumb();
     this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Servizio';
