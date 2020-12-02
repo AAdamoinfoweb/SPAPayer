@@ -10,6 +10,7 @@ import {Colonna} from '../modules/main/model/tabella/Colonna';
 import {Banner} from '../modules/main/model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../enums/livelloBanner.enum';
 import {ToolEnum} from '../enums/Tool.enum';
+import {OpzioneSelect} from '../modules/main/model/OpzioneSelect';
 
 export class Utils {
 
