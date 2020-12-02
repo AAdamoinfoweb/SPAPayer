@@ -228,6 +228,7 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
+                         [size]="5" [maxLength]="5"
                          [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
                          #codiceEnte="ngModel" [(ngModel)]="integrazione.ufficio.codiceEnte"
                          [disabled]="disabilitaCampi()">
@@ -253,6 +254,7 @@
               <div class="row">
                 <div class="col">
                   <input id="tipoUfficio" name="tipoUfficio" type="text" class="input-text pt-0" autocomplete="off"
+                         [size]="1" [maxLength]="1"
                          #tipoUfficio="ngModel" [(ngModel)]="integrazione.ufficio.tipoUfficio"
                          [disabled]="disabilitaCampi()">
                 </div>
@@ -268,6 +270,7 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceUfficio" name="codiceUfficio" type="text" class="input-text pt-0" autocomplete="off"
+                         [size]="6" [maxLength]="6"
                          #codiceUfficio="ngModel" [(ngModel)]="integrazione.ufficio.codiceUfficio"
                          [disabled]="disabilitaCampi()">
                 </div>
@@ -283,7 +286,7 @@
               <div class="row">
                 <div class="col">
                   <input id="codiceIDServizio" name="codiceIDServizio" type="text" class="input-text pt-0"
-                         autocomplete="off"
+                         autocomplete="off" [size]="11" [maxLength]="11"
                          #codiceIDServizio="ngModel" [(ngModel)]="integrazione.codiceIdServizio"
                          [disabled]="disabilitaCampi()">
                 </div>
@@ -451,7 +454,7 @@
                 </select>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
               <div class="col">
                 <p *ngIf="!isCampoInvalido(enteInput)">Seleziona Ente</p>
               </div>
@@ -548,7 +551,7 @@
                 </select>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
               <div class="col">
                 <p *ngIf="!isCampoInvalido(enteBenefInput)">Seleziona Ente</p>
               </div>
@@ -574,7 +577,7 @@
                 </select>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
               <div class="col">
                 <p *ngIf="!isCampoInvalido(ufficioBenefInput)">Seleziona Ufficio</p>
               </div>
@@ -702,7 +705,8 @@
                      [cdkDragDisabled]="!item.draggable || this.funzione === FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
-                    <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i + campoTipologiaServizioList.length" (dblclick)="dblClick(item, (i + campoTipologiaServizioList.length))"
+                    <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i + campoTipologiaServizioList.length"
+                         (dblclick)="dblClick(item, (i + campoTipologiaServizioList.length))"
                          class="col-7 text-right">{{item.titolo}}</div>
                     <div *ngIf="showEditId == i + campoTipologiaServizioList.length" class="col-6 text-right">
                       <input autofocus #edit="ngModel" name="edit"

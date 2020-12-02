@@ -173,7 +173,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         if (this.funzione == FunzioneGestioneEnum.AGGIUNGI) {
           this.aggiungiContoCorrente();
         } else {
-          if (this.servizio.beneficiario.listaContiCorrenti) {
+          if (this.servizio.beneficiario && this.servizio.beneficiario.listaContiCorrenti) {
             this.servizio.beneficiario.listaContiCorrenti.forEach(value1 => {
               this.aggiungiContoCorrente(value1);
             });
@@ -256,21 +256,24 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
         if (value.beneficiario && value.beneficiario.livelloTerritorialeId) {
           this.beneficiario = value.beneficiario;
+          this.beneficiario.ufficio = _.cloneDeep(value.beneficiario.ufficio);
           this.beneficiario.listaContiCorrenti.forEach(cc => {
             cc.inizioValidita = moment(cc.inizioValidita).format(Utils.FORMAT_DATE_CALENDAR);
             if (cc.fineValidita)
               cc.fineValidita = moment(cc.fineValidita).format(Utils.FORMAT_DATE_CALENDAR);
           });
           this._onChangeLivelloTerritorialeBeneficiario(this.beneficiario.livelloTerritorialeId);
-          this.enteService.recuperaContiCorrenti(this.beneficiario.enteId, this.idFunzione).subscribe(contiCorrenti  => {
+          this.enteService.recuperaContiCorrenti(this.beneficiario.enteId, this.idFunzione).subscribe(contiCorrenti => {
             this.listaContiCorrente = contiCorrenti;
           });
         }
 
         this.emailsControl = [];
         if (value.flussiNotifiche) {
-          this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera;
-          this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA;
+          this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera != null ?
+            value.flussiNotifiche.rendicontazioneGiornaliera : new RendicontazioneGiornaliera();
+          this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA != null ?
+            value.flussiNotifiche.flussoRiversamentoPagoPA : new FlussoRiversamentoPagoPA();
           if (value.flussiNotifiche.notifichePagamento &&
             value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.length > 0) {
             const strings = value.flussiNotifiche.notifichePagamento;
@@ -527,9 +530,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           this.configuraServizioService.configuraServiziFiltroUfficio(this.beneficiario.enteId, this.idFunzione)
             .pipe(map((list) => {
               this.listaUfficio = list;
+              let descr = this.beneficiario.ufficio.descrizione;
               this.beneficiario.ufficio = this.listaUfficio.find((item) =>
                 item.enteId == this.beneficiario.enteId && item.codiceUfficio == this.beneficiario.ufficio.codiceUfficio &&
                 item.tipoUfficio == this.beneficiario.ufficio.tipoUfficio);
+              this.beneficiario.ufficio.descrizione = descr;
             })).subscribe();
         }
       })).subscribe();
@@ -897,3 +902,4 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     return !this.servizio.flagPresenzaDettaglioTransazione;
   }
 }
+

@@ -82,7 +82,7 @@
           </div>
           <div class="row">
             <input id="servizio" name="servizio" type="text" class="input-text pt-0" autocomplete="off"
-                   [required]="true"
+                   [required]="true" [size]="45" [maxLength]="45"
                    #filtroServizio="ngModel" [(ngModel)]="filtriRicerca.nomeServizio" [disabled]="disabilitaCampi()">
           </div>
           <div class="row">
