@@ -213,7 +213,7 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
 
   getNumeroRecord(): string {
     const map: Map<string, number> = this.calcolaNumeroAttivitaAttiveDisabilitate();
-    return `Totale: ${this.listaElementi.length} \b Di cui attive: ${map.get('attive')} \b Di cui disabilitate: ${map.get('disabilitate')}`;
+    return `Totale: ${this.listaElementi.length} attività\b Di cui attive: ${map.get('attive')} \b Di cui disabilitate: ${map.get('disabilitate')}`;
   }
 
   private calcolaNumeroAttivitaAttiveDisabilitate(): Map<string, number> {
