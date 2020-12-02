@@ -451,7 +451,7 @@
                 </select>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
               <div class="col">
                 <p *ngIf="!isCampoInvalido(enteInput)">Seleziona Ente</p>
               </div>
@@ -548,7 +548,7 @@
                 </select>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
               <div class="col">
                 <p *ngIf="!isCampoInvalido(enteBenefInput)">Seleziona Ente</p>
               </div>
@@ -574,7 +574,7 @@
                 </select>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
               <div class="col">
                 <p *ngIf="!isCampoInvalido(ufficioBenefInput)">Seleziona Ufficio</p>
               </div>
@@ -589,7 +589,7 @@
             <div class="row">
               <div class="col">
                 <input id="descrUfficio" name="descrUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                       #descrUfficio="ngModel" [ngModel]="beneficiario.ufficio?.descrizione"
+                       #descrUfficio="ngModel" [(ngModel)]="descrizioneUfficio"
                        [required]="false"
                        [disabled]="true">
               </div>
@@ -702,7 +702,8 @@
                      [cdkDragDisabled]="!item.draggable || this.funzione === FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
-                    <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i + campoTipologiaServizioList.length" (dblclick)="dblClick(item, (i + campoTipologiaServizioList.length))"
+                    <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i + campoTipologiaServizioList.length"
+                         (dblclick)="dblClick(item, (i + campoTipologiaServizioList.length))"
                          class="col-7 text-right">{{item.titolo}}</div>
                     <div *ngIf="showEditId == i + campoTipologiaServizioList.length" class="col-6 text-right">
                       <input autofocus #edit="ngModel" name="edit"

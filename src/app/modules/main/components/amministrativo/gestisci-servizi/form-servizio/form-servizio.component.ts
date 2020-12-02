@@ -256,13 +256,14 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
         if (value.beneficiario && value.beneficiario.livelloTerritorialeId) {
           this.beneficiario = value.beneficiario;
+          this.beneficiario.ufficio = _.cloneDeep(value.beneficiario.ufficio);
           this.beneficiario.listaContiCorrenti.forEach(cc => {
             cc.inizioValidita = moment(cc.inizioValidita).format(Utils.FORMAT_DATE_CALENDAR);
             if (cc.fineValidita)
               cc.fineValidita = moment(cc.fineValidita).format(Utils.FORMAT_DATE_CALENDAR);
           });
           this._onChangeLivelloTerritorialeBeneficiario(this.beneficiario.livelloTerritorialeId);
-          this.enteService.recuperaContiCorrenti(this.beneficiario.enteId, this.idFunzione).subscribe(contiCorrenti  => {
+          this.enteService.recuperaContiCorrenti(this.beneficiario.enteId, this.idFunzione).subscribe(contiCorrenti => {
             this.listaContiCorrente = contiCorrenti;
           });
         }
@@ -527,9 +528,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           this.configuraServizioService.configuraServiziFiltroUfficio(this.beneficiario.enteId, this.idFunzione)
             .pipe(map((list) => {
               this.listaUfficio = list;
+              let descr = this.beneficiario.ufficio.descrizione;
               this.beneficiario.ufficio = this.listaUfficio.find((item) =>
                 item.enteId == this.beneficiario.enteId && item.codiceUfficio == this.beneficiario.ufficio.codiceUfficio &&
                 item.tipoUfficio == this.beneficiario.ufficio.tipoUfficio);
+              this.beneficiario.ufficio.descrizione = descr;
             })).subscribe();
         }
       })).subscribe();
@@ -896,4 +899,16 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   isPresenteInDettaglio() {
     return !this.servizio.flagPresenzaDettaglioTransazione;
   }
+
+  get descrizioneUfficio() {
+    if (this.beneficiario.ufficio)
+      return this.beneficiario.ufficio.descrizione;
+    return null;
+  }
+
+  set descrizioneUfficio(event: any) {
+    if (this.beneficiario.ufficio)
+      this.beneficiario.ufficio.descrizione = event;
+  }
 }
+
