@@ -195,11 +195,11 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         this.items = _.sortBy(value, 'posizione');
 
         // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
-        if (this.funzione !== FunzioneGestioneEnum.DETTAGLIO) {
+        if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
           this.items.forEach(campo => {
             campo.id = null;
             campo.uuid = uuidv4();
-            if (campo.dipendeDa && this.funzione === FunzioneGestioneEnum.AGGIUNGI)
+            if (campo.dipendeDa)
               campo.dipendeDa.id = null;
           });
         }
@@ -241,10 +241,11 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       modificaTipologiaServizio.descrizione = this.nomeTipologia;
       modificaTipologiaServizio.listaCampiTipologiaServizio = this.items;
       this.campoTipologiaServizioService.modificaTipologiaServizio(this.tipologiaServizioId, modificaTipologiaServizio, this.idFunzione)
-        .subscribe(() => {
-          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-          this.impostaDettaglioTipologia();
-
+        .subscribe((resp) => {
+          if(!resp) {
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+            this.impostaDettaglioTipologia();
+          }
           let obs = this.caricaCampi(this.tipologiaServizioId);
           this.impostaConfigurazioneCampi(obs);
         });
