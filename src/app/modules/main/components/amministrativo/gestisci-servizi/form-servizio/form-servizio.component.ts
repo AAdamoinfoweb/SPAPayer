@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
   EventEmitter,
@@ -11,7 +12,7 @@ import {
   Renderer2,
   ViewChild,
   ViewChildren,
-  ViewContainerRef
+  ViewContainerRef, ViewRef
 } from '@angular/core';
 import {FormElementoParentComponent} from '../../form-elemento-parent.component';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
@@ -25,7 +26,7 @@ import {CampoTipologiaServizioService} from '../../../../../../services/campo-ti
 import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {ParametriRicercaServizio} from '../../../../model/servizio/ParametriRicercaServizio';
 import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
-import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
+import {FormControl, NgModel, ValidatorFn} from '@angular/forms';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
 import {catchError, map} from 'rxjs/operators';
@@ -55,6 +56,12 @@ import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 import {Utils} from '../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {NotifichePagamento} from '../../../../model/servizio/NotifichePagamento';
+import * as moment from 'moment';
+import {BannerService} from "../../../../../../services/banner.service";
+import {aggiornaTipoCampoEvent} from '../../gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
+import {aggiungiTipoCampoEvent} from '../../gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
+import {RoutingService} from "../../../../../../services/routing.service";
 
 @Component({
   selector: 'app-form-servizio',
@@ -62,10 +69,8 @@ import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
   styleUrls: ['./form-servizio.component.scss']
 })
 export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
-  private firstAdd = false;
-  private isSingleClick: boolean;
 
-  constructor(private cdr: ChangeDetectorRef,
+  constructor(private cdr: ChangeDetectorRef, private bannerService: BannerService,
               private renderer: Renderer2,
               private configuraServizioService: ConfiguraServizioService,
               private componentFactoryResolver: ComponentFactoryResolver,
@@ -78,9 +83,14 @@ export class FormServizioComponent extends FormElementoParentComponent implement
               protected amministrativoService: AmministrativoService,
               private viewportRuler: ViewportRuler,
               protected confirmationService: ConfirmationService,
-              private campoTipologiaServizioService: CampoTipologiaServizioService) {
+              private campoTipologiaServizioService: CampoTipologiaServizioService,
+              private routingService: RoutingService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
+
+  private firstAdd = false;
+  private isSingleClick: boolean;
+  private servizioId: number;
 
   titoloPagina: string;
   tooltip: string;
@@ -131,6 +141,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   @ViewChild('datiContoCorrente', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
   private componentRef: ComponentRef<any>;
 
+  private componentRefs: ComponentRef<any>[] = [];
+  targetMap: Map<string, ViewRef> = new Map<string, ViewRef>();
+
   private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
   private listaDipendeDa: CampoTipologiaServizio[];
   rendicontazioneGiornaliera: RendicontazioneGiornaliera = new RendicontazioneGiornaliera();
@@ -142,19 +155,30 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   mapContoCorrente: Map<string, ContoCorrente> = new Map<string, ContoCorrente>();
   mapControllo: Map<string, boolean> = new Map<string, boolean>();
+
+  showEditId: number;
   getListaContiCorrente = (mapContoCorrente: Map<string, ContoCorrente>) => Array.from(mapContoCorrente, ([name, value]) => value);
   getListaControllo = (mapControllo: Map<string, boolean>) => Array.from(mapControllo, ([name, value]) => value);
 
-  showEditId: number;
-
   ngOnInit(): void {
+    aggiungiTipoCampoEvent.subscribe(idTipoCampo => {
+      this.impostaConfigurazioneCampi(idTipoCampo);
+    });
   }
 
   public ngAfterViewInit() {
     this.datiBeneficiarioFormQuery.changes.subscribe(ql => {
       if (!this.firstAdd) {
         this.firstAdd = true;
-        this.aggiungiContoCorrente();
+        if (this.funzione == FunzioneGestioneEnum.AGGIUNGI) {
+          this.aggiungiContoCorrente();
+        } else {
+          if (this.servizio.beneficiario.listaContiCorrenti) {
+            this.servizio.beneficiario.listaContiCorrenti.forEach(value1 => {
+              this.aggiungiContoCorrente(value1);
+            });
+          }
+        }
       }
     });
   }
@@ -168,7 +192,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         campoForm.campoTipologiaServizioId = campoForm.id;
         this.campoTipologiaServizioList[campoFormIdx] = _.cloneDeep(campoForm);
       } else if (campoFormIdx2 != -1) {
-        this.campoServizioAddList[campoFormIdx] = _.cloneDeep(campoForm);
+        this.campoServizioAddList[campoFormIdx2] = _.cloneDeep(campoForm);
       } else {
         campoForm.uuid = uuidv4();
         campoForm.draggable = true;
@@ -179,8 +203,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
       this.refreshItemsDipendeDa();
     });
+
     this.refreshItemsEvent.subscribe((items) => {
-      this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
+      this.listaDipendeDa = items.filter((value => value && value.tipoCampoId === this.tipoCampoIdSelect));
     });
     this.societaService.ricercaSocieta(null, this.idFunzione)
       .pipe(map((value: Societa[]) => this.listaSocieta = value)).subscribe();
@@ -188,6 +213,86 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.configuraServizioService.configuraServiziFiltroPortaleEsterno(this.idFunzione)
       .pipe(map((value: FiltroSelect[]) => this.listaPortaleEsterno = value)).subscribe();
 
+    this.impostaConfigurazioneCampi();
+
+    this.controllaTipoFunzione();
+    this.inizializzaBreadcrumb();
+    this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Servizio';
+    this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una tipologia servizio';
+
+    if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      this.servizioId = parseInt(snapshot.paramMap.get('servizioId'));
+
+      this.configuraServizioService.dettaglioServizio(this.servizioId, this.idFunzione).pipe(map((value: Servizio) => {
+        this.servizio = value;
+        this.filtro = new ParametriRicercaServizio();
+        this.filtro.raggruppamentoId = value.raggruppamentoId;
+        this.filtro.nomeServizio = value.nomeServizio;
+        this.filtro.tipologiaServizioId = value.tipologiaServizioId;
+        this.caricaCampi(value.tipologiaServizioId).subscribe(() => {
+          this.campoServizioAddList = value.listaCampiServizio.filter((obj) => {
+            return !obj.campoTipologiaServizioId;
+          }).map(value1 => {
+            value1.uuid = uuidv4();
+            return value1;
+          });
+
+          this.campoTipologiaServizioList = this.campoTipologiaServizioList.map((obj) => {
+            const campoServizio = value.listaCampiServizio.find((value1 => value1.campoTipologiaServizioId == obj.id));
+            if (campoServizio)
+              campoServizio.uuid = uuidv4();
+            return campoServizio ? campoServizio : obj;
+          });
+        });
+        this.filtro.abilitaDa = moment(value.abilitaDa, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR);
+        this.filtro.abilitaA = value.abilitaA ? moment(value.abilitaA, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
+        this.filtro.attivo = value.flagAttiva;
+        this.contatti = value.contatti;
+        this.integrazione = value.integrazione;
+        if (value.impositore && value.impositore.societaId) {
+          this.impositore = value.impositore;
+          this._onChangeSocietaImpositore(value.impositore.societaId);
+        }
+
+        if (value.beneficiario && value.beneficiario.livelloTerritorialeId) {
+          this.beneficiario = value.beneficiario;
+          this.beneficiario.listaContiCorrenti.forEach(cc => {
+            cc.inizioValidita = moment(cc.inizioValidita).format(Utils.FORMAT_DATE_CALENDAR);
+            if (cc.fineValidita)
+              cc.fineValidita = moment(cc.fineValidita).format(Utils.FORMAT_DATE_CALENDAR);
+          });
+          this._onChangeLivelloTerritorialeBeneficiario(this.beneficiario.livelloTerritorialeId);
+          this.enteService.recuperaContiCorrenti(this.beneficiario.enteId, this.idFunzione).subscribe(contiCorrenti  => {
+            this.listaContiCorrente = contiCorrenti;
+          });
+        }
+
+        this.emailsControl = [];
+        if (value.flussiNotifiche) {
+          this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera;
+          this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA;
+          if (value.flussiNotifiche.notifichePagamento &&
+            value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.length > 0) {
+            const strings = value.flussiNotifiche.notifichePagamento;
+            if (strings && strings.length > 0) {
+              strings.forEach(obj => {
+                const formControl = new FormControl();
+                formControl.setValue(obj.email);
+                if (this.funzione == FunzioneGestioneEnum.DETTAGLIO) {
+                  formControl.disable();
+                }
+                this.emailsControl.push(formControl);
+              });
+            }
+          }
+        }
+
+        this.filtri = this.filtro;
+      })).subscribe();
+    }
+  }
+
+  impostaConfigurazioneCampi(idTipoCampo: number = null): void {
     this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
         localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
@@ -203,12 +308,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         }
 
         localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
-      })).subscribe();
 
-    this.controllaTipoFunzione();
-    this.inizializzaBreadcrumb();
-    this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Servizio';
-    this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di una tipologia servizio';
+        if (idTipoCampo) {
+          aggiornaTipoCampoEvent.emit(idTipoCampo);
+        }
+      })).subscribe();
   }
 
   caricaCampi(tipologiaServizioId: number): Observable<any> {
@@ -218,10 +322,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         this.campoTipologiaServizioList = _.cloneDeep(this.campoTipologiaServizioOriginal);
 
         // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
-        if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+        if (this.funzione !== FunzioneGestioneEnum.DETTAGLIO) {
           this.campoTipologiaServizioList.forEach(campo => {
             campo.uuid = uuidv4();
-            if (campo.dipendeDa) {
+            if (campo.dipendeDa && this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
               campo.dipendeDa.id = null;
             }
           });
@@ -248,7 +352,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
     breadcrumbs.push(new SintesiBreadcrumb('Gestisci Anagrafiche', null));
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Servizio', this.basePath));
+    breadcrumbs.push(new SintesiBreadcrumb('Configura Servizi', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Servizio', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
   }
@@ -264,31 +368,79 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       }
     });
 
-    const campoServizios: CampoServizio[] = this.campoTipologiaServizioList
-      .filter((value => !value.id || value.campoTipologiaServizioId))
-      .map(value => value.id = null);
+    if (this.integrazione.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV1) {
+      const campoServizios: CampoServizio[] = this.campoTipologiaServizioList
+        .filter((value => !value.id || value.campoTipologiaServizioId))
+        .map(value => {
+          value.id = null;
+          return value;
+        });
 
-    this.campoServizioAddList.forEach((value, index) => value.posizione = index);
+      this.campoServizioAddList.forEach((value, index) => value.posizione = index + 1);
+      this.servizio.listaCampiServizio = _.concat(campoServizios, this.campoServizioAddList);
+    }
 
     const flussiNotifiche = new FlussiNotifiche();
+    flussiNotifiche.notifichePagamento = [];
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
-    flussiNotifiche.flussoRiversamentoPagoPa = this.rendicontazioneFlussoPA;
-    flussiNotifiche.notifichePagamento.email = emails.join(';');
+    flussiNotifiche.flussoRiversamentoPagoPA = this.rendicontazioneFlussoPA;
+    if (emails && emails.length > 0) {
+      emails.forEach(email => {
+        const notifichePagamento: NotifichePagamento = new NotifichePagamento();
+        notifichePagamento.email = email;
+        flussiNotifiche.notifichePagamento.push(notifichePagamento);
+      });
+    }
     this.servizio.flussiNotifiche = flussiNotifiche;
 
     this.servizio.tipologiaServizioId = this.filtri.tipologiaServizio.id;
     this.servizio.raggruppamentoId = this.filtri.raggruppamentoId;
     this.servizio.nomeServizio = this.filtri.nomeServizio;
-    this.servizio.abilitaDa = this.filtri.abilitaDa;
-    this.servizio.abilitaA = this.filtri.abilitaA;
+    this.servizio.abilitaDa = moment(this.filtri.abilitaDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
+    this.servizio.abilitaA = this.filtri.abilitaA ? moment(this.filtri.abilitaA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
     this.servizio.flagAttiva = this.filtri.attivo;
 
     this.servizio.contatti = this.contatti;
     this.servizio.integrazione = this.integrazione;
     this.servizio.impositore = this.impositore;
     this.servizio.beneficiario = this.beneficiario;
-    this.servizio.listaContiCorrenti = this.listaContiCorrente;
-    this.servizio.listaCampiServizio = _.concat(campoServizios, this.campoServizioAddList);
+    const listaContiCorrenti = this.getListaContiCorrente(this.mapContoCorrente);
+    const listaContiCorrentiPerBe = listaContiCorrenti.map(value => {
+      value.inizioValidita = moment(value.inizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
+      if (value.fineValidita) {
+        value.fineValidita = moment(value.fineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO);
+      }
+      return value;
+    });
+    this.servizio.beneficiario.listaContiCorrenti = listaContiCorrentiPerBe;
+
+    if (this.funzione == FunzioneGestioneEnum.AGGIUNGI) {
+      this.configuraServizioService.inserimentoServizio(this.servizio, this.idFunzione)
+        .subscribe((id) => {
+          if (id) {
+            this.resetPagina();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
+        });
+    } else if (this.funzione == FunzioneGestioneEnum.MODIFICA) {
+      this.configuraServizioService.modificaServizio(this.servizio, this.idFunzione)
+        .subscribe((id) => {
+          if (id) {
+            this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaServizio/' + this.servizio.id, null);
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
+        });
+    }
+  }
+
+  private resetPagina() {
+    this.filtro = new ParametriRicercaServizio();
+    this.filtri = null;
+    this.servizio = new Servizio();
+    this.contatti = new Contatti();
+    this.impositore = new ImpositoreServizio();
+    this.integrazione = new LivelloIntegrazioneServizio();
+    this.beneficiario = new BeneficiarioServizio();
   }
 
   onChangeFiltri(event: ParametriRicercaServizio) {
@@ -302,6 +454,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     } else {
       this.campoTipologiaServizioOriginal = null;
       this.campoTipologiaServizioList = null;
+      this.campoServizioAddList = null;
     }
   }
 
@@ -310,34 +463,48 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   onChangeSocietaImpositore(societaInput: NgModel) {
-    if (!societaInput.value) {
-      this.impositore.livelloTerritorialeId = null;
-      this.impositore.enteId = null;
-    } else {
-      this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(societaInput.value, this.idFunzione)
-        .pipe(map((value) => this.listaLivelloTerritoriale = value)).subscribe();
+    this.impositore.livelloTerritorialeId = null;
+    this.impositore.enteId = null;
+    this._onChangeSocietaImpositore(societaInput.value);
+  }
+
+  private _onChangeSocietaImpositore(entity: any) {
+    if (entity) {
+      this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(entity, this.idFunzione)
+        .pipe(map((value) => {
+          this.listaLivelloTerritoriale = value;
+          if (this.impositore.livelloTerritorialeId) {
+            this._onChangeLivelloTerritorialeImpositore(this.impositore.livelloTerritorialeId);
+          }
+        })).subscribe();
     }
   }
 
   onChangeSocietaBeneficiario(societaInput: NgModel) {
-    if (!societaInput.value) {
-      this.beneficiario.livelloTerritorialeId = null;
-      this.beneficiario.enteId = null;
-    } else {
+    this.beneficiario.enteId = null;
+    this.beneficiario.ufficio = null;
+    this.beneficiario.livelloTerritorialeId = null;
+    if (societaInput.value) {
       this.configuraServizioService.configuraServiziFiltroLivelloTerritoriale(societaInput.value, this.idFunzione)
         .pipe(map((value) => this.listaLivelloTerritoriale = value)).subscribe();
     }
   }
 
   onChangeLivelloTerritorialeImpositore(societaInput: NgModel, livelloTerritorialeInput: NgModel) {
-    if (!livelloTerritorialeInput.value) {
-      this.impositore.enteId = null;
-    } else {
+    this.impositore.enteId = null;
+    return this._onChangeLivelloTerritorialeImpositore(livelloTerritorialeInput.value);
+  }
+
+  private _onChangeLivelloTerritorialeImpositore(livelloTerritorialeId: any) {
+    if (livelloTerritorialeId) {
       const params = new ParametriRicercaEnte();
-      params.societaId = societaInput.value;
-      params.livelloTerritorialeId = livelloTerritorialeInput.value;
-      return this.configuraServizioService.configuraServiziFiltroEnteImpositore(params, this.idFunzione)
-        .pipe(map((value) => this.listaEnti = value)).subscribe();
+      params.societaId = this.impositore.societaId;
+      params.livelloTerritorialeId = livelloTerritorialeId;
+      return this.configuraServizioService.filtroEnti(params, this.idFunzione)
+        .pipe(map((value) => {
+          this.listaEnti = value;
+
+        })).subscribe();
     }
   }
 
@@ -345,12 +512,27 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (!livelloTerritorialeInput.value) {
       this.beneficiario.enteId = null;
     } else {
-      const params = new ParametriRicercaEnte();
-      params.societaId = societaInput.value;
-      params.livelloTerritorialeId = livelloTerritorialeInput.value;
-      return this.configuraServizioService.configuraServiziFiltroEnteBeneficiario(params, this.idFunzione)
-        .pipe(map((value) => this.listaEntiBenef = value)).subscribe();
+      this._onChangeLivelloTerritorialeBeneficiario(livelloTerritorialeInput.value);
     }
+  }
+
+  private _onChangeLivelloTerritorialeBeneficiario(livelloTerritorialeId: any) {
+    const params = new ParametriRicercaEnte();
+    params.societaId = this.beneficiario.societaId;
+    params.livelloTerritorialeId = livelloTerritorialeId;
+    this.configuraServizioService.configuraServiziFiltroEnteBeneficiario(params, this.idFunzione)
+      .pipe(map((value) => {
+        this.listaEntiBenef = value;
+        if (this.beneficiario.ufficio) {
+          this.configuraServizioService.configuraServiziFiltroUfficio(this.beneficiario.enteId, this.idFunzione)
+            .pipe(map((list) => {
+              this.listaUfficio = list;
+              this.beneficiario.ufficio = this.listaUfficio.find((item) =>
+                item.enteId == this.beneficiario.enteId && item.codiceUfficio == this.beneficiario.ufficio.codiceUfficio &&
+                item.tipoUfficio == this.beneficiario.ufficio.tipoUfficio);
+            })).subscribe();
+        }
+      })).subscribe();
   }
 
   isCampoInvalido(campo: NgModel | FormControl) {
@@ -360,6 +542,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   setPlaceholder(campo: NgModel | FormControl, tipoCampo: TipoCampoEnum): string {
     if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       return null;
+    } else if (campo instanceof NgModel && campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
     } else if (this.isCampoInvalido(campo)) {
       return 'campo non valido';
     } else {
@@ -380,14 +564,78 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     } else {
       this.enteService.recuperaContiCorrenti(enteInput.value, this.idFunzione)
         .subscribe((value) => {
-          this.componentRef.instance.listaContiCorrente = _.cloneDeep(value);
+          this.listaContiCorrente = _.cloneDeep(value);
+          this.aggiornaListaContiCorrenti();
         }, catchError(() => {
-          this.componentRef.instance.listaContiCorrente = [];
+          this.listaContiCorrente = [];
+          this.aggiornaListaContiCorrenti();
           return of(null);
         }));
       return this.configuraServizioService.configuraServiziFiltroUfficio(enteInput.value, this.idFunzione)
-        .pipe(map((value) => this.listaUfficio = value)).subscribe();
+        .pipe(map((value) => {
+          this.listaUfficio = value;
+
+        })).subscribe();
     }
+  }
+
+  aggiornaListaContiCorrenti() {
+    let i = 0;
+    const targetLength = this.target.length;
+    const components = this.componentRefs;
+    this.componentRefs = [];
+    this.target.clear();
+    while (i < targetLength) {
+      const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiContoCorrenteComponent);
+      const uuid = components[i].instance.uuid;
+      const indexDatiContoCorrente = components[i].instance.indexDatiContoCorrente;
+      const funzione = components[i].instance.funzione;
+      const datiContoCorrente = components[i].instance.datiContoCorrente;
+      const listaContiCorrente = this.listaContiCorrente;
+      this.inizializzaComponentRefInstance(childComponent, uuid, indexDatiContoCorrente, funzione, datiContoCorrente, listaContiCorrente);
+      i++;
+    }
+
+  }
+
+  private inizializzaComponentRefInstance(childComponent: ComponentFactory<any>, uuid, index,
+                                          funzione, datiContoCorrente, listaContiCorrente) {
+    this.componentRef = this.target.createComponent(childComponent);
+    this.renderer.addClass(this.componentRef.location.nativeElement, 'w-100');
+    // input
+    this.componentRef.instance.uuid = uuid;
+    this.targetMap.set(uuid, this.componentRef.hostView);
+    this.componentRef.instance.indexDatiContoCorrente = index;
+    this.componentRef.instance.funzione = funzione;
+    this.componentRef.instance.datiContoCorrente = datiContoCorrente;
+    this.componentRef.instance.listaContiCorrente = listaContiCorrente;
+    // output
+    this.componentRef.instance.onDeleteDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
+      const contoCorrente = this.mapContoCorrente.get(componenteDinamico.uuid);
+      const isContoCorrenteDaModificare: boolean = contoCorrente != null;
+      if (isContoCorrenteDaModificare) {
+        this.mapContoCorrente.delete(componenteDinamico.uuid);
+        this.mapControllo.delete(componenteDinamico.uuid);
+      }
+      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
+      const viewRef = this.targetMap.get(componenteDinamico.uuid);
+      const indexViewRef = this.target.indexOf(viewRef);
+      if (this.target.length === 1) {
+        this.target.clear();
+        this.targetMap.clear();
+      } else {
+        this.target.remove(indexViewRef);
+        this.targetMap.delete(componenteDinamico.uuid);
+      }
+      this.setListaContiCorrente();
+    });
+    this.componentRef.instance.onChangeDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
+      this.mapContoCorrente.set(componenteDinamico.uuid, componenteDinamico.oggetto);
+      this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
+      this.setListaContiCorrente();
+    });
+    this.componentRef.changeDetectorRef.detectChanges();
+    this.componentRefs.push(this.componentRef);
   }
 
   showModal(item: CampoTipologiaServizio) {
@@ -396,6 +644,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       funzione: this.funzione,
       idFunzione: this.idFunzione,
       livelloIntegrazione: this.integrazione.livelloIntegrazioneId,
+      mostraLivelloIntegrazione: true,
       listaDipendeDa: this.listaDipendeDa
     });
   }
@@ -417,9 +666,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
       this.confirmationService.confirm(
         Utils.getModale(() => {
-            let finded = this.campoTipologiaServizioOriginal.find((value => value.id == item.id));
+            const finded = this.campoTipologiaServizioOriginal.find((value => value.id == item.campoTipologiaServizioId));
 
-            let findIndex = this.campoTipologiaServizioList.findIndex((value) => value.id == item.id);
+            const findIndex = this.campoTipologiaServizioList.findIndex((value) => value.id == item.id);
             if (findIndex != -1) {
               finded.uuid = this.campoTipologiaServizioList[findIndex].uuid;
               this.campoTipologiaServizioList[findIndex] = _.cloneDeep(finded);
@@ -478,6 +727,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   add() {
     const campoForm = new CampoTipologiaServizio();
+    if (this.integrazione.livelloIntegrazioneId !== this.LivelloIntegrazioneEnum.LV1) {
+      campoForm.campoInput = true;
+    }
     this.refreshItemsDipendeDa();
     this.showModal(campoForm);
   }
@@ -485,46 +737,18 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   aggiungiContoCorrente(datiContoCorrente?: ContoCorrente): number {
     // creazione Dati Conto Corrente Component
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(DatiContoCorrenteComponent);
-    this.componentRef = this.target.createComponent(childComponent);
     const indexContoCorrente = this.target.length;
     // input
-    this.componentRef.instance.uuid = Utils.uuidv4();
-    this.componentRef.instance.indexDatiContoCorrente = indexContoCorrente;
-    this.componentRef.instance.funzione = this.funzione;
+    const uuid = Utils.uuidv4();
+    const funzione = this.funzione;
     let instanceContoCorrente: ContoCorrente;
     if (datiContoCorrente == null) {
       instanceContoCorrente = new ContoCorrente();
     } else {
       instanceContoCorrente = datiContoCorrente;
     }
-    this.componentRef.instance.datiContoCorrente = instanceContoCorrente;
-    if (this.listaContiCorrente != null && FunzioneGestioneEnum.MODIFICA) {
-      this.componentRef.instance.listaContiCorrente = this.listaContiCorrente;
-    }
-    // output
-    this.componentRef.instance.onDeleteDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
-      const contoCorrente = this.mapContoCorrente.get(componenteDinamico.uuid);
-      const isContoCorrenteDaModificare: boolean = contoCorrente != null;
-      if (isContoCorrenteDaModificare) {
-        this.mapContoCorrente.delete(componenteDinamico.uuid);
-        this.mapControllo.delete(componenteDinamico.uuid);
-      }
-      // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
-      const zeroBasedIndex = componenteDinamico.index - 1;
-      const viewRef = this.target.get(zeroBasedIndex);
-      if (viewRef == null && this.target.length === 1) {
-        this.target.clear();
-      } else {
-        this.target.remove(zeroBasedIndex);
-      }
-      this.setListaContiCorrente();
-    });
-    this.componentRef.instance.onChangeDatiContoCorrente.subscribe((componenteDinamico: ComponenteDinamico) => {
-      this.mapContoCorrente.set(componenteDinamico.uuid, componenteDinamico.oggetto);
-      this.mapControllo.set(componenteDinamico.uuid, componenteDinamico.isFormValid);
-      this.setListaContiCorrente();
-    });
-    this.componentRef.changeDetectorRef.detectChanges();
+    const listaContiCorrente = this.listaContiCorrente;
+    this.inizializzaComponentRefInstance(childComponent, uuid, indexContoCorrente, funzione, instanceContoCorrente, listaContiCorrente);
     return indexContoCorrente;
   }
 
@@ -602,14 +826,14 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   changeEmailGiornaliera(event: boolean) {
     if (!event) {
       this.rendicontazioneGiornaliera.email = null;
-      this.rendicontazioneGiornaliera.emailCcn = null;
+      this.rendicontazioneGiornaliera.ccn = null;
     }
   }
 
   changeEmailFlussoPagoPA(event: boolean) {
     if (!event) {
       this.rendicontazioneFlussoPA.email = null;
-      this.rendicontazioneFlussoPA.emailCcn = null;
+      this.rendicontazioneFlussoPA.ccn = null;
     }
   }
 
@@ -641,14 +865,35 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           funzione: this.funzione,
           idFunzione: this.idFunzione,
           livelloIntegrazione: this.integrazione.livelloIntegrazioneId,
+          mostraLivelloIntegrazione: true,
           listaDipendeDa: this.listaDipendeDa
         });
       }
     }, 250);
   }
 
-  dblClick(item: CampoTipologiaServizio, index: number) {
+  dblClick(item: CampoServizio, index: number) {
+    if (this.funzione == FunzioneGestioneEnum.DETTAGLIO) {
+      return;
+    }
     this.isSingleClick = false;
     this.showEditId = index;
+  }
+
+  applyEdit(item: CampoServizio) {
+    if (item) {
+      if (!this.campoTipologiaServizioOriginal.find((value) => value.id == item.id && value.titolo == item.titolo)) {
+        this.amministrativoService.salvaCampoFormEvent.emit(item);
+      }
+      this.showEditId = null;
+    }
+  }
+
+  isPresenteInDettaglioAndRendicontazione() {
+    return !this.servizio.flagPresenzaDettaglioTransazione && !this.servizio.flagPresenzaRendicontazione;
+  }
+
+  isPresenteInDettaglio() {
+    return !this.servizio.flagPresenzaDettaglioTransazione;
   }
 }

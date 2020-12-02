@@ -65,8 +65,12 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
 
   ngOnChanges(sc: SimpleChanges) {
     if (sc.filtriIniziali?.currentValue) {
+
       this.filtriRicerca = this.filtriIniziali;
       this.disabilitaFiltri = false;
+      if (sc.filtriIniziali?.currentValue.tipologiaServizioId) {
+        this.caricaCodiciTipologia();
+      }
     }
 
   }
@@ -102,6 +106,8 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
 
   creaTipologia(): void {
     this.disabilitaFiltri = true;
+    if (!this.filtriRicerca.attivo)
+      this.filtriRicerca.attivo = false;
     this.onChangeFiltri.emit(this.filtriRicerca);
   }
 
@@ -122,6 +128,9 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
         listaTipologieServizio = _.sortBy(listaTipologieServizio, [this.labelOggettoTipologia]);
         this.listaCodiciTipologia = listaTipologieServizio;
         this.listaCodiciTipologiaFiltrati = this.listaCodiciTipologia;
+
+        if (this.filtriRicerca.tipologiaServizioId)
+          this.filtriRicerca.tipologiaServizio = this.listaCodiciTipologiaFiltrati.find(value => value.id == this.filtriRicerca.tipologiaServizioId);
       }
     });
   }
@@ -134,6 +143,8 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   setPlaceholder(campo: NgModel, tipoCampo: TipoCampoEnum): string {
     if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       return null;
+    } else if (campo instanceof NgModel && campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
     } else if (this.isCampoInvalido(campo)) {
       return 'campo non valido';
     } else {
@@ -164,7 +175,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   disabilitaFiltroRaggruppamento(): boolean {
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI && this.disabilitaFiltri) {
       return true;
-    } else if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+    } else if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
       return true;
     } else {
       return null;
@@ -172,7 +183,8 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   disabilitaFiltroCodice(): boolean {
-    return !this.filtriRicerca.raggruppamentoId || this.disabilitaFiltri;
+    return !this.filtriRicerca.raggruppamentoId || this.disabilitaFiltri ||
+      this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA;
   }
 
   disabilitaBottonePulisci(): boolean {
@@ -185,7 +197,7 @@ export class FiltroGestioneServizioComponent extends FiltroGestioneElementiCompo
   }
 
   disabilitaCampi() {
-    return this.disabilitaFiltri;
+    return this.disabilitaFiltri || this.funzione == FunzioneGestioneEnum.DETTAGLIO;
   }
 
   validateRange() {

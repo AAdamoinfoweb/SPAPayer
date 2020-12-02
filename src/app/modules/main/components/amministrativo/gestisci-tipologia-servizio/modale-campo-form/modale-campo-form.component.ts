@@ -1,17 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {OverlayService} from '../../../../../../../services/overlay.service';
-import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
-import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
-import {CampoTipologiaServizio} from '../../../../../model/CampoTipologiaServizio';
-import {CampoServizio} from '../../../../../model/servizio/CampoServizio';
-import {TipoCampo} from '../../../../../model/campo/TipoCampo';
-import {ConfigurazioneJsonPath} from '../../../../../model/campo/ConfigurazioneJsonPath';
-import {ConfigurazioneTipologica} from '../../../../../model/campo/ConfigurazioneTipologica';
-import {ControlloLogico} from '../../../../../model/ControlloLogico';
-import {ConfigurazioneCampoDettaglioTransazione} from '../../../../../model/campo/ConfigurazioneCampoDettaglioTransazione';
-import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
+import {OverlayService} from '../../../../../../services/overlay.service';
+import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
+import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
+import {CampoServizio} from '../../../../model/servizio/CampoServizio';
+import {TipoCampo} from '../../../../model/campo/TipoCampo';
+import {ConfigurazioneJsonPath} from '../../../../model/campo/ConfigurazioneJsonPath';
+import {ConfigurazioneTipologica} from '../../../../model/campo/ConfigurazioneTipologica';
+import {ControlloLogico} from '../../../../model/ControlloLogico';
+import {ConfigurazioneCampoDettaglioTransazione} from '../../../../model/campo/ConfigurazioneCampoDettaglioTransazione';
+import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
 import * as _ from 'lodash';
 
 export interface DatiModaleCampo {
@@ -20,7 +20,10 @@ export interface DatiModaleCampo {
   campoForm: CampoTipologiaServizio | CampoServizio;
   funzione: FunzioneGestioneEnum;
   idFunzione: number;
+  mostraLivelloIntegrazione: boolean;
 }
+
+export const aggiornaTipoCampoEvent: EventEmitter<number> = new EventEmitter<number>();
 
 @Component({
   selector: 'app-modale-campo-form',
@@ -70,8 +73,9 @@ export class ModaleCampoFormComponent implements OnInit {
       opzioni: new FormControl(null)
     });
 
-    this.campoTipologiaServizioService.aggiornaConfigurazioneCampiEvent.subscribe(() => {
+    aggiornaTipoCampoEvent.subscribe((idTipoCampo) => {
       this.leggiConfigurazioneCampi();
+      this.datiModaleCampo.campoForm.tipoCampoId = idTipoCampo;
     });
   }
 
@@ -89,21 +93,21 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.datiModaleCampo.listaDipendeDa =
-      this.datiModaleCampo.listaDipendeDa.filter((value => value.titolo !== this.datiModaleCampo.campoForm.titolo));
+    if (this.datiModaleCampo.listaDipendeDa) {
+      this.datiModaleCampo.listaDipendeDa =
+        this.datiModaleCampo.listaDipendeDa.filter((value => value.titolo !== this.datiModaleCampo.campoForm.titolo));
 
-    this.datiModaleCampo.campoForm.dipendeDa =
-      this.datiModaleCampo.listaDipendeDa.find((value => this.datiModaleCampo.campoForm.dipendeDa &&
-        value.titolo == this.datiModaleCampo.campoForm.dipendeDa.titolo));
-
+      this.datiModaleCampo.campoForm.dipendeDa =
+        this.datiModaleCampo.listaDipendeDa.find((value => this.datiModaleCampo.campoForm.dipendeDa &&
+          value.titolo == this.datiModaleCampo.campoForm.dipendeDa.titolo));
+    }
     if (!this.datiModaleCampo.livelloIntegrazione) {
       this.datiModaleCampo.livelloIntegrazione = LivelloIntegrazioneEnum.LV2;
     }
 
     if (this.datiModaleCampo.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       this.form.disable();
-    }
-    else {
+    } else {
       this.form.enable();
     }
 

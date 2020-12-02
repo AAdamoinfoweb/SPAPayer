@@ -69,6 +69,18 @@ export class Utils {
     return placement ? {path, color, tooltip, display, placement} : {path, color, tooltip, display, placement: 'right'};
   }
 
+  static ordinaOpzioniSelect(opzioni: OpzioneSelect[]) {
+    opzioni.sort((opzione1, opzione2) => {
+      if (opzione1.label > opzione2.label) {
+        return 1;
+      } else if (opzione1.label < opzione2.label) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+  }
+
   static getModale(confermaFn, tipoModale: TipoModaleEnum, titolo?, messaggio?) {
     let header;
     let message;
@@ -275,7 +287,7 @@ export class Utils {
   static bannerOperazioneSuccesso(): Banner {
     const banner: Banner = {
       titolo: 'SUCCESSO',
-      testo: 'Operazione eseguita correttamente',
+      testo: 'Operazione conclusa con successo',
       tipo: getBannerType(LivelloBanner.SUCCESS)
     };
     return banner;

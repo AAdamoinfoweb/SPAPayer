@@ -20,6 +20,15 @@
       <div class="row">
         <label [htmlFor]="'tipoCampo'" class="title form-elem-title" [ngClass]="{'required': datiModaleCampo?.funzione !== FunzioneGestioneEnum.DETTAGLIO}"
         >Tipo Campo</label>
+        <span class="pointer bottone-campo"
+              *ngIf="datiModaleCampo.funzione !== FunzioneGestioneEnum.DETTAGLIO">
+        <span ngbTooltip="Crea nuovo tipo campo" placement="bottom"
+              [ngStyle]="{fill: '#403d39'}">
+          <svg (click)="addTipoCampo()" class="bg-light icon icon-sm filled">
+            <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+          </svg>
+        </span>
+        </span>
       </div>
       <div class="row">
         <select
@@ -29,14 +38,6 @@
           <option [ngValue]="null"></option>
           <option *ngFor="let item of listaTipiCampo" [ngValue]="item.id">{{item.nome}} - {{item.informazioni}}</option>
         </select>
-      </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4 form-elem-container">
-      <div id="containerBottoneAggiungiTipoCampo">
-        <button class="btn" *ngIf="datiModaleCampo.funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                (click)="addTipoCampo()">Aggiungi Tipo campo
-        </button>
       </div>
     </div>
 
@@ -133,7 +134,7 @@
         />
       </div>
     </div>
-    <ng-container *ngIf="datiModaleCampo.livelloIntegrazione">
+    <ng-container *ngIf="datiModaleCampo.livelloIntegrazione && datiModaleCampo.mostraLivelloIntegrazione">
       <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
         <div class="row">
           <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
@@ -182,7 +183,7 @@
             [(ngModel)]="datiModaleCampo.campoForm['jsonPathId']">
             <option [ngValue]="null"></option>
             <option *ngFor="let item of listaJsonPathFiltrata"
-                    [ngValue]="item.json_path">{{item.nome_attributo}}</option>
+                    [ngValue]="item.id">{{item.nome_attributo}}</option>
           </select>
         </div>
       </div>

@@ -1,3 +1,7 @@
+:host ::ng-deep .w-100 {
+  width: 100%;
+}
+
 :host ::ng-deep .required:after {
   content: ' *';
   color: red;
@@ -97,12 +101,24 @@ span.key::after {
   content: '\1F511';
 }
 
+span.edited::after {
+  content: '\2713';
+}
+
+input[type=checkbox] {
+  margin-top: 10px;
+  margin-left: 10px;
+  height: 20px !important;
+  width: 20px;
+}
+
 .example-box2 {
   font-size: 1.2em;
   border: solid 1px #ccc;
   font-weight: bold;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
+  cursor: pointer;
   justify-content: center;
   align-items: center;
   text-align: center;

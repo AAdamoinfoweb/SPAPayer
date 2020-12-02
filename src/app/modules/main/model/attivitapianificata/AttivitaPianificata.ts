@@ -6,6 +6,7 @@ export class AttivitaPianificata {
   titolo: string;
   descrizione: string;
   abilitato: boolean;
+  bean: string;
   schedulazione: Schedulazione;
   parametri: ParametroAttivitaPianificata[];
 

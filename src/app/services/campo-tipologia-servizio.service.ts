@@ -1,7 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from "rxjs";
-import {CampoForm} from "../modules/main/model/CampoForm";
 import {catchError, map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 import {ParametriRicercaTipologiaServizio} from '../modules/main/model/tipologiaServizio/ParametriRicercaTipologiaServizio';
@@ -26,8 +25,6 @@ export class CampoTipologiaServizioService {
 
   constructor(private http: HttpClient) {
   }
-
-  aggiornaConfigurazioneCampiEvent = new EventEmitter();
 
   recuperaDettaglioTipologiaServizio(idTipologiaServizio: number, idFunzione): Observable<TipologiaServizio> {
     let h: HttpHeaders = new HttpHeaders();
@@ -58,10 +55,11 @@ export class CampoTipologiaServizioService {
       if (filtri.raggruppamentoId) {
         params = params.set('raggruppamentoId', String(filtri.raggruppamentoId));
       }
-      if (filtri instanceof ParametriRicercaTipologiaServizio && filtri.tipologia?.codice) {
+      if (filtri instanceof ParametriRicercaTipologiaServizio && typeof filtri.tipologia === 'string') {
+        params = params.set('codiceTipologia', filtri.tipologia);
+      } else if (filtri instanceof ParametriRicercaTipologiaServizio && filtri.tipologia?.codice) {
         params = params.set('codiceTipologia', filtri.tipologia.codice);
-      }
-      if (filtri instanceof ParametriRicercaServizio && filtri.tipologiaServizio instanceof TipologiaServizio && filtri.tipologiaServizio?.codice) {
+      } else if (filtri instanceof ParametriRicercaServizio && filtri.tipologiaServizio instanceof TipologiaServizio && filtri.tipologiaServizio?.codice) {
         params = params.set('codiceTipologia', filtri.tipologiaServizio.codice);
       }
     }
@@ -171,15 +169,15 @@ export class CampoTipologiaServizioService {
       }));
   }
 
-  inserimentoTipoCampo(inserimentoTipoCampo: InserimentoTipoCampo, idFunzione) {
+  inserimentoTipoCampo(inserimentoTipoCampo: InserimentoTipoCampo, idFunzione): Observable<number> {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     return this.http.post(environment.bffBaseUrl + this.baseUrl +
       this.inserimentoTipoCampoUrl, inserimentoTipoCampo, {
       withCredentials: true,
       headers: h
-    }).pipe(map(() => {
-        return null;
+    }).pipe(map((idTipoCampo: number) => {
+        return idTipoCampo;
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {

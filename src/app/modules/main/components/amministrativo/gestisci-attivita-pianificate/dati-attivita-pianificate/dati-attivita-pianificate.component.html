@@ -28,7 +28,7 @@
       </div>
       <!--      fine Titolo -->
       <!--        inizio Attiva -->
-      <div class="col-md-4 pb-2">
+      <div class="col-md-2 pb-2">
         <div class="row">
           <div class="col">
             <label for="abilitato" class="title">Attiva</label>
@@ -43,6 +43,31 @@
         </div>
       </div>
       <!--        fine Attiva -->
+      <!--    inizio Classe -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="bean" class="title">
+                Classe</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" id="bean" name="bean" #bean="ngModel"
+                     [(ngModel)]="datiAttivitaPianificata.bean"
+                     class="pt-0" autocomplete="off" aria-describedby="beanHelpDescription"
+                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                     (ngModelChange)="onChangeModel(datiForm, bean)">
+            </div>
+          </div>
+          <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(bean)">Inserisci nome della classe</p>
+              <p *ngIf="isCampoInvalido(bean)" class="text-invalid">{{getMessaggioErrore(bean)}}</p>
+            </div>
+          </div>
+        </div>
+      <!--      fine Classe -->
     </div>
     <!--    fine Titolo, Attiva -->
     <!--    inizio Descrizione, Schedulazione -->
@@ -109,8 +134,8 @@
       <!--      fine Descrizione -->
       <!--    inizio Schedulazione -->
       <div class="col-md-6 pb-2">
-        <app-schedulazione [funzione]="funzione" (isFormValid)="schedulazioneFormValid(datiForm, $event)"
-                           [schedulazione]="datiAttivitaPianificata.schedulazione"></app-schedulazione>
+          <app-schedulazione [funzione]="funzione" (isFormValid)="schedulazioneFormValid(datiForm, $event)"
+                             [schedulazione]="datiAttivitaPianificata.schedulazione"></app-schedulazione>
       </div>
       <!--      fine Schedulazione -->
     </div>

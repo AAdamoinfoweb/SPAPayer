@@ -10,28 +10,31 @@ import {
 } from '@angular/core';
 import {CdkDragDrop, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {ViewportRuler} from '@angular/cdk/overlay';
-import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
-import {CampoTipologiaServizioService} from '../../../../../../../services/campo-tipologia-servizio.service';
-import {CampoTipologiaServizio} from '../../../../../model/CampoTipologiaServizio';
-import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
+import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
+import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import * as _ from 'lodash';
-import {FormElementoParentComponent} from '../../../form-elemento-parent.component';
+import {FormElementoParentComponent} from '../../form-elemento-parent.component';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {ConfirmationService} from 'primeng/api';
-import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {Utils} from '../../../../../../../utils/Utils';
-import {TipoModaleEnum} from '../../../../../../../enums/tipoModale.enum';
-import {OverlayService} from '../../../../../../../services/overlay.service';
-import {Breadcrumb, SintesiBreadcrumb} from '../../../../../dto/Breadcrumb';
-import {LivelloIntegrazioneEnum} from '../../../../../../../enums/livelloIntegrazione.enum';
-import {ParametriRicercaTipologiaServizio} from '../../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
+import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
+import {Utils} from '../../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
+import {OverlayService} from '../../../../../../services/overlay.service';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
+import {LivelloIntegrazioneEnum} from '../../../../../../enums/livelloIntegrazione.enum';
+import {ParametriRicercaTipologiaServizio} from '../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
 import {flatMap, map} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
-import {ConfiguratoreCampiNuovoPagamento} from '../../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
+import {ConfiguratoreCampiNuovoPagamento} from '../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 import {v4 as uuidv4} from 'uuid';
-import {InserimentoTipologiaServizio} from "../../../../../model/campo/InserimentoTipologiaServizio";
-import {ModificaTipologiaServizio} from "../../../../../model/campo/ModificaTipologiaServizio";
+import {InserimentoTipologiaServizio} from "../../../../model/campo/InserimentoTipologiaServizio";
+import {ModificaTipologiaServizio} from "../../../../model/campo/ModificaTipologiaServizio";
+import {BannerService} from "../../../../../../services/banner.service";
+import {aggiornaTipoCampoEvent} from '../modale-campo-form/modale-campo-form.component';
+import {aggiungiTipoCampoEvent} from '../modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -80,6 +83,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   private isSingleClick = true;
 
   constructor(
+    private bannerService: BannerService,
     private cdr: ChangeDetectorRef,
     private overlayService: OverlayService,
     protected activatedRoute: ActivatedRoute,
@@ -114,10 +118,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.refreshItemsEvent.subscribe((items) => {
       this.listaDipendeDa = items.filter((value => value.tipoCampoId === this.tipoCampoIdSelect));
     });
-    this.overlayService.mostraModaleTipoCampoEvent.subscribe(mostraModale => {
-      if (!mostraModale) {
-        this.impostaConfigurazioneCampi(of(null), true);
-      }
+    aggiungiTipoCampoEvent.subscribe(idTipoCampo => {
+      this.impostaConfigurazioneCampi(of(null), idTipoCampo);
     });
   }
 
@@ -163,7 +165,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     });
   }
 
-  impostaConfigurazioneCampi(observableIniziale = of(null), aggiornaModale = false): void {
+  impostaConfigurazioneCampi(observableIniziale = of(null), idTipoCampo: number = null): void {
     let observable: Observable<number> = this.campoTipologiaServizioService.letturaConfigurazioneCampiNuovoPagamento(this.idFunzione)
       .pipe(map((configuratore: ConfiguratoreCampiNuovoPagamento) => {
         localStorage.setItem('listaCampiDettaglioTransazione', JSON.stringify(configuratore.listaCampiDettaglioTransazione));
@@ -179,8 +181,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
         localStorage.setItem('listaTipiCampo', JSON.stringify(configuratore.listaTipiCampo));
 
-        if (aggiornaModale) {
-          this.campoTipologiaServizioService.aggiornaConfigurazioneCampiEvent.emit();
+        if (idTipoCampo) {
+          aggiornaTipoCampoEvent.emit(idTipoCampo);
         }
       })).pipe(flatMap(() => observableIniziale));
     observable.subscribe();
@@ -193,11 +195,11 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
         this.items = _.sortBy(value, 'posizione');
 
         // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
-        if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
+        if (this.funzione !== FunzioneGestioneEnum.DETTAGLIO) {
           this.items.forEach(campo => {
             campo.id = null;
             campo.uuid = uuidv4();
-            if (campo.dipendeDa)
+            if (campo.dipendeDa && this.funzione === FunzioneGestioneEnum.AGGIUNGI)
               campo.dipendeDa.id = null;
           });
         }
@@ -226,7 +228,10 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       inserimento.listaCampiTipologiaServizio = this.items;
       this.campoTipologiaServizioService.inserimentoTipologiaServizio(inserimento, this.idFunzione)
         .subscribe((id) => {
-          this.resettaFiltri();
+          if (id) {
+            this.resettaFiltri();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
         });
     } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
       this.items.forEach((value, index) => value.posizione = index + 1);
@@ -237,6 +242,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       modificaTipologiaServizio.listaCampiTipologiaServizio = this.items;
       this.campoTipologiaServizioService.modificaTipologiaServizio(this.tipologiaServizioId, modificaTipologiaServizio, this.idFunzione)
         .subscribe(() => {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           this.impostaDettaglioTipologia();
 
           let obs = this.caricaCampi(this.tipologiaServizioId);
@@ -330,6 +336,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       funzione: this.funzione,
       idFunzione: this.idFunzione,
       livelloIntegrazione: this.livelloIntegrazione,
+      mostraLivelloIntegrazione: false,
       listaDipendeDa: this.listaDipendeDa
     });
   }
@@ -343,6 +350,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
           funzione: this.funzione,
           idFunzione: this.idFunzione,
           livelloIntegrazione: this.livelloIntegrazione,
+          mostraLivelloIntegrazione: false,
           listaDipendeDa: this.listaDipendeDa
         });
       }

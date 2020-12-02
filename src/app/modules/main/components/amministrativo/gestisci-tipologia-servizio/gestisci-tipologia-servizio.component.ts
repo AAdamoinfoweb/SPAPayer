@@ -1,23 +1,24 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {GestisciElementoComponent} from '../../gestisci-elemento.component';
+import {GestisciElementoComponent} from '../gestisci-elemento.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {MenuService} from '../../../../../../services/menu.service';
+import {AmministrativoService} from '../../../../../services/amministrativo.service';
+import {MenuService} from '../../../../../services/menu.service';
 import {ConfirmationService} from 'primeng/api';
-import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
-import {Tabella} from '../../../../model/tabella/Tabella';
-import {ToolEnum} from '../../../../../../enums/Tool.enum';
-import {Colonna} from '../../../../model/tabella/Colonna';
-import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
+import {CampoTipologiaServizioService} from '../../../../../services/campo-tipologia-servizio.service';
+import {Tabella} from '../../../model/tabella/Tabella';
+import {ToolEnum} from '../../../../../enums/Tool.enum';
+import {Colonna} from '../../../model/tabella/Colonna';
+import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
 import {Observable} from 'rxjs';
-import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
-import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
-import {TipologiaServizio} from '../../../../model/tipologiaServizio/TipologiaServizio';
-import {Utils} from '../../../../../../utils/Utils';
-import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
-import {Breadcrumb, SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
-import {ParametriRicercaTipologiaServizio} from '../../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
+import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
+import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
+import {TipologiaServizio} from '../../../model/tipologiaServizio/TipologiaServizio';
+import {Utils} from '../../../../../utils/Utils';
+import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
+import {Breadcrumb, SintesiBreadcrumb} from '../../../dto/Breadcrumb';
+import {ParametriRicercaTipologiaServizio} from '../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
+import {BannerService} from "../../../../../services/banner.service";
 
 @Component({
   selector: 'app-gestisci-tipologia-servizio',
@@ -54,7 +55,7 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  constructor(router: Router,
+  constructor(router: Router, private bannerService: BannerService,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private campoTipologiaServizioService: CampoTipologiaServizioService, private el: ElementRef,
               private menuService: MenuService,
@@ -84,7 +85,7 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
   init() {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Gestisci Anagrafiche', link: null},
-      {label: 'Gestisci Tipologie Servizio', link: null}
+      {label: 'Gestisci Tipologia Servizi', link: null}
     ]);
     this.popolaListaElementi();
   }
@@ -141,6 +142,7 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
       Utils.getModale(() => {
           this.campoTipologiaServizioService.eliminaTipologieServizioSelezionate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;

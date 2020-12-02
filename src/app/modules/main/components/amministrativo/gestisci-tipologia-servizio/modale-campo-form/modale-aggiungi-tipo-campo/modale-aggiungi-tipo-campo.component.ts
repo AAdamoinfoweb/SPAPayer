@@ -1,8 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {OverlayService} from "../../../../../../../../services/overlay.service";
-import {CampoTipologiaServizioService} from "../../../../../../../../services/campo-tipologia-servizio.service";
-import {TipoCampo} from '../../../../../../model/campo/TipoCampo';
+import {OverlayService} from "../../../../../../../services/overlay.service";
+import {CampoTipologiaServizioService} from "../../../../../../../services/campo-tipologia-servizio.service";
+import {TipoCampo} from '../../../../../model/campo/TipoCampo';
+
+export const aggiungiTipoCampoEvent: EventEmitter<number> = new EventEmitter<number>();
 
 @Component({
   selector: 'app-modale-aggiungi-tipo-campo',
@@ -60,7 +62,8 @@ export class ModaleAggiungiTipoCampoComponent implements OnInit {
 
   salvaTipoCampo() {
     this.campoTipologiaServizioService.inserimentoTipoCampo({nome: this.nome, informazione: this.informazione}, this.idFunzione)
-      .subscribe(() => {
+      .subscribe((idTipoCampo) => {
+        aggiungiTipoCampoEvent.emit(idTipoCampo);
         this.clickIndietro();
       });
   }

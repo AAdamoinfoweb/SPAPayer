@@ -1,5 +1,5 @@
 <!-- Sottotitolo -->
-<div class="collapse-header" id="idCollapseFiltri" *ngIf="isPaginaGestione()">
+<div class="collapse-header" id="idCollapseFiltri">
   <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true"
           aria-controls="contenutoSezioneFiltri">
     Filtri
@@ -15,91 +15,110 @@
         <div class="col-xs-6 col-md-4 col-lg-3 pb-2">
           <div class="row">
             <div class="col">
-              <label for="selectRaggruppamento" class="title"
-                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Raggruppamento</label>
+              <label for="servizio" class="title">Servizio</label>
+            </div>
+          </div>
+          <div class="row">
+            <select id="servizio" name="servizio"
+                    #servizio="ngModel" [(ngModel)]="filtriRicerca.servizioId">
+              <option [ngValue]="null" [selected]="true">Tutti</option>
+              <option *ngFor="let item of listaServizi" [ngValue]="item.id">{{item.nome}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectRaggruppamento" class="title">Raggruppamento</label>
             </div>
           </div>
           <div class="row">
             <div class="col">
-              <select [ngClass]="{'text-disabled': !opzioniRaggruppamento.length}" id="selectRaggruppamento"
-                      name="raggruppamento"
-                      [required]="true"
+              <select id="selectRaggruppamento" name="raggruppamento"
                       #filtroRaggruppamento="ngModel"
-                      [(ngModel)]="filtriRicerca.raggruppamentoId"
-                      (ngModelChange)="selezionaRaggruppamento()"
-                      [disabled]="disabilitaFiltroRaggruppamento()"
-              >
-                <option [ngValue]="null" selected *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI">Seleziona</option>
-                <option *ngFor="let item of opzioniRaggruppamento" [ngValue]="item.value">{{item.label}}</option>
+                      [(ngModel)]="filtriRicerca.raggruppamentoId">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniRaggruppamento" [ngValue]="item.id">{{item.nome}}</option>
               </select>
             </div>
           </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
           <div class="row">
             <div class="col">
-              <p [ngClass]="{'text-invalid': isCampoInvalido(filtroRaggruppamento)}">
-                {{setPlaceholder(filtroRaggruppamento, TipoCampoEnum.SELECT)}}
-              </p>
+              <label for="selectEnteImpositore" class="title">Ente Impositore</label>
             </div>
           </div>
-
-        </div>
-        <div class="col-xs-6 col-md-4 col-lg-3 pb-2">
           <div class="row">
             <div class="col">
-              <label for="inputCodice" class="title"
-                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Tipologia di Servizio</label>
+              <select id="selectEnteImpositore" name="selectEnteImpositore"
+                      #enteImpositoreInput="ngModel" [(ngModel)]="filtriRicerca.enteImpositoreId">
+                <option [ngValue]="null" [selected]="true">Tutti</option>
+                <option *ngFor="let item of listaEntiImpositore" [ngValue]="item.id">{{item.nome}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectEnteBenef" class="title">Ente Beneficiario</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select id="selectEnteBenef" name="enteIdBenef"
+                      #enteBenefInput="ngModel" [(ngModel)]="filtriRicerca.enteBeneficiarioId">
+                <option [ngValue]="null" [selected]="true">Tutti</option>
+                <option *ngFor="let item of listaEntiBeneficiario" [ngValue]="item.id">{{item.nome}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="inputCodice" class="title">Tipologia Servizio</label>
             </div>
           </div>
           <div class="row">
             <div class="col">
               <p-autoComplete id="inputCodice" class="pt-0" name="codice"
-                              [required]="true"
-                              #filtroCodice="ngModel"
+                              #filtroCodice="ngModel" [size]="100"
                               [(ngModel)]="filtriRicerca.tipologiaServizio"
                               [field]="labelOggettoTipologia"
                               [suggestions]="listaCodiciTipologiaFiltrati"
                               (completeMethod)="filtraCodiciTipologia($event)"
                               delay="0" autoHighlight="true"
-                              [disabled]="disabilitaFiltroCodice()"
-                              placeholder="Non selezionato"
-              >
+                              placeholder="Tutti">
               </p-autoComplete>
             </div>
           </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
           <div class="row">
             <div class="col">
-              <p [ngClass]="{'text-muted': disabilitaFiltroCodice(), 'text-invalid': isCampoInvalido(filtroCodice)}">
-                {{setPlaceholder(filtroCodice, TipoCampoEnum.INPUT_TESTUALE)}}
-              </p>
+              <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
+              >Livello di Integrazione</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="livelloIntegrazione"
+                name="livelloIntegrazione"
+                [(ngModel)]="filtriRicerca.livelloIntegrazioneId"
+                #livelloIntegrazione="ngModel">
+                <option [ngValue]="null" [selected]="true">Tutti</option>
+                <option *ngFor="let item of listaLivelloIntegrazione" [ngValue]="item.id">{{item.nome}}</option>
+              </select>
             </div>
           </div>
         </div>
-        <div class="col-xs-6 col-md-4 col-lg-3 pb-2">
+        <div class="col-xs-6 col-md-3 col-lg-3 pb-2">
           <div class="row">
             <div class="col">
-              <label for="servizio" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Servizio</label>
-            </div>
-          </div>
-          <div class="row">
-            <input id="servizio" name="servizio" type="text" class="input-text pt-0" autocomplete="off"
-                   [required]="true"
-                   #filtroServizio="ngModel" [(ngModel)]="filtriRicerca.nomeServizio" [disabled]="disabilitaCampi()">
-          </div>
-          <div class="row">
-            <div class="col">
-              <p [ngClass]="{'text-invalid': isCampoInvalido(filtroServizio)}">
-                {{setPlaceholder(filtroServizio, TipoCampoEnum.INPUT_TESTUALE)}}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-6 col-md-2 col-lg-2 pb-2">
-          <div class="row">
-            <div class="col">
-              <label for="scadenzaDataDa" class="title"
-                     [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Abilita Da</label>
+              <label for="scadenzaDataDa" class="title">Abilita Da</label>
             </div>
           </div>
           <div class="row">
@@ -108,9 +127,7 @@
                 <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
               </svg>
               <dp-date-picker
-                [required]="true"
-                [customvalidator]="validateRange()"
-                [disabled]="disabilitaCampi()"
+                class="col-12"
                 mode="day"
                 id="scadenzaDataDa"
                 theme="dp-material"
@@ -132,15 +149,8 @@
               ></dp-date-picker>
             </div>
           </div>
-          <div class="row">
-            <div class="col">
-              <p [ngClass]="{'text-invalid': isCampoInvalido(scadenzaDaInput)}">
-                {{setPlaceholder(scadenzaDaInput, TipoCampoEnum.DATEDDMMYY)}}
-              </p>
-            </div>
-          </div>
         </div>
-        <div class="col-xs-6 col-md-2 col-lg-2 pb-2">
+        <div class="col-xs-6 col-md-3 col-lg-3 pb-2">
           <div class="row">
             <div class="col">
               <label for="scadenzaDataA" class="title">Abilita A</label>
@@ -152,8 +162,7 @@
                 <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
               </svg>
               <dp-date-picker
-                [customvalidator]="validateRange()"
-                [disabled]="disabilitaCampi()"
+                class="col-12"
                 mode="day"
                 id="scadenzaDataA"
                 theme="dp-material"
@@ -175,14 +184,6 @@
               ></dp-date-picker>
             </div>
           </div>
-          <div class="row">
-            <div class="col">
-              <p
-                [ngClass]="{'text-invalid': isCampoInvalido(scadenzaAInput)}">
-                {{setPlaceholder(scadenzaAInput, TipoCampoEnum.DATEDDMMYY)}}
-              </p>
-            </div>
-          </div>
         </div>
         <div class="col-xs-6 col-md-3 col-lg-1 pb-2">
           <div class="row">
@@ -191,22 +192,15 @@
             </div>
           </div>
           <div class="row">
-            <it-toggle id="switchAttivo" [disabled]="disabilitaCampi()" [(ngModel)]="filtriRicerca.attivo"
+            <it-toggle id="switchAttivo" [(ngModel)]="filtriRicerca.attivo"
                        name="attivo"></it-toggle>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3 col-lg-1 pb-2" id="containerBottoneCrea"
-             *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI">
-          <button id="bottoneCrea" class="btn"
-                  [disabled]="filtroForm.invalid || isTipologiaServizio(filtriRicerca.tipologiaServizio) || disabilitaFiltri"
-                  (click)="creaTipologia()">Crea
-          </button>
-        </div>
       </div>
       <!-- Bottoni-->
-      <div class="row" *ngIf="isPaginaGestione()">
+      <div class="row">
         <div class="col-6">
-          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottonePulisci()"
+          <button id="bottonePulisci" class="btn btn-secondary"
                   (click)="pulisciFiltri(filtroForm)">Pulisci
           </button>
         </div>

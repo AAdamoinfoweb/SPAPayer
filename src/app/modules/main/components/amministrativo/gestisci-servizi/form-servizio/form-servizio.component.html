@@ -15,9 +15,7 @@
       </svg>
     </span>
   </h3>
-
   <app-avviso-campi-obbligatori></app-avviso-campi-obbligatori>
-
   <!-- dati -->
   <app-filtro-gestione-servizio
     *ngIf="idFunzione"
@@ -110,6 +108,7 @@
             <div class="row">
               <div class="col">
                 <input id="email" name="email" type="text" class="input-text pt-0" autocomplete="off"
+                       [customvalidator]="validateEmail()"
                        #email="ngModel" [(ngModel)]="contatti.email" [disabled]="disabilitaCampi()">
               </div>
             </div>
@@ -170,6 +169,7 @@
                   [(ngModel)]="integrazione.livelloIntegrazioneId"
                   #livelloIntegrazione="ngModel"
                   [required]="true"
+                  [disabled]="funzione == FunzioneGestioneEnum.DETTAGLIO || funzione == FunzioneGestioneEnum.MODIFICA"
                   (ngModelChange)="cambiaLivelloIntegrazione($event)">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option [ngValue]="LivelloIntegrazioneEnum.LV1">Livello 1</option>
@@ -193,6 +193,7 @@
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'urlWsBO'" class="title form-elem-title"
+                         [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE}"
                   >Url del web service di Back Office</label>
                 </div>
               </div>
@@ -220,6 +221,7 @@
               <div class="row">
                 <div class="col">
                   <label [htmlFor]="'codiceEnte'" class="title form-elem-title"
+                         [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1}"
                   >Codice Ente</label>
                 </div>
               </div>
@@ -229,6 +231,15 @@
                          [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
                          #codiceEnte="ngModel" [(ngModel)]="integrazione.ufficio.codiceEnte"
                          [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                     [ngClass]="{'text-muted': !isCampoInvalido(codiceEnte),
+                       'text-invalid': isCampoInvalido(codiceEnte)}">
+                    {{setPlaceholder(codiceEnte, TipoCampoEnum.INPUT_TESTUALE)}}
+                  </p>
                 </div>
               </div>
             </div>
@@ -341,10 +352,15 @@
                   <select id="portaleEsterno" name="portaleEsterno"
                           #portaleEsterno="ngModel" [(ngModel)]="integrazione.portaleEsternoId"
                           [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
-                          [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                          [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || !isPresenteInDettaglioAndRendicontazione()">
                     <option [ngValue]="null" [selected]="true">Seleziona</option>
                     <option *ngFor="let item of listaPortaleEsterno" [ngValue]="item.id">{{item.nome}}</option>
                   </select>
+                </div>
+              </div>
+              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                <div class="col">
+                  <p *ngIf="!isCampoInvalido(portaleEsterno)">Seleziona portale esterno</p>
                 </div>
               </div>
             </div>
@@ -371,7 +387,7 @@
                 <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
                         #societaInput="ngModel" [(ngModel)]="impositore.societaId"
                         (ngModelChange)="onChangeSocietaImpositore(societaInput)"
-                        [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                        [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || !isPresenteInDettaglioAndRendicontazione()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
@@ -402,7 +418,7 @@
                   #livelloTerritorialeId="ngModel"
                   [required]="true"
                   [(ngModel)]="impositore.livelloTerritorialeId"
-                  [disabled]="!impositore.societaId"
+                  [disabled]="!impositore.societaId || !isPresenteInDettaglioAndRendicontazione() || disabilitaCampi()"
                   (ngModelChange)="onChangeLivelloTerritorialeImpositore(societaInput, livelloTerritorialeId)"
                 >
                   <option [ngValue]="null" selected>Seleziona</option>
@@ -429,7 +445,7 @@
                 <select [ngClass]="{'input-disabled': !listaEnti.length}"
                         id="selectEnte" name="enteId"
                         #enteInput="ngModel" [(ngModel)]="impositore.enteId"
-                        [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId">
+                        [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId || !isPresenteInDettaglioAndRendicontazione() || disabilitaCampi()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
@@ -439,17 +455,6 @@
               <div class="col">
                 <p *ngIf="!isCampoInvalido(enteInput)">Seleziona Ente</p>
               </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="switchMostraAlVersante" class="title">Mostra al versante</label>
-              </div>
-            </div>
-            <div class="row">
-              <it-toggle id="switchMostraAlVersante" [disabled]="disabilitaCampi()"
-                         [(ngModel)]="impositore.mostraAlVersante" name="switchMostraAlVersante"></it-toggle>
             </div>
           </div>
         </div>
@@ -477,7 +482,7 @@
                         [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
                         #societaBenefInput="ngModel" [(ngModel)]="beneficiario.societaId"
                         (ngModelChange)="onChangeSocietaBeneficiario(societaBenefInput)"
-                        [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
+                        [disabled]="disabilitaCampi() || !isPresenteInDettaglioAndRendicontazione()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
@@ -507,7 +512,7 @@
                   name="livelloTerritorialeIdBenef"
                   #livelloTerritorialeIdBenef="ngModel"
                   [(ngModel)]="beneficiario.livelloTerritorialeId"
-                  [disabled]="!beneficiario.societaId"
+                  [disabled]="!beneficiario.societaId || disabilitaCampi() || !isPresenteInDettaglioAndRendicontazione()"
                   [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
                   (ngModelChange)="onChangeLivelloTerritorialeBeneficiario(societaBenefInput, livelloTerritorialeIdBenef)"
                 >
@@ -535,9 +540,9 @@
                 <select [ngClass]="{'input-disabled': !listaEntiBenef.length}"
                         id="selectEnteBenef" name="enteIdBenef"
                         #enteBenefInput="ngModel" [(ngModel)]="beneficiario.enteId"
-                        (ngModelChange)="onChangeEnte(enteBenefInput)"
+                        (ngModelChange)="onChangeEnte(enteBenefInput) || !isPresenteInDettaglioAndRendicontazione()"
                         [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
-                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId">
+                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || disabilitaCampi()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaEntiBenef" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
@@ -562,7 +567,7 @@
                         id="selectEnteUfficio" name="selectEnteUfficio"
                         #ufficioBenefInput="ngModel" [(ngModel)]="beneficiario.ufficio"
                         [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
-                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || !beneficiario.enteId">
+                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || !beneficiario.enteId || disabilitaCampi() || !isPresenteInDettaglioAndRendicontazione()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaUfficio"
                           [ngValue]="item">{{item.codiceEnte}} {{item.tipoUfficio}} {{item.codiceUfficio}}</option>
@@ -571,7 +576,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <p *ngIf="!isCampoInvalido(enteBenefInput)">Seleziona Ufficio</p>
+                <p *ngIf="!isCampoInvalido(ufficioBenefInput)">Seleziona Ufficio</p>
               </div>
             </div>
           </div>
@@ -584,7 +589,8 @@
             <div class="row">
               <div class="col">
                 <input id="descrUfficio" name="descrUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                       #descrUfficio="ngModel" [ngModel]="beneficiario.ufficio?.descrizioneUfficio"
+                       #descrUfficio="ngModel" [ngModel]="beneficiario.ufficio?.descrizione"
+                       [required]="false"
                        [disabled]="true">
               </div>
             </div>
@@ -597,7 +603,9 @@
           </button>
         </div>
         <div id="datiBonifico" class="collapse show" role="tabpanel" aria-labelledby="idCollapseDatiBonifico">
-          <div #datiContoCorrente></div>
+          <div class="row">
+            <div #datiContoCorrente></div>
+          </div>
           <div class="row">
             <div class="col text-right">
               <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiContoCorrente"
@@ -634,7 +642,8 @@
           </div>
           <div class="row" *ngIf="campoTipologiaServizioList">
             <ul class="legend">
-              <li><span class="field-input"></span> Campo modificato</li>
+              <li><span class="field-input"></span> Campo nuovo</li>
+              <li><span class="edited"></span> Campo modificato</li>
               <li><span class="required"></span> Campo obbligatorio</li>
               <li><span class="key"></span> Campo chiave</li>
             </ul>
@@ -650,18 +659,22 @@
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
                     <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i" (dblclick)="dblClick(item, i)"
-                         class="col-7 text-right">{{item.titolo}}</div>
+                         [ngClass]="{'text-right':true, 'col-7': !item.campoTipologiaServizioId, 'col-6': item.campoTipologiaServizioId}"
+                    >{{item.titolo}}</div>
                     <div *ngIf="showEditId == i" class="col-6 text-right">
-                      <input autofocus formControlName="edit"
-                             (keyup.enter)="showEditId = null"
+                      <input autofocus #edit="ngModel" name="edit"
+                             (keyup.enter)="applyEdit(item)"
                              [(ngModel)]="item.titolo"/>
                     </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>
                     </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
-                    <div class="col-3 text-right">
+                    <div
+                      [ngClass]="{'text-right':true, 'col-3': !item.campoTipologiaServizioId, 'col-4': item.campoTipologiaServizioId}">
                       <span [ngClass]="{'field-input': item.campoTipologiaServizioId}"
-                            *ngIf="item.campoTipologiaServizioId" (click)="undo(item)">
+                            it-tooltip="Ripristina al valore iniziale" placement="top"
+                            *ngIf="item.campoTipologiaServizioId && funzione != FunzioneGestioneEnum.DETTAGLIO"
+                            (click)="undo(item)">
                         <svg class="bg-light icon icon-lg icon-padded close" (click)="undo(item)"
                              [ngClass]="{'field-input': item.campoTipologiaServizioId}">
                           <use xlink:href="assets/img/sprite.svg#it-restore"></use>
@@ -685,17 +698,23 @@
                    [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">
                 <div style="min-height: 5vh;"
                      [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item.disabilitato,
-               'field-input': (item.campoInput && !item.disabilitato),
-               'field-output': (!item.campoInput && !item.disabilitato)}"
-                     [cdkDragDisabled]="!item.draggable" cdkDrag>
+               'field-input': true}"
+                     [cdkDragDisabled]="!item.draggable || this.funzione === FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
                   <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
-                    <div (click)="showModal(item)" class="col-7 text-right">{{item.titolo}}</div>
+                    <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i + campoTipologiaServizioList.length" (dblclick)="dblClick(item, (i + campoTipologiaServizioList.length))"
+                         class="col-7 text-right">{{item.titolo}}</div>
+                    <div *ngIf="showEditId == i + campoTipologiaServizioList.length" class="col-6 text-right">
+                      <input autofocus #edit="ngModel" name="edit"
+                             (keyup.enter)="applyEdit(item)"
+                             [(ngModel)]="item.titolo"/>
+                    </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>
                     </div>
                     <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
                     <div class="col-3 text-right">
-                      <span class="close" (click)="removeItem(item)"></span>
+                      <span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO" class="close"
+                            (click)="removeItem(item)"></span>
                     </div>
                   </div>
                 </div>
@@ -727,17 +746,19 @@
                 </div>
                 <div class="col-2">
                   <it-toggle id="emailGiornaliera" (ngModelChange)="changeEmailGiornaliera($event)"
-                             [(ngModel)]="rendicontazioneGiornaliera.emailEnabled" name="emailGiornaliera"></it-toggle>
+                             [disabled]="disabilitaCampi()"
+                             [(ngModel)]="rendicontazioneGiornaliera.flagNotificaEmail"
+                             name="emailGiornaliera"></it-toggle>
                 </div>
               </div>
               <div class="row">
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.emailEnabled)"
-                         #emailGiornalieraId="ngModel" [required]="rendicontazioneGiornaliera.emailEnabled"
+                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.flagNotificaEmail)"
+                         #emailGiornalieraId="ngModel" [required]="rendicontazioneGiornaliera.flagNotificaEmail"
                          id="emailGiornalieraId" [customvalidator]="validateEmail()"
                          name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
-                         [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -754,8 +775,8 @@
                   <input type="text" autocomplete="off" placeholder="Ccn"
                          #emailGiornalieraCcn="ngModel"
                          id="emailGiornalieraCcn" [customvalidator]="validateEmail()"
-                         name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.emailCcn"
-                         [disabled]="!rendicontazioneGiornaliera.emailEnabled ? true : null">
+                         name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.ccn"
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -774,21 +795,22 @@
               <div class="row">
                 <div class="col">
                   <label for="ftpGiornaliera"
-                         [ngClass]="{'required': rendicontazioneGiornaliera.ftpEnabled, 'title':true}">Ftp</label>
+                         [ngClass]="{'required': rendicontazioneGiornaliera.flagNotificaFtp, 'title':true}">Ftp</label>
                 </div>
                 <div class="col-2">
                   <it-toggle id="ftpGiornaliera" (ngModelChange)="changeFtpGiornaliera($event)"
-                             [(ngModel)]="rendicontazioneGiornaliera.ftpEnabled" name="ftpGiornaliera"></it-toggle>
+                             [disabled]="disabilitaCampi()"
+                             [(ngModel)]="rendicontazioneGiornaliera.flagNotificaFtp" name="ftpGiornaliera"></it-toggle>
                 </div>
               </div>
               <div class="row">
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Server"
-                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneGiornaliera.ftpEnabled)"
+                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneGiornaliera.flagNotificaFtp)"
                          id="server" name="server" #server="ngModel" [customvalidator]="validateServer()"
-                         [required]="rendicontazioneGiornaliera.ftpEnabled"
+                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
                          [(ngModel)]="rendicontazioneGiornaliera.server"
-                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -803,11 +825,11 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Username"
-                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneGiornaliera.ftpEnabled)"
+                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneGiornaliera.flagNotificaFtp)"
                          id="username" name="username" #username="ngModel"
-                         [required]="rendicontazioneGiornaliera.ftpEnabled"
+                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
                          [(ngModel)]="rendicontazioneGiornaliera.username"
-                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -822,11 +844,11 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneGiornaliera.ftpEnabled)"
+                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneGiornaliera.flagNotificaFtp)"
                          id="password" name="password" #password="ngModel"
-                         [required]="rendicontazioneGiornaliera.ftpEnabled"
+                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
                          [(ngModel)]="rendicontazioneGiornaliera.password"
-                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -841,11 +863,11 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneGiornaliera.ftpEnabled)"
+                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneGiornaliera.flagNotificaFtp)"
                          id="directory" name="directory" #directory="ngModel"
-                         [required]="rendicontazioneGiornaliera.ftpEnabled"
+                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
                          [(ngModel)]="rendicontazioneGiornaliera.directory"
-                         [disabled]="!rendicontazioneGiornaliera.ftpEnabled ? true : null">
+                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -866,6 +888,7 @@
                 </div>
                 <div class="col-2">
                   <it-toggle id="nuovoFormato" [(ngModel)]="rendicontazioneGiornaliera.nuovoFormato"
+                             [disabled]="disabilitaCampi()"
                              name="nuovoFormato"></it-toggle>
                 </div>
               </div>
@@ -888,18 +911,19 @@
                 </div>
                 <div class="col-2">
                   <it-toggle id="emailFlussoPA" (ngModelChange)="changeEmailFlussoPagoPA($event)"
-                             [(ngModel)]="rendicontazioneFlussoPA.emailEnabled" name="emailFlussoPA"></it-toggle>
+                             [disabled]="disabilitaCampi()"
+                             [(ngModel)]="rendicontazioneFlussoPA.flagNotificaEmail" name="emailFlussoPA"></it-toggle>
                 </div>
               </div>
               <div class="row">
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneFlussoPA.emailEnabled)"
-                         [required]="rendicontazioneFlussoPA.emailEnabled"
+                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneFlussoPA.flagNotificaEmail)"
+                         [required]="rendicontazioneFlussoPA.flagNotificaEmail"
                          id="emailFlussoPAId" [customvalidator]="validateEmail()"
                          name="emailFlussoPAId" [(ngModel)]="rendicontazioneFlussoPA.email"
                          #emailFlussoPAId="ngModel"
-                         [disabled]="!rendicontazioneFlussoPA.emailEnabled ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -914,9 +938,9 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off" placeholder="Ccn" id="emailFlussoPACcn"
-                         name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.emailCcn"
+                         name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.ccn"
                          #emailFlussoPACcn="ngModel" [customvalidator]="validateEmail()"
-                         [disabled]="!rendicontazioneFlussoPA.emailEnabled ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -934,22 +958,24 @@
             <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
               <div class="row">
                 <div class="col">
-                  <label for="ftpFlussoPA" [ngClass]="{'required': rendicontazioneFlussoPA.ftpEnabled, 'title':true}">Ftp</label>
+                  <label for="ftpFlussoPA"
+                         [ngClass]="{'required': rendicontazioneFlussoPA.flagNotificaFtp, 'title':true}">Ftp</label>
                 </div>
                 <div class="col-2">
                   <it-toggle id="ftpFlussoPA" (ngModelChange)="changeFtpFlussoPagoPA($event)"
-                             [(ngModel)]="rendicontazioneFlussoPA.ftpEnabled" name="ftpFlussoPA"></it-toggle>
+                             [disabled]="disabilitaCampi()"
+                             [(ngModel)]="rendicontazioneFlussoPA.flagNotificaFtp" name="ftpFlussoPA"></it-toggle>
                 </div>
               </div>
               <div class="row">
 
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [required]="rendicontazioneFlussoPA.ftpEnabled"
-                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneFlussoPA.ftpEnabled)"
+                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneFlussoPA.flagNotificaFtp)"
                          id="serverFlussoPA" name="serverFlussoPA" [customvalidator]="validateServer()"
                          [(ngModel)]="rendicontazioneFlussoPA.server" #serverFlussoPA="ngModel"
-                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -965,12 +991,12 @@
 
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [required]="rendicontazioneFlussoPA.ftpEnabled"
-                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneFlussoPA.ftpEnabled)"
+                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneFlussoPA.flagNotificaFtp)"
                          id="usernameFlussoPA" name="usernameFlussoPA"
                          #usernameFlussoPA="ngModel"
                          [(ngModel)]="rendicontazioneFlussoPA.username"
-                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -985,12 +1011,12 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         [required]="rendicontazioneFlussoPA.ftpEnabled"
-                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneFlussoPA.ftpEnabled)"
+                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneFlussoPA.flagNotificaFtp)"
                          id="passwordFlussoPA"
                          name="passwordFlussoPA" #passwordFlussoPA="ngModel"
                          [(ngModel)]="rendicontazioneFlussoPA.password"
-                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -1005,11 +1031,11 @@
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off" id="directoryFlussoPA"
-                         [required]="rendicontazioneFlussoPA.ftpEnabled"
-                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneFlussoPA.ftpEnabled)"
+                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneFlussoPA.flagNotificaFtp)"
                          name="directoryFlussoPA" #directoryFlussoPA="ngModel"
                          [(ngModel)]="rendicontazioneFlussoPA.directory"
-                         [disabled]="!rendicontazioneFlussoPA.ftpEnabled ? true : null">
+                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
@@ -1053,14 +1079,16 @@
               <ng-container *ngFor="let item of emailsControl; let i = index">
                 <div class="row">
                   <div class="col-9">
-                    <input [formControl]="item" type="text" autocomplete="off" [customvalidator]="validateEmail()">
+                    <input [formControl]="item" type="text" autocomplete="off"
+                           [disabled]="disabilitaCampi()"
+                           [customvalidator]="validateEmail()">
                   </div>
                   <div class="col-3 align-self-center">
-                    <span class="pointer bottone-campo">
+                    <span *ngIf="!disabilitaCampi()" class="pointer bottone-campo">
                       <span ngbTooltip="rimuovi" placement="bottom"
                             [ngStyle]="{fill: '#403d39'}">
                         <svg (click)="removeEmail(i)" class="bg-light icon icon-sm filled">
-                          <use xlink:href="assets/img/sprite.svg#it-minus"></use>
+                          <use xlink:href="assets/img/sprite.svg#it-close"></use>
                         </svg>
                       </span>
                     </span>
@@ -1091,12 +1119,20 @@
         <!-- Bottoni dx -->
         <div class="col-10 text-right" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
           <button id="buttonSalva" class="btn"
-                  [disabled]="datiForm.invalid || (mapControllo && getListaControllo(mapControllo).includes(false))"
+                  [disabled]="(datiForm && datiForm.invalid) || (mapControllo && getListaControllo(mapControllo).includes(false))"
                   (click)="onClickSalva()">Salva
           </button>
         </div>
       </div>
     </form>
+  </div>
+
+  <div class="row" *ngIf="!filtri">
+    <!-- Bottone sx -->
+    <div class="col-2">
+      <button id="buttonIndietro" class="btn btn-secondary"
+              (click)="onClickAnnulla(funzione)">{{'Indietro'}}</button>
+    </div>
   </div>
 </div>
 <p-dialog header="Lista conti correnti" [(visible)]="displayCc">

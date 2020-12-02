@@ -27,13 +27,14 @@ import {PresaincaricopagamentoL1Component} from './modules/main/components/presa
 import {FormEnteComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component';
 import {RaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';
-import {FormTipologiaServizioComponent} from './modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component';
-import {GestisciTipologiaServizioComponent} from './modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
+import {FormTipologiaServizioComponent} from './modules/main/components/amministrativo/gestisci-tipologia-servizio/form-tipologia-servizio/form-tipologia-servizio.component';
+import {GestisciTipologiaServizioComponent} from './modules/main/components/amministrativo/gestisci-tipologia-servizio/gestisci-tipologia-servizio.component';
 import {FormServizioComponent} from './modules/main/components/amministrativo/gestisci-servizi/form-servizio/form-servizio.component';
 import {GestisciStatisticheComponent} from './modules/main/components/amministrativo/gestisci-statistiche/gestisci-statistiche.component';
 import {FormStatisticaComponent} from './modules/main/components/amministrativo/gestisci-statistiche/form-statistica/form-statistica.component';
 import {GestisciAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/gestisci-attivita-pianificate.component';
 import {FormAttivitaPianificateComponent} from './modules/main/components/amministrativo/gestisci-attivita-pianificate/form-attivita-pianificate/form-attivita-pianificate.component';
+import {GestisciServiziComponent} from "./modules/main/components/amministrativo/gestisci-servizi/gestisci-servizi.component";
 import {RendicontazioneComponent} from './modules/main/components/amministrativo/gestisciportale/rendicontazione/rendicontazione.component';
 import {DettaglioRendicontazioneComponent} from './modules/main/components/amministrativo/gestisciportale/rendicontazione/dettaglio-rendicontazione/dettaglio-rendicontazione.component';
 import {MonitoraggioTransazioniComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/monitoraggio-transazioni.component';
@@ -94,7 +95,13 @@ const routes: Routes = [
   {path: 'gestisciTipologiaServizi/aggiungiTipologia', component: FormTipologiaServizioComponent},
   {path: 'gestisciTipologiaServizi/modificaTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
   {path: 'gestisciTipologiaServizi/dettaglioTipologia/:tipologiaServizioId', component: FormTipologiaServizioComponent},
+
+  {path: 'configuraServizi', component: GestisciServiziComponent},
   {path: 'configuraServizi/aggiungiServizio', component: FormServizioComponent},
+  {path: 'configuraServizi/modificaServizio/:servizioId', component: FormServizioComponent},
+  {path: 'configuraServizi/dettaglioServizio/:servizioId', component: FormServizioComponent},
+
+
   {path: 'gestisciStatistiche', component: GestisciStatisticheComponent},
   {path: 'gestisciStatistiche/aggiungiStatistica', component: FormStatisticaComponent},
   {path: 'gestisciStatistiche/modificaStatistica/:statisticaId', component: FormStatisticaComponent},

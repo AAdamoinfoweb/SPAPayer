@@ -10,7 +10,7 @@ import {OverlayService} from './services/overlay.service';
 import {DatiPagamento} from './modules/main/model/bollettino/DatiPagamento';
 import {EsitoEnum} from './enums/esito.enum';
 import {of} from "rxjs";
-import {DatiModaleCampo} from './modules/main/components/amministrativo/gestisci-servizi/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
+import {DatiModaleCampo} from './modules/main/components/amministrativo/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
 
 @Component({
   selector: 'app-root',

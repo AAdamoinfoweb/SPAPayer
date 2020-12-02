@@ -3,5 +3,5 @@ export class FiltroUfficio {
   codiceEnte: string = null;
   tipoUfficio: string = null;
   codiceUfficio: string = null;
-  descrizioneUfficio: string = null;
+  descrizione: string = null;
 }

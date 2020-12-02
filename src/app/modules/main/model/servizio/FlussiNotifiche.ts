@@ -3,7 +3,7 @@ import {FlussoRiversamentoPagoPA} from './FlussoRiversamentoPagoPA';
 import {RendicontazioneGiornaliera} from './RendicontazioneGiornaliera';
 
 export class FlussiNotifiche {
-  notifichePagamento: NotifichePagamento;
-  flussoRiversamentoPagoPa: FlussoRiversamentoPagoPA;
+  notifichePagamento: NotifichePagamento[];
+  flussoRiversamentoPagoPA: FlussoRiversamentoPagoPA;
   rendicontazioneGiornaliera: RendicontazioneGiornaliera;
 }
