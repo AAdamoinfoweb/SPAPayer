@@ -1,0 +1,67 @@
+<div class="ml-5" *ngIf="!waiting">
+  <!-- breadcrumb -->
+  <it-breadcrumb [dark]="false" [separator]="'/'">
+    <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
+                        [link]="item.link">
+      {{item.label}}
+    </it-breadcrumb-item>
+  </it-breadcrumb>
+
+  <!-- titolo -->
+  <h3 class="mb-2 page-title"><strong>Rendicontazione</strong>
+    <span it-tooltip="{{tooltipTitolo}}">
+      <svg class="bg-light icon icon-lg icon-padded">
+        <use xlink:href="assets/img/sprite.svg#it-help-circle"></use>
+      </svg>
+    </span>
+  </h3>
+
+  <!-- Sottosezione Filtri -->
+  <app-filtro-rendicontazione (onChangeFiltri)="onChangeFiltriRendicontazione($event)"></app-filtro-rendicontazione>
+
+  <!-- Sottosezione Lista Flussi di Rendicontazione -->
+  <div class="collapse-header" id="idCollapseListaRendicontazione">
+    <button data-toggle="collapse" data-target="#contenutoSezioneListaRendicontazione" aria-expanded="true" aria-controls="contenutoSezioneListaRendicontazione">
+      Lista flussi di rendicontazione
+    </button>
+  </div>
+  <div id="contenutoSezioneListaRendicontazione" class="collapse show" role="tabpanel" aria-labelledby="idCollapseListaRendicontazione">
+    <div class="collapse-body">
+      <div class="row align-items-baseline align-content-lg-around">
+        <div class="col-lg pb-2 pb-sm-2 pb-lg-0"></div>
+        <!-- azioni -->
+        <div class="col-auto">
+          <app-toolbar [toolbarIcons]="toolbarIcons" (onClick)="eseguiAzioni($event)"></app-toolbar>
+        </div>
+      </div>
+      <!-- table -->
+      <div class="row">
+        <div class="col">
+          <app-table [dataKey]="tableData.dataKey"
+                     [cols]="tableData.cols"
+                     [rows]="tableData.rows"
+                     [tipoTabella]="tableData.tipoTabella"
+                     [textLeft]="getNumeroRecord()"
+                     (onSelection)="selezionaRigaTabella($event)"
+                     [selectedRows]="true"
+                     (onClickRow)="mostraDettaglioRendicontazione($event)"
+                     [selection]="righeSelezionate">
+          </app-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modale -->
+<p-dialog header="STATISTICHE" [(visible)]="displayModalWithTable" [style]="{width: '50vw'}">
+  <div class="row">
+    <div class="col">
+      <app-table [dataKey]="tableDataStatisticheRendicontazioni.dataKey"
+                 [cols]="tableDataStatisticheRendicontazioni.cols"
+                 [rows]="tableDataStatisticheRendicontazioni.rows"
+                 [tipoTabella]="tableDataStatisticheRendicontazioni.tipoTabella">
+      </app-table>
+    </div>
+  </div>
+</p-dialog>

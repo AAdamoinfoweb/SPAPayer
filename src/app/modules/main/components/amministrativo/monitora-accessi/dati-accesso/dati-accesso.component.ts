@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {Accesso} from '../../../../model/accesso/Accesso';
 import {Utils} from '../../../../../../utils/Utils';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 import {FunzioneService} from '../../../../../../services/funzione.service';
 
 @Component({
@@ -52,7 +53,7 @@ export class DatiAccessoComponent implements OnInit, OnChanges {
           disabled: true
         });
       });
-      Utils.ordinaOpzioniSelect(this.listaFunzioni);
+      this.listaFunzioni = _.sortBy(this.listaFunzioni, ['label']);
     });
   }
 

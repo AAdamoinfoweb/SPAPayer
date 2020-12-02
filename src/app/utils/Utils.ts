@@ -4,14 +4,13 @@ import * as FILESAVER from 'file-saver';
 import * as jsPDF from 'jspdf';
 import {tipoColonna} from '../enums/TipoColonna.enum';
 import {ImmaginePdf} from '../modules/main/model/tabella/ImmaginePdf';
-import {Tabella} from '../modules/main/model/tabella/Tabella';
 import {TipoModaleEnum} from '../enums/tipoModale.enum';
-import {Breadcrumb, SintesiBreadcrumb} from "../modules/main/dto/Breadcrumb";
+import {Breadcrumb, SintesiBreadcrumb} from '../modules/main/dto/Breadcrumb';
 import {Colonna} from '../modules/main/model/tabella/Colonna';
+import {Banner} from '../modules/main/model/banner/Banner';
+import {getBannerType, LivelloBanner} from '../enums/livelloBanner.enum';
+import {ToolEnum} from '../enums/Tool.enum';
 import {OpzioneSelect} from '../modules/main/model/OpzioneSelect';
-import {Banner} from "../modules/main/model/banner/Banner";
-import {getBannerType, LivelloBanner} from "../enums/livelloBanner.enum";
-import {ToolEnum} from "../enums/Tool.enum";
 
 export class Utils {
 
@@ -67,8 +66,8 @@ export class Utils {
     return numeroPositivo < 10 ? '0' + numeroPositivo : '' + numeroPositivo;
   }
 
-  static creaIcona = (path, color, tooltip, display) => {
-    return {path, color, tooltip, display};
+  static creaIcona = (path, color, tooltip, display, placement?) => {
+    return placement ? {path, color, tooltip, display, placement} : {path, color, tooltip, display, placement: 'right'};
   }
 
   static ordinaOpzioniSelect(opzioni: OpzioneSelect[]) {
@@ -129,9 +128,12 @@ export class Utils {
               elementoRigaPdf = riga[elemento]?.display === 'inline' ? '' : null;
               break;
             case tipoColonna.LINK:
-              elementoRigaPdf = riga[elemento]?.testo || null;
+              elementoRigaPdf = riga[elemento]?.value || null;
               break;
             case tipoColonna.TESTO:
+              elementoRigaPdf = riga[elemento]?.value || null;
+              break;
+            case tipoColonna.IMPORTO:
               elementoRigaPdf = riga[elemento]?.value || null;
               break;
             default:
@@ -151,16 +153,29 @@ export class Utils {
     filePdf.autoTable(headerColonne, righePdf, {
       didDrawCell: data => {
         immagini.forEach(immagine => {
-          if (data.section === 'body' && data.column.index === immagine.indiceColonna && data.row.raw[immagine.indiceColonna] != null) {
-            const icona = new Image();
-            icona.src = immagine.srcIcona;
-            filePdf.addImage(icona, 'PNG', data.cell.x + immagine.posizioneX, data.cell.y + immagine.posizioneY, immagine.larghezza, immagine.altezza);
+          if (Array.isArray(immagine)) {
+            immagine.forEach(img => {
+              this.inserisciImmagine(data, img, filePdf);
+            });
+          } else {
+            this.inserisciImmagine(data, immagine, filePdf);
           }
         });
       }
     });
     const blob = filePdf.output('blob');
     window.open(URL.createObjectURL(blob));
+  }
+
+  static inserisciImmagine(data: any, immagine: ImmaginePdf, filePdf: jsPDF.default) {
+    if (data.section === 'body' && data.column.index === immagine.indiceColonna
+      && (immagine.indiceRiga === null || data.row.index === immagine.indiceRiga)
+      && data.row.raw[immagine.indiceColonna] != null) {
+      const icona = new Image();
+      icona.src = immagine.srcIcona;
+      filePdf.addImage(icona, 'PNG', data.cell.x + immagine.posizioneX, data.cell.y + immagine.posizioneY,
+        immagine.larghezza, immagine.altezza);
+    }
   }
 
   static creaFileExcel(rows: any, headers: string[], sheet: any, sheetNames: any, workbook: any, fileName: string): void {
@@ -192,6 +207,20 @@ export class Utils {
       '<iframe width=\'100%\' height=\'100%\' src=\'data:application/pdf;base64, ' +
       stream + '\'></iframe>'
     );
+  }
+
+  /**
+   * salvataggio di un file txt
+   * @param stream  Lo stream del file in base64 da convertire in testo
+   * @param fileName  Il nome da assegnare al file
+   */
+  static downloadBase64ToTxtFile(stream, fileName) {
+    // Converto il Base64 nella rispettiva string (DECODIFICA)
+    const text = atob(stream);
+    // Blob per il salvataggio
+    const file = new Blob([text], {type: 'text/plain'});
+    // Richiamo la funzione saveAs di Blob per salvare il file in formato txt
+    FILESAVER.saveAs(file, fileName);
   }
 
   /**

@@ -35,15 +35,15 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract tableData: Tabella;
 
-  abstract listaElementi: any[];
+  listaElementi: any[];
   abstract filtriRicerca: any;
 
   abstract righeSelezionate: any[];
   waiting = true;
 
-  inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[]): Breadcrumb[] {
+  inizializzaBreadcrumbList(breadcrumbs: SintesiBreadcrumb[], flag?: boolean): Breadcrumb[] {
     const breadcrumbList: SintesiBreadcrumb[] = [];
-    breadcrumbList.push(new SintesiBreadcrumb('Amministra Portale', null));
+    breadcrumbList.push(new SintesiBreadcrumb(flag ? 'Gestisci Portale' : 'Amministra Portale', null));
     breadcrumbList.push(...breadcrumbs);
     return Utils.popolaListaBreadcrumb(breadcrumbList);
   }
@@ -94,7 +94,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     }
   }
 
-  abstract getObservableFunzioneRicerca(): Observable<any[]>;
+  abstract getObservableFunzioneRicerca(): Observable<any[] | any>;
 
   mostraDettaglioElemento(linkFunzioneDettaglio: string, id: number) {
     this.righeSelezionate = [];
@@ -125,7 +125,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
     const copiaTabella = JSON.parse(JSON.stringify(tabella));
     const colonne = this.getColonneFilePdf(copiaTabella.cols);
     const righe = this.getRigheFilePdf(copiaTabella.rows);
-    let immagini = this.getImmaginiFilePdf();
+    let immagini = this.getImmaginiFilePdf(righe);
     if (!immagini) {
       immagini = [];
     }
@@ -136,7 +136,7 @@ export abstract class GestisciElementoComponent extends AmministrativoParentComp
 
   abstract getRigheFilePdf(righe: any[]): any[];
 
-  abstract getImmaginiFilePdf(): ImmaginePdf[];
+  abstract getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] | any[];
 
   abstract selezionaRigaTabella(righeSelezionate: any[]): void;
 

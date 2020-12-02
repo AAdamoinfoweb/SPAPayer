@@ -23,11 +23,11 @@ export class FiltroGestisciStatisticheComponent extends FiltroGestioneElementiCo
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaStatistiche> = new EventEmitter<ParametriRicercaStatistiche>();
 
-  filtroRicercaStatistiche: ParametriRicercaStatistiche;
+  filtroRicercaStatistiche: ParametriRicercaStatistiche = new ParametriRicercaStatistiche();
 
   // calendar
   isCalendarOpen: boolean;
-  readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
+  readonly minDateDDMMYYYY = '01/01/1990';
   readonly tipoData = ECalendarValue.String;
 
   ngOnInit(): void {

@@ -23,7 +23,7 @@
       <td *ngFor="let col of columns" (click)="selectedRows ? onRowClick(row) : null">
         <span class="p-column-title">{{col.header}}</span>
         <!--  template ICONA  -->
-        <div it-tooltip="{{row[col.field].tooltip}}"
+        <div it-tooltip="{{row[col.field].tooltip}}" [placement]="row[col.field].placement"
               *ngIf="col.type == tipoColonnaEnum.ICONA"
              [ngStyle]="{fill: row[col.field] != null ? row[col.field].color : '#403d39', display: row[col.field].display}"
               (click)="onIconClick(row[dataKey])"
@@ -65,7 +65,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="paginatorleft">
-    {{textLeft}}
+    <span style="white-space: pre-line;">{{textLeft}}</span>
   </ng-template>
   <ng-template pTemplate="paginatorright">
     <app-paginator (onChangePageSize)="onChangePageSize($event)" pageSize="{{rowsPerPageOption[0]}}"
