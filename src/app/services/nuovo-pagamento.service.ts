@@ -53,7 +53,7 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaFiltroEnti(idLivelloTerritoriale?, societaId?: number, filtroPagamento: boolean = false): Observable<Ente[]> {
+  recuperaFiltroEnti(idLivelloTerritoriale?, societaId?: number, filtroPagamento: boolean = false, mostraTutti = false): Observable<Ente[]> {
     let params = new HttpParams();
     if (idLivelloTerritoriale) {
       params = params.set('livelloTerritorialeId', idLivelloTerritoriale);
@@ -62,6 +62,7 @@ export class NuovoPagamentoService {
       params = params.set('societaId', String(societaId));
     }
     params = params.set('filtroPagamento', filtroPagamento ? 'true' : 'false'); // gestisce casi true, false, null, undefined
+    params = params.set('mostraTutti', mostraTutti ? 'true' : 'false'); // gestisce casi true, false, null, undefined
 
     return this.http.get(environment.bffBaseUrl + this.filtroEntiUrl, {
       params: params,
@@ -72,12 +73,14 @@ export class NuovoPagamentoService {
       }));
   }
 
-  recuperaFiltroServizi(idEnte?, filtroPagamento: boolean = false): Observable<FiltroServizio[]> {
+  recuperaFiltroServizi(idEnte?, filtroPagamento: boolean = false, mostraTutti = false): Observable<FiltroServizio[]> {
     let params = new HttpParams();
     if (idEnte) {
       params = params.set('enteId', idEnte);
     }
     params = params.set('filtroPagamento', filtroPagamento ? 'true' : 'false'); // gestisce casi true, false, null, undefined
+    params = params.set('mostraTutti', mostraTutti ? 'true' : 'false'); // gestisce casi true, false, null, undefined
+
     return this.http.get(environment.bffBaseUrl + this.filtroServiziUrl, {
       params: params,
       withCredentials: true
