@@ -135,7 +135,9 @@
       <!--    inizio Schedulazione -->
       <div class="col-md-6 pb-2">
           <app-schedulazione [funzione]="funzione" (isFormValid)="schedulazioneFormValid(datiForm, $event)"
-                             [schedulazione]="datiAttivitaPianificata.schedulazione"></app-schedulazione>
+                             [schedulazione]="datiAttivitaPianificata.schedulazione" [idFunzione]="idFunzione">
+
+          </app-schedulazione>
       </div>
       <!--      fine Schedulazione -->
     </div>

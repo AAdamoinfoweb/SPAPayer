@@ -1,4 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
 import {Schedulazione} from '../../../model/schedulazione/Schedulazione';
@@ -6,15 +15,19 @@ import {FunzioneGestioneEnum} from '../../../../../enums/funzioneGestione.enum';
 import {OpzioneSelect} from '../../../model/OpzioneSelect';
 import {NgForm, NgModel} from '@angular/forms';
 import {Utils} from '../../../../../utils/Utils';
+import {HttpErrorResponse} from "@angular/common/http";
+import {RegexSchedulazione} from "../../../model/schedulazione/RegexSchedulazione";
+import {SchedulazioneService} from "../../../../../services/schedulazione.service";
 
 @Component({
   selector: 'app-schedulazione',
   templateUrl: './schedulazione.component.html',
   styleUrls: ['./schedulazione.component.scss']
 })
-export class SchedulazioneComponent implements OnInit {
+export class SchedulazioneComponent implements OnInit, OnChanges {
 
-  constructor() { }
+  constructor(private schedulazioneService: SchedulazioneService) {
+  }
 
   // enums e consts
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
@@ -32,6 +45,8 @@ export class SchedulazioneComponent implements OnInit {
   schedulazione: Schedulazione;
   @Input()
   funzione: FunzioneGestioneEnum;
+  @Input()
+  idFunzione;
 
   @Output()
   isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -42,8 +57,18 @@ export class SchedulazioneComponent implements OnInit {
   readonly tipoData = ECalendarValue.String;
   opzioniTimeZone: OpzioneSelect[] = [];
 
+  regexSchedulazione: RegexSchedulazione = new RegexSchedulazione();
+
   ngOnInit(): void {
     this.inizializzaTimeZone();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.idFunzione) {
+      if (this.idFunzione) {
+        this.recuperaRegexSchedulazione();
+      }
+    }
   }
 
   private inizializzaTimeZone() {
@@ -67,7 +92,7 @@ export class SchedulazioneComponent implements OnInit {
 
   onChangeModel(form: NgForm, campo?: NgModel) {
     if (campo?.value == '') {
-        this.schedulazione[campo.name] = null;
+      this.schedulazione[campo.name] = null;
     }
     this.isFormValid.emit(form.valid);
   }
@@ -88,4 +113,11 @@ export class SchedulazioneComponent implements OnInit {
       ? moment(datePicker.inputElementValue, 'DD/MM/YYYY').subtract(1, 'day').format('DD/MM/YYYY') : null;
   }
 
+  private recuperaRegexSchedulazione() {
+    this.schedulazioneService.regexSchedulazione(this.idFunzione).subscribe((response) => {
+      if (!(response instanceof HttpErrorResponse)) {
+        this.regexSchedulazione = response;
+      }
+    });
+  }
 }

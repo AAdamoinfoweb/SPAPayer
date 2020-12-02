@@ -133,7 +133,8 @@
                              [(ngModel)]="schedulazione.hour"
                              class="pt-0" autocomplete="off" aria-describedby="oraHelpDescription"
                              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                             (ngModelChange)="onChangeModel(schedulazioneForm, hour)">
+                             (ngModelChange)="onChangeModel(schedulazioneForm, hour)"
+                             [pattern]="regexSchedulazione.regexOre">
                     </div>
                   </div>
                   <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
@@ -158,7 +159,8 @@
                              [(ngModel)]="schedulazione.minute"
                              class="pt-0" autocomplete="off" aria-describedby="minutiHelpDescription"
                              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                             (ngModelChange)="onChangeModel(schedulazioneForm, minute)">
+                             (ngModelChange)="onChangeModel(schedulazioneForm, minute)"
+                             [pattern]="regexSchedulazione.regexMinuti">
                     </div>
                   </div>
                   <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
@@ -183,7 +185,8 @@
                              [(ngModel)]="schedulazione.second"
                              class="pt-0" autocomplete="off" aria-describedby="secondiHelpDescription"
                              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                             (ngModelChange)="onChangeModel(schedulazioneForm, second)">
+                             (ngModelChange)="onChangeModel(schedulazioneForm, second)"
+                             [pattern]="regexSchedulazione.regexSecondi">
                     </div>
                   </div>
                   <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
@@ -212,7 +215,8 @@
                              [(ngModel)]="schedulazione.day"
                              class="pt-0" autocomplete="off" aria-describedby="giornoHelpDescription"
                              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                             (ngModelChange)="onChangeModel(schedulazioneForm, day)">
+                             (ngModelChange)="onChangeModel(schedulazioneForm, day)"
+                             [pattern]="regexSchedulazione.regexGiorniMese">
                     </div>
                   </div>
                   <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
@@ -237,7 +241,8 @@
                              [(ngModel)]="schedulazione.month"
                              class="pt-0" autocomplete="off" aria-describedby="meseHelpDescription"
                              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                             (ngModelChange)="onChangeModel(schedulazioneForm, month)">
+                             (ngModelChange)="onChangeModel(schedulazioneForm, month)"
+                             [pattern]="regexSchedulazione.regexMesi">
                     </div>
                   </div>
                   <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
@@ -262,7 +267,8 @@
                              [(ngModel)]="schedulazione.weekDay"
                              class="pt-0" autocomplete="off" aria-describedby="giornoSettimanaHelpDescription"
                              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                             (ngModelChange)="onChangeModel(schedulazioneForm, weekDay)">
+                             (ngModelChange)="onChangeModel(schedulazioneForm, weekDay)"
+                             [pattern]="regexSchedulazione.regexGiorniSettimana">
                     </div>
                   </div>
                   <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
@@ -292,7 +298,8 @@
                              [(ngModel)]="schedulazione.year"
                              class="pt-0" autocomplete="off" aria-describedby="annoHelpDescription"
                              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                             (ngModelChange)="onChangeModel(schedulazioneForm, year)">
+                             (ngModelChange)="onChangeModel(schedulazioneForm, year)"
+                             [pattern]="regexSchedulazione.regexAnni">
                     </div>
                   </div>
                   <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
@@ -370,6 +377,7 @@
                       maxlength="255"
                       [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                       class="textArea"
+                      [pattern]="regexSchedulazione.regexSchedulazioniExtra"
                     ></textarea>
             </div>
           </div>
@@ -410,6 +418,7 @@
                       maxlength="255"
                       [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                       class="textArea"
+                      [pattern]="regexSchedulazione.regexFestivita"
                     ></textarea>
             </div>
           </div>
