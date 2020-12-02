@@ -407,7 +407,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.integrazione = this.integrazione;
     this.servizio.impositore = this.impositore;
     this.servizio.beneficiario = this.beneficiario;
-    const listaContiCorrenti = this.getListaContiCorrente(this.mapContoCorrente);
+    const listaContiCorrenti =  _.cloneDeep(this.getListaContiCorrente(this.mapContoCorrente));
     const listaContiCorrentiPerBe = listaContiCorrenti.map(value => {
       value.inizioValidita = moment(value.inizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
       if (value.fineValidita) {
