@@ -70,8 +70,6 @@ import {RoutingService} from "../../../../../../services/routing.service";
 })
 export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  waiting: boolean = false;
-
   constructor(private cdr: ChangeDetectorRef, private bannerService: BannerService,
               private renderer: Renderer2,
               private configuraServizioService: ConfiguraServizioService,
@@ -192,26 +190,24 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
-    let self = this;
     this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoServizio) => {
-      console.log(this.campoTipologiaServizioList);
-      const campoFormIdx = self.campoTipologiaServizioList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
-      const campoFormIdx2 = self.campoServizioAddList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
+      let parentCampo = this.campoTipologiaServizioOriginal.find((value: CampoServizio) => value.id == campoForm.campoTipologiaServizioId || value.id == campoForm.id);
+      const campoFormIdx = this.campoTipologiaServizioList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
+      const campoFormIdx2 = this.campoServizioAddList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
 
       if (campoFormIdx != -1) {
-        campoForm.campoTipologiaServizioId = campoForm.id;
-        self.campoTipologiaServizioList[campoFormIdx] = _.cloneDeep(campoForm);
+        campoForm.campoTipologiaServizioId = parentCampo.id;
+        this.campoTipologiaServizioList[campoFormIdx] = _.cloneDeep(campoForm);
       } else if (campoFormIdx2 != -1) {
-        self.campoServizioAddList[campoFormIdx2] = _.cloneDeep(campoForm);
+        this.campoServizioAddList[campoFormIdx2] = _.cloneDeep(campoForm);
       } else {
         campoForm.uuid = uuidv4();
         campoForm.draggable = true;
-        self.campoServizioAddList.push(campoForm);
+        this.campoServizioAddList.push(campoForm);
       }
-      self.cdr.detectChanges();
-      self.overlayService.mostraModaleCampoEvent.emit(null);
+      this.overlayService.mostraModaleCampoEvent.emit(null);
 
-      self.refreshItemsDipendeDa();
+      this.refreshItemsDipendeDa();
     });
 
     this.refreshItemsEvent.subscribe((items) => {
@@ -235,7 +231,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.servizioId = parseInt(snapshot.paramMap.get('servizioId'));
 
       this.configuraServizioService.dettaglioServizio(this.servizioId, this.idFunzione).pipe(map((value: Servizio) => {
-        this.waiting = false;
         this.servizio = value;
         this.filtro = new ParametriRicercaServizio();
         this.filtro.raggruppamentoId = value.raggruppamentoId;
@@ -255,7 +250,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
               campoServizio.uuid = uuidv4();
             return campoServizio ? campoServizio : obj;
           });
-          this.waiting = false;
         });
         this.filtro.abilitaDa = moment(value.abilitaDa, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR);
         this.filtro.abilitaA = value.abilitaA ? moment(value.abilitaA, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
@@ -345,7 +339,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
               campo.dipendeDa.id = null;
             }
           });
-          this.cdr.detectChanges();
         }
         this.refreshItemsDipendeDa();
       }));
@@ -444,7 +437,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.configuraServizioService.modificaServizio(this.servizio, this.idFunzione)
         .subscribe((id) => {
           if (id) {
-            this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaServizio/' + this.servizio.id, null);
+            this.router.navigateByUrl(this.basePath + '/modificaServizio/' + this.servizio.id);
             this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
@@ -661,7 +654,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   showModal(item: CampoTipologiaServizio) {
     let obj = _.cloneDeep(item);
     obj.uuid = item.uuid;
-    console.log(this.campoTipologiaServizioList);
     this.overlayService.mostraModaleCampoEvent.emit({
       campoForm: obj,
       funzione: this.funzione,
