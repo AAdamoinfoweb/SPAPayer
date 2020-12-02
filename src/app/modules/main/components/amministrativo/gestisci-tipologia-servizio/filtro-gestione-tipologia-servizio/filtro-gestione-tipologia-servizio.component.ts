@@ -89,13 +89,13 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   selezionaRaggruppamento() {
-    // resetto il filtro codice
-    this.filtriRicerca.tipologia = new TipologiaServizio();
-    this.listaTipologie = [];
-    this.listaTipologieFiltrate = [];
-
     // Nella pagina Form, carico solo i codici tipologia relativi al raggruppamento selezionato
     if (!this.isPaginaGestione() && this.filtriRicerca.raggruppamentoId) {
+      // resetto il filtro codice
+      this.filtriRicerca.tipologia = new TipologiaServizio();
+      this.listaTipologie = [];
+      this.listaTipologieFiltrate = [];
+
       this.caricaCodiciTipologia();
     }
   }
