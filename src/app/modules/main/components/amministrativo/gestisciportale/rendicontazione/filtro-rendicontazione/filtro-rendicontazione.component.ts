@@ -222,8 +222,8 @@ export class FiltroRendicontazioneComponent extends FiltroGestioneElementiCompon
 
   pulisciFiltri(filtroRendicontazioneForm: NgForm): void {
     filtroRendicontazioneForm.resetForm();
-    this.filtroRicercaRendicontazione = new ParametriRicercaRendicontazione();
-    this.onChangeFiltri.emit(null);
+    const filtri = this.formattaFiltri();
+    this.onChangeFiltri.emit(filtri);
   }
 
   disabilitaBottone(filtroRendicontazioneForm: NgForm, nomeBottone: string): boolean {
