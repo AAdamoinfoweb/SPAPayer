@@ -113,7 +113,6 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   onClickRow(contoCorrente: ContoCorrente) {
-    this.datiContoCorrente.id = contoCorrente.id;
     this.datiContoCorrente.iban = contoCorrente.iban;
     this.datiContoCorrente.intestazione = contoCorrente.intestazione;
     this.datiContoCorrente.ibanCCPostale = contoCorrente.ibanCCPostale;
@@ -135,7 +134,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
 
   disabilitaSelezionaCC() {
     if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI &&
-      this.datiContoCorrente.id) {
+      this.datiContoCorrente.id && !this.contoSelezionato) {
       return false;
     } else {
       return true;
