@@ -81,10 +81,10 @@ export class SchedulazioneComponent implements OnInit, OnChanges {
   getMessaggioErrore(campo: NgModel): string {
     if (campo.control?.errors?.required) {
       return 'Il campo è obbligatorio';
-    } else if (campo.name === 'inizioSchedulazione' || campo.name === 'fineSchedulazione') {
-      return 'Campo non valido';
-    } else {
+    } else if (campo.control?.errors?.pattern) {
       return 'Formato non corretto';
+    } else {
+      return 'Campo non valido';
     }
   }
 
