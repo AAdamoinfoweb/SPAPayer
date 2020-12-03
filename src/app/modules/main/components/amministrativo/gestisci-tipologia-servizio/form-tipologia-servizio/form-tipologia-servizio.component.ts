@@ -46,8 +46,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   @ViewChild(CdkDropListGroup) listGroup: CdkDropListGroup<CdkDropList>;
   @ViewChild(CdkDropList) placeholder: CdkDropList;
 
-  public items: CampoTipologiaServizio[] = [];
-
   public target: CdkDropList;
   public targetIndex: number;
   public source: CdkDropList;
@@ -92,24 +90,29 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     protected amministrativoService: AmministrativoService,
     private viewportRuler: ViewportRuler,
     protected confirmationService: ConfirmationService,
-    private campoTipologiaServizioService: CampoTipologiaServizioService) {
+    public campoTipologiaServizioService: CampoTipologiaServizioService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
     this.target = null;
     this.source = null;
   }
 
   ngOnDestroy(): void {
+    this.campoTipologiaServizioService.items = [];
+    if (this.amministrativoService.salvaCampoFormEvent.observers)
+      this.amministrativoService.salvaCampoFormEvent.unsubscribe();
   }
 
   ngOnInit() {
+    this.amministrativoService.salvaCampoFormEvent = new EventEmitter<any>();
     this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoTipologiaServizio) => {
-      let campoFormIdx = this.items.findIndex((value: CampoTipologiaServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
+      let campoFormIdx = this.campoTipologiaServizioService.items
+        .findIndex((value: CampoTipologiaServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
       campoForm.campoInput = true;
       if (campoFormIdx != -1) {
-        this.items[campoFormIdx] = campoForm;
+        this.campoTipologiaServizioService.items[campoFormIdx] = campoForm;
       } else {
         campoForm.uuid = uuidv4();
-        this.items.push(campoForm);
+        this.campoTipologiaServizioService.items.push(campoForm);
         this.cdr.detectChanges();
       }
       this.overlayService.mostraModaleCampoEvent.emit(null);
@@ -191,19 +194,24 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.waiting = true;
     return this.campoTipologiaServizioService.campiTipologiaServizio(tipologiaServizioId, this.idFunzione)
       .pipe(map(value => {
-        this.items = _.sortBy(value, 'posizione');
+        this.campoTipologiaServizioService.items = _.sortBy(value, 'posizione');
 
         // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
         if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
-          this.items.forEach(campo => {
+          this.campoTipologiaServizioService.items.forEach(campo => {
             campo.id = null;
-            campo.uuid = uuidv4();
             if (campo.dipendeDa)
               campo.dipendeDa.id = null;
           });
         }
 
-        this.refreshItemsEvent.emit(this.items);
+        if (this.funzione !== FunzioneGestioneEnum.DETTAGLIO) {
+          this.campoTipologiaServizioService.items.forEach(campo => {
+            campo.uuid = uuidv4();
+          });
+        }
+
+        this.refreshItemsEvent.emit(this.campoTipologiaServizioService.items);
         this.waiting = false;
       }));
   }
@@ -218,13 +226,13 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   onClickSalva(): void {
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
-      this.items.forEach((value, index) => value.posizione = index + 1);
+      this.campoTipologiaServizioService.items.forEach((value, index) => value.posizione = index + 1);
 
       let inserimento: InserimentoTipologiaServizio = new InserimentoTipologiaServizio();
       inserimento.raggruppamentoId = this.filtro.raggruppamentoId;
       inserimento.codice = this.codiceTipologia;
       inserimento.descrizione = this.nomeTipologia;
-      inserimento.listaCampiTipologiaServizio = this.items;
+      inserimento.listaCampiTipologiaServizio = this.campoTipologiaServizioService.items;
       this.campoTipologiaServizioService.inserimentoTipologiaServizio(inserimento, this.idFunzione)
         .subscribe((id) => {
           if (id) {
@@ -233,12 +241,12 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
           }
         });
     } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
-      this.items.forEach((value, index) => value.posizione = index + 1);
+      this.campoTipologiaServizioService.items.forEach((value, index) => value.posizione = index + 1);
 
       let modificaTipologiaServizio: ModificaTipologiaServizio = new ModificaTipologiaServizio();
       modificaTipologiaServizio.raggruppamentoId = this.filtro.raggruppamentoId;
       modificaTipologiaServizio.descrizione = this.nomeTipologia;
-      modificaTipologiaServizio.listaCampiTipologiaServizio = this.items;
+      modificaTipologiaServizio.listaCampiTipologiaServizio = this.campoTipologiaServizioService.items;
       this.campoTipologiaServizioService.modificaTipologiaServizio(this.tipologiaServizioId, modificaTipologiaServizio, this.idFunzione)
         .subscribe((resp) => {
           if (!resp) {
@@ -259,7 +267,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     this.filtro = null;
     this.codiceTipologia = null;
     this.nomeTipologia = null;
-    this.items = [];
+    this.campoTipologiaServizioService.items = [];
   }
 
   onChangeFiltri(filtri: ParametriRicercaTipologiaServizio) {
@@ -277,7 +285,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   add() {
     const campoForm = new CampoTipologiaServizio();
-    this.refreshItemsEvent.emit(this.items);
+    this.refreshItemsEvent.emit(this.campoTipologiaServizioService.items);
     this.showModal(campoForm);
   }
 
@@ -285,8 +293,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
       this.confirmationService.confirm(
         Utils.getModale(() => {
-            this.items.splice(this.items.findIndex((v) => v.id === item.id), 1);
-            this.refreshItemsEvent.emit(this.items);
+            this.campoTipologiaServizioService.items.splice(this.campoTipologiaServizioService.items.findIndex((v) => v.id === item.id), 1);
+            this.refreshItemsEvent.emit(this.campoTipologiaServizioService.items);
           },
           TipoModaleEnum.ELIMINA,
         )
@@ -326,8 +334,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   dropEvt(event: CdkDragDrop<{ item: CampoTipologiaServizio; index: number }, any>) {
-    this.items[event.previousContainer.data.index] = event.container.data.item;
-    this.items[event.container.data.index] = event.previousContainer.data.item;
+    this.campoTipologiaServizioService.items[event.previousContainer.data.index] = event.container.data.item;
+    this.campoTipologiaServizioService.items[event.container.data.index] = event.previousContainer.data.item;
   }
 
   showModal(item: CampoTipologiaServizio) {
