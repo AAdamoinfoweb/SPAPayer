@@ -58,19 +58,13 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.datiAttivitaPianificata) {
-      if (this.datiAttivitaPianificata != null && this.funzione != null) {
-        this.inizializzazioneChiaveValore();
-      }
-    }
+      this.inizializzazioneChiaveValore();
   }
 
   private inizializzazioneChiaveValore() {
     if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
       if (this.datiAttivitaPianificata.parametri != null && this.datiAttivitaPianificata.parametri.length > 0) {
         this.datiAttivitaPianificata.parametri.forEach(parametro => this.aggiungiChiaveValore(parametro));
-      } else {
-        this.aggiungiChiaveValore();
       }
     } else {
       if (this.datiAttivitaPianificata.parametri == null || this.datiAttivitaPianificata.parametri.length === 0) {
@@ -99,6 +93,7 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
 
     this.formsValid(form, this.isSchedulazioneFormValid);
   }
+
 
 
   schedulazioneFormValid(form: NgForm, isSchedulazioneFormValid: boolean) {
