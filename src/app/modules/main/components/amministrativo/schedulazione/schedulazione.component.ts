@@ -22,6 +22,13 @@ export class SchedulazioneComponent implements OnInit, OnChanges {
 
   // enums e consts
   readonly FunzioneGestioneEnum = FunzioneGestioneEnum;
+  tooltipSecondi = 'I valori accettati vanno da 0 a 59. I caratteri accettati sono , - * /';
+  tooltipMinuti = 'I valori accettati vanno da 0 a 59. I caratteri accettati sono , - * /';
+  tooltipOre = 'I valori accettati vanno da 0 a 23. I caratteri accettati sono , - * /';
+  tooltipGiorni = 'I valori accettati vanno da 1 a 31. I caratteri accettati sono , - * ? / L W';
+  tooltipMesi = 'I valori accettati vanno da 1 a 2 e da JAN a DEC. I caratteri accettati sono , - * /';
+  tooltipGiorniSettimana = 'I valori accettati vanno da 1 a 7 e da SUN a SAT. I caratteri accettati sono , - * ? / L #';
+  tooltipAnni = 'I valori accettati vanno da 1970 a 2199. I caratteri accettati sono , - * /';
   tooltipFestivita = 'Definisce date o ore in cui il lavoro non deve essere eseguito.' +
     '\nQueste date possono essere definite utilizzando espressioni cron di Quartz come spiegato nella documentazione di CronCalendar, con ciascuna definizione di festività su una nuova riga.' +
     '\nIn alternativa, è possibile utilizzare codice groovy, con il codice che restituisce un Calendar o un elenco di Calendar.' +
