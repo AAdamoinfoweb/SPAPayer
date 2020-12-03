@@ -106,7 +106,7 @@ export class SchedulazioneComponent implements OnInit, OnChanges {
     if (campo?.value == '') {
       this.schedulazione[campo.name] = null;
     } else {
-      this.schedulazione[campo.name] = this.schedulazione[campo.name].toUpperCase();
+      this.schedulazione[campo.name] = this.schedulazione[campo.name]?.toUpperCase();
     }
     this.isFormValid.emit(form.valid);
   }
