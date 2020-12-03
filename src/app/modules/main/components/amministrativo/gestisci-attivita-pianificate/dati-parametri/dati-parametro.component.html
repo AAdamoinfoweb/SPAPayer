@@ -7,7 +7,7 @@
           <input type="text" id="{{'chiave' + index}}" name="{{'chiave' + index}}"
                  class="pt-0" autocomplete="off" aria-describedby="destinatarioHelpDescription"
                  [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                 [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                 [required]="funzione !== FunzioneGestioneEnum.MODIFICA && funzione !== FunzioneGestioneEnum.DETTAGLIO"
                  [(ngModel)]="parametro.chiave"
                  (ngModelChange)="onChangeModel(datiForm, chiave)"
                  #chiave="ngModel">
