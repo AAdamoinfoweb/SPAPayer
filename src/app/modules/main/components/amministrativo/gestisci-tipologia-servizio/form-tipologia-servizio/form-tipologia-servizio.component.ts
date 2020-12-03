@@ -99,7 +99,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   ngOnDestroy(): void {
-    this.amministrativoService.salvaCampoFormEvent.unsubscribe();
   }
 
   ngOnInit() {
@@ -242,7 +241,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       modificaTipologiaServizio.listaCampiTipologiaServizio = this.items;
       this.campoTipologiaServizioService.modificaTipologiaServizio(this.tipologiaServizioId, modificaTipologiaServizio, this.idFunzione)
         .subscribe((resp) => {
-          if(!resp) {
+          if (!resp) {
             this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
             this.impostaDettaglioTipologia();
           }
@@ -257,7 +256,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
   }
 
   resettaFiltri(): void {
-    this.filtro = new ParametriRicercaTipologiaServizio();
+    this.filtro = null;
     this.codiceTipologia = null;
     this.nomeTipologia = null;
     this.items = [];
