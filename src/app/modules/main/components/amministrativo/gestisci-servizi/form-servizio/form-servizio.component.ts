@@ -12,7 +12,8 @@ import {
   Renderer2,
   ViewChild,
   ViewChildren,
-  ViewContainerRef, ViewRef
+  ViewContainerRef,
+  ViewRef
 } from '@angular/core';
 import {FormElementoParentComponent} from '../../form-elemento-parent.component';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
@@ -72,7 +73,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   constructor(private cdr: ChangeDetectorRef, private bannerService: BannerService,
               private renderer: Renderer2,
-              private configuraServizioService: ConfiguraServizioService,
+              public configuraServizioService: ConfiguraServizioService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private overlayService: OverlayService,
               private societaService: SocietaService,
@@ -126,9 +127,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   filtri: ParametriRicercaServizio;
 
 
-  campoTipologiaServizioOriginal: CampoServizio[];
-  campoTipologiaServizioList: CampoServizio[];
-  campoServizioAddList: CampoServizio[];
+  campoTipologiaServizioOriginal: CampoServizio[] = [];
 
   private tipoCampoIdSelect: number;
 
@@ -162,6 +161,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   getListaControllo = (mapControllo: Map<string, boolean>) => Array.from(mapControllo, ([name, value]) => value);
 
   ngOnInit(): void {
+    this.amministrativoService.salvaCampoFormEvent = new EventEmitter<any>();
     aggiungiTipoCampoEvent.subscribe(idTipoCampo => {
       this.impostaConfigurazioneCampi(idTipoCampo);
     });
@@ -190,24 +190,30 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
+    this.campoTipologiaServizioOriginal = [];
+    this.configuraServizioService.campoTipologiaServizioList = [];
+    this.configuraServizioService.campoServizioAddList = [];
+    let self = this;
     this.amministrativoService.salvaCampoFormEvent.subscribe((campoForm: CampoServizio) => {
-      let parentCampo = this.campoTipologiaServizioOriginal.find((value: CampoServizio) => value.id == campoForm.campoTipologiaServizioId || value.id == campoForm.id);
-      const campoFormIdx = this.campoTipologiaServizioList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
-      const campoFormIdx2 = this.campoServizioAddList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
+      let parentCampo = self.campoTipologiaServizioOriginal.find((value: CampoServizio) => value.id == campoForm.campoTipologiaServizioId || value.id == campoForm.id);
+      let campoFormIdx;
+      let campoFormIdx2;
+      campoFormIdx = self.configuraServizioService.campoTipologiaServizioList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
+      campoFormIdx2 = self.configuraServizioService.campoServizioAddList.findIndex((value: CampoServizio) => value.uuid && campoForm.uuid && value.uuid == campoForm.uuid);
 
       if (campoFormIdx != -1) {
         campoForm.campoTipologiaServizioId = parentCampo.id;
-        this.campoTipologiaServizioList[campoFormIdx] = _.cloneDeep(campoForm);
+        self.configuraServizioService.campoTipologiaServizioList[campoFormIdx] = _.cloneDeep(campoForm);
       } else if (campoFormIdx2 != -1) {
-        this.campoServizioAddList[campoFormIdx2] = _.cloneDeep(campoForm);
+        self.configuraServizioService.campoServizioAddList[campoFormIdx2] = _.cloneDeep(campoForm);
       } else {
         campoForm.uuid = uuidv4();
         campoForm.draggable = true;
-        this.campoServizioAddList.push(campoForm);
+        self.configuraServizioService.campoServizioAddList.push(campoForm);
       }
-      this.overlayService.mostraModaleCampoEvent.emit(null);
+      self.overlayService.mostraModaleCampoEvent.emit(null);
 
-      this.refreshItemsDipendeDa();
+      self.refreshItemsDipendeDa();
     });
 
     this.refreshItemsEvent.subscribe((items) => {
@@ -230,21 +236,22 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (this.funzione === FunzioneGestioneEnum.MODIFICA || this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
       this.servizioId = parseInt(snapshot.paramMap.get('servizioId'));
 
+      let self = this;
       this.configuraServizioService.dettaglioServizio(this.servizioId, this.idFunzione).pipe(map((value: Servizio) => {
         this.servizio = value;
         this.filtro = new ParametriRicercaServizio();
         this.filtro.raggruppamentoId = value.raggruppamentoId;
         this.filtro.nomeServizio = value.nomeServizio;
         this.filtro.tipologiaServizioId = value.tipologiaServizioId;
-        this.caricaCampi(value.tipologiaServizioId).subscribe(() => {
-          this.campoServizioAddList = value.listaCampiServizio.filter((obj) => {
+        this.caricaCampi(value.tipologiaServizioId).subscribe((list) => {
+          self.configuraServizioService.campoServizioAddList = value.listaCampiServizio.filter((obj) => {
             return !obj.campoTipologiaServizioId;
           }).map(value1 => {
             value1.uuid = uuidv4();
             return value1;
           });
 
-          this.campoTipologiaServizioList = this.campoTipologiaServizioList.map((obj) => {
+          self.configuraServizioService.campoTipologiaServizioList = list.map((obj) => {
             const campoServizio = value.listaCampiServizio.find((value1 => value1.campoTipologiaServizioId == obj.id));
             if (campoServizio)
               campoServizio.uuid = uuidv4();
@@ -326,21 +333,23 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   caricaCampi(tipologiaServizioId: number): Observable<any> {
+    let self = this;
     return this.campoTipologiaServizioService.campiTipologiaServizio(tipologiaServizioId, this.idFunzione)
       .pipe(map(value => {
-        this.campoTipologiaServizioOriginal = _.sortBy(value, 'posizione');
-        this.campoTipologiaServizioList = _.cloneDeep(this.campoTipologiaServizioOriginal);
+        self.campoTipologiaServizioOriginal = _.sortBy(value, 'posizione');
+        let list = _.cloneDeep(this.campoTipologiaServizioOriginal);
 
         // Nel caso della funzione Aggiungi, i campi vengono copiati da un'altra tipologia servizio, ma andranno ricreati sul db come nuove entità
-        if (this.funzione !== FunzioneGestioneEnum.DETTAGLIO) {
-          this.campoTipologiaServizioList.forEach(campo => {
+        if (self.funzione !== FunzioneGestioneEnum.DETTAGLIO) {
+          list.forEach(campo => {
             campo.uuid = uuidv4();
             if (campo.dipendeDa && this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
               campo.dipendeDa.id = null;
             }
           });
         }
-        this.refreshItemsDipendeDa();
+        self.refreshItemsDipendeDa();
+        return list;
       }));
   }
 
@@ -368,6 +377,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   ngOnDestroy(): void {
+    this.configuraServizioService.campoServizioAddList = [];
+    this.configuraServizioService.campoTipologiaServizioList = [];
+    if (this.amministrativoService.salvaCampoFormEvent.observers)
+      this.amministrativoService.salvaCampoFormEvent.unsubscribe();
   }
 
   onClickSalva(): void {
@@ -379,7 +392,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     });
 
     if (this.integrazione.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV1) {
-      let list = _.cloneDeep(this.campoTipologiaServizioList);
+      let list = _.cloneDeep(this.configuraServizioService.campoTipologiaServizioList);
       const campoServizios: CampoServizio[] = list
         .filter((value => !value.id || value.campoTipologiaServizioId))
         .map(value => {
@@ -387,8 +400,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           return value;
         });
 
-      this.campoServizioAddList.forEach((value, index) => value.posizione = index + 1);
-      this.servizio.listaCampiServizio = _.concat(campoServizios, this.campoServizioAddList);
+      this.configuraServizioService.campoServizioAddList.forEach((value, index) => value.posizione = index + 1);
+      this.servizio.listaCampiServizio = _.concat(campoServizios, this.configuraServizioService.campoServizioAddList);
     }
 
     const flussiNotifiche = new FlussiNotifiche();
@@ -415,7 +428,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     this.servizio.integrazione = this.integrazione;
     this.servizio.impositore = this.impositore;
     this.servizio.beneficiario = this.beneficiario;
-    const listaContiCorrenti =  _.cloneDeep(this.getListaContiCorrente(this.mapContoCorrente));
+    const listaContiCorrenti = _.cloneDeep(this.getListaContiCorrente(this.mapContoCorrente));
     const listaContiCorrentiPerBe = listaContiCorrenti.map(value => {
       value.inizioValidita = moment(value.inizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME);
       if (value.fineValidita) {
@@ -460,12 +473,12 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   cambiaLivelloIntegrazione(event: any) {
     if (event !== LivelloIntegrazioneEnum.LV1) {
-      this.campoServizioAddList = [];
-      this.caricaCampi(this.filtri.tipologiaServizio.id).subscribe();
+      this.configuraServizioService.campoServizioAddList = [];
+      this.caricaCampi(this.filtri.tipologiaServizio.id).subscribe((list) => this.configuraServizioService.campoTipologiaServizioList = list);
     } else {
-      this.campoTipologiaServizioOriginal = null;
-      this.campoTipologiaServizioList = null;
-      this.campoServizioAddList = null;
+      this.campoTipologiaServizioOriginal = [];
+      this.configuraServizioService.campoTipologiaServizioList = [];
+      this.configuraServizioService.campoServizioAddList = [];
     }
   }
 
@@ -668,7 +681,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     if (this.funzione != FunzioneGestioneEnum.DETTAGLIO) {
       this.confirmationService.confirm(
         Utils.getModale(() => {
-            this.campoServizioAddList.splice(this.campoServizioAddList.findIndex((v) => v.id === item.id), 1);
+            this.configuraServizioService.campoServizioAddList.splice(this.configuraServizioService.campoServizioAddList.findIndex((v) => v.id === item.id), 1);
             this.refreshItemsDipendeDa();
           },
           TipoModaleEnum.ELIMINA,
@@ -683,10 +696,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         Utils.getModale(() => {
             const finded = this.campoTipologiaServizioOriginal.find((value => value.id == item.campoTipologiaServizioId));
 
-            const findIndex = this.campoTipologiaServizioList.findIndex((value) => value.id == item.id);
+            const findIndex = this.configuraServizioService.campoTipologiaServizioList.findIndex((value) => value.id == item.id);
             if (findIndex != -1) {
-              finded.uuid = this.campoTipologiaServizioList[findIndex].uuid;
-              this.campoTipologiaServizioList[findIndex] = _.cloneDeep(finded);
+              finded.uuid = this.configuraServizioService.campoTipologiaServizioList[findIndex].uuid;
+              this.configuraServizioService.campoTipologiaServizioList[findIndex] = _.cloneDeep(finded);
               this.refreshItemsDipendeDa();
             }
           },
@@ -699,7 +712,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   private refreshItemsDipendeDa() {
-    const list = _.concat(this.campoTipologiaServizioList, this.campoServizioAddList);
+    const list = _.concat(this.configuraServizioService.campoTipologiaServizioList, this.configuraServizioService.campoServizioAddList);
     this.refreshItemsEvent.emit(list);
   }
 
@@ -736,8 +749,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   dropEvt(event: CdkDragDrop<{ item: CampoServizio; index: number }, any>) {
-    this.campoServizioAddList[event.previousContainer.data.index] = event.container.data.item;
-    this.campoServizioAddList[event.container.data.index] = event.previousContainer.data.item;
+    this.configuraServizioService.campoServizioAddList[event.previousContainer.data.index] = event.container.data.item;
+    this.configuraServizioService.campoServizioAddList[event.container.data.index] = event.previousContainer.data.item;
   }
 
   add() {

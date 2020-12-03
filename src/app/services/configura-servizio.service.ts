@@ -11,6 +11,7 @@ import {SintesiServizio} from '../modules/main/model/servizio/SintesiServizio';
 import * as moment from 'moment';
 import {Utils} from '../utils/Utils';
 import {base64} from "ngx-custom-validators/src/app/base64/validator";
+import {CampoServizio} from "../modules/main/model/servizio/CampoServizio";
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,9 @@ export class ConfiguraServizioService {
   private filtroPortaleEsternoUrl = '/filtroPortaleEsterno';
   private serviziUrl = '/servizi';
   private eliminaServiziUrl = '/eliminaServizi';
+
+  campoTipologiaServizioList: CampoServizio[] = [];
+  campoServizioAddList: CampoServizio[] = [];
 
   constructor(private http: HttpClient) {
   }
