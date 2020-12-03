@@ -58,7 +58,11 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-      this.inizializzazioneChiaveValore();
+    if (changes.datiAttivitaPianificata) {
+      if (this.datiAttivitaPianificata != null && this.funzione != null) {
+        this.inizializzazioneChiaveValore();
+      }
+    }
   }
 
   private inizializzazioneChiaveValore() {
@@ -95,7 +99,6 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
 
     this.formsValid(form, this.isSchedulazioneFormValid);
   }
-
 
 
   schedulazioneFormValid(form: NgForm, isSchedulazioneFormValid: boolean) {
