@@ -3,10 +3,11 @@ import {FiltroGestioneElementiComponent} from '../../filtro-gestione-elementi.co
 import {NgForm, NgModel} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {ParametriRicercaStatistiche} from "../../../../model/statistica/ParametriRicercaStatistiche";
-import {DatePickerComponent, ECalendarValue} from "ng2-date-picker";
-import * as moment from "moment";
-import {Utils} from "../../../../../../utils/Utils";
+import {ParametriRicercaStatistiche} from '../../../../model/statistica/ParametriRicercaStatistiche';
+import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
+import * as moment from 'moment';
+import {Utils} from '../../../../../../utils/Utils';
+import {BottoneEnum} from '../../../../../../enums/bottone.enum';
 
 @Component({
   selector: 'app-filtro-gestisci-statistiche',
@@ -31,14 +32,7 @@ export class FiltroGestisciStatisticheComponent extends FiltroGestioneElementiCo
   readonly tipoData = ECalendarValue.String;
 
   ngOnInit(): void {
-    this.inizializzaFiltroRicercaStatistiche();
-  }
-
-  private inizializzaFiltroRicercaStatistiche() {
     this.filtroRicercaStatistiche = new ParametriRicercaStatistiche();
-    this.filtroRicercaStatistiche.avvioSchedulazione = null;
-    this.filtroRicercaStatistiche.fineSchedulazione = null;
-    this.filtroRicercaStatistiche.attiva = false;
   }
 
   cercaElementi(): void {
@@ -55,7 +49,7 @@ export class FiltroGestisciStatisticheComponent extends FiltroGestioneElementiCo
 
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
-    this.inizializzaFiltroRicercaStatistiche();
+    this.filtroRicercaStatistiche = new ParametriRicercaStatistiche();
     const filtri = this.formattaFiltri();
     this.onChangeFiltri.emit(filtri);
   }
@@ -76,4 +70,14 @@ export class FiltroGestisciStatisticheComponent extends FiltroGestioneElementiCo
         return 'Campo non valido';
     }
   }
+
+  disabilitaBottone(filtroForm: NgForm, nomeBottone: string): boolean {
+    const isAtLeastOneFieldValued = Object.keys(filtroForm.value).some(key => filtroForm.value[key]);
+    if (nomeBottone === BottoneEnum.PULISCI) {
+      return !isAtLeastOneFieldValued && this.filtroRicercaStatistiche.attiva == null;
+    } else if (nomeBottone === BottoneEnum.CERCA) {
+      return !filtroForm.valid;
+    }
+  }
+
 }
