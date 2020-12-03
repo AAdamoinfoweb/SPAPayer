@@ -82,9 +82,7 @@
       <!-- Stampa Commit Msg -->
       <div *ngIf="toolbarIcon.type == toolEnum.PRINT_COMMIT_MSG" id="print_commit_msg"
            (click)="onClickTool(toolEnum.PRINT_COMMIT_MSG, toolbarIcon?.disabled)" class="pointer">
-        <svg class="bg-light icon icon-sm" [ngClass]="{'img-not-active': toolbarIcon?.disabled}">
-          <use xlink:href="assets/img/sprite.svg#it-file"></use>
-        </svg>
+          <span class="icon-text" [ngClass]="{'icon-text-not-active': toolbarIcon?.disabled}">CM</span>
       </div>
       <!-- Stampa Payment Request -->
       <div *ngIf="toolbarIcon.type == toolEnum.PRINT_PR" id="print_payment_request"
