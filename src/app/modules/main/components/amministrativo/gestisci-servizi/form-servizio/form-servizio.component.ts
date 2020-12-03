@@ -248,6 +248,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
             return !obj.campoTipologiaServizioId;
           }).map(value1 => {
             value1.uuid = uuidv4();
+            value1.draggable = true;
             return value1;
           });
 
