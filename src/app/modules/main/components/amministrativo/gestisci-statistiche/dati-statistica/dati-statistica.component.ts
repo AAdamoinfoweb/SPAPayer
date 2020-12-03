@@ -86,7 +86,7 @@ export class DatiStatisticaComponent implements OnInit, OnChanges {
   }
 
   onChangeModel(form: NgForm, campo?: NgModel) {
-    if (campo?.value == '') {
+    if (campo?.value === '') {
       this.datiStatistica[campo.name] = null;
     }
 

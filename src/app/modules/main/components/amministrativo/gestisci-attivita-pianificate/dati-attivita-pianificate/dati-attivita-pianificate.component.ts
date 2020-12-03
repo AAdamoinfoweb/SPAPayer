@@ -87,14 +87,12 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
   }
 
   onChangeModel(form: NgForm, campo?: NgModel) {
-    if (campo?.value == '') {
+    if (campo?.value === '') {
       this.datiAttivitaPianificata[campo.name] = null;
     }
 
     this.formsValid(form, this.isSchedulazioneFormValid);
   }
-
-
 
   schedulazioneFormValid(form: NgForm, isSchedulazioneFormValid: boolean) {
     this.isSchedulazioneFormValid = isSchedulazioneFormValid;
