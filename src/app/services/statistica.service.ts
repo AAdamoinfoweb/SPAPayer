@@ -28,14 +28,16 @@ export class StatisticaService {
     h = h.append('idFunzione', idFunzione);
     // set params
     let params = new HttpParams();
-    if (parametriRicercaStatistiche.attiva != null) {
-      params = params.set('attiva', String(parametriRicercaStatistiche.attiva));
-    }
-    if (parametriRicercaStatistiche.avvioSchedulazione) {
-      params = params.set('avvioSchedulazione', parametriRicercaStatistiche.avvioSchedulazione);
-    }
-    if (parametriRicercaStatistiche.fineSchedulazione) {
-      params = params.set('fineSchedulazione', parametriRicercaStatistiche.fineSchedulazione);
+    if (parametriRicercaStatistiche) {
+      if (parametriRicercaStatistiche.attiva != null) {
+        params = params.set('attiva', String(parametriRicercaStatistiche.attiva));
+      }
+      if (parametriRicercaStatistiche.avvioSchedulazione) {
+        params = params.set('avvioSchedulazione', parametriRicercaStatistiche.avvioSchedulazione);
+      }
+      if (parametriRicercaStatistiche.fineSchedulazione) {
+        params = params.set('fineSchedulazione', parametriRicercaStatistiche.fineSchedulazione);
+      }
     }
 
     return this.http.get(`${url}`,
