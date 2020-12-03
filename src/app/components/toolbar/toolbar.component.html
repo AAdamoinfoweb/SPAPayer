@@ -97,14 +97,14 @@
       <!-- Invia notifica a cittadino -->
       <div *ngIf="toolbarIcon.type == toolEnum.SEND_NOTIFICATION_TO_CITIZEN" id="invia_notifica_a_cittadino"
            (click)="onClickTool(toolEnum.SEND_NOTIFICATION_TO_CITIZEN, toolbarIcon?.disabled)" class="pointer">
-        <svg class="bg-light icon icon-sm" [ngClass]="{'img-not-active': toolbarIcon?.disabled}">
+        <svg class="bg-light icon icon-sm" [ngClass]="{'img-not-active': toolbarIcon?.disabled, 'icon-success': !toolbarIcon?.disabled}">
           <use xlink:href="assets/img/sprite.svg#it-mail"></use>
         </svg>
       </div>
       <!-- Invia notifica a ente -->
       <div *ngIf="toolbarIcon.type == toolEnum.SEND_NOTIFICATION_TO_ENTE" id="invia_notifica_a_ente"
            (click)="onClickTool(toolEnum.SEND_NOTIFICATION_TO_ENTE, toolbarIcon?.disabled)" class="pointer">
-        <svg class="bg-light icon icon-sm" [ngClass]="{'img-not-active': toolbarIcon?.disabled}">
+        <svg class="bg-light icon icon-sm" [ngClass]="{'img-not-active': toolbarIcon?.disabled, 'icon-primary': !toolbarIcon?.disabled}">
           <use xlink:href="assets/img/sprite.svg#it-mail"></use>
         </svg>
       </div>
