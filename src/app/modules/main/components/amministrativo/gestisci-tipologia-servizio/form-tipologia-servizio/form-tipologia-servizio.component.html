@@ -99,7 +99,7 @@
         </span>
       </div>
     </div>
-    <div class="row" *ngIf="items.length > 0">
+    <div class="row" *ngIf="campoTipologiaServizioService.items.length > 0">
       <ul class="legend">
         <li><span class="field-disabled"></span> Campo disabilitato</li>
         <li><span class="required"></span> Campo obbligatorio</li>
@@ -108,7 +108,7 @@
     </div>
 
     <div *ngIf="!waiting" class="row" cdkDropListGroup>
-      <ng-container *ngFor="let item of items;let i=index">
+      <ng-container *ngFor="let item of campoTipologiaServizioService.items;let i=index">
         <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
              cdkDropListOrientation="horizontal"
              [cdkDropListData]="{item:item, index:i}" (cdkDropListDropped)="dropEvt($event)">

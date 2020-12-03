@@ -16,6 +16,9 @@ import {InserimentoTipoCampo} from '../modules/main/model/campo/InserimentoTipoC
   providedIn: 'root'
 })
 export class CampoTipologiaServizioService {
+
+  public items: CampoTipologiaServizio[] = [];
+
   private readonly baseUrl = '/gestisciTipologiaServizi';
   private readonly tipologiaServizioUrl = '/tipologiaServizi';
   private readonly eliminaTipologiaServizioUrl = this.tipologiaServizioUrl + '/eliminaTipologiaServizi';
