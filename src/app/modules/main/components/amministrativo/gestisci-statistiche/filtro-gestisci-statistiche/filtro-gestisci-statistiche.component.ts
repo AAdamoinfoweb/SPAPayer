@@ -38,7 +38,7 @@ export class FiltroGestisciStatisticheComponent extends FiltroGestioneElementiCo
     this.filtroRicercaStatistiche = new ParametriRicercaStatistiche();
     this.filtroRicercaStatistiche.avvioSchedulazione = null;
     this.filtroRicercaStatistiche.fineSchedulazione = null;
-    this.filtroRicercaStatistiche.attiva = null;
+    this.filtroRicercaStatistiche.attiva = false;
   }
 
   cercaElementi(): void {

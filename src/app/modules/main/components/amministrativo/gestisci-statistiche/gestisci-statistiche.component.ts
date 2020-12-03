@@ -151,7 +151,7 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
 
   getNumeroRecord(): string {
     const map: Map<string, number> = this.calcolaAttivaDisabilitate();
-    return `Totale: ${this.listaElementi.length} Di cui attive: ${map.get('attive')} Di cui disabilitate: ${map.get('disabilitate')}`;
+    return `Totale ${this.listaElementi.length} statistiche Di cui attive: ${map.get('attive')} Di cui disabilitate: ${map.get('disabilitate')}`;
   }
 
   getObservableFunzioneRicerca(): Observable<any[]> {
