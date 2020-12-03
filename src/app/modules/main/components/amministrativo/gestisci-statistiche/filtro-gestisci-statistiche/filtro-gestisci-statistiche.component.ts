@@ -42,16 +42,24 @@ export class FiltroGestisciStatisticheComponent extends FiltroGestioneElementiCo
 
   private formattaFiltri() {
     const filtri: ParametriRicercaStatistiche = JSON.parse(JSON.stringify(this.filtroRicercaStatistiche));
+
+    if ('attiva' in filtri) {
+      this.filtroRicercaStatistiche.attiva = filtri.attiva;
+    } else {
+      this.filtroRicercaStatistiche.attiva = false;
+      // @ts-ignore
+      filtri.attiva = false;
+    }
     filtri.avvioSchedulazione = filtri.avvioSchedulazione ? moment(filtri.avvioSchedulazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     filtri.fineSchedulazione = filtri.fineSchedulazione ? moment(filtri.fineSchedulazione, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
+
     return filtri;
   }
 
   pulisciFiltri(filtroForm: NgForm): void {
     filtroForm.resetForm();
     this.filtroRicercaStatistiche = new ParametriRicercaStatistiche();
-    const filtri = this.formattaFiltri();
-    this.onChangeFiltri.emit(filtri);
+    this.onChangeFiltri.emit(null);
   }
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
