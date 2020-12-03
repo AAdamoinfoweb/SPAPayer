@@ -450,8 +450,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.configuraServizioService.modificaServizio(this.servizio, this.idFunzione)
         .subscribe((id) => {
           if (id) {
-            this.ricaricaContiCorrenti()
-            this.router.navigateByUrl(this.basePath + '/modificaServizio/' + this.servizio.id);
+            this.ricaricaContiCorrenti();
+            this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaServizio/' + this.servizio.id, null);
             this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
