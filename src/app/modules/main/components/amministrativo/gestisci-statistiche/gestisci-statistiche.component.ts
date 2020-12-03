@@ -151,7 +151,7 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
 
   getNumeroRecord(): string {
     const map: Map<string, number> = this.calcolaAttivaDisabilitate();
-    return `Totale: ${this.listaElementi.length} Di cui attive: ${map.get('attive')} Di cui disabilitate: ${map.get('disabilitate')}`;
+    return `Totale ${this.listaElementi.length} statistiche Di cui attive: ${map.get('attive')} Di cui disabilitate: ${map.get('disabilitate')}`;
   }
 
   getObservableFunzioneRicerca(): Observable<any[]> {
@@ -210,7 +210,7 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
     const now = moment();
     const momentInzio = statistica.avvioSchedulazione ? moment(statistica.avvioSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
     const momentFine = statistica.fineSchedulazione ? moment(statistica.fineSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
-    return statistica.abilitato && momentInzio.isSameOrBefore(now) && (momentFine == null || momentFine.isSameOrAfter(now));
+    return statistica.abilitato && (momentInzio != null && momentInzio.isSameOrBefore(now)) && (momentFine == null || momentFine.isSameOrAfter(now));
   }
 
   private inizializzaFiltriRicerca() {

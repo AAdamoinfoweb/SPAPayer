@@ -65,8 +65,6 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
     if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
       if (this.datiAttivitaPianificata.parametri != null && this.datiAttivitaPianificata.parametri.length > 0) {
         this.datiAttivitaPianificata.parametri.forEach(parametro => this.aggiungiChiaveValore(parametro));
-      } else {
-        this.aggiungiChiaveValore();
       }
     } else {
       if (this.datiAttivitaPianificata.parametri == null || this.datiAttivitaPianificata.parametri.length === 0) {
