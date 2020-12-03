@@ -21,3 +21,19 @@ svg:hover{
   cursor: not-allowed;
 }
 
+.icon-text{
+  font-weight: 900;
+  font-size: medium;
+  color: #004987;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.icon-text:hover{
+  color: #EE7622;
+}
+
+.icon-text-not-active,
+.icon-text-not-active:hover {
+  color: #77777B;
+  cursor: not-allowed;
+}
