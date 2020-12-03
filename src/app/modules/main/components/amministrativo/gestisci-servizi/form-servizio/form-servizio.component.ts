@@ -450,31 +450,11 @@ export class FormServizioComponent extends FormElementoParentComponent implement
       this.configuraServizioService.modificaServizio(this.servizio, this.idFunzione)
         .subscribe((id) => {
           if (id) {
-            this.ricaricaContiCorrenti();
             this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaServizio/' + this.servizio.id, null);
             this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
     }
-  }
-
-  ricaricaContiCorrenti() {
-    this.configuraServizioService.dettaglioServizio(this.servizioId, this.idFunzione).subscribe((servizio: Servizio) => {
-      if (servizio.beneficiario && servizio.beneficiario.livelloTerritorialeId) {
-        this.beneficiario = servizio.beneficiario;
-        this.beneficiario.ufficio = _.cloneDeep(servizio.beneficiario.ufficio);
-        this.beneficiario.listaContiCorrenti.forEach(cc => {
-          cc.inizioValidita = moment(cc.inizioValidita).format(Utils.FORMAT_DATE_CALENDAR);
-          if (cc.fineValidita) {
-            cc.fineValidita = moment(cc.fineValidita).format(Utils.FORMAT_DATE_CALENDAR);
-          }
-        });
-        this._onChangeLivelloTerritorialeBeneficiario(this.beneficiario.livelloTerritorialeId);
-        this.enteService.recuperaContiCorrenti(this.beneficiario.enteId, this.idFunzione).subscribe(contiCorrenti => {
-          this.listaContiCorrente = contiCorrenti;
-        });
-      }
-    });
   }
 
   private resetPagina() {
