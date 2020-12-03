@@ -1,5 +1,5 @@
 export enum TipoTransazioneEnum {
-  TUTTI = 'Tutti',
+  TUTTE = 'Tutte',
   ESEGUITE = 'Eseguite',
   NON_ESEGUITE = 'Non eseguite',
   RENDICONTATE = 'Rendicontate',

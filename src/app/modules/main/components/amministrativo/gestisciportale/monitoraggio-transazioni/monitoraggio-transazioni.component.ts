@@ -84,7 +84,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   indiceIconaInviaNotificaAEnte = 5;
 
   readonly tabs = [
-    {value: TipoTransazioneEnum.TUTTI},
+    {value: TipoTransazioneEnum.TUTTE},
     {value: TipoTransazioneEnum.ESEGUITE},
     {value: TipoTransazioneEnum.NON_ESEGUITE},
     {value: TipoTransazioneEnum.RENDICONTATE},
@@ -92,7 +92,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
     {value: TipoTransazioneEnum.QUADRATE},
     {value: TipoTransazioneEnum.NON_QUADRATE}
   ];
-  nomeTabCorrente: TipoTransazioneEnum = TipoTransazioneEnum.TUTTI;
+  nomeTabCorrente: TipoTransazioneEnum = TipoTransazioneEnum.TUTTE;
 
   ngOnInit(): void {
     this.controlloCaricamentoMenu();
@@ -158,7 +158,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
     let tabRows = null;
 
     switch (value) {
-      case TipoTransazioneEnum.TUTTI:
+      case TipoTransazioneEnum.TUTTE:
         tabRows = this.listaElementi;
         break;
       case TipoTransazioneEnum.ESEGUITE:
