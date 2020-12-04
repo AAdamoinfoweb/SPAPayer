@@ -61,12 +61,8 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   onChangePageSize(event) {
-    this.pageSize = event;
-    this.reset();
-  }
-
-  reset() {
-    this.first = 0;
+    this.table.rows = parseInt(event);
+    this.table.reset();
   }
 
   onLinkClick() {

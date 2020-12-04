@@ -1,7 +1,7 @@
 <p-table #table [columns]="cols" [value]="rows" styleClass="p-datatable-responsive-demo"
          dataKey="{{dataKey}}" [(selection)]="selection"
          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
-         [paginator]="true" [rows]="pageSize" [showCurrentPageReport]="false" [(first)]="first"
+         [paginator]="true" [rows]="5" [showCurrentPageReport]="false"
          (onHeaderCheckboxToggle)="onRowSelect($event)" (sortFunction)="customSort($event)" [customSort]="true">
   <ng-template pTemplate="header" let-columns>
     <tr>
