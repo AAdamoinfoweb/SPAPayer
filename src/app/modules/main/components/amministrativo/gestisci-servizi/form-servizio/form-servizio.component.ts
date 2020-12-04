@@ -910,6 +910,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     return !this.servizio.flagPresenzaDettaglioTransazione && !this.servizio.flagPresenzaRendicontazione;
   }
 
+  isPresenteInDatiBonificoAndRendicontazione() {
+    return !this.servizio.flagPresenzaDatiBonifico && !this.servizio.flagPresenzaRendicontazione;
+  }
+
   isPresenteInDettaglio() {
     return !this.servizio.flagPresenzaDettaglioTransazione;
   }
