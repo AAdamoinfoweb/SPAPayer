@@ -261,4 +261,10 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   onClickImage() {
     document.getElementById('pathLogo').click();
   }
+
+  eliminaLogo() {
+    this.pulisciImmagine();
+    this.datiEnte.logo = null;
+    this.onChangeDatiEnte.emit(this.datiEnte);
+  }
 }

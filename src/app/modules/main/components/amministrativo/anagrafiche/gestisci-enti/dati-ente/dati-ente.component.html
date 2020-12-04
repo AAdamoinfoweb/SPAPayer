@@ -93,9 +93,16 @@
       <!--      inizio Logo -->
       <div class="col-md-2 pb-2">
         <div class="row">
-          <div class="col">
+          <div class="col-auto">
             <label for="canvas" class="title ">
               Logo</label>
+          </div>
+          <div class="col-auto">
+            <svg class="icon icon-sm" fill="#004987" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO
+            && datiEnte && datiEnte.logo && datiEnte.logo.contenuto"
+            (click)="eliminaLogo()" style="cursor: pointer">
+              <use xlink:href="assets/img/sprite.svg#it-close"></use>
+            </svg>
           </div>
         </div>
         <div class="row">
