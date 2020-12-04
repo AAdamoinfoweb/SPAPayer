@@ -10,6 +10,9 @@ import {WaitingComponent} from './modules/main/components/waiting/waiting.compon
 import {GenericErrorComponent} from './modules/generic-error/generic-error.component';
 import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/nuovo-pagamento.component';
 import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
+import {CarrelloComponent} from "./modules/main/components/carrello/carrello.component";
+import {WaitingL1Component} from "./modules/main/components/waitingL1/waiting-l1.component";
+import {PresaincaricopagamentoL1Component} from "./modules/main/components/presaincaricopagamentoL1/presaincaricopagamento-l1.component";
 import {CarrelloComponent} from './modules/main/components/carrello/carrello.component';
 import {WaitingL1Component} from './modules/main/components/waitingL1/waiting-l1.component';
 import {GestisciUtentiComponent} from './modules/main/components/amministrativo/gestisci-utenti/gestisci-utenti.component';
