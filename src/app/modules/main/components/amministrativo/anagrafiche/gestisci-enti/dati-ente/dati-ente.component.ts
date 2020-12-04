@@ -265,5 +265,6 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   eliminaLogo() {
     this.pulisciImmagine();
     this.datiEnte.logo = null;
+    this.onChangeDatiEnte.emit(this.datiEnte);
   }
 }
