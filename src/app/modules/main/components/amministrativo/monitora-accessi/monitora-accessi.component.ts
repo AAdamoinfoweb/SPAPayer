@@ -136,7 +136,7 @@ export class MonitoraAccessiComponent extends GestisciElementoComponent implemen
   }
 
   getDataSessioneFormattata(dataSessione: Date): string {
-    return dataSessione ? moment(dataSessione).format('DD/MM/YYYY HH:mm:ss') : null;
+    return dataSessione ? moment(dataSessione).format(Utils.FORMAT_DATE_TIME_CALENDAR) : null;
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
