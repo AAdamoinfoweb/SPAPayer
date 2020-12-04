@@ -259,7 +259,11 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       (response) => {
         if (!(response instanceof HttpErrorResponse)) {
           this.esito = response.esito;
-          this.pulisciEnte();
+          this.controlloEsito();
+          if (this.esito == null) {
+            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          }
+          this.routingService.configuraRouterAndNavigate(this.basePath + '/aggiungiEnte', null);
         }
       });
   }
