@@ -61,7 +61,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
       {field: 'email', header: 'Email', type: tipoColonna.TESTO},
       {field: 'utentiAbilitati', header: 'Utenti abilitati', type: tipoColonna.LINK}
     ],
-    dataKey: 'nome.value',
+    dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
