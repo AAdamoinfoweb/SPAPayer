@@ -540,9 +540,9 @@
                 <select [ngClass]="{'input-disabled': !listaEntiBenef.length}"
                         id="selectEnteBenef" name="enteIdBenef"
                         #enteBenefInput="ngModel" [(ngModel)]="beneficiario.enteId"
-                        (ngModelChange)="onChangeEnte(enteBenefInput) || !isPresenteInDettaglioAndRendicontazione()"
+                        (ngModelChange)="onChangeEnte(enteBenefInput)"
                         [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
-                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || disabilitaCampi()">
+                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || disabilitaCampi() || !isPresenteInDettaglioAndRendicontazione()">
                   <option [ngValue]="null" [selected]="true">Seleziona</option>
                   <option *ngFor="let item of listaEntiBenef" [ngValue]="item.id">{{item.nome}}</option>
                 </select>
