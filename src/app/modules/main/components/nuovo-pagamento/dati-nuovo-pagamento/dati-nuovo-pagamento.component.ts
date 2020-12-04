@@ -523,10 +523,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
           validatori.push(Validators.max(this.calcolaMaxInputAnno(campo)));
           break;
         case TipoCampoEnum.SELECT:
-          this.impostaOpzioniSelect(campo);
-          if (!campo.opzioni?.length) {
-            campoForm.disable();
-          }
+          // I campi select vanno impostati dopo che tutti i campi sono stati caricati, per poter gestire il dipendeDa
           break;
       }
 
@@ -537,6 +534,16 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.form.addControl(this.getNomeCampoForm(campo), campoForm);
       this.listaCampiDinamici.push(campo);
     });
+
+    const campiSelect = campi.filter(campo => campo.tipoCampo === TipoCampoEnum.SELECT);
+    if (campiSelect) {
+      campiSelect.forEach(campoSelect => {
+        this.impostaOpzioniSelect(campoSelect);
+        if (!campoSelect.opzioni?.length) {
+          this.form.controls[this.getNomeCampoForm(campoSelect)].disable();
+        }
+      });
+    }
   }
 
   getCampoDettaglioTransazione(campoDettaglioTransazione: string) {
