@@ -712,8 +712,11 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       // Se la select dipende da un'altra select, filtro le opzioni
       if (campo.dipendeDa) {
         const campoPadre = this.listaCampiDinamici.find(item => item.id === campo.dipendeDa);
-        const valoreCampoPadre = this.model[this.getNomeCampoForm(campoPadre)];
-        this.filtraOpzioniSelectDipendente(campo, campoPadre, valoreCampoPadre);
+        // Controllo di sicurezza in caso di malfunzionamenti (Con un corretto funzionamento della logica di dipendenza il campo padre è sempre presente)
+        if (campoPadre) {
+          const valoreCampoPadre = this.model[this.getNomeCampoForm(campoPadre)];
+          this.filtraOpzioniSelectDipendente(campo, campoPadre, valoreCampoPadre);
+        }
       }
 
       // Ordino le opzioni della select
