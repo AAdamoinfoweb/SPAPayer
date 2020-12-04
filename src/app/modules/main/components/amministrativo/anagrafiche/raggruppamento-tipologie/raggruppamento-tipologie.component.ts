@@ -47,7 +47,7 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   tableData: Tabella = {
     rows: [],
     cols: [
-      {field: 'nome', header: 'Nome', type: tipoColonna.TESTO},
+      {field: 'nome', header: 'Codice', type: tipoColonna.TESTO},
       {field: 'descrizione', header: 'Descrizione', type: tipoColonna.TESTO}
     ],
     dataKey: 'id.value',
