@@ -71,12 +71,12 @@ export class SchedulazioneComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.idFunzione) {
       if (this.idFunzione) {
-        // const regex = localStorage.getItem('regexSchedulazione');
-        // if (regex) {
-        //   this.regexSchedulazione = JSON.parse(regex);
-        // } else {
+        const regex = localStorage.getItem('regexSchedulazione');
+        if (regex) {
+          this.regexSchedulazione = JSON.parse(regex);
+        } else {
           this.recuperaRegexSchedulazione();
-        // }
+        }
       }
     }
   }
@@ -105,8 +105,6 @@ export class SchedulazioneComponent implements OnInit, OnChanges {
   onChangeModel(form: NgForm, campo?: NgModel) {
     if (campo?.value == '') {
       this.schedulazione[campo.name] = null;
-    } else {
-      this.schedulazione[campo.name] = this.schedulazione[campo.name]?.toUpperCase();
     }
     this.isFormValid.emit(form.valid);
   }
