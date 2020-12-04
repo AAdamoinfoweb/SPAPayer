@@ -71,12 +71,12 @@ export class SchedulazioneComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.idFunzione) {
       if (this.idFunzione) {
-        // const regex = localStorage.getItem('regexSchedulazione');
-        // if (regex) {
-        //   this.regexSchedulazione = JSON.parse(regex);
-        // } else {
+        const regex = localStorage.getItem('regexSchedulazione');
+        if (regex) {
+          this.regexSchedulazione = JSON.parse(regex);
+        } else {
           this.recuperaRegexSchedulazione();
-        // }
+        }
       }
     }
   }
