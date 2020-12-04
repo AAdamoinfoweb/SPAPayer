@@ -120,10 +120,10 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     const riga = {
       id: {value: ente.id},
       societa: {value: ente.nomeSocieta},
-      ente: {value: ente.nomeEnte},
       livelloTerritoriale: {value: ente.nomeLivelloTerritoriale},
       comune: {value: ente.comune},
-      provincia: {value: ente.provincia}
+      provincia: {value: ente.provincia},
+      ente: {value: ente.nomeEnte}
     };
     return riga;
   }
@@ -175,10 +175,10 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
     return righe.map(riga => {
       delete riga.id;
       riga.societa = riga.societa.value;
-      riga.ente = riga.ente.value;
       riga.livelloTerritoriale = riga.livelloTerritoriale.value;
       riga.comune = riga.comune.value;
       riga.provincia = riga.provincia.value;
+      riga.ente = riga.ente.value;
       return riga;
     });
   }
