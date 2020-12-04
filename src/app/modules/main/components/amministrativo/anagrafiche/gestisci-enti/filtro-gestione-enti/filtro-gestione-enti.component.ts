@@ -16,6 +16,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Utils} from '../../../../../../../utils/Utils';
 import {SintesiEnte} from "../../../../../model/ente/SintesiEnte";
 import * as _ from 'lodash';
+import {LivelloTerritorialeService} from "../../../../../../../services/livelloTerritoriale.service";
 
 @Component({
   selector: 'app-filtro-gestione-enti',
@@ -43,7 +44,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
 
   constructor(private nuovoPagamentoService: NuovoPagamentoService, private societaService: SocietaService,
               private enteService: EnteService, protected amministrativoService: AmministrativoService,
-              protected route: ActivatedRoute) {
+              protected route: ActivatedRoute, private livelloTerritorialeService: LivelloTerritorialeService) {
     super(route, amministrativoService);
   }
 
@@ -84,7 +85,7 @@ export class FiltroGestioneEntiComponent extends FiltroGestioneElementiComponent
   }
 
   letturaLivelloTerritoriale(): void {
-    this.nuovoPagamentoService.recuperaFiltroLivelloTerritoriale(false)
+    this.livelloTerritorialeService.ricercaLivelliTerritoriali(null, this.idFunzione)
       .subscribe(livelliTerritoriali => {
         this.popolaOpzioniFiltroLivelloTerritoriale(livelliTerritoriali);
       });
