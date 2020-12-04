@@ -57,7 +57,8 @@
       <div class="col-md-4 pb-2">
         <div class="row">
           <div class="col">
-            <label for="nome" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Nome</label>
+            <label for="nome" class="title"
+                   [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Nome</label>
           </div>
         </div>
         <div class="row">
@@ -89,7 +90,7 @@
       <div class="col-3">
         <label class="title">Lista campi tipologia servizio</label>
         <span class="pointer bottone-campo"
-             *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
+              *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
         <span ngbTooltip="Crea nuovo campo" placement="bottom"
               [ngStyle]="{fill: '#403d39'}">
           <svg (click)="add()" class="bg-light icon icon-sm filled">
