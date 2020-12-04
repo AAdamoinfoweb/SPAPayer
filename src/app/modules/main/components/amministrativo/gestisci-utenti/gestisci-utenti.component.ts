@@ -197,7 +197,7 @@ export class GestisciUtentiComponent extends GestisciElementoComponent implement
 
   getImmaginiFilePdf(): ImmaginePdf[] {
     const iconaUtenteAttivo = new ImmaginePdf();
-    iconaUtenteAttivo.indiceColonna = 0;
+    iconaUtenteAttivo.indiceColonna = 1;
     iconaUtenteAttivo.srcIcona = 'assets/img/active-user.png';
     iconaUtenteAttivo.posizioneX = 2;
     iconaUtenteAttivo.posizioneY = 2;
