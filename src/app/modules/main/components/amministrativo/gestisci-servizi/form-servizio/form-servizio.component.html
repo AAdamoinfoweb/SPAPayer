@@ -695,22 +695,25 @@
             <ng-container *ngFor="let item2 of configuraServizioService.campoServizioAddList;let i=index">
               <div [ngClass]="calcolaDimensioneCampo(item2)" cdkDropList
                    cdkDropListOrientation="horizontal"
-                   [cdkDropListData]="{item:item2, index:i}" (cdkDropListDropped)="dropEvt($event)">
+                   [cdkDropListData]="{item:item2, index:i}" (cdkDropListDropped)="drop($event)">
                 <div style="min-height: 5vh;"
-                     [ngClass]="{'example-box':true, 'col-12': true, 'disabled': item2.disabilitato,
+                     [ngClass]="{'cdk-drag':true, 'example-box':true, 'col-12': true, 'disabled': item2.disabilitato,
                'field-input': true}"
                      [cdkDragDisabled]="!item2.draggable || this.funzione === FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
                   <div (click)="showModal(item2)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
                   <div class="row" style="width: 100%">
-                    <div (click)="showModalAtClick(item2)" *ngIf="showEditId !== i + configuraServizioService.campoTipologiaServizioList.length"
+                    <div (click)="showModalAtClick(item2)"
+                         *ngIf="showEditId !== i + configuraServizioService.campoTipologiaServizioList.length"
                          (dblclick)="dblClick(item2, (i + configuraServizioService.campoTipologiaServizioList.length))"
                          class="col-7 text-right">{{item2.titolo}}</div>
-                    <div *ngIf="showEditId == i + configuraServizioService.campoTipologiaServizioList.length" class="col-6 text-right">
+                    <div *ngIf="showEditId == i + configuraServizioService.campoTipologiaServizioList.length"
+                         class="col-6 text-right">
                       <input autofocus #edit="ngModel" name="edit"
                              (keyup.enter)="applyEdit(item2)"
                              [(ngModel)]="item2.titolo"/>
                     </div>
-                    <div (click)="showModal(item2)" class="col-1"><span [class]="{'required':item2.obbligatorio}"></span>
+                    <div (click)="showModal(item2)" class="col-1"><span
+                      [class]="{'required':item2.obbligatorio}"></span>
                     </div>
                     <div (click)="showModal(item2)" class="col-1"><span [class]="{'key':item2.chiave}"></span></div>
                     <div class="col-3 text-right">

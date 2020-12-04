@@ -35,6 +35,7 @@ import {ModificaTipologiaServizio} from "../../../../model/campo/ModificaTipolog
 import {BannerService} from "../../../../../../services/banner.service";
 import {aggiornaTipoCampoEvent} from '../modale-campo-form/modale-campo-form.component';
 import {aggiungiTipoCampoEvent} from '../modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
+import {CampoServizio} from "../../../../model/servizio/CampoServizio";
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -333,9 +334,13 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       return "";
   }
 
-  dropEvt(event: CdkDragDrop<{ item: CampoTipologiaServizio; index: number }, any>) {
-    this.campoTipologiaServizioService.items[event.previousContainer.data.index] = event.container.data.item;
-    this.campoTipologiaServizioService.items[event.container.data.index] = event.previousContainer.data.item;
+  drop(event: CdkDragDrop<{ item: CampoTipologiaServizio; index: number }, any>) {
+    let arr = _.cloneDeep(this.campoTipologiaServizioService.items);
+
+    arr.splice(event.previousContainer.data.index, 1);
+    arr.splice(event.container.data.index, 0, event.previousContainer.data.item);
+
+    this.campoTipologiaServizioService.items = arr;
   }
 
   showModal(item: CampoTipologiaServizio) {

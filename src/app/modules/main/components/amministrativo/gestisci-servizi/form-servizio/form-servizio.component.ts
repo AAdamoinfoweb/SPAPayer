@@ -37,7 +37,7 @@ import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte'
 import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
 import {v4 as uuidv4} from 'uuid';
 import * as _ from 'lodash';
-import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {ConfiguratoreCampiNuovoPagamento} from '../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 import {ContoCorrente} from '../../../../model/ente/ContoCorrente';
@@ -737,7 +737,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         classe = 'col-lg-5 col-md-6 col-xs-6';
       }
     }
-    return classe;
+    return classe + ' example-list';
   }
 
   private decodeTipoCampo(tipoCampoId: number): string {
@@ -747,11 +747,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     } else {
       return '';
     }
-  }
-
-  dropEvt(event: CdkDragDrop<{ item: CampoServizio; index: number }, any>) {
-    this.configuraServizioService.campoServizioAddList[event.previousContainer.data.index] = event.container.data.item;
-    this.configuraServizioService.campoServizioAddList[event.container.data.index] = event.previousContainer.data.item;
   }
 
   add() {
@@ -917,6 +912,15 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   isPresenteInDettaglio() {
     return !this.servizio.flagPresenzaDettaglioTransazione;
+  }
+
+  drop(event: CdkDragDrop<{ item: CampoServizio; index: number }, any>) {
+    let arr = _.cloneDeep(this.configuraServizioService.campoServizioAddList);
+
+    arr.splice(event.previousContainer.data.index, 1);
+    arr.splice(event.container.data.index, 0, event.previousContainer.data.item);
+
+    this.configuraServizioService.campoServizioAddList = arr;
   }
 }
 
