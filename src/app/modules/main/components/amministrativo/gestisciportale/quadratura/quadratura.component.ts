@@ -31,7 +31,7 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
 
   listaElementi: Array<Quadratura> = new Array<Quadratura>();
 
-  filtriRicerca: ParametriRicercaQuadratura;
+  filtriRicerca: ParametriRicercaQuadratura = null;
   righeSelezionate: any[];
   tableData: Tabella = {
     rows: [],
@@ -107,12 +107,11 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
     }
   }
 
-
   callbackPopolaLista() {
     this.onChangeTab(this.nomeTabCorrente);
   }
 
-  creaRigaTabella(elemento: any) {
+  creaRigaTabella(elemento: Quadratura) {
     const riga = {};
     // todo leggi valori da oggetto quadratura e imposta riga tabella
     return riga;
