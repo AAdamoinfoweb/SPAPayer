@@ -20,6 +20,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   filtri: ParametriRicercaQuadratura = new ParametriRicercaQuadratura();
   opzioniFiltroSocieta: OpzioneSelect[];
   opzioniFiltroEnti: OpzioneSelect[];
+  opzioniFiltroPSP: OpzioneSelect[];
   TipoCampoEnum = TipoCampoEnum;
 
   @Output()
@@ -34,6 +35,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   ngOnInit(): void {
     this.popolaFiltroSocieta();
     this.popolaFiltroEnti();
+    this.popolaFiltroPSP();
   }
 
   popolaFiltroSocieta(): void {
@@ -64,6 +66,11 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
         this.opzioniFiltroEnti = _.sortBy(this.opzioniFiltroEnti, ['label']);
       }
     });
+  }
+
+  popolaFiltroPSP(): void {
+    this.opzioniFiltroPSP = [];
+    // todo logica filtro psp
   }
 
   isCampoInvalido(campo: NgModel) {

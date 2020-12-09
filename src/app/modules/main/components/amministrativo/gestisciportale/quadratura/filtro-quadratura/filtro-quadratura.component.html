@@ -39,7 +39,7 @@
             <div class="col">
               <p
                 [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput),
-                 'text-disabled': !opzioniFiltroSocieta.length}">
+                 'text-disabled': !opzioniFiltroSocieta?.length}">
                 {{setPlaceholder(societaInput, TipoCampoEnum.SELECT)}}
               </p>
             </div>
@@ -70,7 +70,7 @@
             <div class="col">
               <p
                 [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput),
-                 'text-disabled': !opzioniFiltroEnti.length}">
+                 'text-disabled': !opzioniFiltroEnti?.length}">
                 {{setPlaceholder(enteInput, TipoCampoEnum.SELECT)}}
               </p>
             </div>
@@ -133,6 +133,37 @@
               <p
                 [ngClass]="{'text-muted': !isCampoInvalido(ibanInput), 'text-invalid': isCampoInvalido(ibanInput)}">
                 {{setPlaceholder(ibanInput, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PSP -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectPSP" class="title">PSP</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectPSP"
+                name="psp"
+                #pspInput="ngModel"
+                [(ngModel)]="filtri.psp"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroPSP" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(pspInput), 'text-invalid': isCampoInvalido(pspInput),
+                 'text-disabled': !opzioniFiltroPSP?.length}">
+                {{setPlaceholder(pspInput, TipoCampoEnum.SELECT)}}
               </p>
             </div>
           </div>
