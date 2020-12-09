@@ -83,23 +83,23 @@ export class DatiPermessoComponent implements OnInit {
         const mapPermessoFunzioni: Map<number, PermessoFunzione> =
           new Map(this.datiPermesso.listaFunzioni.map(permessoFunzione => [permessoFunzione.funzioneId, permessoFunzione]));
         this.mapPermessoFunzione = mapPermessoFunzioni;
-        if (this.datiPermesso.servizioId != null) {
-          this.letturaServizi();
-          this.asyncSubject.subscribe((listaFunzioni) => {
-            this.listaFunzioni = [];
-            listaFunzioni.forEach(funzione => {
-              if (this.mapPermessoFunzione.has(funzione.value.id)) {
-                funzione.checked = true;
-              }
-              this.listaFunzioni.push(funzione);
-            });
-            this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
-          });
-        } else {
-          this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
-        }
+        this.letturaServizi();
+        this.creaFunzioni();
       });
     }
+  }
+
+  private creaFunzioni() {
+    this.asyncSubject.subscribe((listaFunzioni) => {
+      this.listaFunzioni = [];
+      listaFunzioni.forEach(funzione => {
+        if (this.mapPermessoFunzione.has(funzione.value.id)) {
+          funzione.checked = true;
+        }
+        this.listaFunzioni.push(funzione);
+      });
+      this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
+    });
   }
 
   letturaSocieta(societaId: number) {
@@ -155,7 +155,7 @@ export class DatiPermessoComponent implements OnInit {
   letturaFunzioniGestioneUtente(): void {
     this.funzioneService.letturaFunzioni().pipe(map((funzioniAbilitate) => {
       funzioniAbilitate.forEach(funzione => {
-        if (GruppoEnum.GESTIONE === funzione.gruppo && funzione.applicabileAServizio === 1) {
+        if (GruppoEnum.GESTIONE === funzione.gruppo) {
           this.listaFunzioni.push({
             value: funzione,
             label: funzione.nome,
@@ -251,6 +251,7 @@ export class DatiPermessoComponent implements OnInit {
         permessoFunzione.permessoId = null;
         permessoFunzione.funzioneId = funzione.id;
         permessoFunzione.permessoCancellato = false;
+        permessoFunzione.nomeFunzione = funzione.nome;
         this.mapPermessoFunzione.set(funzione.id, permessoFunzione);
       }
     } else {
@@ -263,12 +264,13 @@ export class DatiPermessoComponent implements OnInit {
         const permessoFunzione: PermessoFunzione = this.mapPermessoFunzione.get(funzione.id);
         permessoFunzione.permessoCancellato = false;
         this.mapPermessoFunzione.set(funzione.id, permessoFunzione);
-      }  else if ($event.checked === true) {
+      } else if ($event.checked === true) {
         // inserimento NUOVO permesso
         const permessoFunzione: PermessoFunzione = new PermessoFunzione();
         permessoFunzione.permessoId = null;
         permessoFunzione.funzioneId = funzione.id;
         permessoFunzione.permessoCancellato = false;
+        permessoFunzione.nomeFunzione = funzione.nome;
         this.mapPermessoFunzione.set(funzione.id, permessoFunzione);
       }
     }
