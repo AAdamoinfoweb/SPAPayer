@@ -92,6 +92,8 @@ import {DettaglioEsitoNotificaComponent} from './gestisciportale/monitoraggio-tr
 import {DatiNotificaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dati-notifica/dati-notifica.component';
 import {QuadraturaComponent} from './gestisciportale/quadratura/quadratura.component';
 import {FiltroQuadraturaComponent} from './gestisciportale/quadratura/filtro-quadratura/filtro-quadratura.component';
+import {DettaglioQuadraturaComponent} from './gestisciportale/quadratura/dettaglio-quadratura/dettaglio-quadratura.component';
+import {DatiQuadraturaComponent} from './gestisciportale/quadratura/dati-quadratura/dati-quadratura.component';
 
 
 @NgModule({
@@ -163,7 +165,9 @@ import {FiltroQuadraturaComponent} from './gestisciportale/quadratura/filtro-qua
     DettaglioEsitoNotificaComponent,
     DatiNotificaComponent,
     QuadraturaComponent,
-    FiltroQuadraturaComponent
+    FiltroQuadraturaComponent,
+    DettaglioQuadraturaComponent,
+    DatiQuadraturaComponent
   ],
   imports: [
     HttpClientModule,
