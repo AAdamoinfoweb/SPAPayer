@@ -8,6 +8,7 @@ import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {EnteService} from '../../../../../../../services/ente.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-filtro-quadratura',
@@ -45,6 +46,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
             label: societa.nome
           });
         });
+        this.opzioniFiltroSocieta = _.sortBy(this.opzioniFiltroSocieta, ['label']);
       }
     });
   }
@@ -59,6 +61,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
             label: ente.nomeEnte
           });
         });
+        this.opzioniFiltroEnti = _.sortBy(this.opzioniFiltroEnti, ['label']);
       }
     });
   }
