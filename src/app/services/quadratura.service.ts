@@ -5,6 +5,7 @@ import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaQuadratura} from '../modules/main/model/quadratura/ParametriRicercaQuadratura';
 import {Quadratura} from '../modules/main/model/quadratura/Quadratura';
+import {DettaglioQuadratura} from '../modules/main/model/quadratura/DettaglioQuadratura';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +49,7 @@ export class QuadraturaService {
       }));
   }
 
-  recuperaDettaglioQuadratura(idQuadratura: number, idFunzione: string): Observable<Quadratura> {
+  recuperaDettaglioQuadratura(idQuadratura: number, idFunzione: string): Observable<DettaglioQuadratura> {
     // const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl + '/' + idQuadratura;
     const url = environment.bffBaseUrl + this.baseUrl + '/gestisciSocieta/societa/1'; // todo rimuovere chiamata mockata dopo allacciamento operation backend
     let h: HttpHeaders = new HttpHeaders();
@@ -57,9 +58,9 @@ export class QuadraturaService {
     return this.http.get(`${url}`, {
       withCredentials: true,
       headers: h
-    }).pipe(map((body: Quadratura) => {
+    }).pipe(map((body: DettaglioQuadratura) => {
         // return body; // todo rimuovere response mockata dopo allacciamento operation backend
-        return new Quadratura();
+        return new DettaglioQuadratura();
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
