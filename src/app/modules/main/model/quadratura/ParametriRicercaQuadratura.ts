@@ -6,5 +6,6 @@ export class ParametriRicercaQuadratura {
   iban: string;
   psp: any;
   iuv: any;
-  dataQuadratura: string;
+  dataQuadraturaDa: string;
+  dataQuadraturaA: string;
 }
