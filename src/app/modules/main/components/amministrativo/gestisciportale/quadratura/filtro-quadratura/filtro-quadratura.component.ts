@@ -10,6 +10,7 @@ import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {EnteService} from '../../../../../../../services/ente.service';
 import * as _ from 'lodash';
 import {Utils} from '../../../../../../../utils/Utils';
+import {ECalendarValue} from 'ng2-date-picker';
 
 @Component({
   selector: 'app-filtro-quadratura',
@@ -24,6 +25,9 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   opzioniFiltroPSP: OpzioneSelect[];
   TipoCampoEnum = TipoCampoEnum;
   ibanRegex = Utils.IBAN_ITALIA_REGEX;
+
+  readonly minDateDDMMYYYY = '01/01/1900';
+  readonly tipoData = ECalendarValue.String;
 
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaQuadratura> = new EventEmitter<ParametriRicercaQuadratura>();
@@ -88,6 +92,8 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
           return 'seleziona un elemento dalla lista';
         case TipoCampoEnum.INPUT_TESTUALE:
           return 'inserisci';
+        case TipoCampoEnum.DATEDDMMYY:
+          return 'seleziona una data';
       }
     }
   }
