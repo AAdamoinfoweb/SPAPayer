@@ -117,4 +117,9 @@ export class SidebarComponent implements OnInit {
       }
     }
   }
+
+  isVoceMenuQuadratura(nome: string): boolean {
+    return nome === 'Quadratura';
+  }
+
 }
