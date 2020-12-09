@@ -291,6 +291,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   private inserimentoAggiornamentoPermessi(listaPermessi: PermessoCompleto[], codiceFiscale: string) {
     // creo permessi da inserire
     const listaPermessiDaInserire = listaPermessi.map(permesso => {
+      const permessoDaInserire = JSON.parse(JSON.stringify(permesso));
       if (permesso.enteId === null && permesso.listaFunzioni.length === 0) {
         // creazione funzione per permesso amministrativo al momento dell'inserimento
         const funzionePermessoAmministrativo = new PermessoFunzione();
@@ -298,13 +299,13 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
         funzionePermessoAmministrativo.permessoCancellato = false;
         funzionePermessoAmministrativo.funzioneId = null;
         const listaFunzioniAmministrative: PermessoFunzione[] = [funzionePermessoAmministrativo];
-        permesso.listaFunzioni = listaFunzioniAmministrative;
+        permessoDaInserire.listaFunzioni = listaFunzioniAmministrative;
       }
-      permesso.dataFineValidita = permesso.dataFineValidita ?
+      permessoDaInserire.dataFineValidita = permesso.dataFineValidita ?
         moment(permesso.dataFineValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-      permesso.dataInizioValidita = permesso.dataInizioValidita ?
+      permessoDaInserire.dataInizioValidita = permesso.dataInizioValidita ?
         moment(permesso.dataInizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
-      return permesso;
+      return permessoDaInserire;
     });
     // chiamata be inserimento modifica permessi
     this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessiDaInserire, this.idFunzione)

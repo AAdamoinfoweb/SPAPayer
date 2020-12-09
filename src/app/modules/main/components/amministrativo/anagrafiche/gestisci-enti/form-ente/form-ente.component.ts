@@ -271,6 +271,8 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   private pulisciEnte() {
     this.controlloEsito();
     this.datiEnte = new EnteCompleto();
+    this.mapControllo = new Map<string, boolean>();
+    this.mapBeneficiario = new Map<string, Beneficiario>();
     this.inizializzaDatiEnte();
     this.target.clear();
     if (this.esito == null) {
