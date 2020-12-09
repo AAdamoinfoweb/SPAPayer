@@ -42,6 +42,7 @@ import {DettaglioTransazioneComponent} from './modules/main/components/amministr
 import {DettaglioPendenzaComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-pendenza/dettaglio-pendenza.component';
 import {DettaglioEsitoNotificaComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dettaglio-esito-notifica.component';
 import {QuadraturaComponent} from './modules/main/components/amministrativo/gestisciportale/quadratura/quadratura.component';
+import {DettaglioQuadraturaComponent} from './modules/main/components/amministrativo/gestisciportale/quadratura/dettaglio-quadratura/dettaglio-quadratura.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -118,7 +119,8 @@ const routes: Routes = [
   {path: 'monitoraggioTransazioni/dettaglioTransazioni/dettaglioPendenza/:dettaglioTransazioneId', component: DettaglioPendenzaComponent},
   {path: 'monitoraggioTransazioni/:transazioneId/esitoNotifiche', component: DettaglioEsitoNotificaComponent},
 
-  {path: 'quadratura', component: QuadraturaComponent}
+  {path: 'quadratura', component: QuadraturaComponent},
+  {path: 'quadratura/dettaglioQuadratura/:quadraturaId', component: DettaglioQuadraturaComponent}
 ];
 
 @NgModule({
