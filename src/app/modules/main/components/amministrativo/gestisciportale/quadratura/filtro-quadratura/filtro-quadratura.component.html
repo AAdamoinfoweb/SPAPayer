@@ -16,7 +16,7 @@
       <div class="row mt-2 mb-0">
 
         <!-- Societa -->
-        <div class="col-md-3 pb-2">
+        <div class="col-md-4 pb-2">
           <div class="row">
             <div class="col">
               <label for="selectSocieta" class="title">Società</label>
@@ -47,7 +47,7 @@
         </div>
 
         <!-- Ente -->
-        <div class="col-md-3 pb-2">
+        <div class="col-md-4 pb-2">
           <div class="row">
             <div class="col">
               <label for="selectEnte" class="title">Ente</label>
@@ -72,6 +72,67 @@
                 [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput),
                  'text-disabled': !opzioniFiltroEnti.length}">
                 {{setPlaceholder(enteInput, TipoCampoEnum.SELECT)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flusso -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="inputFlusso" class="title">Id Flusso</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input
+                id="inputFlusso"
+                type="text"
+                name="flussoId"
+                #flussoInput="ngModel"
+                [(ngModel)]="filtri.flussoId"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(flussoInput), 'text-invalid': isCampoInvalido(flussoInput)}">
+                {{setPlaceholder(flussoInput, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- IBAN, PSP, IUV -->
+      <div class="row mt-2 mb-0">
+
+        <!-- IBAN -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="inputIban" class="title">IBAN</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input
+                id="inputIban"
+                type="text"
+                name="flussoId"
+                #ibanInput="ngModel"
+                [(ngModel)]="filtri.iban"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(ibanInput), 'text-invalid': isCampoInvalido(ibanInput)}">
+                {{setPlaceholder(ibanInput, TipoCampoEnum.INPUT_TESTUALE)}}
               </p>
             </div>
           </div>
