@@ -17,7 +17,8 @@ export class QuadraturaService {
   constructor(private http: HttpClient) { }
 
   recuperaQuadrature(parametriRicercaQuadratura: ParametriRicercaQuadratura, idFunzione: string): Observable<Quadratura[]> {
-    const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl;
+    // const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl;
+    const url = environment.bffBaseUrl + '/gestisciSocieta/societa'; idFunzione = '12'; // todo rimuovere chiamata mockata dopo allacciamento operation backend
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     let params = new HttpParams();
@@ -35,7 +36,8 @@ export class QuadraturaService {
       headers: h,
       params
     }).pipe(map((body: Quadratura[]) => {
-        return body;
+        // return body; // todo rimuovere response mockata dopo allacciamento operation backend
+        return [];
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
@@ -47,7 +49,8 @@ export class QuadraturaService {
   }
 
   recuperaDettaglioQuadratura(idQuadratura: number, idFunzione: string): Observable<Quadratura> {
-    const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl + '/' + idQuadratura;
+    // const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl + '/' + idQuadratura;
+    const url = environment.bffBaseUrl + this.baseUrl + '/gestisciSocieta/societa/1'; // todo rimuovere chiamata mockata dopo allacciamento operation backend
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -55,7 +58,8 @@ export class QuadraturaService {
       withCredentials: true,
       headers: h
     }).pipe(map((body: Quadratura) => {
-        return body;
+        // return body; // todo rimuovere response mockata dopo allacciamento operation backend
+        return new Quadratura();
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
