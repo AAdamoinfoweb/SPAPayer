@@ -17,7 +17,9 @@
   </h3>
 
   <!-- Sottosezione Filtri -->
-  <app-filtro-quadratura></app-filtro-quadratura>
+  <app-filtro-quadratura
+    (onChangeFiltri)="onChangeFiltri($event)"
+  ></app-filtro-quadratura>
   <!--todo passare direttive a componente filtro-->
 
   <!-- Sottosezione Lista -->

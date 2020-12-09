@@ -1,10 +1,11 @@
 export class ParametriRicercaQuadratura {
   // todo definire tipo valore per psp, iuv
-  societaId: number;
-  enteId: number;
-  flussoId: number;
-  iban: string;
-  psp: any;
-  iuv: any;
-  dataQuadratura: string;
+  societaId: number = null;
+  enteId: number = null;
+  flussoId: number = null;
+  iban: string = null;
+  psp: any = null;
+  iuv: any = null;
+  dataQuadraturaDa: string = null;
+  dataQuadraturaA: string = null;
 }
