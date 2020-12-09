@@ -1,1 +1,85 @@
-<p>dati-quadratura works!</p>
+<div class="ml-3">
+  <!-- Società, Id flusso, PSP, pulsante Monitoraggio transazioni -->
+  <div class="row mt-4 mb-0">
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="societa" class="title">Società</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="number"
+            disabled
+            [(ngModel)]="societaId"
+            id="societa" name="societaId"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="idFlusso" class="title">Id flusso</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            id="idFlusso" name="flussoId"
+            type="number"
+            disabled
+            [(ngModel)]="flussoId"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <label for="psp" class="title">PSP</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input
+            type="number"
+            disabled
+            [(ngModel)]="pspId"
+            id="psp" name="pspId"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-2">
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn" (click)="redirectToMonitoraggioTransazioni()">Monitoraggio transazioni</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabella lista dettagli transazione contenuti nel flusso quadratura selezionato -->
+  <div class="row mt-5 ml-0">
+    <label class="title">Lista Dettagli Transazione</label>
+  </div>
+  <div class="card-body p-0">
+    <div class="row align-items-baseline align-content-lg-around">
+      <div class="col-lg pb-2 pb-sm-2 pb-lg-0"></div>
+      <div class="col-auto"></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <app-table [dataKey]="tableData.dataKey"
+                   [cols]="tableData.cols"
+                   [rows]="tableData.rows"
+                   [tipoTabella]="tableData.tipoTabella"
+                   [textLeft]="getNumeroRecord()">
+        </app-table>
+      </div>
+    </div>
+  </div>
+</div>
+
