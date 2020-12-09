@@ -125,6 +125,7 @@
                 name="flussoId"
                 #ibanInput="ngModel"
                 [(ngModel)]="filtri.iban"
+                [pattern]="ibanRegex"
               />
             </div>
           </div>

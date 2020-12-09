@@ -9,6 +9,7 @@ import {SocietaService} from '../../../../../../../services/societa.service';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {EnteService} from '../../../../../../../services/ente.service';
 import * as _ from 'lodash';
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-filtro-quadratura',
@@ -22,6 +23,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   opzioniFiltroEnti: OpzioneSelect[];
   opzioniFiltroPSP: OpzioneSelect[];
   TipoCampoEnum = TipoCampoEnum;
+  ibanRegex = Utils.IBAN_ITALIA_REGEX;
 
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaQuadratura> = new EventEmitter<ParametriRicercaQuadratura>();
