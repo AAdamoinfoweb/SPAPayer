@@ -7,6 +7,7 @@ import {NgForm, NgModel} from '@angular/forms';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
 import {SocietaService} from '../../../../../../../services/societa.service';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
+import {EnteService} from '../../../../../../../services/ente.service';
 
 @Component({
   selector: 'app-filtro-quadratura',
@@ -17,19 +18,21 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
 
   filtri: ParametriRicercaQuadratura = new ParametriRicercaQuadratura();
   opzioniFiltroSocieta: OpzioneSelect[];
+  opzioniFiltroEnti: OpzioneSelect[];
   TipoCampoEnum = TipoCampoEnum;
 
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaQuadratura> = new EventEmitter<ParametriRicercaQuadratura>();
 
   constructor(protected route: ActivatedRoute, protected amministrativoService: AmministrativoService,
-              private societaService: SocietaService
+              private societaService: SocietaService, private enteService: EnteService
   ) {
     super(route, amministrativoService);
   }
 
   ngOnInit(): void {
     this.popolaFiltroSocieta();
+    this.popolaFiltroEnti();
   }
 
   popolaFiltroSocieta(): void {
@@ -40,6 +43,20 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
           this.opzioniFiltroSocieta.push({
             value: societa.id,
             label: societa.nome
+          });
+        });
+      }
+    });
+  }
+
+  popolaFiltroEnti(): void {
+    this.opzioniFiltroEnti = [];
+    this.enteService.ricercaEnti(null, this.idFunzione).subscribe(listaEnti => {
+      if (listaEnti) {
+        listaEnti.forEach(ente => {
+          this.opzioniFiltroEnti.push({
+            value: ente.id,
+            label: ente.nomeEnte
           });
         });
       }

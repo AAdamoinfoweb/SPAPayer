@@ -46,6 +46,37 @@
           </div>
         </div>
 
+        <!-- Ente -->
+        <div class="col-md-3 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectEnte" class="title">Ente</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectEnte"
+                name="enteId"
+                #enteInput="ngModel"
+                [(ngModel)]="filtri.enteId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroEnti" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput),
+                 'text-disabled': !opzioniFiltroEnti.length}">
+                {{setPlaceholder(enteInput, TipoCampoEnum.SELECT)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- Bottoni Pulisci e Cerca -->
