@@ -122,7 +122,7 @@
               <input
                 id="inputIban"
                 type="text"
-                name="flussoId"
+                name="iban"
                 #ibanInput="ngModel"
                 [(ngModel)]="filtri.iban"
                 [pattern]="ibanRegex"
@@ -169,6 +169,35 @@
             </div>
           </div>
         </div>
+
+        <!-- IUV -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="inputIuv" class="title">IUV</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input
+                id="inputIuv"
+                type="text"
+                name="iuv"
+                #iuvInput="ngModel"
+                [(ngModel)]="filtri.iuv"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(iuvInput), 'text-invalid': isCampoInvalido(iuvInput)}">
+                {{setPlaceholder(iuvInput, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
 
       </div>
 
