@@ -36,7 +36,7 @@
                    data-toggle="collapse" [attr.data-target]="'#collSub-' + j"
                    [attr.aria-expanded]="false" (click)="sub['isExpanded'] = !sub['isExpanded']">
                   {{sub.nome}}
-                  <ng-container *ngIf="!sub.route">
+                  <ng-container *ngIf="!sub.route || isVoceMenuQuadratura(sub.nome)">
                      <span>
                        <svg class="icon icon-sm icon-primary right" aria-hidden="true">
                          <use [attr.xlink:href]="!sub['isExpanded'] ? 'assets/img/sprite.svg#it-collapse' : 'assets/img/sprite.svg#it-expand'"
