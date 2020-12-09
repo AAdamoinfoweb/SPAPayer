@@ -90,6 +90,8 @@ import {DettaglioPendenzaComponent} from './gestisciportale/monitoraggio-transaz
 import {DatiPendenzaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-pendenza/dati-pendenza/dati-pendenza.component';
 import {DettaglioEsitoNotificaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dettaglio-esito-notifica.component';
 import {DatiNotificaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dati-notifica/dati-notifica.component';
+import {QuadraturaComponent} from './gestisciportale/quadratura/quadratura.component';
+import {FiltroQuadraturaComponent} from './gestisciportale/quadratura/filtro-quadratura/filtro-quadratura.component';
 
 
 @NgModule({
@@ -159,7 +161,9 @@ import {DatiNotificaComponent} from './gestisciportale/monitoraggio-transazioni/
     DettaglioPendenzaComponent,
     DatiPendenzaComponent,
     DettaglioEsitoNotificaComponent,
-    DatiNotificaComponent
+    DatiNotificaComponent,
+    QuadraturaComponent,
+    FiltroQuadraturaComponent
   ],
   imports: [
     HttpClientModule,
