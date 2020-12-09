@@ -8,6 +8,9 @@ import {ToolEnum} from '../../../../../../enums/Tool.enum';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {Observable} from 'rxjs';
+import {QuadraturaService} from '../../../../../../services/quadratura.service';
+import {Quadratura} from '../../../../model/quadratura/Quadratura';
+import {ParametriRicercaQuadratura} from '../../../../model/quadratura/ParametriRicercaQuadratura';
 
 @Component({
   selector: 'app-quadratura',
@@ -16,13 +19,14 @@ import {Observable} from 'rxjs';
 })
 export class QuadraturaComponent extends GestisciElementoComponent implements OnInit {
 
-  filtriRicerca: any;
+  filtriRicerca: ParametriRicercaQuadratura;
   righeSelezionate: any[];
   tableData: Tabella;
 
   constructor(router: Router,
               route: ActivatedRoute, protected http: HttpClient,
-              amministrativoService: AmministrativoService
+              amministrativoService: AmministrativoService,
+              private quadraturaService: QuadraturaService
   ) {
     super(router, route, http, amministrativoService);
   }
@@ -55,8 +59,8 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
     return '';
   }
 
-  getObservableFunzioneRicerca(): Observable<any> {
-    return undefined;
+  getObservableFunzioneRicerca(): Observable<Quadratura[]> {
+    return this.quadraturaService.recuperaQuadrature(this.filtriRicerca, this.idFunzione);
   }
 
   getRigheFileExcel(righe: any[]): any[] {
