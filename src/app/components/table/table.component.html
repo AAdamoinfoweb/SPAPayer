@@ -50,9 +50,9 @@
         </div>
         <!--  template IMPORTO  -->
         <div *ngIf="col.type == tipoColonnaEnum.IMPORTO" [ngClass]="row[col.field].class">
-          {{row[col.field].value|currency:"EUR":"€ "
+          {{row[col.field].value != null && row[col.field].value != undefined ? (row[col.field].value|currency:"EUR":"€ "
           | replace:'.':'|' | replace:',':'.'
-          | replace:'|':','}}
+          | replace:'|':',') : null}}
         </div>
       </td>
     </tr>
