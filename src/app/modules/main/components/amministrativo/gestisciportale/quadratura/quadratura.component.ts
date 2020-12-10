@@ -62,9 +62,9 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
 
   readonly toolbarIcons = [
     {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
-    {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'}
+    {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'},
+    {type: ToolEnum.EXPORT_FLUSSO, tooltip: 'Flusso'}
   ];
-  // todo aggiungere icona scarica flusso
 
   constructor(router: Router,
               route: ActivatedRoute, protected http: HttpClient,
@@ -162,8 +162,14 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
       case ToolEnum.EXPORT_XLS:
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Quadrature');
         break;
-      // todo logica azione scarica flusso
+      case ToolEnum.EXPORT_FLUSSO:
+        this.esportaFlusso();
     }
+  }
+
+  esportaFlusso() {
+    // todo ivan implementare esportazione flusso dopo aver ricevuto direttive sul comportamento
+    console.log('funzione mancante - esporta flusso');
   }
 
   mostraDettaglioQuadratura(rigaTabella) {
