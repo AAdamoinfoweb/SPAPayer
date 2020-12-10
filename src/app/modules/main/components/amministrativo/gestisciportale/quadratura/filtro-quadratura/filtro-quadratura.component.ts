@@ -5,15 +5,14 @@ import {AmministrativoService} from '../../../../../../../services/amministrativ
 import {ParametriRicercaQuadratura} from '../../../../../model/quadratura/ParametriRicercaQuadratura';
 import {NgForm, NgModel} from '@angular/forms';
 import {OpzioneSelect} from '../../../../../model/OpzioneSelect';
-import {SocietaService} from '../../../../../../../services/societa.service';
 import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
-import {EnteService} from '../../../../../../../services/ente.service';
 import * as _ from 'lodash';
 import {Utils} from '../../../../../../../utils/Utils';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {QuadraturaService} from '../../../../../../../services/quadratura.service';
 import {FiltroSelect} from '../../../../../model/servizio/FiltroSelect';
 import {GestisciPortaleService} from '../../../../../../../services/gestisci-portale.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-filtro-quadratura',
@@ -122,7 +121,10 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   }
 
   cercaElementi(): void {
-    this.onChangeFiltri.emit(this.filtri);
+    const filtri = {...this.filtri};
+    filtri.dataQuadraturaDa = filtri.dataQuadraturaDa ? moment(filtri.dataQuadraturaDa, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    filtri.dataQuadraturaA = filtri.dataQuadraturaA ? moment(filtri.dataQuadraturaA, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME_TO) : null;
+    this.onChangeFiltri.emit(filtri);
   }
 
   pulisciFiltri(filtroForm: NgForm): void {
