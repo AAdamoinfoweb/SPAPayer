@@ -63,7 +63,7 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   readonly toolbarIcons = [
     {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
     {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'},
-    {type: ToolEnum.EXPORT_FLUSSO, tooltip: 'Flusso'}
+    {type: ToolEnum.EXPORT_FLUSSO, tooltip: 'Scarica Flusso'}
   ];
 
   constructor(router: Router,
