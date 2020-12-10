@@ -3,7 +3,7 @@ import {DettaglioTransazione} from '../transazione/DettaglioTransazione';
 export class DettaglioQuadratura {
   id: number;
   societaId: number;
-  flussoId: number;
+  flussoId: string;
   pspId: number;
   listaDettaglioTransazione: DettaglioTransazione[];
 }
