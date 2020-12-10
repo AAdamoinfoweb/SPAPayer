@@ -132,10 +132,14 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
     this.onChangeFiltri.emit(null);
   }
 
-  disabilitaBottone(filtroForm: NgForm): boolean {
+  disabilitaBottonePulisci(filtroForm: NgForm): boolean {
     const areFiltriValorizzati = Object.keys(this.filtri).some(chiaveFiltro => {
       return this.filtri[chiaveFiltro] != null;
     });
     return !areFiltriValorizzati;
+  }
+
+  disabilitaBottoneSalva(filtroForm: NgForm): boolean {
+    return !filtroForm.valid;
   }
 }
