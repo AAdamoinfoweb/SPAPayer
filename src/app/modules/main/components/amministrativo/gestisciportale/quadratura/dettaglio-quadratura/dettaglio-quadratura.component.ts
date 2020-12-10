@@ -38,7 +38,7 @@ export class DettaglioQuadraturaComponent extends FormElementoParentComponent im
       {label: 'Dettaglio Flusso Di Quadratura', link: null}
     ], true);
 
-    const idSelezionato = parseInt(this.activatedRoute.snapshot.paramMap.get('quadraturaid'));
+    const idSelezionato = parseInt(this.activatedRoute.snapshot.paramMap.get('quadraturaId'));
     this.quadraturaService.recuperaDettaglioQuadratura(idSelezionato, this.idFunzione).subscribe(quadratura => {
       this.datiQuadratura = quadratura;
     });
