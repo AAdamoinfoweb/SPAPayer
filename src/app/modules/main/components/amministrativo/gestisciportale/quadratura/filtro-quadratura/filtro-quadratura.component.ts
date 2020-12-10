@@ -11,6 +11,7 @@ import {EnteService} from '../../../../../../../services/ente.service';
 import * as _ from 'lodash';
 import {Utils} from '../../../../../../../utils/Utils';
 import {ECalendarValue} from 'ng2-date-picker';
+import {QuadraturaService} from '../../../../../../../services/quadratura.service';
 
 @Component({
   selector: 'app-filtro-quadratura',
@@ -22,7 +23,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   filtri: ParametriRicercaQuadratura = new ParametriRicercaQuadratura();
   opzioniFiltroSocieta: OpzioneSelect[];
   opzioniFiltroEnti: OpzioneSelect[];
-  opzioniFiltroPSP: OpzioneSelect[];
+  opzioniFiltroPsp: OpzioneSelect[];
   TipoCampoEnum = TipoCampoEnum;
   ibanRegex = Utils.IBAN_ITALIA_REGEX;
 
@@ -33,7 +34,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   onChangeFiltri: EventEmitter<ParametriRicercaQuadratura> = new EventEmitter<ParametriRicercaQuadratura>();
 
   constructor(protected route: ActivatedRoute, protected amministrativoService: AmministrativoService,
-              private societaService: SocietaService, private enteService: EnteService
+              private quadraturaService: QuadraturaService
   ) {
     super(route, amministrativoService);
   }
@@ -46,7 +47,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
 
   popolaFiltroSocieta(): void {
     this.opzioniFiltroSocieta = [];
-    this.societaService.ricercaSocieta(null, this.idFunzione).subscribe(listaSocieta => {
+    this.quadraturaService.recuperaFiltroSocieta(null, this.idFunzione).subscribe(listaSocieta => {
       if (listaSocieta) {
         listaSocieta.forEach(societa => {
           this.opzioniFiltroSocieta.push({
@@ -61,7 +62,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
 
   popolaFiltroEnti(): void {
     this.opzioniFiltroEnti = [];
-    this.enteService.ricercaEnti(null, this.idFunzione).subscribe(listaEnti => {
+    this.quadraturaService.recuperaFiltroEnte(null, this.idFunzione).subscribe(listaEnti => {
       if (listaEnti) {
         listaEnti.forEach(ente => {
           this.opzioniFiltroEnti.push({
@@ -75,8 +76,18 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   }
 
   popolaFiltroPSP(): void {
-    this.opzioniFiltroPSP = [];
-    // todo logica filtro psp
+    this.opzioniFiltroPsp = [];
+    this.quadraturaService.recuperaFiltroPsp(null, this.idFunzione).subscribe(listaPsp => {
+      if (listaPsp) {
+        listaPsp.forEach(psp => {
+          this.opzioniFiltroPsp.push({
+            value: psp.id,
+            label: psp.nome
+          });
+        });
+        this.opzioniFiltroPsp = _.sortBy(this.opzioniFiltroPsp, ['label']);
+      }
+    });
   }
 
   isCampoInvalido(campo: NgModel) {

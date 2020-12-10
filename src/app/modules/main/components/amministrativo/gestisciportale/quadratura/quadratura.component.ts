@@ -30,6 +30,8 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   isMenuCarico = false;
 
   listaElementi: Array<Quadratura> = new Array<Quadratura>();
+  listaFlussiQuadrati: Quadratura[] = [];
+  listaFlussiNonQuadrati: Quadratura[] = [];
 
   filtriRicerca: ParametriRicercaQuadratura = null;
   righeSelezionate: any[];
@@ -41,7 +43,6 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
       {field: 'flussoId', header: 'Id flusso', type: tipoColonna.TESTO},
       {field: 'iban', header: 'IBAN', type: tipoColonna.TESTO},
       {field: 'psp', header: 'PSP', type: tipoColonna.TESTO},
-      {field: 'iuv', header: 'IUV', type: tipoColonna.TESTO},
       {field: 'dataQuadratura', header: 'Data quadratura', type: tipoColonna.TESTO},
       {field: 'importo', header: 'Importo flusso', type: tipoColonna.IMPORTO},
       {field: 'iuvTotali', header: 'IUV totali', type: tipoColonna.TESTO},
@@ -109,11 +110,22 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
 
   callbackPopolaLista() {
     this.onChangeTab(this.nomeTabCorrente);
+    this.listaFlussiQuadrati = this.listaElementi.filter(quadratura => this.isQuadrato(quadratura));
+    this.listaFlussiNonQuadrati = this.listaElementi.filter(quadratura => !this.isQuadrato(quadratura));
   }
 
   creaRigaTabella(elemento: Quadratura) {
-    const riga = {};
-    // todo leggi valori da oggetto quadratura e imposta riga tabella
+    const riga = {
+      id: {value: elemento.id},
+      societa: {value: elemento.nomeSocieta},
+      ente: {value: elemento.nomeEnte},
+      flussoId: {value: elemento.flussoId},
+      psp: {value: elemento.psp},
+      dataQuadratura: {value: elemento.dataQuadratura},
+      importo: {value: elemento.importoFlusso},
+      iuvTotali: {value: elemento.iuvTotali},
+      iuvScartati: {value: elemento.iuvScartati}
+    };
     return riga;
   }
 
@@ -127,10 +139,10 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
         tabRows = this.listaElementi;
         break;
       case TipoQuadraturaEnum.QUADRATI:
-        tabRows = this.listaElementi.filter(quadratura => this.isQuadrato(quadratura));
+        tabRows = this.listaFlussiQuadrati;
         break;
       case TipoQuadraturaEnum.NON_QUADRATI:
-        tabRows = this.listaElementi.filter(quadratura => !this.isQuadrato(quadratura));
+        tabRows = this.listaFlussiNonQuadrati;
         break;
     }
 
@@ -139,8 +151,7 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   }
 
   isQuadrato(quadratura: Quadratura): boolean {
-    // todo logica controllo quadratura
-    return true;
+    return quadratura.quadrato;
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
@@ -160,22 +171,20 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    // todo logica file excel
-    return [];
+    return colonne;
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
-    // todo logica file pdf
-    return [];
+    return colonne;
   }
 
   getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] | any[] {
-    // todo logica file pdf
-    return undefined;
+    return [];
   }
 
   getNumeroRecord(): string {
-    return '';
+    return 'Totale ' + this.listaElementi.length + ' flussi di cui ' +
+      this.listaFlussiQuadrati.length + ' quadrati e ' + this.listaFlussiNonQuadrati.length + ' non quadrati';
   }
 
   getObservableFunzioneRicerca(): Observable<Quadratura[]> {
@@ -183,13 +192,21 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   }
 
   getRigheFileExcel(righe: any[]): any[] {
-    // todo logica file excel
-    return [];
+    return righe.map(riga => {
+      delete riga.id;
+      riga.societa = riga.societa.value;
+      riga.ente = riga.ente.value;
+      riga.flussoId = riga.flussoId.value;
+      riga.psp = riga.psp.value;
+      riga.dataQuadratura = riga.dataQuadratura.value;
+      riga.importo = riga.importo.value;
+      riga.iuvTotali = riga.iuvTotali.value;
+      riga.iuvScartati = riga.iuvScartati.value;
+    });
   }
 
   getRigheFilePdf(righe: any[]): any[] {
-    // todo logica file pdf
-    return [];
+    return righe;
   }
 
   selezionaRigaTabella(righeSelezionate: any[]) {}

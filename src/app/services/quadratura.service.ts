@@ -6,20 +6,27 @@ import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaQuadratura} from '../modules/main/model/quadratura/ParametriRicercaQuadratura';
 import {Quadratura} from '../modules/main/model/quadratura/Quadratura';
 import {DettaglioQuadratura} from '../modules/main/model/quadratura/DettaglioQuadratura';
+import {Societa} from '../modules/main/model/Societa';
+import {Psp} from '../modules/main/model/quadratura/Psp';
+import {Ente} from '../modules/main/model/Ente';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuadraturaService {
-  // todo impostare url reali quadratura
   private readonly baseUrl = '/quadratura';
-  private readonly letturaQuadratureUrl = '/letturaQuadrature';
+  private readonly letturaQuadratureUrl = '/ricerca';
+  private readonly filtroPsp = '/filtroPsp';
+  private readonly filtroSocieta = '/filtroSocieta';
+  private readonly filtroEnte = '/filtroEnte';
+
+  private readonly urlMockChiamata = environment.bffBaseUrl + '/gestisciSocieta/societa'; idFunzione = '12';
 
   constructor(private http: HttpClient) { }
 
   recuperaQuadrature(parametriRicercaQuadratura: ParametriRicercaQuadratura, idFunzione: string): Observable<Quadratura[]> {
     // const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl;
-    const url = environment.bffBaseUrl + '/gestisciSocieta/societa'; idFunzione = '12'; // todo rimuovere chiamata mockata dopo allacciamento operation backend
+    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     let params = new HttpParams();
@@ -37,7 +44,7 @@ export class QuadraturaService {
       headers: h,
       params
     }).pipe(map((body: Quadratura[]) => {
-        // return body; // todo rimuovere response mockata dopo allacciamento operation backend
+        // return body; // todo ivan rimuovere response mockata dopo allacciamento operation backend
         return [];
       }),
       catchError((err, caught) => {
@@ -51,7 +58,7 @@ export class QuadraturaService {
 
   recuperaDettaglioQuadratura(idQuadratura: number, idFunzione: string): Observable<DettaglioQuadratura> {
     // const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl + '/' + idQuadratura;
-    const url = environment.bffBaseUrl + this.baseUrl + '/gestisciSocieta/societa/1'; // todo rimuovere chiamata mockata dopo allacciamento operation backend
+    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -59,7 +66,7 @@ export class QuadraturaService {
       withCredentials: true,
       headers: h
     }).pipe(map((body: DettaglioQuadratura) => {
-        // return body; // todo rimuovere response mockata dopo allacciamento operation backend
+        // return body; // todo ivan rimuovere response mockata dopo allacciamento operation backend
         return new DettaglioQuadratura();
       }),
       catchError((err, caught) => {
@@ -70,4 +77,71 @@ export class QuadraturaService {
         }
       }));
   }
+
+  recuperaFiltroPsp(idFunzione: string): Observable<Psp[]> {
+    // const url = environment.bffBaseUrl + this.baseUrl + this.filtroPsp;
+    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}`, {
+      withCredentials: true,
+      headers: h
+    }).pipe(map((body: Psp[]) => {
+        // return body; // todo ivan rimuovere response mockata dopo allacciamento operation backend
+        return [];
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  recuperaFiltroSocieta(idFunzione: string): Observable<Societa[]> {
+    // const url = environment.bffBaseUrl + this.baseUrl + this.filtroSocieta;
+    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}`, {
+      withCredentials: true,
+      headers: h
+    }).pipe(map((body: Societa[]) => {
+        // return body; // todo ivan rimuovere response mockata dopo allacciamento operation backend
+        return [];
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  recuperaFiltroEnte(idFunzione: string): Observable<Ente[]> {
+    // const url = environment.bffBaseUrl + this.baseUrl + this.filtroEnte;
+    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}`, {
+      withCredentials: true,
+      headers: h
+    }).pipe(map((body: Ente[]) => {
+        // return body; // todo ivan rimuovere response mockata dopo allacciamento operation backend
+        return [];
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
 }

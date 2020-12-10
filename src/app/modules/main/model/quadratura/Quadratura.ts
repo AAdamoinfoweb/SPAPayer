@@ -1,10 +1,13 @@
 export class Quadratura {
-  // todo definire attributi reali model quadratura
-  societaId: number;
-  enteId: number;
+  id: number;
+  nomeSocieta: string;
+  nomeEnte: string;
   flussoId: number;
+  iban: string;
+  psp: string;
   dataQuadratura: string;
   importoFlusso: number;
   iuvTotali: number;
   iuvScartati: number;
+  quadrato: boolean;
 }
