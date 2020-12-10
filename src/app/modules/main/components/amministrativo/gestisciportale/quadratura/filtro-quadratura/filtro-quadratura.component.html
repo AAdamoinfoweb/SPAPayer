@@ -86,13 +86,14 @@
           </div>
           <div class="row">
             <div class="col">
-              <input
-                id="inputFlusso"
-                type="text"
-                name="flussoId"
-                #flussoInput="ngModel"
-                [(ngModel)]="filtri.flussoId"
-              />
+              <p-autoComplete id="inputFlusso" class="pt-0" name="codice"
+                              #flussoInput="ngModel" [size]="100"
+                              [(ngModel)]="filtri.flussoId"
+                              [suggestions]="opzioniFiltroFlussoIdFiltrate"
+                              (completeMethod)="filtraOpzioniFlussoId($event)"
+                              delay="0" autoHighlight="true"
+                              placeholder="Tutti">
+              </p-autoComplete>
             </div>
           </div>
           <div class="row">

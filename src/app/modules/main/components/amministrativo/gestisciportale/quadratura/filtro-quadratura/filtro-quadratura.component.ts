@@ -26,6 +26,8 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   opzioniFiltroSocieta: FiltroSelect[];
   opzioniFiltroEnti: FiltroSelect[];
   opzioniFiltroPsp: OpzioneSelect[];
+  opzioniFiltroFlussoId: string[];
+  opzioniFiltroFlussoIdFiltrate: string[];
   TipoCampoEnum = TipoCampoEnum;
   ibanRegex = Utils.IBAN_ITALIA_REGEX;
 
@@ -78,6 +80,22 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
         this.opzioniFiltroPsp = _.sortBy(this.opzioniFiltroPsp, ['label']);
       }
     });
+  }
+
+  popolaFiltroFlussoId(): void {
+    this.opzioniFiltroFlussoId = [];
+    this.quadraturaService.recuperaFiltroFlussoId(this.idFunzione).subscribe(listaFlussoId => {
+      if (listaFlussoId) {
+        listaFlussoId.sort();
+        this.opzioniFiltroFlussoId = listaFlussoId;
+      }
+    });
+  }
+
+  filtraOpzioniFlussoId(event): void {
+    const input = event.query;
+    this.opzioniFiltroFlussoIdFiltrate = this.opzioniFiltroFlussoId
+      .filter(value => value.toLowerCase().startsWith(input.toLowerCase()));
   }
 
   isCampoInvalido(campo: NgModel) {
