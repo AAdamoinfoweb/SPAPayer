@@ -155,7 +155,7 @@
                 [(ngModel)]="filtri.psp"
               >
                 <option [ngValue]="null" selected>Tutti</option>
-                <option *ngFor="let item of opzioniFiltroPSP" [ngValue]="item.value">{{item.label}}</option>
+                <option *ngFor="let item of opzioniFiltroPsp" [ngValue]="item.value">{{item.label}}</option>
               </select>
             </div>
           </div>
@@ -163,7 +163,7 @@
             <div class="col">
               <p
                 [ngClass]="{'text-muted': !isCampoInvalido(pspInput), 'text-invalid': isCampoInvalido(pspInput),
-                 'text-disabled': !opzioniFiltroPSP?.length}">
+                 'text-disabled': !opzioniFiltroPsp?.length}">
                 {{setPlaceholder(pspInput, TipoCampoEnum.SELECT)}}
               </p>
             </div>
