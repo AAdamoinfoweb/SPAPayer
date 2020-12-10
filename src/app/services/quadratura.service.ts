@@ -15,7 +15,8 @@ import {Ente} from '../modules/main/model/Ente';
 })
 export class QuadraturaService {
   private readonly baseUrl = '/quadratura';
-  private readonly letturaQuadratureUrl = '/ricerca';
+  private readonly ricercaQuadratureUrl = '/ricerca';
+  private readonly dettaglioQuadraturaUrl = 'dettaglio';
   private readonly filtroPsp = '/filtroPsp';
   private readonly filtroFlussoId = '/filtroFlussoId';
 
@@ -24,7 +25,7 @@ export class QuadraturaService {
   constructor(private http: HttpClient) { }
 
   recuperaQuadrature(parametriRicercaQuadratura: ParametriRicercaQuadratura, idFunzione: string): Observable<Quadratura[]> {
-    const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl;
+    const url = environment.bffBaseUrl + this.baseUrl + this.ricercaQuadratureUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     let params = new HttpParams();
@@ -54,7 +55,7 @@ export class QuadraturaService {
   }
 
   recuperaDettaglioQuadratura(idQuadratura: number, idFunzione: string): Observable<DettaglioQuadratura> {
-    // const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl + '/' + idQuadratura;
+    // const url = environment.bffBaseUrl + this.baseUrl + this.dettaglioQuadraturaUrl + '/' + idQuadratura;
     const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
