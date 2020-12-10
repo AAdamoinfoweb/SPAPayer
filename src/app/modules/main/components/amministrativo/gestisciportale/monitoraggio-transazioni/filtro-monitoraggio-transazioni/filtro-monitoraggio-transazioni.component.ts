@@ -29,6 +29,7 @@ export class FiltroMonitoraggioTransazioniComponent extends FiltroGestioneElemen
   }
 
   @Input() flussoRendicontazione = null;
+  @Input() flussoQuadratura = null;
 
   @Output()
   onChangeFiltri: EventEmitter<any> = new EventEmitter<any>();
@@ -57,6 +58,12 @@ export class FiltroMonitoraggioTransazioniComponent extends FiltroGestioneElemen
       this.filtroRicercaTransazioni.flussoRendicontazione = this.flussoRendicontazione;
       const parametriRicercaTransazioni = new ParametriRicercaTransazioni();
       parametriRicercaTransazioni.flussoRendicontazione = this.flussoRendicontazione;
+      this.onChangeFiltri.emit(parametriRicercaTransazioni);
+    }
+    if (this.flussoQuadratura) {
+      this.filtroRicercaTransazioni.flussoQuadratura = this.flussoQuadratura;
+      const parametriRicercaTransazioni = new ParametriRicercaTransazioni();
+      parametriRicercaTransazioni.flussoQuadratura = this.flussoQuadratura;
       this.onChangeFiltri.emit(parametriRicercaTransazioni);
     }
 

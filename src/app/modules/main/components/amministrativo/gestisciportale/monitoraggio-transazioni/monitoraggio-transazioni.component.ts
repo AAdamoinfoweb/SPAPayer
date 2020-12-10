@@ -40,6 +40,9 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
       if (params.flussoRendicontazione) {
         this.flussoRendicontazione = parseInt(params.flussoRendicontazione);
       }
+      if (params.flussoQuadratura) {
+        this.flussoQuadratura = parseInt(params.flussoQuadratura);
+      }
     });
   }
 
@@ -47,6 +50,7 @@ export class MonitoraggioTransazioniComponent extends GestisciElementoComponent 
   filtriRicerca: ParametriRicercaTransazioni = null;
 
   flussoRendicontazione = null;
+  flussoQuadratura = null;
 
   righeSelezionate: any[];
 

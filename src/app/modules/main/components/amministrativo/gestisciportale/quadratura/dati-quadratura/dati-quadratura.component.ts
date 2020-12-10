@@ -4,7 +4,7 @@ import {Tabella} from '../../../../../model/tabella/Tabella';
 import {tipoColonna} from '../../../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../../../enums/TipoTabella.enum';
 import {DettaglioTransazione} from '../../../../../model/transazione/DettaglioTransazione';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../../utils/Utils';
 
@@ -35,7 +35,7 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
     tipoTabella: tipoTabella.TEMPLATING
   };
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -78,9 +78,9 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
   }
 
   redirectToMonitoraggioTransazioni(): void {
-    const urlMonitoraggioTransazione = '/monitoraggioTransazioni?flussoQuadratura=' + this.flussoId;
+    const quadraturaId = parseInt(this.activatedRoute.snapshot.paramMap.get('quadraturaId'));
+    const urlMonitoraggioTransazione = '/monitoraggioTransazioni?flussoQuadratura=' + quadraturaId;
     this.router.navigateByUrl(urlMonitoraggioTransazione);
-    // TODO precaricare filtro FlussoQuadratura in componente MonitoraggioTransazioni
   }
 
 }
