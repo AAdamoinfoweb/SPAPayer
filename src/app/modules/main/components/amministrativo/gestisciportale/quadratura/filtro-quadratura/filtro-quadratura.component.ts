@@ -12,6 +12,8 @@ import * as _ from 'lodash';
 import {Utils} from '../../../../../../../utils/Utils';
 import {ECalendarValue} from 'ng2-date-picker';
 import {QuadraturaService} from '../../../../../../../services/quadratura.service';
+import {FiltroSelect} from '../../../../../model/servizio/FiltroSelect';
+import {GestisciPortaleService} from '../../../../../../../services/gestisci-portale.service';
 
 @Component({
   selector: 'app-filtro-quadratura',
@@ -21,8 +23,8 @@ import {QuadraturaService} from '../../../../../../../services/quadratura.servic
 export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent implements OnInit {
 
   filtri: ParametriRicercaQuadratura = new ParametriRicercaQuadratura();
-  opzioniFiltroSocieta: OpzioneSelect[];
-  opzioniFiltroEnti: OpzioneSelect[];
+  opzioniFiltroSocieta: FiltroSelect[];
+  opzioniFiltroEnti: FiltroSelect[];
   opzioniFiltroPsp: OpzioneSelect[];
   TipoCampoEnum = TipoCampoEnum;
   ibanRegex = Utils.IBAN_ITALIA_REGEX;
@@ -34,7 +36,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   onChangeFiltri: EventEmitter<ParametriRicercaQuadratura> = new EventEmitter<ParametriRicercaQuadratura>();
 
   constructor(protected route: ActivatedRoute, protected amministrativoService: AmministrativoService,
-              private quadraturaService: QuadraturaService
+              private quadraturaService: QuadraturaService, private gestisciPortaleService: GestisciPortaleService
   ) {
     super(route, amministrativoService);
   }
@@ -47,30 +49,18 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
 
   popolaFiltroSocieta(): void {
     this.opzioniFiltroSocieta = [];
-    this.quadraturaService.recuperaFiltroSocieta(this.idFunzione).subscribe(listaSocieta => {
+    this.gestisciPortaleService.gestisciPortaleFiltroSocieta(this.idFunzione).subscribe(listaSocieta => {
       if (listaSocieta) {
-        listaSocieta.forEach(societa => {
-          this.opzioniFiltroSocieta.push({
-            value: societa.id,
-            label: societa.nome
-          });
-        });
-        this.opzioniFiltroSocieta = _.sortBy(this.opzioniFiltroSocieta, ['label']);
+        this.opzioniFiltroSocieta = _.sortBy(listaSocieta, ['nome']);
       }
     });
   }
 
   popolaFiltroEnti(): void {
     this.opzioniFiltroEnti = [];
-    this.quadraturaService.recuperaFiltroEnte(this.idFunzione).subscribe(listaEnti => {
+    this.gestisciPortaleService.gestisciPortaleFiltroEnte(this.idFunzione).subscribe(listaEnti => {
       if (listaEnti) {
-        listaEnti.forEach(ente => {
-          this.opzioniFiltroEnti.push({
-            value: ente.id,
-            label: ente.nomeEnte
-          });
-        });
-        this.opzioniFiltroEnti = _.sortBy(this.opzioniFiltroEnti, ['label']);
+        this.opzioniFiltroSocieta = _.sortBy(listaEnti, ['nome']);
       }
     });
   }

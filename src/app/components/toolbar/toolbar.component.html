@@ -56,6 +56,13 @@
           <use xlink:href="assets/img/sprite.svg#it-file"></use>
         </svg>
       </div>
+      <!--    export flusso -->
+      <div *ngIf="toolbarIcon.type == toolEnum.EXPORT_FLUSSO" id="export_flusso"
+           (click)="onClickTool(toolEnum.EXPORT_FLUSSO, toolbarIcon?.disabled)" class="pointer">
+        <svg class="bg-light icon icon-sm" [ngClass]="{'img-not-active': toolbarIcon?.disabled}">
+          <use xlink:href="assets/img/sprite.svg#it-chart-line"></use>
+        </svg>
+      </div>
       <!-- visualizza statistiche -->
       <div *ngIf="toolbarIcon.type == toolEnum.VISUALIZE_STATISTICS" id='visualize_statistics'
            (click)="onClickTool(toolEnum.VISUALIZE_STATISTICS, toolbarIcon?.disabled)" class="pointer">

@@ -100,48 +100,4 @@ export class QuadraturaService {
       }));
   }
 
-  recuperaFiltroSocieta(idFunzione: string): Observable<Societa[]> {
-    // const url = environment.bffBaseUrl + this.baseUrl + this.filtroSocieta;
-    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
-    let h: HttpHeaders = new HttpHeaders();
-    h = h.append('idFunzione', idFunzione);
-
-    return this.http.get(`${url}`, {
-      withCredentials: true,
-      headers: h
-    }).pipe(map((body: Societa[]) => {
-        // return body; // todo ivan rimuovere response mockata dopo allacciamento operation backend
-        return [];
-      }),
-      catchError((err, caught) => {
-        if (err.status === 401 || err.status === 400) {
-          return of(null);
-        } else {
-          return of(null);
-        }
-      }));
-  }
-
-  recuperaFiltroEnte(idFunzione: string): Observable<Ente[]> {
-    // const url = environment.bffBaseUrl + this.baseUrl + this.filtroEnte;
-    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
-    let h: HttpHeaders = new HttpHeaders();
-    h = h.append('idFunzione', idFunzione);
-
-    return this.http.get(`${url}`, {
-      withCredentials: true,
-      headers: h
-    }).pipe(map((body: Ente[]) => {
-        // return body; // todo ivan rimuovere response mockata dopo allacciamento operation backend
-        return [];
-      }),
-      catchError((err, caught) => {
-        if (err.status === 401 || err.status === 400) {
-          return of(null);
-        } else {
-          return of(null);
-        }
-      }));
-  }
-
 }
