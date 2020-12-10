@@ -122,4 +122,12 @@ export class SidebarComponent implements OnInit {
     return nome === 'Quadratura';
   }
 
+  getIdCollapse(nome: string, index: number): string {
+    if (this.isVoceMenuQuadratura(nome)) {
+      return 'funcQuad-' + index;
+    } else {
+      return 'collSub-' + index;
+    }
+  }
+
 }
