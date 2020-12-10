@@ -18,8 +18,6 @@ export class QuadraturaService {
   private readonly filtroPsp = '/filtroPsp';
   private readonly filtroFlussoId = '/filtroFlussoId';
 
-  private readonly urlMockChiamata = environment.bffBaseUrl + '/gestisciSocieta/societa'; idFunzione = '12';
-
   constructor(private http: HttpClient) { }
 
   recuperaQuadrature(parametriRicercaQuadratura: ParametriRicercaQuadratura, idFunzione: string): Observable<Quadratura[]> {
@@ -73,8 +71,7 @@ export class QuadraturaService {
   }
 
   recuperaFiltroPsp(idFunzione: string): Observable<Psp[]> {
-    // const url = environment.bffBaseUrl + this.baseUrl + this.filtroPsp;
-    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
+    const url = environment.bffBaseUrl + this.baseUrl + this.filtroPsp;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -82,8 +79,7 @@ export class QuadraturaService {
       withCredentials: true,
       headers: h
     }).pipe(map((body: Psp[]) => {
-        // return body;
-        return []; // todo ivan rimuovere response mockata dopo allacciamento operation backend
+        return body;
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
@@ -95,8 +91,7 @@ export class QuadraturaService {
   }
 
   recuperaFiltroFlussoId(idFunzione: string): Observable<string[]> {
-    // const url = environment.bffBaseUrl + this.baseUrl + this.filtroFlussoId;
-    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
+    const url = environment.bffBaseUrl + this.baseUrl + this.filtroFlussoId;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
@@ -104,8 +99,7 @@ export class QuadraturaService {
       withCredentials: true,
       headers: h
     }).pipe(map((body: string[]) => {
-        // return body;
-        return []; // todo ivan rimuovere response mockata dopo allacciamento operation backend
+        return body;
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {

@@ -46,6 +46,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
     this.popolaFiltroSocieta();
     this.popolaFiltroEnti();
     this.popolaFiltroPSP();
+    this.popolaFiltroFlussoId();
   }
 
   popolaFiltroSocieta(): void {
