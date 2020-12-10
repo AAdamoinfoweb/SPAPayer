@@ -2,7 +2,7 @@ export class Quadratura {
   id: number;
   nomeSocieta: string;
   nomeEnte: string;
-  flussoId: number;
+  flussoId: string;
   iban: string;
   psp: string;
   dataQuadratura: string;
