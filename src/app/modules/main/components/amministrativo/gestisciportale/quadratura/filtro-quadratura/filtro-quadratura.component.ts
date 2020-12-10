@@ -62,7 +62,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
     this.opzioniFiltroEnti = [];
     this.gestisciPortaleService.gestisciPortaleFiltroEnte(this.idFunzione).subscribe(listaEnti => {
       if (listaEnti) {
-        this.opzioniFiltroSocieta = _.sortBy(listaEnti, ['nome']);
+        this.opzioniFiltroEnti = _.sortBy(listaEnti, ['nome']);
       }
     });
   }

@@ -31,7 +31,7 @@
                 [(ngModel)]="filtri.societaId"
               >
                 <option [ngValue]="null" selected>Tutti</option>
-                <option *ngFor="let item of opzioniFiltroSocieta" [ngValue]="item.value">{{item.label}}</option>
+                <option *ngFor="let item of opzioniFiltroSocieta" [ngValue]="item.id">{{item.nome}}</option>
               </select>
             </div>
           </div>
@@ -62,7 +62,7 @@
                 [(ngModel)]="filtri.enteId"
               >
                 <option [ngValue]="null" selected>Tutti</option>
-                <option *ngFor="let item of opzioniFiltroEnti" [ngValue]="item.value">{{item.label}}</option>
+                <option *ngFor="let item of opzioniFiltroEnti" [ngValue]="item.id">{{item.nome}}</option>
               </select>
             </div>
           </div>
