@@ -4,8 +4,8 @@ export class ParametriRicercaQuadratura {
   enteId: number = null;
   flussoId: number = null;
   iban: string = null;
-  psp: any = null;
-  iuv: any = null;
+  pspId: number = null;
+  iuv: string = null;
   dataQuadraturaDa: string = null;
   dataQuadraturaA: string = null;
 }

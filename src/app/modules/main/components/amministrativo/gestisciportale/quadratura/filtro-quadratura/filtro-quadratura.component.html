@@ -152,7 +152,7 @@
                 id="selectPSP"
                 name="psp"
                 #pspInput="ngModel"
-                [(ngModel)]="filtri.psp"
+                [(ngModel)]="filtri.pspId"
               >
                 <option [ngValue]="null" selected>Tutti</option>
                 <option *ngFor="let item of opzioniFiltroPsp" [ngValue]="item.value">{{item.label}}</option>
