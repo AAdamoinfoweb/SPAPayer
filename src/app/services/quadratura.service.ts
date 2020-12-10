@@ -25,8 +25,7 @@ export class QuadraturaService {
   constructor(private http: HttpClient) { }
 
   recuperaQuadrature(parametriRicercaQuadratura: ParametriRicercaQuadratura, idFunzione: string): Observable<Quadratura[]> {
-    // const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl;
-    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
+    const url = environment.bffBaseUrl + this.baseUrl + this.letturaQuadratureUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
     let params = new HttpParams();
@@ -44,8 +43,7 @@ export class QuadraturaService {
       headers: h,
       params
     }).pipe(map((body: Quadratura[]) => {
-        // return body; // todo ivan rimuovere response mockata dopo allacciamento operation backend
-        return [];
+        return body;
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
@@ -66,8 +64,8 @@ export class QuadraturaService {
       withCredentials: true,
       headers: h
     }).pipe(map((body: DettaglioQuadratura) => {
-        // return body; // todo ivan rimuovere response mockata dopo allacciamento operation backend
-        return new DettaglioQuadratura();
+        // return body;
+        return new DettaglioQuadratura(); // todo ivan rimuovere response mockata dopo allacciamento operation backend
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
@@ -88,8 +86,8 @@ export class QuadraturaService {
       withCredentials: true,
       headers: h
     }).pipe(map((body: Psp[]) => {
-        // return body; // todo ivan rimuovere response mockata dopo allacciamento operation backend
-        return [];
+        // return body;
+        return []; // todo ivan rimuovere response mockata dopo allacciamento operation backend
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
