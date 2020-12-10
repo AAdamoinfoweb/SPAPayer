@@ -47,7 +47,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
 
   popolaFiltroSocieta(): void {
     this.opzioniFiltroSocieta = [];
-    this.quadraturaService.recuperaFiltroSocieta(null, this.idFunzione).subscribe(listaSocieta => {
+    this.quadraturaService.recuperaFiltroSocieta(this.idFunzione).subscribe(listaSocieta => {
       if (listaSocieta) {
         listaSocieta.forEach(societa => {
           this.opzioniFiltroSocieta.push({
@@ -62,7 +62,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
 
   popolaFiltroEnti(): void {
     this.opzioniFiltroEnti = [];
-    this.quadraturaService.recuperaFiltroEnte(null, this.idFunzione).subscribe(listaEnti => {
+    this.quadraturaService.recuperaFiltroEnte(this.idFunzione).subscribe(listaEnti => {
       if (listaEnti) {
         listaEnti.forEach(ente => {
           this.opzioniFiltroEnti.push({
@@ -77,7 +77,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
 
   popolaFiltroPSP(): void {
     this.opzioniFiltroPsp = [];
-    this.quadraturaService.recuperaFiltroPsp(null, this.idFunzione).subscribe(listaPsp => {
+    this.quadraturaService.recuperaFiltroPsp(this.idFunzione).subscribe(listaPsp => {
       if (listaPsp) {
         listaPsp.forEach(psp => {
           this.opzioniFiltroPsp.push({
