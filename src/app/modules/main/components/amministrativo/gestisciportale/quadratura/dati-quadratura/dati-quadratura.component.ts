@@ -5,6 +5,8 @@ import {tipoColonna} from '../../../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../../../enums/TipoTabella.enum';
 import {DettaglioTransazione} from '../../../../../model/transazione/DettaglioTransazione';
 import {Router} from '@angular/router';
+import * as moment from 'moment';
+import {Utils} from '../../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-dati-quadratura',
@@ -61,11 +63,12 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
 
   creaRigaTabella(dettaglioTransazione: DettaglioTransazione) {
     return {
-      // TODO inserire campo dataTransazione nell'oggetto DettaglioTransazione
+      dataTransazione: {value: dettaglioTransazione.dataTransazione
+          ? moment(dettaglioTransazione.dataTransazione).format(Utils.FORMAT_DATE_CALENDAR) : null},
       iuv: {value: dettaglioTransazione.iuv},
       pagatore: {value: dettaglioTransazione.pagatoreCodiceFiscale},
       importo: {value: dettaglioTransazione.importo},
-      // TODO inserire campo stato nell'oggetto DettaglioTransazione
+      stato: {value: dettaglioTransazione.stato},
       id: {value: dettaglioTransazione.dettaglioTransazioneId}
     };
   }

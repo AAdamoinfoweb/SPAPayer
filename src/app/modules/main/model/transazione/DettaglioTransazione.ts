@@ -9,4 +9,6 @@ export class DettaglioTransazione {
   rendicontazioneId: number;
   quadraturaId: number;
   quadrata: boolean;
+  dataTransazione: string;
+  stato: string;
 }
