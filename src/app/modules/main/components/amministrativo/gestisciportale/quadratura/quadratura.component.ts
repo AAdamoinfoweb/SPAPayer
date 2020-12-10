@@ -120,6 +120,7 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
       societa: {value: elemento.nomeSocieta},
       ente: {value: elemento.nomeEnte},
       flussoId: {value: elemento.flussoId},
+      iban: {value: elemento.iban},
       psp: {value: elemento.psp},
       dataQuadratura: {value: elemento.dataQuadratura},
       importo: {value: elemento.importoFlusso},
