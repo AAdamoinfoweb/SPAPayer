@@ -55,17 +55,15 @@ export class QuadraturaService {
   }
 
   recuperaDettaglioQuadratura(idQuadratura: number, idFunzione: string): Observable<DettaglioQuadratura> {
-    // const url = environment.bffBaseUrl + this.baseUrl + this.dettaglioQuadraturaUrl + '/' + idQuadratura;
-    const url = this.urlMockChiamata; // todo ivan rimuovere chiamata mockata dopo allacciamento operation backend
+    const url = environment.bffBaseUrl + this.baseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
-    return this.http.get(`${url}`, {
+    return this.http.get(`${url}/${idQuadratura}`, {
       withCredentials: true,
       headers: h
     }).pipe(map((body: DettaglioQuadratura) => {
-        // return body;
-        return new DettaglioQuadratura(); // todo ivan rimuovere response mockata dopo allacciamento operation backend
+        return body;
       }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
