@@ -16,6 +16,8 @@ import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {TipoQuadraturaEnum} from '../../../../../../enums/TipoQuadraturaEnum';
 import {SpinnerOverlayService} from '../../../../../../services/spinner-overlay.service';
 import {MenuService} from '../../../../../../services/menu.service';
+import * as moment from 'moment';
+import {Utils} from '../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-quadratura',
@@ -122,7 +124,7 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
       flussoId: {value: elemento.flussoId},
       iban: {value: elemento.iban},
       psp: {value: elemento.psp},
-      dataQuadratura: {value: elemento.dataQuadratura},
+      dataQuadratura: {value: elemento.dataQuadratura ? moment(elemento.dataQuadratura).format(Utils.FORMAT_DATE_TIME_CALENDAR) : null},
       importo: {value: elemento.importoFlusso},
       iuvTotali: {value: elemento.iuvTotali},
       iuvScartati: {value: elemento.iuvScartati}
