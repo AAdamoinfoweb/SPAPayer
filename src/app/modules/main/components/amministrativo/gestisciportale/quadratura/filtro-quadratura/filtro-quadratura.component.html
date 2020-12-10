@@ -213,7 +213,7 @@
           </div>
           <div class="row">
             <div [ngClass]="{'col calendar-wrapper': true}">
-              <svg class="bg-light icon img-calendar">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerDataQuadraturaDa)">
                 <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
               </svg>
               <dp-date-picker
@@ -255,7 +255,7 @@
           </div>
           <div class="row">
             <div [ngClass]="{'col calendar-wrapper': true}">
-              <svg class="bg-light icon img-calendar">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerDataQuadraturaA)">
                 <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
               </svg>
               <dp-date-picker

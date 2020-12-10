@@ -10,7 +10,7 @@ import {TipoCampoEnum} from '../../../../../../../enums/tipoCampo.enum';
 import {EnteService} from '../../../../../../../services/ente.service';
 import * as _ from 'lodash';
 import {Utils} from '../../../../../../../utils/Utils';
-import {ECalendarValue} from 'ng2-date-picker';
+import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import {QuadraturaService} from '../../../../../../../services/quadratura.service';
 import {FiltroSelect} from '../../../../../model/servizio/FiltroSelect';
 import {GestisciPortaleService} from '../../../../../../../services/gestisci-portale.service';
@@ -65,6 +65,10 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
         this.opzioniFiltroEnti = _.sortBy(listaEnti, ['nome']);
       }
     });
+  }
+
+  openDatepicker(datePickerComponent: DatePickerComponent): void {
+    datePickerComponent.api.open();
   }
 
   popolaFiltroPSP(): void {
