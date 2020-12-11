@@ -75,10 +75,9 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
 
   inizializzaPagina() {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
-      {label: 'Gestisci Portale', link: null},
       {label: 'Quadratura', link: this.basePath + '/quadratura'},
       {label: 'IUV senza bonifico', link: null}
-    ]);
+    ], true);
     this.popolaListaElementi();
   }
 
