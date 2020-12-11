@@ -288,7 +288,7 @@ export class DatiPermessoComponent implements OnInit {
 
   disabilitaCheckboxFunzione(funzione) {
     if (this.funzione === FunzioneGestioneEnum.DETTAGLIO ||
-      (funzione.value.nome !== 'quadratura' && this.datiPermesso.servizioId == null)) {
+      (funzione.value.nome !== 'quadratura' && funzione.value.nome !== 'iuv senza bonifico' && this.datiPermesso.servizioId == null)) {
       return true;
     } else {
       return false;
