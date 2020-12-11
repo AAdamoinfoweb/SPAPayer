@@ -19,8 +19,8 @@ import {NuovoPagamentoService} from '../../../../../../services/nuovo-pagamento.
 import {Ente} from '../../../../model/Ente';
 import {FiltroServizio} from '../../../../model/FiltroServizio';
 import {AsyncSubject} from 'rxjs';
-import {FunzioneGestioneEnum} from "../../../../../../enums/funzioneGestione.enum";
-import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
+import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
+import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 
 @Component({
   selector: 'app-dati-permesso',
@@ -216,7 +216,7 @@ export class DatiPermessoComponent implements OnInit {
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       this.onDeletePermesso.emit(this.setComponenteDinamico());
     } else {
-      let mapPermessoFunzione: Map<number, PermessoFunzione> = new Map<number, PermessoFunzione>();
+      const mapPermessoFunzione: Map<number, PermessoFunzione> = new Map<number, PermessoFunzione>();
       this.mapPermessoFunzione.forEach((permessoFunzione: PermessoFunzione, key: number) => {
         permessoFunzione.permessoCancellato = true;
         mapPermessoFunzione.set(key, permessoFunzione);
@@ -284,5 +284,14 @@ export class DatiPermessoComponent implements OnInit {
     permessoCompleto = JSON.parse(JSON.stringify(this.datiPermesso));
     permessoCompleto.listaFunzioni = this.listaPermessoFunzione;
     return new ComponenteDinamico(this.uuid, this.indexSezionePermesso, permessoCompleto);
+  }
+
+  disabilitaCheckboxFunzione(funzione) {
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO ||
+      (funzione.value.nome !== 'quadratura' && this.datiPermesso.servizioId == null)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
