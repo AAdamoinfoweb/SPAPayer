@@ -141,8 +141,4 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
     });
     return !areFiltriValorizzati;
   }
-
-  disabilitaBottoneSalva(filtroForm: NgForm): boolean {
-    return !filtroForm.valid;
-  }
 }
