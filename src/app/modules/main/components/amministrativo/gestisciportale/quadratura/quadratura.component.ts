@@ -186,6 +186,7 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    colonne[6].header = colonne[6].header.replace('(€)', '');
     return colonne;
   }
 
