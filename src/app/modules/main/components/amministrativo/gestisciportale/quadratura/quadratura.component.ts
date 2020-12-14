@@ -40,8 +40,8 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   tableData: Tabella = {
     rows: [],
     cols: [
-      {field: 'societa', header: 'Società', type: tipoColonna.TESTO},
-      {field: 'ente', header: 'Ente', type: tipoColonna.TESTO},
+      {field: 'societa', header: 'Società', type: tipoColonna.LINK},
+      {field: 'ente', header: 'Ente', type: tipoColonna.LINK},
       {field: 'flussoId', header: 'Id flusso', type: tipoColonna.TESTO},
       {field: 'iban', header: 'IBAN', type: tipoColonna.TESTO},
       {field: 'psp', header: 'PSP', type: tipoColonna.TESTO},
@@ -116,10 +116,14 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   }
 
   creaRigaTabella(elemento: Quadratura) {
-    const riga = {
+    const iconaGruppoUtenti = 'assets/img/users-solid.svg#users-group';
+    const linkGestisciSocieta = '/gestisciSocieta?societaId=' + elemento.idSocieta;
+    const linkGestisciEnti = '/gestisciEnti?enteId=' + elemento.idEnte;
+
+    return {
       id: {value: elemento.id},
-      societa: {value: elemento.nomeSocieta},
-      ente: {value: elemento.nomeEnte},
+      societa: Utils.creaLink(elemento.nomeSocieta, linkGestisciSocieta, iconaGruppoUtenti),
+      ente: Utils.creaLink(elemento.nomeEnte, linkGestisciEnti, iconaGruppoUtenti),
       flussoId: {value: elemento.flussoId},
       iban: {value: elemento.iban},
       psp: {value: elemento.psp},
@@ -128,7 +132,6 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
       iuvTotali: {value: elemento.iuvTotali},
       iuvScartati: {value: elemento.iuvScartati}
     };
-    return riga;
   }
 
   onChangeTab(value: TipoQuadraturaEnum) {
@@ -186,8 +189,24 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
     return colonne;
   }
 
-  getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] | any[] {
-    return [];
+  getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] {
+    const iconaSocieta = new ImmaginePdf();
+    iconaSocieta.indiceColonna = 0;
+    iconaSocieta.srcIcona = 'assets/img/users-solid-pdf-img.png';
+    iconaSocieta.posizioneX = 60;
+    iconaSocieta.posizioneY = 8;
+    iconaSocieta.larghezza = 18;
+    iconaSocieta.altezza = 15;
+
+    const iconaEnti = new ImmaginePdf();
+    iconaEnti.indiceColonna = 1;
+    iconaEnti.srcIcona = 'assets/img/users-solid-pdf-img.png';
+    iconaEnti.posizioneX = 60;
+    iconaEnti.posizioneY = 8;
+    iconaEnti.larghezza = 18;
+    iconaEnti.altezza = 15;
+
+    return [iconaSocieta, iconaEnti];
   }
 
   getNumeroRecord(): string {
