@@ -64,7 +64,9 @@
   <div class="card-body p-0">
     <div class="row align-items-baseline align-content-lg-around">
       <div class="col-lg pb-2 pb-sm-2 pb-lg-0"></div>
-      <div class="col-auto"></div>
+      <div class="col-auto">
+        <app-toolbar [toolbarIcons]="toolbarIcons" (onClick)="eseguiAzioni($event)"></app-toolbar>
+      </div>
     </div>
     <div class="row">
       <div class="col">

@@ -7,6 +7,9 @@ import {DettaglioTransazione} from '../../../../../model/transazione/DettaglioTr
 import {ActivatedRoute, Router} from '@angular/router';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../../utils/Utils';
+import {Colonna} from '../../../../../model/tabella/Colonna';
+import {ImmaginePdf} from '../../../../../model/tabella/ImmaginePdf';
+import {ToolEnum} from '../../../../../../../enums/Tool.enum';
 
 @Component({
   selector: 'app-dati-quadratura',
@@ -21,6 +24,11 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
   flussoId = null;
   pspId = null;
   listaDettaglioTransazione = null;
+
+  readonly toolbarIcons = [
+    {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
+    {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'}
+  ];
 
   tableData: Tabella = {
     rows: [],
@@ -77,6 +85,78 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
         isTransazioneScartata ? 'inline' : 'none', 'top'),
       id: {value: dettaglioTransazione.dettaglioTransazioneId}
     };
+  }
+
+  eseguiAzioni(azioneTool: ToolEnum): void {
+    switch (azioneTool) {
+      case ToolEnum.EXPORT_PDF:
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Dettagli Transazione');
+        break;
+      case ToolEnum.EXPORT_XLS:
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Dettagli Transazione');
+        break;
+    }
+  }
+
+  esportaTabellaInFileExcel(tabella: Tabella, nomeFile: string): void {
+    const copiaTabella = JSON.parse(JSON.stringify(tabella));
+    const headerColonne = this.getColonneFileExcel(copiaTabella.cols).map(col => col.header);
+    const righe = this.getRigheFileExcel(copiaTabella.rows);
+
+    const fogli = {};
+    fogli[nomeFile] = null;
+    const workbook = {Sheets: fogli, SheetNames: []};
+    Utils.creaFileExcel(righe, headerColonne, nomeFile, [nomeFile], workbook, nomeFile);
+  }
+
+  getColonneFileExcel(colonne: Colonna[]): Colonna[] {
+    return colonne;
+  }
+
+  getRigheFileExcel(righe: any[]): any[] {
+    return righe.map(riga => {
+      const rigaFormattata = riga;
+      rigaFormattata.dataTransazione = riga.dataTransazione.value;
+      rigaFormattata.iuv = riga.iuv.value;
+      rigaFormattata.pagatore = riga.pagatore.value;
+      rigaFormattata.importo = riga.importo.value;
+      rigaFormattata.stato = riga.stato.value;
+      delete rigaFormattata.allarme;
+      delete rigaFormattata.id;
+
+      return rigaFormattata;
+    });
+  }
+
+  esportaTabellaInFilePdf(tabella: Tabella, nomeFile: string): void {
+    const copiaTabella = JSON.parse(JSON.stringify(tabella));
+    const colonne = this.getColonneFilePdf(copiaTabella.cols);
+    const righe = this.getRigheFilePdf(copiaTabella.rows);
+    let immagini = this.getImmaginiFilePdf(righe);
+    if (!immagini) {
+      immagini = [];
+    }
+    Utils.esportaTabellaInFilePdf(colonne, righe, nomeFile, immagini);
+  }
+
+  getColonneFilePdf(colonne: Colonna[]): Colonna[] {
+    return colonne;
+  }
+
+  getRigheFilePdf(righe: any[]): any[] {
+    return righe;
+  }
+
+  getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] {
+    const iconaAllarme = new ImmaginePdf();
+    iconaAllarme.indiceColonna = 5;
+    iconaAllarme.srcIcona = 'assets/img/exclamation-triangle-solid-pdf-img.png';
+    iconaAllarme.posizioneX = 0;
+    iconaAllarme.posizioneY = 0;
+    iconaAllarme.larghezza = 18;
+    iconaAllarme.altezza = 18;
+
+    return [iconaAllarme];
   }
 
   getNumeroRecord(): string {
