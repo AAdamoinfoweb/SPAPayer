@@ -20,7 +20,7 @@ import {ImmaginePdf} from '../../../../../model/tabella/ImmaginePdf';
 export class IuvSenzaBonificoComponent extends GestisciElementoComponent implements OnInit, AfterViewInit {
 
   readonly tooltipTitolo = 'In questa pagina puoi consultare la lista completa di IUV senza bonifico e filtrarli';
-  readonly dicituraSx = 'Elenco dei movimenti per i quali non è ancora arrivato il flusso xml da PagoPA da -5 giorni a -250 giorni';
+  readonly dicituraSx = 'Elenco dei movimenti per i quali non è ancora arrivato il flusso xml da PagoPA\nDa -5 giorni a -250 giorni';
   breadcrumbList = [];
 
   listaElementi: any[];  // TODO tipo oggetto da definire
