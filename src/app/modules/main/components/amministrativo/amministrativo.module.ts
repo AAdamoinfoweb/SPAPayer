@@ -95,6 +95,7 @@ import {FiltroQuadraturaComponent} from './gestisciportale/quadratura/filtro-qua
 import {DettaglioQuadraturaComponent} from './gestisciportale/quadratura/dettaglio-quadratura/dettaglio-quadratura.component';
 import {DatiQuadraturaComponent} from './gestisciportale/quadratura/dati-quadratura/dati-quadratura.component';
 import {IuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonifico/iuv-senza-bonifico.component';
+import {FiltroIuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonifico/filtro-iuv-senza-bonifico/filtro-iuv-senza-bonifico.component';
 
 
 @NgModule({
@@ -169,7 +170,8 @@ import {IuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonifico/iu
     FiltroQuadraturaComponent,
     DettaglioQuadraturaComponent,
     DatiQuadraturaComponent,
-    IuvSenzaBonificoComponent
+    IuvSenzaBonificoComponent,
+    FiltroIuvSenzaBonificoComponent
   ],
   imports: [
     HttpClientModule,
