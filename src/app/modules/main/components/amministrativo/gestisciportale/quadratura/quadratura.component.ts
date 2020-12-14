@@ -162,10 +162,10 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   eseguiAzioni(azioneTool: ToolEnum): void {
     switch (azioneTool) {
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tableData, 'Lista Quadrature');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista Flussi di Quadratura');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tableData, 'Lista Quadrature');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista Flussi di Quadratura');
         break;
       case ToolEnum.EXPORT_FLUSSO:
         this.esportaFlusso();
@@ -224,11 +224,13 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
       riga.societa = riga.societa.value;
       riga.ente = riga.ente.value;
       riga.flussoId = riga.flussoId.value;
+      riga.iban = riga.iban.value;
       riga.psp = riga.psp.value;
       riga.dataQuadratura = riga.dataQuadratura.value;
       riga.importo = riga.importo.value;
       riga.iuvTotali = riga.iuvTotali.value;
       riga.iuvScartati = riga.iuvScartati.value;
+      return riga;
     });
   }
 
