@@ -46,9 +46,9 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
       {field: 'iban', header: 'IBAN', type: tipoColonna.TESTO},
       {field: 'psp', header: 'PSP', type: tipoColonna.TESTO},
       {field: 'dataQuadratura', header: 'Data quadratura', type: tipoColonna.TESTO},
-      {field: 'importo', header: 'Importo flusso', type: tipoColonna.IMPORTO},
-      {field: 'iuvTotali', header: 'IUV totali', type: tipoColonna.TESTO},
-      {field: 'iuvScartati', header: 'IUV scartati', type: tipoColonna.TESTO}
+      {field: 'importo', header: 'Importo flusso(€)', type: tipoColonna.IMPORTO},
+      {field: 'iuvTotali', header: 'Numero IUV', type: tipoColonna.TESTO},
+      {field: 'iuvScartati', header: 'Numero IUV scartati', type: tipoColonna.TESTO}
     ],
     dataKey: 'id.value',
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
