@@ -1,6 +1,8 @@
 export class Quadratura {
   id: number;
+  idSocieta: number;
   nomeSocieta: string;
+  idEnte: number;
   nomeEnte: string;
   flussoId: string;
   iban: string;
