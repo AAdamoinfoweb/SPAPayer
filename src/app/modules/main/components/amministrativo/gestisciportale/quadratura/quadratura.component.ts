@@ -98,7 +98,7 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
 
   init() {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
-      {label: 'Quadratura', link: null}
+      {label: 'Quadratura PagoPa', link: null}
     ], true);
     this.popolaListaElementi();
   }
