@@ -33,7 +33,7 @@
           </svg>
 
           <img *ngIf="!isIconInSpriteFile(row[col.field].path)" src="{{row[col.field].path}}"
-               alt="Alert Icon" [ngStyle]="{cursor: 'pointer', height: '24px'}"/>
+               alt="Alert Icon" [ngStyle]="{cursor: 'pointer', width: '25px', height: '24px'}"/>
         </div>
         <!--  template TESTO  -->
         <div *ngIf="col.type == tipoColonnaEnum.TESTO" [ngClass]="row[col.field].class" [innerHTML]="row[col.field].value | parseHtml">
