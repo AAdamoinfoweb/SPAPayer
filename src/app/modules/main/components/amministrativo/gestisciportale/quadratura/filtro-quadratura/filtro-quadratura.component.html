@@ -226,6 +226,7 @@
                   format: 'DD/MM/YYYY',
                   firstDayOfWeek: 'mo',
                   showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
                   openOnFocus: false,
                   min: minDateDDMMYYYY,
                   returnedValueType: tipoData
@@ -234,6 +235,7 @@
                 [(ngModel)]="filtri.dataQuadraturaDa"
                 name="dataQuadraturaDa"
                 #datePickerDataQuadraturaDa
+                (click)="isCalendarOpen = false"
               ></dp-date-picker>
             </div>
           </div>
@@ -268,6 +270,7 @@
                   format: 'DD/MM/YYYY',
                   firstDayOfWeek: 'mo',
                   showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
                   openOnFocus: false,
                   min: minDateDDMMYYYY,
                   returnedValueType: tipoData
@@ -276,6 +279,7 @@
                 [(ngModel)]="filtri.dataQuadraturaA"
                 name="dataQuadraturaA"
                 #datePickerDataQuadraturaA
+                (click)="isCalendarOpen = false"
               ></dp-date-picker>
             </div>
           </div>

@@ -30,6 +30,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
   TipoCampoEnum = TipoCampoEnum;
   ibanRegex = Utils.IBAN_ITALIA_REGEX;
 
+  isCalendarOpen: boolean;
   readonly minDateDDMMYYYY = '01/01/1900';
   readonly tipoData = ECalendarValue.String;
 
@@ -69,6 +70,7 @@ export class FiltroQuadraturaComponent extends FiltroGestioneElementiComponent i
 
   openDatepicker(datePickerComponent: DatePickerComponent): void {
     datePickerComponent.api.open();
+    this.isCalendarOpen = !this.isCalendarOpen;
   }
 
   popolaFiltroPSP(): void {
