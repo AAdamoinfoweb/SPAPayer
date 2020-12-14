@@ -63,6 +63,8 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
   }
 
   creaRigaTabella(dettaglioTransazione: DettaglioTransazione) {
+    const isTransazioneScartata = dettaglioTransazione.stato === 'Scartata';
+
     return {
       dataTransazione: {value: dettaglioTransazione.dataTransazione
           ? moment(dettaglioTransazione.dataTransazione).format(Utils.FORMAT_DATE_CALENDAR) : null},
@@ -70,7 +72,9 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
       pagatore: {value: dettaglioTransazione.pagatoreCodiceFiscale},
       importo: {value: dettaglioTransazione.importo},
       stato: {value: dettaglioTransazione.stato},
-      allarme: Utils.creaIcona('assets/img/exclamation-triangle-solid.svg#alert-icon', '#B06202', 'prova', 'inline'),  // TODO aggiungere tooltip motivo icona allarme
+      allarme: Utils.creaIcona('assets/img/exclamation-triangle-solid.svg#alert-icon', '#B06202',
+        isTransazioneScartata ? dettaglioTransazione.motivoPagamentoScartato : null,
+        isTransazioneScartata ? 'inline' : 'none', 'top'),
       id: {value: dettaglioTransazione.dettaglioTransazioneId}
     };
   }

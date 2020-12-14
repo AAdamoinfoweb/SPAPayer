@@ -28,9 +28,12 @@
              [ngStyle]="{fill: row[col.field] != null ? row[col.field].color : '#403d39', display: row[col.field].display}"
               (click)="onIconClick(row[dataKey])"
         >
-          <svg class="icon icon-sm">
-            <use [attr.xlink:href]="getIcona(row[col.field].path)"></use>
+          <svg class="icon icon-sm" *ngIf="isIconInSpriteFile(row[col.field].path)">
+            <use [attr.xlink:href]="sprite + row[col.field].path"></use>
           </svg>
+
+          <img *ngIf="!isIconInSpriteFile(row[col.field].path)" src="{{row[col.field].path}}"
+               alt="Alert Icon" [ngStyle]="{cursor: 'pointer', height: '24px'}"/>
         </div>
         <!--  template TESTO  -->
         <div *ngIf="col.type == tipoColonnaEnum.TESTO" [ngClass]="row[col.field].class" [innerHTML]="row[col.field].value | parseHtml">

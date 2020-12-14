@@ -11,4 +11,5 @@ export class DettaglioTransazione {
   quadrata: boolean;
   dataTransazione: string;
   stato: string;
+  motivoPagamentoScartato: string;
 }

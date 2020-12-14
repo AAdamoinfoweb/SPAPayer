@@ -112,8 +112,8 @@ export class TableComponent implements OnInit, OnChanges {
     });
   }
 
-  getIcona(icona: string) {
-    return icona.startsWith('#') ? this.sprite + icona : icona;
+  isIconInSpriteFile(icona: string): boolean {
+    return icona.startsWith('#');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
