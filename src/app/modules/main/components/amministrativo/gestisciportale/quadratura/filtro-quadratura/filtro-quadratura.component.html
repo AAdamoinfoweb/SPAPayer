@@ -126,7 +126,6 @@
                 name="iban"
                 #ibanInput="ngModel"
                 [(ngModel)]="filtri.iban"
-                [pattern]="ibanRegex"
               />
             </div>
           </div>
@@ -304,7 +303,6 @@
         </div>
         <div class="col-6 btn-find">
           <button id="bottoneCerca" class="btn"
-                  [disabled]="disabilitaBottoneSalva(filtroForm)"
                   (click)="cercaElementi()">Cerca</button>
         </div>
       </div>
