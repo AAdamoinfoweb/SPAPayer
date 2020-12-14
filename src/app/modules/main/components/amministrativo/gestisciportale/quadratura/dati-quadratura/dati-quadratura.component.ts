@@ -27,9 +27,10 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
     cols: [
       {field: 'dataTransazione', header: 'Data transazione', type: tipoColonna.TESTO},
       {field: 'iuv', header: 'IUV', type: tipoColonna.TESTO},
-      {field: 'pagatore', header: 'Pagatore (Codice fiscale)', type: tipoColonna.TESTO},
+      {field: 'pagatore', header: 'Pagatore (Cod. fiscale)', type: tipoColonna.TESTO},
       {field: 'importo', header: 'Importo', type: tipoColonna.IMPORTO},
-      {field: 'stato', header: 'Stato', type: tipoColonna.TESTO}
+      {field: 'stato', header: 'Stato', type: tipoColonna.TESTO},
+      {field: 'allarme', header: '', type: tipoColonna.ICONA}
     ],
     dataKey: 'id.value',
     tipoTabella: tipoTabella.TEMPLATING
@@ -69,6 +70,7 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
       pagatore: {value: dettaglioTransazione.pagatoreCodiceFiscale},
       importo: {value: dettaglioTransazione.importo},
       stato: {value: dettaglioTransazione.stato},
+      allarme: Utils.creaIcona('assets/img/exclamation-triangle-solid.svg#alert-icon', '#B06202', 'prova', 'inline'),  // TODO aggiungere tooltip motivo icona allarme
       id: {value: dettaglioTransazione.dettaglioTransazioneId}
     };
   }
