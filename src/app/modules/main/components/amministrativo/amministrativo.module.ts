@@ -94,7 +94,7 @@ import {QuadraturaComponent} from './gestisciportale/quadratura/quadratura.compo
 import {FiltroQuadraturaComponent} from './gestisciportale/quadratura/filtro-quadratura/filtro-quadratura.component';
 import {DettaglioQuadraturaComponent} from './gestisciportale/quadratura/dettaglio-quadratura/dettaglio-quadratura.component';
 import {DatiQuadraturaComponent} from './gestisciportale/quadratura/dati-quadratura/dati-quadratura.component';
-import {IuvSenzaBonificoComponent} from './gestisciportale/quadratura/iuv-senza-bonifico/iuv-senza-bonifico.component';
+import {IuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonifico/iuv-senza-bonifico.component';
 
 
 @NgModule({

@@ -1,16 +1,16 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {GestisciElementoComponent} from '../../../gestisci-elemento.component';
-import {ToolEnum} from '../../../../../../../enums/Tool.enum';
-import {Tabella} from '../../../../../model/tabella/Tabella';
-import {tipoColonna} from '../../../../../../../enums/TipoColonna.enum';
-import {tipoTabella} from '../../../../../../../enums/TipoTabella.enum';
+import {GestisciElementoComponent} from '../../gestisci-elemento.component';
+import {ToolEnum} from '../../../../../../enums/Tool.enum';
+import {Tabella} from '../../../../model/tabella/Tabella';
+import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
+import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {AmministrativoService} from '../../../../../../../services/amministrativo.service';
-import {MenuService} from '../../../../../../../services/menu.service';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {MenuService} from '../../../../../../services/menu.service';
 import {Observable} from 'rxjs';
-import {Colonna} from '../../../../../model/tabella/Colonna';
-import {ImmaginePdf} from '../../../../../model/tabella/ImmaginePdf';
+import {Colonna} from '../../../../model/tabella/Colonna';
+import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 
 @Component({
   selector: 'app-iuv-senza-bonifico',

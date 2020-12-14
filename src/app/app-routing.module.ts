@@ -43,7 +43,7 @@ import {DettaglioPendenzaComponent} from './modules/main/components/amministrati
 import {DettaglioEsitoNotificaComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dettaglio-esito-notifica.component';
 import {QuadraturaComponent} from './modules/main/components/amministrativo/gestisciportale/quadratura/quadratura.component';
 import {DettaglioQuadraturaComponent} from './modules/main/components/amministrativo/gestisciportale/quadratura/dettaglio-quadratura/dettaglio-quadratura.component';
-import {IuvSenzaBonificoComponent} from './modules/main/components/amministrativo/gestisciportale/quadratura/iuv-senza-bonifico/iuv-senza-bonifico.component';
+import {IuvSenzaBonificoComponent} from './modules/main/components/amministrativo/gestisciportale/iuv-senza-bonifico/iuv-senza-bonifico.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -122,6 +122,7 @@ const routes: Routes = [
 
   {path: 'quadratura', component: QuadraturaComponent},
   {path: 'quadratura/dettaglioQuadratura/:quadraturaId', component: DettaglioQuadraturaComponent},
+
   {path: 'iuvSenzaBonifico', component: IuvSenzaBonificoComponent}
 ];
 
