@@ -379,8 +379,39 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     }
   }
 
+  scaleToFit(img, canvas) {
+    const context = canvas.getContext('2d');
+    // get the scale
+    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+    // get the top left position of the image
+    const x = (canvas.width / 2) - (img.width / 2) * scale;
+    const y = (canvas.height / 2) - (img.height / 2) * scale;
+    context.drawImage(img, x, y, img.width * scale, img.height * scale);
+  }
+
   inizializzazioneForm(servizio: FiltroServizio): Observable<any> {
     this.servizio = servizio;
+    this.nuovoPagamentoService.getLogoEnte(this.servizio.enteId).subscribe(logo => {
+      if (logo) {
+        const canvas: any = document.getElementById('canvas');
+        if (canvas != null) {
+          const context = canvas.getContext('2d');
+          const reader = new FileReader();
+          // @ts-ignore
+          reader.readAsDataURL(Utils.b64toBlob(logo.contenuto));
+          reader.onload = () => {
+            const imageObj = new Image();
+            if (typeof reader.result === 'string') {
+              imageObj.src = reader.result;
+            }
+            imageObj.onload = () => {
+              context.clearRect(0, 0, canvas.width, canvas.height);
+              this.scaleToFit(imageObj, canvas);
+            };
+          };
+        }
+      }
+    });
     const isCompilato = this.servizio != null;
 
     if (isCompilato) {
