@@ -65,8 +65,9 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   readonly toolbarIcons = [
     {type: ToolEnum.EXPORT_PDF, tooltip: 'Stampa Pdf'},
     {type: ToolEnum.EXPORT_XLS, tooltip: 'Download'},
-    {type: ToolEnum.EXPORT_FLUSSO, tooltip: 'Scarica Flusso'}
+    {type: ToolEnum.EXPORT_FLUSSO, disabled: true, tooltip: 'Scarica flussi'}
   ];
+  indiceIconaScaricaFlussi = 2;
 
   constructor(router: Router,
               route: ActivatedRoute, protected http: HttpClient,
@@ -168,13 +169,19 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
         this.esportaTabellaInFileExcel(this.tableData, 'Lista Flussi di Quadratura');
         break;
       case ToolEnum.EXPORT_FLUSSO:
-        this.esportaFlusso();
+        this.esportaFlussiInTxtFile(this.getListaIdElementiSelezionati());
+        break;
     }
   }
 
-  esportaFlusso() {
-    // todo ivan implementare esportazione flusso dopo aver ricevuto direttive sul comportamento
-    console.log('funzione mancante - esporta flusso');
+  esportaFlussiInTxtFile(listaFlussoQuadraturaPagoPaId: Array<number>): void {
+    this.quadraturaService.downloadFlussi(listaFlussoQuadraturaPagoPaId, this.idFunzione).subscribe(listaFlussi => {
+      listaFlussi.forEach((flusso, index) => {
+        if (flusso) {
+          Utils.downloadBase64ToTxtFile(flusso, 'flusso_' + index);
+        }
+      });
+    });
   }
 
   mostraDettaglioQuadratura(rigaTabella) {
@@ -239,5 +246,8 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
     return righe;
   }
 
-  selezionaRigaTabella(righeSelezionate: any[]) {}
+  selezionaRigaTabella(righeSelezionate: any[]): void {
+    this.righeSelezionate = righeSelezionate;
+    this.toolbarIcons[this.indiceIconaScaricaFlussi].disabled = this.righeSelezionate.length === 0;
+  }
 }

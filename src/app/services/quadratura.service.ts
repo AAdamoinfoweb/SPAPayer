@@ -17,6 +17,7 @@ export class QuadraturaService {
   private readonly baseUrl = '/quadratura';
   private readonly filtroPsp = '/filtroPsp';
   private readonly filtroFlussoId = '/filtroFlussoId';
+  private readonly scaricaFlussi = '/flussi';
 
   constructor(private http: HttpClient) { }
 
@@ -108,6 +109,33 @@ export class QuadraturaService {
           return of(null);
         }
       }));
+  }
+
+  downloadFlussi(listaFlussoQuadraturaPagoPaId: Array<number>, idFunzione: string): Observable<Array<string>> {
+    const url = environment.bffBaseUrl + this.baseUrl + this.scaricaFlussi;
+    let params = new HttpParams();
+    if (listaFlussoQuadraturaPagoPaId) {
+      params = params.set('listaFlussoQuadraturaPagoPaId', listaFlussoQuadraturaPagoPaId.join(', '));
+    }
+
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+
+    return this.http.get(`${url}`, {
+      params: params,
+      headers: h,
+      withCredentials: true
+    })
+      .pipe(map((body: any) => {
+          return body as Array<string>;
+        }),
+        catchError((err, caught) => {
+          if (err.status == 401 || err.status == 400) {
+            return of(null);
+          } else {
+            return of(null);
+          }
+        }));
   }
 
 }
