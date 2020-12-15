@@ -3,6 +3,7 @@ import {FiltroServizio} from '../../model/FiltroServizio';
 import {NuovoPagamentoService} from '../../../../services/nuovo-pagamento.service';
 import {DatiPagamento} from '../../model/bollettino/DatiPagamento';
 import {Breadcrumb} from '../../dto/Breadcrumb';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-nuovo-pagamento',
@@ -20,10 +21,15 @@ export class NuovoPagamentoComponent implements OnInit {
   @Input()
   filtroPagamento = true;
 
+  servizioId: number;
 
-  constructor(private nuovoPagamentoService: NuovoPagamentoService) {
+
+  constructor(private route: ActivatedRoute, private nuovoPagamentoService: NuovoPagamentoService) {
     this.nuovoPagamentoService.compilazioneEvent.subscribe(servizioSelezionato => {
       this.servizioSelezionato = servizioSelezionato;
+    });
+    this.route.queryParams.subscribe((params) => {
+      this.servizioId = parseInt(params.servizio);
     });
   }
 
