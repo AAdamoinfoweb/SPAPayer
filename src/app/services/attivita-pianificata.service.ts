@@ -6,6 +6,7 @@ import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaStatistiche} from '../modules/main/model/statistica/ParametriRicercaStatistiche';
 import {AttivitaPianificata} from '../modules/main/model/attivitapianificata/AttivitaPianificata';
 import {SintesiAttivitaPianificata} from '../modules/main/model/attivitapianificata/SintesiAttivitaPianificata';
+import {FiltroSelect} from '../modules/main/model/servizio/FiltroSelect';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,30 @@ export class AttivitaPianificataService {
 
   private readonly eliminaAttivitaPianificateUrl = this.gestisciAttivitaPianificateBasePath + '/eliminaAttivitaPianificate';
 
+  private readonly filtroAttivitaPianificataBeanUrl = this.gestisciAttivitaPianificateBasePath + '/filtroAttivitaPianificataBean';
+
   constructor(private http: HttpClient) {
+  }
+
+  recuperaFiltroAttivitaPianificataBean(idFunzione: string): Observable<FiltroSelect[]> {
+    const url = environment.bffBaseUrl + this.filtroAttivitaPianificataBeanUrl;
+    // set headers
+    let h: HttpHeaders = new HttpHeaders();
+    h = h.append('idFunzione', idFunzione);
+    return this.http.get(`${url}`,
+      {
+        withCredentials: true,
+        headers: h
+      }).pipe(map((body: any[]) => {
+        return body as FiltroSelect[];
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
   }
 
   ricercaAttivitaPianificate(parametriRicercaStatistiche: ParametriRicercaStatistiche, idFunzione: string): Observable<SintesiAttivitaPianificata[]> {

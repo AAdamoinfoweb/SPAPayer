@@ -6,11 +6,12 @@ export class AttivitaPianificata {
   titolo: string;
   descrizione: string;
   abilitato: boolean;
-  bean: string;
+  attivitaPianificataBeanId: number;
   schedulazione: Schedulazione;
   parametri: ParametroAttivitaPianificata[];
 
   constructor() {
+    this.attivitaPianificataBeanId = null;
     this.parametri = [];
     this.schedulazione = new Schedulazione();
   }
