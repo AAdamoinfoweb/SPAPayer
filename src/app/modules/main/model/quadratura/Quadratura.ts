@@ -11,5 +11,5 @@ export class Quadratura {
   importoFlusso: number;
   iuvTotali: number;
   iuvScartati: number;
-  quadrato: boolean;
+  quadrata: boolean;
 }
