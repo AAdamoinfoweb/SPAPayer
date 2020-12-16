@@ -1,5 +1,4 @@
-<!--<div class="ml-5" *ngIf="!waiting">-->
-<div class="ml-5">
+<div class="ml-5" *ngIf="!waiting">
   <!-- breadcrumb -->
   <it-breadcrumb [dark]="false" [separator]="'/'">
     <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
@@ -25,7 +24,7 @@
   <!-- Sottosezione Lista -->
   <div class="collapse-header" id="idCollapseLista">
     <button data-toggle="collapse" data-target="#contenutoSezioneLista" aria-expanded="true" aria-controls="contenutoSezioneLista">
-      Lista IUV senza bonifico
+      Lista IUV senza bonifici
     </button>
   </div>
   <div id="contenutoSezioneLista" class="collapse show" role="tabpanel" aria-labelledby="idCollapseLista">

@@ -11,6 +11,10 @@ import {MenuService} from '../../../../../../services/menu.service';
 import {Observable} from 'rxjs';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
+import {SintesiIuvSenzaBonifico} from '../../../../model/iuvsenzabonifico/SintesiIuvSenzaBonifico';
+import {IuvSenzaBonificoService} from '../../../../../../services/iuv-senza-bonifico.service';
+import * as moment from 'moment';
+import {Utils} from '../../../../../../utils/Utils';
 
 @Component({
   selector: 'app-iuv-senza-bonifico',
@@ -23,7 +27,7 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
   readonly dicituraSx = 'Elenco dei movimenti per i quali non è ancora arrivato il flusso xml da PagoPA\nDa -5 giorni a -250 giorni';
   breadcrumbList = [];
 
-  listaElementi: any[];  // TODO tipo oggetto da definire
+  listaElementi: Array<SintesiIuvSenzaBonifico> = new Array<SintesiIuvSenzaBonifico>();
 
   filtriRicerca: any;  // TODO tipo oggetto da definire
   righeSelezionate: any[];
@@ -52,7 +56,7 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
 
   constructor(router: Router, route: ActivatedRoute, protected http: HttpClient,
               amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
-              private menuService: MenuService) {
+              private menuService: MenuService, private iuvSenzaBonificoService: IuvSenzaBonificoService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -83,9 +87,8 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
   callbackPopolaLista() {
   }
 
-  getObservableFunzioneRicerca(): Observable<any> {
-    // TODO invocare operation ricercaIuvSenzaBonifico
-    return null;
+  getObservableFunzioneRicerca(): Observable<SintesiIuvSenzaBonifico[]> {
+    return this.iuvSenzaBonificoService.ricercaIuvSenzaBonifico(this.idFunzione);
   }
 
   ngAfterViewInit(): void {
@@ -97,37 +100,50 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
   eseguiAzioni(azioneTool: ToolEnum): void {
     switch (azioneTool) {
       case ToolEnum.EXPORT_PDF:
-        this.esportaTabellaInFilePdf(this.tableData, 'Lista IUV senza bonifico');
+        this.esportaTabellaInFilePdf(this.tableData, 'Lista IUV senza bonifici');
         break;
       case ToolEnum.EXPORT_XLS:
-        this.esportaTabellaInFileExcel(this.tableData, 'Lista IUV senza bonifico');
+        this.esportaTabellaInFileExcel(this.tableData, 'Lista IUV senza bonifici');
         break;
     }
   }
 
   creaRigaTabella(elemento: any) {
-    // TODO creazione riga tabella
-    return null;
+    return {
+      iuv: {value: elemento.iuv},
+      transazionePayer: {value: elemento.transazionePayer},
+      totale: {value: elemento.totale},
+      dataPagamento: {value: elemento.dataPagamento ? moment(elemento.dataPagamento).format('DD/MM/YYYY HH:mm:ss') : null},
+      psp: {value: elemento.psp},
+      iban: {value: elemento.iban},
+      beneficiario: {value: elemento.beneficiario}
+    };
   }
 
   getColonneFileExcel(colonne: Colonna[]): Colonna[] {
-    // TODO creazione colonne file excel
-    return [];
+    return colonne;
   }
 
   getRigheFileExcel(righe: any[]): any[] {
-    // TODO creazione righe file excel
-    return [];
+    return righe.map(riga => {
+      const rigaFormattata = riga;
+      rigaFormattata.iuv = riga.iuv.value;
+      rigaFormattata.transazionePayer = riga.transazionePayer.value;
+      rigaFormattata.totale = riga.totale.value;
+      rigaFormattata.dataPagamento = riga.dataPagamento.value;
+      rigaFormattata.psp = riga.psp.value;
+      rigaFormattata.iban = riga.iban.value;
+      rigaFormattata.beneficiario = riga.beneficiario.value;
+      return rigaFormattata;
+    });
   }
 
   getColonneFilePdf(colonne: Colonna[]): Colonna[] {
-    // TODO creazione colonne file pdf
-    return [];
+    return colonne;
   }
 
   getRigheFilePdf(righe: any[]): any[] {
-    // TODO creazione righe file pdf
-    return [];
+    return righe;
   }
 
   getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] {
