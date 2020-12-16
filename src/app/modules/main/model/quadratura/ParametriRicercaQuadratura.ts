@@ -1,5 +1,4 @@
 export class ParametriRicercaQuadratura {
-  // todo definire tipo valore per psp, iuv
   societaId: number = null;
   enteId: number = null;
   flussoId: string = null;

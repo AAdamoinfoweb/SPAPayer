@@ -75,7 +75,7 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
 
     return {
       dataTransazione: {value: dettaglioTransazione.dataTransazione
-          ? moment(dettaglioTransazione.dataTransazione).format(Utils.FORMAT_DATE_CALENDAR) : null},
+          ? moment(dettaglioTransazione.dataTransazione).format('DD/MM/YYYY HH:mm:ss') : null},
       iuv: {value: dettaglioTransazione.iuv},
       pagatore: {value: dettaglioTransazione.pagatoreCodiceFiscale},
       importo: {value: dettaglioTransazione.importo},
