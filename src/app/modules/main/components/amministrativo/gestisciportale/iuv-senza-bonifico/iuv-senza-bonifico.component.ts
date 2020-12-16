@@ -28,8 +28,8 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
   breadcrumbList = [];
 
   listaElementi: Array<SintesiIuvSenzaBonifico> = new Array<SintesiIuvSenzaBonifico>();
+  filtriRicerca: string = null;
 
-  filtriRicerca: any;  // TODO tipo oggetto da definire
   righeSelezionate: any[];
 
   isMenuCarico = false;
