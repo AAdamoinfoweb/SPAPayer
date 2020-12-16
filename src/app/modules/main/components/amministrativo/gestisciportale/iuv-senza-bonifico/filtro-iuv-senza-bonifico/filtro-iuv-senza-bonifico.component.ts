@@ -27,7 +27,7 @@ export class FiltroIuvSenzaBonificoComponent extends FiltroGestioneElementiCompo
   }
 
   cercaElementi(): void {
-    // TODO implementare logica cerca filtrando nella tabella ad ogni carattere digitato
+    this.onChangeFiltri.emit(this.filtro);
   }
 
 }

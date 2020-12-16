@@ -14,6 +14,8 @@ import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {SintesiIuvSenzaBonifico} from '../../../../model/iuvsenzabonifico/SintesiIuvSenzaBonifico';
 import {IuvSenzaBonificoService} from '../../../../../../services/iuv-senza-bonifico.service';
 import * as moment from 'moment';
+import {FilterService} from 'primeng/api';
+import {SpinnerOverlayService} from '../../../../../../services/spinner-overlay.service';
 import {Utils} from '../../../../../../utils/Utils';
 
 @Component({
@@ -56,7 +58,8 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
 
   constructor(router: Router, route: ActivatedRoute, protected http: HttpClient,
               amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
-              private menuService: MenuService, private iuvSenzaBonificoService: IuvSenzaBonificoService) {
+              private menuService: MenuService, private iuvSenzaBonificoService: IuvSenzaBonificoService,
+              private filterService: FilterService, private spinnerOverlayService: SpinnerOverlayService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -109,11 +112,22 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
   }
 
   creaRigaTabella(elemento: any) {
+    let formatoData;
+    if (elemento.dataPagamento) {
+      if (elemento.dataPagamento.includes('T')) {
+        formatoData = Utils.FORMAT_LOCAL_DATE_TIME_ISO;
+      } else {
+        formatoData = 'DD/MM/YYYY HH:mm:ss';
+      }
+    } else {
+      formatoData = null;
+    }
+
     return {
       iuv: {value: elemento.iuv},
       transazionePayer: {value: elemento.transazionePayer},
       totale: {value: elemento.totale},
-      dataPagamento: {value: elemento.dataPagamento ? moment(elemento.dataPagamento).format('DD/MM/YYYY HH:mm:ss') : null},
+      dataPagamento: {value: elemento.dataPagamento ? moment(elemento.dataPagamento, formatoData).format('DD/MM/YYYY HH:mm:ss') : null},
       psp: {value: elemento.psp},
       iban: {value: elemento.iban},
       beneficiario: {value: elemento.beneficiario}
@@ -125,6 +139,10 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
   }
 
   getRigheFileExcel(righe: any[]): any[] {
+    return this.getRigheFormattate(righe);
+  }
+
+  getRigheFormattate(righe: any[]): any[] {
     return righe.map(riga => {
       const rigaFormattata = riga;
       rigaFormattata.iuv = riga.iuv.value;
@@ -155,6 +173,23 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
 
   getNumeroRecord(): string {
     return 'Totale: ' + this.tableData.rows.length + ' IUV senza bonifico';
+  }
+
+  onChangeFiltri(filtro: string) {
+    const righe = JSON.parse(JSON.stringify(this.tableData.rows));
+    let colonne = JSON.parse(JSON.stringify(this.tableData.cols));
+    let listaElementiFiltrati = JSON.parse(JSON.stringify(this.listaElementi));
+
+    this.filtriRicerca = filtro;
+    this.tableData.rows = [];
+    if (filtro) {
+      listaElementiFiltrati = [];
+      colonne = colonne.map(colonna => colonna.field);
+      listaElementiFiltrati = this.filterService.filter(this.getRigheFormattate(righe), colonne, this.filtriRicerca, 'contains');
+      this.impostaTabella(listaElementiFiltrati);
+    } else {
+      this.impostaTabella(this.listaElementi);
+    }
   }
 
 }
