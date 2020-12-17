@@ -55,6 +55,7 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
     dataKey: 'id.value',
     tipoTabella: tipoTabella.TEMPLATING
   };
+  righeTemp: any[];
 
   constructor(router: Router, route: ActivatedRoute, protected http: HttpClient,
               amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
@@ -88,6 +89,7 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
   }
 
   callbackPopolaLista() {
+    this.righeTemp = this.tableData.rows;
   }
 
   getObservableFunzioneRicerca(): Observable<SintesiIuvSenzaBonifico[]> {
@@ -176,7 +178,7 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
   }
 
   onChangeFiltri(filtro: string) {
-    const righe = JSON.parse(JSON.stringify(this.tableData.rows));
+    const righe = JSON.parse(JSON.stringify(this.righeTemp));
     let colonne = JSON.parse(JSON.stringify(this.tableData.cols));
     let listaElementiFiltrati = JSON.parse(JSON.stringify(this.listaElementi));
 
