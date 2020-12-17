@@ -15,7 +15,6 @@ import {SintesiIuvSenzaBonifico} from '../../../../model/iuvsenzabonifico/Sintes
 import {IuvSenzaBonificoService} from '../../../../../../services/iuv-senza-bonifico.service';
 import * as moment from 'moment';
 import {FilterService} from 'primeng/api';
-import {SpinnerOverlayService} from '../../../../../../services/spinner-overlay.service';
 import {Utils} from '../../../../../../utils/Utils';
 
 @Component({
@@ -60,7 +59,7 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
   constructor(router: Router, route: ActivatedRoute, protected http: HttpClient,
               amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
               private menuService: MenuService, private iuvSenzaBonificoService: IuvSenzaBonificoService,
-              private filterService: FilterService, private spinnerOverlayService: SpinnerOverlayService) {
+              private filterService: FilterService) {
     super(router, route, http, amministrativoService);
   }
 
