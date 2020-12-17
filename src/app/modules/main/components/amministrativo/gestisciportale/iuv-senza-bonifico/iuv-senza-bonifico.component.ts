@@ -45,7 +45,7 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
     cols: [
       {field: 'iuv', header: 'IUV', type: tipoColonna.TESTO},
       {field: 'transazionePayer', header: 'Transazione Payer', type: tipoColonna.TESTO},
-      {field: 'totale', header: 'Totale', type: tipoColonna.IMPORTO},
+      {field: 'totale', header: 'Totale', type: tipoColonna.TESTO},
       {field: 'dataPagamento', header: 'Data pagamento', type: tipoColonna.TESTO},
       {field: 'psp', header: 'PSP', type: tipoColonna.TESTO},
       {field: 'iban', header: 'IBAN', type: tipoColonna.TESTO},
@@ -114,6 +114,8 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
 
   creaRigaTabella(elemento: any) {
     let formatoData;
+    let totale = elemento.totale;
+
     if (elemento.dataPagamento) {
       if (elemento.dataPagamento.includes('T')) {
         formatoData = Utils.FORMAT_LOCAL_DATE_TIME_ISO;
@@ -124,10 +126,20 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
       formatoData = null;
     }
 
+    if (totale) {
+      if (typeof totale === 'number') {
+        totale = '€ ' + String(totale).replace('.', ',');
+      } else {
+        totale = String(totale).replace('.', ',');
+      }
+    } else {
+      totale = null;
+    }
+
     return {
       iuv: {value: elemento.iuv},
       transazionePayer: {value: elemento.transazionePayer},
-      totale: {value: elemento.totale},
+      totale: {value: totale},
       dataPagamento: {value: elemento.dataPagamento ? moment(elemento.dataPagamento, formatoData).format('DD/MM/YYYY HH:mm:ss') : null},
       psp: {value: elemento.psp},
       iban: {value: elemento.iban},
@@ -143,17 +155,25 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
     return this.getRigheFormattate(righe);
   }
 
-  getRigheFormattate(righe: any[]): any[] {
+  getRigheFormattate(righe: any[], areRigheForExcelFile: boolean = true): any[] {
     return righe.map(riga => {
-      const rigaFormattata = riga;
-      rigaFormattata.iuv = riga.iuv.value;
-      rigaFormattata.transazionePayer = riga.transazionePayer.value;
-      rigaFormattata.totale = riga.totale.value;
-      rigaFormattata.dataPagamento = riga.dataPagamento.value;
-      rigaFormattata.psp = riga.psp.value;
-      rigaFormattata.iban = riga.iban.value;
-      rigaFormattata.beneficiario = riga.beneficiario.value;
-      return rigaFormattata;
+      const totale = riga.totale.value;
+      riga.iuv = riga.iuv.value;
+      riga.transazionePayer = riga.transazionePayer.value;
+      if (totale) {
+        if (areRigheForExcelFile) {
+          riga.totale = this.convertImportoStringIntoNumber(totale);
+        } else {
+          riga.totale = totale;
+        }
+      } else {
+        riga.totale = null;
+      }
+      riga.dataPagamento = riga.dataPagamento.value;
+      riga.psp = riga.psp.value;
+      riga.iban = riga.iban.value;
+      riga.beneficiario = riga.beneficiario.value;
+      return riga;
     });
   }
 
@@ -162,7 +182,17 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
   }
 
   getRigheFilePdf(righe: any[]): any[] {
+    righe.forEach(riga => {
+      const totale = riga.totale.value;
+      if (totale) {
+        riga.totale.value = this.convertImportoStringIntoNumber(totale);
+      }
+    });
     return righe;
+  }
+
+  convertImportoStringIntoNumber(value: string): number {
+    return +value.slice(2).replace(',', '.');
   }
 
   getImmaginiFilePdf(righe?: any[]): ImmaginePdf[] {
@@ -186,7 +216,7 @@ export class IuvSenzaBonificoComponent extends GestisciElementoComponent impleme
     if (filtro) {
       listaElementiFiltrati = [];
       colonne = colonne.map(colonna => colonna.field);
-      listaElementiFiltrati = this.filterService.filter(this.getRigheFormattate(righe), colonne, this.filtriRicerca, 'contains');
+      listaElementiFiltrati = this.filterService.filter(this.getRigheFormattate(righe, false), colonne, this.filtriRicerca, 'contains');
       this.impostaTabella(listaElementiFiltrati);
     } else {
       this.impostaTabella(this.listaElementi);
