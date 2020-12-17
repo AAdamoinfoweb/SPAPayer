@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {NgForm, NgModel} from '@angular/forms';
+import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {Utils} from '../../../../../../../utils/Utils';
@@ -12,6 +12,8 @@ import {SocietaService} from '../../../../../../../services/societa.service';
 import {NuovoPagamentoService} from '../../../../../../../services/nuovo-pagamento.service';
 import {Logo} from '../../../../../model/ente/Logo';
 import {EnteService} from '../../../../../../../services/ente.service';
+import {FlussoRiversamentoPagoPA} from "../../../../../model/servizio/FlussoRiversamentoPagoPA";
+import {TipoCampoEnum} from "../../../../../../../enums/tipoCampo.enum";
 
 @Component({
   selector: 'app-dati-ente',
@@ -36,6 +38,9 @@ export class DatiEnteComponent implements OnInit, OnChanges {
 
   @Output()
   isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  rendicontazioneFlussoPA: FlussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+  TipoCampoEnum = TipoCampoEnum;
 
   // opzioni per select
   opzioniFiltroSocieta: OpzioneSelect[] = [];
@@ -75,6 +80,29 @@ export class DatiEnteComponent implements OnInit, OnChanges {
       }
     }
 
+  }
+
+  isCampoInvalido(campo: NgModel | FormControl) {
+    return campo?.errors;
+  }
+
+  setPlaceholder(campo: NgModel | FormControl, tipoCampo: TipoCampoEnum): string {
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      return null;
+    } else if (campo instanceof NgModel && campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
+    } else if (this.isCampoInvalido(campo)) {
+      return 'campo non valido';
+    } else {
+      switch (tipoCampo) {
+        case TipoCampoEnum.SELECT:
+          return 'Seleziona un elemento dalla lista';
+        case TipoCampoEnum.INPUT_TESTUALE:
+          return 'Inserisci testo';
+        case TipoCampoEnum.DATEDDMMYY:
+          return 'Inserisci data';
+      }
+    }
   }
 
   private pulisciImmagine() {
@@ -129,10 +157,6 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     } else {
       return 'Campo non valido';
     }
-  }
-
-  isCampoInvalido(campo: NgModel) {
-    return campo?.errors != null;
   }
 
   onChangeModel(form: NgForm, campo: NgModel) {
@@ -267,4 +291,93 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     this.datiEnte.logo = null;
     this.onChangeDatiEnte.emit(this.datiEnte);
   }
+
+
+  validateUrl() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '(http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
+        if (!new RegExp(regex).test(control.value)) {
+          return {url: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+
+  validateServer() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
+        const regexIp = '^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$';
+        if (new RegExp(regex).test(control.value) || new RegExp(regexIp).test(control.value)) {
+          return null;
+        } else {
+          return {url: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+  validateEmail() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
+        if (!new RegExp(regex).test(control.value)) {
+          return {email: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+  getPlaceholderRequired(label: string, required: boolean) {
+    if (required) {
+      return label + ' *';
+    }
+    return label;
+  }
+
+  disabilitaCampi() {
+    return this.funzione == FunzioneGestioneEnum.DETTAGLIO;
+  }
+
+  changeEmailFlussoPagoPA(event: boolean) {
+    if (!event) {
+      this.rendicontazioneFlussoPA.email = null;
+      this.rendicontazioneFlussoPA.ccn = null;
+    }
+    this.isFormValid.emit(!event);
+  }
+
+  changeFtpFlussoPagoPA(event: boolean) {
+    if (!event) {
+      this.rendicontazioneFlussoPA.server = null;
+      this.rendicontazioneFlussoPA.username = null;
+      this.rendicontazioneFlussoPA.password = null;
+      this.rendicontazioneFlussoPA.directory = null;
+    }
+    this.isFormValid.emit(!event);
+  }
+
+  changeModelFlusso(model: NgModel) {
+    this.isFormValid.emit(!model.errors);
+  }
+
+  changeModelFlussoFtp(model: NgModel[]) {
+    let ngModel = model.find((item) => item.errors);
+    if (ngModel)
+      this.isFormValid.emit(false);
+    else
+      this.isFormValid.emit(true);
+  }
+
 }
