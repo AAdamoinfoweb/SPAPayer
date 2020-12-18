@@ -1,1 +1,81 @@
-<p>filtro-configura-portali-esterni works!</p>
+<!-- Sottotitolo -->
+<div class="collapse-header" id="idCollapseFiltriConfiguraPortaliEsterni">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true" aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroForm="ngForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltriConfiguraPortaliEsterni">
+    <div class="collapse-body">
+      <!-- Portale esterno, Tipo portale -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-5 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="codicePortaleEsterno" class="title">Portale esterno</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="codicePortaleEsterno"
+                name="codicePortaleEsterno"
+                #codicePortaleEsternoInput="ngModel"
+                [(ngModel)]="filtroRicercaConfiguraPortaliEsterni.codicePortaleEsterno">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroPortaleEsterno" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(codicePortaleEsternoInput)">Seleziona codice portale esterno</p>
+              <p *ngIf="isCampoInvalido(codicePortaleEsternoInput)" class="text-invalid">{{getMessaggioErrore(codicePortaleEsternoInput)}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="idTipoPortaleEsterno" class="title">Tipo portale</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="idTipoPortaleEsterno"
+                name="idTipoPortaleEsterno"
+                #idTipoPortaleEsternoInput="ngModel"
+                [(ngModel)]="filtroRicercaConfiguraPortaliEsterni.idTipoPortaleEsterno">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroTipoPortaleEsterno" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p *ngIf="!isCampoInvalido(idTipoPortaleEsternoInput)">Seleziona codice tipo portale</p>
+              <p *ngIf="isCampoInvalido(idTipoPortaleEsternoInput)" class="text-invalid">{{getMessaggioErrore(idTipoPortaleEsternoInput)}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottoni Pulisci e Cerca -->
+      <div class="row">
+        <div class="col-6">
+          <button type="button" id="bottonePulisci" class="btn btn-secondary"
+                  [disabled]="disabilitaBottone(filtroForm, 'Pulisci')"
+                  (click)="pulisciFiltri(filtroForm)">Pulisci</button>
+        </div>
+        <div class="col-6 text-right">
+          <button type="button" id="bottoneCerca" class="btn"
+                  [disabled]="disabilitaBottone(filtroForm, 'Cerca')"
+                  (click)="cercaElementi()">Cerca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
