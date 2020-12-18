@@ -11,7 +11,7 @@ import {ConfiguraPortaleEsterno} from '../modules/main/model/configuraportaliest
 @Injectable({
   providedIn: 'root'
 })
-export class BannerService {
+export class ConfiguraPortaliEsterniService {
 
   private readonly basePath = '/configuraPortaliEsterni';
   private readonly filtroPortaleEsternoPath = '/filtroPortaleEsterno';
