@@ -98,6 +98,8 @@ import {IuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonifico/iu
 import {FiltroIuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonifico/filtro-iuv-senza-bonifico/filtro-iuv-senza-bonifico.component';
 import {ConfiguraPortaliEsterniComponent} from './configura-portali-esterni/configura-portali-esterni.component';
 import {FiltroConfiguraPortaliEsterniComponent} from './configura-portali-esterni/filtro-configura-portali-esterni/filtro-configura-portali-esterni.component';
+import {FormConfiguraPortaliEsterniComponent} from './configura-portali-esterni/form-configura-portali-esterni/form-configura-portali-esterni.component';
+import {DatiPortaleEsternoComponent} from './configura-portali-esterni/dati-portale-esterno/dati-portale-esterno.component';
 
 
 @NgModule({
@@ -175,7 +177,9 @@ import {FiltroConfiguraPortaliEsterniComponent} from './configura-portali-estern
     IuvSenzaBonificoComponent,
     FiltroIuvSenzaBonificoComponent,
     ConfiguraPortaliEsterniComponent,
-    FiltroConfiguraPortaliEsterniComponent
+    FiltroConfiguraPortaliEsterniComponent,
+    FormConfiguraPortaliEsterniComponent,
+    DatiPortaleEsternoComponent
   ],
   imports: [
     HttpClientModule,
