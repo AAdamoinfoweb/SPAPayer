@@ -44,6 +44,7 @@ import {DettaglioEsitoNotificaComponent} from './modules/main/components/amminis
 import {QuadraturaComponent} from './modules/main/components/amministrativo/gestisciportale/quadratura/quadratura.component';
 import {DettaglioQuadraturaComponent} from './modules/main/components/amministrativo/gestisciportale/quadratura/dettaglio-quadratura/dettaglio-quadratura.component';
 import {IuvSenzaBonificoComponent} from './modules/main/components/amministrativo/gestisciportale/iuv-senza-bonifico/iuv-senza-bonifico.component';
+import {ConfiguraPortaliEsterniComponent} from './modules/main/components/amministrativo/configura-portali-esterni/configura-portali-esterni.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -123,7 +124,9 @@ const routes: Routes = [
   {path: 'quadratura', component: QuadraturaComponent},
   {path: 'quadratura/dettaglioQuadratura/:quadraturaId', component: DettaglioQuadraturaComponent},
 
-  {path: 'iuvSenzaBonifico', component: IuvSenzaBonificoComponent}
+  {path: 'iuvSenzaBonifico', component: IuvSenzaBonificoComponent},
+
+  {path: 'configuraPortaliEsterni', component: ConfiguraPortaliEsterniComponent}
 ];
 
 @NgModule({

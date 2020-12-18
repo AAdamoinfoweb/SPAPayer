@@ -96,6 +96,8 @@ import {DettaglioQuadraturaComponent} from './gestisciportale/quadratura/dettagl
 import {DatiQuadraturaComponent} from './gestisciportale/quadratura/dati-quadratura/dati-quadratura.component';
 import {IuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonifico/iuv-senza-bonifico.component';
 import {FiltroIuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonifico/filtro-iuv-senza-bonifico/filtro-iuv-senza-bonifico.component';
+import {ConfiguraPortaliEsterniComponent} from './configura-portali-esterni/configura-portali-esterni.component';
+import {FiltroConfiguraPortaliEsterniComponent} from './configura-portali-esterni/filtro-configura-portali-esterni/filtro-configura-portali-esterni.component';
 
 
 @NgModule({
@@ -171,7 +173,9 @@ import {FiltroIuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonif
     DettaglioQuadraturaComponent,
     DatiQuadraturaComponent,
     IuvSenzaBonificoComponent,
-    FiltroIuvSenzaBonificoComponent
+    FiltroIuvSenzaBonificoComponent,
+    ConfiguraPortaliEsterniComponent,
+    FiltroConfiguraPortaliEsterniComponent
   ],
   imports: [
     HttpClientModule,
