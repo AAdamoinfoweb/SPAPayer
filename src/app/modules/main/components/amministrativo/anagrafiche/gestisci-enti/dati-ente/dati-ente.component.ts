@@ -39,9 +39,6 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   @Output()
   isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  rendicontazioneFlussoPA: FlussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
-  TipoCampoEnum = TipoCampoEnum;
-
   // opzioni per select
   opzioniFiltroSocieta: OpzioneSelect[] = [];
   opzioniFiltroLivelliTerritoriale: OpzioneSelect[] = [];
@@ -290,94 +287,6 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     this.pulisciImmagine();
     this.datiEnte.logo = null;
     this.onChangeDatiEnte.emit(this.datiEnte);
-  }
-
-
-  validateUrl() {
-    return ((control: FormControl) => {
-
-      if (control.value) {
-        const regex = '(http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
-        if (!new RegExp(regex).test(control.value)) {
-          return {url: false};
-        }
-      }
-
-      return null;
-    }) as ValidatorFn;
-  }
-
-
-  validateServer() {
-    return ((control: FormControl) => {
-
-      if (control.value) {
-        const regex = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
-        const regexIp = '^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$';
-        if (new RegExp(regex).test(control.value) || new RegExp(regexIp).test(control.value)) {
-          return null;
-        } else {
-          return {url: false};
-        }
-      }
-
-      return null;
-    }) as ValidatorFn;
-  }
-
-  validateEmail() {
-    return ((control: FormControl) => {
-
-      if (control.value) {
-        const regex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
-        if (!new RegExp(regex).test(control.value)) {
-          return {email: false};
-        }
-      }
-
-      return null;
-    }) as ValidatorFn;
-  }
-
-  getPlaceholderRequired(label: string, required: boolean) {
-    if (required) {
-      return label + ' *';
-    }
-    return label;
-  }
-
-  disabilitaCampi() {
-    return this.funzione == FunzioneGestioneEnum.DETTAGLIO;
-  }
-
-  changeEmailFlussoPagoPA(event: boolean) {
-    if (!event) {
-      this.rendicontazioneFlussoPA.email = null;
-      this.rendicontazioneFlussoPA.ccn = null;
-    }
-    this.isFormValid.emit(!event);
-  }
-
-  changeFtpFlussoPagoPA(event: boolean) {
-    if (!event) {
-      this.rendicontazioneFlussoPA.server = null;
-      this.rendicontazioneFlussoPA.username = null;
-      this.rendicontazioneFlussoPA.password = null;
-      this.rendicontazioneFlussoPA.directory = null;
-    }
-    this.isFormValid.emit(!event);
-  }
-
-  changeModelFlusso(model: NgModel) {
-    this.isFormValid.emit(!model.errors);
-  }
-
-  changeModelFlussoFtp(model: NgModel[]) {
-    let ngModel = model.find((item) => item.errors);
-    if (ngModel)
-      this.isFormValid.emit(false);
-    else
-      this.isFormValid.emit(true);
   }
 
 }

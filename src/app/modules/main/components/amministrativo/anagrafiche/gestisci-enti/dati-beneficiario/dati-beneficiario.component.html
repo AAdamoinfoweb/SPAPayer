@@ -183,5 +183,166 @@
       </button>
     </div>
   </div>
+  <div class="collapse-header" id="idCollapseflussoPA">
+    <button data-toggle="collapse" data-target="#flussoPA" aria-expanded="true"
+            aria-controls="flussoPA">
+      Invio flusso di quadratura
+    </button>
+  </div>
+  <div id="flussoPA" class="collapse show" role="tabpanel" aria-labelledby="idCollapseflussoPA">
+    <div class="row mt-2 mb-0">
+      <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
+        <div class="row">
+          <div class="col">
+            <label for="emailFlussoPA" class="title">Email</label>
+          </div>
+          <div class="col-2">
+            <it-toggle id="emailFlussoPA" (ngModelChange)="changeEmailFlussoPagoPA($event)"
+                       [disabled]="disabilitaCampi()"
+                       [(ngModel)]="rendicontazioneFlussoPA.flagNotificaEmail" name="emailFlussoPA"></it-toggle>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <input type="text" autocomplete="off"
+                   [placeholder]="getPlaceholderRequired('Email', rendicontazioneFlussoPA.flagNotificaEmail)"
+                   [required]="rendicontazioneFlussoPA.flagNotificaEmail"
+                   id="emailFlussoPAId" [customvalidator]="validateEmail()"
+                   name="emailFlussoPAId" [(ngModel)]="rendicontazioneFlussoPA.email"
+                   #emailFlussoPAId="ngModel"
+                   (ngModelChange)="changeModelFlusso(emailFlussoPAId)"
+                   [disabled]="!rendicontazioneFlussoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(emailFlussoPAId),
+                       'text-invalid': isCampoInvalido(emailFlussoPAId)}">
+                  {{setPlaceholder(emailFlussoPAId, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <input type="text" autocomplete="off" placeholder="Ccn" id="emailFlussoPACcn"
+                   name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.ccn"
+                   #emailFlussoPACcn="ngModel" [customvalidator]="validateEmail()"
+                   [disabled]="!rendicontazioneFlussoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(emailFlussoPACcn),
+                       'text-invalid': isCampoInvalido(emailFlussoPACcn)}">
+                  {{setPlaceholder(emailFlussoPACcn, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
+        <div class="row">
+          <div class="col">
+            <label for="ftpFlussoPA"
+                   [ngClass]="{'required': rendicontazioneFlussoPA.flagNotificaFtp, 'title':true}">Ftp</label>
+          </div>
+          <div class="col-2">
+            <it-toggle id="ftpFlussoPA" (ngModelChange)="changeFtpFlussoPagoPA($event)"
+                       [disabled]="disabilitaCampi()"
+                       [(ngModel)]="rendicontazioneFlussoPA.flagNotificaFtp" name="ftpFlussoPA"></it-toggle>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="col-12">
+            <input type="text" autocomplete="off"
+                   (ngModelChange)="changeModelFlussoFtp([serverFlussoPA, usernameFlussoPA, passwordFlussoPA, directoryFlussoPA])"
+                   [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                   [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneFlussoPA.flagNotificaFtp)"
+                   id="serverFlussoPA" name="serverFlussoPA" [customvalidator]="validateServer()"
+                   [(ngModel)]="rendicontazioneFlussoPA.server" #serverFlussoPA="ngModel"
+                   [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(serverFlussoPA),
+                       'text-invalid': isCampoInvalido(serverFlussoPA)}">
+                  {{setPlaceholder(serverFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <input type="text" autocomplete="off"
+                   (ngModelChange)="changeModelFlussoFtp([serverFlussoPA, usernameFlussoPA, passwordFlussoPA, directoryFlussoPA])"
+                   [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                   [placeholder]="getPlaceholderRequired('Username', rendicontazioneFlussoPA.flagNotificaFtp)"
+                   id="usernameFlussoPA" name="usernameFlussoPA"
+                   #usernameFlussoPA="ngModel"
+                   [(ngModel)]="rendicontazioneFlussoPA.username"
+                   [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(usernameFlussoPA),
+                       'text-invalid': isCampoInvalido(usernameFlussoPA)}">
+                  {{setPlaceholder(usernameFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <input type="text" autocomplete="off"
+                   (ngModelChange)="changeModelFlussoFtp([serverFlussoPA, usernameFlussoPA, passwordFlussoPA, directoryFlussoPA])"
+                   [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                   [placeholder]="getPlaceholderRequired('Password', rendicontazioneFlussoPA.flagNotificaFtp)"
+                   id="passwordFlussoPA"
+                   name="passwordFlussoPA" #passwordFlussoPA="ngModel"
+                   [(ngModel)]="rendicontazioneFlussoPA.password"
+                   [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(passwordFlussoPA),
+                       'text-invalid': isCampoInvalido(passwordFlussoPA)}">
+                  {{setPlaceholder(passwordFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <input type="text" autocomplete="off" id="directoryFlussoPA"
+                   (ngModelChange)="changeModelFlussoFtp([serverFlussoPA, usernameFlussoPA, passwordFlussoPA, directoryFlussoPA])"
+                   [required]="rendicontazioneFlussoPA.flagNotificaFtp"
+                   [placeholder]="getPlaceholderRequired('Directory', rendicontazioneFlussoPA.flagNotificaFtp)"
+                   name="directoryFlussoPA" #directoryFlussoPA="ngModel"
+                   [(ngModel)]="rendicontazioneFlussoPA.directory"
+                   [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col">
+                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [ngClass]="{'text-muted': !isCampoInvalido(directoryFlussoPA),
+                       'text-invalid': isCampoInvalido(directoryFlussoPA)}">
+                  {{setPlaceholder(directoryFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <!--      fine Buttons -->

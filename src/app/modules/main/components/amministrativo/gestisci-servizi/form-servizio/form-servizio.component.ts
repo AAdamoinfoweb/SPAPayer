@@ -52,7 +52,6 @@ import {BeneficiarioServizio} from '../../../../model/servizio/BeneficiarioServi
 import {FiltroUfficio} from '../../../../model/servizio/FiltroUfficio';
 import {Contatti} from '../../../../model/servizio/Contatti';
 import {Servizio} from '../../../../model/servizio/Servizio';
-import {FlussoRiversamentoPagoPA} from '../../../../model/servizio/FlussoRiversamentoPagoPA';
 import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 import {Utils} from '../../../../../../utils/Utils';
