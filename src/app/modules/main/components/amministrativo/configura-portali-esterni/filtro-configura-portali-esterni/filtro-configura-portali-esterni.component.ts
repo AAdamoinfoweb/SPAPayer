@@ -6,6 +6,8 @@ import {ParametriRicercaConfiguraPortaleEsterno} from '../../../../model/configu
 import {OpzioneSelect} from '../../../../model/OpzioneSelect';
 import {NgForm, NgModel} from '@angular/forms';
 import {BottoneEnum} from '../../../../../../enums/bottone.enum';
+import {ConfiguraPortaliEsterniService} from '../../../../../../services/configura-portali-esterni.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-filtro-configura-portali-esterni',
@@ -22,7 +24,8 @@ export class FiltroConfiguraPortaliEsterniComponent extends FiltroGestioneElemen
   opzioniFiltroPortaleEsterno: OpzioneSelect[] = [];
   opzioniFiltroTipoPortaleEsterno: OpzioneSelect[] = [];
 
-  constructor(protected activatedRoute: ActivatedRoute, protected amministrativoService: AmministrativoService) {
+  constructor(protected activatedRoute: ActivatedRoute, protected amministrativoService: AmministrativoService,
+              private configuraPortaliEsterniService: ConfiguraPortaliEsterniService) {
     super(activatedRoute, amministrativoService);
   }
 
@@ -39,11 +42,27 @@ export class FiltroConfiguraPortaliEsterniComponent extends FiltroGestioneElemen
   }
 
   recuperaFiltroPortaleEsterno(): void {
-    // TODO invocare operation configuraPortaliEsterniFiltroPortaleEsterno e popolare opzioniFiltroPortaleEsterno
+    this.configuraPortaliEsterniService.configuraPortaliEsterniFiltroPortaleEsterno(this.idFunzione).subscribe(listaPortaleEsterno => {
+      listaPortaleEsterno.forEach(portaleEsterno => {
+        this.opzioniFiltroPortaleEsterno.push({
+          value: portaleEsterno.nome,
+          label: portaleEsterno.nome
+        });
+      });
+      this.opzioniFiltroPortaleEsterno = _.sortBy(this.opzioniFiltroPortaleEsterno, ['label']);
+    });
   }
 
   recuperaFiltroTipoPortale(): void {
-    // TODO invocare operation configuraPortaliEsterniFiltroTipoPortale e popolare opzioniFiltroTipoPortaleEsterno
+    this.configuraPortaliEsterniService.configuraPortaliEsterniFiltroTipoPortaleEsterno(this.idFunzione).subscribe(listaTipoPortaleEsterno => {
+      listaTipoPortaleEsterno.forEach(tipoPortaleEsterno => {
+        this.opzioniFiltroTipoPortaleEsterno.push({
+          value: tipoPortaleEsterno.id,
+          label: tipoPortaleEsterno.nome
+        });
+      });
+      this.opzioniFiltroTipoPortaleEsterno = _.sortBy(this.opzioniFiltroTipoPortaleEsterno, ['label']);
+    });
   }
 
   cercaElementi(): void {
