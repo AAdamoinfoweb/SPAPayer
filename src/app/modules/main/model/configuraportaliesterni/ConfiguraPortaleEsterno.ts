@@ -5,6 +5,6 @@ export class ConfiguraPortaleEsterno {
   tipoPortale: string;
   encryptIV?: string;
   encryptKey: string;
-  windowMinute?: string;
+  tempoValiditaMessaggio?: string;
   waitingPagePayer?: boolean;
 }
