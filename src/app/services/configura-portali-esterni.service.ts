@@ -160,7 +160,7 @@ export class ConfiguraPortaliEsterniService {
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
 
-    return this.http.post(environment.bffBaseUrl + this.eliminaPortaleEsternoPath, listaPortaleEsternoId, {
+    return this.http.post(environment.bffBaseUrl + this.basePath + this.eliminaPortaleEsternoPath, listaPortaleEsternoId, {
       headers: h,
       withCredentials: true
     })
