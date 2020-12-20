@@ -1,0 +1,17 @@
+.required:after {
+  content: ' *';
+  color: red;
+}
+
+.text-invalid {
+  color: #FF0000;
+}
+
+.bottone-campo {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.filled {
+  fill: #004987;
+}
