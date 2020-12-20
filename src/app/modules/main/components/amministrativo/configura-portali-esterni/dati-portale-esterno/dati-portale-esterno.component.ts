@@ -28,6 +28,7 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
   readonly minValueTempoValiditaMessaggio = 10;
 
   listaTipoPortaleEsterno: OpzioneSelect[] = [];
+  idTipoPortale = null;
 
   constructor(private configuraPortaliEsterniService: ConfiguraPortaliEsterniService) {
   }
@@ -38,6 +39,9 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.funzione && this.funzione != null) {
       this.popolaSelectTipoPortale();
+    }
+    if (changes.datiPortaleEsterno) {
+      this.idTipoPortale = this.datiPortaleEsterno.tipoPortaleEsterno?.id;
     }
   }
 
@@ -77,7 +81,8 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
 
   onChangeTipoPortale(tipoPortale: NgModel) {
     const index = this.listaTipoPortaleEsterno.findIndex(elemento => elemento.value === tipoPortale.value);
-    this.datiPortaleEsterno.tipoPortale = this.listaTipoPortaleEsterno[index].label;
+    this.datiPortaleEsterno.tipoPortaleEsterno.id = this.listaTipoPortaleEsterno[index].value;
+    this.datiPortaleEsterno.tipoPortaleEsterno.codice = this.listaTipoPortaleEsterno[index].label;
   }
 
   aggiungiNuovoTipoPortale() {

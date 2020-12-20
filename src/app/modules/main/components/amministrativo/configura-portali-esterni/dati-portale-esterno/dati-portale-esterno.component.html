@@ -41,7 +41,7 @@
               #tipoPortaleInput="ngModel"
               [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-              [(ngModel)]="datiPortaleEsterno.idTipoPortale"
+              [(ngModel)]="idTipoPortale"
               (ngModelChange)="onChangeTipoPortale(tipoPortaleInput)">
               <option [ngValue]="undefined" [selected]="true">Seleziona</option>
               <option *ngFor="let item of listaTipoPortaleEsterno" [ngValue]="item.value">{{item.label}}</option>

@@ -10,6 +10,7 @@ import {ConfiguraPortaliEsterniService} from '../../../../../../services/configu
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {BannerService} from '../../../../../../services/banner.service';
 import {Utils} from '../../../../../../utils/Utils';
+import {TipoPortaleEsterno} from '../../../../model/configuraportaliesterni/TipoPortaleEsterno';
 
 @Component({
   selector: 'app-form-configura-portali-esterni',
@@ -41,7 +42,7 @@ export class FormConfiguraPortaliEsterniComponent extends FormElementoParentComp
     this.activatedRoute.params.subscribe(() => {
       this.controllaTipoFunzione();
       this.inizializzaBreadcrumb();
-      this.datiPortaleEsterno.waitingPagePayer = false;
+      this.inizializzaDatiPortaleEsterno();
       this.titoloPagina = this.getTestoFunzione(this.funzione) + ' Portale Esterno';
       this.tooltip = 'In questa pagina puoi ' + this.getTestoFunzione(this.funzione, false) + ' i dettagli di un portale esterno';
       if (this.funzione === FunzioneGestioneEnum.DETTAGLIO || this.funzione === FunzioneGestioneEnum.MODIFICA) {
@@ -88,7 +89,7 @@ export class FormConfiguraPortaliEsterniComponent extends FormElementoParentComp
         this.configuraPortaliEsterniService.inserimentoPortaleEsterno(this.datiPortaleEsterno, this.idFunzione).subscribe((portaleEsterno) => {
           if (portaleEsterno != null) {
             this.datiPortaleEsterno = new ConfiguraPortaleEsterno();
-            this.datiPortaleEsterno.waitingPagePayer = false;
+            this.inizializzaDatiPortaleEsterno();
             this.isFormValido = false;
             this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
@@ -103,6 +104,11 @@ export class FormConfiguraPortaliEsterniComponent extends FormElementoParentComp
         });
         break;
     }
+  }
+
+  inizializzaDatiPortaleEsterno(): void {
+    this.datiPortaleEsterno.waitingPagePayer = false;
+    this.datiPortaleEsterno.tipoPortaleEsterno = new TipoPortaleEsterno();
   }
 
   onChangeForm(isFormValido: boolean): void {
