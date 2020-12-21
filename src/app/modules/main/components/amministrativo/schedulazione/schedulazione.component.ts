@@ -37,13 +37,9 @@ export class SchedulazioneComponent implements OnInit, OnChanges {
   tooltipAnni = 'Valori ammessi: 1970-2199;' +
     '\nCaratteri ammessi: , - * /';
   tooltipFestivita = 'Definisce date o ore in cui il lavoro non deve essere eseguito.' +
-    '\nQueste date possono essere definite utilizzando espressioni cron di Quartz come spiegato nella documentazione di CronCalendar, con ciascuna definizione di festività su una nuova riga.' +
-    '\nIn alternativa, è possibile utilizzare codice groovy, con il codice che restituisce un Calendar o un elenco di Calendar.' +
-    '\nSe si utilizza codice groovy, il campo dovrebbe iniziare con "g [" e terminare con "] g".';
+    '\nQueste date possono essere definite utilizzando espressioni cron di Quartz, con ciascuna definizione di festività su una nuova riga.';
   tooltipSchedulazioniExtra = 'Definizioni di schedulazioni extra su cui eseguire il lavoro, oltre alla schedulazione principale definita nei singoli campi della schedulazione.' +
-    '\nLe pianificazioni possono essere definite come espressioni cron di Quartz, con ciascuna schedulazione su una nuova riga.' +
-    '\nIn alternativa, è possibile utilizzare codice groovy, con il codice che restituisce un Trigger o un elenco di Trigger.' +
-    '\nSe si utilizza codice groovy, il campo dovrebbe iniziare con "g [" e terminare con "] g".';
+    '\nLe pianificazioni possono essere definite come espressioni cron di Quartz, con ciascuna schedulazione su una nuova riga.';
 
 
   @Input()
