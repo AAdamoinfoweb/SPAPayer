@@ -13,6 +13,9 @@ export class ModaleTipoPortaleEsternoComponent implements OnInit {
 
   @Input() datiTipoPortale: TipoPortaleEsterno;
 
+  readonly maxLengthCodice = 3;
+  readonly maxLengthDescrizione = 20;
+
   constructor(private overlayService: OverlayService, private amministrativoService: AmministrativoService) {
   }
 
