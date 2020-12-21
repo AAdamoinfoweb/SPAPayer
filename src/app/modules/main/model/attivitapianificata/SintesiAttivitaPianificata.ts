@@ -5,4 +5,5 @@ export class SintesiAttivitaPianificata {
   avvioSchedulazione: string;
   fineSchedulazione: string;
   abilitato: boolean;
+  attivitaPianificataBeanId: number;
 }

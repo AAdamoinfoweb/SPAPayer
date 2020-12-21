@@ -128,7 +128,7 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
     const momentFine = attivitaPianificata.fineSchedulazione
       ? moment(attivitaPianificata.fineSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
     return attivitaPianificata.abilitato
-      // && attivitaPianificata.beanId != null //todo ivan chiedere se aggiungere informazione beanId a dto sintesiAttivitaPianificata
+      && attivitaPianificata.attivitaPianificataBeanId != null
       && (momentInizio == null || (momentInizio != null && momentInizio.isSameOrBefore(dataSistema)))
       && (momentFine === null || momentFine.isSameOrAfter(dataSistema));
   }
