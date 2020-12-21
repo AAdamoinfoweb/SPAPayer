@@ -100,6 +100,7 @@ import {ConfiguraPortaliEsterniComponent} from './configura-portali-esterni/conf
 import {FiltroConfiguraPortaliEsterniComponent} from './configura-portali-esterni/filtro-configura-portali-esterni/filtro-configura-portali-esterni.component';
 import {FormConfiguraPortaliEsterniComponent} from './configura-portali-esterni/form-configura-portali-esterni/form-configura-portali-esterni.component';
 import {DatiPortaleEsternoComponent} from './configura-portali-esterni/dati-portale-esterno/dati-portale-esterno.component';
+import {ModaleTipoPortaleEsternoComponent} from './configura-portali-esterni/modale-tipo-portale-esterno/modale-tipo-portale-esterno.component';
 
 
 @NgModule({
@@ -179,7 +180,8 @@ import {DatiPortaleEsternoComponent} from './configura-portali-esterni/dati-port
     ConfiguraPortaliEsterniComponent,
     FiltroConfiguraPortaliEsterniComponent,
     FormConfiguraPortaliEsterniComponent,
-    DatiPortaleEsternoComponent
+    DatiPortaleEsternoComponent,
+    ModaleTipoPortaleEsternoComponent
   ],
   imports: [
     HttpClientModule,
