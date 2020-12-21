@@ -1,3 +1,5 @@
+import {FlussoRiversamentoPagoPA} from "../servizio/FlussoRiversamentoPagoPA";
+
 export class ContoCorrente {
   id: number;
   iban: string;
@@ -6,4 +8,5 @@ export class ContoCorrente {
   intestazioneCCPostale: string;
   inizioValidita: string; //date
   fineValidita: string; //date
+  flussoRiversamentoPagoPA: FlussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
 }

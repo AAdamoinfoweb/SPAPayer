@@ -1,11 +1,12 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {NgForm, NgModel} from '@angular/forms';
+import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../../utils/Utils';
 import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
+import {TipoCampoEnum} from "../../../../../../../enums/tipoCampo.enum";
 
 @Component({
   selector: 'app-dati-conto-corrente',
@@ -29,6 +30,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   @Output()
   onDeleteDatiContoCorrente: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
 
+  TipoCampoEnum = TipoCampoEnum;
 
   // calendar
   isCalendarOpen = false;
@@ -71,10 +73,6 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     } else {
       return 'Campo non valido';
     }
-  }
-
-  isCampoInvalido(campo: NgModel) {
-    return campo?.errors != null;
   }
 
   onChangeModel(form: NgForm, campo: NgModel) {
@@ -139,5 +137,107 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     } else {
       return true;
     }
+  }
+
+  isCampoInvalido(campo: NgModel | FormControl) {
+    return campo?.errors;
+  }
+
+  setPlaceholder(campo: NgModel | FormControl, tipoCampo: TipoCampoEnum): string {
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      return null;
+    } else if (campo instanceof NgModel && campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
+    } else if (this.isCampoInvalido(campo)) {
+      return 'campo non valido';
+    } else {
+      switch (tipoCampo) {
+        case TipoCampoEnum.SELECT:
+          return 'Seleziona un elemento dalla lista';
+        case TipoCampoEnum.INPUT_TESTUALE:
+          return 'Inserisci testo';
+        case TipoCampoEnum.DATEDDMMYY:
+          return 'Inserisci data';
+      }
+    }
+  }
+
+  getPlaceholderRequired(label: string, required: boolean) {
+    if (required) {
+      return label + ' *';
+    }
+    return label;
+  }
+
+  disabilitaCampi() {
+    return this.funzione == FunzioneGestioneEnum.DETTAGLIO;
+  }
+
+  changeEmailFlussoPagoPA(event: boolean) {
+    //this.datiForm.emit(!event);
+  }
+
+  changeFtpFlussoPagoPA(event: boolean) {
+    //this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(!event));
+  }
+
+  changeModelFlusso(model: NgModel) {
+    //this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(!model.errors));
+  }
+
+  changeModelFlussoFtp(model: NgModel[]) {
+    /*const ngModel = model.find((item) => item.errors);
+    if (ngModel) {
+      this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(false));
+    } else {
+      this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(true));
+    }*/
+  }
+
+
+  validateUrl() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '(http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
+        if (!new RegExp(regex).test(control.value)) {
+          return {url: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+
+  validateServer() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
+        const regexIp = '^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$';
+        if (new RegExp(regex).test(control.value) || new RegExp(regexIp).test(control.value)) {
+          return null;
+        } else {
+          return {url: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+  validateEmail() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
+        if (!new RegExp(regex).test(control.value)) {
+          return {email: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
   }
 }
