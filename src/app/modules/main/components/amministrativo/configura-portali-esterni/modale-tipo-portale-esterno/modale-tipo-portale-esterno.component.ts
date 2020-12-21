@@ -1,4 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {TipoPortaleEsterno} from '../../../../model/configuraportaliesterni/TipoPortaleEsterno';
+import {NgModel} from '@angular/forms';
+import {OverlayService} from '../../../../../../services/overlay.service';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 
 @Component({
   selector: 'app-modale-tipo-portale-esterno',
@@ -7,9 +11,32 @@ import {Component, OnInit} from '@angular/core';
 })
 export class ModaleTipoPortaleEsternoComponent implements OnInit {
 
-  constructor() { }
+  @Input() datiTipoPortale: TipoPortaleEsterno;
+
+  constructor(private overlayService: OverlayService, private amministrativoService: AmministrativoService) {
+  }
 
   ngOnInit(): void {
+  }
+
+  isCampoInvalido(campo: NgModel): boolean {
+    return campo?.errors != null;
+  }
+
+  getMessaggioErrore(campo: NgModel): string {
+    if (campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
+    } else {
+      return 'Campo non valido';
+    }
+  }
+
+  onClickAnnulla(): void {
+    this.overlayService.mostraModaleTipoPortaleEsternoEvent.emit(null);
+  }
+
+  onClickOk(): void {
+    this.amministrativoService.salvaTipoPortaleEsternoEvent.emit(this.datiTipoPortale);
   }
 
 }

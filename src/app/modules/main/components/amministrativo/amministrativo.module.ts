@@ -246,7 +246,8 @@ import {ModaleTipoPortaleEsternoComponent} from './configura-portali-esterni/mod
   ],
   exports: [
     ModaleCampoFormComponent,
-    ModaleAggiungiTipoCampoComponent
+    ModaleAggiungiTipoCampoComponent,
+    ModaleTipoPortaleEsternoComponent
   ],
   schemas: [NO_ERRORS_SCHEMA]
 })

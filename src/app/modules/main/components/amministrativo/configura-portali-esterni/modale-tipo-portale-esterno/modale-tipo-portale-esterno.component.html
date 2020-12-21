@@ -1,1 +1,61 @@
-<p>modale-tipo-portale-esterno works!</p>
+<form #tipoPortaleForm="ngForm" class="modal-wrapper">
+  <div class="row form-row">
+    <!-- Codice -->
+    <div class="col-md-6 form-elem-container">
+      <div class="row">
+        <div class="col">
+          <label for="codiceInput" class="title">Codice</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input type="text" id="codiceInput" class="pt-0" required name="codice"
+                 autocomplete="off" #codiceInput="ngModel"
+                 [(ngModel)]="datiTipoPortale.codice">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p *ngIf="!isCampoInvalido(codiceInput)">Inserisci codice</p>
+          <p *ngIf="isCampoInvalido(codiceInput)" class="text-invalid">{{getMessaggioErrore(codiceInput)}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Descrizione -->
+    <div class="col-md-6 form-elem-container">
+      <div class="row">
+        <div class="col">
+          <label for="descrizioneInput" class="title">Descrizione</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input type="text" id="descrizioneInput" class="pt-0" name="descrizione"
+                 autocomplete="off" #descrizioneInput="ngModel"
+                 [disabled]="!datiTipoPortale.codice"
+                 [(ngModel)]="datiTipoPortale.descrizione">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p *ngIf="!isCampoInvalido(descrizioneInput)">Inserisci descrizione</p>
+          <p *ngIf="isCampoInvalido(descrizioneInput)" class="text-invalid">{{getMessaggioErrore(descrizioneInput)}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottoni Annulla, OK -->
+    <div class="col-12">
+      <div class="row buttons-row">
+        <div class="col-2">
+          <button type="button" id="bottoneAnnulla" class="btn btn-secondary" (click)="onClickAnnulla()">Annulla</button>
+        </div>
+        <div class="col-10 text-right">
+          <button (click)="onClickOk()" type="button" class="btn" [disabled]="tipoPortaleForm.invalid">OK</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</form>

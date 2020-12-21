@@ -6,6 +6,8 @@ import {NgForm, NgModel} from '@angular/forms';
 import {OpzioneSelect} from '../../../../model/OpzioneSelect';
 import {ConfiguraPortaliEsterniService} from '../../../../../../services/configura-portali-esterni.service';
 import * as _ from 'lodash';
+import {TipoPortaleEsterno} from '../../../../model/configuraportaliesterni/TipoPortaleEsterno';
+import {OverlayService} from '../../../../../../services/overlay.service';
 
 @Component({
   selector: 'app-dati-portale-esterno',
@@ -30,7 +32,8 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
   listaTipoPortaleEsterno: OpzioneSelect[] = [];
   idTipoPortale = null;
 
-  constructor(private configuraPortaliEsterniService: ConfiguraPortaliEsterniService) {
+  constructor(private configuraPortaliEsterniService: ConfiguraPortaliEsterniService,
+              private overlayService: OverlayService) {
   }
 
   ngOnInit(): void {
@@ -89,7 +92,12 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
   }
 
   aggiungiNuovoTipoPortale() {
-    // TODO logica creazione nuovo tipo portale esterno
+    const tipoPortaleEsterno = new TipoPortaleEsterno();
+    this.mostraModale(tipoPortaleEsterno);
+  }
+
+  mostraModale(item: TipoPortaleEsterno) {
+    this.overlayService.mostraModaleTipoPortaleEsternoEvent.emit(_.cloneDeep(item));
   }
 
   onChangeForm(datiPortaleEsternoForm: NgForm) {

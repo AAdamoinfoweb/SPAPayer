@@ -14,6 +14,9 @@
           </app-overlay>
         </ng-container>
       </ng-container>
+      <ng-container *ngIf="datiTipoPortaleEsterno">
+        <app-modale-tipo-portale-esterno [datiTipoPortale]="datiTipoPortaleEsterno"></app-modale-tipo-portale-esterno>
+      </ng-container>
     </ng-template>
   </app-overlay>
   <app-login-bar></app-login-bar>

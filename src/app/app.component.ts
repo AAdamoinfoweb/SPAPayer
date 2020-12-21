@@ -8,9 +8,9 @@ import {AuthguardService} from "./services/authguard.service";
 import {Router} from "@angular/router";
 import {OverlayService} from './services/overlay.service';
 import {DatiPagamento} from './modules/main/model/bollettino/DatiPagamento';
-import {EsitoEnum} from './enums/esito.enum';
 import {of} from "rxjs";
 import {DatiModaleCampo} from './modules/main/components/amministrativo/gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
+import {TipoPortaleEsterno} from './modules/main/model/configuraportaliesterni/TipoPortaleEsterno';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
   mostraModale = false;
   datiPagamento: DatiPagamento = null;
   datiModaleCampo: DatiModaleCampo = null;
+  datiTipoPortaleEsterno: TipoPortaleEsterno = null;
   idFunzione: string;
 
   constructor(private menuService: MenuService,
@@ -60,6 +61,13 @@ export class AppComponent implements OnInit {
       .subscribe(idFunzione => {
         this.idFunzione = idFunzione;
         // Non imposto mostraModale false se idFunzione null in quando mostraModale gestisce la comparsa delle modali di primo livello (non innestate)
+        this.cdr.detectChanges();
+      });
+
+    this.overlayService.mostraModaleTipoPortaleEsternoEvent
+      .subscribe(datiTipoPortaleEsterno => {
+        this.datiTipoPortaleEsterno = datiTipoPortaleEsterno;
+        this.mostraModale = datiTipoPortaleEsterno != null;
         this.cdr.detectChanges();
       });
 
