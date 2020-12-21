@@ -45,7 +45,7 @@
               [(ngModel)]="idTipoPortale"
               (ngModelChange)="onChangeTipoPortale(tipoPortaleInput); onChangeForm(datiPortaleEsternoForm)">
               <option [ngValue]="undefined" [selected]="true">Seleziona</option>
-              <option *ngFor="let item of listaTipoPortaleEsterno" [ngValue]="item.value">{{item.label}}</option>
+              <option *ngFor="let item of listaTipoPortaleEsterno" [ngValue]="item.value" [selected]="!item.value">{{item.label}}</option>
             </select>
           </div>
           <div class="col-4 p-0" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">

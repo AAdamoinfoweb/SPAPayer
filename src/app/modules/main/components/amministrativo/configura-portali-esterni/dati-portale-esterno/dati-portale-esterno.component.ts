@@ -8,6 +8,7 @@ import {ConfiguraPortaliEsterniService} from '../../../../../../services/configu
 import * as _ from 'lodash';
 import {TipoPortaleEsterno} from '../../../../model/configuraportaliesterni/TipoPortaleEsterno';
 import {OverlayService} from '../../../../../../services/overlay.service';
+import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 
 @Component({
   selector: 'app-dati-portale-esterno',
@@ -33,11 +34,21 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
   idTipoPortale = null;
 
   constructor(private configuraPortaliEsterniService: ConfiguraPortaliEsterniService,
-              private overlayService: OverlayService) {
+              private overlayService: OverlayService, private amministrativoService: AmministrativoService) {
   }
 
   ngOnInit(): void {
     this.datiPortaleEsterno.tempoValiditaMessaggio = this.minValueTempoValiditaMessaggio;
+
+    this.amministrativoService.salvaTipoPortaleEsternoEvent = new EventEmitter<any>();
+    this.amministrativoService.salvaTipoPortaleEsternoEvent.subscribe((tipoPortaleEsterno: TipoPortaleEsterno) => {
+      this.datiPortaleEsterno.tipoPortaleEsterno = tipoPortaleEsterno;
+      this.listaTipoPortaleEsterno.push({
+        value: tipoPortaleEsterno.id,
+        label: tipoPortaleEsterno.codice
+      });
+      this.overlayService.mostraModaleTipoPortaleEsternoEvent.emit(null);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
