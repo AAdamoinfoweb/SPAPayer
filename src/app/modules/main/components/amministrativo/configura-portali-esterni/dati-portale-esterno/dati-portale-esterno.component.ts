@@ -3,7 +3,6 @@ import {ConfiguraPortaleEsterno} from '../../../../model/configuraportaliesterni
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {NgForm, NgModel} from '@angular/forms';
-import {OpzioneSelect} from '../../../../model/OpzioneSelect';
 import {ConfiguraPortaliEsterniService} from '../../../../../../services/configura-portali-esterni.service';
 import * as _ from 'lodash';
 import {TipoPortaleEsterno} from '../../../../model/configuraportaliesterni/TipoPortaleEsterno';
@@ -30,8 +29,8 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
   readonly maxLengthEncryptIV = 8;
   readonly minValueTempoValiditaMessaggio = 10;
 
-  listaTipoPortaleEsterno: OpzioneSelect[] = [];
-  idTipoPortale = null;
+  listaTipoPortaleEsterno: any[] = [];
+  codiceTipoPortale = null;
 
   constructor(private configuraPortaliEsterniService: ConfiguraPortaliEsterniService,
               private overlayService: OverlayService, private amministrativoService: AmministrativoService) {
@@ -43,10 +42,13 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
     this.amministrativoService.salvaTipoPortaleEsternoEvent = new EventEmitter<any>();
     this.amministrativoService.salvaTipoPortaleEsternoEvent.subscribe((tipoPortaleEsterno: TipoPortaleEsterno) => {
       this.datiPortaleEsterno.tipoPortaleEsterno = tipoPortaleEsterno;
+      this.codiceTipoPortale = tipoPortaleEsterno.codice;
       this.listaTipoPortaleEsterno.push({
-        value: tipoPortaleEsterno.id,
-        label: tipoPortaleEsterno.codice
+        idItem: tipoPortaleEsterno.id,
+        value: tipoPortaleEsterno.codice,
+        label: tipoPortaleEsterno.codice.toUpperCase()
       });
+      this.listaTipoPortaleEsterno = _.sortBy(this.listaTipoPortaleEsterno, ['label']);
       this.overlayService.mostraModaleTipoPortaleEsternoEvent.emit(null);
     });
   }
@@ -56,7 +58,7 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
       this.popolaSelectTipoPortale();
     }
     if (changes.datiPortaleEsterno) {
-      this.idTipoPortale = this.datiPortaleEsterno.tipoPortaleEsterno?.id;
+      this.codiceTipoPortale = this.datiPortaleEsterno.tipoPortaleEsterno?.codice;
     }
   }
 
@@ -64,7 +66,8 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
     this.configuraPortaliEsterniService.configuraPortaliEsterniFiltroTipoPortaleEsterno(this.idFunzione).subscribe(listaTipoPortaleEsterno => {
       listaTipoPortaleEsterno.forEach(tipoPortaleEsterno => {
         this.listaTipoPortaleEsterno.push({
-          value: tipoPortaleEsterno.id,
+          idItem: tipoPortaleEsterno.id,
+          value: tipoPortaleEsterno.nome,
           label: tipoPortaleEsterno.nome
         });
       });
@@ -98,7 +101,7 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
 
   onChangeTipoPortale(tipoPortale: NgModel) {
     const index = this.listaTipoPortaleEsterno.findIndex(elemento => elemento.value === tipoPortale.value);
-    this.datiPortaleEsterno.tipoPortaleEsterno.id = this.listaTipoPortaleEsterno[index]?.value;
+    this.datiPortaleEsterno.tipoPortaleEsterno.id = this.listaTipoPortaleEsterno[index]?.idItem;
     this.datiPortaleEsterno.tipoPortaleEsterno.codice = this.listaTipoPortaleEsterno[index]?.label;
   }
 

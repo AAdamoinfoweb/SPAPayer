@@ -38,14 +38,14 @@
           <div [ngClass]="{'col': funzione === FunzioneGestioneEnum.DETTAGLIO, 'col-8': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
             <select
               id="tipoPortaleSelect"
-              name="idTipoPortale"
+              name="codiceTipoPortale"
               #tipoPortaleInput="ngModel"
               [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-              [(ngModel)]="idTipoPortale"
+              [(ngModel)]="codiceTipoPortale"
               (ngModelChange)="onChangeTipoPortale(tipoPortaleInput); onChangeForm(datiPortaleEsternoForm)">
               <option [ngValue]="undefined" [selected]="true">Seleziona</option>
-              <option *ngFor="let item of listaTipoPortaleEsterno" [ngValue]="item.value" [selected]="!item.value">{{item.label}}</option>
+              <option *ngFor="let item of listaTipoPortaleEsterno" [ngValue]="item.value" [selected]="!item.idItem">{{item.label}}</option>
             </select>
           </div>
           <div class="col-4 p-0" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
@@ -128,7 +128,7 @@
           <div class="col">
             <input type="text" id="encryptIV" name="encryptIV" #encryptIVInput="ngModel"
                    [(ngModel)]="datiPortaleEsterno.encryptIV"
-                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || datiPortaleEsterno.tipoPortaleEsterno?.codice === 'CUP'"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || codiceTipoPortale === 'CUP'"
                    [maxLength]="maxLengthEncryptIV" class="pt-0" autocomplete="off"
                    (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
                    aria-describedby="encryptIVHelpDescription">
