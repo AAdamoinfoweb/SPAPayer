@@ -99,10 +99,11 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
     }
   }
 
-  onChangeTipoPortale(tipoPortale: NgModel) {
+  onChangeTipoPortale(tipoPortale: NgModel, datiForm: NgForm) {
     const index = this.listaTipoPortaleEsterno.findIndex(elemento => elemento.value === tipoPortale.value);
     this.datiPortaleEsterno.tipoPortaleEsterno.id = this.listaTipoPortaleEsterno[index]?.idItem;
     this.datiPortaleEsterno.tipoPortaleEsterno.codice = this.listaTipoPortaleEsterno[index]?.label;
+    this.onChangeForm(datiForm);
   }
 
   aggiungiNuovoTipoPortale() {

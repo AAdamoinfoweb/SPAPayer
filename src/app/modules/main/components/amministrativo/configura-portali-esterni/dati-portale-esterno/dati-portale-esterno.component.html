@@ -43,7 +43,7 @@
               [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
               [(ngModel)]="codiceTipoPortale"
-              (ngModelChange)="onChangeTipoPortale(tipoPortaleInput); onChangeForm(datiPortaleEsternoForm)">
+              (ngModelChange)="onChangeTipoPortale(tipoPortaleInput, datiPortaleEsternoForm)">
               <option [ngValue]="undefined" [selected]="true">Seleziona</option>
               <option *ngFor="let item of listaTipoPortaleEsterno" [ngValue]="item.value" [selected]="!item.idItem">{{item.label}}</option>
             </select>
