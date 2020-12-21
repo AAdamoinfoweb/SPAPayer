@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import {Utils} from '../../../../../../../utils/Utils';
 import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
 import {TipoCampoEnum} from "../../../../../../../enums/tipoCampo.enum";
+import {FlussoRiversamentoPagoPA} from "../../../../../model/servizio/FlussoRiversamentoPagoPA";
 
 @Component({
   selector: 'app-dati-conto-corrente',
@@ -30,6 +31,8 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   @Output()
   onDeleteDatiContoCorrente: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
 
+  flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+
   TipoCampoEnum = TipoCampoEnum;
 
   // calendar
@@ -44,6 +47,8 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    if (this.datiContoCorrente.flussoRiversamentoPagoPA)
+      this.flussoRiversamentoPagoPA = this.datiContoCorrente.flussoRiversamentoPagoPA;
   }
 
   ngAfterViewInit(): void {
@@ -174,24 +179,24 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   changeEmailFlussoPagoPA(event: boolean) {
-    //this.datiForm.emit(!event);
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(!event));
   }
 
   changeFtpFlussoPagoPA(event: boolean) {
-    //this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(!event));
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(!event));
   }
 
   changeModelFlusso(model: NgModel) {
-    //this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(!model.errors));
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(!model.errors));
   }
 
   changeModelFlussoFtp(model: NgModel[]) {
-    /*const ngModel = model.find((item) => item.errors);
+    const ngModel = model.find((item) => item.errors);
     if (ngModel) {
-      this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(false));
+      this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(false));
     } else {
-      this.onChangeDatiBeneficiario.emit(this.setComponenteDinamico(true));
-    }*/
+      this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(true));
+    }
   }
 
 

@@ -8,5 +8,5 @@ export class ContoCorrente {
   intestazioneCCPostale: string;
   inizioValidita: string; //date
   fineValidita: string; //date
-  flussoRiversamentoPagoPA: FlussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+  flussoRiversamentoPagoPA: FlussoRiversamentoPagoPA;
 }
