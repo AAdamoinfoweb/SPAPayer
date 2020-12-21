@@ -1,0 +1,187 @@
+<span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
+<div class="ml-3">
+  <form #datiPortaleEsternoForm="ngForm">
+    <!-- Codice, Tipo portale, Pulsante per creazione nuovo tipo portale, Encrypt Key -->
+    <div class="row mt-4 mb-0">
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="codicePortaleEsterno" [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Codice</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="codicePortaleEsterno" name="codice" #codiceInput="ngModel"
+                   [(ngModel)]="datiPortaleEsterno.codice"
+                   [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || funzione === FunzioneGestioneEnum.MODIFICA"
+                   [maxLength]="maxLengthCodice" class="pt-0" autocomplete="off"
+                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
+                   aria-describedby="codicePortaleEsternoHelpDescription">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p [ngClass]="{'text-muted': !isCampoInvalido(codiceInput), 'text-invalid': isCampoInvalido(codiceInput)}">
+              {{setPlaceholder(codiceInput, tipoCampo.INPUT_TESTUALE)}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="tipoPortaleSelect" [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Tipo portale</label>
+          </div>
+        </div>
+        <div class="row">
+          <div [ngClass]="{'col': funzione === FunzioneGestioneEnum.DETTAGLIO, 'col-8': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+            <select
+              id="tipoPortaleSelect"
+              name="idTipoPortale"
+              #tipoPortaleInput="ngModel"
+              [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+              [(ngModel)]="idTipoPortale"
+              (ngModelChange)="onChangeTipoPortale(tipoPortaleInput); onChangeForm(datiPortaleEsternoForm)">
+              <option [ngValue]="undefined" [selected]="true">Seleziona</option>
+              <option *ngFor="let item of listaTipoPortaleEsterno" [ngValue]="item.value" [selected]="!item.value">{{item.label}}</option>
+            </select>
+          </div>
+          <div class="col-4 p-0" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+            <span class="pointer bottone-campo">
+              <span ngbTooltip="Crea tipo" placement="bottom">
+                <svg (click)="aggiungiNuovoTipoPortale()" class="bg-light icon icon-sm filled">
+                  <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+                </svg>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p [ngClass]="{'text-muted': !isCampoInvalido(tipoPortaleInput), 'text-invalid': isCampoInvalido(tipoPortaleInput)}">
+              {{setPlaceholder(tipoPortaleInput, tipoCampo.SELECT)}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="encryptKey" [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">EncryptKey</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="encryptKey" name="encryptKey" #encryptKeyInput="ngModel"
+                   [(ngModel)]="datiPortaleEsterno.encryptKey"
+                   [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   [maxLength]="maxLengthEncryptKey" class="pt-0" autocomplete="off"
+                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
+                   aria-describedby="encryptKeyHelpDescription">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p [ngClass]="{'text-muted': !isCampoInvalido(encryptKeyInput), 'text-invalid': isCampoInvalido(encryptKeyInput)}">
+              {{setPlaceholder(encryptKeyInput, tipoCampo.INPUT_TESTUALE)}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Descrizione, EncryptIV, Tempo di validità del messaggio, Switch waitingPagePayer -->
+    <div class="row mt-4 mb-0">
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="descrizione" class="title">Descrizione</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="descrizione" name="descrizione" #descrizioneInput="ngModel"
+                   [(ngModel)]="datiPortaleEsterno.descrizione"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
+                   class="pt-0" autocomplete="off" aria-describedby="descrizioneHelpDescription">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p [ngClass]="{'text-muted': !isCampoInvalido(descrizioneInput), 'text-invalid': isCampoInvalido(descrizioneInput)}">
+              {{setPlaceholder(descrizioneInput, tipoCampo.INPUT_TESTUALE)}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="encryptIV" class="title">EncryptIV</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="encryptIV" name="encryptIV" #encryptIVInput="ngModel"
+                   [(ngModel)]="datiPortaleEsterno.encryptIV"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || datiPortaleEsterno.tipoPortaleEsterno?.codice === 'CUP'"
+                   [maxLength]="maxLengthEncryptIV" class="pt-0" autocomplete="off"
+                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
+                   aria-describedby="encryptIVHelpDescription">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p [ngClass]="{'text-muted': !isCampoInvalido(encryptIVInput), 'text-invalid': isCampoInvalido(encryptIVInput)}">
+              {{setPlaceholder(encryptIVInput, tipoCampo.INPUT_TESTUALE)}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="tempoValiditaMessaggio" class="title">Tempo di validità del messaggio</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="number" id="tempoValiditaMessaggio"
+                   name="tempoValiditaMessaggio" #tempoValiditaMessaggioInput="ngModel"
+                   [(ngModel)]="datiPortaleEsterno.tempoValiditaMessaggio"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   [min]="minValueTempoValiditaMessaggio" class="pt-0" autocomplete="off"
+                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
+                   aria-describedby="tempoValiditaMessaggioHelpDescription">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p [ngClass]="{'text-muted': !isCampoInvalido(tempoValiditaMessaggioInput), 'text-invalid': isCampoInvalido(tempoValiditaMessaggioInput)}">
+              {{setPlaceholder(tempoValiditaMessaggioInput, tipoCampo.INPUT_TESTUALE)}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="row">
+          <div class="col mr-4">
+            <label for="switchWaitingPage" class="title">Waiting page</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <it-toggle id="switchWaitingPage" name="waitingPagePayer"
+                       [(ngModel)]="datiPortaleEsterno.waitingPagePayer"
+                       (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
+                       [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"></it-toggle>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

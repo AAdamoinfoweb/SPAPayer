@@ -12,6 +12,8 @@ export class AmministrativoService {
 
   salvaCampoFormEvent: EventEmitter<any> = new EventEmitter<any>();
 
+  salvaTipoPortaleEsternoEvent: EventEmitter<any> = new EventEmitter<any>();
+
   constructor() {
   }
 }

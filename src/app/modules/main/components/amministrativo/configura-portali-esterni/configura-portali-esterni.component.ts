@@ -5,7 +5,7 @@ import {Tabella} from '../../../model/tabella/Tabella';
 import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
 import {MenuService} from '../../../../../services/menu.service';
 import {ConfirmationService} from 'primeng/api';
@@ -16,6 +16,8 @@ import {Utils} from '../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
 import {Colonna} from '../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../model/tabella/ImmaginePdf';
+import {ConfiguraPortaliEsterniService} from '../../../../../services/configura-portali-esterni.service';
+import {BannerService} from '../../../../../services/banner.service';
 
 @Component({
   selector: 'app-configura-portali-esterni',
@@ -58,7 +60,8 @@ export class ConfiguraPortaliEsterniComponent extends GestisciElementoComponent 
 
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
-              private menuService: MenuService, private confirmationService: ConfirmationService) {
+              private menuService: MenuService, private confirmationService: ConfirmationService,
+              private configuraPortaliEsterniService: ConfiguraPortaliEsterniService, private bannerService: BannerService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -99,12 +102,16 @@ export class ConfiguraPortaliEsterniComponent extends GestisciElementoComponent 
   }
 
   creaRigaTabella(elemento: SintesiConfiguraPortaleEsterno) {
-    // TODO logica creazione riga tabella
-    return null;
+    return {
+      codice: {value: elemento.codice},
+      descrizione: {value: elemento.descrizione},
+      tipoPortale: {value: elemento.tipoPortale},
+      id: {value: elemento.id}
+    };
   }
 
   getObservableFunzioneRicerca(): Observable<SintesiConfiguraPortaleEsterno[]> {
-    return null;
+    return this.configuraPortaliEsterniService.ricercaPortaliEsterni(this.filtriRicerca, this.idFunzione);
   }
 
   callbackPopolaLista() {
@@ -133,7 +140,13 @@ export class ConfiguraPortaliEsterniComponent extends GestisciElementoComponent 
   eliminaPortaliEsterniSelezionati(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          // TODO invocare operation eliminaPortaliEsterni
+          this.configuraPortaliEsterniService.eliminaPortaleEsterno(this.getListaIdElementiSelezionati(), this.idFunzione)
+            .subscribe((response) => {
+              if (!(response instanceof HttpErrorResponse)) {
+                this.popolaListaElementi();
+                this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+              }
+            });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;
           this.toolbarIcons[this.indiceIconaElimina].disabled = true;
@@ -160,8 +173,13 @@ export class ConfiguraPortaliEsterniComponent extends GestisciElementoComponent 
   }
 
   getRigheFileExcel(righe: any[]): any[] {
-    // TODO logica creazione righe file excel
-    return null;
+    return righe.map(riga => {
+      riga.codice = riga.codice.value;
+      riga.descrizione = riga.descrizione.value;
+      riga.tipoPortale = riga.tipoPortale.value;
+      delete riga.id;
+      return riga;
+    });
   }
 
   getNumeroRecord(): string {

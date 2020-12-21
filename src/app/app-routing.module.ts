@@ -45,6 +45,7 @@ import {QuadraturaComponent} from './modules/main/components/amministrativo/gest
 import {DettaglioQuadraturaComponent} from './modules/main/components/amministrativo/gestisciportale/quadratura/dettaglio-quadratura/dettaglio-quadratura.component';
 import {IuvSenzaBonificoComponent} from './modules/main/components/amministrativo/gestisciportale/iuv-senza-bonifico/iuv-senza-bonifico.component';
 import {ConfiguraPortaliEsterniComponent} from './modules/main/components/amministrativo/configura-portali-esterni/configura-portali-esterni.component';
+import {FormConfiguraPortaliEsterniComponent} from './modules/main/components/amministrativo/configura-portali-esterni/form-configura-portali-esterni/form-configura-portali-esterni.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -126,7 +127,10 @@ const routes: Routes = [
 
   {path: 'iuvSenzaBonifico', component: IuvSenzaBonificoComponent},
 
-  {path: 'configuraPortaliEsterni', component: ConfiguraPortaliEsterniComponent}
+  {path: 'configuraPortaliEsterni', component: ConfiguraPortaliEsterniComponent},
+  {path: 'configuraPortaliEsterni/aggiungiPortaleEsterno', component: FormConfiguraPortaliEsterniComponent},
+  {path: 'configuraPortaliEsterni/modificaPortaleEsterno/:portaleEsternoId', component: FormConfiguraPortaliEsterniComponent},
+  {path: 'configuraPortaliEsterni/dettaglioPortaleEsterno/:portaleEsternoId', component: FormConfiguraPortaliEsterniComponent}
 ];
 
 @NgModule({

@@ -1,10 +1,11 @@
+import {TipoPortaleEsterno} from './TipoPortaleEsterno';
+
 export class ConfiguraPortaleEsterno {
   codice: string;
   descrizione?: string;
-  idTipoPortale: number;
-  tipoPortale: string;
+  tipoPortaleEsterno: TipoPortaleEsterno;
   encryptIV?: string;
   encryptKey: string;
-  windowMinute?: string;
+  tempoValiditaMessaggio?: number;
   waitingPagePayer?: boolean;
 }
