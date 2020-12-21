@@ -50,6 +50,7 @@ export class FormConfiguraPortaliEsterniComponent extends FormElementoParentComp
         this.configuraPortaliEsterniService.dettaglioPortaleEsterno(this.portaleEsternoId, this.idFunzione).subscribe(portaleEsterno => {
           if (portaleEsterno != null) {
             this.datiPortaleEsterno = portaleEsterno;
+            this.isFormValido = true;
           }
         });
         window.scrollTo(0, 0);

@@ -34,6 +34,7 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.datiPortaleEsterno.tempoValiditaMessaggio = this.minValueTempoValiditaMessaggio;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -71,6 +72,8 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
     } else {
       if (TipoCampoEnum.INPUT_TESTUALE === tipo) {
         return 'inserisci testo';
+      } else if (TipoCampoEnum.INPUT_NUMERICO === tipo) {
+        return 'inserisci tempo validità messaggio (in minuti)';
       } else if (TipoCampoEnum.DATEDDMMYY === tipo) {
         return 'inserisci data';
       } else if (TipoCampoEnum.SELECT === tipo) {
@@ -81,8 +84,8 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
 
   onChangeTipoPortale(tipoPortale: NgModel) {
     const index = this.listaTipoPortaleEsterno.findIndex(elemento => elemento.value === tipoPortale.value);
-    this.datiPortaleEsterno.tipoPortaleEsterno.id = this.listaTipoPortaleEsterno[index].value;
-    this.datiPortaleEsterno.tipoPortaleEsterno.codice = this.listaTipoPortaleEsterno[index].label;
+    this.datiPortaleEsterno.tipoPortaleEsterno.id = this.listaTipoPortaleEsterno[index]?.value;
+    this.datiPortaleEsterno.tipoPortaleEsterno.codice = this.listaTipoPortaleEsterno[index]?.label;
   }
 
   aggiungiNuovoTipoPortale() {

@@ -1,6 +1,6 @@
 <span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO">Tutti i campi contrassegnati con * sono obbligatori</span>
 <div class="ml-3">
-  <form #datiPortaleEsternoForm="ngForm" (input)="onChangeForm(datiPortaleEsternoForm)">
+  <form #datiPortaleEsternoForm="ngForm">
     <!-- Codice, Tipo portale, Pulsante per creazione nuovo tipo portale, Encrypt Key -->
     <div class="row mt-4 mb-0">
       <div class="col-md-3 pb-2">
@@ -16,6 +16,7 @@
                    [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || funzione === FunzioneGestioneEnum.MODIFICA"
                    [maxLength]="maxLengthCodice" class="pt-0" autocomplete="off"
+                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
                    aria-describedby="codicePortaleEsternoHelpDescription">
           </div>
         </div>
@@ -42,7 +43,7 @@
               [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
               [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
               [(ngModel)]="idTipoPortale"
-              (ngModelChange)="onChangeTipoPortale(tipoPortaleInput)">
+              (ngModelChange)="onChangeTipoPortale(tipoPortaleInput); onChangeForm(datiPortaleEsternoForm)">
               <option [ngValue]="undefined" [selected]="true">Seleziona</option>
               <option *ngFor="let item of listaTipoPortaleEsterno" [ngValue]="item.value">{{item.label}}</option>
             </select>
@@ -78,6 +79,7 @@
                    [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                    [maxLength]="maxLengthEncryptKey" class="pt-0" autocomplete="off"
+                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
                    aria-describedby="encryptKeyHelpDescription">
           </div>
         </div>
@@ -104,6 +106,7 @@
             <input type="text" id="descrizione" name="descrizione" #descrizioneInput="ngModel"
                    [(ngModel)]="datiPortaleEsterno.descrizione"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
                    class="pt-0" autocomplete="off" aria-describedby="descrizioneHelpDescription">
           </div>
         </div>
@@ -125,8 +128,9 @@
           <div class="col">
             <input type="text" id="encryptIV" name="encryptIV" #encryptIVInput="ngModel"
                    [(ngModel)]="datiPortaleEsterno.encryptIV"
-                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || datiPortaleEsterno.tipoPortaleEsterno?.codice === 'CUP'"
                    [maxLength]="maxLengthEncryptIV" class="pt-0" autocomplete="off"
+                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
                    aria-describedby="encryptIVHelpDescription">
           </div>
         </div>
@@ -151,6 +155,7 @@
                    [(ngModel)]="datiPortaleEsterno.tempoValiditaMessaggio"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
                    [min]="minValueTempoValiditaMessaggio" class="pt-0" autocomplete="off"
+                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
                    aria-describedby="tempoValiditaMessaggioHelpDescription">
           </div>
         </div>
@@ -170,7 +175,9 @@
         </div>
         <div class="row">
           <div class="col">
-            <it-toggle id="switchWaitingPage" [(ngModel)]="datiPortaleEsterno.waitingPagePayer" name="waitingPagePayer"
+            <it-toggle id="switchWaitingPage" name="waitingPagePayer"
+                       [(ngModel)]="datiPortaleEsterno.waitingPagePayer"
+                       (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
                        [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"></it-toggle>
           </div>
         </div>
