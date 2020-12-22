@@ -1,11 +1,13 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
-import {NgForm, NgModel} from '@angular/forms';
+import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
 import {DatePickerComponent, ECalendarValue} from 'ng2-date-picker';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../../utils/Utils';
 import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
+import {TipoCampoEnum} from "../../../../../../../enums/tipoCampo.enum";
+import {FlussoRiversamentoPagoPA} from "../../../../../model/servizio/FlussoRiversamentoPagoPA";
 
 @Component({
   selector: 'app-dati-conto-corrente',
@@ -29,6 +31,9 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   @Output()
   onDeleteDatiContoCorrente: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
 
+  flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+
+  TipoCampoEnum = TipoCampoEnum;
 
   // calendar
   isCalendarOpen = false;
@@ -42,6 +47,8 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    if (this.datiContoCorrente.flussoRiversamentoPagoPA)
+      this.flussoRiversamentoPagoPA = this.datiContoCorrente.flussoRiversamentoPagoPA;
   }
 
   ngAfterViewInit(): void {
@@ -73,8 +80,13 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     }
   }
 
-  isCampoInvalido(campo: NgModel) {
-    return campo?.errors != null;
+  onChangeModelFlusso(form: NgForm, campo: NgModel) {
+    if (campo.value == '') {
+      this.flussoRiversamentoPagoPA[campo.name] = null;
+    } else
+      this.flussoRiversamentoPagoPA[campo.name] = campo.value;
+    this.datiContoCorrente.flussoRiversamentoPagoPA = this.flussoRiversamentoPagoPA;
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(this.controlloForm(form)));
   }
 
   onChangeModel(form: NgForm, campo: NgModel) {
@@ -139,5 +151,99 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     } else {
       return true;
     }
+  }
+
+  isCampoInvalido(campo: NgModel | FormControl) {
+    return campo?.errors;
+  }
+
+  setPlaceholder(campo: NgModel | FormControl, tipoCampo: TipoCampoEnum): string {
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      return null;
+    } else if (campo instanceof NgModel && campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
+    } else if (this.isCampoInvalido(campo)) {
+      return 'campo non valido';
+    } else {
+      switch (tipoCampo) {
+        case TipoCampoEnum.SELECT:
+          return 'Seleziona un elemento dalla lista';
+        case TipoCampoEnum.INPUT_TESTUALE:
+          return 'Inserisci testo';
+        case TipoCampoEnum.DATEDDMMYY:
+          return 'Inserisci data';
+      }
+    }
+  }
+
+  getPlaceholderRequired(label: string, required: boolean) {
+    if (required) {
+      return label + ' *';
+    }
+    return label;
+  }
+
+  disabilitaCampi() {
+    return this.funzione == FunzioneGestioneEnum.DETTAGLIO;
+  }
+
+  changeEmailFlussoPagoPA(form: NgForm, event: boolean) {
+    if (!this.datiContoCorrente.flussoRiversamentoPagoPA)
+      this.datiContoCorrente.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+    this.datiContoCorrente.flussoRiversamentoPagoPA.flagNotificaEmail = event;
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(this.controlloForm(form)));
+  }
+
+  changeFtpFlussoPagoPA(form: NgForm, event: boolean) {
+    if (!this.datiContoCorrente.flussoRiversamentoPagoPA)
+      this.datiContoCorrente.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+    this.datiContoCorrente.flussoRiversamentoPagoPA.flagNotificaFtp = event;
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(this.controlloForm(form)));
+  }
+
+  validateUrl() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '(http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
+        if (!new RegExp(regex).test(control.value)) {
+          return {url: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+
+  validateServer() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?';
+        const regexIp = '^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$';
+        if (new RegExp(regex).test(control.value) || new RegExp(regexIp).test(control.value)) {
+          return null;
+        } else {
+          return {url: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
+
+  validateEmail() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        const regex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
+        if (!new RegExp(regex).test(control.value)) {
+          return {email: false};
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
   }
 }

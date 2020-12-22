@@ -52,7 +52,6 @@ import {BeneficiarioServizio} from '../../../../model/servizio/BeneficiarioServi
 import {FiltroUfficio} from '../../../../model/servizio/FiltroUfficio';
 import {Contatti} from '../../../../model/servizio/Contatti';
 import {Servizio} from '../../../../model/servizio/Servizio';
-import {FlussoRiversamentoPagoPA} from '../../../../model/servizio/FlussoRiversamentoPagoPA';
 import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 import {Utils} from '../../../../../../utils/Utils';
@@ -147,7 +146,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
   private listaDipendeDa: CampoTipologiaServizio[];
   rendicontazioneGiornaliera: RendicontazioneGiornaliera = new RendicontazioneGiornaliera();
-  rendicontazioneFlussoPA: FlussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+
   TipoCampoEnum = TipoCampoEnum;
   invioNotifiche: any = {};
   emailsControl: FormControl[] = [new FormControl()];
@@ -287,8 +286,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         if (value.flussiNotifiche) {
           this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera != null ?
             value.flussiNotifiche.rendicontazioneGiornaliera : new RendicontazioneGiornaliera();
-          this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA != null ?
-            value.flussiNotifiche.flussoRiversamentoPagoPA : new FlussoRiversamentoPagoPA();
           if (value.flussiNotifiche.notifichePagamento &&
             value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.length > 0) {
             const strings = value.flussiNotifiche.notifichePagamento;
@@ -408,7 +405,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     const flussiNotifiche = new FlussiNotifiche();
     flussiNotifiche.notifichePagamento = [];
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
-    flussiNotifiche.flussoRiversamentoPagoPA = this.rendicontazioneFlussoPA;
     if (emails && emails.length > 0) {
       emails.forEach(email => {
         const notifichePagamento: NotifichePagamento = new NotifichePagamento();
@@ -848,36 +844,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   changeEmailGiornaliera(event: boolean) {
-    if (!event) {
-      this.rendicontazioneGiornaliera.email = null;
-      this.rendicontazioneGiornaliera.ccn = null;
-    }
-  }
-
-  changeEmailFlussoPagoPA(event: boolean) {
-    if (!event) {
-      this.rendicontazioneFlussoPA.email = null;
-      this.rendicontazioneFlussoPA.ccn = null;
-    }
-  }
-
-  changeFtpFlussoPagoPA(event: boolean) {
-    if (!event) {
-      this.rendicontazioneFlussoPA.server = null;
-      this.rendicontazioneFlussoPA.username = null;
-      this.rendicontazioneFlussoPA.password = null;
-      this.rendicontazioneFlussoPA.directory = null;
-    }
   }
 
   changeFtpGiornaliera(event: boolean) {
-    if (!event) {
-      this.rendicontazioneGiornaliera.server = null;
-      this.rendicontazioneGiornaliera.username = null;
-      this.rendicontazioneGiornaliera.password = null;
-      this.rendicontazioneGiornaliera.directory = null;
-      this.rendicontazioneGiornaliera.nuovoFormato = null;
-    }
   }
 
   showModalAtClick(item: CampoTipologiaServizio) {

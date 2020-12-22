@@ -29,6 +29,8 @@ import {BannerService} from '../../../../../../../services/banner.service';
 import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
 import {Util} from 'design-angular-kit/lib/util/util';
 import {RoutingService} from "../../../../../../../services/routing.service";
+import {RendicontazioneGiornaliera} from "../../../../../model/servizio/RendicontazioneGiornaliera";
+import {FlussoRiversamentoPagoPA} from "../../../../../model/servizio/FlussoRiversamentoPagoPA";
 
 @Component({
   selector: 'app-form-ente',
@@ -219,6 +221,8 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       } else {
         this.setListaBeneficiari();
       }
+      this.datiEnte.flussoRiversamentoPagoPA = ente.flussoRiversamentoPagoPA != null ?
+        ente.flussoRiversamentoPagoPA : new FlussoRiversamentoPagoPA();
     });
   }
 

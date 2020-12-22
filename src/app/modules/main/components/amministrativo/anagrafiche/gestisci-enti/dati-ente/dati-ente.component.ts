@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {NgForm, NgModel} from '@angular/forms';
+import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {Utils} from '../../../../../../../utils/Utils';
@@ -12,6 +12,8 @@ import {SocietaService} from '../../../../../../../services/societa.service';
 import {NuovoPagamentoService} from '../../../../../../../services/nuovo-pagamento.service';
 import {Logo} from '../../../../../model/ente/Logo';
 import {EnteService} from '../../../../../../../services/ente.service';
+import {FlussoRiversamentoPagoPA} from "../../../../../model/servizio/FlussoRiversamentoPagoPA";
+import {TipoCampoEnum} from "../../../../../../../enums/tipoCampo.enum";
 
 @Component({
   selector: 'app-dati-ente',
@@ -77,6 +79,29 @@ export class DatiEnteComponent implements OnInit, OnChanges {
 
   }
 
+  isCampoInvalido(campo: NgModel | FormControl) {
+    return campo?.errors;
+  }
+
+  setPlaceholder(campo: NgModel | FormControl, tipoCampo: TipoCampoEnum): string {
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      return null;
+    } else if (campo instanceof NgModel && campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
+    } else if (this.isCampoInvalido(campo)) {
+      return 'campo non valido';
+    } else {
+      switch (tipoCampo) {
+        case TipoCampoEnum.SELECT:
+          return 'Seleziona un elemento dalla lista';
+        case TipoCampoEnum.INPUT_TESTUALE:
+          return 'Inserisci testo';
+        case TipoCampoEnum.DATEDDMMYY:
+          return 'Inserisci data';
+      }
+    }
+  }
+
   private pulisciImmagine() {
     // @ts-ignore
     const canvas: HTMLCanvasElement = document.getElementById('canvas');
@@ -129,10 +154,6 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     } else {
       return 'Campo non valido';
     }
-  }
-
-  isCampoInvalido(campo: NgModel) {
-    return campo?.errors != null;
   }
 
   onChangeModel(form: NgForm, campo: NgModel) {
@@ -267,4 +288,5 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     this.datiEnte.logo = null;
     this.onChangeDatiEnte.emit(this.datiEnte);
   }
+
 }
