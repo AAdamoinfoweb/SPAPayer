@@ -329,7 +329,7 @@
                          [required]="flussoRiversamentoPagoPA.flagNotificaFtp"
                          [placeholder]="getPlaceholderRequired('Server (nome o IP)', flussoRiversamentoPagoPA.flagNotificaFtp)"
                          id="server" name="server" [customvalidator]="validateServer()"
-                         [(ngModel)]="flussoRiversamentoPagoPA.server" #server="ngModel"
+                         [ngModel]="flussoRiversamentoPagoPA.server" #server="ngModel"
                          [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
@@ -351,7 +351,7 @@
                          [placeholder]="getPlaceholderRequired('Username', flussoRiversamentoPagoPA.flagNotificaFtp)"
                          id="username" name="username"
                          #username="ngModel"
-                         [(ngModel)]="flussoRiversamentoPagoPA.username"
+                         [ngModel]="flussoRiversamentoPagoPA.username"
                          [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
@@ -372,7 +372,7 @@
                          [placeholder]="getPlaceholderRequired('Password', flussoRiversamentoPagoPA.flagNotificaFtp)"
                          id="password"
                          name="password" #password="ngModel"
-                         [(ngModel)]="flussoRiversamentoPagoPA.password"
+                         [ngModel]="flussoRiversamentoPagoPA.password"
                          [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
@@ -392,7 +392,7 @@
                          [required]="flussoRiversamentoPagoPA.flagNotificaFtp"
                          [placeholder]="getPlaceholderRequired('Directory', flussoRiversamentoPagoPA.flagNotificaFtp)"
                          name="directory" #directory="ngModel"
-                         [(ngModel)]="flussoRiversamentoPagoPA.directory"
+                         [ngModel]="flussoRiversamentoPagoPA.directory"
                          [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">

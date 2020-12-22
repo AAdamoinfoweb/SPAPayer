@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
 import {ContoCorrente} from '../../../../../model/ente/ContoCorrente';
@@ -43,7 +52,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
 
   contoSelezionato = false;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -191,14 +200,18 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     if (!this.datiContoCorrente.flussoRiversamentoPagoPA)
       this.datiContoCorrente.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
     this.datiContoCorrente.flussoRiversamentoPagoPA.flagNotificaEmail = event;
-    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(this.controlloForm(form)));
+    let res = !event || (event && this.datiContoCorrente.flussoRiversamentoPagoPA.email != null);
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(res));
   }
 
   changeFtpFlussoPagoPA(form: NgForm, event: boolean) {
     if (!this.datiContoCorrente.flussoRiversamentoPagoPA)
       this.datiContoCorrente.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
     this.datiContoCorrente.flussoRiversamentoPagoPA.flagNotificaFtp = event;
-    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(this.controlloForm(form)));
+    let res = !event || (event && this.datiContoCorrente.flussoRiversamentoPagoPA.server != null &&
+      this.datiContoCorrente.flussoRiversamentoPagoPA.username != null && this.datiContoCorrente.flussoRiversamentoPagoPA.password != null &&
+      this.datiContoCorrente.flussoRiversamentoPagoPA.directory != null);
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(res));
   }
 
   validateUrl() {
