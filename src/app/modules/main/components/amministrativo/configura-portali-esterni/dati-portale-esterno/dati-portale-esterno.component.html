@@ -154,7 +154,7 @@
                    name="tempoValiditaMessaggio" #tempoValiditaMessaggioInput="ngModel"
                    [(ngModel)]="datiPortaleEsterno.tempoValiditaMessaggio"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-                   [min]="minValueTempoValiditaMessaggio" class="pt-0" autocomplete="off"
+                   [attr.min]="minValueTempoValiditaMessaggio" class="pt-0" autocomplete="off"
                    (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
                    aria-describedby="tempoValiditaMessaggioHelpDescription">
           </div>
