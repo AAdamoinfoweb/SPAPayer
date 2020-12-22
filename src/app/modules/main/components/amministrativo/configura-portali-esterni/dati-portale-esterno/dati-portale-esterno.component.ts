@@ -59,7 +59,7 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
         this.listaTipoPortaleEsterno.push({
           idItem: tipoPortaleEsterno.id,
           value: tipoPortaleEsterno.codice,
-          label: tipoPortaleEsterno.codice.toUpperCase()
+          label: tipoPortaleEsterno.codice
         });
         this.listaTipoPortaleEsterno = _.sortBy(this.listaTipoPortaleEsterno, ['label']);
         this.overlayService.mostraModaleTipoPortaleEsternoEvent.emit(null);
@@ -111,6 +111,11 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
         return 'seleziona un elemento dalla lista';
       }
     }
+  }
+
+  onChangeCodicePortaleEsterno(codicePortale: NgModel, datiForm: NgForm) {
+    this.datiPortaleEsterno.codice = codicePortale.value.toUpperCase();
+    this.onChangeForm(datiForm);
   }
 
   onChangeTipoPortale(tipoPortale: NgModel, datiForm: NgForm) {

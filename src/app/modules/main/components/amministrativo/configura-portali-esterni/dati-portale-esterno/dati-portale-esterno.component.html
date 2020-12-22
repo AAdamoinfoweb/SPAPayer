@@ -16,7 +16,7 @@
                    [required]="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || funzione === FunzioneGestioneEnum.MODIFICA"
                    [maxLength]="maxLengthCodice" class="pt-0" autocomplete="off"
-                   (ngModelChange)="onChangeForm(datiPortaleEsternoForm)"
+                   (ngModelChange)="onChangeCodicePortaleEsterno(codiceInput, datiPortaleEsternoForm)"
                    aria-describedby="codicePortaleEsternoHelpDescription">
           </div>
         </div>

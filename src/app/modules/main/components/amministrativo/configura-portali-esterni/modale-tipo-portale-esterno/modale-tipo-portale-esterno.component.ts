@@ -34,6 +34,10 @@ export class ModaleTipoPortaleEsternoComponent implements OnInit {
     }
   }
 
+  onChangeCodiceTipoPortale(codiceTipoPortale: NgModel) {
+    this.datiTipoPortale.codice = codiceTipoPortale.value.toUpperCase();
+  }
+
   onClickAnnulla(): void {
     this.overlayService.mostraModaleTipoPortaleEsternoEvent.emit(null);
   }

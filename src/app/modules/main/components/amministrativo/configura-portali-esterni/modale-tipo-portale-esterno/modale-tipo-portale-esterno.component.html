@@ -11,7 +11,8 @@
         <div class="col">
           <input type="text" id="codiceInput" class="pt-0" required name="codice"
                  autocomplete="off" #codiceInput="ngModel" [maxLength]="maxLengthCodice"
-                 [(ngModel)]="datiTipoPortale.codice">
+                 [(ngModel)]="datiTipoPortale.codice"
+                 (ngModelChange)="onChangeCodiceTipoPortale(codiceInput)">
         </div>
       </div>
       <div class="row">
