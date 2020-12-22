@@ -32,7 +32,8 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
   funzioneSelezionata: number = null;
 
-  listaIdUtenti = [];
+  listaIdUtenti: string[] = [];
+  listaIdUtentiFiltrati: string[] = [];
   idUtenteSelezionato: string = null;
   indirizzoIPSelezionato: string = null;
   dataDaSelezionata: string = moment().subtract(1, 'months').format(this.formatoData);
@@ -76,12 +77,14 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
 
     if (inputCf.length < this.minCharsToRetrieveCF) {
       this.listaIdUtenti = [];
+      this.listaIdUtentiFiltrati = [];
     } else if (inputCf.length === this.minCharsToRetrieveCF) {
       this.utenteService.letturaCodiciFiscali(inputCf, this.idFunzione).subscribe(data => {
         this.listaIdUtenti = data;
+        this.listaIdUtentiFiltrati = data;
       });
     } else {
-      this.listaIdUtenti = this.listaIdUtenti.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
+      this.listaIdUtentiFiltrati = this.listaIdUtenti.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
     }
   }
 
