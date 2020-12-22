@@ -74,6 +74,7 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
       }
     } else {
       if (this.datiAttivitaPianificata.parametri == null || this.datiAttivitaPianificata.parametri.length === 0) {
+        this.mapParametri = new Map<string, ParametroAttivitaPianificata>();
         this.target.clear();
         this.aggiungiChiaveValore();
       }
