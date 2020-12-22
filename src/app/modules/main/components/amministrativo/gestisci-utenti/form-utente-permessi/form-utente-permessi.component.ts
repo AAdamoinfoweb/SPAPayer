@@ -245,7 +245,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     const codiceFiscale = this.funzione === FunzioneGestioneEnum.MODIFICA ? this.codiceFiscaleRecuperato : this.codiceFiscale;
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       // controllo su codice fiscale
-      this.utenteService.letturaCodiceFiscale(this.codiceFiscale, this.idFunzione).subscribe((data) => {
+      this.utenteService.letturaCodiciFiscali(this.codiceFiscale, this.idFunzione).subscribe((data) => {
         const codiciFiscaleUpperCase = data.map(value => value.toUpperCase());
         const iscodiceFiscaleEsistente = codiciFiscaleUpperCase.includes(this.codiceFiscale.toUpperCase());
         if (iscodiceFiscaleEsistente) {

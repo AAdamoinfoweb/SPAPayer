@@ -76,7 +76,7 @@ export class UtenteService {
         }));
   }
 
-  letturaCodiceFiscale(codiceFiscaleParziale, idFunzione: string): Observable<string[]> {
+  letturaCodiciFiscali(codiceFiscaleParziale, idFunzione: string): Observable<string[]> {
     let params = new HttpParams();
     if (codiceFiscaleParziale != null) {
       params = params.set('codiceFiscaleParziale', codiceFiscaleParziale);

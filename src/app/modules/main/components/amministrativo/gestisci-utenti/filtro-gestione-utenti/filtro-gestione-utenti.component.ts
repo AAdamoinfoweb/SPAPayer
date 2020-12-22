@@ -177,7 +177,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
     if (inputCf.length < this.minCharsToRetrieveCF) {
         this.listaCodiciFiscali = [];
     } else if (inputCf.length === this.minCharsToRetrieveCF) {
-      this.utenteService.letturaCodiceFiscale(inputCf, this.idFunzione).subscribe(data => {
+      this.utenteService.letturaCodiciFiscali(inputCf, this.idFunzione).subscribe(data => {
         this.listaCodiciFiscali = data;
       });
     } else {

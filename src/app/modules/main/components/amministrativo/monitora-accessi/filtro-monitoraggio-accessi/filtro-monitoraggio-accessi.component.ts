@@ -77,7 +77,7 @@ export class FiltroMonitoraggioAccessiComponent extends FiltroGestioneElementiCo
     if (inputCf.length < this.minCharsToRetrieveCF) {
       this.listaIdUtenti = [];
     } else if (inputCf.length === this.minCharsToRetrieveCF) {
-      this.utenteService.letturaCodiceFiscale(inputCf, this.idFunzione).subscribe(data => {
+      this.utenteService.letturaCodiciFiscali(inputCf, this.idFunzione).subscribe(data => {
         this.listaIdUtenti = data;
       });
     } else {
