@@ -80,6 +80,15 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onChangeModelFlusso(form: NgForm, campo: NgModel) {
+    if (campo.value == '') {
+      this.flussoRiversamentoPagoPA[campo.name] = null;
+    } else
+      this.flussoRiversamentoPagoPA[campo.name] = campo.value;
+    this.datiContoCorrente.flussoRiversamentoPagoPA = this.flussoRiversamentoPagoPA;
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(this.controlloForm(form)));
+  }
+
   onChangeModel(form: NgForm, campo: NgModel) {
     if (campo.value == '') {
       this.datiContoCorrente[campo.name] = null;
@@ -179,10 +188,16 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
   }
 
   changeEmailFlussoPagoPA(event: boolean) {
+    if (!this.datiContoCorrente.flussoRiversamentoPagoPA)
+      this.datiContoCorrente.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+    this.datiContoCorrente.flussoRiversamentoPagoPA.flagNotificaEmail = event;
     this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(!event));
   }
 
   changeFtpFlussoPagoPA(event: boolean) {
+    if (!this.datiContoCorrente.flussoRiversamentoPagoPA)
+      this.datiContoCorrente.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+    this.datiContoCorrente.flussoRiversamentoPagoPA.flagNotificaFtp = event;
     this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(!event));
   }
 

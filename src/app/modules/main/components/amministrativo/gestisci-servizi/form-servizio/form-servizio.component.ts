@@ -844,20 +844,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   changeEmailGiornaliera(event: boolean) {
-    if (!event) {
-      this.rendicontazioneGiornaliera.email = null;
-      this.rendicontazioneGiornaliera.ccn = null;
-    }
   }
 
   changeFtpGiornaliera(event: boolean) {
-    if (!event) {
-      this.rendicontazioneGiornaliera.server = null;
-      this.rendicontazioneGiornaliera.username = null;
-      this.rendicontazioneGiornaliera.password = null;
-      this.rendicontazioneGiornaliera.directory = null;
-      this.rendicontazioneGiornaliera.nuovoFormato = null;
-    }
   }
 
   showModalAtClick(item: CampoTipologiaServizio) {

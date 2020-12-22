@@ -272,36 +272,37 @@
                   <input type="text" autocomplete="off"
                          [placeholder]="getPlaceholderRequired('Email', flussoRiversamentoPagoPA.flagNotificaEmail)"
                          [required]="flussoRiversamentoPagoPA.flagNotificaEmail"
-                         id="emailFlussoPAId" [customvalidator]="validateEmail()"
-                         name="emailFlussoPAId" [(ngModel)]="flussoRiversamentoPagoPA.email"
-                         #emailFlussoPAId="ngModel"
-                         (ngModelChange)="changeModelFlusso(emailFlussoPAId)"
+                         id="email" [customvalidator]="validateEmail()"
+                         name="email" [(ngModel)]="flussoRiversamentoPagoPA.email"
+                         #email="ngModel"
+                         (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, email)"
                          [disabled]="!flussoRiversamentoPagoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
                     <div class="col">
                       <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(emailFlussoPAId),
-                       'text-invalid': isCampoInvalido(emailFlussoPAId)}">
-                        {{setPlaceholder(emailFlussoPAId, TipoCampoEnum.INPUT_TESTUALE)}}
+                         [ngClass]="{'text-muted': !isCampoInvalido(email),
+                       'text-invalid': isCampoInvalido(email)}">
+                        {{setPlaceholder(email, TipoCampoEnum.INPUT_TESTUALE)}}
                       </p>
                     </div>
                   </div>
                 </div>
                 <div class="col-12">
-                  <input type="text" autocomplete="off" placeholder="Ccn" id="emailFlussoPACcn"
-                         name="emailFlussoPACcn" [(ngModel)]="flussoRiversamentoPagoPA.ccn"
-                         #emailFlussoPACcn="ngModel" [customvalidator]="validateEmail()"
+                  <input type="text" autocomplete="off" placeholder="Ccn" id="ccn"
+                         name="ccn" [(ngModel)]="flussoRiversamentoPagoPA.ccn"
+                         #ccn="ngModel" [customvalidator]="validateEmail()"
+                         (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, ccn)"
                          [disabled]="!flussoRiversamentoPagoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
                     <div class="col">
                       <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(emailFlussoPACcn),
-                       'text-invalid': isCampoInvalido(emailFlussoPACcn)}">
-                        {{setPlaceholder(emailFlussoPACcn, TipoCampoEnum.INPUT_TESTUALE)}}
+                         [ngClass]="{'text-muted': !isCampoInvalido(ccn),
+                       'text-invalid': isCampoInvalido(ccn)}">
+                        {{setPlaceholder(ccn, TipoCampoEnum.INPUT_TESTUALE)}}
                       </p>
                     </div>
                   </div>
@@ -324,20 +325,20 @@
 
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         (ngModelChange)="changeModelFlussoFtp([serverFlussoPA, usernameFlussoPA, passwordFlussoPA, directoryFlussoPA])"
+                         (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, server)"
                          [required]="flussoRiversamentoPagoPA.flagNotificaFtp"
                          [placeholder]="getPlaceholderRequired('Server (nome o IP)', flussoRiversamentoPagoPA.flagNotificaFtp)"
-                         id="serverFlussoPA" name="serverFlussoPA" [customvalidator]="validateServer()"
-                         [(ngModel)]="flussoRiversamentoPagoPA.server" #serverFlussoPA="ngModel"
+                         id="server" name="server" [customvalidator]="validateServer()"
+                         [(ngModel)]="flussoRiversamentoPagoPA.server" #server="ngModel"
                          [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
                 <div class="col-12">
                   <div class="row">
                     <div class="col">
                       <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(serverFlussoPA),
-                       'text-invalid': isCampoInvalido(serverFlussoPA)}">
-                        {{setPlaceholder(serverFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                         [ngClass]="{'text-muted': !isCampoInvalido(server),
+                       'text-invalid': isCampoInvalido(server)}">
+                        {{setPlaceholder(server, TipoCampoEnum.INPUT_TESTUALE)}}
                       </p>
                     </div>
                   </div>
@@ -345,11 +346,11 @@
 
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         (ngModelChange)="changeModelFlussoFtp([serverFlussoPA, usernameFlussoPA, passwordFlussoPA, directoryFlussoPA])"
+                         (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, username)"
                          [required]="flussoRiversamentoPagoPA.flagNotificaFtp"
                          [placeholder]="getPlaceholderRequired('Username', flussoRiversamentoPagoPA.flagNotificaFtp)"
-                         id="usernameFlussoPA" name="usernameFlussoPA"
-                         #usernameFlussoPA="ngModel"
+                         id="username" name="username"
+                         #username="ngModel"
                          [(ngModel)]="flussoRiversamentoPagoPA.username"
                          [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
@@ -357,20 +358,20 @@
                   <div class="row">
                     <div class="col">
                       <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(usernameFlussoPA),
-                       'text-invalid': isCampoInvalido(usernameFlussoPA)}">
-                        {{setPlaceholder(usernameFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                         [ngClass]="{'text-muted': !isCampoInvalido(username),
+                       'text-invalid': isCampoInvalido(username)}">
+                        {{setPlaceholder(username, TipoCampoEnum.INPUT_TESTUALE)}}
                       </p>
                     </div>
                   </div>
                 </div>
                 <div class="col-12">
                   <input type="text" autocomplete="off"
-                         (ngModelChange)="changeModelFlussoFtp([serverFlussoPA, usernameFlussoPA, passwordFlussoPA, directoryFlussoPA])"
+                         (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, password)"
                          [required]="flussoRiversamentoPagoPA.flagNotificaFtp"
                          [placeholder]="getPlaceholderRequired('Password', flussoRiversamentoPagoPA.flagNotificaFtp)"
-                         id="passwordFlussoPA"
-                         name="passwordFlussoPA" #passwordFlussoPA="ngModel"
+                         id="password"
+                         name="password" #password="ngModel"
                          [(ngModel)]="flussoRiversamentoPagoPA.password"
                          [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
@@ -378,19 +379,19 @@
                   <div class="row">
                     <div class="col">
                       <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(passwordFlussoPA),
-                       'text-invalid': isCampoInvalido(passwordFlussoPA)}">
-                        {{setPlaceholder(passwordFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                         [ngClass]="{'text-muted': !isCampoInvalido(password),
+                       'text-invalid': isCampoInvalido(password)}">
+                        {{setPlaceholder(password, TipoCampoEnum.INPUT_TESTUALE)}}
                       </p>
                     </div>
                   </div>
                 </div>
                 <div class="col-12">
-                  <input type="text" autocomplete="off" id="directoryFlussoPA"
-                         (ngModelChange)="changeModelFlussoFtp([serverFlussoPA, usernameFlussoPA, passwordFlussoPA, directoryFlussoPA])"
+                  <input type="text" autocomplete="off" id="directory"
+                         (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, directory)"
                          [required]="flussoRiversamentoPagoPA.flagNotificaFtp"
                          [placeholder]="getPlaceholderRequired('Directory', flussoRiversamentoPagoPA.flagNotificaFtp)"
-                         name="directoryFlussoPA" #directoryFlussoPA="ngModel"
+                         name="directory" #directory="ngModel"
                          [(ngModel)]="flussoRiversamentoPagoPA.directory"
                          [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
                 </div>
@@ -398,9 +399,9 @@
                   <div class="row">
                     <div class="col">
                       <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(directoryFlussoPA),
-                       'text-invalid': isCampoInvalido(directoryFlussoPA)}">
-                        {{setPlaceholder(directoryFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
+                         [ngClass]="{'text-muted': !isCampoInvalido(directory),
+                       'text-invalid': isCampoInvalido(directory)}">
+                        {{setPlaceholder(directory, TipoCampoEnum.INPUT_TESTUALE)}}
                       </p>
                     </div>
                   </div>
@@ -409,7 +410,6 @@
             </div>
           </div>
         </div>
-        <!--    fine IbanCCPostale, IntestazioneCCPostale -->
       </form>
     </div>
   </div>
