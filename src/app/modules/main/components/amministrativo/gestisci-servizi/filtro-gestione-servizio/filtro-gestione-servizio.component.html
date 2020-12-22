@@ -12,7 +12,7 @@
     <div class="collapse-body">
       <!-- Filtri -->
       <div class="row mt-2 mb-0">
-        <div class="col-xs-6 col-md-4 col-lg-3 pb-2">
+        <div class="col-md-4 pb-2">
           <div class="row">
             <div class="col">
               <label for="selectRaggruppamento" class="title"
@@ -43,7 +43,7 @@
           </div>
 
         </div>
-        <div class="col-xs-6 col-md-4 col-lg-3 pb-2">
+        <div class="col-md-4 pb-2">
           <div class="row">
             <div class="col">
               <label for="inputCodice" class="title"
@@ -74,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-6 col-md-4 col-lg-3 pb-2">
+        <div class="col-md-4 pb-2">
           <div class="row">
             <div class="col">
               <label for="servizio" class="title" [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Servizio</label>
@@ -95,7 +95,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-6 col-md-2 col-lg-2 pb-2">
+        <div class="col-md-3 pb-2">
           <div class="row">
             <div class="col">
               <label for="scadenzaDataDa" class="title"
@@ -115,15 +115,15 @@
                 id="scadenzaDataDa"
                 theme="dp-material"
                 [config]="{
-              locale: 'it',
-              format: 'DD/MM/YYYY',
-              firstDayOfWeek: 'mo',
-              showGoToCurrent: false,
-              openOnClick: isCalendarOpen,
-              openOnFocus: false,
-              min: minDateDDMMYY,
-              returnedValueType: tipoData
-	          }"
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYY,
+                  returnedValueType: tipoData
+	              }"
                 #scadenzaDaInput="ngModel"
                 [(ngModel)]="filtriRicerca.abilitaDa"
                 name="abilitaDa"
@@ -140,7 +140,7 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-6 col-md-2 col-lg-2 pb-2">
+        <div class="col-md-3 pb-2">
           <div class="row">
             <div class="col">
               <label for="scadenzaDataA" class="title">Abilita A</label>
@@ -158,15 +158,15 @@
                 id="scadenzaDataA"
                 theme="dp-material"
                 [config]="{
-              locale: 'it',
-              format: 'DD/MM/YYYY',
-              firstDayOfWeek: 'mo',
-              showGoToCurrent: false,
-              openOnClick: isCalendarOpen,
-              openOnFocus: false,
-              min: minDateDDMMYY,
-              returnedValueType: tipoData
-            }"
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYY,
+                  returnedValueType: tipoData
+                }"
                 #scadenzaAInput="ngModel"
                 [(ngModel)]="filtriRicerca.abilitaA"
                 name="abilitaA"
@@ -184,18 +184,20 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3 col-lg-1 pb-2">
+        <div class="col-md-2 pb-2">
           <div class="row">
             <div class="col">
               <label for="switchAttivo" class="title">Attivo</label>
             </div>
           </div>
           <div class="row">
-            <it-toggle id="switchAttivo" [disabled]="disabilitaCampi()" [(ngModel)]="filtriRicerca.attivo"
-                       name="attivo"></it-toggle>
+            <div class="col">
+              <it-toggle id="switchAttivo" [disabled]="disabilitaCampi()" [(ngModel)]="filtriRicerca.attivo"
+                         name="attivo"></it-toggle>
+            </div>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3 col-lg-1 pb-2" id="containerBottoneCrea"
+        <div class="col-md-3 pb-2" id="containerBottoneCrea"
              *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI">
           <button id="bottoneCrea" class="btn"
                   [disabled]="filtroForm.invalid || isTipologiaServizio(filtriRicerca.tipologiaServizio) || disabilitaFiltri"
