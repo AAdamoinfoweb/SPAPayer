@@ -101,7 +101,6 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
 
   init() {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
-      {label: 'Gestisci Anagrafiche', link: null},
       {label: 'Configura Servizi', link: null}
     ]);
     this.popolaListaElementi();
