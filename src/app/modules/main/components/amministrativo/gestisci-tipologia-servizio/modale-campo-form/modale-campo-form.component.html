@@ -193,7 +193,7 @@
     <ng-container *ngIf="nomeTipoCampoSelezionato === TipoCampoEnum.SELECT">
       <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
         <div class="row">
-          <label [htmlFor]="'tipologica'" class="title form-elem-title"
+          <label [htmlFor]="'tipologica'" class="title form-elem-title" [ngClass]="{'required': datiModaleCampo?.funzione !== FunzioneGestioneEnum.DETTAGLIO}"
           >Tipologica</label>
         </div>
         <div class="row">

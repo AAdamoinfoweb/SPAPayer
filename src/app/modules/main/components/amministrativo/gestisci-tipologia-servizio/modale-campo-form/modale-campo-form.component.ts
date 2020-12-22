@@ -101,6 +101,9 @@ export class ModaleCampoFormComponent implements OnInit {
       const tipoCampo = this.listaTipiCampo.find(tipo => tipo.id === this.datiModaleCampo.campoForm.tipoCampoId);
       if (tipoCampo) {
         this.nomeTipoCampoSelezionato = tipoCampo.nome;
+        if (this.nomeTipoCampoSelezionato === TipoCampoEnum.SELECT) {
+          this.form.controls['tipologica'].setValidators([Validators.required]);
+        }
       }
     }
 
@@ -133,9 +136,15 @@ export class ModaleCampoFormComponent implements OnInit {
   selezionaTipoCampo(tipoCampoIdSelezionato: number): void {
     const tipoCampoSelezionato = this.listaTipiCampo.find(tipoCampo => tipoCampo.id === tipoCampoIdSelezionato);
     this.nomeTipoCampoSelezionato = tipoCampoSelezionato?.nome;
-    if (this.nomeTipoCampoSelezionato && this.nomeTipoCampoSelezionato !== TipoCampoEnum.SELECT) {
-      this.datiModaleCampo.campoForm.tipologica = null;
-      this.datiModaleCampo.campoForm.dipendeDa = null;
+    if (this.nomeTipoCampoSelezionato) {
+      if (this.nomeTipoCampoSelezionato === TipoCampoEnum.SELECT) {
+        this.form.controls['tipologica'].setValidators([Validators.required]);
+      } else {
+        this.datiModaleCampo.campoForm.tipologica = null;
+        this.datiModaleCampo.campoForm.dipendeDa = null;
+        this.form.controls['tipologica'].clearValidators();
+      }
+      this.form.updateValueAndValidity();
     }
   }
 
