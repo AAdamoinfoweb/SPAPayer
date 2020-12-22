@@ -8,6 +8,9 @@ import * as _ from 'lodash';
 import {TipoPortaleEsterno} from '../../../../model/configuraportaliesterni/TipoPortaleEsterno';
 import {OverlayService} from '../../../../../../services/overlay.service';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
+import {Banner} from '../../../../model/banner/Banner';
+import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
+import {BannerService} from '../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-dati-portale-esterno',
@@ -33,7 +36,8 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
   codiceTipoPortale = null;
 
   constructor(private configuraPortaliEsterniService: ConfiguraPortaliEsterniService,
-              private overlayService: OverlayService, private amministrativoService: AmministrativoService) {
+              private overlayService: OverlayService, private amministrativoService: AmministrativoService,
+              private bannerService: BannerService) {
   }
 
   ngOnInit(): void {
@@ -41,15 +45,25 @@ export class DatiPortaleEsternoComponent implements OnInit, OnChanges {
 
     this.amministrativoService.salvaTipoPortaleEsternoEvent = new EventEmitter<any>();
     this.amministrativoService.salvaTipoPortaleEsternoEvent.subscribe((tipoPortaleEsterno: TipoPortaleEsterno) => {
-      this.datiPortaleEsterno.tipoPortaleEsterno = tipoPortaleEsterno;
-      this.codiceTipoPortale = tipoPortaleEsterno.codice;
-      this.listaTipoPortaleEsterno.push({
-        idItem: tipoPortaleEsterno.id,
-        value: tipoPortaleEsterno.codice,
-        label: tipoPortaleEsterno.codice.toUpperCase()
-      });
-      this.listaTipoPortaleEsterno = _.sortBy(this.listaTipoPortaleEsterno, ['label']);
-      this.overlayService.mostraModaleTipoPortaleEsternoEvent.emit(null);
+      const tipoPortaleEsternoPresente = this.listaTipoPortaleEsterno.find(elemento => tipoPortaleEsterno.codice.toLowerCase() === elemento.value.toLowerCase());
+      if (tipoPortaleEsternoPresente) {
+        const banner: Banner = {
+          titolo: 'ATTENZIONE',
+          testo: 'Il tipo portale è già presente nel sistema. Cambiare il codice o annullare l’operazione di inserimento',
+          tipo: getBannerType(LivelloBanner.ERROR)
+        };
+        this.bannerService.bannerEvent.emit([banner]);
+      } else {
+        this.datiPortaleEsterno.tipoPortaleEsterno = tipoPortaleEsterno;
+        this.codiceTipoPortale = tipoPortaleEsterno.codice;
+        this.listaTipoPortaleEsterno.push({
+          idItem: tipoPortaleEsterno.id,
+          value: tipoPortaleEsterno.codice,
+          label: tipoPortaleEsterno.codice.toUpperCase()
+        });
+        this.listaTipoPortaleEsterno = _.sortBy(this.listaTipoPortaleEsterno, ['label']);
+        this.overlayService.mostraModaleTipoPortaleEsternoEvent.emit(null);
+      }
     });
   }
 
