@@ -15,3 +15,9 @@
 .filled {
   fill: #004987;
 }
+
+select:disabled {
+  opacity: 1;
+  color: #66615B;
+  font-weight: 700;
+}
