@@ -31,6 +31,7 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
   listaServizi: Array<OpzioneSelect> = [];
   listaFunzioniAbilitate: Array<OpzioneSelect> = [];
   listaCodiciFiscali: string[] = [];
+  listaCodiciFiscaliFiltrati: string[] = [];
 
   readonly minCharsToRetrieveCF = 1;
 
@@ -176,12 +177,14 @@ export class FiltroGestioneUtentiComponent extends FiltroGestioneElementiCompone
 
     if (inputCf.length < this.minCharsToRetrieveCF) {
         this.listaCodiciFiscali = [];
+        this.listaCodiciFiscaliFiltrati = [];
     } else if (inputCf.length === this.minCharsToRetrieveCF) {
       this.utenteService.letturaCodiciFiscali(inputCf, this.idFunzione).subscribe(data => {
         this.listaCodiciFiscali = data;
+        this.listaCodiciFiscaliFiltrati = data;
       });
     } else {
-      this.listaCodiciFiscali = this.listaCodiciFiscali.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
+      this.listaCodiciFiscaliFiltrati = this.listaCodiciFiscali.filter(cf => cf.toLowerCase().indexOf(inputCf.toLowerCase()) === 0);
     }
   }
 
