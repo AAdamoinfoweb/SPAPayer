@@ -58,7 +58,7 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
   inizializzaOpzioniRaggruppamento(): void {
     this.configuraServizioService.configuraServiziFiltroRaggruppamento(null, this.idFunzione)
       .subscribe(value => {
-        this.opzioniRaggruppamento = _.orderBy(value,  [s => s.nome.toLowerCase()]);
+        this.opzioniRaggruppamento = _.orderBy(value,  [s => s.nome?.toLowerCase()]);
       });
   }
 
