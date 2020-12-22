@@ -187,33 +187,19 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     return this.funzione == FunzioneGestioneEnum.DETTAGLIO;
   }
 
-  changeEmailFlussoPagoPA(event: boolean) {
+  changeEmailFlussoPagoPA(form: NgForm, event: boolean) {
     if (!this.datiContoCorrente.flussoRiversamentoPagoPA)
       this.datiContoCorrente.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
     this.datiContoCorrente.flussoRiversamentoPagoPA.flagNotificaEmail = event;
-    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(!event));
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(this.controlloForm(form)));
   }
 
-  changeFtpFlussoPagoPA(event: boolean) {
+  changeFtpFlussoPagoPA(form: NgForm, event: boolean) {
     if (!this.datiContoCorrente.flussoRiversamentoPagoPA)
       this.datiContoCorrente.flussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
     this.datiContoCorrente.flussoRiversamentoPagoPA.flagNotificaFtp = event;
-    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(!event));
+    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(this.controlloForm(form)));
   }
-
-  changeModelFlusso(model: NgModel) {
-    this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(!model.errors));
-  }
-
-  changeModelFlussoFtp(model: NgModel[]) {
-    const ngModel = model.find((item) => item.errors);
-    if (ngModel) {
-      this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(false));
-    } else {
-      this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(true));
-    }
-  }
-
 
   validateUrl() {
     return ((control: FormControl) => {

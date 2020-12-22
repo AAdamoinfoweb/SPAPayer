@@ -262,7 +262,7 @@
                   <label for="emailFlussoPA" class="title">Email</label>
                 </div>
                 <div class="col-2">
-                  <it-toggle id="emailFlussoPA" (ngModelChange)="changeEmailFlussoPagoPA($event)"
+                  <it-toggle id="emailFlussoPA" (ngModelChange)="changeEmailFlussoPagoPA(datiContoCorrenteForm, $event)"
                              [disabled]="disabilitaCampi()"
                              [(ngModel)]="flussoRiversamentoPagoPA.flagNotificaEmail" name="emailFlussoPA"></it-toggle>
                 </div>
@@ -316,7 +316,7 @@
                          [ngClass]="{'required': flussoRiversamentoPagoPA.flagNotificaFtp, 'title':true}">Ftp</label>
                 </div>
                 <div class="col-2">
-                  <it-toggle id="ftpFlussoPA" (ngModelChange)="changeFtpFlussoPagoPA($event)"
+                  <it-toggle id="ftpFlussoPA" (ngModelChange)="changeFtpFlussoPagoPA(datiContoCorrenteForm, $event)"
                              [disabled]="disabilitaCampi()"
                              [(ngModel)]="flussoRiversamentoPagoPA.flagNotificaFtp" name="ftpFlussoPA"></it-toggle>
                 </div>
