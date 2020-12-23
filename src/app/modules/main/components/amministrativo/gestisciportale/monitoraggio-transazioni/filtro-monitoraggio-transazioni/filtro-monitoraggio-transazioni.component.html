@@ -521,12 +521,15 @@
           </div>
           <div class="row">
             <div class="col">
-              <input type="number" class="pt-0"
-                     name="flussoQuadratura"
-                     id="flussoQuadratura"
-                     autocomplete="off"
-                     #flussoQuadratura="ngModel"
-                     [(ngModel)]="filtroRicercaTransazioni.flussoQuadratura">
+
+              <p-autoComplete id="flussoQuadratura" class="pt-0" name="flussoQuadratura"
+                              #flussoQuadratura="ngModel" [size]="100"
+                              [(ngModel)]="filtroRicercaTransazioni.flussoQuadratura"
+                              [suggestions]="opzioniFiltroFlussoQuadraturaFiltrate"
+                              (completeMethod)="filtraOpzioniFlussoQuadratura($event)"
+                              delay="0" autoHighlight="true"
+                              placeholder="Tutti">
+              </p-autoComplete>
             </div>
           </div>
           <div class="row">

@@ -8,6 +8,7 @@ import {SintesiTransazione} from '../modules/main/model/transazione/SintesiTrans
 import {Transazione} from '../modules/main/model/transazione/Transazione';
 import {DettaglioPendenza} from '../modules/main/model/transazione/DettaglioPendenza';
 import {EsitoNotifica} from "../modules/main/model/transazione/EsitoNotifica";
+import {QuadraturaService} from './quadratura.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class MonitoraggioTransazioniService {
   private readonly monitoraggioTransazioniBaseUrl = '/monitoraggioTransazioni';
   private readonly dettaglioPendenzaUrl = this.monitoraggioTransazioniBaseUrl + '/dettaglioTransazioni';
 
-  constructor(private readonly http: HttpClient) {
+  constructor(private readonly http: HttpClient, private readonly quadraturaService: QuadraturaService) {
   }
 
   ricercaTransazioni(filtri: ParametriRicercaTransazioni, idFunzione: string): Observable<SintesiTransazione[]> {
@@ -162,6 +163,10 @@ export class MonitoraggioTransazioniService {
             return of(null);
           }
         }));
+  }
+
+  recuperaFiltroFlussoQuadratura(idFunzione: string): Observable<string[]> {
+    return this.quadraturaService.recuperaFiltroFlussoId(idFunzione);
   }
 
 }
