@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="modal-wrapper">
   <div class="row form-row">
 
-    <div class="col-sm-6 col-md-4 form-elem-container">
+    <div class="col-sm-6 col-md-6 form-elem-container">
       <div class="row">
         <label [htmlFor]="'titolo'" class="title form-elem-title" [ngClass]="{'required': datiModaleCampo?.funzione !== FunzioneGestioneEnum.DETTAGLIO}"
         >Titolo</label>
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="col-sm-6 col-md-4 form-elem-container">
+    <div class="col-sm-6 col-md-6 form-elem-container">
       <div class="row">
         <label [htmlFor]="'tipoCampo'" class="title form-elem-title" [ngClass]="{'required': datiModaleCampo?.funzione !== FunzioneGestioneEnum.DETTAGLIO}"
         >Tipo Campo</label>
