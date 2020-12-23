@@ -104,7 +104,9 @@ export class UtenteService {
       idSocieta = idSocieta.filter((value, index, self) => {
         return self.indexOf(value) === index;
       });
-      h = h.append('idSocieta', idSocieta.toString());
+      if (!idSocieta.some(value => value === undefined || value === null)) {
+        h = h.append('idSocieta', idSocieta.toString());
+      }
     }
 
     return this.http.put(`${url}/${codiceFiscale}`, datiUtente,

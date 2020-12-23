@@ -237,6 +237,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   onClickSalva(): void {
     // inserimento utente
     let utente = new InserimentoModificaUtente();
+    utente.listaPermessi = new Array<PermessoCompleto>();
     utente = JSON.parse(JSON.stringify(this.datiUtente));
     utente.scadenza = utente.scadenza ?
       moment(utente.scadenza, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
