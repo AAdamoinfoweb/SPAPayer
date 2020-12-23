@@ -32,7 +32,7 @@ import {HttpClient} from '@angular/common/http';
 import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaUtente';
 import {map} from 'rxjs/operators';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
-import {RoutingService} from "../../../../../../services/routing.service";
+import {RoutingService} from '../../../../../../services/routing.service';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -256,12 +256,12 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
           };
           this.bannerService.bannerEvent.emit([banner]);
         } else {
-          this.inserimentoAggiornamentoUtente(codiceFiscale, utente);
+          this.inserimentoModificaUtentePermessi(codiceFiscale, utente);
         }
       });
     } else {
       // nessun controllo codice fiscale
-      this.inserimentoAggiornamentoUtente(codiceFiscale, utente);
+      this.inserimentoModificaUtentePermessi(codiceFiscale, utente);
     }
     this.asyncSubject.subscribe(cf => {
       this.codiceFiscaleRecuperato = cf;
@@ -273,24 +273,24 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   }
 
 
-  private inserimentoAggiornamentoUtente(codiceFiscale: string, utente: InserimentoModificaUtente) {
-    this.utenteService.inserimentoAggiornamentoUtente(codiceFiscale, utente, this.idFunzione).subscribe((err) => {
+  private inserimentoModificaUtentePermessi(codiceFiscale: string, utente: InserimentoModificaUtente) {
+    let listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
+    if (listaPermessi.length > 0) {
+      listaPermessi = this.formattaPermessi(listaPermessi);
+    }
+    utente.listaPermessi = listaPermessi;
+
+    this.utenteService.inserimentoModificaUtentePermessi(codiceFiscale, utente, this.idFunzione).subscribe((err) => {
       if (err == null) {
-        // se presenti inserimento permessi
-        const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
-        if (listaPermessi.length > 0) {
-          this.inserimentoAggiornamentoPermessi(listaPermessi, codiceFiscale);
-        } else {
-          this.asyncSubject.next(codiceFiscale);
-          this.asyncSubject.complete();
-        }
+        this.asyncSubject.next(codiceFiscale);
+        this.asyncSubject.complete();
       }
     });
   }
 
-  private inserimentoAggiornamentoPermessi(listaPermessi: PermessoCompleto[], codiceFiscale: string) {
+  formattaPermessi(listaPermessi: PermessoCompleto[]): PermessoCompleto[] {
     // creo permessi da inserire
-    const listaPermessiDaInserire = listaPermessi.map(permesso => {
+    return listaPermessi.map(permesso => {
       const permessoDaInserire = JSON.parse(JSON.stringify(permesso));
       if (permesso.enteId === null && permesso.listaFunzioni.length === 0) {
         // creazione funzione per permesso amministrativo al momento dell'inserimento
@@ -307,14 +307,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
         moment(permesso.dataInizioValidita, Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
       return permessoDaInserire;
     });
-    // chiamata be inserimento modifica permessi
-    this.permessoService.inserimentoModificaPermessi(codiceFiscale, listaPermessiDaInserire, this.idFunzione)
-      .subscribe((error) => {
-        if (error == null) {
-          this.asyncSubject.next(codiceFiscale);
-          this.asyncSubject.complete();
-        }
-      });
   }
 
   onClickAnnullaButton() {
