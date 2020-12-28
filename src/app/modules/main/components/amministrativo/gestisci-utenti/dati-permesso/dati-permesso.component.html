@@ -189,8 +189,7 @@
       </div>
     </div>
 
-    <div
-      *ngIf="isSelectValida(datiPermesso.enteId, listaEnti) && datiPermesso.servizioId !== listaServizi[listaServizi.length - 1]?.value">
+    <div *ngIf="isSelectValida(datiPermesso.enteId, listaEnti)">
       <div class="row">
         <div *ngFor="let funzion of listaFunzioni; let i = index" class="col-3">
           <it-checkbox [id]="i" [label]="funzion.label" (change)="onChangeCheckBox($event, funzion.value)"
