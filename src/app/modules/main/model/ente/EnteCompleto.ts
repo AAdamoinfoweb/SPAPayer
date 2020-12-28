@@ -17,5 +17,7 @@ export class EnteCompleto {
   emailReferente: string;
   telefonoReferente: string;
   listaBeneficiari: Beneficiario[];
+  chiaveApi: string;
+  secretApi: string;
   flussoRiversamentoPagoPA: FlussoRiversamentoPagoPA;
 }

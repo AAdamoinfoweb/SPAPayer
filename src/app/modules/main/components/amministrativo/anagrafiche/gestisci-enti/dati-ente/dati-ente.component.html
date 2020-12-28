@@ -132,6 +132,62 @@
       <!--      fine Logo -->
     </div>
     <!--    fine Decrizione, Logo -->
+    <!--    inizio Chiave API, Secret API -->
+    <div class="row mt-4 mb-0">
+      <!--    inizio Chiave API-->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="chiaveApi" class="title ">
+              Chiave API</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="chiaveApi" name="chiaveApi" #chiaveApi="ngModel"
+                   [(ngModel)]="datiEnte.chiaveApi"
+                   [pattern]="regexChiaveApi"
+                   class="pt-0" autocomplete="off" aria-describedby="chiaveHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   (ngModelChange)="onChangeModel(datiEnteForm, chiaveApi)">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(chiaveApi)">Inserisci chiave API ente</p>
+            <p *ngIf="isCampoInvalido(chiaveApi)" class="text-invalid">{{getMessaggioErrore(chiaveApi)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--    fine Chiave API-->
+      <!--    inizio Secret API-->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="secretApi" class="title ">
+              Secret API</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="secretApi" name="secretApi" #secretApi="ngModel"
+                   [(ngModel)]="datiEnte.secretApi"
+                   [pattern]="regexSecretApi"
+                   class="pt-0" autocomplete="off" aria-describedby="secretHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   (ngModelChange)="onChangeModel(datiEnteForm, secretApi)">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(secretApi)">Inserisci secret API ente</p>
+            <p *ngIf="isCampoInvalido(secretApi)" class="text-invalid">{{getMessaggioErrore(secretApi)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--    fine Secret API-->
+    </div>
+    <!--    fine Chiave API, Secret API -->
     <!--    inizio Dati referente -->
       <!--      sotto-titolo -->
     <div class="row mt-4 mb-0">

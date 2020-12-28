@@ -36,6 +36,9 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   @Output()
   onChangeDatiEnte: EventEmitter<EnteCompleto> = new EventEmitter<EnteCompleto>();
 
+  readonly regexChiaveApi = Utils.API_KEY_REGEX;
+  readonly regexSecretApi = Utils.API_SECRET_REGEX;
+
   @Output()
   isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
