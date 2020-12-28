@@ -227,10 +227,14 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   disabilitaBottone(): boolean {
     let controlloCodiceFiscale = false;
+    const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
+
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       controlloCodiceFiscale = this.codiceFiscale == null || this.codiceFiscale === '';
     }
-    return controlloCodiceFiscale || !this.isFormDatiUtenteValido;
+
+    return controlloCodiceFiscale || !this.isFormDatiUtenteValido
+      || (listaPermessi.length > 0 && listaPermessi.some(value => !('enteId' in value)));
   }
 
 
