@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {AsyncSubject, BehaviorSubject, Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
@@ -93,10 +93,21 @@ export class UtenteService {
       }));
   }
 
-  inserimentoAggiornamentoUtente(codiceFiscale: string, datiUtente: InserimentoModificaUtente, idFunzione: string): Observable<any> {
-    const url = environment.bffBaseUrl + this.utentiBaseUrl;
+  inserimentoModificaUtentePermessi(codiceFiscale: string, datiUtente: InserimentoModificaUtente, idFunzione: string): Observable<any> {
+    const url = environment.bffBaseUrl + this.utentiBaseUrl + 'Permessi';
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
+
+    const listaPermessi = datiUtente.listaPermessi;
+    if (listaPermessi.length > 0) {
+      let idSocieta: number[] = listaPermessi.map(value => value.societaId);
+      idSocieta = idSocieta.filter((value, index, self) => {
+        return self.indexOf(value) === index;
+      });
+      if (!idSocieta.some(value => value === undefined || value === null)) {
+        h = h.append('idSocieta', idSocieta.toString());
+      }
+    }
 
     return this.http.put(`${url}/${codiceFiscale}`, datiUtente,
       {
@@ -109,7 +120,7 @@ export class UtenteService {
         if (err.status == 401 || err.status == 400) {
           return of(err);
         } else {
-           return of(err);
+           return of(null);
         }
       }));
   }
