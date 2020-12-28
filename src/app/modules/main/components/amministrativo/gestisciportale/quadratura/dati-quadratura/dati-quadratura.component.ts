@@ -164,8 +164,7 @@ export class DatiQuadraturaComponent implements OnInit, OnChanges {
   }
 
   redirectToMonitoraggioTransazioni(): void {
-    const quadraturaId = parseInt(this.activatedRoute.snapshot.paramMap.get('quadraturaId'));
-    const urlMonitoraggioTransazione = '/monitoraggioTransazioni?flussoQuadratura=' + quadraturaId;
+    const urlMonitoraggioTransazione = '/monitoraggioTransazioni?flussoQuadratura=' + this.datiQuadratura.flussoId;
     this.router.navigateByUrl(urlMonitoraggioTransazione);
   }
 
