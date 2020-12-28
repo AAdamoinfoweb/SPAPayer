@@ -273,7 +273,6 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       this.routingService
         .configuraRouterAndNavigate(this.basePath + '/modificaUtentePermessi/' + cf,
           null);
-      this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
     });
   }
 
@@ -287,6 +286,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
     this.utenteService.inserimentoModificaUtentePermessi(codiceFiscale, utente, this.idFunzione).subscribe((err) => {
       if (err == null) {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         this.asyncSubject.next(codiceFiscale);
         this.asyncSubject.complete();
       }
