@@ -790,6 +790,7 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.ente = this.servizio.enteNome;
     bollettino.numero = this.getNumDocumento();
     bollettino.anagraficaPagatore = this.model[this.getCampoDettaglioTransazione('anagrafica_pagatore')];
+    bollettino.anagraficaPagatore = this.model[this.getCampoDettaglioTransazione('anagrafica_pagatore')];
     bollettino.anno = this.model[this.getCampoDettaglioTransazione('anno_documento')];
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
     // rimuovere primi 3 caratteri
@@ -797,6 +798,8 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
       this.model[this.getCampoDettaglioTransazione('iuv')].toString().substring(3) : null;
     bollettino.cfpiva = this.model[this.getCampoDettaglioTransazione('codice_fiscale_pagatore')];
     bollettino.dataScadenza = this.model[this.getCampoDettaglioTransazione('data_scadenza')] ? moment(this.model[this.getCampoDettaglioTransazione('data_scadenza')], Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    bollettino.dataSanzione = this.model[this.getCampoDettaglioTransazione('data_sanzione')] ? moment(this.model[this.getCampoDettaglioTransazione('data_sanzione')], Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    bollettino.targa = this.model[this.getCampoDettaglioTransazione('targa')];
     bollettino.importo = this.model[this.importoNomeCampo];
 
     bollettino.listaCampoDettaglioTransazione = [];
