@@ -894,5 +894,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
     this.configuraServizioService.campoServizioAddList = arr;
   }
+
+  isPresenteInQuadratura() {
+    return !this.servizio.flagPresenzaQuadraturaPagoPA;
+  }
 }
 
