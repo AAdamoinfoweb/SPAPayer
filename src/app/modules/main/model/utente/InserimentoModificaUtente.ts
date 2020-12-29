@@ -1,3 +1,5 @@
+import {PermessoCompleto} from '../permesso/PermessoCompleto';
+
 export class InserimentoModificaUtente {
   nome?: string = null;
   cognome?: string = null;
@@ -5,4 +7,5 @@ export class InserimentoModificaUtente {
   telefono?: string = null;
   attivazione?: string = null;
   scadenza?: string = null;
+  listaPermessi: PermessoCompleto[];
 }

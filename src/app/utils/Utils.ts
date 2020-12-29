@@ -33,6 +33,8 @@ export class Utils {
   static readonly CODICE_FISCALE_REGEX = '^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
   static readonly CODICE_FISCALE_O_PARTITA_IVA_REGEX = '^[0-9]{11}$|^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
   static readonly PARTITA_IVA_REGEX = '^[0-9]{11}$';
+  static readonly API_KEY_REGEX = '^(.){32,32}$';
+  static readonly API_SECRET_REGEX = Utils.API_KEY_REGEX;
 
   static creaLink = (value, link, iconHref?) => {
     return iconHref ? {value, link, iconHref} : {value, link, iconHref: null};

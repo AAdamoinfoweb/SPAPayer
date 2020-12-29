@@ -15,7 +15,7 @@ export class ParametriRicercaTransazioni {
   importoTransazioneDa: number;
   importoTransazioneA: number;
   pagatore: string;
-  flussoQuadratura: number;
+  flussoQuadratura: string;
   flussoRendicontazione: number;
 
   constructor() {

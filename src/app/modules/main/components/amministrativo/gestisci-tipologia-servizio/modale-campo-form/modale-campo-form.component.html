@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="modal-wrapper">
   <div class="row form-row">
 
-    <div class="col-sm-6 col-md-4 form-elem-container">
+    <div class="col-sm-6 col-md-6 form-elem-container">
       <div class="row">
         <label [htmlFor]="'titolo'" class="title form-elem-title" [ngClass]="{'required': datiModaleCampo?.funzione !== FunzioneGestioneEnum.DETTAGLIO}"
         >Titolo</label>
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="col-sm-6 col-md-4 form-elem-container">
+    <div class="col-sm-6 col-md-6 form-elem-container">
       <div class="row">
         <label [htmlFor]="'tipoCampo'" class="title form-elem-title" [ngClass]="{'required': datiModaleCampo?.funzione !== FunzioneGestioneEnum.DETTAGLIO}"
         >Tipo Campo</label>
@@ -190,43 +190,39 @@
         </div>
       </div>
     </ng-container>
-    <ng-container *ngIf="nomeTipoCampoSelezionato === TipoCampoEnum.SELECT">
-      <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'tipologica'" class="title form-elem-title" [ngClass]="{'required': datiModaleCampo?.funzione !== FunzioneGestioneEnum.DETTAGLIO}"
-          >Tipologica</label>
-        </div>
-        <div class="row">
-          <select
-            id="tipologica"
-            [formControl]="form.controls['tipologica']"
-            [(ngModel)]="datiModaleCampo.campoForm.tipologica">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let item of listaTipologiche" [ngValue]="item.nome">{{item.nome}}</option>
-          </select>
-        </div>
+    <div class="col-sm-4 col-md-4 col-lg-2 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'tipologica'" class="title form-elem-title" [ngClass]="{'required': nomeTipoCampoSelezionato === TipoCampoEnum.SELECT && datiModaleCampo?.funzione !== FunzioneGestioneEnum.DETTAGLIO}"
+        >Tipologica</label>
       </div>
-    </ng-container>
+      <div class="row">
+        <select
+          id="tipologica"
+          [formControl]="form.controls['tipologica']"
+          [(ngModel)]="datiModaleCampo.campoForm.tipologica">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of listaTipologiche" [ngValue]="item.nome">{{item.nome}}</option>
+        </select>
+      </div>
+    </div>
 
-    <ng-container *ngIf="nomeTipoCampoSelezionato === TipoCampoEnum.SELECT">
-      <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
-        <div class="row">
-          <label [htmlFor]="'dipendeDa'" class="title form-elem-title"
-          >Dipende da</label>
-        </div>
-        <div class="row">
-          <select
-            [attr.disabled]="dipendeDaIsDisabled()"
-            id="dipendeDa"
-            [formControl]="form.controls['dipendeDa']"
-            [(ngModel)]="datiModaleCampo.campoForm.dipendeDa">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let item of datiModaleCampo.listaDipendeDa"
-                    [ngValue]="item">{{item.titolo}}</option>
-          </select>
-        </div>
+    <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
+      <div class="row">
+        <label [htmlFor]="'dipendeDa'" class="title form-elem-title"
+        >Dipende da</label>
       </div>
-    </ng-container>
+      <div class="row">
+        <select
+          [attr.disabled]="dipendeDaIsDisabled()"
+          id="dipendeDa"
+          [formControl]="form.controls['dipendeDa']"
+          [(ngModel)]="datiModaleCampo.campoForm.dipendeDa">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let item of datiModaleCampo.listaDipendeDa"
+                  [ngValue]="item">{{item.titolo}}</option>
+        </select>
+      </div>
+    </div>
 
     <div class="col-sm-6 col-md-6 col-lg-3 form-elem-container">
       <div class="row">

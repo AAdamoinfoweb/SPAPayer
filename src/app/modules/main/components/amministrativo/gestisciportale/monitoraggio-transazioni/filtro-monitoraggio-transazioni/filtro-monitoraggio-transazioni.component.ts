@@ -14,6 +14,7 @@ import {map} from 'rxjs/operators';
 import * as _ from 'lodash';
 import {StatoTransazioneEnum} from '../../../../../../../enums/statoTransazione.enum';
 import {BottoneEnum} from '../../../../../../../enums/bottone.enum';
+import {MonitoraggioTransazioniService} from '../../../../../../../services/monitoraggio-transazioni.service';
 
 @Component({
   selector: 'app-filtro-monitoraggio-transazioni',
@@ -24,7 +25,8 @@ export class FiltroMonitoraggioTransazioniComponent extends FiltroGestioneElemen
 
   constructor(protected activatedRoute: ActivatedRoute, protected amministrativoService: AmministrativoService,
               private gestisciPortaleService: GestisciPortaleService,
-              private campoTipologiaServizioService: CampoTipologiaServizioService) {
+              private campoTipologiaServizioService: CampoTipologiaServizioService,
+              private monitoraggioTransazioniService: MonitoraggioTransazioniService) {
     super(activatedRoute, amministrativoService);
   }
 
@@ -40,6 +42,8 @@ export class FiltroMonitoraggioTransazioniComponent extends FiltroGestioneElemen
   isCalendarOpen: boolean;
   readonly minDateDDMMYYYY = '01/01/1990';
   readonly tipoData = ECalendarValue.String;
+  opzioniFiltroFlussoQuadratura: string[];
+  opzioniFiltroFlussoQuadraturaFiltrate: string[];
 
   // opzioni per select
   opzioniFiltroSocieta: OpzioneSelect[] = [];
@@ -76,6 +80,7 @@ export class FiltroMonitoraggioTransazioniComponent extends FiltroGestioneElemen
     this.recuperaFiltroCanale();
     this.recuperaFiltroVersanteIndirizzoIP();
     this.recuperaFiltroStatoTransazione();
+    this.recuperaFiltroFlussoQuadratura();
   }
 
   recuperaFiltroSocieta(): void {
@@ -182,6 +187,22 @@ export class FiltroMonitoraggioTransazioniComponent extends FiltroGestioneElemen
         label: key.replace(/_/g, ' ')
       });
     });
+  }
+
+  recuperaFiltroFlussoQuadratura(): void {
+    this.opzioniFiltroFlussoQuadratura = [];
+    this.monitoraggioTransazioniService.recuperaFiltroFlussoQuadratura(this.idFunzione).subscribe(listaFlussoId => {
+      if (listaFlussoId) {
+        listaFlussoId.sort();
+        this.opzioniFiltroFlussoQuadratura = listaFlussoId;
+      }
+    });
+  }
+
+  filtraOpzioniFlussoQuadratura(event): void {
+    const input = event.query;
+    this.opzioniFiltroFlussoQuadraturaFiltrate = this.opzioniFiltroFlussoQuadratura
+      .filter(value => value.toLowerCase().startsWith(input.toLowerCase()));
   }
 
   cercaElementi(): void {

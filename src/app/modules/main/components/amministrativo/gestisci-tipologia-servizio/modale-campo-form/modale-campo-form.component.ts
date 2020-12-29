@@ -138,10 +138,12 @@ export class ModaleCampoFormComponent implements OnInit {
     this.nomeTipoCampoSelezionato = tipoCampoSelezionato?.nome;
     if (this.nomeTipoCampoSelezionato) {
       if (this.nomeTipoCampoSelezionato === TipoCampoEnum.SELECT) {
+        this.form.controls['tipologica'].enable();
         this.form.controls['tipologica'].setValidators([Validators.required]);
       } else {
         this.datiModaleCampo.campoForm.tipologica = null;
         this.datiModaleCampo.campoForm.dipendeDa = null;
+        this.form.controls['tipologica'].disable();
         this.form.controls['tipologica'].clearValidators();
       }
       this.form.updateValueAndValidity();
