@@ -145,7 +145,7 @@
         <div class="row">
           <div class="col">
             <input type="text" id="chiaveApi" name="chiaveApi" #chiaveApi="ngModel"
-                   [(ngModel)]="datiEnte.chiaveApi"
+                   [(ngModel)]="datiEnte.credenzialiApi.apiKey"
                    [pattern]="regexChiaveApi"
                    class="pt-0" autocomplete="off" aria-describedby="chiaveHelpDescription"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
@@ -171,7 +171,7 @@
         <div class="row">
           <div class="col">
             <input type="text" id="secretApi" name="secretApi" #secretApi="ngModel"
-                   [(ngModel)]="datiEnte.secretApi"
+                   [(ngModel)]="datiEnte.credenzialiApi.apiSecret"
                    [pattern]="regexSecretApi"
                    class="pt-0" autocomplete="off" aria-describedby="secretHelpDescription"
                    [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
