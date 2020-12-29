@@ -793,9 +793,15 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.anagraficaPagatore = this.model[this.getCampoDettaglioTransazione('anagrafica_pagatore')];
     bollettino.anno = this.model[this.getCampoDettaglioTransazione('anno_documento')];
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
-    // rimuovere primi 3 caratteri
+
     bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv')] != null ?
-      this.model[this.getCampoDettaglioTransazione('iuv')].toString().substring(3) : null;
+      this.model[this.getCampoDettaglioTransazione('iuv')].toString() : null;
+
+    // rimuovere primi 3 caratteri
+    if (bollettino.iuv == null)
+      bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv (da codice_avviso)')] != null ?
+        this.model[this.getCampoDettaglioTransazione('iuv (da codice_avviso)')].toString().substring(3) : null;
+
     bollettino.cfpiva = this.model[this.getCampoDettaglioTransazione('codice_fiscale_pagatore')];
     bollettino.dataScadenza = this.model[this.getCampoDettaglioTransazione('data_scadenza')] ? moment(this.model[this.getCampoDettaglioTransazione('data_scadenza')], Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
     bollettino.dataSanzione = this.model[this.getCampoDettaglioTransazione('data_sanzione')] ? moment(this.model[this.getCampoDettaglioTransazione('data_sanzione')], Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
