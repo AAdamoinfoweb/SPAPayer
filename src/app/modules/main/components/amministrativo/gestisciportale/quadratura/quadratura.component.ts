@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {GestisciElementoComponent} from '../../gestisci-elemento.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
@@ -18,6 +18,9 @@ import {SpinnerOverlayService} from '../../../../../../services/spinner-overlay.
 import {MenuService} from '../../../../../../services/menu.service';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../utils/Utils';
+import {Banner} from '../../../../model/banner/Banner';
+import {BannerService} from '../../../../../../services/banner.service';
+import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
 
 @Component({
   selector: 'app-quadratura',
@@ -75,7 +78,8 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
               private renderer: Renderer2, private el: ElementRef,
               private menuService: MenuService,
               private quadraturaService: QuadraturaService,
-              private spinnerOverlayService: SpinnerOverlayService
+              private spinnerOverlayService: SpinnerOverlayService,
+              private bannerService: BannerService
   ) {
     super(router, route, http, amministrativoService);
   }
@@ -175,12 +179,23 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   }
 
   esportaFlussiInTxtFile(listaFlussoQuadraturaPagoPaId: Array<number>): void {
-    this.quadraturaService.downloadFlussi(listaFlussoQuadraturaPagoPaId, this.idFunzione).subscribe(listaFlussi => {
-      listaFlussi.forEach((flusso, index) => {
-        if (flusso) {
-          Utils.downloadBase64ToTxtFile(flusso, 'flusso_' + index);
+    this.quadraturaService.downloadFlussi(listaFlussoQuadraturaPagoPaId, this.idFunzione).subscribe(response => {
+
+      if (!(response instanceof HttpErrorResponse)) {
+        if (response.esito != null) {
+          const banner: Banner = {
+            titolo: 'ATTENZIONE',
+            testo: response.esito,
+            tipo: getBannerType(LivelloBanner.WARNING)
+          };
+          this.bannerService.bannerEvent.emit([banner]);
         }
-      });
+        response.listaFlussi.forEach((flusso, index) => {
+          if (flusso) {
+            Utils.downloadBase64ToTxtFile(flusso, 'flusso_' + index);
+          }
+        });
+      }
     });
   }
 

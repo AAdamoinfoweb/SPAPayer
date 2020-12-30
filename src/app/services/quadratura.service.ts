@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaQuadratura} from '../modules/main/model/quadratura/ParametriRicercaQuadratura';
 import {Quadratura} from '../modules/main/model/quadratura/Quadratura';
 import {DettaglioQuadratura} from '../modules/main/model/quadratura/DettaglioQuadratura';
-import {Societa} from '../modules/main/model/Societa';
 import {Psp} from '../modules/main/model/quadratura/Psp';
-import {Ente} from '../modules/main/model/Ente';
+import {EsitoScaricaFlussi} from '../modules/main/model/quadratura/EsitoScaricaFlussi';
 
 @Injectable({
   providedIn: 'root'
@@ -111,7 +110,7 @@ export class QuadraturaService {
       }));
   }
 
-  downloadFlussi(listaFlussoQuadraturaPagoPaId: Array<number>, idFunzione: string): Observable<Array<string>> {
+  downloadFlussi(listaFlussoQuadraturaPagoPaId: Array<number>, idFunzione: string): Observable<EsitoScaricaFlussi | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.baseUrl + this.scaricaFlussi;
     let params = new HttpParams();
     if (listaFlussoQuadraturaPagoPaId) {
@@ -131,9 +130,9 @@ export class QuadraturaService {
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
-            return of(null);
+            return of(err);
           } else {
-            return of(null);
+            return of(err);
           }
         }));
   }
