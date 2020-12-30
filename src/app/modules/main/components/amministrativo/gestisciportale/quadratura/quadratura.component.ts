@@ -157,7 +157,7 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   }
 
   isQuadrato(quadratura: Quadratura): boolean {
-    return quadratura.quadrata;
+    return quadratura.quadrata === 0;
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {

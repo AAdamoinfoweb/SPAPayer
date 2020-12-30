@@ -8,7 +8,7 @@ export class DettaglioTransazione {
   importo: number;
   rendicontazioneId: number;
   flussoId: string;
-  quadrata: boolean;
+  quadrata: number;
   dataTransazione: string;
   stato: string;
   motivoPagamentoScartato: string;
