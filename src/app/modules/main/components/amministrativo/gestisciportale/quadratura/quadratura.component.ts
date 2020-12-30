@@ -201,18 +201,18 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
     const iconaSocieta = new ImmaginePdf();
     iconaSocieta.indiceColonna = 0;
     iconaSocieta.srcIcona = 'assets/img/users-solid-pdf-img.png';
-    iconaSocieta.posizioneX = 60;
-    iconaSocieta.posizioneY = 8;
-    iconaSocieta.larghezza = 18;
-    iconaSocieta.altezza = 15;
+    iconaSocieta.posizioneX = 46;
+    iconaSocieta.posizioneY = 14;
+    iconaSocieta.larghezza = 15;
+    iconaSocieta.altezza = 13;
 
     const iconaEnti = new ImmaginePdf();
     iconaEnti.indiceColonna = 1;
     iconaEnti.srcIcona = 'assets/img/users-solid-pdf-img.png';
-    iconaEnti.posizioneX = 60;
-    iconaEnti.posizioneY = 8;
-    iconaEnti.larghezza = 18;
-    iconaEnti.altezza = 15;
+    iconaEnti.posizioneX = 50;
+    iconaEnti.posizioneY = 5;
+    iconaEnti.larghezza = 16;
+    iconaEnti.altezza = 13;
 
     return [iconaSocieta, iconaEnti];
   }
