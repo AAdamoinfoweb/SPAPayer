@@ -335,11 +335,11 @@
       <!-- Bottoni Pulisci e Cerca -->
       <div class="row">
         <div class="col-6">
-          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroGestioneUtentiForm, 'Pulisci')"
+          <button type="button" id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottone(filtroGestioneUtentiForm, 'Pulisci')"
                   (click)="pulisciFiltri(filtroGestioneUtentiForm)">Pulisci</button>
         </div>
         <div class="col-6 btn-find">
-          <button id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroGestioneUtentiForm, 'Cerca')"
+          <button type="button" id="bottoneCerca" class="btn" [disabled]="disabilitaBottone(filtroGestioneUtentiForm, 'Cerca')"
                   (click)="cercaElementi()">Cerca</button>
         </div>
       </div>

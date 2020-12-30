@@ -7,7 +7,7 @@ export class DettaglioTransazione {
   pagatoreCodiceFiscale: string;
   importo: number;
   rendicontazioneId: number;
-  quadraturaId: number;
+  flussoId: string;
   quadrata: boolean;
   dataTransazione: string;
   stato: string;
