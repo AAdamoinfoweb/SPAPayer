@@ -34,7 +34,7 @@ export class DettaglioQuadraturaComponent extends FormElementoParentComponent im
 
   ngOnInit(): void {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
-      {label: 'Quadratura', link: this.basePath},
+      {label: 'Quadratura PagoPA', link: this.basePath},
       {label: 'Dettaglio Flusso Di Quadratura', link: null}
     ], true);
 
