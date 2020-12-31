@@ -33,6 +33,7 @@ import {ParametriRicercaUtente} from '../../../../model/utente/ParametriRicercaU
 import {map} from 'rxjs/operators';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 import {RoutingService} from '../../../../../../services/routing.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-aggiungi-utente-permessi',
@@ -52,7 +53,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   codiceFiscaleRecuperato: string;
 
   datiUtente: InserimentoModificaUtente = new InserimentoModificaUtente();
-  datiPermesso: PermessoCompleto;
+
   asyncSubject: AsyncSubject<string> = new AsyncSubject<string>();
   mapPermessi: Map<string, PermessoCompleto> = new Map();
   isFormDatiUtenteValido = false;
@@ -159,6 +160,13 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
     const uuidComponente = Utils.uuidv4();
     this.componentRef.instance.uuid = uuidComponente;
     this.targetMap.set(uuidComponente, this.componentRef.hostView);
+
+    if (datiPermesso) {
+      this.componentRef.instance.datiPermesso = _.cloneDeep(datiPermesso);
+    }
+    this.componentRef.instance.funzione = this.funzione;
+    this.componentRef.instance.idFunzione = this.idFunzione;
+
     this.componentRef.instance.onDeletePermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
       const permessoCompleto = this.mapPermessi.get(componenteDinamico.uuid);
       const isPermessoDaModificare: boolean = permessoCompleto.listaFunzioni
@@ -177,6 +185,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
         this.targetMap.delete(componenteDinamico.uuid);
       }
     });
+
     this.componentRef.instance.onChangeDatiPermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
       if (this.mapPermessi.has(componenteDinamico.uuid)) {
         const permessoCompleto: PermessoCompleto = this.mapPermessi.get(componenteDinamico.uuid);
@@ -184,6 +193,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
           // da amministrativo a gestionale
           if (componenteDinamico.oggetto.enteId != null) {
             // elimina logicamente permesso amministrativo precedente
+            componenteDinamico.oggetto.listaFunzioni = [];
             permessoCompleto.listaFunzioni[0].permessoCancellato = true;
             this.mapPermessi.set(Utils.uuidv4(), permessoCompleto);
           }
@@ -200,29 +210,36 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
           }
         }
       }
+
+      if (componenteDinamico.oggetto.listaFunzioni && componenteDinamico.oggetto.listaFunzioni.length > 0) {
+        this.mapPermessi.forEach(value => {
+          let permessoFunzione: PermessoFunzione = value.listaFunzioni.find(value1 => value1.permessoCancellato == true);
+          if (permessoFunzione) {
+            let findIndex = componenteDinamico.oggetto.listaFunzioni.findIndex((v) => v.permessoId == permessoFunzione.permessoId);
+            if (findIndex != -1)
+              componenteDinamico.oggetto.listaFunzioni.splice(findIndex, 1);
+          }
+        });
+      }
+
       this.mapPermessi.set(componenteDinamico.uuid, componenteDinamico.oggetto);
     });
-    if (datiPermesso) {
-      this.datiPermesso = datiPermesso;
-      this.componentRef.instance.datiPermesso = datiPermesso;
-    }
-    this.componentRef.instance.funzione = this.funzione;
-    this.componentRef.instance.idFunzione = this.idFunzione;
-    this.componentRef.changeDetectorRef.detectChanges();
+
     return uuidComponente;
   }
 
   letturaPermessi(codiceFiscale) {
-    this.permessoService.letturaPermessi(codiceFiscale, this.idFunzione).subscribe((listaPermessi: PermessoCompleto[]) => {
-      listaPermessi.forEach((permesso: PermessoCompleto) => {
-        permesso.dataInizioValidita = permesso.dataInizioValidita ?
-          moment(permesso.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
-        permesso.dataFineValidita = permesso.dataFineValidita ?
-          moment(permesso.dataFineValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
-        const uuidComponente = this.aggiungiSezionePermesso(permesso);
-        this.mapPermessi.set(uuidComponente, permesso);
+    this.permessoService.letturaPermessi(codiceFiscale, this.idFunzione)
+      .subscribe((listaPermessi: PermessoCompleto[]) => {
+        listaPermessi.forEach((permesso: PermessoCompleto) => {
+          permesso.dataInizioValidita = permesso.dataInizioValidita ?
+            moment(permesso.dataInizioValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
+          permesso.dataFineValidita = permesso.dataFineValidita ?
+            moment(permesso.dataFineValidita, Utils.FORMAT_LOCAL_DATE_TIME).format(Utils.FORMAT_DATE_CALENDAR) : null;
+          const uuidComponente = this.aggiungiSezionePermesso(permesso);
+          this.mapPermessi.set(uuidComponente, permesso);
+        });
       });
-    });
   }
 
   disabilitaBottone(): boolean {

@@ -22,8 +22,8 @@
         <div class="row">
           <div class="col">
             <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
-                    #societaInput="ngModel" [(ngModel)]="datiPermesso.societaId"
-                    (ngModelChange)="onChangeModel(societaInput)"
+                    #societaInput="ngModel" [ngModel]="datiPermesso.societaId"
+                    (change)="onChangeModel(societaInput)"
                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
               <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
             </select>
@@ -49,7 +49,7 @@
           <div class="col">
             <select [ngClass]="{'input-disabled': !listaEnti.length}"
                     id="selectEnte" name="enteId" [required]="datiPermesso.enteId === undefined"
-                    #enteInput="ngModel" [(ngModel)]="datiPermesso.enteId" (ngModelChange)="onChangeModel(enteInput)"
+                    #enteInput="ngModel" [ngModel]="datiPermesso.enteId" (change)="onChangeModel(enteInput)"
                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
               <option [ngValue]="undefined" [selected]="true">Seleziona</option>
               <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
@@ -76,10 +76,10 @@
         </div>
         <div class="row">
           <div class="col">
-            <select [ngClass]="{'input-disabled': datiPermesso.enteId == null}"
+            <select [ngClass]="{'input-disabled': enteInput.value == null}"
                     id="selectServizio" name="servizioId"
-                    #servizioInput="ngModel" [(ngModel)]="datiPermesso.servizioId"
-                    (ngModelChange)="onChangeModel(servizioInput)"
+                    #servizioInput="ngModel" [ngModel]="datiPermesso.servizioId"
+                    (change)="onChangeModel(servizioInput)"
                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
               <option [ngValue]="null" [selected]="true" *ngIf="datiPermesso.enteId != null">Seleziona</option>
               <option [ngValue]="null" [selected]="true" *ngIf="datiPermesso.enteId == null">Tutto</option>
@@ -124,11 +124,10 @@
               returnedValueType: tipoData
             }"
               #attivazioneInput="ngModel"
-              [(ngModel)]="datiPermesso.dataInizioValidita"
+              [ngModel]="datiPermesso.dataInizioValidita"
               name="attivazione"
               #datePickerAttivazione
               (click)="isCalendarOpen = false"
-              (ngModelChange)="onChangeModel(attivazioneInput)"
               [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
             ></dp-date-picker>
           </div>
@@ -169,11 +168,10 @@
               returnedValueType: tipoData
             }"
               #scadenzaInput="ngModel"
-              [(ngModel)]="datiPermesso.dataFineValidita"
+              [ngModel]="datiPermesso.dataFineValidita"
               name="scadenza"
               #datePickerScadenza
               (click)="isCalendarOpen = false"
-              (ngModelChange)="onChangeModel(attivazioneInput)"
               [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
             ></dp-date-picker>
           </div>
@@ -189,12 +187,12 @@
       </div>
     </div>
 
-    <div *ngIf="isSelectValida(datiPermesso.enteId, listaEnti)">
+    <div *ngIf="isSelectValida(enteInput.value, listaEnti)">
       <div class="row">
         <div *ngFor="let funzion of listaFunzioni; let i = index" class="col-3">
           <it-checkbox [id]="i" [label]="funzion.label" (change)="onChangeCheckBox($event, funzion.value)"
                        [checked]="funzion.checked"
-                       [disabled]="disabilitaCheckboxFunzione(funzion)"></it-checkbox>
+                       [disabled]="disabilitaCheckboxFunzione(funzion, servizioInput)"></it-checkbox>
         </div>
       </div>
     </div>

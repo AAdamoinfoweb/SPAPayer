@@ -21,6 +21,7 @@ import {FiltroServizio} from '../../../../model/FiltroServizio';
 import {AsyncSubject} from 'rxjs';
 import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enum';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-dati-permesso',
@@ -63,7 +64,6 @@ export class DatiPermessoComponent implements OnInit {
 
   @ViewChild('datiPermessoForm') datiPermessoForm: NgForm;
 
-
   constructor(private funzioneService: FunzioneService, private societaService: SocietaService,
               private amministrativoService: AmministrativoService, private nuovoPagamentoService: NuovoPagamentoService) {
   }
@@ -83,7 +83,7 @@ export class DatiPermessoComponent implements OnInit {
         const mapPermessoFunzioni: Map<number, PermessoFunzione> =
           new Map(this.datiPermesso.listaFunzioni.map(permessoFunzione => [permessoFunzione.funzioneId, permessoFunzione]));
         this.mapPermessoFunzione = mapPermessoFunzioni;
-        this.letturaServizi();
+        this.letturaServizi(this.datiPermesso.enteId);
         this.creaFunzioni();
       });
     }
@@ -98,7 +98,7 @@ export class DatiPermessoComponent implements OnInit {
         }
         this.listaFunzioni.push(funzione);
       });
-      this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
+      //this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
     });
   }
 
@@ -135,13 +135,13 @@ export class DatiPermessoComponent implements OnInit {
     })).subscribe();
   }
 
-  letturaServizi(): void {
+  letturaServizi(enteId: number): void {
     this.listaServizi = [];
     this.listaFunzioni = [];
 
     // TODO lista Servizio relativa all'utente amministratore inserito/modificato mockata temporaneamente in attesa di informazioni su come recuperarla
-    if (this.datiPermesso.enteId != null) {
-      this.nuovoPagamentoService.recuperaFiltroServizi(this.datiPermesso.enteId).pipe(map((listaServizi: FiltroServizio[]) => {
+    if (enteId != null) {
+      this.nuovoPagamentoService.recuperaFiltroServizi(enteId).pipe(map((listaServizi: FiltroServizio[]) => {
         listaServizi.forEach(servizio => {
           const servizioElement = {value: servizio.id, label: servizio.nome};
           this.listaServizi.push(servizioElement);
@@ -231,14 +231,18 @@ export class DatiPermessoComponent implements OnInit {
     if (campo?.name === 'societaId') {
       this.datiPermesso.enteId = undefined;
       this.letturaEnti();
+      this.onChangeDatiPermesso.emit(this.setComponenteDinamico(campo));
     } else if (campo?.name === 'enteId') {
-      if (this.datiPermesso.enteId == null) {
+      if (campo.value == null) {
         this.mapPermessoFunzione = new Map<number, PermessoFunzione>();
       }
       this.datiPermesso.servizioId = null;
-      this.letturaServizi();
+      this.letturaServizi(campo.value);
+      this.onChangeDatiPermesso.emit(this.setComponenteDinamico(campo));
+      this.datiPermesso.enteId = campo.value;
+    } else if (campo?.name === 'servizioId') {
+      this.onChangeDatiPermesso.emit(this.setComponenteDinamico(campo));
     }
-    this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
   }
 
   onChangeCheckBox($event: CheckboxChange, funzione: Funzione) {
@@ -278,17 +282,20 @@ export class DatiPermessoComponent implements OnInit {
     this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
   }
 
-  private setComponenteDinamico(): ComponenteDinamico {
+  private setComponenteDinamico(campo?: NgModel): ComponenteDinamico {
     this.listaPermessoFunzione = Array.from(this.mapPermessoFunzione, ([name, value]) => value);
+    let dati = _.cloneDeep(this.datiPermesso);
+    if (campo)
+      dati[campo.name] = campo.value;
     let permessoCompleto = new PermessoCompleto();
-    permessoCompleto = JSON.parse(JSON.stringify(this.datiPermesso));
+    permessoCompleto = JSON.parse(JSON.stringify(dati));
     permessoCompleto.listaFunzioni = this.listaPermessoFunzione;
     return new ComponenteDinamico(this.uuid, this.indexSezionePermesso, permessoCompleto);
   }
 
-  disabilitaCheckboxFunzione(funzione) {
+  disabilitaCheckboxFunzione(funzione, campo: NgModel) {
     if (this.funzione === FunzioneGestioneEnum.DETTAGLIO ||
-      (funzione.value.nome !== 'quadratura' && funzione.value.nome !== 'iuv senza bonifico' && this.datiPermesso.servizioId == null)) {
+      (funzione.value.nome !== 'quadratura' && funzione.value.nome !== 'iuv senza bonifico' && campo.value == null)) {
       return true;
     } else {
       return false;
