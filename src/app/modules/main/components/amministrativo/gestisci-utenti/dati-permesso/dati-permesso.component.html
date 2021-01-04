@@ -99,7 +99,7 @@
       <div class="col-md-2 pb-2">
         <div class="row">
           <div class="col">
-            <label for="attivazione" class="title">Attivazione</label>
+            <label for="dataInizioValidita" class="title">Attivazione</label>
           </div>
         </div>
         <div class="row">
@@ -110,7 +110,7 @@
             </svg>
             <dp-date-picker
               mode="day"
-              id="attivazione"
+              id="dataInizioValidita"
               theme="dp-material"
               [config]="{
               locale: 'it',
@@ -125,8 +125,9 @@
             }"
               #attivazioneInput="ngModel"
               [ngModel]="datiPermesso.dataInizioValidita"
-              name="attivazione"
+              name="dataInizioValidita"
               #datePickerAttivazione
+              (onSelect)="onChangeModel(attivazioneInput)"
               (click)="isCalendarOpen = false"
               [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
             ></dp-date-picker>
@@ -144,7 +145,7 @@
       <div class="col-md-2 pb-2">
         <div class="row">
           <div class="col">
-            <label for="scadenza" class="title">Scadenza</label>
+            <label for="dataFineValidita" class="title">Scadenza</label>
           </div>
         </div>
         <div class="row">
@@ -155,7 +156,7 @@
             </svg>
             <dp-date-picker
               mode="day"
-              id="scadenza"
+              id="dataFineValidita"
               theme="dp-material"
               [config]="{
               locale: 'it',
@@ -169,8 +170,9 @@
             }"
               #scadenzaInput="ngModel"
               [ngModel]="datiPermesso.dataFineValidita"
-              name="scadenza"
+              name="dataFineValidita"
               #datePickerScadenza
+              (onSelect)="onChangeModel(scadenzaInput)"
               (click)="isCalendarOpen = false"
               [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
             ></dp-date-picker>

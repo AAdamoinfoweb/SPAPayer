@@ -242,6 +242,13 @@ export class DatiPermessoComponent implements OnInit {
       this.datiPermesso.enteId = campo.value;
     } else if (campo?.name === 'servizioId') {
       this.onChangeDatiPermesso.emit(this.setComponenteDinamico(campo));
+      this.datiPermesso.servizioId = campo.value;
+    } else if (campo?.name === 'dataInizioValidita') {
+      this.onChangeDatiPermesso.emit(this.setComponenteDinamico(campo));
+      this.datiPermesso.dataInizioValidita = campo.value;
+    } else if (campo?.name === 'dataFineValidita') {
+      this.onChangeDatiPermesso.emit(this.setComponenteDinamico(campo));
+      this.datiPermesso.dataFineValidita = campo.value;
     }
   }
 
@@ -296,6 +303,7 @@ export class DatiPermessoComponent implements OnInit {
   disabilitaCheckboxFunzione(funzione, campo: NgModel) {
     if (this.funzione === FunzioneGestioneEnum.DETTAGLIO ||
       (funzione.value.nome !== 'quadratura' && funzione.value.nome !== 'iuv senza bonifico' && campo.value == null)) {
+      funzione.checked = false;
       return true;
     } else {
       return false;

@@ -197,6 +197,15 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
             permessoCompleto.listaFunzioni[0].permessoCancellato = true;
             this.mapPermessi.set(Utils.uuidv4(), permessoCompleto);
           }
+        } else if (permessoCompleto.servizioId != null && permessoCompleto.listaFunzioni.length > 0) {
+          // da amministrativo a gestionale
+          if (componenteDinamico.oggetto.servizioId == null) {
+            // elimina logicamente permesso su servizio
+            componenteDinamico.oggetto.listaFunzioni.forEach((f => {
+              if (f.nomeFunzione !== 'quadratura' && f.nomeFunzione !== 'iuv senza bonifico')
+                f.permessoCancellato = true;
+            }));
+          }
         } else if (permessoCompleto.enteId != null && permessoCompleto.listaFunzioni.length > 0) {
           // da gestionale ad amministrativo
           if (componenteDinamico.oggetto.enteId == null) {
