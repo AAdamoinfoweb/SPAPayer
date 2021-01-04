@@ -117,7 +117,7 @@ export class DettaglioTransazioneComponent extends DettaglioElementoComponent im
       pagatore: {value: dettaglioTransazione.pagatoreCodiceFiscale},
       importo: {value: dettaglioTransazione.importo},
       idRendicontazione: {value: dettaglioTransazione.rendicontazioneId},
-      idQuadratura: {value: dettaglioTransazione.quadraturaId}
+      idQuadratura: {value: dettaglioTransazione.flussoId}
     };
   }
 

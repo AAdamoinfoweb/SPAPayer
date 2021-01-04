@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {GestisciElementoComponent} from '../../gestisci-elemento.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {Tabella} from '../../../../model/tabella/Tabella';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
@@ -18,6 +18,9 @@ import {SpinnerOverlayService} from '../../../../../../services/spinner-overlay.
 import {MenuService} from '../../../../../../services/menu.service';
 import * as moment from 'moment';
 import {Utils} from '../../../../../../utils/Utils';
+import {Banner} from '../../../../model/banner/Banner';
+import {BannerService} from '../../../../../../services/banner.service';
+import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
 
 @Component({
   selector: 'app-quadratura',
@@ -75,7 +78,8 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
               private renderer: Renderer2, private el: ElementRef,
               private menuService: MenuService,
               private quadraturaService: QuadraturaService,
-              private spinnerOverlayService: SpinnerOverlayService
+              private spinnerOverlayService: SpinnerOverlayService,
+              private bannerService: BannerService
   ) {
     super(router, route, http, amministrativoService);
   }
@@ -99,7 +103,7 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
 
   init() {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
-      {label: 'Quadratura PagoPa', link: null}
+      {label: 'Quadratura', link: null}
     ], true);
     this.popolaListaElementi();
   }
@@ -157,7 +161,7 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   }
 
   isQuadrato(quadratura: Quadratura): boolean {
-    return quadratura.quadrata;
+    return quadratura.quadrata === 0;
   }
 
   eseguiAzioni(azioneTool: ToolEnum): void {
@@ -175,12 +179,23 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
   }
 
   esportaFlussiInTxtFile(listaFlussoQuadraturaPagoPaId: Array<number>): void {
-    this.quadraturaService.downloadFlussi(listaFlussoQuadraturaPagoPaId, this.idFunzione).subscribe(listaFlussi => {
-      listaFlussi.forEach((flusso, index) => {
-        if (flusso) {
-          Utils.downloadBase64ToTxtFile(flusso, 'flusso_' + index);
+    this.quadraturaService.downloadFlussi(listaFlussoQuadraturaPagoPaId, this.idFunzione).subscribe(response => {
+
+      if (!(response instanceof HttpErrorResponse)) {
+        if (response.esito != null) {
+          const banner: Banner = {
+            titolo: 'ATTENZIONE',
+            testo: response.esito,
+            tipo: getBannerType(LivelloBanner.WARNING)
+          };
+          this.bannerService.bannerEvent.emit([banner]);
         }
-      });
+        response.listaFlussi.forEach((flusso, index) => {
+          if (flusso) {
+            Utils.downloadBase64ToTxtFile(flusso, 'flusso_' + index);
+          }
+        });
+      }
     });
   }
 
@@ -201,18 +216,18 @@ export class QuadraturaComponent extends GestisciElementoComponent implements On
     const iconaSocieta = new ImmaginePdf();
     iconaSocieta.indiceColonna = 0;
     iconaSocieta.srcIcona = 'assets/img/users-solid-pdf-img.png';
-    iconaSocieta.posizioneX = 60;
-    iconaSocieta.posizioneY = 8;
-    iconaSocieta.larghezza = 18;
-    iconaSocieta.altezza = 15;
+    iconaSocieta.posizioneX = 46;
+    iconaSocieta.posizioneY = 14;
+    iconaSocieta.larghezza = 15;
+    iconaSocieta.altezza = 13;
 
     const iconaEnti = new ImmaginePdf();
     iconaEnti.indiceColonna = 1;
     iconaEnti.srcIcona = 'assets/img/users-solid-pdf-img.png';
-    iconaEnti.posizioneX = 60;
-    iconaEnti.posizioneY = 8;
-    iconaEnti.larghezza = 18;
-    iconaEnti.altezza = 15;
+    iconaEnti.posizioneX = 50;
+    iconaEnti.posizioneY = 5;
+    iconaEnti.larghezza = 16;
+    iconaEnti.altezza = 13;
 
     return [iconaSocieta, iconaEnti];
   }
