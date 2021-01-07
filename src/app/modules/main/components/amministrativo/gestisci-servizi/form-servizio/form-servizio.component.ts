@@ -37,7 +37,7 @@ import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte'
 import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
 import {v4 as uuidv4} from 'uuid';
 import * as _ from 'lodash';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {ConfiguratoreCampiNuovoPagamento} from '../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 import {ContoCorrente} from '../../../../model/ente/ContoCorrente';
@@ -58,10 +58,9 @@ import {Utils} from '../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {NotifichePagamento} from '../../../../model/servizio/NotifichePagamento';
 import * as moment from 'moment';
-import {BannerService} from "../../../../../../services/banner.service";
 import {aggiornaTipoCampoEvent} from '../../gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
 import {aggiungiTipoCampoEvent} from '../../gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
-import {RoutingService} from "../../../../../../services/routing.service";
+import {RoutingService} from '../../../../../../services/routing.service';
 
 @Component({
   selector: 'app-form-servizio',
@@ -70,7 +69,7 @@ import {RoutingService} from "../../../../../../services/routing.service";
 })
 export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  constructor(private cdr: ChangeDetectorRef, private bannerService: BannerService,
+  constructor(private cdr: ChangeDetectorRef,
               private renderer: Renderer2,
               public configuraServizioService: ConfiguraServizioService,
               private componentFactoryResolver: ComponentFactoryResolver,
@@ -439,7 +438,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         .subscribe((id) => {
           if (id) {
             this.resetPagina();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
     } else if (this.funzione == FunzioneGestioneEnum.MODIFICA) {
@@ -447,7 +445,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         .subscribe((id) => {
           if (id) {
             this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaServizio/' + this.servizio.id, null);
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
     }
