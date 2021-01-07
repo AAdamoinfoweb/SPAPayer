@@ -46,7 +46,6 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
 
   // calendar
   isCalendarOpen = false;
-  // todo verificare data attivazione minima
   readonly minDateDDMMYYYY = moment().format('DD/MM/YYYY');
   readonly tipoData = ECalendarValue.String;
 
