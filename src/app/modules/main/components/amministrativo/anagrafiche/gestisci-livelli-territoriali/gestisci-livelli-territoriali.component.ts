@@ -17,7 +17,6 @@ import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {Observable} from 'rxjs';
-import {BannerService} from '../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestione-livelli-territoriali',
@@ -65,7 +64,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
               protected route: ActivatedRoute, protected http: HttpClient, protected amministrativoService: AmministrativoService,
               private renderer: Renderer2, private livelloTerritorialeService: LivelloTerritorialeService, private el: ElementRef,
               private menuService: MenuService,
-              private confirmationService: ConfirmationService, private bannerService: BannerService
+              private confirmationService: ConfirmationService
   ) {
     super(router, route, http, amministrativoService);
   }
@@ -147,7 +146,6 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
       Utils.getModale(() => {
           this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;

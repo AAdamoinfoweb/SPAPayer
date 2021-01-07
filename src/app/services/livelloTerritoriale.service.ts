@@ -4,6 +4,8 @@ import {LivelloTerritoriale} from '../modules/main/model/LivelloTerritoriale';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
+import {Utils} from '../utils/Utils';
+import {BannerService} from './banner.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ export class LivelloTerritorialeService {
 
   private readonly eliminaLivelliTerritorialiurl = this.livelloTerritorialeBaseUrl + '/eliminaLivelloTerritoriale';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private bannerService: BannerService) { }
 
   ricercaLivelliTerritoriali(livelloTerritorialeId: number, idFunzione: string): Observable<any> {
     const url = environment.bffBaseUrl + this.livelloTerritorialeBaseUrl;
@@ -54,7 +56,8 @@ export class LivelloTerritorialeService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
-        return body;
+      this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+      return body;
       }));
   }
 
@@ -68,6 +71,7 @@ export class LivelloTerritorialeService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }),
       catchError((err, caught) => {
@@ -89,6 +93,7 @@ export class LivelloTerritorialeService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }),
       catchError((err, caught) => {
