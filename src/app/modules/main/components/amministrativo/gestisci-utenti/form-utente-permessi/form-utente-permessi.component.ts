@@ -217,7 +217,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
             }
           } else if (permessoCompleto.enteId != null && permessoCompleto.listaFunzioni.length > 0) {
             // da gestionale ad amministrativo
-            if (componenteDinamico.oggetto.enteId == null) {
+            if (componenteDinamico.oggetto.enteId == null || permessoCompleto.enteId != componenteDinamico.oggetto.enteId) {
               // elimina logicamente permessi gestionali precedenti
               const listaFunzioniAggiornata = permessoCompleto.listaFunzioni.map((permessoFunzione) => {
                 permessoFunzione.permessoCancellato = true;
