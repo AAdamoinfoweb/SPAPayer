@@ -10,7 +10,6 @@ import {FormElementoParentComponent} from '../../../form-elemento-parent.compone
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {BannerService} from '../../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-dettaglio-societa',
@@ -36,8 +35,7 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
     protected amministrativoService: AmministrativoService,
     private overlayService: OverlayService,
     private societaService: SocietaService,
-    confirmationService: ConfirmationService,
-    private bannerService: BannerService
+    confirmationService: ConfirmationService
   ) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
@@ -89,16 +87,11 @@ export class FormSocietaComponent extends FormElementoParentComponent implements
         this.societaService.aggiuntaSocieta(this.societa, this.idFunzione).subscribe((response) => {
           if (!(response instanceof HttpErrorResponse)) {
             this.societa = new Societa();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.societaService.modificaSocieta(this.societa, this.idFunzione).subscribe((response) => {
-          if (!(response instanceof HttpErrorResponse)) {
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-          }
-        });
+        this.societaService.modificaSocieta(this.societa, this.idFunzione).subscribe();
         break;
     }
   }

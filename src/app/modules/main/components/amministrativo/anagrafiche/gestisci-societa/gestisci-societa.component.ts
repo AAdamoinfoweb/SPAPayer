@@ -17,7 +17,6 @@ import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {Observable} from 'rxjs';
-import {BannerService} from '../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestione-societa',
@@ -69,7 +68,7 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private societaService: SocietaService, private el: ElementRef,
               private menuService: MenuService,
-              private confirmationService: ConfirmationService, private bannerService: BannerService
+              private confirmationService: ConfirmationService
               ) {
     super(router, route, http, amministrativoService);
 
@@ -160,7 +159,6 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
       Utils.getModale(() => {
           this.societaService.eliminazioneSocieta(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;
