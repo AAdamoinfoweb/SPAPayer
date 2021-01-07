@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from "rxjs";
 import {catchError, map} from "rxjs/operators";
@@ -11,6 +11,8 @@ import {InserimentoTipologiaServizio} from "../modules/main/model/campo/Inserime
 import {ModificaTipologiaServizio} from "../modules/main/model/campo/ModificaTipologiaServizio";
 import {ParametriRicercaServizio} from '../modules/main/model/servizio/ParametriRicercaServizio';
 import {InserimentoTipoCampo} from '../modules/main/model/campo/InserimentoTipoCampo';
+import {BannerService} from './banner.service';
+import {Utils} from '../utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +28,7 @@ export class CampoTipologiaServizioService {
   private configurazioneCampiNuovoPagamentoUrl = '/configurazioneCampiNuovoPagamento';
   private inserimentoTipoCampoUrl = '/tipoCampo';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private bannerService: BannerService) {
   }
 
   recuperaDettaglioTipologiaServizio(idTipologiaServizio: number, idFunzione): Observable<TipologiaServizio> {
@@ -130,7 +132,8 @@ export class CampoTipologiaServizioService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
-      return body;
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+        return body;
     }));
   }
 
@@ -142,6 +145,7 @@ export class CampoTipologiaServizioService {
       withCredentials: true,
       headers: h
     }).pipe(map((id: number) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return id;
       }),
       catchError((err, caught) => {
@@ -161,6 +165,7 @@ export class CampoTipologiaServizioService {
       withCredentials: true,
       headers: h
     }).pipe(map(() => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return null;
       }),
       catchError((err, caught) => {
