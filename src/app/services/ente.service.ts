@@ -11,6 +11,10 @@ import {Comune} from "../modules/main/model/Comune";
 import {Provincia} from "../modules/main/model/Provincia";
 import {EsitoInserimentoModificaEnte} from "../modules/main/model/ente/EsitoInserimentoModificaEnte";
 import {Logo} from "../modules/main/model/ente/Logo";
+import {BannerService} from './banner.service';
+import {Banner} from '../modules/main/model/banner/Banner';
+import {getBannerType, LivelloBanner} from '../enums/livelloBanner.enum';
+import {Utils} from '../utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +32,7 @@ export class EnteService {
 
   private readonly contiCorrentiUrl = '/contiCorrenti';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private bannerService: BannerService) {
   }
 
   ricercaEnti(parametriRicercaEnte: ParametriRicercaEnte, idFunzione: string): Observable<SintesiEnte[]> {
@@ -73,6 +77,20 @@ export class EnteService {
       }));
   }
 
+  private mostraBanner(response: EsitoInserimentoModificaEnte): void {
+    let banner: Banner;
+    if (response.esito != null) {
+      banner = {
+        titolo: 'ATTENZIONE',
+        testo: response.esito,
+        tipo: getBannerType(LivelloBanner.WARNING)
+      };
+    } else {
+      banner = Utils.bannerOperazioneSuccesso();
+    }
+    this.bannerService.bannerEvent.emit([banner]);
+  }
+
   eliminaEnti(listaEntiId: Array<number>, idFunzione: string): Observable<EsitoInserimentoModificaEnte | HttpErrorResponse> {
     const url = environment.bffBaseUrl + this.eliminaEntiUrl;
     let h: HttpHeaders = new HttpHeaders();
@@ -83,6 +101,7 @@ export class EnteService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: EsitoInserimentoModificaEnte) => {
+      this.mostraBanner(body);
       return body;
     }),
       catchError((err, caught) => {
@@ -104,6 +123,7 @@ export class EnteService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: EsitoInserimentoModificaEnte) => {
+        this.mostraBanner(body);
         return body;
       }),
       catchError((err, caught) => {
@@ -127,6 +147,7 @@ export class EnteService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: EsitoInserimentoModificaEnte) => {
+        this.mostraBanner(body);
         return body;
       }),
       catchError((err, caught) => {
