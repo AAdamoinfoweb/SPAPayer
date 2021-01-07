@@ -1,12 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaStatistiche} from '../modules/main/model/statistica/ParametriRicercaStatistiche';
 import {AttivitaPianificata} from '../modules/main/model/attivitapianificata/AttivitaPianificata';
 import {SintesiAttivitaPianificata} from '../modules/main/model/attivitapianificata/SintesiAttivitaPianificata';
 import {FiltroSelect} from '../modules/main/model/servizio/FiltroSelect';
+import {BannerService} from './banner.service';
+import {Utils} from '../utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,7 @@ export class AttivitaPianificataService {
 
   private readonly filtroAttivitaPianificataBeanUrl = this.gestisciAttivitaPianificateBasePath + '/filtroAttivitaPianificataBean';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private bannerService: BannerService) {
   }
 
   recuperaFiltroAttivitaPianificataBean(idFunzione: string): Observable<FiltroSelect[]> {
@@ -79,7 +81,7 @@ export class AttivitaPianificataService {
       }));
   }
 
-  eliminaAttivitaPianificate(listaAttivitaPianificateId: Array<number>, idFunzione: string): Observable<any | HttpErrorResponse> {
+  eliminaAttivitaPianificate(listaAttivitaPianificateId: Array<number>, idFunzione: string): Observable<any> {
     const url = environment.bffBaseUrl + this.eliminaAttivitaPianificateUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -89,7 +91,8 @@ export class AttivitaPianificataService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
-      return body;
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+        return body;
     }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
@@ -110,6 +113,7 @@ export class AttivitaPianificataService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: number) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }),
       catchError((err, caught) => {
@@ -121,7 +125,7 @@ export class AttivitaPianificataService {
       }));
   }
 
-  modificaAttivitaPianificata(attivitaPianificata: AttivitaPianificata, idFunzione: string): Observable<number | HttpErrorResponse> {
+  modificaAttivitaPianificata(attivitaPianificata: AttivitaPianificata, idFunzione: string): Observable<number> {
     const url = environment.bffBaseUrl + this.attivitaPianificataBaseUrl + '/' + attivitaPianificata.id;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -131,6 +135,7 @@ export class AttivitaPianificataService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: number) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }),
       catchError((err, caught) => {

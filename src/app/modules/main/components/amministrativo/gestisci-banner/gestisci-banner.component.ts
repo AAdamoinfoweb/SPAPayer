@@ -146,7 +146,6 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
       Utils.getModale(() => {
           this.bannerService.eliminaBanner(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;
