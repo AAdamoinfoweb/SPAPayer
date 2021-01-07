@@ -72,7 +72,6 @@ export class DatiPermessoComponent implements OnInit {
   ngOnInit(): void {
     if (this.datiPermesso == null) {
       this.datiPermesso = new PermessoCompleto();
-      // TODO liste Società, Ente relative all'utente amministratore inserito/modificato mockate temporaneamente in attesa di informazioni su come recuperarle
       this.letturaSocieta(null).subscribe();
 
       this.datiPermesso.enteId = undefined;
@@ -141,7 +140,6 @@ export class DatiPermessoComponent implements OnInit {
     this.listaServizi = [];
     this.listaFunzioni = [];
 
-    // TODO lista Servizio relativa all'utente amministratore inserito/modificato mockata temporaneamente in attesa di informazioni su come recuperarla
     if (enteId != null) {
       this.nuovoPagamentoService.recuperaFiltroServizi(enteId).pipe(map((listaServizi: FiltroServizio[]) => {
         listaServizi.forEach(servizio => {
