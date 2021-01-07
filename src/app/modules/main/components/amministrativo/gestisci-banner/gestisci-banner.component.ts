@@ -112,7 +112,7 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
     const dataSistema = moment();
     const momentInizio = banner.inizio ? moment(banner.inizio, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
     const momentFine = banner.fine ? moment(banner.fine, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
-    return banner.attivo && momentInizio.isSameOrBefore(dataSistema) && (momentFine == null || momentFine.isSameOrAfter(dataSistema));
+    return banner.attivo && momentInizio != null && momentInizio.isSameOrBefore(dataSistema) && (momentFine == null || momentFine.isSameOrAfter(dataSistema));
   }
 
   getObservableFunzioneRicerca(): Observable<Banner[]> {
