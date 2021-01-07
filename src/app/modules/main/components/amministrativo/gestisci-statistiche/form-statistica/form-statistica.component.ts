@@ -4,7 +4,7 @@ import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enu
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {ConfirmationService} from 'primeng/api';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Statistica} from '../../../../model/statistica/Statistica';
 import {StatisticaService} from '../../../../../../services/statistica.service';
@@ -133,17 +133,12 @@ export class FormStatisticaComponent extends FormElementoParentComponent impleme
       if (statisticaId != null) {
         this.datiStatistica = new Statistica();
         this.inizializzaDatiStatistica();
-        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
       }
     });
   }
 
   private modificaStatistica(statistica: Statistica) {
-    this.statisticaService.modificaStatistica(statistica, this.idFunzione).subscribe((response) => {
-      if (!(response instanceof HttpErrorResponse)) {
-        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-      }
-    });
+    this.statisticaService.modificaStatistica(statistica, this.idFunzione).subscribe();
   }
 
   disabilitaBottone(): boolean {

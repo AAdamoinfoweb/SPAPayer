@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {ParametriRicercaStatistiche} from '../modules/main/model/statistica/ParametriRicercaStatistiche';
 import {Statistica} from '../modules/main/model/statistica/Statistica';
+import {BannerService} from './banner.service';
+import {Utils} from '../utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class StatisticaService {
   private readonly eliminaStatisticheUrl = this.gestisciStatisticheBasePath + '/eliminaStatistiche';
   private readonly eseguiQueryUrl = this.gestisciStatisticheBasePath + '/eseguiQuery';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private bannerService: BannerService) {
   }
 
   ricercaStatistiche(parametriRicercaStatistiche: ParametriRicercaStatistiche, idFunzione: string): Observable<any[]> {
@@ -57,7 +59,7 @@ export class StatisticaService {
       }));
   }
 
-  eliminaStatistiche(listaStatisticheId: Array<number>, idFunzione: string): Observable<any | HttpErrorResponse> {
+  eliminaStatistiche(listaStatisticheId: Array<number>, idFunzione: string): Observable<any> {
     const url = environment.bffBaseUrl + this.eliminaStatisticheUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -67,7 +69,8 @@ export class StatisticaService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
-      return body;
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+        return body;
     }),
       catchError((err, caught) => {
         if (err.status === 401 || err.status === 400) {
@@ -88,6 +91,7 @@ export class StatisticaService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: number) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }),
       catchError((err, caught) => {
@@ -99,7 +103,7 @@ export class StatisticaService {
       }));
   }
 
-  modificaStatistica(statistica: Statistica, idFunzione: string): Observable<number | HttpErrorResponse> {
+  modificaStatistica(statistica: Statistica, idFunzione: string): Observable<number> {
     const url = environment.bffBaseUrl + this.statisticheBaseUrl + '/' + statistica.id;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -109,6 +113,7 @@ export class StatisticaService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: number) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }),
       catchError((err, caught) => {
