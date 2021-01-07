@@ -117,7 +117,7 @@ export class UtenteService {
         return body;
       }),
       catchError((err, caught) => {
-        if (err.status == 401 || err.status == 400) {
+        if (err.status == 401 || err.status == 400 || err.status == 500) {
           return of(err);
         } else {
            return of(null);

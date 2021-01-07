@@ -98,34 +98,36 @@ export class DatiPermessoComponent implements OnInit {
         }
         this.listaFunzioni.push(funzione);
       });
-      //this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
     });
   }
 
   letturaSocieta(societaId: number) {
-    return this.societaService.ricercaSocieta(societaId, this.idFunzione).pipe(map((listaSocieta: Societa[]) => {
+    return this.societaService.ricercaSocieta(null, this.idFunzione).pipe(map((listaSocieta: Societa[]) => {
       listaSocieta.forEach(societa => {
         const societaElement = {value: societa.id, label: societa.nome};
         this.listaSocieta.push(societaElement);
       });
-      // prevalorizzo il campo societaId con la società avente id minore nella lista recuperata
       if (this.listaSocieta.length > 0) {
-        if (this.listaSocieta.length > 1) {
-          this.datiPermesso.societaId = this.listaSocieta.reduce((prev, curr) => prev.value < curr.value ? prev : curr).value;
+        if (societaId) {
+          let opzioneSelect = this.listaSocieta.find(value => value.value == societaId);
+          this.datiPermesso.societaId = opzioneSelect.value;
         } else {
-          this.datiPermesso.societaId = this.listaSocieta[0].value;
+          // prevalorizzo il campo societaId con la società avente id minore nella lista recuperata
+          if (this.listaSocieta.length > 1) {
+            this.datiPermesso.societaId = this.listaSocieta.reduce((prev, curr) => prev.value < curr.value ? prev : curr).value;
+          } else {
+            this.datiPermesso.societaId = this.listaSocieta[0].value;
+          }
         }
-        this.letturaEnti();
-      } else {
-        this.datiPermesso.societaId = null;
+        this.letturaEnti(societaId);
       }
     }));
   }
 
-  letturaEnti(): void {
+  letturaEnti(societaId: number): void {
     this.listaEnti = [];
 
-    this.nuovoPagamentoService.recuperaFiltroEnti(null, this.datiPermesso.societaId, null).pipe(map((listaEnti: Ente[]) => {
+    this.nuovoPagamentoService.recuperaFiltroEnti(null, societaId, null).pipe(map((listaEnti: Ente[]) => {
       listaEnti.forEach(ente => {
         const enteElement = {value: ente.id, label: ente.nome};
         this.listaEnti.push(enteElement);
@@ -230,8 +232,11 @@ export class DatiPermessoComponent implements OnInit {
   onChangeModel(campo: NgModel) {
     if (campo?.name === 'societaId') {
       this.datiPermesso.enteId = undefined;
-      this.letturaEnti();
+      this.datiPermesso.listaFunzioni = [];
+      this.mapPermessoFunzione = new Map();
+      this.letturaEnti(campo.value);
       this.onChangeDatiPermesso.emit(this.setComponenteDinamico(campo));
+      this.datiPermesso.societaId = campo.value;
     } else if (campo?.name === 'enteId') {
       if (campo.value == null) {
         this.mapPermessoFunzione = new Map<number, PermessoFunzione>();
