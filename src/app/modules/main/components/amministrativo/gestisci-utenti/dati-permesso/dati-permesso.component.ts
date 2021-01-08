@@ -260,7 +260,11 @@ export class DatiPermessoComponent implements OnInit {
       this.onChangeDatiPermesso.emit(this.setComponenteDinamico(campo));
       this.datiPermesso.dataFineValidita = campo.value;
     }
-    this.onValidaDatiPermessoForm.emit(this.datiPermessoForm.valid);
+    this.onValidaDatiPermessoForm.emit(this.isEnteValido());
+  }
+
+  isEnteValido(): boolean {
+    return this.datiPermessoForm.value.enteId !== undefined;
   }
 
   onChangeCheckBox($event: CheckboxChange, funzione: Funzione) {
@@ -298,7 +302,7 @@ export class DatiPermessoComponent implements OnInit {
     }
 
     this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
-    this.onValidaDatiPermessoForm.emit(this.datiPermessoForm.valid);
+    this.onValidaDatiPermessoForm.emit(this.isEnteValido());
   }
 
   private setComponenteDinamico(campo?: NgModel): ComponenteDinamico {
