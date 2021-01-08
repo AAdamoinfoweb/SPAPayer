@@ -20,7 +20,6 @@ import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte'
 import {Observable} from 'rxjs';
 import {Banner} from '../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../enums/livelloBanner.enum';
-import {BannerService} from '../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestisci-enti',
@@ -71,8 +70,7 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
               private renderer: Renderer2, private el: ElementRef,
               private menuService: MenuService,
               private confirmationService: ConfirmationService,
-              private enteService: EnteService,
-              private bannerService: BannerService
+              private enteService: EnteService
   ) {
     super(router, route, http, amministrativoService);
 
@@ -189,17 +187,6 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
           this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
             if (!(response instanceof HttpErrorResponse)) {
               this.popolaListaElementi();
-              let banner: Banner;
-              if (response.esito != null) {
-                  banner = {
-                  titolo: 'ATTENZIONE',
-                  testo: response.esito,
-                  tipo: getBannerType(LivelloBanner.WARNING)
-                };
-              } else {
-                banner = Utils.bannerOperazioneSuccesso();
-              }
-              this.bannerService.bannerEvent.emit([banner]);
             }
           });
           this.righeSelezionate = [];

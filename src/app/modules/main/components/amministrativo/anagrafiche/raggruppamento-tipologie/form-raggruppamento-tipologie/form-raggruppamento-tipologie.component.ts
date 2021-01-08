@@ -92,15 +92,11 @@ export class FormRaggruppamentoTipologieComponent extends FormElementoParentComp
           if (raggruppamento != null) {
             this.raggruppamentoTipologiaServizio = new RaggruppamentoTipologiaServizio();
             this.isFormValido = false;
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
         this.raggruppamentoTipologiaServizioService.modificaRaggruppamentoTipologiaServizio(this.raggruppamentoTipologiaServizio, this.idFunzione).subscribe((response) => {
-          if (!(response instanceof HttpErrorResponse)) {
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-          }
           this.isFormValido = false;
         });
         break;
