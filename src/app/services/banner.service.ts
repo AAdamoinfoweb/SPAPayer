@@ -1,4 +1,4 @@
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {XsrfService} from './xsrf.service';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
@@ -7,6 +7,7 @@ import {Banner} from '../modules/main/model/banner/Banner';
 import {EventEmitter, Injectable} from '@angular/core';
 import * as moment from 'moment';
 import {ParametriRicercaBanner} from '../modules/main/model/banner/ParametriRicercaBanner';
+import {Utils} from '../utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -114,6 +115,7 @@ export class BannerService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+          this.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           return body;
         }),
         catchError((err, caught) => {
@@ -125,7 +127,7 @@ export class BannerService {
         }));
   }
 
-  modificaBanner(datiBanner: Banner, idFunzione: string): Observable<any | HttpErrorResponse> {
+  modificaBanner(datiBanner: Banner, idFunzione: string): Observable<any> {
     const url = environment.bffBaseUrl + this.bannerAmministrativoBaseUrl;
     let h: HttpHeaders = new HttpHeaders();
     h = h.append('idFunzione', idFunzione);
@@ -135,6 +137,7 @@ export class BannerService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+          this.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           return body;
         }),
         catchError((err, caught) => {
@@ -155,6 +158,7 @@ export class BannerService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+        this.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }));
   }

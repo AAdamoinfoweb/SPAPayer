@@ -18,7 +18,6 @@ import {Utils} from '../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../dto/Breadcrumb';
 import {ParametriRicercaTipologiaServizio} from '../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
-import {BannerService} from "../../../../../services/banner.service";
 
 @Component({
   selector: 'app-gestisci-tipologia-servizio',
@@ -55,7 +54,7 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  constructor(router: Router, private bannerService: BannerService,
+  constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private campoTipologiaServizioService: CampoTipologiaServizioService, private el: ElementRef,
               private menuService: MenuService,
@@ -142,7 +141,6 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
       Utils.getModale(() => {
           this.campoTipologiaServizioService.eliminaTipologieServizioSelezionate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
             this.popolaListaElementi();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           });
           this.righeSelezionate = [];
           this.toolbarIcons[this.indiceIconaModifica].disabled = true;
