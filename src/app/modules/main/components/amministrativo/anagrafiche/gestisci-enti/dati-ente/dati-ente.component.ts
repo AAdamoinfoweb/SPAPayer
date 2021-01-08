@@ -14,6 +14,7 @@ import {Logo} from '../../../../../model/ente/Logo';
 import {EnteService} from '../../../../../../../services/ente.service';
 import {FlussoRiversamentoPagoPA} from "../../../../../model/servizio/FlussoRiversamentoPagoPA";
 import {TipoCampoEnum} from "../../../../../../../enums/tipoCampo.enum";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-dati-ente',
@@ -184,6 +185,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
           label: s.nome
         });
       });
+      this.opzioniFiltroSocieta = _.sortBy(this.opzioniFiltroSocieta, ['label']);
     }
   }
 
@@ -201,6 +203,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
         label: livello.nome
       });
     });
+    this.opzioniFiltroLivelliTerritoriale = _.sortBy(this.opzioniFiltroLivelliTerritoriale, ['label']);
   }
 
   letturaComuni() {
@@ -215,6 +218,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
         label: comune.nome
       });
     });
+    this.opzioniFiltroComune = _.sortBy(this.opzioniFiltroComune, ['label']);
   }
 
   letturaProvince() {
@@ -229,6 +233,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
         label: provincia.sigla
       });
     });
+    this.opzioniFiltroProvincia = _.sortBy(this.opzioniFiltroProvincia, ['label']);
   }
 
   filtraComuni() {
