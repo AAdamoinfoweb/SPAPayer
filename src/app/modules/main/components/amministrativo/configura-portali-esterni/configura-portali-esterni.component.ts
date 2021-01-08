@@ -144,11 +144,11 @@ export class ConfiguraPortaliEsterniComponent extends GestisciElementoComponent 
             .subscribe((response) => {
               if (!(response instanceof HttpErrorResponse)) {
                 this.popolaListaElementi();
+                this.righeSelezionate = [];
+                this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+                this.toolbarIcons[this.indiceIconaElimina].disabled = true;
               }
             });
-          this.righeSelezionate = [];
-          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

@@ -8,7 +8,7 @@ import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
 import {MenuService} from '../../../../../services/menu.service';
 import {ConfirmationService} from 'primeng/api';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Utils} from '../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
@@ -162,11 +162,13 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
     this.confirmationService.confirm(
       Utils.getModale(() => {
           this.attivitaPianificataService.eliminaAttivitaPianificate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
-            this.popolaListaElementi();
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              this.righeSelezionate = [];
+              this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+              this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+            }
           });
-          this.righeSelezionate = [];
-          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

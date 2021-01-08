@@ -260,9 +260,9 @@ export class ConfiguraServizioService {
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
-            return of('error');
+            return of(err);
           } else {
-            return of('error');
+            return of(err);
           }
         }));
   }

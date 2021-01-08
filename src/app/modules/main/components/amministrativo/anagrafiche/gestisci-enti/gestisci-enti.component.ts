@@ -187,12 +187,12 @@ export class GestisciEntiComponent extends GestisciElementoComponent implements 
           this.enteService.eliminaEnti(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
             if (!(response instanceof HttpErrorResponse)) {
               this.popolaListaElementi();
+              this.righeSelezionate = [];
+              const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
+              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
+              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
             }
           });
-          this.righeSelezionate = [];
-          const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
-          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
-          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

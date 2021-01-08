@@ -4,7 +4,7 @@ import {Tabella} from '../../../../model/tabella/Tabella';
 import {tipoColonna} from '../../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {MenuService} from '../../../../../../services/menu.service';
 import {ConfirmationService} from 'primeng/api';
@@ -133,12 +133,14 @@ export class RaggruppamentoTipologieComponent extends GestisciElementoComponent 
   eliminaRaggruppamentiSelezionati(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.raggruppamentoTipologiaServizioService.eliminaRaggruppamentoTipologiaServizio(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
-            this.popolaListaElementi();
+          this.raggruppamentoTipologiaServizioService.eliminaRaggruppamentoTipologiaServizio(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              this.righeSelezionate = [];
+              this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+              this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+            }
           });
-          this.righeSelezionate = [];
-          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

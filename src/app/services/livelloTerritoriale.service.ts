@@ -58,6 +58,13 @@ export class LivelloTerritorialeService {
       }).pipe(map((body: any) => {
       this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
       return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(err);
+        } else {
+          return of(err);
+        }
       }));
   }
 

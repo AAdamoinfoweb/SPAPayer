@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {GestisciElementoComponent} from '../gestisci-elemento.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
 import {MenuService} from '../../../../../services/menu.service';
 import {ConfirmationService} from 'primeng/api';
@@ -139,12 +139,14 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
   eliminaTipologieServizioSelezionate(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.campoTipologiaServizioService.eliminaTipologieServizioSelezionate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
-            this.popolaListaElementi();
+          this.campoTipologiaServizioService.eliminaTipologieServizioSelezionate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              this.righeSelezionate = [];
+              this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+              this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+            }
           });
-          this.righeSelezionate = [];
-          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

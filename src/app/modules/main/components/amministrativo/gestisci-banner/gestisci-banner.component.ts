@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ParametriRicercaBanner} from '../../../model/banner/ParametriRicercaBanner';
 import {ToolEnum} from '../../../../../enums/Tool.enum';
 import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
@@ -144,12 +144,14 @@ export class GestisciBannerComponent extends GestisciElementoComponent implement
   eliminaBannerSelezionati(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.bannerService.eliminaBanner(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
-            this.popolaListaElementi();
+          this.bannerService.eliminaBanner(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              this.righeSelezionate = [];
+              this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+              this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+            }
           });
-          this.righeSelezionate = [];
-          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

@@ -3,7 +3,7 @@ import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
 import 'jspdf-autotable';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {Societa} from '../../../../model/Societa';
 import {SocietaService} from '../../../../../../services/societa.service';
@@ -157,12 +157,14 @@ export class GestisciSocietaComponent extends GestisciElementoComponent implemen
   eliminaSocietaSelezionate() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.societaService.eliminazioneSocieta(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
-            this.popolaListaElementi();
+          this.societaService.eliminazioneSocieta(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              this.righeSelezionate = [];
+              this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+              this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+            }
           });
-          this.righeSelezionate = [];
-          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

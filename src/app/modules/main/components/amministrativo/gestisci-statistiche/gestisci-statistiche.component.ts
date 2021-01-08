@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {GestisciElementoComponent} from '../gestisci-elemento.component';
 import {Tabella} from '../../../model/tabella/Tabella';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
 import {ToolEnum} from '../../../../../enums/Tool.enum';
 import {Colonna} from '../../../model/tabella/Colonna';
@@ -190,12 +190,14 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
     this.confirmationService.confirm(
       Utils.getModale(() => {
           this.statisticaService.eliminaStatistiche(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
-            this.popolaListaElementi();
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              this.righeSelezionate = [];
+              const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
+              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
+              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
+            }
           });
-          this.righeSelezionate = [];
-          const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
-          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
-          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )
