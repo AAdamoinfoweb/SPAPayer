@@ -170,7 +170,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
     this.componentRef.instance.onDeletePermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
       const permessoCompleto = this.mapPermessi.get(componenteDinamico.uuid);
-      const isPermessoDaModificare: boolean = permessoCompleto.listaFunzioni
+      const isPermessoDaModificare: boolean = permessoCompleto?.listaFunzioni
         .some((permessoFunzione) => permessoFunzione.permessoId != null);
       if (!isPermessoDaModificare) {
         this.mapPermessi.delete(componenteDinamico.uuid);
@@ -178,6 +178,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
       const viewRef = this.targetMap.get(componenteDinamico.uuid);
       const indexViewRef = this.target.indexOf(viewRef);
+      this.isFormDatiPermessoValido = true;
       if (this.target.length === 1) {
         this.target.clear();
         this.targetMap.clear();

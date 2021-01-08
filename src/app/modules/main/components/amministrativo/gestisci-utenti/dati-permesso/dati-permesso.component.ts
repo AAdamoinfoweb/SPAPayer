@@ -79,6 +79,8 @@ export class DatiPermessoComponent implements OnInit {
 
       this.datiPermesso.enteId = undefined;
       this.datiPermesso.dataInizioValidita = moment().format(Utils.FORMAT_DATE_CALENDAR);
+
+      this.onValidaDatiPermessoForm.emit(false);
     } else {
       // init spinner modifica e dettaglio per lettura permessi
       this.letturaSocieta(this.datiPermesso.societaId).subscribe((value) => {
@@ -87,10 +89,10 @@ export class DatiPermessoComponent implements OnInit {
         this.mapPermessoFunzione = mapPermessoFunzioni;
         this.letturaServizi(this.datiPermesso.enteId);
         this.creaFunzioni();
+
+        this.onValidaDatiPermessoForm.emit(true);
       });
     }
-
-    this.onValidaDatiPermessoForm.emit(false);
   }
 
   private creaFunzioni() {
@@ -258,7 +260,11 @@ export class DatiPermessoComponent implements OnInit {
       this.onChangeDatiPermesso.emit(this.setComponenteDinamico(campo));
       this.datiPermesso.dataFineValidita = campo.value;
     }
-    this.onValidaDatiPermessoForm.emit(this.datiPermessoForm.valid);
+    this.onValidaDatiPermessoForm.emit(this.isEnteValido());
+  }
+
+  isEnteValido(): boolean {
+    return this.datiPermessoForm.value.enteId !== undefined;
   }
 
   onChangeCheckBox($event: CheckboxChange, funzione: Funzione) {
@@ -296,7 +302,7 @@ export class DatiPermessoComponent implements OnInit {
     }
 
     this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
-    this.onValidaDatiPermessoForm.emit(this.datiPermessoForm.valid);
+    this.onValidaDatiPermessoForm.emit(this.isEnteValido());
   }
 
   private setComponenteDinamico(campo?: NgModel): ComponenteDinamico {
