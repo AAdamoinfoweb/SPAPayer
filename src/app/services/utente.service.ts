@@ -6,6 +6,8 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {ParametriRicercaUtente} from '../modules/main/model/utente/ParametriRicercaUtente';
 import {RicercaUtente} from '../modules/main/model/utente/RicercaUtente';
 import {InserimentoModificaUtente} from '../modules/main/model/utente/InserimentoModificaUtente';
+import {BannerService} from './banner.service';
+import {Utils} from '../utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class UtenteService {
   codiceFiscaleEvent: EventEmitter<string> = new EventEmitter<string>();
   utentePermessiAsyncSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private bannerService: BannerService) {
   }
 
   ricercaUtenti(parametriRicercaUtente: ParametriRicercaUtente, idFunzione: string): Observable<RicercaUtente[]> {
@@ -114,6 +116,7 @@ export class UtenteService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }),
       catchError((err, caught) => {
