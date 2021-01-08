@@ -384,12 +384,11 @@
               name="comune"
               #comune="ngModel"
               [(ngModel)]="datiEnte.comune"
-              (ngModelChange)="selezionaComune()"
-              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || !opzioniFiltroComuneFiltrate.length"
               (ngModelChange)="onChangeModel(datiEnteForm, comune)"
             >
               <option [ngValue]="null" selected>Seleziona</option>
-              <option *ngFor="let item of opzioniFiltroComune" [ngValue]="item.value">{{item.label}}</option>
+              <option *ngFor="let item of opzioniFiltroComuneFiltrate" [ngValue]="item.value">{{item.label}}</option>
             </select>
           </div>
         </div>

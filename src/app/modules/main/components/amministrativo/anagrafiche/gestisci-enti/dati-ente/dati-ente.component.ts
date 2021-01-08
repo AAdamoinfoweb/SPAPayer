@@ -46,6 +46,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   opzioniFiltroSocieta: OpzioneSelect[] = [];
   opzioniFiltroLivelliTerritoriale: OpzioneSelect[] = [];
   opzioniFiltroComune: OpzioneSelect[] = [];
+  opzioniFiltroComuneFiltrate: OpzioneSelect[] = [];
   opzioniFiltroProvincia: OpzioneSelect[] = [];
 
   province: Provincia[];
@@ -72,6 +73,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     }
     if (changes.datiEnte) {
       if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
+        this.filtraComuni();
         this.caricaImmagine();
       } else {
         if (this.datiEnte.logo == null || this.datiEnte.logo.contenuto == null) {
@@ -229,17 +231,18 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     });
   }
 
-  selezionaComune() {
-    this.datiEnte.provincia = this.province
-      .find((prov) => prov.codice === this.datiEnte.comune.substring(0, 3))
-      .sigla;
+  filtraComuni() {
+    const provincia = this.province.find((prov) => prov.sigla === this.datiEnte.provincia);
+    if (provincia) {
+      this.opzioniFiltroComuneFiltrate = this.opzioniFiltroComune.filter(opzioneComune => opzioneComune.value && opzioneComune.value.substring(0, 3) === provincia.codice);
+    } else {
+      this.opzioniFiltroComuneFiltrate = [];
+    }
   }
 
   selezionaProvincia() {
-    const provincia = this.province.find((prov) => prov.sigla === this.datiEnte.provincia);
-    if (!(this.datiEnte.comune.includes(provincia.codice))) {
-      this.datiEnte.comune = null;
-    }
+    this.datiEnte.comune = null;
+    this.filtraComuni();
   }
 
   loadImg($event: any) {
