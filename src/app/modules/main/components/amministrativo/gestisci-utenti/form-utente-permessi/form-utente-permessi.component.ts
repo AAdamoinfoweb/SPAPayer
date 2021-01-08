@@ -57,6 +57,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
   asyncSubject: AsyncSubject<string> = new AsyncSubject<string>();
   mapPermessi: Map<string, PermessoCompleto> = new Map();
   isFormDatiUtenteValido = false;
+  isFormDatiPermessoValido = true;
   funzione: FunzioneGestioneEnum;
 
   @ViewChild('datiPermesso', {static: false, read: ViewContainerRef}) target: ViewContainerRef;
@@ -244,6 +245,10 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       this.mapPermessi.set(componenteDinamico.uuid, componenteDinamico.oggetto);
     });
 
+    this.componentRef.instance.onValidaDatiPermessoForm.subscribe((isFormValido: boolean) => {
+      this.isFormDatiPermessoValido = isFormValido;
+    });
+
     return uuidComponente;
   }
 
@@ -263,14 +268,12 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
   disabilitaBottone(): boolean {
     let controlloCodiceFiscale = false;
-    const listaPermessi: PermessoCompleto[] = this.getListaPermessi(this.mapPermessi);
 
     if (this.funzione === FunzioneGestioneEnum.AGGIUNGI) {
       controlloCodiceFiscale = this.codiceFiscale == null || this.codiceFiscale === '';
     }
 
-    return controlloCodiceFiscale || !this.isFormDatiUtenteValido
-      || (listaPermessi.length > 0 && listaPermessi.some(value => !('enteId' in value)));
+    return controlloCodiceFiscale || !this.isFormDatiUtenteValido || !this.isFormDatiPermessoValido;
   }
 
 

@@ -60,6 +60,9 @@ export class DatiPermessoComponent implements OnInit {
   onChangeDatiPermesso: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
 
   @Output()
+  onValidaDatiPermessoForm: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @Output()
   onDeletePermesso: EventEmitter<ComponenteDinamico> = new EventEmitter<ComponenteDinamico>();
 
   @ViewChild('datiPermessoForm') datiPermessoForm: NgForm;
@@ -86,6 +89,8 @@ export class DatiPermessoComponent implements OnInit {
         this.creaFunzioni();
       });
     }
+
+    this.onValidaDatiPermessoForm.emit(false);
   }
 
   private creaFunzioni() {
@@ -253,6 +258,7 @@ export class DatiPermessoComponent implements OnInit {
       this.onChangeDatiPermesso.emit(this.setComponenteDinamico(campo));
       this.datiPermesso.dataFineValidita = campo.value;
     }
+    this.onValidaDatiPermessoForm.emit(this.datiPermessoForm.valid);
   }
 
   onChangeCheckBox($event: CheckboxChange, funzione: Funzione) {
@@ -290,6 +296,7 @@ export class DatiPermessoComponent implements OnInit {
     }
 
     this.onChangeDatiPermesso.emit(this.setComponenteDinamico());
+    this.onValidaDatiPermessoForm.emit(this.datiPermessoForm.valid);
   }
 
   private setComponenteDinamico(campo?: NgModel): ComponenteDinamico {
