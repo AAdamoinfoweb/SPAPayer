@@ -28,10 +28,11 @@ import {flatMap, map} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {ConfiguratoreCampiNuovoPagamento} from '../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 import {v4 as uuidv4} from 'uuid';
-import {InserimentoTipologiaServizio} from "../../../../model/campo/InserimentoTipologiaServizio";
-import {ModificaTipologiaServizio} from "../../../../model/campo/ModificaTipologiaServizio";
+import {InserimentoTipologiaServizio} from '../../../../model/campo/InserimentoTipologiaServizio';
+import {ModificaTipologiaServizio} from '../../../../model/campo/ModificaTipologiaServizio';
 import {aggiornaTipoCampoEvent} from '../modale-campo-form/modale-campo-form.component';
 import {aggiungiTipoCampoEvent} from '../modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
+import {RoutingService} from '../../../../../../services/routing.service';
 
 @Component({
   selector: 'app-form-tipologia-servizio',
@@ -86,7 +87,8 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
     protected amministrativoService: AmministrativoService,
     private viewportRuler: ViewportRuler,
     protected confirmationService: ConfirmationService,
-    public campoTipologiaServizioService: CampoTipologiaServizioService) {
+    public campoTipologiaServizioService: CampoTipologiaServizioService,
+    private routingService: RoutingService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
     this.target = null;
     this.source = null;
@@ -232,7 +234,7 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
       this.campoTipologiaServizioService.inserimentoTipologiaServizio(inserimento, this.idFunzione)
         .subscribe((id) => {
           if (id) {
-            this.resettaFiltri();
+            this.routingService.configuraRouterAndNavigate(this.basePath + '/aggiungiTipologia', null);
           }
         });
     } else if (this.funzione === FunzioneGestioneEnum.MODIFICA) {
@@ -255,13 +257,6 @@ export class FormTipologiaServizioComponent extends FormElementoParentComponent 
 
   abilitaSalva(): boolean {
     return this.codiceTipologia && this.codiceTipologia != "" && this.nomeTipologia && this.nomeTipologia != "";
-  }
-
-  resettaFiltri(): void {
-    this.filtro = null;
-    this.codiceTipologia = null;
-    this.nomeTipologia = null;
-    this.campoTipologiaServizioService.items = [];
   }
 
   onChangeFiltri(filtri: ParametriRicercaTipologiaServizio) {
