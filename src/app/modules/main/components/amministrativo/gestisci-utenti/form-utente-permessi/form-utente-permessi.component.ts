@@ -170,7 +170,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
 
     this.componentRef.instance.onDeletePermesso.subscribe((componenteDinamico: ComponenteDinamico) => {
       const permessoCompleto = this.mapPermessi.get(componenteDinamico.uuid);
-      const isPermessoDaModificare: boolean = permessoCompleto.listaFunzioni
+      const isPermessoDaModificare: boolean = permessoCompleto?.listaFunzioni
         .some((permessoFunzione) => permessoFunzione.permessoId != null);
       if (!isPermessoDaModificare) {
         this.mapPermessi.delete(componenteDinamico.uuid);
