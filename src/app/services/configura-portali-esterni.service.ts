@@ -7,6 +7,8 @@ import {FiltroSelect} from '../modules/main/model/servizio/FiltroSelect';
 import {ParametriRicercaConfiguraPortaleEsterno} from '../modules/main/model/configuraportaliesterni/ParametriRicercaConfiguraPortaleEsterno';
 import {SintesiConfiguraPortaleEsterno} from '../modules/main/model/configuraportaliesterni/SintesiConfiguraPortaleEsterno';
 import {ConfiguraPortaleEsterno} from '../modules/main/model/configuraportaliesterni/ConfiguraPortaleEsterno';
+import {BannerService} from './banner.service';
+import {Utils} from '../utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,7 @@ export class ConfiguraPortaliEsterniService {
   private readonly eliminaPortaleEsternoPath = '/eliminaPortaleEsterno';
 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private bannerService: BannerService) {
   }
 
   configuraPortaliEsterniFiltroPortaleEsterno(idFunzione: string) {
@@ -124,6 +126,7 @@ export class ConfiguraPortaliEsterniService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           return body as number;
         }),
         catchError((err, caught) => {
@@ -145,6 +148,7 @@ export class ConfiguraPortaliEsterniService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           return body;
         }),
         catchError((err, caught) => {
@@ -165,6 +169,7 @@ export class ConfiguraPortaliEsterniService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }));
   }

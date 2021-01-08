@@ -144,7 +144,6 @@ export class ConfiguraPortaliEsterniComponent extends GestisciElementoComponent 
             .subscribe((response) => {
               if (!(response instanceof HttpErrorResponse)) {
                 this.popolaListaElementi();
-                this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
               }
             });
           this.righeSelezionate = [];

@@ -92,15 +92,11 @@ export class FormConfiguraPortaliEsterniComponent extends FormElementoParentComp
             this.datiPortaleEsterno = new ConfiguraPortaleEsterno();
             this.inizializzaDatiPortaleEsterno();
             this.isFormValido = false;
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
         this.configuraPortaliEsterniService.modificaPortaleEsterno(this.portaleEsternoId, this.datiPortaleEsterno, this.idFunzione).subscribe((response) => {
-          if (!(response instanceof HttpErrorResponse)) {
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-          }
           this.isFormValido = false;
         });
         break;
