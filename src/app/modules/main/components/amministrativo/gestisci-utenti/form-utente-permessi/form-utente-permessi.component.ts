@@ -178,6 +178,7 @@ export class FormUtentePermessiComponent extends FormElementoParentComponent imp
       // controllo se esiste un view ref e target ha solo un elemento, se vero uso remove altrimenti clear
       const viewRef = this.targetMap.get(componenteDinamico.uuid);
       const indexViewRef = this.target.indexOf(viewRef);
+      this.isFormDatiPermessoValido = true;
       if (this.target.length === 1) {
         this.target.clear();
         this.targetMap.clear();
