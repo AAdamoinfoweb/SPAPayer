@@ -125,7 +125,7 @@ export class DatiPermessoComponent implements OnInit {
             this.datiPermesso.societaId = this.listaSocieta[0].value;
           }
         }
-        this.letturaEnti(societaId);
+        this.letturaEnti(this.datiPermesso.societaId);
       }
     }));
   }
