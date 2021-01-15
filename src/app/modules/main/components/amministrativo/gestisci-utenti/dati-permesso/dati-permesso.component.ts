@@ -319,7 +319,8 @@ export class DatiPermessoComponent implements OnInit {
   disabilitaCheckboxFunzione(funzione, campo: NgModel) {
     if (this.funzione === FunzioneGestioneEnum.DETTAGLIO ||
       (funzione.value.nome !== 'quadratura' && funzione.value.nome !== 'iuv senza bonifico' && campo.value == null)) {
-      funzione.checked = false;
+      if (this.funzione !== FunzioneGestioneEnum.DETTAGLIO)
+        funzione.checked = false;
       return true;
     } else {
       return false;
