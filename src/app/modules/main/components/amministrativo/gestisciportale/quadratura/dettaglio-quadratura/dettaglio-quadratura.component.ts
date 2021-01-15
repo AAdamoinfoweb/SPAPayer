@@ -30,18 +30,18 @@ export class DettaglioQuadraturaComponent extends FormElementoParentComponent im
   }
 
   initFormPage(snapshot: ActivatedRouteSnapshot) {
-  }
-
-  ngOnInit(): void {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
       {label: 'Quadratura', link: this.basePath},
       {label: 'Dettaglio Flusso Di Quadratura', link: null}
     ], true);
 
-    const idSelezionato = parseInt(this.activatedRoute.snapshot.paramMap.get('quadraturaId'));
+    const idSelezionato = parseInt(snapshot.paramMap.get('quadraturaId'));
     this.quadraturaService.recuperaDettaglioQuadratura(idSelezionato, this.idFunzione).subscribe(quadratura => {
       this.datiQuadratura = quadratura;
     });
+  }
+
+  ngOnInit(): void {
   }
 
   onClickSalva(): void {
