@@ -139,6 +139,7 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
     this.datiContoCorrente.intestazioneCCPostale = contoCorrente.intestazioneCCPostale;
     this.datiContoCorrente.inizioValidita = contoCorrente.inizioValidita;
     this.datiContoCorrente.fineValidita = contoCorrente.fineValidita;
+    this.flussoRiversamentoPagoPA = contoCorrente.flussoRiversamentoPagoPA;
     this.contoSelezionato = true;
     this.onChangeDatiContoCorrente.emit(this.setComponenteDinamico(true));
   }

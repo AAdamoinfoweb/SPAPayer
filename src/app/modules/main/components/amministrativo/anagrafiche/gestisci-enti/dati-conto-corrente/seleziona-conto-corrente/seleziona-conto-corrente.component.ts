@@ -70,6 +70,7 @@ export class SelezionaContoCorrenteComponent implements OnInit, AfterViewInit, O
             moment(contoCorrente.fineValidita, Utils.FORMAT_LOCAL_DATE_TIME_ISO)
               .format(Utils.FORMAT_DATE_CALENDAR) : null
         },
+        flussoRiversamentoPagoPA: contoCorrente.flussoRiversamentoPagoPA
       };
       rows.push(row);
     });
@@ -88,6 +89,7 @@ export class SelezionaContoCorrenteComponent implements OnInit, AfterViewInit, O
     contoCorrente.intestazioneCCPostale = row.intestazioneCCPostale.value;
     contoCorrente.inizioValidita = row.attivazione.value;
     contoCorrente.fineValidita = row.scadenza.value;
+    contoCorrente.flussoRiversamentoPagoPA = row.flussoRiversamentoPagoPA;
     this.onClick.emit(contoCorrente);
     this.display = false;
   }
