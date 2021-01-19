@@ -41,6 +41,11 @@ import {MonitoraggioTransazioniComponent} from './modules/main/components/ammini
 import {DettaglioTransazioneComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-transazione.component';
 import {DettaglioPendenzaComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-pendenza/dettaglio-pendenza.component';
 import {DettaglioEsitoNotificaComponent} from './modules/main/components/amministrativo/gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dettaglio-esito-notifica.component';
+import {QuadraturaComponent} from './modules/main/components/amministrativo/gestisciportale/quadratura/quadratura.component';
+import {DettaglioQuadraturaComponent} from './modules/main/components/amministrativo/gestisciportale/quadratura/dettaglio-quadratura/dettaglio-quadratura.component';
+import {IuvSenzaBonificoComponent} from './modules/main/components/amministrativo/gestisciportale/iuv-senza-bonifico/iuv-senza-bonifico.component';
+import {ConfiguraPortaliEsterniComponent} from './modules/main/components/amministrativo/configura-portali-esterni/configura-portali-esterni.component';
+import {FormConfiguraPortaliEsterniComponent} from './modules/main/components/amministrativo/configura-portali-esterni/form-configura-portali-esterni/form-configura-portali-esterni.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '/home', pathMatch: 'full' },
@@ -115,7 +120,17 @@ const routes: Routes = [
   {path: 'monitoraggioTransazioni', component: MonitoraggioTransazioniComponent},
   {path: 'monitoraggioTransazioni/dettaglioTransazioni/:transazioneId', component: DettaglioTransazioneComponent},
   {path: 'monitoraggioTransazioni/dettaglioTransazioni/dettaglioPendenza/:dettaglioTransazioneId', component: DettaglioPendenzaComponent},
-  {path: 'monitoraggioTransazioni/:transazioneId/esitoNotifiche', component: DettaglioEsitoNotificaComponent}
+  {path: 'monitoraggioTransazioni/:transazioneId/esitoNotifiche', component: DettaglioEsitoNotificaComponent},
+
+  {path: 'quadratura', component: QuadraturaComponent},
+  {path: 'quadratura/dettaglioQuadratura/:quadraturaId', component: DettaglioQuadraturaComponent},
+
+  {path: 'iuvSenzaBonifico', component: IuvSenzaBonificoComponent},
+
+  {path: 'configuraPortaliEsterni', component: ConfiguraPortaliEsterniComponent},
+  {path: 'configuraPortaliEsterni/aggiungiPortaleEsterno', component: FormConfiguraPortaliEsterniComponent},
+  {path: 'configuraPortaliEsterni/modificaPortaleEsterno/:portaleEsternoId', component: FormConfiguraPortaliEsterniComponent},
+  {path: 'configuraPortaliEsterni/dettaglioPortaleEsterno/:portaleEsternoId', component: FormConfiguraPortaliEsterniComponent}
 ];
 
 @NgModule({

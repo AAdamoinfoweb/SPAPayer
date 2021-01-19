@@ -379,8 +379,39 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     }
   }
 
+  scaleToFit(img, canvas) {
+    const context = canvas.getContext('2d');
+    // get the scale
+    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+    // get the top left position of the image
+    const x = (canvas.width / 2) - (img.width / 2) * scale;
+    const y = (canvas.height / 2) - (img.height / 2) * scale;
+    context.drawImage(img, x, y, img.width * scale, img.height * scale);
+  }
+
   inizializzazioneForm(servizio: FiltroServizio): Observable<any> {
     this.servizio = servizio;
+    this.nuovoPagamentoService.getLogoEnte(this.servizio.enteId).subscribe(logo => {
+      if (logo) {
+        const canvas: any = document.getElementById('canvas');
+        if (canvas != null) {
+          const context = canvas.getContext('2d');
+          const reader = new FileReader();
+          // @ts-ignore
+          reader.readAsDataURL(Utils.b64toBlob(logo.contenuto));
+          reader.onload = () => {
+            const imageObj = new Image();
+            if (typeof reader.result === 'string') {
+              imageObj.src = reader.result;
+            }
+            imageObj.onload = () => {
+              context.clearRect(0, 0, canvas.width, canvas.height);
+              this.scaleToFit(imageObj, canvas);
+            };
+          };
+        }
+      }
+    });
     const isCompilato = this.servizio != null;
 
     if (isCompilato) {
@@ -758,14 +789,23 @@ export class DatiNuovoPagamentoComponent implements OnInit, OnChanges {
     bollettino.enteId = this.servizio.enteId;
     bollettino.ente = this.servizio.enteNome;
     bollettino.numero = this.getNumDocumento();
+
     bollettino.anagraficaPagatore = this.model[this.getCampoDettaglioTransazione('anagrafica_pagatore')];
     bollettino.anno = this.model[this.getCampoDettaglioTransazione('anno_documento')];
     bollettino.causale = this.model[this.getCampoDettaglioTransazione('causale')];
-    // rimuovere primi 3 caratteri
+
     bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv')] != null ?
-      this.model[this.getCampoDettaglioTransazione('iuv')].toString().substring(3) : null;
+      this.model[this.getCampoDettaglioTransazione('iuv')].toString() : null;
+
+    // rimuovere primi 3 caratteri
+    if (bollettino.iuv == null)
+      bollettino.iuv = this.model[this.getCampoDettaglioTransazione('iuv (da codice_avviso)')] != null ?
+        this.model[this.getCampoDettaglioTransazione('iuv (da codice_avviso)')].toString().substring(3) : null;
+
     bollettino.cfpiva = this.model[this.getCampoDettaglioTransazione('codice_fiscale_pagatore')];
     bollettino.dataScadenza = this.model[this.getCampoDettaglioTransazione('data_scadenza')] ? moment(this.model[this.getCampoDettaglioTransazione('data_scadenza')], Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    bollettino.dataSanzione = this.model[this.getCampoDettaglioTransazione('data_sanzione')] ? moment(this.model[this.getCampoDettaglioTransazione('data_sanzione')], Utils.FORMAT_DATE_CALENDAR).format(Utils.FORMAT_LOCAL_DATE_TIME) : null;
+    bollettino.targa = this.model[this.getCampoDettaglioTransazione('targa')];
     bollettino.importo = this.model[this.importoNomeCampo];
 
     bollettino.listaCampoDettaglioTransazione = [];

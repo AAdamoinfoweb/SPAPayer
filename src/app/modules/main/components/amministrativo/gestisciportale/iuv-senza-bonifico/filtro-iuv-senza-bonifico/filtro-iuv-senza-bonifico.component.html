@@ -1,0 +1,39 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="heading1">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true"
+          aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroForm="ngForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="heading1">
+    <div class="collapse-body">
+      <!-- Cerca -->
+      <div class="row mt-2 mb-0">
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="filtroInput" class="title">Cerca</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="pt-0"
+                     name="filtro"
+                     id="filtroInput"
+                     autocomplete="off"
+                     [(ngModel)]="filtro" (ngModelChange)="cercaElementi()">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p>inserisci</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

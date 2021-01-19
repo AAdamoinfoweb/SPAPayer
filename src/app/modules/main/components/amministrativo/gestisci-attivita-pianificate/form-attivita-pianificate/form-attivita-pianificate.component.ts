@@ -4,14 +4,12 @@ import {FunzioneGestioneEnum} from '../../../../../../enums/funzioneGestione.enu
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {ConfirmationService} from 'primeng/api';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {SintesiBreadcrumb} from '../../../../dto/Breadcrumb';
 import {Utils} from '../../../../../../utils/Utils';
-import {BannerService} from '../../../../../../services/banner.service';
 import * as moment from 'moment';
 import {AttivitaPianificata} from '../../../../model/attivitapianificata/AttivitaPianificata';
 import {AttivitaPianificataService} from '../../../../../../services/attivita-pianificata.service';
-import {ParametroAttivitaPianificata} from '../../../../model/attivitapianificata/ParametroAttivitaPianificata';
 
 @Component({
   selector: 'app-form-attivita-pianificate',
@@ -24,7 +22,7 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
               protected activatedRoute: ActivatedRoute,
               protected amministrativoService: AmministrativoService,
               protected http: HttpClient, private attivitaPianificataService: AttivitaPianificataService,
-              protected router: Router, private bannerService: BannerService) {
+              protected router: Router) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
 
@@ -124,17 +122,12 @@ export class FormAttivitaPianificateComponent extends FormElementoParentComponen
       if (attivitaPianificataId != null) {
         this.datiAttivitaPianificata = new AttivitaPianificata();
         this.inizializzaDatiAttivitaPianificata();
-        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
       }
     });
   }
 
   private modificaAttivitaPianificata(attivitaPianificata: AttivitaPianificata) {
-    this.attivitaPianificataService.modificaAttivitaPianificata(attivitaPianificata, this.idFunzione).subscribe((response) => {
-      if (!(response instanceof HttpErrorResponse)) {
-        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-      }
-    });
+    this.attivitaPianificataService.modificaAttivitaPianificata(attivitaPianificata, this.idFunzione).subscribe();
   }
 
   disabilitaBottone(): boolean {

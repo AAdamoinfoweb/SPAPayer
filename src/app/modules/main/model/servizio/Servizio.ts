@@ -12,6 +12,7 @@ export class Servizio {
   flagPresenzaDettaglioTransazione: boolean;
   flagPresenzaRendicontazione: boolean;
   flagPresenzaDatiBonifico: boolean;
+  flagPresenzaQuadraturaPagoPA: boolean;
 
   flussiNotifiche: FlussiNotifiche;
   listaCampiServizio: CampoServizio[];

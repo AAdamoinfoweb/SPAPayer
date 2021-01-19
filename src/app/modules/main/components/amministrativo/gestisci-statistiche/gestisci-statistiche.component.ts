@@ -18,7 +18,6 @@ import * as moment from 'moment';
 import {ParametriRicercaStatistiche} from '../../../model/statistica/ParametriRicercaStatistiche';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
 import {ConfirmationService} from 'primeng/api';
-import {BannerService} from '../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestisci-statistiche',
@@ -30,7 +29,7 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
   constructor(protected router: Router, protected activatedRoute: ActivatedRoute,
               protected http: HttpClient, protected amministrativoService: AmministrativoService,
               private menuService: MenuService, private statisticaService: StatisticaService,
-              private confirmationService: ConfirmationService, private bannerService: BannerService) {
+              private confirmationService: ConfirmationService) {
     super(router, activatedRoute, http, amministrativoService);
   }
 
@@ -193,13 +192,12 @@ export class GestisciStatisticheComponent extends GestisciElementoComponent impl
           this.statisticaService.eliminaStatistiche(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
             if (!(response instanceof HttpErrorResponse)) {
               this.popolaListaElementi();
-              this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+              this.righeSelezionate = [];
+              const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
+              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
+              this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
             }
           });
-          this.righeSelezionate = [];
-          const mapToolbarIndex = Utils.getMapToolbarIndex(this.toolbarIcons);
-          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.UPDATE)].disabled = true;
-          this.toolbarIcons[mapToolbarIndex.get(ToolEnum.DELETE)].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

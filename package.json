@@ -52,7 +52,7 @@
     "ngx-custom-validators": "9.1.0",
     "ngx-youtube-player": "^7.1.5",
     "primeicons": "4.0.0",
-    "primeng": "10.0.3",
+    "primeng": "11.0.0",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
     "xlsx": "^0.16.8",

@@ -4,6 +4,8 @@ import {Observable, of} from 'rxjs';
 import {RaggruppamentoTipologiaServizio} from '../modules/main/model/RaggruppamentoTipologiaServizio';
 import {environment} from '../../environments/environment';
 import {catchError, map} from 'rxjs/operators';
+import {BannerService} from './banner.service';
+import {Utils} from '../utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class RaggruppamentoTipologiaServizioService {
   private readonly baseUrl = this.raggruppamentoTipologieBasePath + '/raggruppamentoTipologiaServizio';
   private readonly eliminaRaggruppamentoUrl = this.baseUrl + '/eliminaRaggruppamentoTipologiaServizio';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private bannerService: BannerService) { }
 
   ricercaRaggruppamentoTipologiaServizio(raggruppamentoTipologiaServizioId: number, idFunzione: string): Observable<RaggruppamentoTipologiaServizio[]> {
     let params = new HttpParams();
@@ -51,6 +53,7 @@ export class RaggruppamentoTipologiaServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           return body;
         }),
         catchError((err, caught) => {
@@ -72,6 +75,7 @@ export class RaggruppamentoTipologiaServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           return body;
         }),
         catchError((err, caught) => {
@@ -92,7 +96,15 @@ export class RaggruppamentoTipologiaServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           return body;
+        }),
+        catchError((err, caught) => {
+          if (err.status === 401 || err.status === 400) {
+            return of(err);
+          } else {
+            return of(err);
+          }
         }));
   }
 

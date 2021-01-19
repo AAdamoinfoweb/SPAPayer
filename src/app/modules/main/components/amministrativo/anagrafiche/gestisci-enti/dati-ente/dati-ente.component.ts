@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {NgForm, NgModel} from '@angular/forms';
+import {FormControl, NgForm, NgModel, ValidatorFn} from '@angular/forms';
 import {EnteCompleto} from '../../../../../model/ente/EnteCompleto';
 import {FunzioneGestioneEnum} from '../../../../../../../enums/funzioneGestione.enum';
 import {Utils} from '../../../../../../../utils/Utils';
@@ -12,6 +12,9 @@ import {SocietaService} from '../../../../../../../services/societa.service';
 import {NuovoPagamentoService} from '../../../../../../../services/nuovo-pagamento.service';
 import {Logo} from '../../../../../model/ente/Logo';
 import {EnteService} from '../../../../../../../services/ente.service';
+import {FlussoRiversamentoPagoPA} from "../../../../../model/servizio/FlussoRiversamentoPagoPA";
+import {TipoCampoEnum} from "../../../../../../../enums/tipoCampo.enum";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-dati-ente',
@@ -34,6 +37,9 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   @Output()
   onChangeDatiEnte: EventEmitter<EnteCompleto> = new EventEmitter<EnteCompleto>();
 
+  readonly regexChiaveApi = Utils.API_KEY_REGEX;
+  readonly regexSecretApi = Utils.API_SECRET_REGEX;
+
   @Output()
   isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -41,6 +47,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   opzioniFiltroSocieta: OpzioneSelect[] = [];
   opzioniFiltroLivelliTerritoriale: OpzioneSelect[] = [];
   opzioniFiltroComune: OpzioneSelect[] = [];
+  opzioniFiltroComuneFiltrate: OpzioneSelect[] = [];
   opzioniFiltroProvincia: OpzioneSelect[] = [];
 
   province: Provincia[];
@@ -67,6 +74,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     }
     if (changes.datiEnte) {
       if (this.funzione !== FunzioneGestioneEnum.AGGIUNGI) {
+        this.filtraComuni();
         this.caricaImmagine();
       } else {
         if (this.datiEnte.logo == null || this.datiEnte.logo.contenuto == null) {
@@ -75,6 +83,29 @@ export class DatiEnteComponent implements OnInit, OnChanges {
       }
     }
 
+  }
+
+  isCampoInvalido(campo: NgModel | FormControl) {
+    return campo?.errors;
+  }
+
+  setPlaceholder(campo: NgModel | FormControl, tipoCampo: TipoCampoEnum): string {
+    if (this.funzione === FunzioneGestioneEnum.DETTAGLIO) {
+      return null;
+    } else if (campo instanceof NgModel && campo.control?.errors?.required) {
+      return 'Il campo è obbligatorio';
+    } else if (this.isCampoInvalido(campo)) {
+      return 'campo non valido';
+    } else {
+      switch (tipoCampo) {
+        case TipoCampoEnum.SELECT:
+          return 'Seleziona un elemento dalla lista';
+        case TipoCampoEnum.INPUT_TESTUALE:
+          return 'Inserisci testo';
+        case TipoCampoEnum.DATEDDMMYY:
+          return 'Inserisci data';
+      }
+    }
   }
 
   private pulisciImmagine() {
@@ -131,10 +162,6 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     }
   }
 
-  isCampoInvalido(campo: NgModel) {
-    return campo?.errors != null;
-  }
-
   onChangeModel(form: NgForm, campo: NgModel) {
     if (campo.value == '') {
       this.datiEnte[campo.name] = null;
@@ -158,6 +185,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
           label: s.nome
         });
       });
+      this.opzioniFiltroSocieta = _.sortBy(this.opzioniFiltroSocieta, ['label']);
     }
   }
 
@@ -175,6 +203,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
         label: livello.nome
       });
     });
+    this.opzioniFiltroLivelliTerritoriale = _.sortBy(this.opzioniFiltroLivelliTerritoriale, ['label']);
   }
 
   letturaComuni() {
@@ -189,6 +218,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
         label: comune.nome
       });
     });
+    this.opzioniFiltroComune = _.sortBy(this.opzioniFiltroComune, ['label']);
   }
 
   letturaProvince() {
@@ -203,19 +233,21 @@ export class DatiEnteComponent implements OnInit, OnChanges {
         label: provincia.sigla
       });
     });
+    this.opzioniFiltroProvincia = _.sortBy(this.opzioniFiltroProvincia, ['label']);
   }
 
-  selezionaComune() {
-    this.datiEnte.provincia = this.province
-      .find((prov) => prov.codice === this.datiEnte.comune.substring(0, 3))
-      .sigla;
+  filtraComuni() {
+    const provincia = this.province.find((prov) => prov.sigla === this.datiEnte.provincia);
+    if (provincia) {
+      this.opzioniFiltroComuneFiltrate = this.opzioniFiltroComune.filter(opzioneComune => opzioneComune.value && opzioneComune.value.substring(0, 3) === provincia.codice);
+    } else {
+      this.opzioniFiltroComuneFiltrate = [];
+    }
   }
 
   selezionaProvincia() {
-    const provincia = this.province.find((prov) => prov.sigla === this.datiEnte.provincia);
-    if (!(this.datiEnte.comune.includes(provincia.codice))) {
-      this.datiEnte.comune = null;
-    }
+    this.datiEnte.comune = null;
+    this.filtraComuni();
   }
 
   loadImg($event: any) {
@@ -267,4 +299,5 @@ export class DatiEnteComponent implements OnInit, OnChanges {
     this.datiEnte.logo = null;
     this.onChangeDatiEnte.emit(this.datiEnte);
   }
+
 }

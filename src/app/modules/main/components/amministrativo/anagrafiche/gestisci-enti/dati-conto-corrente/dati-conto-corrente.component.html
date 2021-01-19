@@ -25,7 +25,6 @@
   <!--  fine Header -->
   <div [id]="'collapseCC'+uuid" class="collapse show" role="tabpanel"
        aria-labelledby="idCollapseContoCorrente">
-    <div class="collapse-body">
       <form #datiContoCorrenteForm="ngForm">
         <!--      inizio modale cc -->
         <app-seleziona-conto-corrente [funzione]="funzione"
@@ -34,7 +33,7 @@
         </app-seleziona-conto-corrente>
         <!--      fine modale cc -->
         <!--    inizio Iban, Intestazione -->
-        <div class="row mt-4 mb-0">
+        <div class="row mt-4 mb-0 ml-4">
           <!--      inizio Iban -->
           <div class="col-md-4 pb-2">
             <div class="row">
@@ -91,7 +90,7 @@
         </div>
         <!--    fine Iban, Intestazione -->
         <!--    inizio IbanCCPostale, IntestazioneCCPostale -->
-        <div class="row mt-4 mb-0">
+        <div class="row mt-4 mb-0 ml-4">
           <!--      inizio IbanCC -->
           <div class="col-md-4 pb-2">
             <div class="row">
@@ -148,7 +147,7 @@
         </div>
         <!--    fine IbanCCPostale, IntestazioneCCPostale -->
         <!--    inizio IbanCCPostale, IntestazioneCCPostale -->
-        <div class="row mt-4 mb-0">
+        <div class="row mt-4 mb-0 ml-4">
           <!--      inizio Attivazione -->
           <div class="col-md-2 pb-2">
             <div class="row">
@@ -248,9 +247,174 @@
           </div>
           <!--      fine Scadenza -->
         </div>
+        <div class="row mt-2">
+          <div class="col ml-4">
+            <div class="collapse-header" id="idCollapseflussoPA">
+              <button data-toggle="collapse" data-target="#flussoPA" aria-expanded="true"
+                      aria-controls="flussoPA">
+                Invio flusso di quadratura
+              </button>
+            </div>
+            <div id="flussoPA" class="collapse show" role="tabpanel" aria-labelledby="idCollapseflussoPA">
+              <div class="collapse-body">
+                <div class="row mt-2 mb-0">
+                  <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
+                    <div class="row">
+                      <div class="col">
+                        <label for="emailFlussoPA" class="title">Email</label>
+                      </div>
+                      <div class="col-2">
+                        <it-toggle id="emailFlussoPA" (ngModelChange)="changeEmailFlussoPagoPA(datiContoCorrenteForm, $event)"
+                                   [disabled]="disabilitaCampi()"
+                                   [(ngModel)]="flussoRiversamentoPagoPA.flagNotificaEmail" name="emailFlussoPA"></it-toggle>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <input type="text" autocomplete="off"
+                               [placeholder]="getPlaceholderRequired('Email', flussoRiversamentoPagoPA.flagNotificaEmail)"
+                               [required]="flussoRiversamentoPagoPA.flagNotificaEmail"
+                               id="email" [customvalidator]="validateEmail()"
+                               name="email" [(ngModel)]="flussoRiversamentoPagoPA.email"
+                               #email="ngModel"
+                               (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, email)"
+                               [disabled]="!flussoRiversamentoPagoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
+                      </div>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col">
+                            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                               [ngClass]="{'text-muted': !isCampoInvalido(email),
+                             'text-invalid': isCampoInvalido(email)}">
+                              {{setPlaceholder(email, TipoCampoEnum.INPUT_TESTUALE)}}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <input type="text" autocomplete="off" placeholder="Ccn" id="ccn"
+                               name="ccn" [(ngModel)]="flussoRiversamentoPagoPA.ccn"
+                               #ccn="ngModel" [customvalidator]="validateEmail()"
+                               (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, ccn)"
+                               [disabled]="!flussoRiversamentoPagoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
+                      </div>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col">
+                            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                               [ngClass]="{'text-muted': !isCampoInvalido(ccn),
+                             'text-invalid': isCampoInvalido(ccn)}">
+                              {{setPlaceholder(ccn, TipoCampoEnum.INPUT_TESTUALE)}}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
+                    <div class="row">
+                      <div class="col">
+                        <label for="ftpFlussoPA"
+                               [ngClass]="{'required': flussoRiversamentoPagoPA.flagNotificaFtp, 'title':true}">Ftp</label>
+                      </div>
+                      <div class="col-2">
+                        <it-toggle id="ftpFlussoPA" (ngModelChange)="changeFtpFlussoPagoPA(datiContoCorrenteForm, $event)"
+                                   [disabled]="disabilitaCampi()"
+                                   [(ngModel)]="flussoRiversamentoPagoPA.flagNotificaFtp" name="ftpFlussoPA"></it-toggle>
+                      </div>
+                    </div>
+                    <div class="row">
 
-        <!--    fine IbanCCPostale, IntestazioneCCPostale -->
+                      <div class="col-12">
+                        <input type="text" autocomplete="off"
+                               (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, server)"
+                               [required]="flussoRiversamentoPagoPA.flagNotificaFtp"
+                               [placeholder]="getPlaceholderRequired('Server (nome o IP)', flussoRiversamentoPagoPA.flagNotificaFtp)"
+                               id="server" name="server" [customvalidator]="validateServer()"
+                               [ngModel]="flussoRiversamentoPagoPA.server" #server="ngModel"
+                               [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
+                      </div>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col">
+                            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                               [ngClass]="{'text-muted': !isCampoInvalido(server),
+                             'text-invalid': isCampoInvalido(server)}">
+                              {{setPlaceholder(server, TipoCampoEnum.INPUT_TESTUALE)}}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <input type="text" autocomplete="off"
+                               (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, username)"
+                               [required]="flussoRiversamentoPagoPA.flagNotificaFtp"
+                               [placeholder]="getPlaceholderRequired('Username', flussoRiversamentoPagoPA.flagNotificaFtp)"
+                               id="username" name="username"
+                               #username="ngModel"
+                               [ngModel]="flussoRiversamentoPagoPA.username"
+                               [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
+                      </div>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col">
+                            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                               [ngClass]="{'text-muted': !isCampoInvalido(username),
+                             'text-invalid': isCampoInvalido(username)}">
+                              {{setPlaceholder(username, TipoCampoEnum.INPUT_TESTUALE)}}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <input type="text" autocomplete="off"
+                               (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, password)"
+                               [required]="flussoRiversamentoPagoPA.flagNotificaFtp"
+                               [placeholder]="getPlaceholderRequired('Password', flussoRiversamentoPagoPA.flagNotificaFtp)"
+                               id="password"
+                               name="password" #password="ngModel"
+                               [ngModel]="flussoRiversamentoPagoPA.password"
+                               [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
+                      </div>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col">
+                            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                               [ngClass]="{'text-muted': !isCampoInvalido(password),
+                             'text-invalid': isCampoInvalido(password)}">
+                              {{setPlaceholder(password, TipoCampoEnum.INPUT_TESTUALE)}}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <input type="text" autocomplete="off" id="directory"
+                               (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, directory)"
+                               [required]="flussoRiversamentoPagoPA.flagNotificaFtp"
+                               [placeholder]="getPlaceholderRequired('Directory', flussoRiversamentoPagoPA.flagNotificaFtp)"
+                               name="directory" #directory="ngModel"
+                               [ngModel]="flussoRiversamentoPagoPA.directory"
+                               [disabled]="!flussoRiversamentoPagoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
+                      </div>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col">
+                            <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                               [ngClass]="{'text-muted': !isCampoInvalido(directory),
+                             'text-invalid': isCampoInvalido(directory)}">
+                              {{setPlaceholder(directory, TipoCampoEnum.INPUT_TESTUALE)}}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
-    </div>
   </div>
 </div>

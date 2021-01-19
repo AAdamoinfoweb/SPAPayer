@@ -6,7 +6,7 @@ import {Tabella} from '../../../model/tabella/Tabella';
 import {tipoColonna} from '../../../../../enums/TipoColonna.enum';
 import {tipoTabella} from '../../../../../enums/TipoTabella.enum';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
 import {CampoTipologiaServizioService} from '../../../../../services/campo-tipologia-servizio.service';
 import {MenuService} from '../../../../../services/menu.service';
@@ -22,7 +22,6 @@ import {SintesiServizio} from '../../../model/servizio/SintesiServizio';
 import {TipoUtenteEnum} from '../../../../../enums/TipoUtente.enum';
 import * as moment from 'moment';
 import {SpinnerOverlayService} from '../../../../../services/spinner-overlay.service';
-import {BannerService} from "../../../../../services/banner.service";
 
 @Component({
   selector: 'app-gestisci-servizi',
@@ -72,7 +71,7 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  constructor(router: Router, private bannerService: BannerService,
+  constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2,
               private configuraServizioService: ConfiguraServizioService,
@@ -101,7 +100,6 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
 
   init() {
     this.breadcrumbList = this.inizializzaBreadcrumbList([
-      {label: 'Gestisci Anagrafiche', link: null},
       {label: 'Configura Servizi', link: null}
     ]);
     this.popolaListaElementi();
@@ -168,14 +166,13 @@ export class GestisciServiziComponent extends GestisciElementoComponent implemen
       Utils.getModale(() => {
           this.configuraServizioService.eliminaServizioSelezionati(this.getListaIdElementiSelezionati(), this.idFunzione)
             .subscribe((value) => {
-              if (!value) {
+              if (!(value instanceof HttpErrorResponse)) {
                 this.popolaListaElementi();
-                this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+                this.righeSelezionate = [];
+                this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+                this.toolbarIcons[this.indiceIconaElimina].disabled = true;
               }
             });
-          this.righeSelezionate = [];
-          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

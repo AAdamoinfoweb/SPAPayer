@@ -18,7 +18,6 @@ import {ParametriRicercaStatistiche} from '../../../model/statistica/ParametriRi
 import {SintesiAttivitaPianificata} from '../../../model/attivitapianificata/SintesiAttivitaPianificata';
 import {AttivitaPianificataService} from '../../../../../services/attivita-pianificata.service';
 import * as moment from 'moment';
-import {BannerService} from '../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestisci-attivita-pianificate',
@@ -66,7 +65,7 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
   constructor(protected router: Router, protected route: ActivatedRoute, protected http: HttpClient,
               protected amministrativoService: AmministrativoService, private renderer: Renderer2, private el: ElementRef,
               private menuService: MenuService, private confirmationService: ConfirmationService,
-              private attivitaPianificataService: AttivitaPianificataService, private bannerService: BannerService) {
+              private attivitaPianificataService: AttivitaPianificataService) {
     super(router, route, http, amministrativoService);
   }
 
@@ -127,7 +126,9 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
       ? moment(attivitaPianificata.avvioSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
     const momentFine = attivitaPianificata.fineSchedulazione
       ? moment(attivitaPianificata.fineSchedulazione, Utils.FORMAT_LOCAL_DATE_TIME_ISO) : null;
-    return attivitaPianificata.abilitato && (momentInizio != null && momentInizio.isSameOrBefore(dataSistema))
+    return attivitaPianificata.abilitato
+      && attivitaPianificata.attivitaPianificataBeanId != null
+      && (momentInizio == null || (momentInizio != null && momentInizio.isSameOrBefore(dataSistema)))
       && (momentFine === null || momentFine.isSameOrAfter(dataSistema));
   }
 
@@ -163,12 +164,11 @@ export class GestisciAttivitaPianificateComponent extends GestisciElementoCompon
           this.attivitaPianificataService.eliminaAttivitaPianificate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
             if (!(response instanceof HttpErrorResponse)) {
               this.popolaListaElementi();
-              this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+              this.righeSelezionate = [];
+              this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+              this.toolbarIcons[this.indiceIconaElimina].disabled = true;
             }
           });
-          this.righeSelezionate = [];
-          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

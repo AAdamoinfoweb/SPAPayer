@@ -141,7 +141,7 @@
 
     <div class="row">
       <!-- Bottone sx -->
-      <div class="col-2">
+      <div [ngClass]="{'col-2': funzione !== FunzioneGestioneEnum.DETTAGLIO, 'col-12 text-center': funzione === FunzioneGestioneEnum.DETTAGLIO}">
         <button id="buttonAnnulla" class="btn btn-secondary"
                 (click)="onClickAnnulla(funzione)">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
       </div>

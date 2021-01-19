@@ -33,6 +33,8 @@ export class Utils {
   static readonly CODICE_FISCALE_REGEX = '^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
   static readonly CODICE_FISCALE_O_PARTITA_IVA_REGEX = '^[0-9]{11}$|^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$';
   static readonly PARTITA_IVA_REGEX = '^[0-9]{11}$';
+  static readonly API_KEY_REGEX = '^(.){32,32}$';
+  static readonly API_SECRET_REGEX = Utils.API_KEY_REGEX;
 
   static creaLink = (value, link, iconHref?) => {
     return iconHref ? {value, link, iconHref} : {value, link, iconHref: null};
@@ -69,18 +71,6 @@ export class Utils {
 
   static creaIcona = (path, color, tooltip, display, placement?) => {
     return placement ? {path, color, tooltip, display, placement} : {path, color, tooltip, display, placement: 'right'};
-  }
-
-  static ordinaOpzioniSelect(opzioni: OpzioneSelect[]) {
-    opzioni.sort((opzione1, opzione2) => {
-      if (opzione1.label > opzione2.label) {
-        return 1;
-      } else if (opzione1.label < opzione2.label) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
   }
 
   static getModale(confermaFn, tipoModale: TipoModaleEnum, titolo?, messaggio?) {

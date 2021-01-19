@@ -37,7 +37,7 @@ import {ParametriRicercaEnte} from '../../../../model/ente/ParametriRicercaEnte'
 import {CampoTipologiaServizio} from '../../../../model/CampoTipologiaServizio';
 import {v4 as uuidv4} from 'uuid';
 import * as _ from 'lodash';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 import {ConfiguratoreCampiNuovoPagamento} from '../../../../model/campo/ConfiguratoreCampiNuovoPagamento';
 import {ContoCorrente} from '../../../../model/ente/ContoCorrente';
@@ -52,17 +52,15 @@ import {BeneficiarioServizio} from '../../../../model/servizio/BeneficiarioServi
 import {FiltroUfficio} from '../../../../model/servizio/FiltroUfficio';
 import {Contatti} from '../../../../model/servizio/Contatti';
 import {Servizio} from '../../../../model/servizio/Servizio';
-import {FlussoRiversamentoPagoPA} from '../../../../model/servizio/FlussoRiversamentoPagoPA';
 import {FlussiNotifiche} from '../../../../model/servizio/FlussiNotifiche';
 import {ComponenteDinamico} from '../../../../model/ComponenteDinamico';
 import {Utils} from '../../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../../enums/tipoModale.enum';
 import {NotifichePagamento} from '../../../../model/servizio/NotifichePagamento';
 import * as moment from 'moment';
-import {BannerService} from "../../../../../../services/banner.service";
 import {aggiornaTipoCampoEvent} from '../../gestisci-tipologia-servizio/modale-campo-form/modale-campo-form.component';
 import {aggiungiTipoCampoEvent} from '../../gestisci-tipologia-servizio/modale-campo-form/modale-aggiungi-tipo-campo/modale-aggiungi-tipo-campo.component';
-import {RoutingService} from "../../../../../../services/routing.service";
+import {RoutingService} from '../../../../../../services/routing.service';
 
 @Component({
   selector: 'app-form-servizio',
@@ -71,7 +69,7 @@ import {RoutingService} from "../../../../../../services/routing.service";
 })
 export class FormServizioComponent extends FormElementoParentComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  constructor(private cdr: ChangeDetectorRef, private bannerService: BannerService,
+  constructor(private cdr: ChangeDetectorRef,
               private renderer: Renderer2,
               public configuraServizioService: ConfiguraServizioService,
               private componentFactoryResolver: ComponentFactoryResolver,
@@ -147,7 +145,7 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   private refreshItemsEvent: EventEmitter<any> = new EventEmitter<any>();
   private listaDipendeDa: CampoTipologiaServizio[];
   rendicontazioneGiornaliera: RendicontazioneGiornaliera = new RendicontazioneGiornaliera();
-  rendicontazioneFlussoPA: FlussoRiversamentoPagoPA = new FlussoRiversamentoPagoPA();
+
   TipoCampoEnum = TipoCampoEnum;
   invioNotifiche: any = {};
   emailsControl: FormControl[] = [new FormControl()];
@@ -287,8 +285,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         if (value.flussiNotifiche) {
           this.rendicontazioneGiornaliera = value.flussiNotifiche.rendicontazioneGiornaliera != null ?
             value.flussiNotifiche.rendicontazioneGiornaliera : new RendicontazioneGiornaliera();
-          this.rendicontazioneFlussoPA = value.flussiNotifiche.flussoRiversamentoPagoPA != null ?
-            value.flussiNotifiche.flussoRiversamentoPagoPA : new FlussoRiversamentoPagoPA();
           if (value.flussiNotifiche.notifichePagamento &&
             value.flussiNotifiche.notifichePagamento && value.flussiNotifiche.notifichePagamento.length > 0) {
             const strings = value.flussiNotifiche.notifichePagamento;
@@ -371,7 +367,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   inizializzaBreadcrumb(): void {
     const breadcrumbs: SintesiBreadcrumb[] = [];
-    breadcrumbs.push(new SintesiBreadcrumb('Gestisci Anagrafiche', null));
     breadcrumbs.push(new SintesiBreadcrumb('Configura Servizi', this.basePath));
     breadcrumbs.push(new SintesiBreadcrumb(this.getTestoFunzione(this.funzione) + ' Servizio', null));
     this.breadcrumbList = this.inizializzaBreadcrumbList(breadcrumbs);
@@ -408,7 +403,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     const flussiNotifiche = new FlussiNotifiche();
     flussiNotifiche.notifichePagamento = [];
     flussiNotifiche.rendicontazioneGiornaliera = this.rendicontazioneGiornaliera;
-    flussiNotifiche.flussoRiversamentoPagoPA = this.rendicontazioneFlussoPA;
     if (emails && emails.length > 0) {
       emails.forEach(email => {
         const notifichePagamento: NotifichePagamento = new NotifichePagamento();
@@ -444,7 +438,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         .subscribe((id) => {
           if (id) {
             this.resetPagina();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
     } else if (this.funzione == FunzioneGestioneEnum.MODIFICA) {
@@ -452,7 +445,6 @@ export class FormServizioComponent extends FormElementoParentComponent implement
         .subscribe((id) => {
           if (id) {
             this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaServizio/' + this.servizio.id, null);
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
     }
@@ -848,36 +840,9 @@ export class FormServizioComponent extends FormElementoParentComponent implement
   }
 
   changeEmailGiornaliera(event: boolean) {
-    if (!event) {
-      this.rendicontazioneGiornaliera.email = null;
-      this.rendicontazioneGiornaliera.ccn = null;
-    }
-  }
-
-  changeEmailFlussoPagoPA(event: boolean) {
-    if (!event) {
-      this.rendicontazioneFlussoPA.email = null;
-      this.rendicontazioneFlussoPA.ccn = null;
-    }
-  }
-
-  changeFtpFlussoPagoPA(event: boolean) {
-    if (!event) {
-      this.rendicontazioneFlussoPA.server = null;
-      this.rendicontazioneFlussoPA.username = null;
-      this.rendicontazioneFlussoPA.password = null;
-      this.rendicontazioneFlussoPA.directory = null;
-    }
   }
 
   changeFtpGiornaliera(event: boolean) {
-    if (!event) {
-      this.rendicontazioneGiornaliera.server = null;
-      this.rendicontazioneGiornaliera.username = null;
-      this.rendicontazioneGiornaliera.password = null;
-      this.rendicontazioneGiornaliera.directory = null;
-      this.rendicontazioneGiornaliera.nuovoFormato = null;
-    }
   }
 
   showModalAtClick(item: CampoTipologiaServizio) {
@@ -925,6 +890,10 @@ export class FormServizioComponent extends FormElementoParentComponent implement
     arr.splice(event.container.data.index, 0, event.previousContainer.data.item);
 
     this.configuraServizioService.campoServizioAddList = arr;
+  }
+
+  isPresenteInQuadratura() {
+    return !this.servizio.flagPresenzaQuadraturaPagoPA;
   }
 }
 

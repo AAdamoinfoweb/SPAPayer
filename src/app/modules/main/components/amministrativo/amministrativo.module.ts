@@ -90,6 +90,17 @@ import {DettaglioPendenzaComponent} from './gestisciportale/monitoraggio-transaz
 import {DatiPendenzaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-pendenza/dati-pendenza/dati-pendenza.component';
 import {DettaglioEsitoNotificaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dettaglio-esito-notifica.component';
 import {DatiNotificaComponent} from './gestisciportale/monitoraggio-transazioni/dettaglio-transazione/dettaglio-esito-notifica/dati-notifica/dati-notifica.component';
+import {QuadraturaComponent} from './gestisciportale/quadratura/quadratura.component';
+import {FiltroQuadraturaComponent} from './gestisciportale/quadratura/filtro-quadratura/filtro-quadratura.component';
+import {DettaglioQuadraturaComponent} from './gestisciportale/quadratura/dettaglio-quadratura/dettaglio-quadratura.component';
+import {DatiQuadraturaComponent} from './gestisciportale/quadratura/dati-quadratura/dati-quadratura.component';
+import {IuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonifico/iuv-senza-bonifico.component';
+import {FiltroIuvSenzaBonificoComponent} from './gestisciportale/iuv-senza-bonifico/filtro-iuv-senza-bonifico/filtro-iuv-senza-bonifico.component';
+import {ConfiguraPortaliEsterniComponent} from './configura-portali-esterni/configura-portali-esterni.component';
+import {FiltroConfiguraPortaliEsterniComponent} from './configura-portali-esterni/filtro-configura-portali-esterni/filtro-configura-portali-esterni.component';
+import {FormConfiguraPortaliEsterniComponent} from './configura-portali-esterni/form-configura-portali-esterni/form-configura-portali-esterni.component';
+import {DatiPortaleEsternoComponent} from './configura-portali-esterni/dati-portale-esterno/dati-portale-esterno.component';
+import {ModaleTipoPortaleEsternoComponent} from './configura-portali-esterni/modale-tipo-portale-esterno/modale-tipo-portale-esterno.component';
 
 
 @NgModule({
@@ -159,7 +170,18 @@ import {DatiNotificaComponent} from './gestisciportale/monitoraggio-transazioni/
     DettaglioPendenzaComponent,
     DatiPendenzaComponent,
     DettaglioEsitoNotificaComponent,
-    DatiNotificaComponent
+    DatiNotificaComponent,
+    QuadraturaComponent,
+    FiltroQuadraturaComponent,
+    DettaglioQuadraturaComponent,
+    DatiQuadraturaComponent,
+    IuvSenzaBonificoComponent,
+    FiltroIuvSenzaBonificoComponent,
+    ConfiguraPortaliEsterniComponent,
+    FiltroConfiguraPortaliEsterniComponent,
+    FormConfiguraPortaliEsterniComponent,
+    DatiPortaleEsternoComponent,
+    ModaleTipoPortaleEsternoComponent
   ],
   imports: [
     HttpClientModule,
@@ -224,7 +246,8 @@ import {DatiNotificaComponent} from './gestisciportale/monitoraggio-transazioni/
   ],
   exports: [
     ModaleCampoFormComponent,
-    ModaleAggiungiTipoCampoComponent
+    ModaleAggiungiTipoCampoComponent,
+    ModaleTipoPortaleEsternoComponent
   ],
   schemas: [NO_ERRORS_SCHEMA]
 })

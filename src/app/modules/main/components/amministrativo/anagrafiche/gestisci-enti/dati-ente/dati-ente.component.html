@@ -132,6 +132,62 @@
       <!--      fine Logo -->
     </div>
     <!--    fine Decrizione, Logo -->
+    <!--    inizio Chiave API, Secret API -->
+    <div class="row mt-4 mb-0">
+      <!--    inizio Chiave API-->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="chiaveApi" class="title ">
+              Chiave API</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="chiaveApi" name="chiaveApi" #chiaveApi="ngModel"
+                   [(ngModel)]="datiEnte.credenzialiApi.apiKey"
+                   [pattern]="regexChiaveApi"
+                   class="pt-0" autocomplete="off" aria-describedby="chiaveHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   (ngModelChange)="onChangeModel(datiEnteForm, chiaveApi)">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(chiaveApi)">Inserisci chiave API ente</p>
+            <p *ngIf="isCampoInvalido(chiaveApi)" class="text-invalid">{{getMessaggioErrore(chiaveApi)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--    fine Chiave API-->
+      <!--    inizio Secret API-->
+      <div class="col-md-6 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="secretApi" class="title ">
+              Secret API</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" id="secretApi" name="secretApi" #secretApi="ngModel"
+                   [(ngModel)]="datiEnte.credenzialiApi.apiSecret"
+                   [pattern]="regexSecretApi"
+                   class="pt-0" autocomplete="off" aria-describedby="secretHelpDescription"
+                   [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
+                   (ngModelChange)="onChangeModel(datiEnteForm, secretApi)">
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(secretApi)">Inserisci secret API ente</p>
+            <p *ngIf="isCampoInvalido(secretApi)" class="text-invalid">{{getMessaggioErrore(secretApi)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--    fine Secret API-->
+    </div>
+    <!--    fine Chiave API, Secret API -->
     <!--    inizio Dati referente -->
       <!--      sotto-titolo -->
     <div class="row mt-4 mb-0">
@@ -247,7 +303,7 @@
       <!--      fine Telefono -->
     </div>
     <!--      fine Email, Telefono -->
-    <!-- inizio Società, Livello Territoriale, Comune, Provincia -->
+    <!-- inizio Società, Livello Territoriale, Provincia, Comune -->
     <div class="row mt-2 mb-0">
       <!--       inizio select società -->
       <div class="col-md-3 pb-2">
@@ -314,37 +370,6 @@
         </div>
       </div>
       <!--        fine select territoriali -->
-      <!--       inizio select comuni -->
-      <div class="col-md-3 pb-2">
-        <div class="row">
-          <div class="col">
-            <label for="comune" class="title">Comune</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <select
-              id="comune"
-              name="comune"
-              #comune="ngModel"
-              [(ngModel)]="datiEnte.comune"
-              (ngModelChange)="selezionaComune()"
-              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"
-              (ngModelChange)="onChangeModel(datiEnteForm, comune)"
-            >
-              <option [ngValue]="null" selected>Seleziona</option>
-              <option *ngFor="let item of opzioniFiltroComune" [ngValue]="item.value">{{item.label}}</option>
-            </select>
-          </div>
-        </div>
-        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-          <div class="col">
-            <p *ngIf="!isCampoInvalido(comune)">Seleziona comune</p>
-            <p *ngIf="isCampoInvalido(comune)" class="text-invalid">{{getMessaggioErrore(comune)}}</p>
-          </div>
-        </div>
-      </div>
-      <!--        fine select comuni -->
       <!--       inizio select province -->
       <div class="col-md-3 pb-2">
         <div class="row">
@@ -376,8 +401,38 @@
         </div>
       </div>
       <!--        fine select province -->
+      <!--       inizio select comuni -->
+      <div class="col-md-3 pb-2">
+        <div class="row">
+          <div class="col">
+            <label for="comune" class="title">Comune</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <select
+              id="comune"
+              name="comune"
+              #comune="ngModel"
+              [(ngModel)]="datiEnte.comune"
+              [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || !opzioniFiltroComuneFiltrate.length"
+              (ngModelChange)="onChangeModel(datiEnteForm, comune)"
+            >
+              <option [ngValue]="null" selected>Seleziona</option>
+              <option *ngFor="let item of opzioniFiltroComuneFiltrate" [ngValue]="item.value">{{item.label}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+          <div class="col">
+            <p *ngIf="!isCampoInvalido(comune)">Seleziona comune</p>
+            <p *ngIf="isCampoInvalido(comune)" class="text-invalid">{{getMessaggioErrore(comune)}}</p>
+          </div>
+        </div>
+      </div>
+      <!--        fine select comuni -->
     </div>
-    <!-- fine Società, Livello Territoriale, Comune, Provincia -->
+    <!-- fine Società, Livello Territoriale, Provincia, Comune -->
     <!--    fine Dati referente -->
   </form>
 </div>

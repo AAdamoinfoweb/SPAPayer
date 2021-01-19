@@ -12,6 +12,7 @@ import {Bollettino} from '../modules/main/model/bollettino/Bollettino';
 import {EsitoEnum} from '../enums/esito.enum';
 import {DettagliTransazione} from "../modules/main/model/bollettino/DettagliTransazione";
 import {Carrello} from "../modules/main/model/Carrello";
+import {Logo} from "../modules/main/model/ente/Logo";
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,7 @@ export class NuovoPagamentoService {
   compilazioneEvent: EventEmitter<FiltroServizio> = new EventEmitter<FiltroServizio>();
   prezzoEvent: EventEmitter<any> = new EventEmitter<any>();
   pulisciEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  private logoEnteUrl = '/logoEnte';
 
   constructor(private readonly http: HttpClient) {
   }
@@ -278,6 +280,21 @@ export class NuovoPagamentoService {
     return this.http.post(environment.bffBaseUrl + this.verificaEsitoPagamentoUrl, ultima, {withCredentials: true, headers: headers})
       .pipe(map((json: any) => {
         return json ? json.url : null;
+      }), catchError((err, caught) => {
+        if (err.status == 401) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      }));
+  }
+
+  getLogoEnte(enteId: number): Observable<Logo> {
+    let params = new HttpParams();
+    params = params.set('enteId', enteId.toString()); // gestisce casi true, false, null, undefined
+    return this.http.get(environment.bffBaseUrl + this.logoEnteUrl, {withCredentials: true, params})
+      .pipe(map((body: any) => {
+        return body as Logo;
       }), catchError((err, caught) => {
         if (err.status == 401) {
           return of(null);

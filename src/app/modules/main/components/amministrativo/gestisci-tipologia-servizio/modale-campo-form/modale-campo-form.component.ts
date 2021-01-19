@@ -13,6 +13,7 @@ import {ControlloLogico} from '../../../../model/ControlloLogico';
 import {ConfigurazioneCampoDettaglioTransazione} from '../../../../model/campo/ConfigurazioneCampoDettaglioTransazione';
 import {CampoTipologiaServizioService} from '../../../../../../services/campo-tipologia-servizio.service';
 import * as _ from 'lodash';
+import {TipoCampoEnum} from '../../../../../../enums/tipoCampo.enum';
 
 export interface DatiModaleCampo {
   listaDipendeDa: any[];
@@ -48,6 +49,9 @@ export class ModaleCampoFormComponent implements OnInit {
   listaJsonPathFiltrata: ConfigurazioneJsonPath[];
 
   livelloIntegrazioneEnum = LivelloIntegrazioneEnum;
+
+  nomeTipoCampoSelezionato: string;
+  TipoCampoEnum = TipoCampoEnum;
 
   constructor(private overlayService: OverlayService, private amministrativoService: AmministrativoService, private campoTipologiaServizioService: CampoTipologiaServizioService) {
     this.leggiConfigurazioneCampi();
@@ -93,6 +97,16 @@ export class ModaleCampoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.datiModaleCampo?.campoForm?.tipoCampoId) {
+      const tipoCampo = this.listaTipiCampo.find(tipo => tipo.id === this.datiModaleCampo.campoForm.tipoCampoId);
+      if (tipoCampo) {
+        this.nomeTipoCampoSelezionato = tipoCampo.nome;
+        if (this.nomeTipoCampoSelezionato === TipoCampoEnum.SELECT) {
+          this.form.controls['tipologica'].setValidators([Validators.required]);
+        }
+      }
+    }
+
     if (this.datiModaleCampo.listaDipendeDa) {
       this.datiModaleCampo.listaDipendeDa =
         this.datiModaleCampo.listaDipendeDa.filter((value => value.titolo !== this.datiModaleCampo.campoForm.titolo));
@@ -116,6 +130,23 @@ export class ModaleCampoFormComponent implements OnInit {
       if (this.datiModaleCampo.campoForm instanceof CampoServizio) {
         this.datiModaleCampo.campoForm.jsonPathId = null;
       }
+    }
+  }
+
+  selezionaTipoCampo(tipoCampoIdSelezionato: number): void {
+    const tipoCampoSelezionato = this.listaTipiCampo.find(tipoCampo => tipoCampo.id === tipoCampoIdSelezionato);
+    this.nomeTipoCampoSelezionato = tipoCampoSelezionato?.nome;
+    if (this.nomeTipoCampoSelezionato) {
+      if (this.nomeTipoCampoSelezionato === TipoCampoEnum.SELECT) {
+        this.form.controls['tipologica'].enable();
+        this.form.controls['tipologica'].setValidators([Validators.required]);
+      } else {
+        this.datiModaleCampo.campoForm.tipologica = null;
+        this.datiModaleCampo.campoForm.dipendeDa = null;
+        this.form.controls['tipologica'].disable();
+        this.form.controls['tipologica'].clearValidators();
+      }
+      this.form.updateValueAndValidity();
     }
   }
 

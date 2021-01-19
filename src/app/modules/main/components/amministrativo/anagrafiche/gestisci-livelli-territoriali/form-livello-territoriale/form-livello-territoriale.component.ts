@@ -10,7 +10,6 @@ import {FormElementoParentComponent} from '../../../form-elemento-parent.compone
 import {ConfirmationService} from 'primeng/api';
 import {Utils} from '../../../../../../../utils/Utils';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {BannerService} from '../../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-dettaglio-livello-territoriale',
@@ -38,7 +37,7 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
     private overlayService: OverlayService,
     private livelloTerritorialeService: LivelloTerritorialeService,
     confirmationService: ConfirmationService,
-    protected http: HttpClient, private bannerService: BannerService
+    protected http: HttpClient
   ) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
@@ -90,16 +89,11 @@ export class FormLivelloTerritorialeComponent extends FormElementoParentComponen
         this.livelloTerritorialeService.aggiuntaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe((response) => {
           if (!(response instanceof HttpErrorResponse)) {
             this.livelloTerritoriale = new LivelloTerritoriale();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           }
         });
         break;
       case FunzioneGestioneEnum.MODIFICA:
-        this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe((response) => {
-          if (!(response instanceof HttpErrorResponse)) {
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-          }
-        });
+        this.livelloTerritorialeService.modificaLivelloTerritoriale(this.livelloTerritoriale, this.idFunzione).subscribe();
         break;
     }
   }

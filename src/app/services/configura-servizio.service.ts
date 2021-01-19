@@ -10,8 +10,8 @@ import {ParametriRicercaServizio} from '../modules/main/model/servizio/Parametri
 import {SintesiServizio} from '../modules/main/model/servizio/SintesiServizio';
 import * as moment from 'moment';
 import {Utils} from '../utils/Utils';
-import {base64} from "ngx-custom-validators/src/app/base64/validator";
-import {CampoServizio} from "../modules/main/model/servizio/CampoServizio";
+import {CampoServizio} from '../modules/main/model/servizio/CampoServizio';
+import {BannerService} from './banner.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class ConfiguraServizioService {
   campoTipologiaServizioList: CampoServizio[] = [];
   campoServizioAddList: CampoServizio[] = [];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private bannerService: BannerService) {
   }
 
   configuraServiziFiltroTipologia(idFunzione: string) {
@@ -234,6 +234,7 @@ export class ConfiguraServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           return body as number;
         }),
         catchError((err, caught) => {
@@ -254,13 +255,14 @@ export class ConfiguraServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           return null;
         }),
         catchError((err, caught) => {
           if (err.status == 401 || err.status == 400) {
-            return of('error');
+            return of(err);
           } else {
-            return of('error');
+            return of(err);
           }
         }));
   }
@@ -330,6 +332,7 @@ export class ConfiguraServizioService {
       withCredentials: true
     })
       .pipe(map((body: any) => {
+          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
           return body as number;
         }),
         catchError((err, caught) => {

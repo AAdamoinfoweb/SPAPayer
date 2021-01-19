@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {GestisciElementoComponent} from '../gestisci-elemento.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../services/amministrativo.service';
 import {MenuService} from '../../../../../services/menu.service';
 import {ConfirmationService} from 'primeng/api';
@@ -18,7 +18,6 @@ import {Utils} from '../../../../../utils/Utils';
 import {TipoModaleEnum} from '../../../../../enums/tipoModale.enum';
 import {Breadcrumb, SintesiBreadcrumb} from '../../../dto/Breadcrumb';
 import {ParametriRicercaTipologiaServizio} from '../../../model/tipologiaServizio/ParametriRicercaTipologiaServizio';
-import {BannerService} from "../../../../../services/banner.service";
 
 @Component({
   selector: 'app-gestisci-tipologia-servizio',
@@ -55,7 +54,7 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
     tipoTabella: tipoTabella.CHECKBOX_SELECTION
   };
 
-  constructor(router: Router, private bannerService: BannerService,
+  constructor(router: Router,
               route: ActivatedRoute, http: HttpClient, amministrativoService: AmministrativoService,
               private renderer: Renderer2, private campoTipologiaServizioService: CampoTipologiaServizioService, private el: ElementRef,
               private menuService: MenuService,
@@ -140,13 +139,14 @@ export class GestisciTipologiaServizioComponent extends GestisciElementoComponen
   eliminaTipologieServizioSelezionate(): void {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.campoTipologiaServizioService.eliminaTipologieServizioSelezionate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
-            this.popolaListaElementi();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          this.campoTipologiaServizioService.eliminaTipologieServizioSelezionate(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              this.righeSelezionate = [];
+              this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+              this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+            }
           });
-          this.righeSelezionate = [];
-          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

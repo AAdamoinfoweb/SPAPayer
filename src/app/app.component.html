@@ -14,6 +14,12 @@
           </app-overlay>
         </ng-container>
       </ng-container>
+      <ng-container *ngIf="datiTipoPortaleEsterno">
+        <div class="banner" [ngStyle]="{'top': '6vh'}">
+          <app-banner></app-banner>
+        </div>
+        <app-modale-tipo-portale-esterno [datiTipoPortale]="datiTipoPortaleEsterno"></app-modale-tipo-portale-esterno>
+      </ng-container>
     </ng-template>
   </app-overlay>
   <app-login-bar></app-login-bar>
@@ -23,7 +29,7 @@
   </div>
   <div class="main-panel font-color">
     <div class="content">
-      <div class="banner">
+      <div class="banner" *ngIf="!datiTipoPortaleEsterno">
         <app-banner></app-banner>
       </div>
       <router-outlet></router-outlet>

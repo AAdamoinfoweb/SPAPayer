@@ -28,9 +28,12 @@
              [ngStyle]="{fill: row[col.field] != null ? row[col.field].color : '#403d39', display: row[col.field].display}"
               (click)="onIconClick(row[dataKey])"
         >
-          <svg class="icon icon-sm">
+          <svg class="icon icon-sm" *ngIf="isIconInSpriteFile(row[col.field].path)">
             <use [attr.xlink:href]="sprite + row[col.field].path"></use>
           </svg>
+
+          <img *ngIf="!isIconInSpriteFile(row[col.field].path)" src="{{row[col.field].path}}"
+               alt="Alert Icon" [ngStyle]="{cursor: 'pointer', width: '25px', height: '24px'}"/>
         </div>
         <!--  template TESTO  -->
         <div *ngIf="col.type == tipoColonnaEnum.TESTO" [ngClass]="row[col.field].class" [innerHTML]="row[col.field].value | parseHtml">
@@ -50,9 +53,9 @@
         </div>
         <!--  template IMPORTO  -->
         <div *ngIf="col.type == tipoColonnaEnum.IMPORTO" [ngClass]="row[col.field].class">
-          {{row[col.field].value|currency:"EUR":"€ "
+          {{row[col.field].value != null && row[col.field].value != undefined ? (row[col.field].value|currency:"EUR":"€ "
           | replace:'.':'|' | replace:',':'.'
-          | replace:'|':','}}
+          | replace:'|':',') : null}}
         </div>
       </td>
     </tr>

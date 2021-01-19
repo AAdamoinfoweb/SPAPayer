@@ -22,8 +22,8 @@
         <div class="row">
           <div class="col">
             <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
-                    #societaInput="ngModel" [(ngModel)]="datiPermesso.societaId"
-                    (ngModelChange)="onChangeModel(societaInput)"
+                    #societaInput="ngModel" [ngModel]="datiPermesso.societaId"
+                    (change)="onChangeModel(societaInput)"
                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
               <option *ngFor="let item of listaSocieta" [ngValue]="item.value">{{item.label}}</option>
             </select>
@@ -49,7 +49,7 @@
           <div class="col">
             <select [ngClass]="{'input-disabled': !listaEnti.length}"
                     id="selectEnte" name="enteId" [required]="datiPermesso.enteId === undefined"
-                    #enteInput="ngModel" [(ngModel)]="datiPermesso.enteId" (ngModelChange)="onChangeModel(enteInput)"
+                    #enteInput="ngModel" [ngModel]="datiPermesso.enteId" (change)="onChangeModel(enteInput)"
                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
               <option [ngValue]="undefined" [selected]="true">Seleziona</option>
               <option *ngFor="let item of listaEnti" [ngValue]="item.value">{{item.label}}</option>
@@ -76,10 +76,10 @@
         </div>
         <div class="row">
           <div class="col">
-            <select [ngClass]="{'input-disabled': datiPermesso.enteId == null}"
+            <select [ngClass]="{'input-disabled': enteInput.value == null}"
                     id="selectServizio" name="servizioId"
-                    #servizioInput="ngModel" [(ngModel)]="datiPermesso.servizioId"
-                    (ngModelChange)="onChangeModel(servizioInput)"
+                    #servizioInput="ngModel" [ngModel]="datiPermesso.servizioId"
+                    (change)="onChangeModel(servizioInput)"
                     [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO">
               <option [ngValue]="null" [selected]="true" *ngIf="datiPermesso.enteId != null">Seleziona</option>
               <option [ngValue]="null" [selected]="true" *ngIf="datiPermesso.enteId == null">Tutto</option>
@@ -99,7 +99,7 @@
       <div class="col-md-2 pb-2">
         <div class="row">
           <div class="col">
-            <label for="attivazione" class="title">Attivazione</label>
+            <label for="dataInizioValidita" class="title">Attivazione</label>
           </div>
         </div>
         <div class="row">
@@ -110,7 +110,7 @@
             </svg>
             <dp-date-picker
               mode="day"
-              id="attivazione"
+              id="dataInizioValidita"
               theme="dp-material"
               [config]="{
               locale: 'it',
@@ -124,11 +124,11 @@
               returnedValueType: tipoData
             }"
               #attivazioneInput="ngModel"
-              [(ngModel)]="datiPermesso.dataInizioValidita"
-              name="attivazione"
+              [ngModel]="datiPermesso.dataInizioValidita"
+              name="dataInizioValidita"
               #datePickerAttivazione
+              (onSelect)="onChangeModel(attivazioneInput)"
               (click)="isCalendarOpen = false"
-              (ngModelChange)="onChangeModel(attivazioneInput)"
               [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
             ></dp-date-picker>
           </div>
@@ -145,7 +145,7 @@
       <div class="col-md-2 pb-2">
         <div class="row">
           <div class="col">
-            <label for="scadenza" class="title">Scadenza</label>
+            <label for="dataFineValidita" class="title">Scadenza</label>
           </div>
         </div>
         <div class="row">
@@ -156,7 +156,7 @@
             </svg>
             <dp-date-picker
               mode="day"
-              id="scadenza"
+              id="dataFineValidita"
               theme="dp-material"
               [config]="{
               locale: 'it',
@@ -169,11 +169,11 @@
               returnedValueType: tipoData
             }"
               #scadenzaInput="ngModel"
-              [(ngModel)]="datiPermesso.dataFineValidita"
-              name="scadenza"
+              [ngModel]="datiPermesso.dataFineValidita"
+              name="dataFineValidita"
               #datePickerScadenza
+              (onSelect)="onChangeModel(scadenzaInput)"
               (click)="isCalendarOpen = false"
-              (ngModelChange)="onChangeModel(attivazioneInput)"
               [ngClass]="{'disabled': funzione === FunzioneGestioneEnum.DETTAGLIO}"
             ></dp-date-picker>
           </div>
@@ -189,13 +189,12 @@
       </div>
     </div>
 
-    <div
-      *ngIf="isSelectValida(datiPermesso.enteId, listaEnti) && datiPermesso.servizioId !== listaServizi[listaServizi.length - 1]?.value">
+    <div *ngIf="isSelectValida(enteInput.value, listaEnti)">
       <div class="row">
         <div *ngFor="let funzion of listaFunzioni; let i = index" class="col-3">
           <it-checkbox [id]="i" [label]="funzion.label" (change)="onChangeCheckBox($event, funzion.value)"
                        [checked]="funzion.checked"
-                       [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO"></it-checkbox>
+                       [disabled]="disabilitaCheckboxFunzione(funzion, servizioInput)"></it-checkbox>
         </div>
       </div>
     </div>

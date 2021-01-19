@@ -14,4 +14,6 @@ export class Bollettino {
   causale: string;
   iuv: string;
   listaCampoDettaglioTransazione: CampoDettaglioTransazione[];
+  dataSanzione: string;
+  targa: string;
 }

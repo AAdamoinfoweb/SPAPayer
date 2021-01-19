@@ -33,112 +33,114 @@
         </button>
       </div>
       <div id="contatti" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltri">
-        <div class="row mt-2 mb-0">
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="nome" class="title">Nome</label>
+        <div class="collapse-body">
+          <div class="row mt-2 mb-0">
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="nome" class="title">Nome</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input id="nome" name="nome" type="text" class="input-text pt-0" autocomplete="off"
+                         #nome="ngModel" [(ngModel)]="contatti.nome" [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p
+                    [ngClass]="{'text-invalid': isCampoInvalido(nome)}">
+                    {{setPlaceholder(nome, TipoCampoEnum.INPUT_TESTUALE)}}
+                  </p>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <input id="nome" name="nome" type="text" class="input-text pt-0" autocomplete="off"
-                       #nome="ngModel" [(ngModel)]="contatti.nome" [disabled]="disabilitaCampi()">
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="cognome" class="title">Cognome</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input id="cognome" name="cognome" type="text" class="input-text pt-0" autocomplete="off"
+                         #cognome="ngModel" [(ngModel)]="contatti.cognome" [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p
+                    [ngClass]="{'text-invalid': isCampoInvalido(cognome)}">
+                    {{setPlaceholder(cognome, TipoCampoEnum.INPUT_TESTUALE)}}
+                  </p>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <p
-                  [ngClass]="{'text-invalid': isCampoInvalido(nome)}">
-                  {{setPlaceholder(nome, TipoCampoEnum.INPUT_TESTUALE)}}
-                </p>
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="tel" class="title">Tel. ufficio o cellulare</label>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="cognome" class="title">Cognome</label>
+              <div class="row">
+                <div class="col">
+                  <input id="tel" name="tel" type="text" class="input-text pt-0" autocomplete="off"
+                         #tel="ngModel" [(ngModel)]="contatti.telefono" [disabled]="disabilitaCampi()">
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <input id="cognome" name="cognome" type="text" class="input-text pt-0" autocomplete="off"
-                       #cognome="ngModel" [(ngModel)]="contatti.cognome" [disabled]="disabilitaCampi()">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <p
-                  [ngClass]="{'text-invalid': isCampoInvalido(cognome)}">
-                  {{setPlaceholder(cognome, TipoCampoEnum.INPUT_TESTUALE)}}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="tel" class="title">Tel. ufficio o cellulare</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <input id="tel" name="tel" type="text" class="input-text pt-0" autocomplete="off"
-                       #tel="ngModel" [(ngModel)]="contatti.telefono" [disabled]="disabilitaCampi()">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <p
-                  [ngClass]="{'text-invalid': isCampoInvalido(tel)}">
-                  {{setPlaceholder(tel, TipoCampoEnum.INPUT_TESTUALE)}}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-2 mb-0">
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="email" class="title">Email</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <input id="email" name="email" type="text" class="input-text pt-0" autocomplete="off"
-                       [customvalidator]="validateEmail()"
-                       #email="ngModel" [(ngModel)]="contatti.email" [disabled]="disabilitaCampi()">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <p
-                  [ngClass]="{'text-invalid': isCampoInvalido(email)}">
-                  {{setPlaceholder(email, TipoCampoEnum.INPUT_TESTUALE)}}
-                </p>
+              <div class="row">
+                <div class="col">
+                  <p
+                    [ngClass]="{'text-invalid': isCampoInvalido(tel)}">
+                    {{setPlaceholder(tel, TipoCampoEnum.INPUT_TESTUALE)}}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-md-5 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="reperibile" class="title">Giorni e orario in cui è reperibile</label>
+          <div class="row mt-2 mb-0">
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="email" class="title">Email</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input id="email" name="email" type="text" class="input-text pt-0" autocomplete="off"
+                         [customvalidator]="validateEmail()"
+                         #email="ngModel" [(ngModel)]="contatti.email" [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p
+                    [ngClass]="{'text-invalid': isCampoInvalido(email)}">
+                    {{setPlaceholder(email, TipoCampoEnum.INPUT_TESTUALE)}}
+                  </p>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <input id="reperibile" name="reperibile" type="text" class="input-text pt-0" autocomplete="off"
-                       #reperibile="ngModel" [(ngModel)]="contatti.reperibilita" [disabled]="disabilitaCampi()">
+            <div class="col-md-5 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="reperibile" class="title">Giorni e orario in cui è reperibile</label>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <p
-                  [ngClass]="{'text-invalid': isCampoInvalido(reperibile)}">
-                  {{setPlaceholder(reperibile, TipoCampoEnum.INPUT_TESTUALE)}}
-                </p>
+              <div class="row">
+                <div class="col">
+                  <input id="reperibile" name="reperibile" type="text" class="input-text pt-0" autocomplete="off"
+                         #reperibile="ngModel" [(ngModel)]="contatti.reperibilita" [disabled]="disabilitaCampi()">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p
+                    [ngClass]="{'text-invalid': isCampoInvalido(reperibile)}">
+                    {{setPlaceholder(reperibile, TipoCampoEnum.INPUT_TESTUALE)}}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -152,219 +154,221 @@
         </button>
       </div>
       <div id="integrazione" class="collapse show" role="tabpanel" aria-labelledby="idCollapseIntegrazione">
-        <div class="row mt-2 mb-0">
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
-                       [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}"
-                >Livello di Integrazione</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <select
-                  id="livelloIntegrazione"
-                  name="livelloIntegrazione"
-                  [(ngModel)]="integrazione.livelloIntegrazioneId"
-                  #livelloIntegrazione="ngModel"
-                  [required]="true"
-                  [disabled]="funzione == FunzioneGestioneEnum.DETTAGLIO || funzione == FunzioneGestioneEnum.MODIFICA"
-                  (ngModelChange)="cambiaLivelloIntegrazione($event)">
-                  <option [ngValue]="null" [selected]="true">Seleziona</option>
-                  <option *ngFor="let item of listaLivelloIntegrazione" [ngValue]="item.id">{{item.nome}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <p
-                  [ngClass]="{'text-invalid': isCampoInvalido(livelloIntegrazione)}">
-                  {{setPlaceholder(livelloIntegrazione, TipoCampoEnum.SELECT)}}
-                </p>
-              </div>
-            </div>
-          </div>
-          <ng-container *ngIf="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE">
-            <div class="col-sm-6 col-md-5 col-lg-5 pb-2">
+        <div class="collapse-body">
+          <div class="row mt-2 mb-0">
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
               <div class="row">
                 <div class="col">
-                  <label [htmlFor]="'urlWsBO'" class="title form-elem-title"
-                         [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE}"
-                  >Url del web service di Back Office</label>
+                  <label [htmlFor]="'livelloIntegrazione'" class="title form-elem-title"
+                         [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}"
+                  >Livello di Integrazione</label>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
-                  <input id="urlWsBO" name="urlWsBO" type="text" class="input-text pt-0" autocomplete="off"
-                         [customvalidator]="validateUrl()"
-                         [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE"
-                         #urlWsBO="ngModel" [(ngModel)]="integrazione.urlWebServiceBackoffice"
-                         [disabled]="disabilitaCampi()">
+                  <select
+                    id="livelloIntegrazione"
+                    name="livelloIntegrazione"
+                    [(ngModel)]="integrazione.livelloIntegrazioneId"
+                    #livelloIntegrazione="ngModel"
+                    [required]="true"
+                    [disabled]="funzione == FunzioneGestioneEnum.DETTAGLIO || funzione == FunzioneGestioneEnum.MODIFICA"
+                    (ngModelChange)="cambiaLivelloIntegrazione($event)">
+                    <option [ngValue]="null" [selected]="true">Seleziona</option>
+                    <option *ngFor="let item of listaLivelloIntegrazione" [ngValue]="item.id">{{item.nome}}</option>
+                  </select>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
                   <p
-                    [ngClass]="{'text-invalid': isCampoInvalido(urlWsBO)}">
-                    {{setPlaceholder(urlWsBO, TipoCampoEnum.INPUT_TESTUALE)}}
+                    [ngClass]="{'text-invalid': isCampoInvalido(livelloIntegrazione)}">
+                    {{setPlaceholder(livelloIntegrazione, TipoCampoEnum.SELECT)}}
                   </p>
                 </div>
               </div>
             </div>
-          </ng-container>
-          <ng-container *ngIf="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1">
-            <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
-              <div class="row">
-                <div class="col">
-                  <label [htmlFor]="'codiceEnte'" class="title form-elem-title"
-                         [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1}"
-                  >Codice Ente</label>
+            <ng-container *ngIf="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE">
+              <div class="col-sm-6 col-md-5 col-lg-5 pb-2">
+                <div class="row">
+                  <div class="col">
+                    <label [htmlFor]="'urlWsBO'" class="title form-elem-title"
+                           [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE}"
+                    >Url del web service di Back Office</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <input id="urlWsBO" name="urlWsBO" type="text" class="input-text pt-0" autocomplete="off"
+                           [customvalidator]="validateUrl()"
+                           [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV2_BACK_OFFICE"
+                           #urlWsBO="ngModel" [(ngModel)]="integrazione.urlWebServiceBackoffice"
+                           [disabled]="disabilitaCampi()">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p
+                      [ngClass]="{'text-invalid': isCampoInvalido(urlWsBO)}">
+                      {{setPlaceholder(urlWsBO, TipoCampoEnum.INPUT_TESTUALE)}}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col">
-                  <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
-                         [size]="5" [maxLength]="5"
-                         [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
-                         #codiceEnte="ngModel" [(ngModel)]="integrazione.ufficio.codiceEnte"
-                         [disabled]="disabilitaCampi()">
+            </ng-container>
+            <ng-container *ngIf="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1">
+              <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
+                <div class="row">
+                  <div class="col">
+                    <label [htmlFor]="'codiceEnte'" class="title form-elem-title"
+                           [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1}"
+                    >Codice Ente</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <input id="codiceEnte" name="codiceEnte" type="text" class="input-text pt-0" autocomplete="off"
+                           [size]="5" [maxLength]="5"
+                           [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
+                           #codiceEnte="ngModel" [(ngModel)]="integrazione.ufficio.codiceEnte"
+                           [disabled]="disabilitaCampi()">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                       [ngClass]="{'text-muted': !isCampoInvalido(codiceEnte),
+                         'text-invalid': isCampoInvalido(codiceEnte)}">
+                      {{setPlaceholder(codiceEnte, TipoCampoEnum.INPUT_TESTUALE)}}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col">
-                  <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                     [ngClass]="{'text-muted': !isCampoInvalido(codiceEnte),
-                       'text-invalid': isCampoInvalido(codiceEnte)}">
-                    {{setPlaceholder(codiceEnte, TipoCampoEnum.INPUT_TESTUALE)}}
-                  </p>
+              <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
+                <div class="row">
+                  <div class="col">
+                    <label [htmlFor]="'tipoUfficio'" class="title form-elem-title"
+                    >Tipo Ufficio</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <input id="tipoUfficio" name="tipoUfficio" type="text" class="input-text pt-0" autocomplete="off"
+                           [size]="1" [maxLength]="1"
+                           #tipoUfficio="ngModel" [(ngModel)]="integrazione.ufficio.tipoUfficio"
+                           [disabled]="disabilitaCampi()">
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
-              <div class="row">
-                <div class="col">
-                  <label [htmlFor]="'tipoUfficio'" class="title form-elem-title"
-                  >Tipo Ufficio</label>
+              <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
+                <div class="row">
+                  <div class="col">
+                    <label [htmlFor]="'codiceUfficio'" class="title form-elem-title"
+                    >Codice Ufficio</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <input id="codiceUfficio" name="codiceUfficio" type="text" class="input-text pt-0" autocomplete="off"
+                           [size]="6" [maxLength]="6"
+                           #codiceUfficio="ngModel" [(ngModel)]="integrazione.ufficio.codiceUfficio"
+                           [disabled]="disabilitaCampi()">
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col">
-                  <input id="tipoUfficio" name="tipoUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                         [size]="1" [maxLength]="1"
-                         #tipoUfficio="ngModel" [(ngModel)]="integrazione.ufficio.tipoUfficio"
-                         [disabled]="disabilitaCampi()">
+              <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
+                <div class="row">
+                  <div class="col">
+                    <label [htmlFor]="'codiceIDServizio'" class="title form-elem-title"
+                    >Codice IDServizio</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <input id="codiceIDServizio" name="codiceIDServizio" type="text" class="input-text pt-0"
+                           autocomplete="off" [size]="11" [maxLength]="11"
+                           #codiceIDServizio="ngModel" [(ngModel)]="integrazione.codiceIdServizio"
+                           [disabled]="disabilitaCampi()">
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
-              <div class="row">
-                <div class="col">
-                  <label [htmlFor]="'codiceUfficio'" class="title form-elem-title"
-                  >Codice Ufficio</label>
+              <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+                <div class="row">
+                  <div class="col">
+                    <label [htmlFor]="'numeroTentativiNotifica'" class="title form-elem-title"
+                    >Numero tentativi di notifica</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <input id="numeroTentativiNotifica" name="numeroTentativiNotifica" type="number"
+                           class="input-text pt-0"
+                           autocomplete="off"
+                           #numeroTentativiNotifica="ngModel" [(ngModel)]="integrazione.numeroTentativiNotifica"
+                           [disabled]="disabilitaCampi()">
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col">
-                  <input id="codiceUfficio" name="codiceUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                         [size]="6" [maxLength]="6"
-                         #codiceUfficio="ngModel" [(ngModel)]="integrazione.ufficio.codiceUfficio"
-                         [disabled]="disabilitaCampi()">
+              <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
+                <div class="row">
+                  <div class="col">
+                    <label [htmlFor]="'notificaUtente'" class="title form-elem-title"
+                    >Notifica utente</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <select id="notificaUtente" name="notificaUtente"
+                            #notificaUtente="ngModel" [(ngModel)]="integrazione.notificaUtente"
+                            [disabled]="disabilitaCampi()">
+                      <option [ngValue]="false" [selected]="true">NO</option>
+                      <option [ngValue]="true">SI</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
-              <div class="row">
-                <div class="col">
-                  <label [htmlFor]="'codiceIDServizio'" class="title form-elem-title"
-                  >Codice IDServizio</label>
+              <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
+                <div class="row">
+                  <div class="col">
+                    <label [htmlFor]="'redirect'" class="title form-elem-title"
+                    >Redirect</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <input id="redirect" name="redirect" type="checkbox" class="input-text pt-0" autocomplete="off"
+                           #redirect="ngModel" [(ngModel)]="integrazione.redirect"
+                           [disabled]="disabilitaCampi()">
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col">
-                  <input id="codiceIDServizio" name="codiceIDServizio" type="text" class="input-text pt-0"
-                         autocomplete="off" [size]="11" [maxLength]="11"
-                         #codiceIDServizio="ngModel" [(ngModel)]="integrazione.codiceIdServizio"
-                         [disabled]="disabilitaCampi()">
+              <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
+                <div class="row">
+                  <div class="col">
+                    <label [htmlFor]="'portaleEsterno'" class="title form-elem-title"
+                           [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1 || funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+                      Portale esterno</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <select id="portaleEsterno" name="portaleEsterno"
+                            #portaleEsterno="ngModel" [(ngModel)]="integrazione.portaleEsternoId"
+                            [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
+                            [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || !isPresenteInDettaglioAndRendicontazione()">
+                      <option [ngValue]="null" [selected]="true">Seleziona</option>
+                      <option *ngFor="let item of listaPortaleEsterno" [ngValue]="item.id">{{item.nome}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                  <div class="col">
+                    <p *ngIf="!isCampoInvalido(portaleEsterno)">Seleziona portale esterno</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-              <div class="row">
-                <div class="col">
-                  <label [htmlFor]="'numeroTentativiNotifica'" class="title form-elem-title"
-                  >Numero tentativi di notifica</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <input id="numeroTentativiNotifica" name="numeroTentativiNotifica" type="number"
-                         class="input-text pt-0"
-                         autocomplete="off"
-                         #numeroTentativiNotifica="ngModel" [(ngModel)]="integrazione.numeroTentativiNotifica"
-                         [disabled]="disabilitaCampi()">
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
-              <div class="row">
-                <div class="col">
-                  <label [htmlFor]="'notificaUtente'" class="title form-elem-title"
-                  >Notifica utente</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <select id="notificaUtente" name="notificaUtente"
-                          #notificaUtente="ngModel" [(ngModel)]="integrazione.notificaUtente"
-                          [disabled]="disabilitaCampi()">
-                    <option [ngValue]="false" [selected]="true">NO</option>
-                    <option [ngValue]="true">SI</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
-              <div class="row">
-                <div class="col">
-                  <label [htmlFor]="'redirect'" class="title form-elem-title"
-                  >Redirect</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <input id="redirect" name="redirect" type="checkbox" class="input-text pt-0" autocomplete="off"
-                         #redirect="ngModel" [(ngModel)]="integrazione.redirect"
-                         [disabled]="disabilitaCampi()">
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-2 pb-2">
-              <div class="row">
-                <div class="col">
-                  <label [htmlFor]="'portaleEsterno'" class="title form-elem-title"
-                         [ngClass]="{'required': integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1 || funzione !== FunzioneGestioneEnum.DETTAGLIO}">
-                    Portale esterno</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <select id="portaleEsterno" name="portaleEsterno"
-                          #portaleEsterno="ngModel" [(ngModel)]="integrazione.portaleEsternoId"
-                          [required]="integrazione.livelloIntegrazioneId == LivelloIntegrazioneEnum.LV1"
-                          [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || !isPresenteInDettaglioAndRendicontazione()">
-                    <option [ngValue]="null" [selected]="true">Seleziona</option>
-                    <option *ngFor="let item of listaPortaleEsterno" [ngValue]="item.id">{{item.nome}}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-                <div class="col">
-                  <p *ngIf="!isCampoInvalido(portaleEsterno)">Seleziona portale esterno</p>
-                </div>
-              </div>
-            </div>
-          </ng-container>
+            </ng-container>
+          </div>
         </div>
       </div>
       <div class="collapse-header" id="idCollapseImpositore">
@@ -374,86 +378,88 @@
         </button>
       </div>
       <div id="impositore" class="collapse show" role="tabpanel" aria-labelledby="idCollapseImpositore">
-        <div class="row mt-2 mb-0">
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="selectSocieta" class="title"
-                       [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Società</label>
+        <div class="collapse-body">
+          <div class="row mt-2 mb-0">
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="selectSocieta" class="title"
+                         [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Società</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
+                          #societaInput="ngModel" [(ngModel)]="impositore.societaId"
+                          (ngModelChange)="onChangeSocietaImpositore(societaInput)"
+                          [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || !isPresenteInDettaglioAndRendicontazione()">
+                    <option [ngValue]="null" [selected]="true">Seleziona</option>
+                    <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                     [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
+                    {{setPlaceholder(societaInput, TipoCampoEnum.SELECT)}}
+                  </p>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocieta" name="societaId"
-                        #societaInput="ngModel" [(ngModel)]="impositore.societaId"
-                        (ngModelChange)="onChangeSocietaImpositore(societaInput)"
-                        [disabled]="funzione === FunzioneGestioneEnum.DETTAGLIO || !isPresenteInDettaglioAndRendicontazione()">
-                  <option [ngValue]="null" [selected]="true">Seleziona</option>
-                  <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
-                </select>
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="livelloTerritorialeId" class="title"
+                         [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
+                    Livello Territoriale</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <select
+                    id="livelloTerritorialeId"
+                    name="livelloTerritorialeId"
+                    #livelloTerritorialeId="ngModel"
+                    [required]="true"
+                    [(ngModel)]="impositore.livelloTerritorialeId"
+                    [disabled]="!impositore.societaId || !isPresenteInDettaglioAndRendicontazione() || disabilitaCampi()"
+                    (ngModelChange)="onChangeLivelloTerritorialeImpositore(societaInput, livelloTerritorialeId)"
+                  >
+                    <option [ngValue]="null" selected>Seleziona</option>
+                    <option *ngFor="let item of listaLivelloTerritoriale"
+                            [ngValue]="item.id">{{item.nome}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                <div class="col">
+                  <p *ngIf="!isCampoInvalido(livelloTerritorialeId)">Seleziona livello territoriale</p>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                   [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput), 'text-disabled': !listaSocieta.length}">
-                  {{setPlaceholder(societaInput, TipoCampoEnum.SELECT)}}
-                </p>
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="selectEnte"
+                         [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Ente</label>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="livelloTerritorialeId" class="title"
-                       [ngClass]="{'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">
-                  Livello Territoriale</label>
+              <div class="row">
+                <div class="col">
+                  <select [ngClass]="{'input-disabled': !listaEnti.length}"
+                          id="selectEnte" name="enteId"
+                          #enteInput="ngModel" [(ngModel)]="impositore.enteId"
+                          [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId || !isPresenteInDettaglioAndRendicontazione() || disabilitaCampi()">
+                    <option [ngValue]="null" [selected]="true">Seleziona</option>
+                    <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nome}}</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <select
-                  id="livelloTerritorialeId"
-                  name="livelloTerritorialeId"
-                  #livelloTerritorialeId="ngModel"
-                  [required]="true"
-                  [(ngModel)]="impositore.livelloTerritorialeId"
-                  [disabled]="!impositore.societaId || !isPresenteInDettaglioAndRendicontazione() || disabilitaCampi()"
-                  (ngModelChange)="onChangeLivelloTerritorialeImpositore(societaInput, livelloTerritorialeId)"
-                >
-                  <option [ngValue]="null" selected>Seleziona</option>
-                  <option *ngFor="let item of listaLivelloTerritoriale"
-                          [ngValue]="item.id">{{item.nome}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-              <div class="col">
-                <p *ngIf="!isCampoInvalido(livelloTerritorialeId)">Seleziona livello territoriale</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="selectEnte"
-                       [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Ente</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <select [ngClass]="{'input-disabled': !listaEnti.length}"
-                        id="selectEnte" name="enteId"
-                        #enteInput="ngModel" [(ngModel)]="impositore.enteId"
-                        [disabled]="!impositore.societaId || !impositore.livelloTerritorialeId || !isPresenteInDettaglioAndRendicontazione() || disabilitaCampi()">
-                  <option [ngValue]="null" [selected]="true">Seleziona</option>
-                  <option *ngFor="let item of listaEnti" [ngValue]="item.id">{{item.nome}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-              <div class="col">
-                <p *ngIf="!isCampoInvalido(enteInput)">Seleziona Ente</p>
+              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                <div class="col">
+                  <p *ngIf="!isCampoInvalido(enteInput)">Seleziona Ente</p>
+                </div>
               </div>
             </div>
           </div>
@@ -467,131 +473,133 @@
         </button>
       </div>
       <div id="beneficiario" class="collapse show" role="tabpanel" aria-labelledby="idCollapseBeneficiario">
-        <div class="row mt-2 mb-0">
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="selectSocietaBenef" class="title"
-                       [ngClass]="{'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">Società</label>
+        <div class="collapse-body">
+          <div class="row mt-2 mb-0">
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="selectSocietaBenef" class="title"
+                         [ngClass]="{'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">Società</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocietaBenef"
+                          name="societaIdBenef"
+                          [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
+                          #societaBenefInput="ngModel" [(ngModel)]="beneficiario.societaId"
+                          (ngModelChange)="onChangeSocietaBeneficiario(societaBenefInput)"
+                          [disabled]="disabilitaCampi() || !isPresenteInDatiBonificoAndRendicontazione() || !isPresenteInQuadratura()">
+                    <option [ngValue]="null" [selected]="true">Seleziona</option>
+                    <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                     [ngClass]="{'text-muted': !isCampoInvalido(societaBenefInput), 'text-invalid': isCampoInvalido(societaBenefInput), 'text-disabled': !listaSocieta.length}">
+                    {{setPlaceholder(societaBenefInput, TipoCampoEnum.SELECT)}}
+                  </p>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <select [ngClass]="{'text-disabled': !listaSocieta.length}" id="selectSocietaBenef"
-                        name="societaIdBenef"
-                        [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
-                        #societaBenefInput="ngModel" [(ngModel)]="beneficiario.societaId"
-                        (ngModelChange)="onChangeSocietaBeneficiario(societaBenefInput)"
-                        [disabled]="disabilitaCampi() || !isPresenteInDatiBonificoAndRendicontazione()">
-                  <option [ngValue]="null" [selected]="true">Seleziona</option>
-                  <option *ngFor="let item of listaSocieta" [ngValue]="item.id">{{item.nome}}</option>
-                </select>
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="livelloTerritorialeIdBenef" class="title"
+                         [ngClass]="{'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">
+                    Livello Territoriale</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <select
+                    id="livelloTerritorialeIdBenef"
+                    name="livelloTerritorialeIdBenef"
+                    #livelloTerritorialeIdBenef="ngModel"
+                    [(ngModel)]="beneficiario.livelloTerritorialeId"
+                    [disabled]="!beneficiario.societaId || disabilitaCampi() || !isPresenteInDatiBonificoAndRendicontazione() || !isPresenteInQuadratura()"
+                    [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
+                    (ngModelChange)="onChangeLivelloTerritorialeBeneficiario(societaBenefInput, livelloTerritorialeIdBenef)"
+                  >
+                    <option [ngValue]="null" selected>Seleziona</option>
+                    <option *ngFor="let item of listaLivelloTerritoriale"
+                            [ngValue]="item.id">{{item.nome}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                <div class="col">
+                  <p *ngIf="!isCampoInvalido(livelloTerritorialeIdBenef)">Seleziona livello territoriale</p>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                   [ngClass]="{'text-muted': !isCampoInvalido(societaBenefInput), 'text-invalid': isCampoInvalido(societaBenefInput), 'text-disabled': !listaSocieta.length}">
-                  {{setPlaceholder(societaBenefInput, TipoCampoEnum.SELECT)}}
-                </p>
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="selectEnteBenef"
+                         [ngClass]="{'title': true, 'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">Ente</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <select [ngClass]="{'input-disabled': !listaEntiBenef.length}"
+                          id="selectEnteBenef" name="enteIdBenef"
+                          #enteBenefInput="ngModel" [(ngModel)]="beneficiario.enteId"
+                          (ngModelChange)="onChangeEnte(enteBenefInput)"
+                          [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
+                          [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || disabilitaCampi() || !isPresenteInDatiBonificoAndRendicontazione() || !isPresenteInQuadratura()">
+                    <option [ngValue]="null" [selected]="true">Seleziona</option>
+                    <option *ngFor="let item of listaEntiBenef" [ngValue]="item.id">{{item.nome}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                <div class="col">
+                  <p *ngIf="!isCampoInvalido(enteBenefInput)">Seleziona Ente</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="livelloTerritorialeIdBenef" class="title"
-                       [ngClass]="{'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">
-                  Livello Territoriale</label>
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="selectEnteUfficio"
+                         [ngClass]="{'title': true, 'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">Ufficio</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <select [ngClass]="{'input-disabled': !listaEntiBenef.length}"
+                          id="selectEnteUfficio" name="selectEnteUfficio"
+                          #ufficioBenefInput="ngModel" [(ngModel)]="beneficiario.ufficio"
+                          [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
+                          [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || !beneficiario.enteId || disabilitaCampi() || !isPresenteInDatiBonificoAndRendicontazione() || !isPresenteInQuadratura()">
+                    <option [ngValue]="null" [selected]="true">Seleziona</option>
+                    <option *ngFor="let item of listaUfficio"
+                            [ngValue]="item">{{item.codiceEnte}} {{item.tipoUfficio}} {{item.codiceUfficio}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
+                <div class="col">
+                  <p *ngIf="!isCampoInvalido(ufficioBenefInput)">Seleziona Ufficio</p>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <select
-                  id="livelloTerritorialeIdBenef"
-                  name="livelloTerritorialeIdBenef"
-                  #livelloTerritorialeIdBenef="ngModel"
-                  [(ngModel)]="beneficiario.livelloTerritorialeId"
-                  [disabled]="!beneficiario.societaId || disabilitaCampi() || !isPresenteInDatiBonificoAndRendicontazione()"
-                  [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
-                  (ngModelChange)="onChangeLivelloTerritorialeBeneficiario(societaBenefInput, livelloTerritorialeIdBenef)"
-                >
-                  <option [ngValue]="null" selected>Seleziona</option>
-                  <option *ngFor="let item of listaLivelloTerritoriale"
-                          [ngValue]="item.id">{{item.nome}}</option>
-                </select>
+            <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
+              <div class="row">
+                <div class="col">
+                  <label for="descrUfficio">Descrizione</label>
+                </div>
               </div>
-            </div>
-            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-              <div class="col">
-                <p *ngIf="!isCampoInvalido(livelloTerritorialeIdBenef)">Seleziona livello territoriale</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="selectEnteBenef"
-                       [ngClass]="{'title': true, 'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">Ente</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <select [ngClass]="{'input-disabled': !listaEntiBenef.length}"
-                        id="selectEnteBenef" name="enteIdBenef"
-                        #enteBenefInput="ngModel" [(ngModel)]="beneficiario.enteId"
-                        (ngModelChange)="onChangeEnte(enteBenefInput)"
-                        [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
-                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || disabilitaCampi() || !isPresenteInDatiBonificoAndRendicontazione()">
-                  <option [ngValue]="null" [selected]="true">Seleziona</option>
-                  <option *ngFor="let item of listaEntiBenef" [ngValue]="item.id">{{item.nome}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-              <div class="col">
-                <p *ngIf="!isCampoInvalido(enteBenefInput)">Seleziona Ente</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="selectEnteUfficio"
-                       [ngClass]="{'title': true, 'required': integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1}">Ufficio</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <select [ngClass]="{'input-disabled': !listaEntiBenef.length}"
-                        id="selectEnteUfficio" name="selectEnteUfficio"
-                        #ufficioBenefInput="ngModel" [(ngModel)]="beneficiario.ufficio"
-                        [required]="integrazione.livelloIntegrazioneId != LivelloIntegrazioneEnum.LV1"
-                        [disabled]="!beneficiario.societaId || !beneficiario.livelloTerritorialeId || !beneficiario.enteId || disabilitaCampi() || !isPresenteInDatiBonificoAndRendicontazione()">
-                  <option [ngValue]="null" [selected]="true">Seleziona</option>
-                  <option *ngFor="let item of listaUfficio"
-                          [ngValue]="item">{{item.codiceEnte}} {{item.tipoUfficio}} {{item.codiceUfficio}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="row" *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO">
-              <div class="col">
-                <p *ngIf="!isCampoInvalido(ufficioBenefInput)">Seleziona Ufficio</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-4 pb-2">
-            <div class="row">
-              <div class="col">
-                <label for="descrUfficio">Descrizione</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <input id="descrUfficio" name="descrUfficio" type="text" class="input-text pt-0" autocomplete="off"
-                       #descrUfficio="ngModel" [ngModel]="beneficiario.ufficio?.descrizione"
-                       [required]="false"
-                       [disabled]="true">
+              <div class="row">
+                <div class="col">
+                  <input id="descrUfficio" name="descrUfficio" type="text" class="input-text pt-0" autocomplete="off"
+                         #descrUfficio="ngModel" [ngModel]="beneficiario.ufficio?.descrizione"
+                         [required]="false"
+                         [disabled]="true">
+                </div>
               </div>
             </div>
           </div>
@@ -626,104 +634,106 @@
       <div id="campiServizio" class="collapse show" role="tabpanel" aria-labelledby="idCollapseCampiServizio">
         <ng-container
           *ngIf="integrazione.livelloIntegrazioneId && integrazione.livelloIntegrazioneId !== LivelloIntegrazioneEnum.LV1">
-          <div class="row">
-            <div class="col-12">
-              <label class="title">Lista campi tipologia servizio</label>
-              <span class="pointer bottone-campo"
-                    *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
-        <span ngbTooltip="Crea nuovo campo" placement="bottom"
-              [ngStyle]="{fill: '#403d39'}">
-          <svg (click)="add()" class="bg-light icon icon-sm filled">
-            <use xlink:href="assets/img/sprite.svg#it-plus"></use>
-          </svg>
-        </span>
-        </span>
+          <div class="collapse-body">
+            <div class="row">
+              <div class="col-12">
+                <label class="title">Lista campi tipologia servizio</label>
+                <span class="pointer bottone-campo"
+                      *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
+                  <span ngbTooltip="Crea nuovo campo" placement="bottom"
+                        [ngStyle]="{fill: '#403d39'}">
+                    <svg (click)="add()" class="bg-light icon icon-sm filled">
+                      <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+                    </svg>
+                  </span>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="row" *ngIf="configuraServizioService.campoTipologiaServizioList">
-            <ul class="legend">
-              <li><span class="field-input"></span> Campo nuovo</li>
-              <li><span class="edited"></span> Campo modificato</li>
-              <li><span class="required"></span> Campo obbligatorio</li>
-              <li><span class="key"></span> Campo chiave</li>
-            </ul>
-          </div>
-          <div class="row" cdkDropListGroup *ngIf="configuraServizioService.campoTipologiaServizioList">
-            <ng-container *ngFor="let item of configuraServizioService.campoTipologiaServizioList;let i=index">
-              <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
-                   cdkDropListOrientation="horizontal"
-                   [cdkDropListData]="{item:item, index:i}">
-                <div style="min-height: 5vh;"
-                     [ngClass]="{'example-box2':true, 'col-12': true, 'disabled': !item.campoTipologiaServizioId,
-               'field-input': (item.campoTipologiaServizioId)}">
-                  <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                  <div class="row" style="width: 100%">
-                    <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i" (dblclick)="dblClick(item, i)"
-                         [ngClass]="{'text-right':true, 'col-7': !item.campoTipologiaServizioId, 'col-6': item.campoTipologiaServizioId}"
-                    >{{item.titolo}}</div>
-                    <div *ngIf="showEditId == i" class="col-6 text-right">
-                      <input autofocus #edit="ngModel" name="edit"
-                             (keyup.enter)="applyEdit(item)"
-                             [(ngModel)]="item.titolo"/>
-                    </div>
-                    <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>
-                    </div>
-                    <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
-                    <div
-                      [ngClass]="{'text-right':true, 'col-3': !item.campoTipologiaServizioId, 'col-4': item.campoTipologiaServizioId}">
-                      <span [ngClass]="{'field-input': item.campoTipologiaServizioId}"
-                            it-tooltip="Ripristina al valore iniziale" placement="top"
-                            *ngIf="item.campoTipologiaServizioId && funzione != FunzioneGestioneEnum.DETTAGLIO"
-                            (click)="undo(item)">
-                        <svg class="bg-light icon icon-lg icon-padded close" (click)="undo(item)"
-                             [ngClass]="{'field-input': item.campoTipologiaServizioId}">
-                          <use xlink:href="assets/img/sprite.svg#it-restore"></use>
-                        </svg>
-                      </span>
-                      <span [ngClass]="{'field-input': item.campoTipologiaServizioId}"
-                            *ngIf="item.campoTipologiaServizioId">
-                        <svg class="bg-light icon icon-lg icon-padded" (click)="undo(item)"
-                             [ngClass]="{'field-input': item.campoTipologiaServizioId}">
-                          <use xlink:href="assets/img/sprite.svg#it-check"></use>
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-            <ng-container *ngFor="let item2 of configuraServizioService.campoServizioAddList;let i=index">
-              <div [ngClass]="calcolaDimensioneCampo(item2)" cdkDropList
-                   cdkDropListOrientation="horizontal"
-                   [cdkDropListData]="{item:item2, index:i}" (cdkDropListDropped)="drop($event)">
-                <div style="min-height: 5vh;"
-                     [ngClass]="{'cdk-drag':true, 'example-box':true, 'col-12': true, 'disabled': item2.disabilitato,
-               'field-input': true}"
-                     [cdkDragDisabled]="!item2.draggable || this.funzione === FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
-                  <div (click)="showModal(item2)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                  <div class="row" style="width: 100%">
-                    <div (click)="showModalAtClick(item2)"
-                         *ngIf="showEditId !== i + configuraServizioService.campoTipologiaServizioList.length"
-                         (dblclick)="dblClick(item2, (i + configuraServizioService.campoTipologiaServizioList.length))"
-                         class="col-7 text-right">{{item2.titolo}}</div>
-                    <div *ngIf="showEditId == i + configuraServizioService.campoTipologiaServizioList.length"
-                         class="col-6 text-right">
-                      <input autofocus #edit="ngModel" name="edit"
-                             (keyup.enter)="applyEdit(item2)"
-                             [(ngModel)]="item2.titolo"/>
-                    </div>
-                    <div (click)="showModal(item2)" class="col-1"><span
-                      [class]="{'required':item2.obbligatorio}"></span>
-                    </div>
-                    <div (click)="showModal(item2)" class="col-1"><span [class]="{'key':item2.chiave}"></span></div>
-                    <div class="col-3 text-right">
-                      <span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO" class="close"
-                            (click)="removeItem(item2)"></span>
+            <div class="row" *ngIf="configuraServizioService.campoTipologiaServizioList">
+              <ul class="legend">
+                <li><span class="field-input"></span> Campo nuovo</li>
+                <li><span class="edited"></span> Campo modificato</li>
+                <li><span class="required"></span> Campo obbligatorio</li>
+                <li><span class="key"></span> Campo chiave</li>
+              </ul>
+            </div>
+            <div class="row" cdkDropListGroup *ngIf="configuraServizioService.campoTipologiaServizioList">
+              <ng-container *ngFor="let item of configuraServizioService.campoTipologiaServizioList;let i=index">
+                <div [ngClass]="calcolaDimensioneCampo(item)" cdkDropList
+                     cdkDropListOrientation="horizontal"
+                     [cdkDropListData]="{item:item, index:i}">
+                  <div style="min-height: 5vh;"
+                       [ngClass]="{'example-box2':true, 'col-12': true, 'disabled': !item.campoTipologiaServizioId,
+                 'field-input': (item.campoTipologiaServizioId)}">
+                    <div (click)="showModal(item)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                    <div class="row" style="width: 100%">
+                      <div (click)="showModalAtClick(item)" *ngIf="showEditId !== i" (dblclick)="dblClick(item, i)"
+                           [ngClass]="{'text-right':true, 'col-7': !item.campoTipologiaServizioId, 'col-6': item.campoTipologiaServizioId}"
+                      >{{item.titolo}}</div>
+                      <div *ngIf="showEditId == i" class="col-6 text-right">
+                        <input autofocus #edit="ngModel" name="edit"
+                               (keyup.enter)="applyEdit(item)"
+                               [(ngModel)]="item.titolo"/>
+                      </div>
+                      <div (click)="showModal(item)" class="col-1"><span [class]="{'required':item.obbligatorio}"></span>
+                      </div>
+                      <div (click)="showModal(item)" class="col-1"><span [class]="{'key':item.chiave}"></span></div>
+                      <div
+                        [ngClass]="{'text-right':true, 'col-3': !item.campoTipologiaServizioId, 'col-4': item.campoTipologiaServizioId}">
+                        <span [ngClass]="{'field-input': item.campoTipologiaServizioId}"
+                              it-tooltip="Ripristina al valore iniziale" placement="top"
+                              *ngIf="item.campoTipologiaServizioId && funzione != FunzioneGestioneEnum.DETTAGLIO"
+                              (click)="undo(item)">
+                          <svg class="bg-light icon icon-lg icon-padded close" (click)="undo(item)"
+                               [ngClass]="{'field-input': item.campoTipologiaServizioId}">
+                            <use xlink:href="assets/img/sprite.svg#it-restore"></use>
+                          </svg>
+                        </span>
+                        <span [ngClass]="{'field-input': item.campoTipologiaServizioId}"
+                              *ngIf="item.campoTipologiaServizioId">
+                          <svg class="bg-light icon icon-lg icon-padded" (click)="undo(item)"
+                               [ngClass]="{'field-input': item.campoTipologiaServizioId}">
+                            <use xlink:href="assets/img/sprite.svg#it-check"></use>
+                          </svg>
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </ng-container>
+              </ng-container>
+              <ng-container *ngFor="let item2 of configuraServizioService.campoServizioAddList;let i=index">
+                <div [ngClass]="calcolaDimensioneCampo(item2)" cdkDropList
+                     cdkDropListOrientation="horizontal"
+                     [cdkDropListData]="{item:item2, index:i}" (cdkDropListDropped)="drop($event)">
+                  <div style="min-height: 5vh;"
+                       [ngClass]="{'cdk-drag':true, 'example-box':true, 'col-12': true, 'disabled': item2.disabilitato,
+                 'field-input': true}"
+                       [cdkDragDisabled]="!item2.draggable || this.funzione === FunzioneGestioneEnum.DETTAGLIO" cdkDrag>
+                    <div (click)="showModal(item2)" class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                    <div class="row" style="width: 100%">
+                      <div (click)="showModalAtClick(item2)"
+                           *ngIf="showEditId !== i + configuraServizioService.campoTipologiaServizioList.length"
+                           (dblclick)="dblClick(item2, (i + configuraServizioService.campoTipologiaServizioList.length))"
+                           class="col-7 text-right">{{item2.titolo}}</div>
+                      <div *ngIf="showEditId == i + configuraServizioService.campoTipologiaServizioList.length"
+                           class="col-6 text-right">
+                        <input autofocus #edit="ngModel" name="edit"
+                               (keyup.enter)="applyEdit(item2)"
+                               [(ngModel)]="item2.titolo"/>
+                      </div>
+                      <div (click)="showModal(item2)" class="col-1"><span
+                        [class]="{'required':item2.obbligatorio}"></span>
+                      </div>
+                      <div (click)="showModal(item2)" class="col-1"><span [class]="{'key':item2.chiave}"></span></div>
+                      <div class="col-3 text-right">
+                        <span *ngIf="funzione != FunzioneGestioneEnum.DETTAGLIO" class="close"
+                              (click)="removeItem(item2)"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
           </div>
         </ng-container>
       </div>
@@ -733,381 +743,230 @@
           Flussi e notifiche
         </button>
       </div>
-      <div id="flussi" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFlussi">
+      <div class="ml-3">
+        <div id="flussi" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFlussi">
 
-        <div class="collapse-header" id="idCollapseGiornaliera">
-          <button data-toggle="collapse" data-target="#giornaliera" aria-expanded="true"
-                  aria-controls="giornaliera">
-            Invio e rendicontazione giornaliera
-          </button>
-        </div>
-        <div id="giornaliera" class="collapse show" role="tabpanel" aria-labelledby="idCollapseGiornaliera">
-          <div class="row mt-2 mb-0">
-            <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
-              <div class="row">
-                <div class="col">
-                  <label for="emailGiornaliera" class="title">Email</label>
-                </div>
-                <div class="col-2">
-                  <it-toggle id="emailGiornaliera" (ngModelChange)="changeEmailGiornaliera($event)"
-                             [disabled]="disabilitaCampi()"
-                             [(ngModel)]="rendicontazioneGiornaliera.flagNotificaEmail"
-                             name="emailGiornaliera"></it-toggle>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.flagNotificaEmail)"
-                         #emailGiornalieraId="ngModel" [required]="rendicontazioneGiornaliera.flagNotificaEmail"
-                         id="emailGiornalieraId" [customvalidator]="validateEmail()"
-                         name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
-                         [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(emailGiornalieraId),
-                       'text-invalid': isCampoInvalido(emailGiornalieraId)}">
-                        {{setPlaceholder(emailGiornalieraId, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <input type="text" autocomplete="off" placeholder="Ccn"
-                         #emailGiornalieraCcn="ngModel"
-                         id="emailGiornalieraCcn" [customvalidator]="validateEmail()"
-                         name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.ccn"
-                         [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(emailGiornalieraCcn),
-                       'text-invalid': isCampoInvalido(emailGiornalieraCcn)}">
-                        {{setPlaceholder(emailGiornalieraCcn, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
-              <div class="row">
-                <div class="col">
-                  <label for="ftpGiornaliera"
-                         [ngClass]="{'required': rendicontazioneGiornaliera.flagNotificaFtp, 'title':true}">Ftp</label>
-                </div>
-                <div class="col-2">
-                  <it-toggle id="ftpGiornaliera" (ngModelChange)="changeFtpGiornaliera($event)"
-                             [disabled]="disabilitaCampi()"
-                             [(ngModel)]="rendicontazioneGiornaliera.flagNotificaFtp" name="ftpGiornaliera"></it-toggle>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <input type="text" autocomplete="off" placeholder="Server"
-                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneGiornaliera.flagNotificaFtp)"
-                         id="server" name="server" #server="ngModel" [customvalidator]="validateServer()"
-                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
-                         [(ngModel)]="rendicontazioneGiornaliera.server"
-                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(server),
-                       'text-invalid': isCampoInvalido(server)}">
-                        {{setPlaceholder(server, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <input type="text" autocomplete="off" placeholder="Username"
-                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneGiornaliera.flagNotificaFtp)"
-                         id="username" name="username" #username="ngModel"
-                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
-                         [(ngModel)]="rendicontazioneGiornaliera.username"
-                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(username),
-                       'text-invalid': isCampoInvalido(username)}">
-                        {{setPlaceholder(username, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneGiornaliera.flagNotificaFtp)"
-                         id="password" name="password" #password="ngModel"
-                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
-                         [(ngModel)]="rendicontazioneGiornaliera.password"
-                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(password),
-                       'text-invalid': isCampoInvalido(password)}">
-                        {{setPlaceholder(password, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneGiornaliera.flagNotificaFtp)"
-                         id="directory" name="directory" #directory="ngModel"
-                         [required]="rendicontazioneGiornaliera.flagNotificaFtp"
-                         [(ngModel)]="rendicontazioneGiornaliera.directory"
-                         [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(directory),
-                       'text-invalid': isCampoInvalido(directory)}">
-                        {{setPlaceholder(directory, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <label for="nuovoFormato"
-                         [ngClass]="{'title':true}">Nuovo formato</label>
-                </div>
-                <div class="col-2">
-                  <it-toggle id="nuovoFormato" [(ngModel)]="rendicontazioneGiornaliera.nuovoFormato"
-                             [disabled]="disabilitaCampi()"
-                             name="nuovoFormato"></it-toggle>
-                </div>
-              </div>
-            </div>
+          <div class="collapse-header" id="idCollapseGiornaliera">
+            <button data-toggle="collapse" data-target="#giornaliera" aria-expanded="true"
+                    aria-controls="giornaliera">
+              Invio e rendicontazione giornaliera
+            </button>
           </div>
-        </div>
-
-        <div class="collapse-header" id="idCollapseflussoPA">
-          <button data-toggle="collapse" data-target="#flussoPA" aria-expanded="true"
-                  aria-controls="flussoPA">
-            Invio flusso di quadratura
-          </button>
-        </div>
-        <div id="flussoPA" class="collapse show" role="tabpanel" aria-labelledby="idCollapseflussoPA">
-          <div class="row mt-2 mb-0">
-            <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
-              <div class="row">
-                <div class="col">
-                  <label for="emailFlussoPA" class="title">Email</label>
-                </div>
-                <div class="col-2">
-                  <it-toggle id="emailFlussoPA" (ngModelChange)="changeEmailFlussoPagoPA($event)"
-                             [disabled]="disabilitaCampi()"
-                             [(ngModel)]="rendicontazioneFlussoPA.flagNotificaEmail" name="emailFlussoPA"></it-toggle>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <input type="text" autocomplete="off"
-                         [placeholder]="getPlaceholderRequired('Email', rendicontazioneFlussoPA.flagNotificaEmail)"
-                         [required]="rendicontazioneFlussoPA.flagNotificaEmail"
-                         id="emailFlussoPAId" [customvalidator]="validateEmail()"
-                         name="emailFlussoPAId" [(ngModel)]="rendicontazioneFlussoPA.email"
-                         #emailFlussoPAId="ngModel"
-                         [disabled]="!rendicontazioneFlussoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
+          <div id="giornaliera" class="collapse show" role="tabpanel" aria-labelledby="idCollapseGiornaliera">
+            <div class="collapse-body">
+              <div class="row mt-2 mb-0">
+                <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
                   <div class="row">
                     <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(emailFlussoPAId),
-                       'text-invalid': isCampoInvalido(emailFlussoPAId)}">
-                        {{setPlaceholder(emailFlussoPAId, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
+                      <label for="emailGiornaliera" class="title">Email</label>
+                    </div>
+                    <div class="col-2">
+                      <it-toggle id="emailGiornaliera" (ngModelChange)="changeEmailGiornaliera($event)"
+                                 [disabled]="disabilitaCampi()"
+                                 [(ngModel)]="rendicontazioneGiornaliera.flagNotificaEmail"
+                                 name="emailGiornaliera"></it-toggle>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <input type="text" autocomplete="off"
+                             [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.flagNotificaEmail)"
+                             #emailGiornalieraId="ngModel" [required]="rendicontazioneGiornaliera.flagNotificaEmail"
+                             id="emailGiornalieraId" [customvalidator]="validateEmail()"
+                             name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
+                             [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
+                    </div>
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col">
+                          <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                             [ngClass]="{'text-muted': !isCampoInvalido(emailGiornalieraId),
+                           'text-invalid': isCampoInvalido(emailGiornalieraId)}">
+                            {{setPlaceholder(emailGiornalieraId, TipoCampoEnum.INPUT_TESTUALE)}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" autocomplete="off" placeholder="Ccn"
+                             #emailGiornalieraCcn="ngModel"
+                             id="emailGiornalieraCcn" [customvalidator]="validateEmail()"
+                             name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.ccn"
+                             [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
+                    </div>
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col">
+                          <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                             [ngClass]="{'text-muted': !isCampoInvalido(emailGiornalieraCcn),
+                           'text-invalid': isCampoInvalido(emailGiornalieraCcn)}">
+                            {{setPlaceholder(emailGiornalieraCcn, TipoCampoEnum.INPUT_TESTUALE)}}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-12">
-                  <input type="text" autocomplete="off" placeholder="Ccn" id="emailFlussoPACcn"
-                         name="emailFlussoPACcn" [(ngModel)]="rendicontazioneFlussoPA.ccn"
-                         #emailFlussoPACcn="ngModel" [customvalidator]="validateEmail()"
-                         [disabled]="!rendicontazioneFlussoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
+                <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
                   <div class="row">
                     <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(emailFlussoPACcn),
-                       'text-invalid': isCampoInvalido(emailFlussoPACcn)}">
-                        {{setPlaceholder(emailFlussoPACcn, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
+                      <label for="ftpGiornaliera"
+                             [ngClass]="{'required': rendicontazioneGiornaliera.flagNotificaFtp, 'title':true}">Ftp</label>
+                    </div>
+                    <div class="col-2">
+                      <it-toggle id="ftpGiornaliera" (ngModelChange)="changeFtpGiornaliera($event)"
+                                 [disabled]="disabilitaCampi()"
+                                 [(ngModel)]="rendicontazioneGiornaliera.flagNotificaFtp" name="ftpGiornaliera"></it-toggle>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
-              <div class="row">
-                <div class="col">
-                  <label for="ftpFlussoPA"
-                         [ngClass]="{'required': rendicontazioneFlussoPA.flagNotificaFtp, 'title':true}">Ftp</label>
-                </div>
-                <div class="col-2">
-                  <it-toggle id="ftpFlussoPA" (ngModelChange)="changeFtpFlussoPagoPA($event)"
-                             [disabled]="disabilitaCampi()"
-                             [(ngModel)]="rendicontazioneFlussoPA.flagNotificaFtp" name="ftpFlussoPA"></it-toggle>
-                </div>
-              </div>
-              <div class="row">
-
-                <div class="col-12">
-                  <input type="text" autocomplete="off"
-                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
-                         [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneFlussoPA.flagNotificaFtp)"
-                         id="serverFlussoPA" name="serverFlussoPA" [customvalidator]="validateServer()"
-                         [(ngModel)]="rendicontazioneFlussoPA.server" #serverFlussoPA="ngModel"
-                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
                   <div class="row">
-                    <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(serverFlussoPA),
-                       'text-invalid': isCampoInvalido(serverFlussoPA)}">
-                        {{setPlaceholder(serverFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
+                    <div class="col-12">
+                      <input type="text" autocomplete="off" placeholder="Server"
+                             [placeholder]="getPlaceholderRequired('Server (nome o IP)', rendicontazioneGiornaliera.flagNotificaFtp)"
+                             id="server" name="server" #server="ngModel" [customvalidator]="validateServer()"
+                             [required]="rendicontazioneGiornaliera.flagNotificaFtp"
+                             [(ngModel)]="rendicontazioneGiornaliera.server"
+                             [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
+                    </div>
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col">
+                          <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                             [ngClass]="{'text-muted': !isCampoInvalido(server),
+                           'text-invalid': isCampoInvalido(server)}">
+                            {{setPlaceholder(server, TipoCampoEnum.INPUT_TESTUALE)}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" autocomplete="off" placeholder="Username"
+                             [placeholder]="getPlaceholderRequired('Username', rendicontazioneGiornaliera.flagNotificaFtp)"
+                             id="username" name="username" #username="ngModel"
+                             [required]="rendicontazioneGiornaliera.flagNotificaFtp"
+                             [(ngModel)]="rendicontazioneGiornaliera.username"
+                             [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
+                    </div>
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col">
+                          <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                             [ngClass]="{'text-muted': !isCampoInvalido(username),
+                           'text-invalid': isCampoInvalido(username)}">
+                            {{setPlaceholder(username, TipoCampoEnum.INPUT_TESTUALE)}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" autocomplete="off"
+                             [placeholder]="getPlaceholderRequired('Password', rendicontazioneGiornaliera.flagNotificaFtp)"
+                             id="password" name="password" #password="ngModel"
+                             [required]="rendicontazioneGiornaliera.flagNotificaFtp"
+                             [(ngModel)]="rendicontazioneGiornaliera.password"
+                             [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
+                    </div>
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col">
+                          <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                             [ngClass]="{'text-muted': !isCampoInvalido(password),
+                           'text-invalid': isCampoInvalido(password)}">
+                            {{setPlaceholder(password, TipoCampoEnum.INPUT_TESTUALE)}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" autocomplete="off"
+                             [placeholder]="getPlaceholderRequired('Directory', rendicontazioneGiornaliera.flagNotificaFtp)"
+                             id="directory" name="directory" #directory="ngModel"
+                             [required]="rendicontazioneGiornaliera.flagNotificaFtp"
+                             [(ngModel)]="rendicontazioneGiornaliera.directory"
+                             [disabled]="!rendicontazioneGiornaliera.flagNotificaFtp || disabilitaCampi() ? true : null">
+                    </div>
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col">
+                          <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                             [ngClass]="{'text-muted': !isCampoInvalido(directory),
+                           'text-invalid': isCampoInvalido(directory)}">
+                            {{setPlaceholder(directory, TipoCampoEnum.INPUT_TESTUALE)}}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div class="col-12">
-                  <input type="text" autocomplete="off"
-                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
-                         [placeholder]="getPlaceholderRequired('Username', rendicontazioneFlussoPA.flagNotificaFtp)"
-                         id="usernameFlussoPA" name="usernameFlussoPA"
-                         #usernameFlussoPA="ngModel"
-                         [(ngModel)]="rendicontazioneFlussoPA.username"
-                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
                   <div class="row">
                     <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(usernameFlussoPA),
-                       'text-invalid': isCampoInvalido(usernameFlussoPA)}">
-                        {{setPlaceholder(usernameFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
+                      <label for="nuovoFormato"
+                             [ngClass]="{'title':true}">Nuovo formato</label>
                     </div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <input type="text" autocomplete="off"
-                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
-                         [placeholder]="getPlaceholderRequired('Password', rendicontazioneFlussoPA.flagNotificaFtp)"
-                         id="passwordFlussoPA"
-                         name="passwordFlussoPA" #passwordFlussoPA="ngModel"
-                         [(ngModel)]="rendicontazioneFlussoPA.password"
-                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(passwordFlussoPA),
-                       'text-invalid': isCampoInvalido(passwordFlussoPA)}">
-                        {{setPlaceholder(passwordFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <input type="text" autocomplete="off" id="directoryFlussoPA"
-                         [required]="rendicontazioneFlussoPA.flagNotificaFtp"
-                         [placeholder]="getPlaceholderRequired('Directory', rendicontazioneFlussoPA.flagNotificaFtp)"
-                         name="directoryFlussoPA" #directoryFlussoPA="ngModel"
-                         [(ngModel)]="rendicontazioneFlussoPA.directory"
-                         [disabled]="!rendicontazioneFlussoPA.flagNotificaFtp || disabilitaCampi() ? true : null">
-                </div>
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col">
-                      <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                         [ngClass]="{'text-muted': !isCampoInvalido(directoryFlussoPA),
-                       'text-invalid': isCampoInvalido(directoryFlussoPA)}">
-                        {{setPlaceholder(directoryFlussoPA, TipoCampoEnum.INPUT_TESTUALE)}}
-                      </p>
+                    <div class="col-2">
+                      <it-toggle id="nuovoFormato" [(ngModel)]="rendicontazioneGiornaliera.nuovoFormato"
+                                 [disabled]="disabilitaCampi()"
+                                 name="nuovoFormato"></it-toggle>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="collapse-header" id="idCollapseNotifiche">
-          <button data-toggle="collapse" data-target="#notifiche" aria-expanded="true"
-                  aria-controls="notifiche">
-            Invio notifiche di pagamento
-          </button>
-        </div>
-        <div id="notifiche" class="collapse show" role="tabpanel" aria-labelledby="idCollapseNotifiche">
-          <div class="row mt-2 mb-0">
-            <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
-              <div class="row">
-                <div class="col">
-                  <label class="title">Email</label>
-                  <span class="pointer bottone-campo"
-                        *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
-                    <span ngbTooltip="Aggiungi email" placement="bottom"
-                          [ngStyle]="{fill: '#403d39'}">
-                      <svg (click)="addEmail()" class="bg-light icon icon-sm filled">
-                        <use xlink:href="assets/img/sprite.svg#it-plus"></use>
-                      </svg>
+          <div class="collapse-header" id="idCollapseNotifiche">
+            <button data-toggle="collapse" data-target="#notifiche" aria-expanded="true"
+                    aria-controls="notifiche">
+              Invio notifiche di pagamento
+            </button>
+          </div>
+          <div id="notifiche" class="collapse show" role="tabpanel" aria-labelledby="idCollapseNotifiche">
+            <div class="collapse-body">
+              <div class="row mt-2 mb-0">
+                <div class="col-sm-6 col-md-4 col-lg-3 pb-2 pr-3 mr-3">
+                  <div class="row">
+                    <div class="col">
+                      <label class="title">Email</label>
+                      <span class="pointer bottone-campo"
+                            *ngIf="funzione == FunzioneGestioneEnum.AGGIUNGI || funzione == FunzioneGestioneEnum.MODIFICA">
+                        <span ngbTooltip="Aggiungi email" placement="bottom"
+                              [ngStyle]="{fill: '#403d39'}">
+                          <svg (click)="addEmail()" class="bg-light icon icon-sm filled">
+                            <use xlink:href="assets/img/sprite.svg#it-plus"></use>
+                          </svg>
+                        </span>
                     </span>
-                </span>
+                    </div>
+                  </div>
+                  <ng-container *ngFor="let item of emailsControl; let i = index">
+                    <div class="row">
+                      <div class="col-9">
+                        <input [formControl]="item" type="text" autocomplete="off"
+                               [disabled]="disabilitaCampi()"
+                               [customvalidator]="validateEmail()">
+                      </div>
+                      <div class="col-3 align-self-center">
+                        <span *ngIf="!disabilitaCampi()" class="pointer bottone-campo">
+                          <span ngbTooltip="rimuovi" placement="bottom"
+                                [ngStyle]="{fill: '#403d39'}">
+                            <svg (click)="removeEmail(i)" class="bg-light icon icon-sm filled">
+                              <use xlink:href="assets/img/sprite.svg#it-close"></use>
+                            </svg>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
+                           [ngClass]="{'text-muted': !isCampoInvalido(item),
+                           'text-invalid': isCampoInvalido(item)}">
+                          {{setPlaceholder(item, TipoCampoEnum.INPUT_TESTUALE)}}
+                        </p>
+                      </div>
+                    </div>
+                  </ng-container>
                 </div>
               </div>
-              <ng-container *ngFor="let item of emailsControl; let i = index">
-                <div class="row">
-                  <div class="col-9">
-                    <input [formControl]="item" type="text" autocomplete="off"
-                           [disabled]="disabilitaCampi()"
-                           [customvalidator]="validateEmail()">
-                  </div>
-                  <div class="col-3 align-self-center">
-                    <span *ngIf="!disabilitaCampi()" class="pointer bottone-campo">
-                      <span ngbTooltip="rimuovi" placement="bottom"
-                            [ngStyle]="{fill: '#403d39'}">
-                        <svg (click)="removeEmail(i)" class="bg-light icon icon-sm filled">
-                          <use xlink:href="assets/img/sprite.svg#it-close"></use>
-                        </svg>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
-                       [ngClass]="{'text-muted': !isCampoInvalido(item),
-                       'text-invalid': isCampoInvalido(item)}">
-                      {{setPlaceholder(item, TipoCampoEnum.INPUT_TESTUALE)}}
-                    </p>
-                  </div>
-                </div>
-              </ng-container>
             </div>
           </div>
         </div>
@@ -1116,7 +975,7 @@
 
       <div class="row">
         <!-- Bottone sx -->
-        <div class="col-2">
+        <div [ngClass]="{'col-2': funzione !== FunzioneGestioneEnum.DETTAGLIO, 'col-12 text-center': funzione === FunzioneGestioneEnum.DETTAGLIO}">
           <button id="buttonAnnulla" class="btn btn-secondary"
                   (click)="onClickAnnulla(funzione)">{{funzione === FunzioneGestioneEnum.DETTAGLIO ? 'Indietro' : 'Annulla'}}</button>
         </div>

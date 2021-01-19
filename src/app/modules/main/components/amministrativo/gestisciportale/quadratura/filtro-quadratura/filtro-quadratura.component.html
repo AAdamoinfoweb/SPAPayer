@@ -1,0 +1,311 @@
+<!-- Sottotitolo -->
+<div class="collapse-header" id="idCollapseFiltri">
+  <button data-toggle="collapse" data-target="#contenutoSezioneFiltri" aria-expanded="true" aria-controls="contenutoSezioneFiltri">
+    Filtri
+  </button>
+</div>
+
+<!-- Form filtri -->
+<form #filtroForm="ngForm">
+  <div id="contenutoSezioneFiltri" class="collapse show" role="tabpanel" aria-labelledby="idCollapseFiltri">
+    <div class="collapse-body">
+
+      <!-- Filtri -->
+
+      <!-- Societa, Ente, Flusso -->
+      <div class="row mt-2 mb-0">
+
+        <!-- Societa -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectSocieta" class="title">Società</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectSocieta"
+                name="societaId"
+                #societaInput="ngModel"
+                [(ngModel)]="filtri.societaId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroSocieta" [ngValue]="item.id">{{item.nome}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(societaInput), 'text-invalid': isCampoInvalido(societaInput),
+                 'text-disabled': !opzioniFiltroSocieta?.length}">
+                {{setPlaceholder(societaInput, TipoCampoEnum.SELECT)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ente -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectEnte" class="title">Ente</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectEnte"
+                name="enteId"
+                #enteInput="ngModel"
+                [(ngModel)]="filtri.enteId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroEnti" [ngValue]="item.id">{{item.nome}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(enteInput), 'text-invalid': isCampoInvalido(enteInput),
+                 'text-disabled': !opzioniFiltroEnti?.length}">
+                {{setPlaceholder(enteInput, TipoCampoEnum.SELECT)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flusso -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="inputFlusso" class="title">Id flusso</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p-autoComplete id="inputFlusso" class="pt-0" name="codice"
+                              #flussoInput="ngModel" [size]="100"
+                              [(ngModel)]="filtri.flussoId"
+                              [suggestions]="opzioniFiltroFlussoIdFiltrate"
+                              (completeMethod)="filtraOpzioniFlussoId($event)"
+                              delay="0" autoHighlight="true">
+              </p-autoComplete>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(flussoInput), 'text-invalid': isCampoInvalido(flussoInput)}">
+                {{setPlaceholder(flussoInput, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- IBAN, PSP, IUV -->
+      <div class="row mt-2 mb-0">
+
+        <!-- IBAN -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="inputIban" class="title">IBAN</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input
+                id="inputIban"
+                type="text"
+                name="iban"
+                #ibanInput="ngModel"
+                [(ngModel)]="filtri.iban"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(ibanInput), 'text-invalid': isCampoInvalido(ibanInput)}">
+                {{setPlaceholder(ibanInput, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PSP -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="selectPSP" class="title">PSP</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select
+                id="selectPSP"
+                name="psp"
+                #pspInput="ngModel"
+                [(ngModel)]="filtri.pspId"
+              >
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of opzioniFiltroPsp" [ngValue]="item.value">{{item.label}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(pspInput), 'text-invalid': isCampoInvalido(pspInput),
+                 'text-disabled': !opzioniFiltroPsp?.length}">
+                {{setPlaceholder(pspInput, TipoCampoEnum.SELECT)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- IUV -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="inputIuv" class="title">IUV</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input
+                id="inputIuv"
+                type="text"
+                name="iuv"
+                #iuvInput="ngModel"
+                [(ngModel)]="filtri.iuv"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p
+                [ngClass]="{'text-muted': !isCampoInvalido(iuvInput), 'text-invalid': isCampoInvalido(iuvInput)}">
+                {{setPlaceholder(iuvInput, TipoCampoEnum.INPUT_TESTUALE)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Data Da, Data A -->
+      <div class="row mt-2 mb-0">
+
+        <!-- Data Da -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="dataDa" class="title">Data quadratura da</label>
+            </div>
+          </div>
+          <div class="row">
+            <div [ngClass]="{'col calendar-wrapper': true}">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerDataQuadraturaDa)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="dataDa"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #dataQuadraturaDaInput = "ngModel"
+                [(ngModel)]="filtri.dataQuadraturaDa"
+                name="dataQuadraturaDa"
+                #datePickerDataQuadraturaDa
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(dataQuadraturaDaInput), 'text-invalid': isCampoInvalido(dataQuadraturaDaInput)}">
+                {{setPlaceholder(dataQuadraturaDaInput, TipoCampoEnum.DATEDDMMYY)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data A -->
+        <div class="col-md-4 pb-2">
+          <div class="row">
+            <div class="col">
+              <label for="dataA" class="title">Data quadratura a</label>
+            </div>
+          </div>
+          <div class="row">
+            <div [ngClass]="{'col calendar-wrapper': true}">
+              <svg class="bg-light icon img-calendar" (click)="openDatepicker(datePickerDataQuadraturaA)">
+                <use xlink:href="assets/img/sprite.svg#it-calendar"></use>
+              </svg>
+              <dp-date-picker
+                mode="day"
+                id="dataA"
+                theme="dp-material"
+                dayInput
+                [config]="{
+                  locale: 'it',
+                  format: 'DD/MM/YYYY',
+                  firstDayOfWeek: 'mo',
+                  showGoToCurrent: false,
+                  openOnClick: isCalendarOpen,
+                  openOnFocus: false,
+                  min: minDateDDMMYYYY,
+                  returnedValueType: tipoData
+                }"
+                #dataQuadraturaAInput = "ngModel"
+                [(ngModel)]="filtri.dataQuadraturaA"
+                name="dataQuadraturaA"
+                #datePickerDataQuadraturaA
+                (click)="isCalendarOpen = false"
+              ></dp-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p [ngClass]="{'text-muted': !isCampoInvalido(dataQuadraturaAInput), 'text-invalid': isCampoInvalido(dataQuadraturaAInput)}">
+                {{setPlaceholder(dataQuadraturaAInput, TipoCampoEnum.DATEDDMMYY)}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+      <!-- Bottoni Pulisci e Cerca -->
+      <div class="row">
+        <div class="col-6">
+          <button id="bottonePulisci" class="btn btn-secondary" type="button"
+                  [disabled]="disabilitaBottonePulisci(filtroForm)"
+                  (click)="pulisciFiltri(filtroForm)">Pulisci</button>
+        </div>
+        <div class="col-6 btn-find">
+          <button id="bottoneCerca" class="btn" type="button"
+                  (click)="cercaElementi()">Cerca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

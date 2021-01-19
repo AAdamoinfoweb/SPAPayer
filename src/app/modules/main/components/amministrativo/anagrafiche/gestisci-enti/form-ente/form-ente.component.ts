@@ -25,10 +25,11 @@ import {Utils} from '../../../../../../../utils/Utils';
 import {EnteService} from '../../../../../../../services/ente.service';
 import {Banner} from '../../../../../model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../../../../../../enums/livelloBanner.enum';
-import {BannerService} from '../../../../../../../services/banner.service';
 import {ComponenteDinamico} from '../../../../../model/ComponenteDinamico';
 import {Util} from 'design-angular-kit/lib/util/util';
 import {RoutingService} from "../../../../../../../services/routing.service";
+import {RendicontazioneGiornaliera} from "../../../../../model/servizio/RendicontazioneGiornaliera";
+import {FlussoRiversamentoPagoPA} from "../../../../../model/servizio/FlussoRiversamentoPagoPA";
 
 @Component({
   selector: 'app-form-ente',
@@ -50,7 +51,6 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   listaContiCorrente: ContoCorrente[];
   mapBeneficiario: Map<string, Beneficiario> = new Map();
   mapControllo: Map<string, boolean> = new Map();
-  esito;
 
   // form valid
   isFormDatiEnteValido = false;
@@ -68,7 +68,7 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
               private componentFactoryResolver: ComponentFactoryResolver, private renderer: Renderer2,
               private el: ElementRef, amministrativoService: AmministrativoService,
               private overlayService: OverlayService, http: HttpClient,
-              confirmationService: ConfirmationService, private enteService: EnteService, private bannerService: BannerService,
+              confirmationService: ConfirmationService, private enteService: EnteService,
               private routingService: RoutingService) {
     super(confirmationService, activatedRoute, amministrativoService, http, router);
   }
@@ -85,17 +85,6 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       this.letturaEnte(enteId);
     } else {
       // inizializzazione form inserimento
-    }
-  }
-
-  private controlloEsito() {
-    if (this.esito != null) {
-      const banner: Banner = {
-        titolo: 'ATTENZIONE',
-        testo: this.esito,
-        tipo: getBannerType(LivelloBanner.WARNING)
-      };
-      this.bannerService.bannerEvent.emit([banner]);
     }
   }
 
@@ -219,6 +208,8 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
       } else {
         this.setListaBeneficiari();
       }
+      this.datiEnte.flussoRiversamentoPagoPA = ente.flussoRiversamentoPagoPA != null ?
+        ente.flussoRiversamentoPagoPA : new FlussoRiversamentoPagoPA();
     });
   }
 
@@ -258,37 +249,13 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
     this.enteService.inserimentoEnte(this.datiEnte, this.idFunzione, this.datiEnte.societaId).subscribe(
       (response) => {
         if (!(response instanceof HttpErrorResponse)) {
-          this.esito = response.esito;
-          this.controlloEsito();
-          if (this.esito == null) {
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-          }
           this.routingService.configuraRouterAndNavigate(this.basePath + '/aggiungiEnte', null);
         }
       });
   }
 
-  private pulisciEnte() {
-    this.controlloEsito();
-    this.datiEnte = new EnteCompleto();
-    this.inizializzaDatiEnte();
-    this.target.clear();
-    if (this.esito == null) {
-      this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-    }
-  }
-
   private modificaEnte() {
-    this.enteService.modificaEnte(this.datiEnte, this.idFunzione, this.datiEnte.societaId).subscribe((response) => {
-      if (!(response instanceof HttpErrorResponse)) {
-        this.esito = response.esito;
-        this.controlloEsito();
-        this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaEnte/' + this.datiEnte.id, null);
-        if (this.esito == null) {
-          this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
-        }
-      }
-    });
+    this.enteService.modificaEnte(this.datiEnte, this.idFunzione, this.datiEnte.societaId).subscribe();
   }
 
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {

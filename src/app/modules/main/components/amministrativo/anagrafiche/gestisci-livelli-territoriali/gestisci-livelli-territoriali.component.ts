@@ -3,7 +3,7 @@ import {tipoTabella} from '../../../../../../enums/TipoTabella.enum';
 import 'jspdf-autotable';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToolEnum} from '../../../../../../enums/Tool.enum';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AmministrativoService} from '../../../../../../services/amministrativo.service';
 import {LivelloTerritoriale} from '../../../../model/LivelloTerritoriale';
 import {LivelloTerritorialeService} from '../../../../../../services/livelloTerritoriale.service';
@@ -17,7 +17,6 @@ import {ConfirmationService} from 'primeng/api';
 import {Colonna} from '../../../../model/tabella/Colonna';
 import {ImmaginePdf} from '../../../../model/tabella/ImmaginePdf';
 import {Observable} from 'rxjs';
-import {BannerService} from '../../../../../../services/banner.service';
 
 @Component({
   selector: 'app-gestione-livelli-territoriali',
@@ -65,7 +64,7 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
               protected route: ActivatedRoute, protected http: HttpClient, protected amministrativoService: AmministrativoService,
               private renderer: Renderer2, private livelloTerritorialeService: LivelloTerritorialeService, private el: ElementRef,
               private menuService: MenuService,
-              private confirmationService: ConfirmationService, private bannerService: BannerService
+              private confirmationService: ConfirmationService
   ) {
     super(router, route, http, amministrativoService);
   }
@@ -145,13 +144,14 @@ export class GestisciLivelliTerritorialiComponent extends GestisciElementoCompon
   eliminaLivelliTerritorialiSelezionati() {
     this.confirmationService.confirm(
       Utils.getModale(() => {
-          this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe(() => {
-            this.popolaListaElementi();
-            this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+          this.livelloTerritorialeService.eliminazioneLivelliTerritoriali(this.getListaIdElementiSelezionati(), this.idFunzione).subscribe((response) => {
+            if (!(response instanceof HttpErrorResponse)) {
+              this.popolaListaElementi();
+              this.righeSelezionate = [];
+              this.toolbarIcons[this.indiceIconaModifica].disabled = true;
+              this.toolbarIcons[this.indiceIconaElimina].disabled = true;
+            }
           });
-          this.righeSelezionate = [];
-          this.toolbarIcons[this.indiceIconaModifica].disabled = true;
-          this.toolbarIcons[this.indiceIconaElimina].disabled = true;
         },
         TipoModaleEnum.ELIMINA
       )

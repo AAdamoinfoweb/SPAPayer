@@ -16,9 +16,9 @@ import * as _ from 'lodash';
   styleUrls: ['../nuovo-pagamento.component.scss', './compila-nuovo-pagamento.component.scss']
 })
 export class CompilaNuovoPagamentoComponent implements OnInit {
-  listaLivelliTerritoriali: Array<OpzioneSelect> = [];
-  listaEnti: Array<OpzioneSelect> = [];
-  listaServizi: Array<OpzioneSelect> = [];
+  listaLivelliTerritoriali: OpzioneSelect[] = [];
+  listaEnti: OpzioneSelect[] = [];
+  listaServizi: OpzioneSelect[] = [];
 
   livelloTerritorialeSelezionato: LivelloTerritoriale = null;
   enteSelezionato: Ente = null;
@@ -30,6 +30,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   @Input()
   filtroPagamento: boolean;
 
+  @Input()
+  servizioId: number;
+
+  private servizioInput: FiltroServizio;
+
   constructor(private nuovoPagamentoService: NuovoPagamentoService,
               private menuService: MenuService,
               private overlayService: OverlayService) {
@@ -39,7 +44,20 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.recuperaFiltroLivelloTerritoriale();
+    if (this.servizioId) {
+      this.nuovoPagamentoService.recuperaFiltroServizi(null, this.filtroPagamento)
+        .pipe(map(servizi => {
+          this.servizioInput = servizi.find(item => item.id === this.servizioId);
+          if (this.servizioInput) {
+            this.recuperaFiltroLivelloTerritoriale();
+          } else {
+            console.log('Servizio mancante');
+            this.overlayService.gestisciErrore();
+          }
+        })).subscribe();
+    } else {
+      this.recuperaFiltroLivelloTerritoriale();
+    }
   }
 
   pulisci(): void {
@@ -59,6 +77,10 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       });
       this.listaLivelliTerritoriali = _.sortBy(this.listaLivelliTerritoriali, ['label']);
 
+      if (this.servizioInput) {
+        this.livelloTerritorialeSelezionato = livelliTerritoriali.find(value => value.id == this.servizioInput.livelloTerritorialeId);
+        this.selezionaLivelloTerritoriale();
+      }
       if (this.datiPagamento) {
         this.nuovoPagamentoService.recuperaFiltroEnti(null, null, this.filtroPagamento).pipe(map(enti => {
           const ente = enti.find(ente => ente.id === this.datiPagamento.enteId);
@@ -130,6 +152,11 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
       });
       this.listaEnti = _.sortBy(this.listaEnti, ['label']);
 
+      if (this.servizioInput) {
+        this.enteSelezionato = enti.find(value => value.id == this.servizioInput.enteId);
+        this.selezionaEnte();
+      }
+
       if (this.datiPagamento) {
         const ente = this.listaEnti.find(item => item.value.id === this.datiPagamento.enteId)?.value;
         if (ente) {
@@ -162,6 +189,10 @@ export class CompilaNuovoPagamentoComponent implements OnInit {
         });
         this.listaServizi = _.sortBy(this.listaServizi, ['label']);
 
+        if (this.servizioInput) {
+          this.servizioSelezionato = servizi.find(value => value.id == this.servizioInput.id);
+          this.selezionaServizio();
+        }
         if (this.datiPagamento) {
           const servizio = this.listaServizi.find(item => item.value.id === this.datiPagamento.servizioId)?.value;
           if (servizio) {

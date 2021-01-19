@@ -112,6 +112,10 @@ export class TableComponent implements OnInit, OnChanges {
     });
   }
 
+  isIconInSpriteFile(icona: string): boolean {
+    return icona.startsWith('#');
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.rows && !changes.rows.firstChange)
       this.table.reset();

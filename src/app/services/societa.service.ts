@@ -4,6 +4,8 @@ import {Societa} from '../modules/main/model/Societa';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
+import {BannerService} from './banner.service';
+import {Utils} from '../utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class SocietaService {
 
   private readonly eliminaSocietaUrl = this.societaBaseUrl + '/eliminaSocieta';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private bannerService: BannerService) { }
 
   filtroSocieta(): Observable<Societa[]> {
     return this.http.get(environment.bffBaseUrl + this.filtroSocietaUrl)
@@ -63,7 +65,15 @@ export class SocietaService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
-        return body;
+      this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
+      return body;
+      }),
+      catchError((err, caught) => {
+        if (err.status === 401 || err.status === 400) {
+          return of(err);
+        } else {
+          return of(err);
+        }
       }));
   }
 
@@ -77,6 +87,7 @@ export class SocietaService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }),
       catchError((err, caught) => {
@@ -98,6 +109,7 @@ export class SocietaService {
         withCredentials: true,
         headers: h
       }).pipe(map((body: any) => {
+        this.bannerService.bannerEvent.emit([Utils.bannerOperazioneSuccesso()]);
         return body;
       }),
       catchError((err, caught) => {

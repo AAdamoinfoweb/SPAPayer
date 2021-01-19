@@ -79,7 +79,7 @@
       <!-- Bottoni-->
       <div class="row" *ngIf="isPaginaGestione()">
         <div class="col-6">
-          <button id="bottonePulisci" class="btn btn-secondary" [disabled]="disabilitaBottonePulisci()"
+          <button id="bottonePulisci" type="button" class="btn btn-secondary" [disabled]="disabilitaBottonePulisci()"
                   (click)="pulisciFiltri(filtroForm)">Pulisci</button>
         </div>
         <div class="col-6 btn-find">

@@ -17,6 +17,8 @@ import {ParametroAttivitaPianificata} from "../../../../model/attivitapianificat
 import {DatiParametroComponent} from "../dati-parametri/dati-parametro.component";
 import {Utils} from "../../../../../../utils/Utils";
 import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
+import {FiltroSelect} from '../../../../model/servizio/FiltroSelect';
+import {AttivitaPianificataService} from '../../../../../../services/attivita-pianificata.service';
 
 @Component({
   selector: 'app-dati-attivita-pianificate',
@@ -24,7 +26,8 @@ import {ComponenteDinamico} from "../../../../model/ComponenteDinamico";
   styleUrls: ['./dati-attivita-pianificate.component.scss']
 })
 export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(private componentFactoryResolver: ComponentFactoryResolver,
+              private attivitaPianificataService: AttivitaPianificataService) {
   }
 
   // enums e consts
@@ -49,12 +52,15 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
 
   isSchedulazioneFormValid: boolean;
 
+  opzioniAttivitaPianificataBean: FiltroSelect[];
+
   mapParametri: Map<string, ParametroAttivitaPianificata> = new Map<string, ParametroAttivitaPianificata>();
   mapControllo: Map<string, boolean> = new Map<string, boolean>();
   getListaFromMap = (map: Map<string, any>) => Array.from(map, ([name, value]) => value);
 
 
   ngOnInit(): void {
+    this.recuperaFiltroAttivitaPianificataBean();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -68,10 +74,19 @@ export class DatiAttivitaPianificateComponent implements OnInit, OnChanges {
       }
     } else {
       if (this.datiAttivitaPianificata.parametri == null || this.datiAttivitaPianificata.parametri.length === 0) {
+        this.mapParametri = new Map<string, ParametroAttivitaPianificata>();
         this.target.clear();
         this.aggiungiChiaveValore();
       }
     }
+  }
+
+  recuperaFiltroAttivitaPianificataBean() {
+    this.attivitaPianificataService.recuperaFiltroAttivitaPianificataBean(this.idFunzione).subscribe(listaOpzioni => {
+      if (listaOpzioni) {
+        this.opzioniAttivitaPianificataBean = listaOpzioni;
+      }
+    });
   }
 
   isCampoInvalido(campo: NgModel) {
