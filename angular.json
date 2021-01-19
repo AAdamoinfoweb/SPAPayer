@@ -70,6 +70,14 @@
                   "maximumWarning": "6kb"
                 }
               ]
+            },
+            "testbe" : {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testbe.ts"
+                }
+              ]
             }
           }
         },
@@ -81,7 +89,10 @@
           "configurations": {
             "production": {
               "browserTarget": "main-frontend:build:production"
-            }
+            },
+            "testbe": {
+              "browserTarget": "main-frontend:build:testbe"
+            }            
           }
         },
         "extract-i18n": {

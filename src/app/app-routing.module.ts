@@ -10,6 +10,7 @@ import {WaitingComponent} from './modules/main/components/waiting/waiting.compon
 import {GenericErrorComponent} from './modules/generic-error/generic-error.component';
 import {NuovoPagamentoComponent} from './modules/main/components/nuovo-pagamento/nuovo-pagamento.component';
 import {IMieiPagamentiComponent} from './modules/main/components/i-miei-pagamenti/i-miei-pagamenti.component';
+import {PresaincaricopagamentoL1Component} from './modules/main/components/presaincaricopagamentoL1/presaincaricopagamento-l1.component';
 import {CarrelloComponent} from './modules/main/components/carrello/carrello.component';
 import {WaitingL1Component} from './modules/main/components/waitingL1/waiting-l1.component';
 import {GestisciUtentiComponent} from './modules/main/components/amministrativo/gestisci-utenti/gestisci-utenti.component';
@@ -23,7 +24,6 @@ import {GestisciBannerComponent} from './modules/main/components/amministrativo/
 import {FormBannerComponent} from './modules/main/components/amministrativo/gestisci-banner/form-banner/form-banner.component';
 import {MonitoraAccessiComponent} from './modules/main/components/amministrativo/monitora-accessi/monitora-accessi.component';
 import {DettaglioAccessoComponent} from './modules/main/components/amministrativo/monitora-accessi/dettaglio-accesso/dettaglio-accesso.component';
-import {PresaincaricopagamentoL1Component} from './modules/main/components/presaincaricopagamentoL1/presaincaricopagamento-l1.component';
 import {FormEnteComponent} from './modules/main/components/amministrativo/anagrafiche/gestisci-enti/form-ente/form-ente.component';
 import {RaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/raggruppamento-tipologie.component';
 import {FormRaggruppamentoTipologieComponent} from './modules/main/components/amministrativo/anagrafiche/raggruppamento-tipologie/form-raggruppamento-tipologie/form-raggruppamento-tipologie.component';

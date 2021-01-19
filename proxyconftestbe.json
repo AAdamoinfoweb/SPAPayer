@@ -1,0 +1,22 @@
+{
+  "/auth": {
+    "target": {
+        "host": "127.0.0.1",
+        "protocol": "http:",
+        "port": 3138
+      },
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/api": {
+    "target": {
+        "host": "payer2staging.lepida.it",
+        "protocol": "https:",
+        "port": 443
+      },
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

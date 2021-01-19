@@ -1,5 +1,5 @@
-import {EventEmitter, Injectable} from "@angular/core";
-import {AsyncSubject} from "rxjs";
+import {EventEmitter, Injectable} from '@angular/core';
+import {AsyncSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
