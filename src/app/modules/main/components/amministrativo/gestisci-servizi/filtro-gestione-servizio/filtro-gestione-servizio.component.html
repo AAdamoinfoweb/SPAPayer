@@ -52,18 +52,19 @@
           </div>
           <div class="row">
             <div class="col">
-              <p-autoComplete id="inputCodice" class="pt-0" name="codice"
-                              [required]="true"
-                              #filtroCodice="ngModel"
-                              [(ngModel)]="filtriRicerca.tipologiaServizio"
-                              [field]="labelOggettoTipologia"
-                              [suggestions]="listaCodiciTipologiaFiltrati"
-                              (completeMethod)="filtraCodiciTipologia($event)"
-                              delay="0" autoHighlight="true"
-                              [disabled]="disabilitaFiltroCodice()"
-                              placeholder="Non selezionato"
+
+              <select
+                id="inputCodice"
+                name="codice"
+                [required]="true"
+                #filtroCodice="ngModel"
+                [(ngModel)]="filtriRicerca.tipologiaServizio"
+                [disabled]="disabilitaFiltroCodice()"
               >
-              </p-autoComplete>
+                <option [ngValue]="null" selected>Non selezionato</option>
+                <option *ngFor="let item of listaCodiciTipologiaFiltrati"
+                        [ngValue]="item">{{item[labelOggettoTipologia]}}</option>
+              </select>
             </div>
           </div>
           <div class="row">
