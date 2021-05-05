@@ -5911,6 +5911,16 @@ img {
     display: none
   }
 
+  .breadcrumb-container .breadcrumb .breadcrumb-item {
+    pointer-events: none;
+    text-decoration: none;
+  }
+
+  .breadcrumb-container .breadcrumb .breadcrumb-item a {
+    pointer-events: none;
+    text-decoration: none;
+  }
+
   .navbar .dropdown.show .dropdown-menu,
   .navbar .dropdown .dropdown-menu {
     border: 0;

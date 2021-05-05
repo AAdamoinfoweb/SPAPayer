@@ -1,7 +1,7 @@
 <div id="nuovoPagamento">
   <it-breadcrumb [dark]="false" [separator]="'/'">
     <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
-                        [link]="item.link" [icon]="item.icon">
+                         [icon]="item.icon">
       {{item.label}}
     </it-breadcrumb-item>
   </it-breadcrumb>
