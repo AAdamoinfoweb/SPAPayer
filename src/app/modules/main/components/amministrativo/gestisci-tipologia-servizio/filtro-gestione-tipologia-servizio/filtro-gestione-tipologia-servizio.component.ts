@@ -188,6 +188,6 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
   }
 
   getLabelCodice(): string {
-    return this.isPaginaGestione() ? "Codice" : "Tipologia servizio da ereditare";
+    return this.isPaginaGestione() ? "Tipologia servizio" : "Tipologia servizio da ereditare";
   }
 }
