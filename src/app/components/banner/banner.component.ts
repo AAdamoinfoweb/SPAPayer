@@ -19,6 +19,8 @@ export class BannerComponent implements OnInit {
   classe: string = 'alert alert-dismissible fade show';
 
   BannerType = LivelloBanner;
+  getBannerType = getBannerType;
+
   dataSistema: string;
 
   constructor(private bannerService: BannerService) {
