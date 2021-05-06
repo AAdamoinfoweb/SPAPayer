@@ -187,4 +187,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     return !this.filtriRicerca.raggruppamentoId || this.isTipologiaCreata;
   }
 
+  getLabelCodice(): string {
+    return this.isPaginaGestione() ? "Codice" : "Tipologia servizio da ereditare";
+  }
 }

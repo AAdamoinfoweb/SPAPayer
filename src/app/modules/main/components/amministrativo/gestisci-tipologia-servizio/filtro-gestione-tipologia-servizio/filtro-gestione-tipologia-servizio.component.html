@@ -44,25 +44,27 @@
         <div class="col-md-4 pb-2" *ngIf="funzione === FunzioneGestioneEnum.AGGIUNGI || isPaginaGestione()">
           <div class="row">
             <div class="col">
-              <label for="inputCodice" class="title">Codice</label>
+              <label for="inputCodice" class="title">{{getLabelCodice()}}</label>
             </div>
           </div>
           <div class="row">
             <div class="col">
-              <p-autoComplete id="inputCodice" class="pt-0" name="codice"
-                              #filtroCodice = "ngModel" [(ngModel)]="filtriRicerca.tipologia"
-                              [suggestions]="listaTipologieFiltrate" field="codice" (completeMethod)="filtraCodiciTipologia($event)"
-                              delay="0" autoHighlight="true"
-                              [disabled]="disabilitaFiltroCodice()"
-                              placeholder="Non selezionato"
-              >
-              </p-autoComplete>
+              <select id="inputCodice" class="pt-0"
+                      name="codice"
+                      [disabled]="disabilitaFiltroCodice()"
+                      #filtroCodice="ngModel"
+                      [(ngModel)]="filtriRicerca.tipologia">
+                <option [ngValue]="null" [selected]="true">Non selezionato</option>
+                <option *ngFor="let item of listaTipologie"
+                        [ngValue]="item">{{item["codice"]}} - {{item["descrizione"]}}</option>
+              </select>
+
             </div>
           </div>
           <div class="row">
             <div class="col">
               <p [ngClass]="{'text-muted': disabilitaFiltroCodice(), 'text-invalid': isCampoInvalido(filtroCodice)}">
-                {{setPlaceholder(filtroCodice, TipoCampoEnum.INPUT_TESTUALE)}}
+                {{setPlaceholder(filtroCodice, TipoCampoEnum.SELECT)}}
               </p>
             </div>
           </div>

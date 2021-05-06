@@ -63,6 +63,7 @@ export class FiltroRicercaServizioComponent extends FiltroGestioneElementiCompon
   }
 
   caricaCodiciTipologia(): void {
+    this.filtriRicerca.tipologiaServizio = null;
     let observable;
 
     observable = this.configuraServizioService.configuraServiziFiltroTipologia(this.idFunzione);

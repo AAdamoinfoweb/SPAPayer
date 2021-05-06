@@ -52,18 +52,15 @@
           </div>
           <div class="row">
             <div class="col">
-
-              <select
-                id="inputCodice"
+              <select id="inputCodice"
                 name="codice"
                 [required]="true"
                 #filtroCodice="ngModel"
                 [(ngModel)]="filtriRicerca.tipologiaServizio"
-                [disabled]="disabilitaFiltroCodice()"
-              >
-                <option [ngValue]="null" selected>Non selezionato</option>
+                [disabled]="disabilitaFiltroCodice()">
+                <option [ngValue]="null" [selected]="true">Non selezionato</option>
                 <option *ngFor="let item of listaCodiciTipologiaFiltrati"
-                        [ngValue]="item">{{item[labelOggettoTipologia]}}</option>
+                        [ngValue]="item">{{item["codice"]}} - {{item["nome"]}}</option>
               </select>
             </div>
           </div>

@@ -87,15 +87,14 @@
           </div>
           <div class="row">
             <div class="col">
-              <p-autoComplete id="inputCodice" class="pt-0" name="codice"
-                              #filtroCodice="ngModel" [size]="100"
-                              [(ngModel)]="filtriRicerca.tipologiaServizio"
-                              [field]="labelOggettoTipologia"
-                              [suggestions]="listaCodiciTipologiaFiltrati"
-                              (completeMethod)="filtraCodiciTipologia($event)"
-                              delay="0" autoHighlight="true"
-                              placeholder="Tutti">
-              </p-autoComplete>
+              <select id="inputCodice" class="pt-0"
+                      name="codice"
+                      #filtroCodice="ngModel"
+                      [(ngModel)]="filtriRicerca.tipologiaServizio">
+                <option [ngValue]="null" selected>Tutti</option>
+                <option *ngFor="let item of listaCodiciTipologiaFiltrati"
+                        [ngValue]="item">{{item["codice"]}} - {{item["nome"]}}</option>
+              </select>
             </div>
           </div>
         </div>
