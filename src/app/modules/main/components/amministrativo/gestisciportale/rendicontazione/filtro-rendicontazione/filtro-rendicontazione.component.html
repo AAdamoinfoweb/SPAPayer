@@ -138,17 +138,21 @@
           </div>
           <div class="row">
             <div class="col">
-              <select id="selectIdentificativoTransazione" name="transazioneId" #idTransazioneInput = "ngModel"
-                      [(ngModel)]="filtroRicercaRendicontazione.transazioneId">
-                <option [ngValue]="null" selected>Tutti</option>
-                <option *ngFor="let item of listaTransazioneId" [ngValue]="item.value">{{item.label}}</option>
-              </select>
+
+              <input
+                id="selectIdentificativoTransazione"
+                name="transazioneId"
+                [(ngModel)]="filtroRicercaRendicontazione.transazioneId"
+                #idTransazioneInput = "ngModel"
+                autocomplete="off"
+                placeholder="Tutti"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col">
               <p [ngClass]="{'text-muted': !isCampoInvalido(idTransazioneInput), 'text-invalid': isCampoInvalido(idTransazioneInput)}">
-                {{setPlaceholder(idTransazioneInput, 'select')}}
+                {{setPlaceholder(idTransazioneInput, TipoCampoEnum.INPUT_TESTUALE)}}
               </p>
             </div>
           </div>
