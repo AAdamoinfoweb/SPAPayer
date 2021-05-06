@@ -54,7 +54,7 @@
                       [disabled]="disabilitaFiltroCodice()"
                       #filtroCodice="ngModel"
                       [(ngModel)]="filtriRicerca.tipologia">
-                <option [ngValue]="null" [selected]="true">Non selezionato</option>
+                <option [ngValue]="null" [selected]="true">{{gatLabelValue()}}</option>
                 <option *ngFor="let item of listaTipologie"
                         [ngValue]="item">{{item["codice"]}} - {{item["descrizione"]}}</option>
               </select>
