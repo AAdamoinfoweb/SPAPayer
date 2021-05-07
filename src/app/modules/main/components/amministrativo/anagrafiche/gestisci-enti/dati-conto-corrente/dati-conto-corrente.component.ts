@@ -260,4 +260,22 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
       return null;
     }) as ValidatorFn;
   }
+
+  validateEmails() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        let emails: string[] = control.value.split(";");
+        const regex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
+        for (let idx in emails) {
+          let value = emails[idx];
+          if (value != "" && !new RegExp(regex).test(value)) {
+            return {email: false};
+          }
+        }
+      }
+
+      return null;
+    }) as ValidatorFn;
+  }
 }

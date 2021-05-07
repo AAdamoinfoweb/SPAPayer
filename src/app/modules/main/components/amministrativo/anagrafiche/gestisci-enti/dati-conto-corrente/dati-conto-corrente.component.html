@@ -274,7 +274,7 @@
                         <input type="text" autocomplete="off"
                                [placeholder]="getPlaceholderRequired('Email', flussoRiversamentoPagoPA.flagNotificaEmail)"
                                [required]="flussoRiversamentoPagoPA.flagNotificaEmail"
-                               id="email" [customvalidator]="validateEmail()"
+                               id="email" [customvalidator]="validateEmails()"
                                name="email" [(ngModel)]="flussoRiversamentoPagoPA.email"
                                #email="ngModel"
                                (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, email)"
@@ -294,7 +294,7 @@
                       <div class="col-12">
                         <input type="text" autocomplete="off" placeholder="Ccn" id="ccn"
                                name="ccn" [(ngModel)]="flussoRiversamentoPagoPA.ccn"
-                               #ccn="ngModel" [customvalidator]="validateEmail()"
+                               #ccn="ngModel" [customvalidator]="validateEmails()"
                                (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, ccn)"
                                [disabled]="!flussoRiversamentoPagoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
                       </div>
