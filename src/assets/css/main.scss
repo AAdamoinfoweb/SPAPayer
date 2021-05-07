@@ -6079,6 +6079,19 @@ img {
     left: auto
   }
 
+  .nav-open #bodyClick {
+
+    background-color: grey;
+    opacity: 0.7;
+  }
+
+  .nav-open .menu-on-right #bodyClick {
+    right: 260px;
+    left: auto;
+    background-color: grey;
+    opacity: 0.7;
+  }
+
   .menu-on-right .sidebar {
     left: auto;
     right: 0;
