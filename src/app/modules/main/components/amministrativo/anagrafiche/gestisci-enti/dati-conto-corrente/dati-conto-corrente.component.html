@@ -286,7 +286,7 @@
                             <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                                [ngClass]="{'text-muted': !isCampoInvalido(email),
                              'text-invalid': isCampoInvalido(email)}">
-                              {{setPlaceholder(email, TipoCampoEnum.INPUT_TESTUALE)}}
+                              {{setPlaceholder(email, TipoCampoEnum.INPUT_TESTUALE_EMAILS)}}
                             </p>
                           </div>
                         </div>
@@ -304,7 +304,7 @@
                             <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                                [ngClass]="{'text-muted': !isCampoInvalido(ccn),
                              'text-invalid': isCampoInvalido(ccn)}">
-                              {{setPlaceholder(ccn, TipoCampoEnum.INPUT_TESTUALE)}}
+                              {{setPlaceholder(ccn, TipoCampoEnum.INPUT_TESTUALE_EMAILS)}}
                             </p>
                           </div>
                         </div>

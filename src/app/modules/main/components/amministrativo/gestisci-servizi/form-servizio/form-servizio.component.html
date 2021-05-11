@@ -782,7 +782,7 @@
                           <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                              [ngClass]="{'text-muted': !isCampoInvalido(emailGiornalieraId),
                            'text-invalid': isCampoInvalido(emailGiornalieraId)}">
-                            {{setPlaceholder(emailGiornalieraId, TipoCampoEnum.INPUT_TESTUALE)}}
+                            {{setPlaceholder(emailGiornalieraId, TipoCampoEnum.INPUT_TESTUALE_EMAILS)}}
                           </p>
                         </div>
                       </div>
@@ -800,7 +800,7 @@
                           <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                              [ngClass]="{'text-muted': !isCampoInvalido(emailGiornalieraCcn),
                            'text-invalid': isCampoInvalido(emailGiornalieraCcn)}">
-                            {{setPlaceholder(emailGiornalieraCcn, TipoCampoEnum.INPUT_TESTUALE)}}
+                            {{setPlaceholder(emailGiornalieraCcn, TipoCampoEnum.INPUT_TESTUALE_EMAILS)}}
                           </p>
                         </div>
                       </div>

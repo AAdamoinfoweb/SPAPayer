@@ -180,6 +180,8 @@ export class DatiContoCorrenteComponent implements OnInit, AfterViewInit {
           return 'Seleziona un elemento dalla lista';
         case TipoCampoEnum.INPUT_TESTUALE:
           return 'Inserisci testo';
+        case TipoCampoEnum.INPUT_TESTUALE_EMAILS:
+          return 'Inserisci le email separate da ;';
         case TipoCampoEnum.DATEDDMMYY:
           return 'Inserisci data';
       }
