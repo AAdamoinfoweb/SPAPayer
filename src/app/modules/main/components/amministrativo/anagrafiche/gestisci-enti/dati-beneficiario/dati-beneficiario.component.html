@@ -172,15 +172,15 @@
         <!--      fine Dati Conto Corrente -->
       </form>
     </div>
-  </div>
-  <!--      inizio Buttons -->
-  <div class="row">
-    <div class="col text-right">
-      <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiContoCorrente"
-              class="btn btn-secondary"
-              [disabled]="disabilitaBottone()" (click)="aggiungiContoCorrente()">
-        Aggiungi conto corrente
-      </button>
+    <!--      inizio Buttons -->
+    <div class="row">
+      <div class="col text-right">
+        <button *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO" id="buttonAggiungiContoCorrente"
+                class="btn btn-secondary"
+                [disabled]="disabilitaBottone()" (click)="aggiungiContoCorrente()">
+          Aggiungi conto corrente
+        </button>
+      </div>
     </div>
   </div>
 </div>

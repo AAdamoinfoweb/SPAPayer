@@ -16,7 +16,8 @@
       <div class="col-md-3 pb-2">
         <div class="row">
           <div class="col">
-            <label for="selectSocieta" class="title">Società</label>
+            <label for="selectSocieta"
+                   [ngClass]="{'title': true, 'required': funzione !== FunzioneGestioneEnum.DETTAGLIO}">Società</label>
           </div>
         </div>
         <div class="row">

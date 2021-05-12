@@ -92,7 +92,7 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     // Nella pagina Form, carico solo i codici tipologia relativi al raggruppamento selezionato
     if (!this.isPaginaGestione() && this.filtriRicerca.raggruppamentoId) {
       // resetto il filtro codice
-      this.filtriRicerca.tipologia = new TipologiaServizio();
+      this.filtriRicerca.tipologia = null;
       this.listaTipologie = [];
       this.listaTipologieFiltrate = [];
 
@@ -187,4 +187,11 @@ export class FiltroGestioneTipologiaServizioComponent extends FiltroGestioneElem
     return !this.filtriRicerca.raggruppamentoId || this.isTipologiaCreata;
   }
 
+  getLabelCodice(): string {
+    return this.isPaginaGestione() ? "Tipologia servizio" : "Tipologia servizio da ereditare";
+  }
+
+  gatLabelValue(): string {
+    return this.isPaginaGestione() ? "Tutti" : "Non selezionato";
+  }
 }

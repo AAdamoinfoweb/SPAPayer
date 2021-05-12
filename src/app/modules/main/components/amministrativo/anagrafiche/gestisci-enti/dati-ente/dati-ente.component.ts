@@ -50,7 +50,7 @@ export class DatiEnteComponent implements OnInit, OnChanges {
   opzioniFiltroComuneFiltrate: OpzioneSelect[] = [];
   opzioniFiltroProvincia: OpzioneSelect[] = [];
 
-  province: Provincia[];
+  province: Provincia[] = [];
 
   constructor(private societaService: SocietaService, private nuovoPagamentoService: NuovoPagamentoService,
               private enteService: EnteService) {

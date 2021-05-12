@@ -571,6 +571,8 @@ export class FormServizioComponent extends FormElementoParentComponent implement
           return 'Seleziona un elemento dalla lista';
         case TipoCampoEnum.INPUT_TESTUALE:
           return 'Inserisci testo';
+        case TipoCampoEnum.INPUT_TESTUALE_EMAILS:
+          return 'Inserisci le email separate da ;';
         case TipoCampoEnum.DATEDDMMYY:
           return 'Inserisci data';
       }
@@ -894,6 +896,23 @@ export class FormServizioComponent extends FormElementoParentComponent implement
 
   isPresenteInQuadratura() {
     return !this.servizio.flagPresenzaQuadraturaPagoPA;
+  }
+
+  validateEmails() {
+    return ((control: FormControl) => {
+
+      if (control.value) {
+        let emails: string[] = control.value.split(";");
+        const regex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
+        for (let idx in emails) {
+          let value = emails[idx];
+          if (value != "" && !new RegExp(regex).test(value)) {
+            return {email: false};
+          }
+        }
+      }
+      return null;
+    }) as ValidatorFn;
   }
 }
 

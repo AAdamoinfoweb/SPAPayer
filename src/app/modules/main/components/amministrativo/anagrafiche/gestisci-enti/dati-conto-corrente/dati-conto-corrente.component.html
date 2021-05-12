@@ -5,7 +5,7 @@
             aria-controls="contenutoSezioneDatiContoCorrente">
       <div class="row">
         <div class="col">
-          Dati Conto Corrente
+          Dato Conti Correnti
         </div>
         <!--    inizio Elimina Dati Beneficario -->
         <div class="col text-right">
@@ -274,7 +274,7 @@
                         <input type="text" autocomplete="off"
                                [placeholder]="getPlaceholderRequired('Email', flussoRiversamentoPagoPA.flagNotificaEmail)"
                                [required]="flussoRiversamentoPagoPA.flagNotificaEmail"
-                               id="email" [customvalidator]="validateEmail()"
+                               id="email" [customvalidator]="validateEmails()"
                                name="email" [(ngModel)]="flussoRiversamentoPagoPA.email"
                                #email="ngModel"
                                (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, email)"
@@ -286,7 +286,7 @@
                             <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                                [ngClass]="{'text-muted': !isCampoInvalido(email),
                              'text-invalid': isCampoInvalido(email)}">
-                              {{setPlaceholder(email, TipoCampoEnum.INPUT_TESTUALE)}}
+                              {{setPlaceholder(email, TipoCampoEnum.INPUT_TESTUALE_EMAILS)}}
                             </p>
                           </div>
                         </div>
@@ -294,7 +294,7 @@
                       <div class="col-12">
                         <input type="text" autocomplete="off" placeholder="Ccn" id="ccn"
                                name="ccn" [(ngModel)]="flussoRiversamentoPagoPA.ccn"
-                               #ccn="ngModel" [customvalidator]="validateEmail()"
+                               #ccn="ngModel" [customvalidator]="validateEmails()"
                                (ngModelChange)="onChangeModelFlusso(datiContoCorrenteForm, ccn)"
                                [disabled]="!flussoRiversamentoPagoPA.flagNotificaEmail || disabilitaCampi() ? true : null">
                       </div>
@@ -304,7 +304,7 @@
                             <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                                [ngClass]="{'text-muted': !isCampoInvalido(ccn),
                              'text-invalid': isCampoInvalido(ccn)}">
-                              {{setPlaceholder(ccn, TipoCampoEnum.INPUT_TESTUALE)}}
+                              {{setPlaceholder(ccn, TipoCampoEnum.INPUT_TESTUALE_EMAILS)}}
                             </p>
                           </div>
                         </div>

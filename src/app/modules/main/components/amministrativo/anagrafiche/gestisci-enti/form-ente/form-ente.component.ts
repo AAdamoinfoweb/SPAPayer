@@ -255,7 +255,12 @@ export class FormEnteComponent extends FormElementoParentComponent implements On
   }
 
   private modificaEnte() {
-    this.enteService.modificaEnte(this.datiEnte, this.idFunzione, this.datiEnte.societaId).subscribe();
+    this.enteService.modificaEnte(this.datiEnte, this.idFunzione, this.datiEnte.societaId)
+      .subscribe((esito) => {
+        if (esito) {
+          this.routingService.configuraRouterAndNavigate(this.basePath + '/modificaEnte/' + this.datiEnte.id, null);
+        }
+      });
   }
 
   private formattaCampi(listaBeneficiari: Beneficiario[], dateIsIso?: boolean) {

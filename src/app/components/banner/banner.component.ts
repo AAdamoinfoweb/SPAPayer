@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BannerService} from '../../services/banner.service';
 import {Banner} from '../../modules/main/model/banner/Banner';
 import {getBannerType, LivelloBanner} from '../../enums/livelloBanner.enum';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-banner',
@@ -17,6 +18,8 @@ export class BannerComponent implements OnInit {
   livello;
   classe: string = 'alert alert-dismissible fade show';
 
+  BannerType = LivelloBanner;
+  getBannerType = getBannerType;
 
   constructor(private bannerService: BannerService) {
   }
@@ -24,6 +27,7 @@ export class BannerComponent implements OnInit {
   ngOnInit(): void {
     this.bannerService.bannerEvent.subscribe((banners: Banner[]) => {
       const bannersTemp = banners.map(banner => {
+        banner.dataSistema = moment().format('DD-MM-YYYY HH:mm:ss');
         this.classe = banner.tipo ? banner.tipo.classe : getBannerType(LivelloBanner.INFO).classe;
         banner.classe = this.classe;
         return banner;

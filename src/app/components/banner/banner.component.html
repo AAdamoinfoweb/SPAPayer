@@ -2,10 +2,13 @@
   <div *ngFor="let banner of this.banners">
     <div [ngClass]="banner.classe" role="alert">
       <div class="row">
-        <div class="col">
+        <div class="col-8 col-lg-10 col-xl-10">
           <h5 class="alert-heading">{{banner.titolo}}</h5>
         </div>
-        <div class="col">
+        <div class="col-3  col-lg-2 col-xl-2" *ngIf="banner.tipo.livello != getBannerType(BannerType.SUCCESS).livello && banner.tipo != getBannerType(BannerType.INFO).livello">
+          <p>{{banner.dataSistema}}</p>
+        </div>
+        <div class="col" (click)="onClick(banner)">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="onClick(banner)">
             <span aria-hidden="true">&times;</span>
           </button>

@@ -5911,6 +5911,16 @@ img {
     display: none
   }
 
+  .breadcrumb-container .breadcrumb .breadcrumb-item {
+    pointer-events: none;
+    text-decoration: none;
+  }
+
+  .breadcrumb-container .breadcrumb .breadcrumb-item a {
+    pointer-events: none;
+    text-decoration: none;
+  }
+
   .navbar .dropdown.show .dropdown-menu,
   .navbar .dropdown .dropdown-menu {
     border: 0;
@@ -6067,6 +6077,19 @@ img {
   .nav-open .menu-on-right #bodyClick {
     right: 260px;
     left: auto
+  }
+
+  .nav-open #bodyClick {
+
+    background-color: grey;
+    opacity: 0.7;
+  }
+
+  .nav-open .menu-on-right #bodyClick {
+    right: 260px;
+    left: auto;
+    background-color: grey;
+    opacity: 0.7;
   }
 
   .menu-on-right .sidebar {

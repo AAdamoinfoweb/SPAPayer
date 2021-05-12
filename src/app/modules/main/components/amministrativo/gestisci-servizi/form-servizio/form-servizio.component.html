@@ -2,7 +2,7 @@
   <!-- breadcrumb -->
   <it-breadcrumb [dark]="false" [separator]="'/'">
     <it-breadcrumb-item [id]="'breadcrumb-item-' + item.id" *ngFor="let item of breadcrumbList; let i = index"
-                        [link]="item.link">
+                        >
       {{item.label}}
     </it-breadcrumb-item>
   </it-breadcrumb>
@@ -772,7 +772,7 @@
                       <input type="text" autocomplete="off"
                              [placeholder]="getPlaceholderRequired('Email', rendicontazioneGiornaliera.flagNotificaEmail)"
                              #emailGiornalieraId="ngModel" [required]="rendicontazioneGiornaliera.flagNotificaEmail"
-                             id="emailGiornalieraId" [customvalidator]="validateEmail()"
+                             id="emailGiornalieraId" [customvalidator]="validateEmails()"
                              name="emailGiornalieraId" [(ngModel)]="rendicontazioneGiornaliera.email"
                              [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
                     </div>
@@ -782,7 +782,7 @@
                           <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                              [ngClass]="{'text-muted': !isCampoInvalido(emailGiornalieraId),
                            'text-invalid': isCampoInvalido(emailGiornalieraId)}">
-                            {{setPlaceholder(emailGiornalieraId, TipoCampoEnum.INPUT_TESTUALE)}}
+                            {{setPlaceholder(emailGiornalieraId, TipoCampoEnum.INPUT_TESTUALE_EMAILS)}}
                           </p>
                         </div>
                       </div>
@@ -790,7 +790,7 @@
                     <div class="col-12">
                       <input type="text" autocomplete="off" placeholder="Ccn"
                              #emailGiornalieraCcn="ngModel"
-                             id="emailGiornalieraCcn" [customvalidator]="validateEmail()"
+                             id="emailGiornalieraCcn" [customvalidator]="validateEmails()"
                              name="emailGiornalieraCcn" [(ngModel)]="rendicontazioneGiornaliera.ccn"
                              [disabled]="!rendicontazioneGiornaliera.flagNotificaEmail || disabilitaCampi() ? true : null">
                     </div>
@@ -800,7 +800,7 @@
                           <p *ngIf="funzione !== FunzioneGestioneEnum.DETTAGLIO"
                              [ngClass]="{'text-muted': !isCampoInvalido(emailGiornalieraCcn),
                            'text-invalid': isCampoInvalido(emailGiornalieraCcn)}">
-                            {{setPlaceholder(emailGiornalieraCcn, TipoCampoEnum.INPUT_TESTUALE)}}
+                            {{setPlaceholder(emailGiornalieraCcn, TipoCampoEnum.INPUT_TESTUALE_EMAILS)}}
                           </p>
                         </div>
                       </div>

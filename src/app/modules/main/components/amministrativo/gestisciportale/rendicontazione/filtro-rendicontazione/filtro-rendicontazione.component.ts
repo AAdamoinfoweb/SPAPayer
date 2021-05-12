@@ -22,6 +22,8 @@ import {CampoTipologiaServizioService} from '../../../../../../../services/campo
 })
 export class FiltroRendicontazioneComponent extends FiltroGestioneElementiComponent implements OnInit {
 
+  TipoCampoEnum = TipoCampoEnum;
+
   @Output()
   onChangeFiltri: EventEmitter<ParametriRicercaRendicontazione> = new EventEmitter<ParametriRicercaRendicontazione>();
 
