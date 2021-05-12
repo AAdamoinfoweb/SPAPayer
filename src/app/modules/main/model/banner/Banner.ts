@@ -9,4 +9,5 @@ export class Banner {
   attivo?: boolean = false;
   tipo?: BannerType;
   classe?: string;
+  dataSistema?: string;
 }

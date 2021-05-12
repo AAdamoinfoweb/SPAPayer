@@ -21,15 +21,13 @@ export class BannerComponent implements OnInit {
   BannerType = LivelloBanner;
   getBannerType = getBannerType;
 
-  dataSistema: string;
-
   constructor(private bannerService: BannerService) {
   }
 
   ngOnInit(): void {
     this.bannerService.bannerEvent.subscribe((banners: Banner[]) => {
-      this.dataSistema = moment().format('DD-MM-YYYY HH:mm:ss');
       const bannersTemp = banners.map(banner => {
+        banner.dataSistema = moment().format('DD-MM-YYYY HH:mm:ss');
         this.classe = banner.tipo ? banner.tipo.classe : getBannerType(LivelloBanner.INFO).classe;
         banner.classe = this.classe;
         return banner;
